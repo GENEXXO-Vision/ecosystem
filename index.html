@@ -103,16 +103,20 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
    CANVAS SECTIONS (two-col on desktop)
    ══════════════════════════════════════════════ */
 .canvas-section{padding:60px 0;position:relative}
-.canvas-row{display:flex;flex-direction:column;gap:32px}
-.canvas-visual{position:relative;width:100%;height:300px;border-radius:16px;overflow:hidden;background:#06060a}
+.canvas-row{display:flex;flex-direction:column;gap:24px}
+.canvas-header{order:1}
+.canvas-visual{order:2;position:relative;width:100%;height:300px;border-radius:16px;overflow:hidden;background:#06060a}
 .canvas-visual canvas{width:100%;height:100%}
-.canvas-text{display:flex;flex-direction:column;justify-content:center}
+.canvas-body{order:3}
 @media(min-width:768px){
   .canvas-section{padding:80px 0}
-  .canvas-row{flex-direction:row;align-items:center;gap:48px}
-  .canvas-visual{flex:0 0 48%;height:400px}
-  .canvas-text{flex:1}
-  .canvas-row.reverse{flex-direction:row-reverse}
+  .canvas-row{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:16px 48px;align-items:center}
+  .canvas-header{order:unset;grid-column:2;grid-row:1;align-self:end}
+  .canvas-visual{order:unset;grid-column:1;grid-row:1 / 3;height:400px}
+  .canvas-body{order:unset;grid-column:2;grid-row:2;align-self:start}
+  .canvas-row.reverse .canvas-visual{grid-column:2}
+  .canvas-row.reverse .canvas-header{grid-column:1}
+  .canvas-row.reverse .canvas-body{grid-column:1}
 }
 
 /* ── Feature cards ── */
@@ -272,9 +276,11 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
       <div class="canvas-visual reveal" id="appVisual">
         <canvas id="supernovaAppCanvas"></canvas>
       </div>
-      <div class="canvas-text">
+      <div class="canvas-header">
         <div class="section-tag reveal">The Supernova App</div>
         <div class="headline reveal reveal-delay-1">Expansion,<br><span class="gradient">Not Compression</span></div>
+      </div>
+      <div class="canvas-body">
         <div class="body-text reveal reveal-delay-2">Built on PWA architecture &mdash; no app store gatekeepers. The launchpad for the entire GENEXXO ecosystem.</div>
         <div class="feature-cards reveal reveal-delay-3">
           <div class="feature-card">
@@ -303,9 +309,11 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
       <div class="canvas-visual reveal" id="gatewayVisual">
         <canvas id="gatewayCanvas"></canvas>
       </div>
-      <div class="canvas-text">
+      <div class="canvas-header">
         <div class="section-tag reveal">The Gateways</div>
         <div class="headline reveal reveal-delay-1">Every Domain Becomes<br><span class="gradient">A Gravitational Gateway</span></div>
+      </div>
+      <div class="canvas-body">
         <div class="body-text reveal reveal-delay-2">Each XX domain is a living micro-brand &mdash; a gravitational gateway that pulls in content, communities, commerce, and AI.</div>
         <div class="metrics reveal reveal-delay-3">
           <div class="metric"><div class="metric-value">10K+</div><div class="metric-label">Gateways</div></div>
@@ -325,9 +333,11 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
       <div class="canvas-visual reveal" id="networkVisual">
         <canvas id="networkCanvas"></canvas>
       </div>
-      <div class="canvas-text">
+      <div class="canvas-header">
         <div class="section-tag reveal">The Network</div>
         <div class="headline reveal reveal-delay-1">Where All Gateways Lead<br><span class="gradient2">A Multi-Dimensional Ecosystem</span></div>
+      </div>
+      <div class="canvas-body">
         <div class="body-text reveal reveal-delay-2">Every gateway connects to the GENEXXO Hub &mdash; and to each other. Not siloed categories, but a living network.</div>
         <div class="metrics reveal reveal-delay-3">
           <div class="metric"><div class="metric-value">10,000+</div><div class="metric-label">Gateways</div></div>
@@ -348,9 +358,11 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
       <div class="canvas-visual reveal" id="hubVisual" style="display:flex;align-items:center;justify-content:center;background:transparent">
         <canvas id="hubCanvas" style="width:260px;height:260px"></canvas>
       </div>
-      <div class="canvas-text">
+      <div class="canvas-header">
         <div class="section-tag reveal">The Hub</div>
         <div class="headline reveal reveal-delay-1">The GENEXXO Hub<br><span class="gradient">Where Your Universe Begins</span></div>
+      </div>
+      <div class="canvas-body">
         <div class="body-text reveal reveal-delay-2">One hub. Every gateway. A personalised nexus powered by AI, shaped by you.</div>
         <div class="hub-grid reveal reveal-delay-3">
           <div class="hub-row"><div class="hub-dot" style="background:#E84D3A"></div><div><div class="hub-title">Personalised Feed</div><div class="hub-desc">Content, communities, and commerce curated to your passions.</div></div></div>
@@ -374,9 +386,11 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
       <div class="canvas-visual reveal" id="bizVisual">
         <canvas id="bizCanvas"></canvas>
       </div>
-      <div class="canvas-text">
+      <div class="canvas-header">
         <div class="section-tag reveal">The Facilitator</div>
         <div class="headline reveal reveal-delay-1">Where Everybody<br><span class="gradient">Thrives</span></div>
+      </div>
+      <div class="canvas-body">
         <div class="body-text reveal reveal-delay-2">GENEXXO doesn't compete with the players &mdash; it builds the stadium. A logistics-free facilitator model.</div>
         <div class="info-cards reveal reveal-delay-3">
           <div class="info-card" style="background:rgba(232,77,58,.06);border:1px solid rgba(232,77,58,.12)">
@@ -411,9 +425,11 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
       <div class="canvas-visual reveal" id="aiVisual">
         <canvas id="aiCanvas"></canvas>
       </div>
-      <div class="canvas-text">
+      <div class="canvas-header">
         <div class="section-tag reveal">Supernova Intelligence</div>
         <div class="headline reveal reveal-delay-1">AI in the DNA<br><span class="gradient">From Day One</span></div>
+      </div>
+      <div class="canvas-body">
         <div class="body-text reveal reveal-delay-2">Intelligence woven into every layer. A Supernova Host that guards and guides. Specialised AI in every domain.</div>
         <div class="info-cards reveal reveal-delay-3">
           <div class="info-card" style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.12)">
