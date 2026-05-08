@@ -276,18 +276,28 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
      ═══════════════════════════════════════════════════════ -->
 <section class="slide" id="slide-1" style="padding:0;background:#06060a">
   <div class="bg-noise"></div>
-  <div class="slide-number">01 / 11</div>
+  <div class="slide-number">01 / 10</div>
 
   <!-- Full-viewport supernova canvas -->
   <canvas id="supernovaCanvas"></canvas>
 
   <!-- Content overlay -->
-  <div class="slide-inner title-hero slide1-content" style="padding:60px 80px">
+  <div class="slide-inner title-hero slide1-content" style="padding:60px 80px;text-align:center">
 
     <div style="height:52vh;pointer-events:none"></div>
 
-    <div class="headline reveal" style="font-size:4.5rem">
-      <span class="gradient">GENEXXO</span>
+    <div class="reveal" style="max-width:420px;margin:0 auto;filter:drop-shadow(0 0 30px rgba(232,77,58,.3)) drop-shadow(0 0 60px rgba(139,92,246,.15))">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 57.2" style="width:100%;height:auto">
+        <defs>
+          <linearGradient id="genexxoGrad" x1="74.1" y1="-57.4" x2="245.8" y2="114.3" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#ec1c24"/>
+            <stop offset=".7" stop-color="#2a265e"/>
+            <stop offset=".8" stop-color="#25265f"/>
+            <stop offset="1" stop-color="#1b75bb"/>
+          </linearGradient>
+        </defs>
+        <path fill="url(#genexxoGrad)" d="M230.1,1.8h0c0,.1,0,0,0,0h.1ZM203.7,1.8h-8.9l15.3,23.1,4.6-6.5-11-16.6ZM245.5,38.8l10.9,16.5h8.9l-15.3-23.1-4.5,6.7ZM247.6,28.5l-4.5,6.7h0l-8.7,13.2-4.4,6.7-4.4-6.7-8.7-13.2-13.2,20h-8.9l16.7-25.3h0s.9-1.4.9-1.4h0l4.4-6.7,8.7-13.2,4.4-6.7,4.4,6.7,8.7,13.2,13.2-20h8.9l-17.6,26.7ZM238.7,28.5l-8.7-13.2-8.7,13.2,8.7,13.2,8.7-13.2ZM211.6,29.9h0s0,0,0,0ZM212.5,28.5h0l-.9,1.3.9-1.3ZM52.2,17.2c-2-5.1-5.2-9.1-9.7-11.9-4.4-2.8-9.5-4.2-15.2-4.2s-9.6,1.2-13.8,3.5c-4.2,2.3-7.5,5.6-9.9,9.7C1.2,18.5,0,23.2,0,28.4s1.2,9.9,3.7,14.1c2.4,4.2,5.7,7.4,9.9,9.7,4.2,2.3,8.8,3.5,13.8,3.5s8.9-1,12.8-3.1c3.8-2.1,6.9-4.9,9.3-8.4,2.4-3.5,3.9-7.3,4.4-11.5v-6.9h-29.5v7h20.1c-.7,4.6-2.5,8.2-5.5,10.9-3,2.7-6.9,4-11.6,4s-6.7-.8-9.5-2.4c-2.8-1.6-4.9-3.9-6.5-6.8-1.6-3-2.4-6.4-2.4-10.2s.8-7.2,2.4-10.2c1.6-2.9,3.7-5.2,6.5-6.8,2.8-1.6,5.9-2.4,9.5-2.4s6.1.7,8.6,2c2.5,1.4,4.4,3.4,5.8,6h10.6ZM92.1,8.8V1.7h-29.6v53.6h29.6v-7.2h-20.8v-16.4h18.5v-7.2h-18.5v-15.7h20.8ZM146.9,1.7h-8.8v39.9L111.7,1.7h-8.8v53.6h8.8V15.3l26.4,40h8.8V1.7ZM188,8.8V1.7h-29.6v53.6h29.6v-7.2h-20.8v-16.4h18.5v-7.2h-18.5v-15.7h20.8ZM292.5,55.8c5,0,9.6-1.2,13.8-3.5,4.2-2.3,7.5-5.6,9.9-9.8,2.4-4.2,3.6-8.9,3.6-14.1s-1.2-9.9-3.6-14.1c-2.4-4.2-5.7-7.4-9.9-9.7-4.2-2.3-8.8-3.5-13.8-3.5s-9.6,1.2-13.8,3.5c-4.2,2.3-7.5,5.6-9.9,9.7-2.4,4.2-3.7,8.9-3.7,14.1s1.2,10,3.7,14.1c2.4,4.2,5.8,7.5,9.9,9.8,4.2,2.3,8.8,3.5,13.8,3.5ZM292.5,48.2c-3.5,0-6.7-.8-9.5-2.4-2.8-1.6-4.9-3.9-6.5-6.9-1.6-3-2.4-6.5-2.4-10.4s.8-7.4,2.4-10.4c1.6-3,3.7-5.3,6.5-6.9,2.8-1.6,5.9-2.4,9.5-2.4s6.7.8,9.5,2.4c2.8,1.6,4.9,3.9,6.5,6.9,1.6,3,2.4,6.4,2.4,10.4s-.8,7.4-2.4,10.4c-1.6,3-3.7,5.3-6.5,6.9-2.8,1.6-5.9,2.4-9.5,2.4Z"/>
+      </svg>
     </div>
     <div class="tagline reveal reveal-delay-1">The Facilitator Model</div>
     <div class="tagline2 reveal reveal-delay-2">
@@ -326,12 +336,13 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
 <section class="slide" id="slide-2">
   <div class="bg-grid"></div>
   <div class="bg-radial" style="background:radial-gradient(circle,rgba(232,77,58,.2),transparent);top:-200px;right:-200px"></div>
-  <div class="slide-number">02 / 11</div>
+  <div class="slide-number">02 / 10</div>
   <div class="slide-logo"><div class="mark"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></div><span class="wordmark">GENEXXO</span></div>
   <div class="slide-inner">
     <div class="section-tag reveal">THE COLLECTION</div>
     <div class="headline reveal">The Linguistic Moat<br><span class="gradient">10,000 Branded Gateways</span></div>
-    <div class="subtitle reveal reveal-delay-1">Technology is a commodity. Namespace is scarce. Over 10,000 premium single-word .com domains, each branded with the XX signature. Assembled over 14 years. Now locked and complete.</div>
+    <div style="font-size:1.05rem;font-weight:700;color:rgba(255,255,255,.9);margin-top:8px;letter-spacing:.02em" class="reveal reveal-delay-1">The asset that makes it all possible.</div>
+    <div class="subtitle reveal reveal-delay-1" style="margin-top:12px">Technology is a commodity. Namespace is scarce. Over 10,000 premium single-word .com domains, each branded with the XX signature. Assembled over 14 years. Now locked and complete.</div>
 
     <!-- Three pillars -->
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:40px">
@@ -343,17 +354,6 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
         <div style="font-size:.62rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#E84D3A;margin-bottom:10px">The Foundation</div>
         <div style="font-size:1.1rem;font-weight:800;margin-bottom:10px;line-height:1.25">The Bedrock of<br>the Organizing Layer</div>
         <div style="font-size:.82rem;opacity:.45;line-height:1.65">The internet's organizing layer cannot be built on secondary assets. It demands premium, category-native namespace. Every ClimbXX, every SurfXX, every CryptoXX &mdash; a foundation stone that gives this architecture its permanence and authority.</div>
-        <!-- Domain samples -->
-        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:16px">
-          <span class="domain-pill" style="font-size:.62rem;padding:3px 9px;border-color:rgba(232,77,58,.12);color:#E84D3A">ClimbXX.com</span>
-          <span class="domain-pill" style="font-size:.62rem;padding:3px 9px;border-color:rgba(232,77,58,.12);color:#E84D3A">SurfXX.com</span>
-          <span class="domain-pill" style="font-size:.62rem;padding:3px 9px;border-color:rgba(232,77,58,.12);color:#E84D3A">CryptoXX.com</span>
-          <span class="domain-pill" style="font-size:.62rem;padding:3px 9px">FinanceXX.com</span>
-          <span class="domain-pill" style="font-size:.62rem;padding:3px 9px">HealthXX.com</span>
-          <span class="domain-pill" style="font-size:.62rem;padding:3px 9px">TechXX.com</span>
-          <span class="domain-pill" style="font-size:.62rem;padding:3px 9px">FoodXX.com</span>
-          <span class="domain-pill" style="font-size:.62rem;padding:3px 9px">SportXX.com</span>
-        </div>
       </div>
 
       <!-- BRANDING -->
@@ -363,19 +363,6 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
         <div style="font-size:.62rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#8B5CF6;margin-bottom:10px">The Branding</div>
         <div style="font-size:1.1rem;font-weight:800;margin-bottom:10px;line-height:1.25">10,000 Domains,<br>One Unified Signature</div>
         <div style="font-size:.82rem;opacity:.45;line-height:1.65">We have effectively branded over 10,000 single-word domains with the super-cool XX signature. Every gateway is instantly recognisable. CycleXX, StyleXX, DroneXX &mdash; the XX becomes a universal mark of category authority and belonging.</div>
-        <!-- XX Signature visual -->
-        <div style="margin-top:16px;text-align:center">
-          <div style="display:inline-block;padding:14px 28px;border-radius:12px;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.12)">
-            <span style="font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:800;letter-spacing:.06em">
-              <span style="color:rgba(255,255,255,.5)">Climb</span><span style="color:#8B5CF6">XX</span>
-              <span style="opacity:.2;margin:0 6px">&middot;</span>
-              <span style="color:rgba(255,255,255,.5)">Style</span><span style="color:#8B5CF6">XX</span>
-              <span style="opacity:.2;margin:0 6px">&middot;</span>
-              <span style="color:rgba(255,255,255,.5)">Crypto</span><span style="color:#8B5CF6">XX</span>
-            </span>
-          </div>
-          <div style="font-size:.66rem;opacity:.3;margin-top:8px;font-weight:600">One signature. Infinite categories.</div>
-        </div>
       </div>
 
       <!-- PROTECTION -->
@@ -385,19 +372,6 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
         <div style="font-size:.62rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#4A6CF7;margin-bottom:10px">The Protection</div>
         <div style="font-size:1.1rem;font-weight:800;margin-bottom:10px;line-height:1.25">Impossible to<br>Assemble Again</div>
         <div style="font-size:.82rem;opacity:.45;line-height:1.65">A collection of this quality and scale will be impossible to assemble in the future. Premium single-word .com domains are finite, increasingly locked, and disappearing from the open market. This is not a technology moat &mdash; it is a linguistic moat that cannot be crossed.</div>
-        <!-- Lock visual -->
-        <div style="margin-top:16px;display:flex;gap:10px;align-items:center;justify-content:center">
-          <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:9px;background:rgba(74,108,247,.06);border:1px solid rgba(74,108,247,.08)">
-            <span style="font-size:.8rem">&#x1F512;</span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#4A6CF7">10,000+</span>
-            <span style="font-size:.66rem;opacity:.4">locked</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:9px;background:rgba(74,108,247,.06);border:1px solid rgba(74,108,247,.08)">
-            <span style="font-size:.8rem">&#x23F3;</span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#4A6CF7">14 yrs</span>
-            <span style="font-size:.66rem;opacity:.4">assembled</span>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -415,7 +389,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
      ═══════════════════════════════════════════════════════ -->
 <section class="slide" id="slide-3" style="padding:0;background:#06060a">
   <div class="bg-noise"></div>
-  <div class="slide-number">03 / 11</div>
+  <div class="slide-number">03 / 10</div>
   <div class="slide-logo"><div class="mark"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></div><span class="wordmark">GENEXXO</span></div>
 
   <!-- Full-viewport canvas -->
@@ -445,7 +419,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
      ═══════════════════════════════════════════════════════ -->
 <section class="slide" id="slide-4" style="padding:0;background:#06060a">
   <div class="bg-noise"></div>
-  <div class="slide-number">04 / 11</div>
+  <div class="slide-number">04 / 10</div>
   <div class="slide-logo"><div class="mark"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></div><span class="wordmark">GENEXXO</span></div>
 
   <!-- Full-slide gateway canvas -->
@@ -473,7 +447,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
      ═══════════════════════════════════════════════════════ -->
 <section class="slide" id="slide-5">
   <div class="bg-grid"></div>
-  <div class="slide-number">05 / 11</div>
+  <div class="slide-number">05 / 10</div>
   <div class="slide-logo"><div class="mark"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></div><span class="wordmark">GENEXXO</span></div>
 
   <!-- Full-viewport canvas for the multi-dimensional network -->
@@ -511,7 +485,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
 <section class="slide" id="slide-6">
   <div class="bg-grid"></div>
   <div class="bg-radial" style="background:radial-gradient(circle,rgba(232,77,58,.12),transparent);top:-50px;left:50%;transform:translateX(-50%)"></div>
-  <div class="slide-number">06 / 11</div>
+  <div class="slide-number">06 / 10</div>
   <div class="slide-logo"><div class="mark"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></div><span class="wordmark">GENEXXO</span></div>
   <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0">
     <div class="section-tag reveal">THE NEXUS</div>
@@ -588,7 +562,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
      ═══════════════════════════════════════════════════════ -->
 <section class="slide" id="slide-7" style="padding:0;background:#06060a">
   <div class="bg-noise"></div>
-  <div class="slide-number">07 / 11</div>
+  <div class="slide-number">07 / 10</div>
   <div class="slide-logo"><div class="mark"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></div><span class="wordmark">GENEXXO</span></div>
 
   <!-- Full-viewport canvas -->
@@ -655,7 +629,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
 <section class="slide" id="slide-8">
   <div class="bg-grid"></div>
   <div class="bg-radial" style="background:radial-gradient(circle,rgba(16,185,129,.12),transparent);bottom:-200px;right:-200px"></div>
-  <div class="slide-number">08 / 11</div>
+  <div class="slide-number">08 / 10</div>
   <div class="slide-logo"><div class="mark"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></div><span class="wordmark">GENEXXO</span></div>
   <div class="slide-inner">
     <div class="section-tag reveal">THE FREEDOM</div>
@@ -712,255 +686,127 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
 </section>
 
 <!-- ═══════════════════════════════════════════════════════
-     SLIDE 8 — BRAND ZONES (Hub-centric)
+     SLIDE 9 — SUPERNOVA INTELLIGENCE
      ═══════════════════════════════════════════════════════ -->
-<section class="slide" id="slide-9">
-  <div class="bg-grid"></div>
-  <div class="bg-radial" style="background:radial-gradient(circle,rgba(245,158,11,.12),transparent);top:-200px;left:-100px"></div>
-  <div class="slide-number">09 / 11</div>
+<section class="slide" id="slide-9" style="padding:0;background:#06060a">
+  <div class="bg-noise"></div>
+  <div class="slide-number">09 / 10</div>
   <div class="slide-logo"><div class="mark"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></div><span class="wordmark">GENEXXO</span></div>
-  <div class="slide-inner">
-    <div class="section-tag reveal">THE BRAND</div>
-    <div class="headline reveal">Brand Zones<br><span class="gradient">Living Inside Communities</span></div>
-    <div class="subtitle reveal reveal-delay-1">Brands don't advertise at communities &mdash; they live within them. One Brand Zone, multiple gateways. Patagonia exists natively in ClimbXX, HikeXX, SurfXX, SkiXX. The hub connects them all.</div>
 
-    <!-- Hub-centric brand diagram -->
-    <div class="bz-nexus reveal reveal-delay-2">
-      <svg style="position:absolute;inset:0;z-index:1;pointer-events:none" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
-        <defs><linearGradient id="bzLine"><stop offset="0%" stop-color="#E84D3A" stop-opacity=".2"/><stop offset="100%" stop-color="#8B5CF6" stop-opacity=".05"/></linearGradient></defs>
-        <line x1="400" y1="200" x2="140" y2="70" stroke="url(#bzLine)" stroke-width="1" stroke-dasharray="3 3" style="animation:flowDash 3s linear infinite"/>
-        <line x1="400" y1="200" x2="660" y2="70" stroke="url(#bzLine)" stroke-width="1" stroke-dasharray="3 3" style="animation:flowDash 2.5s linear infinite"/>
-        <line x1="400" y1="200" x2="100" y2="250" stroke="url(#bzLine)" stroke-width="1" stroke-dasharray="3 3" style="animation:flowDash 3.5s linear infinite"/>
-        <line x1="400" y1="200" x2="700" y2="250" stroke="url(#bzLine)" stroke-width="1" stroke-dasharray="3 3" style="animation:flowDash 2.8s linear infinite"/>
-        <line x1="400" y1="200" x2="200" y2="350" stroke="url(#bzLine)" stroke-width="1" stroke-dasharray="3 3" style="animation:flowDash 3.2s linear infinite"/>
-        <line x1="400" y1="200" x2="600" y2="350" stroke="url(#bzLine)" stroke-width="1" stroke-dasharray="3 3" style="animation:flowDash 2.7s linear infinite"/>
-        <circle r="2.5" fill="#E84D3A" opacity=".6"><animateMotion dur="3s" repeatCount="indefinite" path="M400,200 L140,70"/></circle>
-        <circle r="2.5" fill="#8B5CF6" opacity=".6"><animateMotion dur="4s" repeatCount="indefinite" path="M400,200 L660,70"/></circle>
-        <circle r="2.5" fill="#4A6CF7" opacity=".6"><animateMotion dur="3.5s" repeatCount="indefinite" path="M400,200 L700,250"/></circle>
-      </svg>
+  <!-- Full-viewport neural canvas -->
+  <div style="position:absolute;inset:0;z-index:0">
+    <canvas id="aiCanvas" style="width:100%;height:100%"></canvas>
+  </div>
 
-      <div class="bz-orbit" style="width:200px;height:200px"></div>
-      <div class="bz-orbit" style="width:360px;height:360px"></div>
+  <!-- Content overlay -->
+  <div style="position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;padding:0 60px 45px;background:linear-gradient(to top,rgba(6,6,10,.95) 0%,rgba(6,6,10,.65) 40%,transparent 100%)">
+    <div class="section-tag reveal">THE INTELLIGENCE</div>
+    <div class="headline reveal" style="font-size:clamp(1.5rem,3.2vw,2.6rem)">Supernova Intelligence<br><span class="gradient">AI in the DNA From Day One</span></div>
+    <div class="subtitle reveal reveal-delay-1" style="max-width:720px;margin-bottom:28px">Not AI bolted on as an afterthought &mdash; intelligence woven into every layer of the ecosystem. A Supernova Host that guards and guides. Specialised AI in every domain. The first architecture where AI thrives both vertically and horizontally.</div>
 
-      <div class="bz-hub">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="6" stroke="#E84D3A" stroke-width="1.5"/><circle cx="12" cy="12" r="2.5" fill="#E84D3A"/></svg>
-        <div style="font-size:.45rem;font-weight:800;letter-spacing:.1em;color:#E84D3A;margin-top:2px">HUB</div>
+    <!-- Three intelligence pillars -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:960px" class="reveal reveal-delay-2">
+
+      <div style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.12);border-radius:16px;padding:22px 20px;backdrop-filter:blur(10px)">
+        <div style="font-size:.6rem;font-weight:800;color:#8B5CF6;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">The Host</div>
+        <div style="font-size:.74rem;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:8px">Supernova Guardian</div>
+        <div style="font-size:.68rem;color:rgba(255,255,255,.45);line-height:1.55;margin-bottom:14px">Your AI companion at the centre of everything. It knows the entire ecosystem, learns how you move through it, and opens doors you didn't know existed.</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px">
+          <span style="font-size:.58rem;font-weight:600;padding:4px 9px;border-radius:6px;background:rgba(139,92,246,.08);color:rgba(139,92,246,.7)">Cross-domain</span>
+          <span style="font-size:.58rem;font-weight:600;padding:4px 9px;border-radius:6px;background:rgba(139,92,246,.08);color:rgba(139,92,246,.7)">Always learning</span>
+        </div>
       </div>
 
-      <!-- Brand nodes orbiting -->
-      <div class="bz-brand-node" style="top:8%;left:8%">
-        <div style="font-size:1.2rem;margin-bottom:2px">&#x1F3D4;</div>
-        <div class="bbn-name" style="color:#E84D3A">Patagonia</div>
-        <div class="bbn-gateways">ClimbXX, HikeXX, SurfXX, SkiXX</div>
+      <div style="background:rgba(232,77,58,.06);border:1px solid rgba(232,77,58,.12);border-radius:16px;padding:22px 20px;backdrop-filter:blur(10px)">
+        <div style="font-size:.6rem;font-weight:800;color:#E84D3A;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Vertical Depth</div>
+        <div style="font-size:.74rem;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:8px">Domain-Native AI</div>
+        <div style="font-size:.68rem;color:rgba(255,255,255,.45);line-height:1.55;margin-bottom:14px">Every gateway breeds its own specialised intelligence. ClimbXX AI knows climbing like no general model ever could. SurfXX AI reads the ocean. 10,000 experts.</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px">
+          <span style="font-size:.58rem;font-weight:600;padding:4px 9px;border-radius:6px;background:rgba(232,77,58,.08);color:rgba(232,77,58,.7)">Specialised</span>
+          <span style="font-size:.58rem;font-weight:600;padding:4px 9px;border-radius:6px;background:rgba(232,77,58,.08);color:rgba(232,77,58,.7)">Domain-trained</span>
+        </div>
       </div>
-      <div class="bz-brand-node" style="top:8%;right:8%">
-        <div style="font-size:1.2rem;margin-bottom:2px">&#x1F451;</div>
-        <div class="bbn-name" style="color:#8B5CF6">Rolex</div>
-        <div class="bbn-gateways">StyleXX, DiveXX, SailXX, FXXX</div>
-      </div>
-      <div class="bz-brand-node" style="top:50%;left:2%">
-        <div style="font-size:1.2rem;margin-bottom:2px">&#x2714;</div>
-        <div class="bbn-name" style="color:#F97316">Nike</div>
-        <div class="bbn-gateways">RunXX, BasketXX, TrainXX</div>
-      </div>
-      <div class="bz-brand-node" style="top:50%;right:2%">
-        <div style="font-size:1.2rem;margin-bottom:2px">&#x1F50B;</div>
-        <div class="bbn-name" style="color:#06B6D4">Tesla</div>
-        <div class="bbn-gateways">EVXX, TechXX, EnergyXX</div>
-      </div>
-      <div class="bz-brand-node" style="bottom:5%;left:18%">
-        <div style="font-size:1.2rem;margin-bottom:2px">&#x2615;</div>
-        <div class="bbn-name" style="color:#10B981">Starbucks</div>
-        <div class="bbn-gateways">CoffeeXX, FoodXX, WorkXX</div>
-      </div>
-      <div class="bz-brand-node" style="bottom:5%;right:18%">
-        <div style="font-size:1.2rem;margin-bottom:2px">&#x1F3B5;</div>
-        <div class="bbn-name" style="color:#EC4899">Apple</div>
-        <div class="bbn-gateways">TechXX, MusicXX, FitXX</div>
+
+      <div style="background:rgba(74,108,247,.06);border:1px solid rgba(74,108,247,.12);border-radius:16px;padding:22px 20px;backdrop-filter:blur(10px)">
+        <div style="font-size:.6rem;font-weight:800;color:#4A6CF7;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Horizontal Reach</div>
+        <div style="font-size:.74rem;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:8px">The Paradox, Solved</div>
+        <div style="font-size:.68rem;color:rgba(255,255,255,.45);line-height:1.55;margin-bottom:14px">AI doesn't just go deep &mdash; it connects. A climber's nutrition, travel, gear, and training needs flow seamlessly across gateways. Vertical depth with horizontal intelligence.</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px">
+          <span style="font-size:.58rem;font-weight:600;padding:4px 9px;border-radius:6px;background:rgba(74,108,247,.08);color:rgba(74,108,247,.7)">Connected</span>
+          <span style="font-size:.58rem;font-weight:600;padding:4px 9px;border-radius:6px;background:rgba(74,108,247,.08);color:rgba(74,108,247,.7)">Cross-pollinating</span>
+        </div>
       </div>
     </div>
 
-    <!-- Flow description -->
-    <div class="bz-flow-desc reveal reveal-delay-3">
-      <div class="bz-flow-step">
-        <div class="bfs-num">01</div>
-        <div class="bfs-icon">&#x1F3E2;</div>
-        <div class="bfs-title">Create Zone</div>
-        <div class="bfs-desc">Full creative control, own brand identity</div>
-      </div>
-      <div class="bz-flow-step">
-        <div class="bfs-num">02</div>
-        <div class="bfs-icon">&#x1F6AA;</div>
-        <div class="bfs-title">Multi-Gateway</div>
-        <div class="bfs-desc">Exist natively across relevant XX gateways</div>
-      </div>
-      <div class="bz-flow-step">
-        <div class="bfs-num">03</div>
-        <div class="bfs-icon">&#x1F4AC;</div>
-        <div class="bfs-title">Brand Direct</div>
-        <div class="bfs-desc">AI-powered 1:1 conversations with customers</div>
-      </div>
-      <div class="bz-flow-step">
-        <div class="bfs-num">04</div>
-        <div class="bfs-icon">&#x1F6D2;</div>
-        <div class="bfs-title">In-Context Commerce</div>
-        <div class="bfs-desc">Purchase within the community, not in isolation</div>
-      </div>
+    <!-- Bottom quote -->
+    <div style="margin-top:22px;padding:14px 24px;border-left:2px solid rgba(139,92,246,.3);max-width:700px" class="reveal reveal-delay-3">
+      <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.6;font-style:italic">"For the first time, AI has an architecture designed for it &mdash; not retrofitted around it. 10,000 vertical experts connected by one horizontal intelligence. The paradox that has haunted the internet since day one, finally solved."</div>
     </div>
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════════════
-     SLIDE 9 — SUPERNOVA vs SUPER APP + LOGISTICS-FREE
+     SLIDE 10 — THE ORGANIZING LAYER (Closing)
      ═══════════════════════════════════════════════════════ -->
-<section class="slide" id="slide-10">
-  <div class="bg-grid"></div>
-  <div class="slide-number">10 / 11</div>
-  <div class="slide-logo"><div class="mark"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></div><span class="wordmark">GENEXXO</span></div>
-  <div class="slide-inner">
-    <div class="section-tag reveal">THE VISION</div>
-    <div class="headline reveal">Supernova<br><span class="gradient">Expansion, Not Compression</span></div>
-    <div class="subtitle reveal reveal-delay-1">Super apps compress everything into one controlled cage. GENEXXO is a supernova &mdash; the hub at the centre, energy radiating outward through 10,000 gateways, each growing into its own universe. Logistics-free. Capital-light. Infinitely scalable.</div>
+<section class="slide" id="slide-10" style="padding:0;background:#06060a">
+  <div class="bg-noise"></div>
+  <div class="slide-number">10 / 10</div>
 
-    <!-- Supernova hub-centric visualization -->
-    <div class="sn-container reveal reveal-delay-2">
-      <!-- Expanding rings from center -->
-      <div style="position:absolute;width:100px;height:100px;border-radius:50%;border:1px dashed rgba(232,77,58,.15);animation:pulse-ring 4s ease-out infinite"></div>
-      <div style="position:absolute;width:200px;height:200px;border-radius:50%;border:1px dashed rgba(139,92,246,.1);animation:pulse-ring 4s ease-out 1.3s infinite"></div>
-      <div style="position:absolute;width:320px;height:320px;border-radius:50%;border:1px dashed rgba(74,108,247,.07);animation:pulse-ring 4s ease-out 2.6s infinite"></div>
-
-      <!-- Static orbit rings -->
-      <div style="position:absolute;width:200px;height:200px;border-radius:50%;border:1px solid rgba(255,255,255,.03)"></div>
-      <div style="position:absolute;width:360px;height:360px;border-radius:50%;border:1px solid rgba(255,255,255,.02)"></div>
-      <div style="position:absolute;width:520px;height:520px;border-radius:50%;border:1px solid rgba(255,255,255,.015)"></div>
-
-      <!-- Hub center -->
-      <div class="sn-center">
-        <div style="font-size:.6rem;font-weight:900;letter-spacing:.1em;color:#fff;text-align:center">GENEXXO<br><span style="font-size:.5rem;opacity:.7">HUB</span></div>
-      </div>
-
-      <!-- Orbiting gateways -->
-      <div class="sn-gateway" style="top:15%;left:5%;color:#E84D3A;animation:float 3s ease-in-out infinite">ClimbXX</div>
-      <div class="sn-gateway" style="top:5%;left:35%;color:#0066CC;animation:float 3s ease-in-out .5s infinite">SurfXX</div>
-      <div class="sn-gateway" style="top:5%;right:30%;color:#4A6CF7;animation:float 3s ease-in-out 1s infinite">CryptoXX</div>
-      <div class="sn-gateway" style="top:15%;right:5%;color:#8B5CF6;animation:float 3s ease-in-out 1.5s infinite">StyleXX</div>
-      <div class="sn-gateway" style="top:45%;right:0%;color:#10B981;animation:float 3s ease-in-out 2s infinite">HealthXX</div>
-      <div class="sn-gateway" style="bottom:15%;right:8%;color:#F59E0B;animation:float 3s ease-in-out .8s infinite">FoodXX</div>
-      <div class="sn-gateway" style="bottom:5%;right:35%;color:#EC4899;animation:float 3s ease-in-out 1.3s infinite">BeautyXX</div>
-      <div class="sn-gateway" style="bottom:5%;left:30%;color:#06B6D4;animation:float 3s ease-in-out 1.8s infinite">TechXX</div>
-      <div class="sn-gateway" style="bottom:15%;left:5%;color:#F97316;animation:float 3s ease-in-out .3s infinite">SportXX</div>
-      <div class="sn-gateway" style="top:45%;left:0%;color:#A855F7;animation:float 3s ease-in-out 2.3s infinite">MusicXX</div>
-    </div>
-
-    <!-- Comparison -->
-    <div class="sn-vs reveal reveal-delay-3">
-      <div class="sn-vs-card" style="background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.08);border-radius:16px">
-        <div style="text-align:center;margin-bottom:14px">
-          <div style="font-size:1.8rem;margin-bottom:4px">&#x1F4A5;</div>
-          <div style="font-size:.95rem;font-weight:800;color:#EF4444">Super App</div>
-          <div style="font-size:.66rem;opacity:.3">Compression</div>
-        </div>
-        <div style="font-size:.76rem;opacity:.4;line-height:1.6">Everything forced into one controlled interface. Brands lose identity. Users get a one-size-fits-all cage. Heavy logistics. Massive capital. Platform owns everything.</div>
-      </div>
-      <div class="sn-vs-divider">VS</div>
-      <div class="sn-vs-card" style="background:rgba(232,77,58,.04);border:1px solid rgba(232,77,58,.1);border-radius:16px">
-        <div style="text-align:center;margin-bottom:14px">
-          <div style="font-size:1.8rem;margin-bottom:4px">&#x2728;</div>
-          <div style="font-size:.95rem;font-weight:800;background:linear-gradient(135deg,#E84D3A,#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Supernova</div>
-          <div style="font-size:.66rem;opacity:.3">Expansion</div>
-        </div>
-        <div style="font-size:.76rem;opacity:.4;line-height:1.6">Hub at the centre. 10,000 gateways expanding outward. Brands own their zones. Communities flourish. Zero logistics. Pure digital infrastructure. Facilitator of decades.</div>
-      </div>
-    </div>
+  <!-- Full-viewport canvas — the final supernova -->
+  <div style="position:absolute;inset:0;z-index:0">
+    <canvas id="closingCanvas" style="width:100%;height:100%"></canvas>
   </div>
-</section>
 
-<!-- ═══════════════════════════════════════════════════════
-     SLIDE 10 — AI & THE HORIZONTAL/VERTICAL PARADOX
-     ═══════════════════════════════════════════════════════ -->
-<section class="slide" id="slide-11">
-  <div class="bg-grid"></div>
-  <div class="bg-radial" style="background:radial-gradient(circle,rgba(232,77,58,.1),transparent);top:50%;left:50%;transform:translate(-50%,-50%)"></div>
-  <div class="slide-number">11 / 11</div>
-  <div class="slide-logo"><div class="mark"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></div><span class="wordmark">GENEXXO</span></div>
-  <div class="slide-inner">
-    <div class="section-tag reveal">THE BREAKTHROUGH</div>
-    <div class="headline reveal" style="font-size:3.2rem">AI-Native Infrastructure<br><span class="gradient">The Paradox, Solved</span></div>
-    <div class="subtitle reveal reveal-delay-1">Since the internet began: go horizontal and lose depth, go vertical and lose reach. GENEXXO is the first architecture that delivers both &mdash; the hub at the nexus where vertical depth meets horizontal reach.</div>
+  <!-- Centred content overlay -->
+  <div style="position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px">
 
-    <!-- Cross diagram with hub at center -->
-    <div class="paradox-cross reveal reveal-delay-2">
-      <div class="px-vertical"></div>
-      <div class="px-horizontal"></div>
+    <div class="section-tag reveal" style="margin-bottom:16px">THE VISION</div>
 
-      <!-- SVG animated flows -->
-      <svg style="position:absolute;inset:0;z-index:2;pointer-events:none" viewBox="0 0 800 380" preserveAspectRatio="xMidYMid meet">
-        <!-- Vertical travelers -->
-        <circle r="3" fill="#E84D3A" opacity=".5"><animateMotion dur="3s" repeatCount="indefinite" path="M400,10 L400,370"/></circle>
-        <circle r="3" fill="#E84D3A" opacity=".5"><animateMotion dur="3s" repeatCount="indefinite" path="M400,370 L400,10"/></circle>
-        <!-- Horizontal travelers -->
-        <circle r="3" fill="#8B5CF6" opacity=".5"><animateMotion dur="4s" repeatCount="indefinite" path="M20,190 L780,190"/></circle>
-        <circle r="3" fill="#8B5CF6" opacity=".5"><animateMotion dur="4s" repeatCount="indefinite" path="M780,190 L20,190"/></circle>
+    <!-- GENEXXO SVG wordmark -->
+    <div class="reveal" style="max-width:360px;margin-bottom:30px;filter:drop-shadow(0 0 30px rgba(232,77,58,.3)) drop-shadow(0 0 60px rgba(139,92,246,.15))">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 57.2" style="width:100%;height:auto">
+        <defs>
+          <linearGradient id="genexxoGradEnd" x1="74.1" y1="-57.4" x2="245.8" y2="114.3" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#ec1c24"/>
+            <stop offset=".7" stop-color="#2a265e"/>
+            <stop offset=".8" stop-color="#25265f"/>
+            <stop offset="1" stop-color="#1b75bb"/>
+          </linearGradient>
+        </defs>
+        <path fill="url(#genexxoGradEnd)" d="M230.1,1.8h0c0,.1,0,0,0,0h.1ZM203.7,1.8h-8.9l15.3,23.1,4.6-6.5-11-16.6ZM245.5,38.8l10.9,16.5h8.9l-15.3-23.1-4.5,6.7ZM247.6,28.5l-4.5,6.7h0l-8.7,13.2-4.4,6.7-4.4-6.7-8.7-13.2-13.2,20h-8.9l16.7-25.3h0s.9-1.4.9-1.4h0l4.4-6.7,8.7-13.2,4.4-6.7,4.4,6.7,8.7,13.2,13.2-20h8.9l-17.6,26.7ZM238.7,28.5l-8.7-13.2-8.7,13.2,8.7,13.2,8.7-13.2ZM211.6,29.9h0s0,0,0,0ZM212.5,28.5h0l-.9,1.3.9-1.3ZM52.2,17.2c-2-5.1-5.2-9.1-9.7-11.9-4.4-2.8-9.5-4.2-15.2-4.2s-9.6,1.2-13.8,3.5c-4.2,2.3-7.5,5.6-9.9,9.7C1.2,18.5,0,23.2,0,28.4s1.2,9.9,3.7,14.1c2.4,4.2,5.7,7.4,9.9,9.7,4.2,2.3,8.8,3.5,13.8,3.5s8.9-1,12.8-3.1c3.8-2.1,6.9-4.9,9.3-8.4,2.4-3.5,3.9-7.3,4.4-11.5v-6.9h-29.5v7h20.1c-.7,4.6-2.5,8.2-5.5,10.9-3,2.7-6.9,4-11.6,4s-6.7-.8-9.5-2.4c-2.8-1.6-4.9-3.9-6.5-6.8-1.6-3-2.4-6.4-2.4-10.2s.8-7.2,2.4-10.2c1.6-2.9,3.7-5.2,6.5-6.8,2.8-1.6,5.9-2.4,9.5-2.4s6.1.7,8.6,2c2.5,1.4,4.4,3.4,5.8,6h10.6ZM92.1,8.8V1.7h-29.6v53.6h29.6v-7.2h-20.8v-16.4h18.5v-7.2h-18.5v-15.7h20.8ZM146.9,1.7h-8.8v39.9L111.7,1.7h-8.8v53.6h8.8V15.3l26.4,40h8.8V1.7ZM188,8.8V1.7h-29.6v53.6h29.6v-7.2h-20.8v-16.4h18.5v-7.2h-18.5v-15.7h20.8ZM292.5,55.8c5,0,9.6-1.2,13.8-3.5,4.2-2.3,7.5-5.6,9.9-9.8,2.4-4.2,3.6-8.9,3.6-14.1s-1.2-9.9-3.6-14.1c-2.4-4.2-5.7-7.4-9.9-9.7-4.2-2.3-8.8-3.5-13.8-3.5s-9.6,1.2-13.8,3.5c-4.2,2.3-7.5,5.6-9.9,9.7-2.4,4.2-3.7,8.9-3.7,14.1s1.2,10,3.7,14.1c2.4,4.2,5.8,7.5,9.9,9.8,4.2,2.3,8.8,3.5,13.8,3.5ZM292.5,48.2c-3.5,0-6.7-.8-9.5-2.4-2.8-1.6-4.9-3.9-6.5-6.9-1.6-3-2.4-6.5-2.4-10.4s.8-7.4,2.4-10.4c1.6-3,3.7-5.3,6.5-6.9,2.8-1.6,5.9-2.4,9.5-2.4s6.7.8,9.5,2.4c2.8,1.6,4.9,3.9,6.5,6.9,1.6,3,2.4,6.4,2.4,10.4s-.8,7.4-2.4,10.4c-1.6,3-3.7,5.3-6.5,6.9-2.8,1.6-5.9,2.4-9.5,2.4Z"/>
       </svg>
-
-      <!-- Hub at the nexus/intersection -->
-      <div class="px-hub" style="z-index:5">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="6" stroke="#E84D3A" stroke-width="1.5"/><circle cx="12" cy="12" r="2.5" fill="#E84D3A"/></svg>
-        <div style="font-size:.42rem;font-weight:800;letter-spacing:.1em;color:#E84D3A;margin-top:1px">NEXUS</div>
-      </div>
-
-      <!-- Vertical nodes (depth) -->
-      <div class="px-node" style="top:3%;left:50%;transform:translateX(-50%)"><div class="px-icon">&#x1F9D7;</div><div class="px-label" style="color:#E84D3A">ClimbXX</div><div class="px-sub">Deep vertical expertise</div></div>
-      <div class="px-node" style="bottom:3%;left:50%;transform:translateX(-50%)"><div class="px-icon">&#x1F3C4;</div><div class="px-label" style="color:#0066CC">SurfXX</div><div class="px-sub">Domain-native AI</div></div>
-
-      <!-- Horizontal nodes (reach) -->
-      <div class="px-node" style="top:50%;left:2%;transform:translateY(-50%)"><div class="px-icon">&#x1F3E2;</div><div class="px-label">Brands</div><div class="px-sub">Reach across gateways</div></div>
-      <div class="px-node" style="top:50%;right:2%;transform:translateY(-50%)"><div class="px-icon">&#x1F465;</div><div class="px-label">Users</div><div class="px-sub">Flow between worlds</div></div>
-
-      <!-- Diagonal nodes (convergence) -->
-      <div class="px-node" style="top:12%;left:12%"><div class="px-icon">&#x1F916;</div><div class="px-label" style="color:#10B981">AI</div><div class="px-sub">Vertical &amp; horizontal</div></div>
-      <div class="px-node" style="top:12%;right:12%"><div class="px-icon">&#x1F4F0;</div><div class="px-label" style="color:#F59E0B">Content</div><div class="px-sub">Crosses boundaries</div></div>
-      <div class="px-node" style="bottom:12%;left:12%"><div class="px-icon">&#x1F6D2;</div><div class="px-label" style="color:#8B5CF6">Commerce</div><div class="px-sub">In-context everywhere</div></div>
-      <div class="px-node" style="bottom:12%;right:12%"><div class="px-icon">&#x1F4AC;</div><div class="px-label" style="color:#EC4899">Community</div><div class="px-sub">Connected mesh</div></div>
     </div>
 
-    <!-- AI capabilities -->
-    <div class="ai-row reveal reveal-delay-3">
-      <div class="ai-card">
-        <div class="ai-icon">&#x1F9E0;</div>
-        <div class="ai-name">Vertical AI Agents</div>
-        <div class="ai-desc">Deep domain expertise within each gateway. ClimbXX AI knows climbing like no general model can.</div>
-      </div>
-      <div class="ai-card">
-        <div class="ai-icon">&#x1F310;</div>
-        <div class="ai-name">Horizontal Reach</div>
-        <div class="ai-desc">AI connects insights across gateways. A climber's nutrition, travel, and gear needs flow between worlds.</div>
-      </div>
-      <div class="ai-card">
-        <div class="ai-icon">&#x1F3E2;</div>
-        <div class="ai-name">Brand Agents</div>
-        <div class="ai-desc">Every brand gets its own AI agent, living natively across its gateway presence.</div>
-      </div>
-      <div class="ai-card">
-        <div class="ai-icon">&#x2728;</div>
-        <div class="ai-name">GENEXXO Host</div>
-        <div class="ai-desc">Your personal AI guide, orchestrating your entire universe from the hub nexus.</div>
-      </div>
+    <div class="reveal reveal-delay-1" style="font-size:clamp(1.8rem,4vw,3.2rem);font-weight:900;line-height:1.15;margin-bottom:30px">
+      This is <span style="background:linear-gradient(135deg,#E84D3A,#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent">The Organizing Layer</span>
     </div>
 
-    <!-- Final statement -->
-    <div style="margin-top:24px;padding:24px 28px;border-radius:16px;background:linear-gradient(135deg,rgba(232,77,58,.06),rgba(139,92,246,.06));border:1px solid rgba(232,77,58,.12);position:relative;overflow:hidden" class="reveal reveal-delay-4">
-      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(232,77,58,.06),transparent 60%);pointer-events:none"></div>
-      <div style="position:relative;display:flex;align-items:center;gap:20px">
-        <div style="flex-shrink:0;width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,#E84D3A,#8B5CF6);display:flex;align-items:center;justify-content:center;animation:glow 3s ease-in-out infinite">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="6" stroke="white" stroke-width="1.5"/><circle cx="12" cy="12" r="2.5" fill="white"/><line x1="12" y1="2" x2="12" y2="6" stroke="white" stroke-width="1.5" opacity=".5"/><line x1="12" y1="18" x2="12" y2="22" stroke="white" stroke-width="1.5" opacity=".5"/><line x1="2" y1="12" x2="6" y2="12" stroke="white" stroke-width="1.5" opacity=".5"/><line x1="18" y1="12" x2="22" y2="12" stroke="white" stroke-width="1.5" opacity=".5"/></svg>
-        </div>
-        <div>
-          <div style="font-size:1.15rem;font-weight:900;margin-bottom:4px;line-height:1.2">
-            <span style="background:linear-gradient(135deg,#E84D3A,#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent">The Internet's Organizing Layer.</span> Finally.
-          </div>
-          <div style="font-size:.82rem;opacity:.45;line-height:1.6">10,000 category-native gateways. 45 sectors. One hub at the nexus. A linguistic moat that cannot be replicated. Not another platform &mdash; the facilitator of digital commerce for decades to come. This is where everybody thrives.</div>
-        </div>
+    <div class="reveal reveal-delay-2" style="max-width:640px;font-size:clamp(.88rem,1.4vw,1.05rem);color:rgba(255,255,255,.5);line-height:1.8;font-weight:400">
+      A place where everything finds its natural home.<br>
+      Where content, communities, and commerce converge.<br>
+      Where artificial intelligence can learn, evolve, and mature.<br><br>
+      A network with vertical depth and horizontal reach &mdash;<br>
+      ever expanding, self-evolving, self-optimising.<br><br>
+      <span style="color:rgba(255,255,255,.7);font-weight:600">The layer that connects the physical and digital worlds.</span>
+    </div>
+
+    <!-- Stats bar -->
+    <div style="display:flex;gap:40px;margin-top:40px" class="reveal reveal-delay-3">
+      <div style="text-align:center">
+        <div style="font-size:1.6rem;font-weight:800;background:linear-gradient(135deg,#E84D3A,#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent">10,000+</div>
+        <div style="font-size:.6rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.12em;margin-top:4px">Gateways</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:1.6rem;font-weight:800;background:linear-gradient(135deg,#4A6CF7,#10B981);-webkit-background-clip:text;-webkit-text-fill-color:transparent">45</div>
+        <div style="font-size:.6rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.12em;margin-top:4px">Sectors</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:1.6rem;font-weight:800;background:linear-gradient(135deg,#F59E0B,#EC4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent">14 yrs</div>
+        <div style="font-size:.6rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.12em;margin-top:4px">Assembled</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:1.6rem;font-weight:800;background:linear-gradient(135deg,#8B5CF6,#4A6CF7);-webkit-background-clip:text;-webkit-text-fill-color:transparent">&infin;</div>
+        <div style="font-size:.6rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.12em;margin-top:4px">Possibilities</div>
       </div>
     </div>
   </div>
@@ -981,7 +827,6 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
   <div class="nav-dot" onclick="goSlide(8)" data-slide="8"></div>
   <div class="nav-dot" onclick="goSlide(9)" data-slide="9"></div>
   <div class="nav-dot" onclick="goSlide(10)" data-slide="10"></div>
-  <div class="nav-dot" onclick="goSlide(11)" data-slide="11"></div>
   <div class="nav-label" id="navLabel">The Supernova</div>
   <div class="nav-arrow" onclick="goSlide(currentSlide+1)">&#x2192;</div>
 </div>
@@ -1360,253 +1205,240 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
   const sc = document.getElementById('supernovaAppCanvas');
   if (!sc) return;
   const sx = sc.getContext('2d');
-  let W, H, cx, cy, appRings = [], sectorNodes = [], expansionParticles = [], waveRings = [];
+  let W, H, cx, cy;
 
-  const SECTORS = [
-    { name: 'SurfXX', color: '#4A6CF7', sector: 'Adventure' },
-    { name: 'CryptoXX', color: '#F59E0B', sector: 'Finance' },
-    { name: 'StyleXX', color: '#EC4899', sector: 'Fashion' },
-    { name: 'ClimbXX', color: '#10B981', sector: 'Adventure' },
-    { name: 'YogaXX', color: '#8B5CF6', sector: 'Health' },
-    { name: 'RunXX', color: '#EF4444', sector: 'Sport' },
-    { name: 'CookXX', color: '#F97316', sector: 'Food' },
-    { name: 'DroneXX', color: '#06B6D4', sector: 'Tech' },
-    { name: 'DJxx', color: '#EC4899', sector: 'Music' },
-    { name: 'BikeXX', color: '#10B981', sector: 'Sport' },
-    { name: 'PokerXX', color: '#F59E0B', sector: 'Gaming' },
-    { name: 'GolfXX', color: '#10B981', sector: 'Sport' },
-    { name: 'BrewXX', color: '#F97316', sector: 'Food' },
-    { name: 'SkiXX', color: '#06B6D4', sector: 'Adventure' },
-    { name: 'DiveXX', color: '#4A6CF7', sector: 'Adventure' },
-    { name: 'ChefXX', color: '#F59E0B', sector: 'Food' }
+  // 4 rings of domains, deployed sequentially
+  const RINGS = [
+    { domains: [
+      { name: 'ClimbXX', color: '#E84D3A' },
+      { name: 'SurfXX', color: '#4A6CF7' },
+      { name: 'CryptoXX', color: '#F59E0B' },
+      { name: 'StyleXX', color: '#EC4899' },
+      { name: 'YogaXX', color: '#8B5CF6' },
+      { name: 'RunXX', color: '#10B981' }
+    ]},
+    { domains: [
+      { name: 'CookXX', color: '#F97316' },
+      { name: 'DroneXX', color: '#06B6D4' },
+      { name: 'DJxx', color: '#EC4899' },
+      { name: 'BikeXX', color: '#10B981' },
+      { name: 'PokerXX', color: '#F59E0B' },
+      { name: 'GolfXX', color: '#4A6CF7' },
+      { name: 'SkiXX', color: '#06B6D4' },
+      { name: 'DiveXX', color: '#8B5CF6' }
+    ]},
+    { domains: [
+      { name: 'BrewXX', color: '#F97316' },
+      { name: 'ChefXX', color: '#F59E0B' },
+      { name: 'HikeXX', color: '#10B981' },
+      { name: 'SailXX', color: '#4A6CF7' },
+      { name: 'TrainXX', color: '#E84D3A' },
+      { name: 'FlyXX', color: '#06B6D4' },
+      { name: 'GrowXX', color: '#10B981' },
+      { name: 'BuildXX', color: '#F97316' },
+      { name: 'DriveXX', color: '#8B5CF6' },
+      { name: 'BeautyXX', color: '#EC4899' }
+    ]},
+    { domains: [
+      { name: 'PropertyXX', color: '#4A6CF7' },
+      { name: 'TechXX', color: '#06B6D4' },
+      { name: 'HealthXX', color: '#10B981' },
+      { name: 'FoodXX', color: '#F97316' },
+      { name: 'SportXX', color: '#E84D3A' },
+      { name: 'MusicXX', color: '#EC4899' },
+      { name: 'FinanceXX', color: '#F59E0B' },
+      { name: 'EVXX', color: '#8B5CF6' },
+      { name: 'FitXX', color: '#10B981' },
+      { name: 'CycleXX', color: '#4A6CF7' },
+      { name: 'StudyXX', color: '#06B6D4' },
+      { name: 'WorkXX', color: '#F97316' }
+    ]}
   ];
 
-  // Animation state — sectors expand outward over time
-  let expandProgress = 0;
-  const EXPAND_SPEED = 0.0004;
-  const MAX_EXPAND = 1;
+  let ringData = []; // computed positions
+  let startTime = 0;
+  const RING_DEPLOY_TIME = 3000; // ms per ring to deploy
+  const RING_STAGGER = 2500;    // ms between ring starts
+  const TOTAL_CYCLE = RING_STAGGER * RINGS.length + RING_DEPLOY_TIME + 2000; // full cycle then restart
 
   function initSupernovaApp() {
     const slide = document.getElementById('slide-3');
     W = sc.width = slide.offsetWidth;
     H = sc.height = slide.offsetHeight;
     cx = W / 2;
-    cy = H * 0.42;
+    cy = H * 0.40;
 
-    // Place sector nodes in 2 rings, starting near center and expanding
-    sectorNodes = [];
-    for (let i = 0; i < 8; i++) {
-      const angle = (i / 8) * Math.PI * 2 - Math.PI / 2;
-      sectorNodes.push({
-        angle: angle,
-        baseR: Math.min(W, H) * 0.12,
-        maxR: Math.min(W, H) * 0.22,
-        ...SECTORS[i]
+    const minDim = Math.min(W, H);
+    const radii = [minDim * 0.1, minDim * 0.19, minDim * 0.28, minDim * 0.37];
+
+    ringData = RINGS.map((ring, ri) => {
+      const r = radii[ri];
+      const nodes = ring.domains.map((d, di) => {
+        const angle = (di / ring.domains.length) * Math.PI * 2 - Math.PI / 2;
+        return {
+          finalX: cx + Math.cos(angle) * r,
+          finalY: cy + Math.sin(angle) * r,
+          angle,
+          ...d
+        };
       });
-    }
-    for (let i = 0; i < 8; i++) {
-      const angle = (i / 8) * Math.PI * 2 - Math.PI / 2 + Math.PI / 8;
-      sectorNodes.push({
-        angle: angle,
-        baseR: Math.min(W, H) * 0.22,
-        maxR: Math.min(W, H) * 0.38,
-        ...SECTORS[8 + i]
-      });
-    }
+      return { r, nodes, deployStart: ri * RING_STAGGER };
+    });
 
-    // Expansion wave rings
-    waveRings = [];
-    for (let i = 0; i < 4; i++) {
-      waveRings.push({ r: i * 40, maxR: Math.min(W, H) * 0.45, speed: 0.4 + Math.random() * 0.2 });
-    }
-
-    // Outward expansion particles
-    expansionParticles = [];
-    for (let i = 0; i < 50; i++) {
-      expansionParticles.push(newExpParticle());
-    }
+    startTime = performance.now();
   }
 
-  function newExpParticle() {
-    const angle = Math.random() * Math.PI * 2;
-    return {
-      angle: angle,
-      r: 20 + Math.random() * 30,
-      speed: 0.3 + Math.random() * 0.6,
-      maxR: Math.min(W, H) * 0.48,
-      size: 1 + Math.random() * 1.5,
-      color: SECTORS[Math.floor(Math.random() * SECTORS.length)].color
-    };
+  function easeOutCubic(t) {
+    return 1 - Math.pow(1 - t, 3);
   }
 
   function drawSupernovaApp(time) {
     sx.clearRect(0, 0, W, H);
 
-    // Slowly cycle expansion
-    expandProgress = (Math.sin(time * EXPAND_SPEED) + 1) / 2; // 0 to 1 oscillation
+    const elapsed = (time - startTime) % TOTAL_CYCLE;
 
-    // Expansion wave rings — radiating outward
-    waveRings.forEach(w => {
-      const alpha = 0.15 * (1 - w.r / w.maxR);
-      sx.beginPath();
-      sx.arc(cx, cy, w.r, 0, Math.PI * 2);
-      sx.strokeStyle = `rgba(232,77,58,${alpha})`;
-      sx.lineWidth = 1.5;
-      sx.stroke();
-      w.r += w.speed;
-      if (w.r > w.maxR) w.r = 0;
-    });
-
-    // Faint orbit tracks
-    sx.strokeStyle = 'rgba(255,255,255,.03)';
-    sx.lineWidth = 1;
-    sx.setLineDash([4, 6]);
-    const r1 = lerp(sectorNodes[0].baseR, sectorNodes[0].maxR, expandProgress);
-    const r2 = lerp(sectorNodes[8].baseR, sectorNodes[8].maxR, expandProgress);
-    sx.beginPath(); sx.arc(cx, cy, r1, 0, Math.PI * 2); sx.stroke();
-    sx.beginPath(); sx.arc(cx, cy, r2, 0, Math.PI * 2); sx.stroke();
-    sx.setLineDash([]);
-
-    // Connection lines from nodes to center
-    sectorNodes.forEach((n, i) => {
-      const r = lerp(n.baseR, n.maxR, expandProgress);
-      const nx = cx + Math.cos(n.angle) * r;
-      const ny = cy + Math.sin(n.angle) * r;
-      sx.beginPath();
-      sx.moveTo(cx, cy);
-      sx.lineTo(nx, ny);
-      sx.strokeStyle = n.color + '15';
-      sx.lineWidth = 0.5;
-      sx.stroke();
-    });
-
-    // Cross-connections between nearby nodes
-    for (let i = 0; i < sectorNodes.length; i++) {
-      const ri = lerp(sectorNodes[i].baseR, sectorNodes[i].maxR, expandProgress);
-      const xi = cx + Math.cos(sectorNodes[i].angle) * ri;
-      const yi = cy + Math.sin(sectorNodes[i].angle) * ri;
-      for (let j = i + 1; j < sectorNodes.length; j++) {
-        const rj = lerp(sectorNodes[j].baseR, sectorNodes[j].maxR, expandProgress);
-        const xj = cx + Math.cos(sectorNodes[j].angle) * rj;
-        const yj = cy + Math.sin(sectorNodes[j].angle) * rj;
-        const dist = Math.sqrt((xi - xj) ** 2 + (yi - yj) ** 2);
-        if (dist < 160) {
-          sx.beginPath();
-          sx.moveTo(xi, yi);
-          sx.lineTo(xj, yj);
-          sx.strokeStyle = `rgba(255,255,255,${0.04 * (1 - dist / 160)})`;
-          sx.lineWidth = 0.5;
-          sx.stroke();
-        }
-      }
-    }
-
-    // Expansion particles — flying outward from center
-    expansionParticles.forEach(p => {
-      p.r += p.speed;
-      if (p.r > p.maxR) Object.assign(p, newExpParticle());
-      const px = cx + Math.cos(p.angle) * p.r;
-      const py = cy + Math.sin(p.angle) * p.r;
-      const alpha = 0.5 * (1 - p.r / p.maxR);
-      sx.beginPath();
-      sx.arc(px, py, p.size, 0, Math.PI * 2);
-      sx.fillStyle = p.color;
-      sx.globalAlpha = alpha;
-      sx.fill();
-      sx.globalAlpha = 1;
-    });
-
-    // Draw sector nodes — expanding outward
-    sectorNodes.forEach((n, i) => {
-      const r = lerp(n.baseR, n.maxR, expandProgress);
-      const nx = cx + Math.cos(n.angle) * r;
-      const ny = cy + Math.sin(n.angle) * r;
-
-      // Glow
-      const ng = sx.createRadialGradient(nx, ny, 0, nx, ny, 18);
-      ng.addColorStop(0, n.color + '40');
-      ng.addColorStop(1, 'transparent');
-      sx.fillStyle = ng;
-      sx.beginPath();
-      sx.arc(nx, ny, 18, 0, Math.PI * 2);
-      sx.fill();
-
-      // Core
-      const nodeR = i < 8 ? 5.5 + Math.sin(time * 0.003 + i) * 1.2 : 4 + Math.sin(time * 0.003 + i) * 0.8;
-      const cg = sx.createRadialGradient(nx, ny, 0, nx, ny, nodeR);
-      cg.addColorStop(0, n.color);
-      cg.addColorStop(1, n.color + '60');
-      sx.fillStyle = cg;
-      sx.beginPath();
-      sx.arc(nx, ny, nodeR, 0, Math.PI * 2);
-      sx.fill();
-
-      // Label
-      sx.font = i < 8 ? '600 8px "JetBrains Mono", monospace' : '500 7px "JetBrains Mono", monospace';
-      sx.fillStyle = i < 8 ? 'rgba(255,255,255,.6)' : 'rgba(255,255,255,.4)';
-      sx.textAlign = 'center';
-      const lx = nx + Math.cos(n.angle) * (nodeR + 14);
-      const ly = ny + Math.sin(n.angle) * (nodeR + 14);
-      sx.fillText(n.name, lx, ly + 3);
-    });
-
-    // Central Supernova App — pulsing core
-    const pulse = 24 + Math.sin(time * 0.002) * 5;
-
-    // Outer glow
-    const outerG = sx.createRadialGradient(cx, cy, 0, cx, cy, 60);
-    outerG.addColorStop(0, 'rgba(232,77,58,.5)');
-    outerG.addColorStop(0.4, 'rgba(139,92,246,.2)');
+    // Central Supernova App core (always visible)
+    // Soft outer glow
+    const outerG = sx.createRadialGradient(cx, cy, 0, cx, cy, 50);
+    outerG.addColorStop(0, 'rgba(232,77,58,.4)');
+    outerG.addColorStop(0.4, 'rgba(139,92,246,.15)');
     outerG.addColorStop(1, 'transparent');
     sx.fillStyle = outerG;
     sx.beginPath();
-    sx.arc(cx, cy, 60, 0, Math.PI * 2);
+    sx.arc(cx, cy, 50, 0, Math.PI * 2);
     sx.fill();
 
-    // Inner core
-    const coreG = sx.createRadialGradient(cx, cy, 0, cx, cy, pulse);
+    // Core
+    const coreR = 20;
+    const coreG = sx.createRadialGradient(cx, cy, 0, cx, cy, coreR);
     coreG.addColorStop(0, '#fff');
     coreG.addColorStop(0.2, '#E84D3A');
     coreG.addColorStop(0.7, 'rgba(139,92,246,.7)');
     coreG.addColorStop(1, 'transparent');
     sx.fillStyle = coreG;
     sx.beginPath();
-    sx.arc(cx, cy, pulse, 0, Math.PI * 2);
+    sx.arc(cx, cy, coreR, 0, Math.PI * 2);
     sx.fill();
 
-    // App icon shape — rounded square in center
-    const iconS = 16;
-    const iconR = 4;
+    // App icon
+    const iconS = 14;
     sx.beginPath();
-    sx.roundRect(cx - iconS, cy - iconS - 2, iconS * 2, iconS * 2, iconR);
+    sx.roundRect(cx - iconS, cy - iconS - 1, iconS * 2, iconS * 2, 4);
     sx.fillStyle = 'rgba(232,77,58,.85)';
     sx.fill();
-    sx.strokeStyle = 'rgba(255,255,255,.3)';
-    sx.lineWidth = 0.5;
-    sx.stroke();
-
-    // XX inside the icon
-    sx.font = '800 12px "Plus Jakarta Sans", sans-serif';
+    sx.font = '800 11px "Plus Jakarta Sans", sans-serif';
     sx.fillStyle = '#fff';
     sx.textAlign = 'center';
-    sx.fillText('XX', cx, cy + 3);
+    sx.fillText('XX', cx, cy + 4);
+    sx.font = '600 7px "Plus Jakarta Sans", sans-serif';
+    sx.fillStyle = 'rgba(255,255,255,.6)';
+    sx.fillText('SUPERNOVA', cx, cy + 26);
 
-    // Label below
-    sx.font = '700 9px "Plus Jakarta Sans", sans-serif';
-    sx.fillStyle = 'rgba(255,255,255,.8)';
-    sx.fillText('SUPERNOVA', cx, cy + 30);
-    sx.font = '500 7px "Plus Jakarta Sans", sans-serif';
-    sx.fillStyle = 'rgba(255,255,255,.4)';
-    sx.fillText('PWA', cx, cy + 40);
+    // Draw each ring
+    ringData.forEach((ring, ri) => {
+      const ringElapsed = elapsed - ring.deployStart;
+      if (ringElapsed < 0) return; // not started yet
+
+      // Deploy progress: 0 → 1 over RING_DEPLOY_TIME, then stays at 1
+      const rawT = Math.min(ringElapsed / RING_DEPLOY_TIME, 1);
+      const t = easeOutCubic(rawT);
+
+      // Expansion wave ring (visible during deployment)
+      if (rawT < 1) {
+        const waveR = ring.r * t;
+        sx.beginPath();
+        sx.arc(cx, cy, waveR, 0, Math.PI * 2);
+        sx.strokeStyle = `rgba(232,77,58,${0.25 * (1 - rawT)})`;
+        sx.lineWidth = 2;
+        sx.stroke();
+      }
+
+      // Orbit track (fades in as ring deploys)
+      const trackAlpha = t * 0.06;
+      sx.beginPath();
+      sx.arc(cx, cy, ring.r, 0, Math.PI * 2);
+      sx.strokeStyle = `rgba(255,255,255,${trackAlpha})`;
+      sx.lineWidth = 1;
+      sx.setLineDash([4, 6]);
+      sx.stroke();
+      sx.setLineDash([]);
+
+      // Draw nodes
+      ring.nodes.forEach((n, ni) => {
+        // Stagger each node slightly within the ring
+        const nodeDelay = (ni / ring.nodes.length) * 0.3; // 0 to 0.3 of progress
+        const nodeT = Math.max(0, Math.min((rawT - nodeDelay) / (1 - nodeDelay), 1));
+        const nt = easeOutCubic(nodeT);
+
+        if (nt <= 0) return;
+
+        // Node travels from center to final position
+        const nx = cx + (n.finalX - cx) * nt;
+        const ny = cy + (n.finalY - cy) * nt;
+
+        // Connection line to center (fades in)
+        sx.beginPath();
+        sx.moveTo(cx, cy);
+        sx.lineTo(nx, ny);
+        sx.strokeStyle = n.color + Math.round(nt * 20).toString(16).padStart(2, '0');
+        sx.lineWidth = 0.5;
+        sx.stroke();
+
+        // Node glow
+        const ng = sx.createRadialGradient(nx, ny, 0, nx, ny, 16);
+        ng.addColorStop(0, n.color + Math.round(nt * 64).toString(16).padStart(2, '0'));
+        ng.addColorStop(1, 'transparent');
+        sx.fillStyle = ng;
+        sx.beginPath();
+        sx.arc(nx, ny, 16, 0, Math.PI * 2);
+        sx.fill();
+
+        // Node core (static size once deployed)
+        const nodeR = ri < 2 ? 5.5 : 4;
+        sx.beginPath();
+        sx.arc(nx, ny, nodeR * nt, 0, Math.PI * 2);
+        const cg = sx.createRadialGradient(nx, ny, 0, nx, ny, nodeR * nt);
+        cg.addColorStop(0, n.color);
+        cg.addColorStop(1, n.color + '70');
+        sx.fillStyle = cg;
+        sx.globalAlpha = nt;
+        sx.fill();
+        sx.globalAlpha = 1;
+
+        // Label (only when mostly deployed)
+        if (nt > 0.7) {
+          const labelAlpha = (nt - 0.7) / 0.3;
+          sx.font = ri < 2 ? '600 8px "JetBrains Mono", monospace' : '500 7px "JetBrains Mono", monospace';
+          sx.fillStyle = `rgba(255,255,255,${labelAlpha * (ri < 2 ? 0.6 : 0.4)})`;
+          sx.textAlign = 'center';
+          const lx = nx + Math.cos(n.angle) * (nodeR + 13);
+          const ly = ny + Math.sin(n.angle) * (nodeR + 13);
+          sx.fillText(n.name, lx, ly + 3);
+        }
+      });
+
+      // Cross-connections between nodes in this ring (only when fully deployed)
+      if (rawT >= 1) {
+        for (let i = 0; i < ring.nodes.length; i++) {
+          const a = ring.nodes[i];
+          const b = ring.nodes[(i + 1) % ring.nodes.length];
+          sx.beginPath();
+          sx.moveTo(a.finalX, a.finalY);
+          sx.lineTo(b.finalX, b.finalY);
+          sx.strokeStyle = 'rgba(255,255,255,.04)';
+          sx.lineWidth = 0.5;
+          sx.stroke();
+        }
+      }
+    });
 
     requestAnimationFrame(drawSupernovaApp);
   }
 
-  function lerp(a, b, t) { return a + (b - a) * t; }
-
   initSupernovaApp();
+  startTime = performance.now();
   requestAnimationFrame(drawSupernovaApp);
-  window.addEventListener('resize', initSupernovaApp);
+  window.addEventListener('resize', () => { initSupernovaApp(); startTime = performance.now(); });
 })();
 
 /* ═══════════════════════════════════════════
@@ -2660,6 +2492,422 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
 })();
 
 /* ═══════════════════════════════════════════
+   AI CANVAS — Slide 9 Neural Intelligence
+   ═══════════════════════════════════════════ */
+(function() {
+  const ac = document.getElementById('aiCanvas');
+  if (!ac) return;
+  const ax = ac.getContext('2d');
+  let W, H, cx, cy;
+
+  // Vertical domain columns — each a deep AI vertical
+  const DOMAINS = [
+    { name: 'ClimbXX', color: '#E84D3A' },
+    { name: 'SurfXX', color: '#4A6CF7' },
+    { name: 'CryptoXX', color: '#F59E0B' },
+    { name: 'StyleXX', color: '#EC4899' },
+    { name: 'YogaXX', color: '#8B5CF6' },
+    { name: 'CookXX', color: '#F97316' },
+    { name: 'DroneXX', color: '#06B6D4' },
+    { name: 'RunXX', color: '#10B981' }
+  ];
+
+  let columns = [], hostPulses = [], synapses = [], verticalPulses = [], neuralNodes = [];
+
+  function initAI() {
+    const slide = document.getElementById('slide-9');
+    W = ac.width = slide.offsetWidth;
+    H = ac.height = slide.offsetHeight;
+    cx = W / 2;
+    cy = H * 0.38;
+
+    // Place vertical columns evenly across width
+    columns = [];
+    const colSpacing = W / (DOMAINS.length + 1);
+    for (let i = 0; i < DOMAINS.length; i++) {
+      const x = colSpacing * (i + 1);
+      // Each column has neural nodes stacked vertically
+      const nodes = [];
+      const nodeCount = 4 + Math.floor(Math.random() * 3);
+      for (let j = 0; j < nodeCount; j++) {
+        const y = H * 0.08 + (j / (nodeCount - 1)) * H * 0.55;
+        nodes.push({ x, y, size: 2.5 + Math.random() * 2 });
+      }
+      columns.push({ ...DOMAINS[i], x, nodes });
+    }
+
+    // Build all neural nodes flat list for connection drawing
+    neuralNodes = [];
+    columns.forEach(col => {
+      col.nodes.forEach(n => {
+        neuralNodes.push({ x: n.x, y: n.y, size: n.size, color: col.color });
+      });
+    });
+
+    // Host expanding rings
+    hostPulses = [];
+    for (let i = 0; i < 5; i++) {
+      hostPulses.push({ r: i * 20, maxR: 70, speed: 0.2 + Math.random() * 0.1 });
+    }
+
+    // Horizontal synaptic pulses — firing between columns
+    synapses = [];
+    for (let i = 0; i < 25; i++) {
+      synapses.push(newSynapse());
+    }
+
+    // Vertical pulses — flowing down each column
+    verticalPulses = [];
+    for (let i = 0; i < 20; i++) {
+      verticalPulses.push(newVertPulse());
+    }
+  }
+
+  function newSynapse() {
+    // Pick two different columns
+    const a = Math.floor(Math.random() * columns.length);
+    let b = Math.floor(Math.random() * columns.length);
+    while (b === a) b = Math.floor(Math.random() * columns.length);
+    const colA = columns[a], colB = columns[b];
+    // Pick a similar Y height for horizontal connection
+    const yBase = H * 0.08 + Math.random() * H * 0.55;
+    return {
+      sx: colA.x, sy: yBase + (Math.random() - 0.5) * 30,
+      ex: colB.x, ey: yBase + (Math.random() - 0.5) * 30,
+      t: Math.random(),
+      speed: 0.004 + Math.random() * 0.006,
+      color: colA.color,
+      size: 1.5 + Math.random() * 1.5,
+      active: Math.random() > 0.3 // some dormant
+    };
+  }
+
+  function newVertPulse() {
+    const col = columns[Math.floor(Math.random() * columns.length)];
+    if (!col) return { x: cx, y: 0, ey: H, speed: 1, color: '#E84D3A', size: 1.5, col: null };
+    const goingDown = Math.random() > 0.3;
+    return {
+      x: col.x + (Math.random() - 0.5) * 6,
+      y: goingDown ? H * 0.05 : H * 0.65,
+      ey: goingDown ? H * 0.65 : H * 0.05,
+      speed: 0.8 + Math.random() * 1.2,
+      color: col.color,
+      size: 1 + Math.random() * 1.5,
+      goingDown,
+      col
+    };
+  }
+
+  function drawAI(time) {
+    ax.clearRect(0, 0, W, H);
+
+    // Draw vertical column tracks (faint lines)
+    columns.forEach(col => {
+      ax.beginPath();
+      ax.moveTo(col.x, H * 0.05);
+      ax.lineTo(col.x, H * 0.68);
+      ax.strokeStyle = col.color + '10';
+      ax.lineWidth = 1;
+      ax.stroke();
+
+      // Faint glow along column
+      const colGlow = ax.createLinearGradient(col.x, H * 0.05, col.x, H * 0.68);
+      colGlow.addColorStop(0, 'transparent');
+      colGlow.addColorStop(0.3, col.color + '08');
+      colGlow.addColorStop(0.7, col.color + '08');
+      colGlow.addColorStop(1, 'transparent');
+      ax.strokeStyle = colGlow;
+      ax.lineWidth = 20;
+      ax.stroke();
+    });
+
+    // Draw horizontal connection lines (the horizontal framework)
+    // Connect nearby nodes across columns with faint lines
+    for (let i = 0; i < neuralNodes.length; i++) {
+      for (let j = i + 1; j < neuralNodes.length; j++) {
+        const a = neuralNodes[i], b = neuralNodes[j];
+        if (a.x === b.x) continue; // same column, skip
+        const dy = Math.abs(a.y - b.y);
+        const dx = Math.abs(a.x - b.x);
+        if (dy < 40 && dx < W * 0.4) {
+          ax.beginPath();
+          ax.moveTo(a.x, a.y);
+          // Slight curve for organic feel
+          const midX = (a.x + b.x) / 2;
+          const midY = (a.y + b.y) / 2 - 8;
+          ax.quadraticCurveTo(midX, midY, b.x, b.y);
+          ax.strokeStyle = `rgba(255,255,255,0.025)`;
+          ax.lineWidth = 0.5;
+          ax.stroke();
+        }
+      }
+    }
+
+    // Draw neural nodes at each column intersection
+    neuralNodes.forEach((n, i) => {
+      const pulse = n.size + Math.sin(time * 0.004 + i * 0.7) * 0.8;
+      // Glow
+      const ng = ax.createRadialGradient(n.x, n.y, 0, n.x, n.y, pulse * 3);
+      ng.addColorStop(0, n.color + '30');
+      ng.addColorStop(1, 'transparent');
+      ax.fillStyle = ng;
+      ax.beginPath();
+      ax.arc(n.x, n.y, pulse * 3, 0, Math.PI * 2);
+      ax.fill();
+      // Core
+      ax.beginPath();
+      ax.arc(n.x, n.y, pulse, 0, Math.PI * 2);
+      ax.fillStyle = n.color + 'AA';
+      ax.fill();
+    });
+
+    // Vertical pulses — flowing through columns (depth)
+    verticalPulses.forEach(p => {
+      if (p.goingDown) {
+        p.y += p.speed;
+        if (p.y > p.ey) Object.assign(p, newVertPulse());
+      } else {
+        p.y -= p.speed;
+        if (p.y < p.ey) Object.assign(p, newVertPulse());
+      }
+      const progress = p.goingDown
+        ? (p.y - H * 0.05) / (H * 0.6)
+        : 1 - (p.y - H * 0.05) / (H * 0.6);
+      const alpha = Math.sin(progress * Math.PI) * 0.7;
+
+      ax.beginPath();
+      ax.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ax.fillStyle = p.color;
+      ax.globalAlpha = alpha;
+      ax.fill();
+      // Trail
+      const trailLen = p.goingDown ? -12 : 12;
+      const tg = ax.createLinearGradient(p.x, p.y, p.x, p.y + trailLen);
+      tg.addColorStop(0, p.color);
+      tg.addColorStop(1, 'transparent');
+      ax.fillStyle = tg;
+      ax.globalAlpha = alpha * 0.4;
+      ax.fillRect(p.x - 0.5, Math.min(p.y, p.y + trailLen), 1, Math.abs(trailLen));
+      ax.globalAlpha = 1;
+    });
+
+    // Horizontal synaptic pulses (reach — firing between columns)
+    synapses.forEach(s => {
+      if (!s.active) {
+        // Random chance to activate
+        if (Math.random() < 0.002) s.active = true;
+        return;
+      }
+      s.t += s.speed;
+      if (s.t > 1) {
+        Object.assign(s, newSynapse());
+        return;
+      }
+      const px = s.sx + (s.ex - s.sx) * s.t;
+      const py = s.sy + (s.ey - s.sy) * s.t;
+      const alpha = Math.sin(s.t * Math.PI) * 0.65;
+
+      // Firing line (brief flash)
+      if (s.t < 0.15) {
+        ax.beginPath();
+        ax.moveTo(s.sx, s.sy);
+        const midX = (s.sx + s.ex) / 2;
+        const midY = (s.sy + s.ey) / 2 - 10;
+        ax.quadraticCurveTo(midX, midY, s.ex, s.ey);
+        ax.strokeStyle = s.color + '15';
+        ax.lineWidth = 1;
+        ax.stroke();
+      }
+
+      ax.beginPath();
+      ax.arc(px, py, s.size, 0, Math.PI * 2);
+      ax.fillStyle = s.color;
+      ax.globalAlpha = alpha;
+      ax.fill();
+      // Glow
+      const sg = ax.createRadialGradient(px, py, 0, px, py, s.size * 4);
+      sg.addColorStop(0, s.color);
+      sg.addColorStop(1, 'transparent');
+      ax.fillStyle = sg;
+      ax.globalAlpha = alpha * 0.2;
+      ax.beginPath();
+      ax.arc(px, py, s.size * 4, 0, Math.PI * 2);
+      ax.fill();
+      ax.globalAlpha = 1;
+    });
+
+    // Central Supernova Host — larger, more prominent
+    // Expanding rings
+    hostPulses.forEach(hp => {
+      const alpha = 0.25 * (1 - hp.r / hp.maxR);
+      ax.beginPath();
+      ax.arc(cx, cy, hp.r, 0, Math.PI * 2);
+      ax.strokeStyle = `rgba(139,92,246,${alpha})`;
+      ax.lineWidth = 1.5;
+      ax.stroke();
+      hp.r += hp.speed;
+      if (hp.r > hp.maxR) hp.r = 0;
+    });
+
+    // Host outer glow
+    const hostGlow = ax.createRadialGradient(cx, cy, 0, cx, cy, 55);
+    hostGlow.addColorStop(0, 'rgba(139,92,246,.45)');
+    hostGlow.addColorStop(0.3, 'rgba(232,77,58,.2)');
+    hostGlow.addColorStop(1, 'transparent');
+    ax.fillStyle = hostGlow;
+    ax.beginPath();
+    ax.arc(cx, cy, 55, 0, Math.PI * 2);
+    ax.fill();
+
+    // Host core
+    const pulse = 18 + Math.sin(time * 0.0015) * 4;
+    const coreG = ax.createRadialGradient(cx, cy, 0, cx, cy, pulse);
+    coreG.addColorStop(0, '#fff');
+    coreG.addColorStop(0.15, '#8B5CF6');
+    coreG.addColorStop(0.6, 'rgba(232,77,58,.6)');
+    coreG.addColorStop(1, 'transparent');
+    ax.fillStyle = coreG;
+    ax.beginPath();
+    ax.arc(cx, cy, pulse, 0, Math.PI * 2);
+    ax.fill();
+
+    // Host label
+    ax.font = '800 9px "Plus Jakarta Sans", sans-serif';
+    ax.fillStyle = 'rgba(255,255,255,.9)';
+    ax.textAlign = 'center';
+    ax.fillText('SUPERNOVA', cx, cy + 3);
+    ax.font = '600 7px "Plus Jakarta Sans", sans-serif';
+    ax.fillStyle = 'rgba(139,92,246,.7)';
+    ax.fillText('HOST', cx, cy + 13);
+
+    // Connection lines from host to each column
+    columns.forEach(col => {
+      ax.beginPath();
+      ax.moveTo(cx, cy);
+      ax.lineTo(col.x, cy);
+      ax.strokeStyle = col.color + '12';
+      ax.lineWidth = 0.8;
+      ax.stroke();
+    });
+
+    // Domain labels at top of each column
+    columns.forEach(col => {
+      ax.font = '600 8px "JetBrains Mono", monospace';
+      ax.fillStyle = col.color + '80';
+      ax.textAlign = 'center';
+      ax.fillText(col.name, col.x, H * 0.04);
+      // Tiny "AI" badge
+      ax.font = '700 6px "Plus Jakarta Sans", sans-serif';
+      ax.fillStyle = col.color + '50';
+      ax.fillText('AI', col.x, H * 0.04 + 11);
+    });
+
+    // "VERTICAL" and "HORIZONTAL" axis labels
+    ax.save();
+    ax.font = '700 8px "Plus Jakarta Sans", sans-serif';
+    ax.fillStyle = 'rgba(232,77,58,.2)';
+    ax.translate(18, cy);
+    ax.rotate(-Math.PI / 2);
+    ax.textAlign = 'center';
+    ax.fillText('VERTICAL DEPTH', 0, 0);
+    ax.restore();
+
+    ax.font = '700 8px "Plus Jakarta Sans", sans-serif';
+    ax.fillStyle = 'rgba(74,108,247,.2)';
+    ax.textAlign = 'center';
+    ax.fillText('HORIZONTAL REACH', cx, H * 0.7);
+
+    requestAnimationFrame(drawAI);
+  }
+
+  initAI();
+  requestAnimationFrame(drawAI);
+  window.addEventListener('resize', initAI);
+})();
+
+/* ═══════════════════════════════════════════
+   CLOSING CANVAS — Slide 10 Ambient Supernova
+   ═══════════════════════════════════════════ */
+(function() {
+  const cc = document.getElementById('closingCanvas');
+  if (!cc) return;
+  const cx2 = cc.getContext('2d');
+  let W, H, mx, my, rings = [], drifters = [];
+
+  function initClosing() {
+    const slide = document.getElementById('slide-10');
+    W = cc.width = slide.offsetWidth;
+    H = cc.height = slide.offsetHeight;
+    mx = W / 2;
+    my = H / 2;
+
+    rings = [];
+    for (let i = 0; i < 6; i++) {
+      rings.push({ r: i * 35, maxR: Math.min(W, H) * 0.5, speed: 0.15 + Math.random() * 0.1 });
+    }
+
+    drifters = [];
+    for (let i = 0; i < 40; i++) {
+      drifters.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.2,
+        size: 0.5 + Math.random() * 1.5,
+        alpha: 0.05 + Math.random() * 0.12,
+        color: ['#E84D3A','#8B5CF6','#4A6CF7','#10B981','#F59E0B','#EC4899'][Math.floor(Math.random() * 6)]
+      });
+    }
+  }
+
+  function drawClosing(time) {
+    cx2.clearRect(0, 0, W, H);
+
+    // Central ambient glow — slow breathing
+    const breath = 0.3 + Math.sin(time * 0.0008) * 0.1;
+    const cg = cx2.createRadialGradient(mx, my, 0, mx, my, Math.min(W, H) * 0.45);
+    cg.addColorStop(0, `rgba(232,77,58,${breath * 0.15})`);
+    cg.addColorStop(0.3, `rgba(139,92,246,${breath * 0.08})`);
+    cg.addColorStop(0.6, `rgba(74,108,247,${breath * 0.04})`);
+    cg.addColorStop(1, 'transparent');
+    cx2.fillStyle = cg;
+    cx2.fillRect(0, 0, W, H);
+
+    // Expanding rings
+    rings.forEach(r => {
+      const alpha = 0.12 * (1 - r.r / r.maxR);
+      cx2.beginPath();
+      cx2.arc(mx, my, r.r, 0, Math.PI * 2);
+      cx2.strokeStyle = `rgba(232,77,58,${alpha})`;
+      cx2.lineWidth = 1;
+      cx2.stroke();
+      r.r += r.speed;
+      if (r.r > r.maxR) r.r = 0;
+    });
+
+    // Drifting particles
+    drifters.forEach(d => {
+      d.x += d.vx;
+      d.y += d.vy;
+      if (d.x < 0 || d.x > W) d.vx *= -1;
+      if (d.y < 0 || d.y > H) d.vy *= -1;
+      cx2.beginPath();
+      cx2.arc(d.x, d.y, d.size, 0, Math.PI * 2);
+      cx2.fillStyle = d.color;
+      cx2.globalAlpha = d.alpha;
+      cx2.fill();
+      cx2.globalAlpha = 1;
+    });
+
+    requestAnimationFrame(drawClosing);
+  }
+
+  initClosing();
+  requestAnimationFrame(drawClosing);
+  window.addEventListener('resize', initClosing);
+})();
+
+/* ═══════════════════════════════════════════
    BACKGROUND CANVAS — Particle Network
    ═══════════════════════════════════════════ */
 const canvas = document.getElementById('bgCanvas');
@@ -2739,12 +2987,12 @@ window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
    SLIDE NAVIGATION
    ═══════════════════════════════════════════ */
 let currentSlide = 1;
-const TOTAL_SLIDES = 11;
+const TOTAL_SLIDES = 10;
 const slideNames = [
   '', 'The Supernova', 'The Collection', 'Supernova App',
   'The Gateways', 'The Network', 'The Hub',
-  'The Facilitator', 'PWA Freedom', 'Brand Zones',
-  'Supernova Expansion', 'AI & The Paradox'
+  'The Facilitator', 'PWA Freedom', 'Supernova Intelligence',
+  'The Organizing Layer'
 ];
 
 function goSlide(n) {
