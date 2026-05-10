@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The GENEXXO Collection — 10,000+ XX Domains</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{background:#0a0a0f;color:#e8e4df;font-family:'Plus Jakarta Sans',-apple-system,sans-serif}
+
+/* ── BACK BUTTON ── */
+.back-btn{position:fixed;top:20px;left:20px;z-index:100;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.4);font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.08em;text-decoration:none;transition:all .25s;backdrop-filter:blur(12px)}
+.back-btn:hover{background:rgba(255,255,255,.08);color:#e8e4df;border-color:rgba(255,255,255,.15)}
+.back-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── PROGRESS DOTS ── */
+.progress{position:fixed;right:16px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:100}
+.progress-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);opacity:.4;transition:all .3s;cursor:pointer;border:none;padding:0}
+.progress-dot.active{opacity:1;background:#E84D3A;box-shadow:0 0 8px rgba(232,77,58,.5)}
+
+/* ── SLIDES ── */
+.slide{min-height:100dvh;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 24px;position:relative;overflow:hidden}
+.slide-inner{max-width:640px;width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;gap:24px;opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
+.slide-inner.visible{opacity:1;transform:translateY(0)}
+
+/* ── TYPOGRAPHY ── */
+.slide-tag{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#E84D3A;display:flex;align-items:center;gap:8px}
+.slide-tag::before{content:'';width:16px;height:2px;background:linear-gradient(90deg,#E84D3A,#8B5CF6);border-radius:1px}
+.slide h2{font-size:clamp(1.6rem,5vw,2.6rem);font-weight:800;line-height:1.15;letter-spacing:-.03em;max-width:560px}
+.slide h2 em{font-style:italic;color:#8B5CF6;-webkit-text-fill-color:#8B5CF6}
+.slide h2 .grad{background:linear-gradient(135deg,#E84D3A,#8B5CF6,#4A6CF7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.slide p{font-size:clamp(.85rem,2.2vw,.95rem);line-height:1.8;color:rgba(255,255,255,.45);max-width:520px;font-weight:400}
+.slide p strong{color:rgba(255,255,255,.8);font-weight:600}
+
+/* ── ILLUSTRATIONS ── */
+.slide-illust{width:100%;max-width:420px;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center}
+.slide-illust svg{width:100%;height:100%}
+
+/* ── SCROLL CUE ── */
+.scroll-cue{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;opacity:.25;animation:bob 2.5s ease-in-out infinite}
+.scroll-cue span{font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.2em;color:rgba(255,255,255,.3);text-transform:uppercase}
+.scroll-cue::after{content:'';width:1px;height:20px;background:linear-gradient(to bottom,rgba(255,255,255,.3),transparent)}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+
+/* ── STAT ROW ── */
+.stat-row{display:flex;gap:28px;justify-content:center;flex-wrap:wrap}
+.stat-block{text-align:center}
+.stat-val{font-family:'JetBrains Mono',monospace;font-size:clamp(1.2rem,3.5vw,1.8rem);font-weight:700;color:#E84D3A}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.14em;color:rgba(255,255,255,.25);text-transform:uppercase;margin-top:2px}
+
+/* ── RULES GRID ── */
+.rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;text-align:left;width:100%;max-width:500px}
+.rule-item{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:400;color:rgba(255,255,255,.4);padding:6px 0;border-bottom:1px solid rgba(232,77,58,.06)}
+.rule-num{color:#E84D3A;margin-right:6px;font-size:.6rem;font-weight:600}
+
+/* ── SECTOR BARS ── */
+.sector-bars{display:flex;flex-direction:column;gap:10px;width:100%;max-width:440px}
+.sector-bar{display:flex;align-items:center;gap:12px}
+.sector-bar-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:rgba(255,255,255,.35);width:80px;text-align:right;flex-shrink:0}
+.sector-bar-track{flex:1;height:20px;background:rgba(255,255,255,.02);border-radius:6px;overflow:hidden;position:relative}
+.sector-bar-fill{height:100%;border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px}
+.sector-bar-count{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:rgba(255,255,255,.7);letter-spacing:.06em}
+
+/* ── DOMAIN PILLS ── */
+.domain-pills{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.domain-pill{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:500;padding:5px 12px;border-radius:100px}
+.domain-pill.foundation{border:1px solid rgba(232,77,58,.25);color:#E84D3A;background:rgba(232,77,58,.05)}
+.domain-pill.primary{border:1px solid rgba(139,92,246,.25);color:#8B5CF6;background:rgba(139,92,246,.05)}
+.domain-pill.secondary{border:1px solid rgba(74,108,247,.15);color:rgba(255,255,255,.35);background:rgba(74,108,247,.03)}
+.tier-label{font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.14em;color:rgba(255,255,255,.25);text-transform:uppercase;margin-top:8px}
+
+/* ── CTA ── */
+.cta-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;background:linear-gradient(135deg,#E84D3A,#8B5CF6);color:#fff;text-decoration:none;border-radius:10px;font-size:.85rem;font-weight:700;transition:all .25s;margin-top:8px}
+.cta-btn:hover{transform:translateY(-2px);filter:brightness(1.15)}
+
+/* ── NOISE ── */
+.bg-noise{position:absolute;inset:0;opacity:.03;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+@media(max-width:480px){
+  .slide{padding:48px 20px}
+  .slide-illust{max-width:300px}
+  .progress{right:8px;gap:8px}
+  .progress-dot{width:5px;height:5px}
+  .rules-grid{grid-template-columns:1fr;gap:2px}
+  .sector-bar-label{width:65px;font-size:.5rem}
+  .stat-row{gap:20px}
+}
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-btn"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>Back</a>
+
+<nav class="progress" id="progress"></nav>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 1 — TITLE
+     ══════════════════════════════════════════════ -->
+<section class="slide" style="background:#0a0a0f">
+  <div class="bg-noise"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">GENEXXO Collection</div>
+    <div class="slide-illust">
+      <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#E84D3A" stop-opacity=".85"/><stop offset="50%" stop-color="#8B5CF6" stop-opacity=".85"/><stop offset="100%" stop-color="#4A6CF7" stop-opacity=".85"/></linearGradient></defs>
+        <rect x="40" y="30" width="340" height="200" rx="8" fill="none" stroke="url(#g1)" stroke-width=".7" opacity=".3"/>
+        <g font-family="'JetBrains Mono',monospace" font-size="10" opacity=".25" fill="#8a8b9e">
+          <text x="55" y="50">FINANCEXX</text><text x="140" y="50">BEAUTYXX</text><text x="220" y="50">TRAVELXX</text><text x="300" y="50">TECHXX</text>
+          <text x="55" y="70">SURFXX</text><text x="140" y="70">GIFTXX</text><text x="220" y="70">FOODXX</text><text x="300" y="70">SPORTSXX</text>
+          <text x="55" y="90">CRYPTOXX</text><text x="140" y="90">FASHIONXX</text><text x="220" y="90">MUSICXX</text><text x="300" y="90">LEGALXX</text>
+          <text x="55" y="110">YOGAXX</text><text x="140" y="110">PETXX</text><text x="220" y="110">FILMXX</text><text x="300" y="110">DRONEXX</text>
+          <text x="55" y="195">GOLFXX</text><text x="140" y="195">DANCEXX</text><text x="220" y="195">RUNNERXX</text><text x="300" y="195">COOKXX</text>
+          <text x="55" y="215">BINGOXX</text><text x="140" y="215">SKIXX</text><text x="220" y="215">BIKEXX</text><text x="300" y="215">CLIMBXX</text>
+        </g>
+        <g font-family="'JetBrains Mono',monospace" opacity=".9">
+          <text x="210" y="138" text-anchor="middle" font-size="16" fill="#e8e4df" letter-spacing="6">XX.COM</text>
+          <text x="210" y="160" text-anchor="middle" font-size="11" fill="#E84D3A" letter-spacing="3">10,000+</text>
+        </g>
+      </svg>
+    </div>
+    <h2>The <span class="grad">GENEXXO Collection</span></h2>
+    <p>The most comprehensive linguistic infrastructure ever assembled for digital commerce. A portfolio that took fourteen years to build &mdash; and can never be assembled again.</p>
+  </div>
+  <div class="scroll-cue"><span>Scroll</span></div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 2 — THE SCALE
+     ══════════════════════════════════════════════ -->
+<section class="slide" style="background:#0b0b12">
+  <div class="bg-noise"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">01 &middot; The Scale</div>
+    <div class="slide-illust">
+      <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#E84D3A"/><stop offset="50%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#4A6CF7"/></linearGradient></defs>
+        <circle cx="210" cy="125" r="95" fill="none" stroke="url(#g2)" stroke-width=".7" opacity=".35"/>
+        <circle cx="210" cy="125" r="62" fill="none" stroke="url(#g2)" stroke-width=".7" opacity=".4"/>
+        <circle cx="210" cy="125" r="28" fill="none" stroke="url(#g2)" stroke-width=".9" opacity=".35"/>
+        <g font-family="'JetBrains Mono',monospace" font-size="10" fill="rgba(255,255,255,.25)" text-anchor="middle">
+          <text x="210" y="22">DOMAINS</text><text x="210" y="57">SUBCATEGORIES</text><text x="210" y="95">CATEGORIES</text>
+        </g>
+        <g opacity=".45" fill="#E84D3A">
+          <circle cx="130" cy="60" r="1.5"/><circle cx="165" cy="38" r="1.5"/><circle cx="255" cy="35" r="1.5"/>
+          <circle cx="290" cy="55" r="1.5"/><circle cx="310" cy="90" r="1.5"/><circle cx="305" cy="140" r="1.5"/>
+          <circle cx="290" cy="185" r="1.5"/><circle cx="250" cy="210" r="1.5"/><circle cx="170" cy="215" r="1.5"/>
+          <circle cx="125" cy="190" r="1.5"/><circle cx="115" cy="140" r="1.5"/><circle cx="120" cy="95" r="1.5"/>
+        </g>
+        <circle cx="210" cy="125" r="6" fill="url(#g2)" opacity=".8"/>
+      </svg>
+    </div>
+    <h2>Fourteen years. <em>One collection.</em></h2>
+    <p>Systematically acquired over 14 years, transforming scattered digital real estate into <strong>unified strategic infrastructure</strong> of unprecedented scale and coherence.</p>
+    <div class="stat-row">
+      <div class="stat-block"><div class="stat-val">10,000+</div><div class="stat-label">Domains</div></div>
+      <div class="stat-block"><div class="stat-val">45</div><div class="stat-label">Categories</div></div>
+      <div class="stat-block"><div class="stat-val">400+</div><div class="stat-label">Sub-categories</div></div>
+      <div class="stat-block"><div class="stat-val">14 yrs</div><div class="stat-label">Assembled</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 3 — THE 14 GOLDEN RULES
+     ══════════════════════════════════════════════ -->
+<section class="slide" style="background:#0c0c14">
+  <div class="bg-noise"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">02 &middot; The Discipline</div>
+    <div class="slide-illust">
+      <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F59E0B" stop-opacity=".8"/><stop offset="100%" stop-color="#D97706" stop-opacity=".8"/></linearGradient></defs>
+        <g stroke="url(#gold)" stroke-width=".7" opacity=".4">
+          <line x1="50" y1="20" x2="210" y2="230"/><line x1="80" y1="15" x2="210" y2="230"/>
+          <line x1="110" y1="12" x2="210" y2="230"/><line x1="145" y1="10" x2="210" y2="230"/>
+          <line x1="180" y1="10" x2="210" y2="230"/><line x1="215" y1="10" x2="210" y2="230"/>
+          <line x1="245" y1="10" x2="210" y2="230"/><line x1="275" y1="12" x2="210" y2="230"/>
+          <line x1="305" y1="15" x2="210" y2="230"/><line x1="330" y1="20" x2="210" y2="230"/>
+          <line x1="350" y1="28" x2="210" y2="230"/><line x1="365" y1="38" x2="210" y2="230"/>
+          <line x1="375" y1="52" x2="210" y2="230"/><line x1="380" y1="68" x2="210" y2="230"/>
+        </g>
+        <path d="M 50,20 Q 210,-10 380,68" fill="none" stroke="url(#gold)" stroke-width="1" opacity=".35"/>
+        <circle cx="210" cy="230" r="5" fill="#F59E0B" opacity=".85"/>
+        <text x="210" y="250" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#F59E0B" opacity=".7" letter-spacing="3">14 RULES</text>
+      </svg>
+    </div>
+    <h2>The <em>14 Golden Rules</em></h2>
+    <p>Every domain passed through a rigorous acquisition framework. Not random. Not opportunistic. <strong>Systematically filtered</strong> through 14 non-negotiable criteria.</p>
+    <div class="rules-grid">
+      <div class="rule-item"><span class="rule-num">01</span>Exclusive .com focus</div>
+      <div class="rule-item"><span class="rule-num">02</span>Single-word purity</div>
+      <div class="rule-item"><span class="rule-num">03</span>English language primacy</div>
+      <div class="rule-item"><span class="rule-num">04</span>Trademark safety</div>
+      <div class="rule-item"><span class="rule-num">05</span>Generic term focus</div>
+      <div class="rule-item"><span class="rule-num">06</span>Complete word integrity</div>
+      <div class="rule-item"><span class="rule-num">07</span>Clean format</div>
+      <div class="rule-item"><span class="rule-num">08</span>Regional spelling coverage</div>
+      <div class="rule-item"><span class="rule-num">09</span>Categorical clarity</div>
+      <div class="rule-item"><span class="rule-num">10</span>B2B &amp; B2C balance</div>
+      <div class="rule-item"><span class="rule-num">11</span>Future-proofing</div>
+      <div class="rule-item"><span class="rule-num">12</span>Strategic plurals</div>
+      <div class="rule-item"><span class="rule-num">13</span>Global market awareness</div>
+      <div class="rule-item"><span class="rule-num">14</span>Functional categorization</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 4 — THE AUTHORITY
+     ══════════════════════════════════════════════ -->
+<section class="slide" style="background:#0d0d15">
+  <div class="bg-noise"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">03 &middot; The Authority</div>
+    <div class="slide-illust">
+      <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#E84D3A"/><stop offset="50%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#4A6CF7"/></linearGradient></defs>
+        <g opacity=".85">
+          <rect x="85" y="35" width="28" height="18" rx="3" fill="url(#g4)" opacity=".85"/><rect x="119" y="35" width="28" height="18" rx="3" fill="url(#g4)" opacity=".85"/><rect x="153" y="35" width="28" height="18" rx="3" fill="url(#g4)" opacity=".85"/><rect x="187" y="35" width="28" height="18" rx="3" fill="url(#g4)" opacity=".85"/><rect x="221" y="35" width="28" height="18" rx="3" fill="url(#g4)" opacity=".85"/><rect x="255" y="35" width="28" height="18" rx="3" fill="url(#g4)" opacity=".85"/><rect x="289" y="35" width="28" height="18" rx="3" fill="url(#g4)" opacity=".85"/>
+          <rect x="85" y="59" width="28" height="18" rx="3" fill="url(#g4)" opacity=".65"/><rect x="119" y="59" width="28" height="18" rx="3" fill="url(#g4)" opacity=".65"/><rect x="153" y="59" width="28" height="18" rx="3" fill="url(#g4)" opacity=".65"/><rect x="187" y="59" width="28" height="18" rx="3" fill="url(#g4)" opacity=".65"/><rect x="221" y="59" width="28" height="18" rx="3" fill="url(#g4)" opacity=".65"/><rect x="255" y="59" width="28" height="18" rx="3" fill="url(#g4)" opacity=".65"/><rect x="289" y="59" width="28" height="18" rx="3" fill="url(#g4)" opacity=".65"/>
+          <rect x="85" y="83" width="28" height="18" rx="3" fill="url(#g4)" opacity=".6"/><rect x="119" y="83" width="28" height="18" rx="3" fill="url(#g4)" opacity=".6"/><rect x="153" y="83" width="28" height="18" rx="3" fill="url(#g4)" opacity=".6"/><rect x="187" y="83" width="28" height="18" rx="3" fill="url(#g4)" opacity=".6"/><rect x="221" y="83" width="28" height="18" rx="3" fill="url(#g4)" opacity=".6"/><rect x="255" y="83" width="28" height="18" rx="3" fill="url(#g4)" opacity=".6"/><rect x="289" y="83" width="28" height="18" rx="3" fill="url(#g4)" opacity=".6"/>
+          <rect x="85" y="107" width="28" height="18" rx="3" fill="url(#g4)" opacity=".5"/><rect x="119" y="107" width="28" height="18" rx="3" fill="url(#g4)" opacity=".5"/><rect x="153" y="107" width="28" height="18" rx="3" fill="url(#g4)" opacity=".5"/><rect x="187" y="107" width="28" height="18" rx="3" fill="url(#g4)" opacity=".5"/><rect x="221" y="107" width="28" height="18" rx="3" fill="url(#g4)" opacity=".5"/><rect x="255" y="107" width="28" height="18" rx="3" fill="url(#g4)" opacity=".5"/><rect x="289" y="107" width="28" height="18" rx="3" fill="url(#g4)" opacity=".5"/>
+          <rect x="85" y="131" width="28" height="18" rx="3" fill="url(#g4)" opacity=".4"/><rect x="119" y="131" width="28" height="18" rx="3" fill="url(#g4)" opacity=".4"/><rect x="153" y="131" width="28" height="18" rx="3" fill="url(#g4)" opacity=".4"/><rect x="187" y="131" width="28" height="18" rx="3" fill="url(#g4)" opacity=".4"/><rect x="221" y="131" width="28" height="18" rx="3" fill="url(#g4)" opacity=".4"/><rect x="255" y="131" width="28" height="18" rx="3" fill="url(#g4)" opacity=".4"/><rect x="289" y="131" width="28" height="18" rx="3" fill="url(#g4)" opacity=".4"/>
+          <rect x="85" y="155" width="28" height="18" rx="3" fill="url(#g4)" opacity=".35"/><rect x="119" y="155" width="28" height="18" rx="3" fill="url(#g4)" opacity=".35"/><rect x="153" y="155" width="28" height="18" rx="3" fill="url(#g4)" opacity=".35"/><rect x="187" y="155" width="28" height="18" rx="3" fill="url(#g4)" opacity=".35"/><rect x="221" y="155" width="28" height="18" rx="3" fill="url(#g4)" opacity=".35"/><rect x="255" y="155" width="28" height="18" rx="3" fill="url(#g4)" opacity=".35"/><rect x="289" y="155" width="28" height="18" rx="3" fill="url(#g4)" opacity=".35"/>
+          <rect x="85" y="179" width="28" height="18" rx="3" fill="url(#g4)" opacity=".45"/>
+          <rect x="119" y="179" width="28" height="18" rx="3" fill="none" stroke="rgba(255,255,255,.15)" stroke-width=".7"/>
+          <rect x="153" y="179" width="28" height="18" rx="3" fill="none" stroke="rgba(255,255,255,.15)" stroke-width=".7"/>
+        </g>
+        <text x="210" y="225" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="22" fill="#E84D3A" opacity=".85">90%+</text>
+        <text x="210" y="245" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="rgba(255,255,255,.3)" letter-spacing="2">IN 43 OF 45 CATEGORIES</text>
+      </svg>
+    </div>
+    <h2>Not just presence. <em>Market authority.</em></h2>
+    <p>In 43 out of 45 carefully researched categories, GENEXXO has assembled <strong>over 90% of the most essential terms.</strong> From core business sectors to consumer markets, professional fields to cultural categories &mdash; comprehensive coverage across B2B and B2C.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 5 — THE DEPTH
+     ══════════════════════════════════════════════ -->
+<section class="slide" style="background:#0e0e17">
+  <div class="bg-noise"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">04 &middot; The Depth</div>
+    <h2>Real numbers. <em>Real depth.</em></h2>
+    <p>Each category is not a token presence &mdash; it's a <strong>comprehensive ecosystem unto itself.</strong></p>
+    <div class="sector-bars">
+      <div class="sector-bar"><div class="sector-bar-label">Travel</div><div class="sector-bar-track"><div class="sector-bar-fill" style="width:100%;background:linear-gradient(90deg,#E84D3A,#8B5CF6);opacity:.4"><span class="sector-bar-count">1,200+</span></div></div></div>
+      <div class="sector-bar"><div class="sector-bar-label">Healthcare</div><div class="sector-bar-track"><div class="sector-bar-fill" style="width:75%;background:linear-gradient(90deg,#8B5CF6,#4A6CF7);opacity:.38"><span class="sector-bar-count">900+</span></div></div></div>
+      <div class="sector-bar"><div class="sector-bar-label">Education</div><div class="sector-bar-track"><div class="sector-bar-fill" style="width:42%;background:linear-gradient(90deg,#4A6CF7,#8B5CF6);opacity:.35"><span class="sector-bar-count">500+</span></div></div></div>
+      <div class="sector-bar"><div class="sector-bar-label">Careers</div><div class="sector-bar-track"><div class="sector-bar-fill" style="width:42%;background:linear-gradient(90deg,#EC4899,#8B5CF6);opacity:.33"><span class="sector-bar-count">500+</span></div></div></div>
+      <div class="sector-bar"><div class="sector-bar-label">Gift</div><div class="sector-bar-track"><div class="sector-bar-fill" style="width:33%;background:linear-gradient(90deg,#E84D3A,#EC4899);opacity:.32"><span class="sector-bar-count">400+</span></div></div></div>
+      <div class="sector-bar"><div class="sector-bar-label">Sports</div><div class="sector-bar-track"><div class="sector-bar-fill" style="width:25%;background:linear-gradient(90deg,#4A6CF7,#10B981);opacity:.32"><span class="sector-bar-count">300+</span></div></div></div>
+      <div class="sector-bar"><div class="sector-bar-label">Finance</div><div class="sector-bar-track"><div class="sector-bar-fill" style="width:21%;background:linear-gradient(90deg,#8B5CF6,#E84D3A);opacity:.32"><span class="sector-bar-count">250+</span></div></div></div>
+    </div>
+    <p style="font-size:.7rem;color:rgba(255,255,255,.2);margin-top:4px">Countries, cities, conditions, professions, activities, technologies &mdash; every layer covered.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 6 — THE STRUCTURE
+     ══════════════════════════════════════════════ -->
+<section class="slide" style="background:#0d0d15">
+  <div class="bg-noise"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">05 &middot; The Structure</div>
+    <div class="slide-illust">
+      <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+        <g>
+          <circle cx="140" cy="130" r="65" fill="none" stroke="#E84D3A" stroke-width="1" opacity=".3"/>
+          <g fill="#E84D3A" opacity=".45">
+            <circle cx="110" cy="100" r="2"/><circle cx="130" cy="90" r="2"/><circle cx="155" cy="95" r="2"/>
+            <circle cx="170" cy="110" r="2"/><circle cx="160" cy="130" r="2"/><circle cx="140" cy="145" r="2"/>
+            <circle cx="115" cy="140" r="2"/><circle cx="105" cy="120" r="2"/><circle cx="135" cy="110" r="2"/>
+            <circle cx="150" cy="150" r="2"/><circle cx="125" cy="160" r="2"/><circle cx="145" cy="170" r="2"/>
+            <circle cx="120" cy="115" r="2"/><circle cx="165" cy="145" r="2"/><circle cx="130" cy="130" r="2"/>
+          </g>
+          <text x="140" y="215" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#E84D3A" opacity=".7" letter-spacing="2">FINITE</text>
+        </g>
+        <g>
+          <circle cx="290" cy="130" r="65" fill="none" stroke="#4A6CF7" stroke-width="1" opacity=".3" stroke-dasharray="3 3"/>
+          <g fill="#4A6CF7" opacity=".45">
+            <circle cx="260" cy="100" r="2"/><circle cx="280" cy="88" r="2"/><circle cx="305" cy="92" r="2"/>
+            <circle cx="320" cy="108" r="2"/><circle cx="310" cy="130" r="2"/><circle cx="290" cy="145" r="2"/>
+            <circle cx="265" cy="140" r="2"/><circle cx="255" cy="118" r="2"/><circle cx="285" cy="110" r="2"/>
+            <circle cx="300" cy="152" r="2"/><circle cx="275" cy="160" r="2"/><circle cx="295" cy="170" r="2"/>
+          </g>
+          <g fill="#8B5CF6" opacity=".4">
+            <circle cx="340" cy="70" r="1.5"/><circle cx="355" cy="100" r="1.5"/><circle cx="360" cy="145" r="1.5"/>
+            <circle cx="345" cy="185" r="1.5"/><circle cx="235" cy="65" r="1.5"/><circle cx="225" cy="175" r="1.5"/>
+            <circle cx="310" cy="200" r="1.5"/><circle cx="260" cy="195" r="1.5"/>
+          </g>
+          <text x="290" y="215" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#4A6CF7" opacity=".7" letter-spacing="2">EXPANSIVE</text>
+        </g>
+      </svg>
+    </div>
+    <h2>Two types of category. <em>Both mastered.</em></h2>
+    <p><strong>Finite categories</strong> &mdash; Beauty, Fashion, Gift &mdash; where comprehensive means owning every meaningful term. GENEXXO has virtually all of them. <strong>Expansive categories</strong> &mdash; Healthcare, Careers, Education &mdash; with unlimited niches. GENEXXO holds all the most prominent positions.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 7 — THE HIERARCHY
+     ══════════════════════════════════════════════ -->
+<section class="slide" style="background:#0c0c14">
+  <div class="bg-noise"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">06 &middot; The Hierarchy</div>
+    <div class="slide-illust">
+      <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+        <rect x="165" y="45" width="90" height="32" rx="6" fill="none" stroke="#E84D3A" stroke-width="1" opacity=".6"/>
+        <text x="210" y="65" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#E84D3A" opacity=".75" letter-spacing="1">FOUNDATION</text>
+        <rect x="130" y="95" width="160" height="32" rx="6" fill="none" stroke="#8B5CF6" stroke-width="1" opacity=".45"/>
+        <text x="210" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8B5CF6" opacity=".6" letter-spacing="1">PRIMARY</text>
+        <rect x="90" y="145" width="240" height="32" rx="6" fill="none" stroke="#4A6CF7" stroke-width="1" opacity=".4"/>
+        <text x="210" y="165" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4A6CF7" opacity=".65" letter-spacing="1">SECONDARY</text>
+        <line x1="210" y1="77" x2="210" y2="95" stroke="#8B5CF6" stroke-width=".7" opacity=".4"/>
+        <line x1="210" y1="127" x2="210" y2="145" stroke="#4A6CF7" stroke-width=".7" opacity=".4"/>
+      </svg>
+    </div>
+    <h2>Every domain has <em>its tier</em></h2>
+    <p>A three-level classification system that maps the strategic value of every domain in the collection.</p>
+    <div style="display:flex;flex-direction:column;gap:14px;align-items:center;width:100%;max-width:480px">
+      <div>
+        <div class="tier-label">Foundation &mdash; Category cornerstones</div>
+        <div class="domain-pills"><span class="domain-pill foundation">GiftXX.com</span><span class="domain-pill foundation">HealthXX.com</span><span class="domain-pill foundation">TravelXX.com</span></div>
+      </div>
+      <div>
+        <div class="tier-label">Primary &mdash; Major category elements</div>
+        <div class="domain-pills"><span class="domain-pill primary">ChocolateXX.com</span><span class="domain-pill primary">JewelryXX.com</span><span class="domain-pill primary">ToyXX.com</span></div>
+      </div>
+      <div>
+        <div class="tier-label">Secondary &mdash; Specialised niches</div>
+        <div class="domain-pills"><span class="domain-pill secondary">BroochXX.com</span><span class="domain-pill secondary">CalendarXX.com</span><span class="domain-pill secondary">CufflinksXX.com</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 8 — THE INTELLIGENCE
+     ══════════════════════════════════════════════ -->
+<section class="slide" style="background:#0b0b12">
+  <div class="bg-noise"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">07 &middot; The Intelligence</div>
+    <div class="slide-illust">
+      <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+        <g opacity=".85">
+          <circle cx="105" cy="90" r="28" fill="none" stroke="#E84D3A" stroke-width=".7" opacity=".4"/>
+          <text x="105" y="80" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#E84D3A" opacity=".7">FilmXX</text>
+          <text x="105" y="100" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#E84D3A" opacity=".7">FilmsXX</text>
+        </g>
+        <g opacity=".85">
+          <circle cx="210" cy="90" r="38" fill="none" stroke="#8B5CF6" stroke-width=".7" opacity=".4"/>
+          <text x="210" y="75" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8B5CF6" opacity=".7">SurfXX</text>
+          <text x="210" y="93" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8B5CF6" opacity=".8">SurferXX</text>
+          <text x="210" y="111" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8B5CF6" opacity=".7">SurfingXX</text>
+        </g>
+        <g opacity=".85">
+          <circle cx="315" cy="90" r="38" fill="none" stroke="#4A6CF7" stroke-width=".7" opacity=".4"/>
+          <text x="315" y="75" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4A6CF7" opacity=".7">ClimbXX</text>
+          <text x="315" y="93" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4A6CF7" opacity=".8">HikeXX</text>
+          <text x="315" y="111" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4A6CF7" opacity=".7">TrekXX</text>
+        </g>
+        <path d="M 133,90 Q 170,60 182,90" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+        <path d="M 248,90 Q 280,60 287,90" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+      </svg>
+    </div>
+    <h2>Strategic <em>depth</em> at every level</h2>
+    <p><strong>Strategic plurals</strong> &mdash; both FilmXX and FilmsXX. <strong>Format variations</strong> &mdash; SurfXX, SurferXX, SurfingXX. <strong>Semantic clusters</strong> &mdash; ClimbXX, HikeXX, TrekXX. Every angle covered. Every user behaviour addressed.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 9 — THE OPPORTUNITY
+     ══════════════════════════════════════════════ -->
+<section class="slide" style="background:#0a0a0f">
+  <div class="bg-noise"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">08 &middot; The Opportunity</div>
+    <div class="slide-illust">
+      <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="opp9" cx="50%" cy="50%"><stop offset="0%" stop-color="#8B5CF6" stop-opacity=".18"/><stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/></radialGradient>
+          <linearGradient id="g9" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#E84D3A"/><stop offset="50%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#4A6CF7"/></linearGradient>
+        </defs>
+        <circle cx="210" cy="130" r="90" fill="url(#opp9)"/>
+        <circle cx="210" cy="130" r="7" fill="url(#g9)" opacity=".8"><animate attributeName="r" values="7;10;7" dur="3s" repeatCount="indefinite"/></circle>
+        <circle cx="210" cy="130" r="25" fill="none" stroke="url(#g9)" stroke-width=".7" opacity=".3"><animate attributeName="r" values="25;35;25" dur="4s" repeatCount="indefinite"/><animate attributeName="opacity" values=".2;.08;.2" dur="4s" repeatCount="indefinite"/></circle>
+        <circle cx="210" cy="130" r="50" fill="none" stroke="url(#g9)" stroke-width=".5" opacity=".15"><animate attributeName="r" values="50;65;50" dur="5s" repeatCount="indefinite"/><animate attributeName="opacity" values=".12;.04;.12" dur="5s" repeatCount="indefinite"/></circle>
+        <circle cx="210" cy="130" r="80" fill="none" stroke="url(#g9)" stroke-width=".3" opacity=".06"><animate attributeName="r" values="80;95;80" dur="6s" repeatCount="indefinite"/></circle>
+        <g font-family="'JetBrains Mono',monospace" font-size="11" fill="rgba(255,255,255,.3)">
+          <text x="210" y="88" text-anchor="middle">COMMERCE</text>
+          <text x="295" y="135" text-anchor="start">COMMUNITY</text>
+          <text x="210" y="180" text-anchor="middle">CONTENT</text>
+          <text x="125" y="135" text-anchor="end">AI HUB</text>
+        </g>
+      </svg>
+    </div>
+    <h2>Each domain is a <em>launchpad</em></h2>
+    <p>Every XX domain can serve as the foundation for an authoritative digital node &mdash; <strong>AI hubs with content, community and commerce.</strong> And the unified XX branding generates network effects that no fragmented collection could achieve.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 10 — THE FOUNDATION (CLOSE)
+     ══════════════════════════════════════════════ -->
+<section class="slide" style="background:#0a0a0f">
+  <div class="bg-noise"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">The Foundation</div>
+    <div class="slide-illust">
+      <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g10" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#E84D3A"/><stop offset="50%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#4A6CF7"/></linearGradient>
+          <radialGradient id="glow10" cx="50%" cy="50%"><stop offset="0%" stop-color="#8B5CF6" stop-opacity=".18"/><stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/></radialGradient>
+        </defs>
+        <circle cx="210" cy="110" r="85" fill="url(#glow10)"/>
+        <g stroke="url(#g10)" stroke-width=".7" opacity=".15">
+          <line x1="210" y1="110" x2="130" y2="50"/><line x1="210" y1="110" x2="290" y2="45"/>
+          <line x1="210" y1="110" x2="95" y2="115"/><line x1="210" y1="110" x2="325" y2="120"/>
+          <line x1="210" y1="110" x2="140" y2="180"/><line x1="210" y1="110" x2="280" y2="175"/>
+          <line x1="130" y1="50" x2="290" y2="45"/><line x1="95" y1="115" x2="140" y2="180"/>
+          <line x1="325" y1="120" x2="280" y2="175"/><line x1="130" y1="50" x2="95" y2="115"/>
+          <line x1="290" y1="45" x2="325" y2="120"/><line x1="140" y1="180" x2="280" y2="175"/>
+        </g>
+        <g opacity=".55">
+          <circle cx="130" cy="50" r="4" fill="#E84D3A"/><circle cx="290" cy="45" r="4" fill="#4A6CF7"/>
+          <circle cx="95" cy="115" r="4" fill="#8B5CF6"/><circle cx="325" cy="120" r="4" fill="#EC4899"/>
+          <circle cx="140" cy="180" r="4" fill="#4A6CF7"/><circle cx="280" cy="175" r="4" fill="#E84D3A"/>
+        </g>
+        <circle cx="210" cy="110" r="6" fill="url(#g10)" opacity=".8"><animate attributeName="r" values="6;9;6" dur="3.5s" repeatCount="indefinite"/></circle>
+        <g font-family="'JetBrains Mono',monospace" text-anchor="middle" opacity=".55">
+          <text x="120" y="230" font-size="16" fill="#E84D3A">10,000+</text><text x="120" y="245" font-size="7" fill="rgba(255,255,255,.25)" letter-spacing="2">DOMAINS</text>
+          <text x="210" y="230" font-size="16" fill="#8B5CF6">90%+</text><text x="210" y="245" font-size="7" fill="rgba(255,255,255,.25)" letter-spacing="2">COVERAGE</text>
+          <text x="300" y="230" font-size="16" fill="#E84D3A">Validated</text><text x="300" y="245" font-size="7" fill="rgba(255,255,255,.25)" letter-spacing="2">INDEPENDENTLY</text>
+        </g>
+      </svg>
+    </div>
+    <h2><span class="grad">Linguistic infrastructure.</span> The ultimate foundation.</h2>
+    <p>More than a collection of digital assets &mdash; this is the <strong>linguistic infrastructure for the organizing layer of the internet.</strong> Independently validated. Unreplicable at any price. The foundation that the GENEXXO Vision is built on.</p>
+    <a href="index.html" class="cta-btn">Return to Home &rarr;</a>
+  </div>
+</section>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const prog=document.getElementById('progress');
+
+slides.forEach((_,i)=>{
+  const dot=document.createElement('button');
+  dot.className='progress-dot';
+  dot.setAttribute('aria-label',`Slide ${i+1}`);
+  dot.onclick=()=>slides[i].scrollIntoView({behavior:'smooth'});
+  prog.appendChild(dot);
+});
+
+const dots=document.querySelectorAll('.progress-dot');
+
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const idx=[...slides].indexOf(e.target);
+      dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
+    }
+  });
+},{threshold:.55});
+
+slides.forEach(c=>obs.observe(c));
+
+const fadeObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting)e.target.classList.add('visible');
+  });
+},{threshold:.3});
+
+document.querySelectorAll('.slide-inner').forEach(el=>fadeObs.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>There Can Only Be One — GENEXXO Vision</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0a0a0f;
+  --surface:rgba(255,255,255,0.03);
+  --border:rgba(255,255,255,0.06);
+  --text:#e4e4ec;
+  --text-dim:#8a8b9e;
+  --text-muted:#55566a;
+  --red:#E84D3A;
+  --purple:#8B5CF6;
+  --blue:#4A6CF7;
+  --coral:#ff3e8e;
+  --gold:#d4a845;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth;overflow-x:hidden;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);}
+
+.back-btn{
+  position:fixed;top:20px;left:20px;z-index:100;
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 14px;border-radius:8px;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  color:var(--text-dim);font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:1px;
+  text-decoration:none;transition:all 0.25s;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.back-btn:hover{background:rgba(255,255,255,0.08);color:var(--text);border-color:rgba(255,255,255,0.15);}
+.back-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+
+.card{
+  min-height:100dvh;scroll-snap-align:start;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  padding:60px 32px;position:relative;overflow:hidden;
+  background:var(--bg);
+}
+.card:nth-child(odd){background:rgba(255,255,255,0.01);}
+
+.card-inner{
+  max-width:640px;width:100%;
+  display:flex;flex-direction:column;align-items:center;text-align:center;gap:28px;
+}
+.card-num{
+  font-family:var(--mono);font-size:10px;font-weight:400;
+  letter-spacing:4px;color:var(--text-muted);text-transform:uppercase;
+}
+.card-illust{width:100%;max-width:420px;height:auto;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;}
+.card-illust svg{width:100%;height:100%;}
+
+.card h2{
+  font-family:var(--sans);font-weight:700;
+  font-size:clamp(28px,5vw,44px);line-height:1.2;
+  letter-spacing:-0.3px;max-width:560px;
+}
+.card h2 em{
+  font-style:normal;
+  background:linear-gradient(135deg,var(--red),var(--purple),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.card h2 .grad{
+  background:linear-gradient(135deg,var(--red),var(--purple),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.card h2 .gold{color:var(--gold);}
+.card p{
+  font-size:clamp(15px,2.2vw,17px);line-height:1.8;
+  color:var(--text-dim);max-width:520px;font-weight:300;
+}
+.card p strong{color:var(--text);font-weight:500;}
+
+.scroll-cue{
+  position:absolute;bottom:24px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  opacity:0.3;animation:bob 2.5s ease-in-out infinite;
+}
+.scroll-cue span{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--text-muted);text-transform:uppercase;}
+.scroll-cue::after{content:'';width:1px;height:20px;background:linear-gradient(to bottom,var(--text-muted),transparent);}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+
+.strat-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  width:100%;max-width:480px;
+}
+.strat-card{
+  padding:14px 16px;border-radius:10px;text-align:left;
+  border:1px solid var(--border);background:var(--surface);
+  position:relative;overflow:hidden;
+}
+.strat-card::after{
+  content:'\2717';position:absolute;top:10px;right:12px;
+  font-size:14px;color:var(--red);opacity:0.5;
+}
+.strat-card-title{
+  font-family:var(--mono);font-size:10px;font-weight:400;
+  color:var(--text-dim);letter-spacing:1px;margin-bottom:4px;
+}
+.strat-card-desc{font-size:12px;color:var(--text-muted);line-height:1.5;}
+
+.cta-btn{
+  display:inline-flex;align-items:center;gap:10px;padding:14px 32px;
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  color:#fff;text-decoration:none;border-radius:10px;
+  font-size:15px;font-weight:600;transition:all 0.25s;margin-top:8px;
+  font-family:var(--sans);
+}
+.cta-btn:hover{transform:translateY(-2px);filter:brightness(1.15);}
+
+.progress{position:fixed;right:16px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:100;}
+.progress-dot{width:6px;height:6px;border-radius:50%;background:var(--text-muted);opacity:0.2;transition:all 0.3s;cursor:pointer;border:none;padding:0;}
+.progress-dot.active{opacity:1;background:var(--blue);box-shadow:0 0 8px var(--blue);}
+
+@media(max-width:480px){
+  .card{padding:48px 20px;}
+  .card-illust{max-width:300px;}
+  .progress{right:8px;gap:8px;}
+  .progress-dot{width:5px;height:5px;}
+  .strat-grid{grid-template-columns:1fr;gap:8px;}
+}
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-btn"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>Back</a>
+<nav class="progress" id="progress"></nav>
+
+<!-- TITLE -->
+<section class="card">
+<div class="card-inner">
+  <div class="card-num">The Defining Argument</div>
+  <div class="card-illust"><svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#E84D3A" stop-opacity="0.8"/><stop offset="50%" stop-color="#8B5CF6" stop-opacity="0.8"/><stop offset="100%" stop-color="#4A6CF7" stop-opacity="0.8"/></linearGradient><radialGradient id="glow1" cx="50%" cy="50%"><stop offset="0%" stop-color="#4A6CF7" stop-opacity="0.35"/><stop offset="100%" stop-color="#4A6CF7" stop-opacity="0"/></radialGradient></defs><circle cx="210" cy="130" r="90" fill="url(#glow1)"/><circle cx="210" cy="130" r="12" fill="url(#g1)" opacity="0.9"><animate attributeName="r" values="12;16;12" dur="4s" repeatCount="indefinite"/></circle><g opacity="0.25"><circle cx="90" cy="70" r="6" fill="#8a8b9e"/><circle cx="330" cy="75" r="6" fill="#8a8b9e"/><circle cx="70" cy="180" r="6" fill="#8a8b9e"/><circle cx="350" cy="185" r="6" fill="#8a8b9e"/><circle cx="140" cy="40" r="5" fill="#8a8b9e"/><circle cx="280" cy="45" r="5" fill="#8a8b9e"/><circle cx="120" cy="210" r="5" fill="#8a8b9e"/><circle cx="300" cy="215" r="5" fill="#8a8b9e"/></g><g stroke="#E84D3A" stroke-width="0.7" opacity="0.3"><line x1="83" y1="63" x2="97" y2="77"/><line x1="323" y1="68" x2="337" y2="82"/><line x1="63" y1="173" x2="77" y2="187"/><line x1="343" y1="178" x2="357" y2="192"/></g><text x="210" y="170" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#4A6CF7" opacity="0.8" letter-spacing="4">ONE</text></svg></div>
+  <h2>There Can Only Be <span class="grad">One</span> Organizing Layer</h2>
+  <p>The logic that eliminates every alternative — and reveals the only foundation it can be developed on.</p>
+</div>
+<div class="scroll-cue"><span>Scroll</span></div>
+</section>
+
+<!-- 01 · THE PRIZE -->
+<section class="card">
+<div class="card-inner">
+  <div class="card-num">01 · The Prize</div>
+  <div class="card-illust"><svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="prize1" cx="50%" cy="50%"><stop offset="0%" stop-color="#d4a845" stop-opacity="0.25"/><stop offset="100%" stop-color="#d4a845" stop-opacity="0"/></radialGradient></defs><circle cx="210" cy="120" r="80" fill="url(#prize1)"/><circle cx="210" cy="120" r="12" fill="#d4a845" opacity="0.8"><animate attributeName="r" values="12;16;12" dur="3.5s" repeatCount="indefinite"/></circle><circle cx="210" cy="120" r="35" fill="none" stroke="#d4a845" stroke-width="0.7" opacity="0.3"><animate attributeName="r" values="35;42;35" dur="4s" repeatCount="indefinite"/></circle><circle cx="210" cy="120" r="60" fill="none" stroke="#d4a845" stroke-width="0.5" opacity="0.15"><animate attributeName="r" values="60;70;60" dur="5s" repeatCount="indefinite"/></circle><g font-family="'JetBrains Mono',monospace" font-size="9" fill="#8a8b9e" opacity="0.6" text-anchor="middle"><text x="120" y="55">COMMERCE</text><text x="300" y="55">HEALTHCARE</text><text x="80" y="130">FINANCE</text><text x="340" y="130">TRAVEL</text><text x="120" y="205">EDUCATION</text><text x="300" y="205">TECHNOLOGY</text></g><text x="210" y="125" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#d4a845" opacity="0.85" letter-spacing="3">EVERY CATEGORY</text></svg></div>
+  <h2>A trillion-dollar opportunity. A <em>once-in-a-generation</em> race.</h2>
+  <p>The organizing layer for the internet — spanning every category of human activity. The corporation that develops it doesn't just enter a market. <strong>It becomes the market.</strong></p>
+</div>
+</section>
+
+<!-- 02 · THE PARITY -->
+<section class="card">
+<div class="card-inner">
+  <div class="card-num">02 · The Parity</div>
+  <div class="card-illust"><svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg"><g opacity="0.65"><rect x="65" y="80" width="44" height="100" rx="4" fill="none" stroke="#4A6CF7" stroke-width="1"/><rect x="127" y="80" width="44" height="100" rx="4" fill="none" stroke="#4A6CF7" stroke-width="1"/><rect x="189" y="80" width="44" height="100" rx="4" fill="none" stroke="#4A6CF7" stroke-width="1"/><rect x="251" y="80" width="44" height="100" rx="4" fill="none" stroke="#4A6CF7" stroke-width="1"/><rect x="313" y="80" width="44" height="100" rx="4" fill="none" stroke="#4A6CF7" stroke-width="1"/></g><g font-family="'JetBrains Mono',monospace" font-size="14" fill="#55566a" opacity="0.45" text-anchor="middle"><text x="118" y="135">=</text><text x="180" y="135">=</text><text x="242" y="135">=</text><text x="304" y="135">=</text></g><g font-family="'JetBrains Mono',monospace" font-size="9" fill="#ffffff" opacity="0.75" text-anchor="middle"><text x="87" y="125">AI</text><text x="149" y="125">CLOUD</text><text x="211" y="125">CAPITAL</text><text x="273" y="125">TALENT</text><text x="335" y="125">REACH</text></g><text x="210" y="215" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#ffffff" opacity="0.65" letter-spacing="3">ACCESSIBLE</text></svg></div>
+  <h2>Every major corp has access <em>to similar tech etc.</em></h2>
+  <p>AI. Cloud infrastructure. Capital. Talent. Global reach. Every major technology corporation has access to the same tools. <strong>Technology alone will not decide who wins.</strong></p>
+</div>
+</section>
+
+<!-- 03 · THE COMMITMENT -->
+<section class="card">
+<div class="card-inner">
+  <div class="card-num">03 · The Commitment</div>
+  <div class="card-illust"><svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gc" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#E84D3A" stop-opacity="0.6"/><stop offset="100%" stop-color="#4A6CF7" stop-opacity="0.6"/></linearGradient></defs><path d="M 40,130 Q 130,130 210,130 Q 290,130 380,130" fill="none" stroke="url(#gc)" stroke-width="2" opacity="0.4"/><g fill="#55566a" opacity="0.5"><circle cx="60" cy="130" r="2.5"/><circle cx="140" cy="130" r="2.5"/><circle cx="220" cy="130" r="2.5"/><circle cx="300" cy="130" r="2.5"/><circle cx="380" cy="130" r="2.5"/></g><g font-family="'JetBrains Mono',monospace" font-size="9" fill="#ffffff" opacity="0.6" text-anchor="middle"><text x="60" y="152">YR 1</text><text x="140" y="152">YR 3</text><text x="220" y="152">YR 5</text><text x="300" y="152">YR 7</text><text x="380" y="152">YR 10</text></g><g font-family="'JetBrains Mono',monospace" font-size="9" fill="#8a8b9e" opacity="0.6" text-anchor="middle"><text x="210" y="60">BILLIONS INVESTED</text><text x="210" y="75">BRAND REPUTATION STAKED</text><text x="210" y="90">STRATEGIC DIRECTION SET</text><text x="210" y="105">DECADE COMMITTED</text></g><line x1="210" y1="110" x2="210" y2="125" stroke="#d4a845" stroke-width="0.8" opacity="0.5"/><text x="210" y="195" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#d4a845" opacity="0.85" letter-spacing="2">CAN YOUR FOUNDATION WIN?</text><text x="210" y="225" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#E84D3A" opacity="0.5" letter-spacing="2">SECOND PLACE BURNS BILLIONS</text></svg></div>
+  <h2>You don't enter the race with a car <em>that can't win.</em></h2>
+  <p>Developing the organizing layer is a decade-long commitment. The investment is measured in billions. The outcome shapes a corporation's future for a generation. <strong>No board will approve that commitment knowing the foundation is secondary. The race only makes sense if you start with the best assets on the grid.</strong></p>
+</div>
+</section>
+
+<!-- 04 · THE ELIMINATION -->
+<section class="card">
+<div class="card-inner">
+  <div class="card-num">04 · The Elimination</div>
+  <h2>Most will default to <em>one of the following options.</em></h2>
+  <p>Every obvious strategy has a fatal flaw. <strong>None of these options create any significant advantage or moat.</strong></p>
+  <div class="strat-grid">
+    <div class="strat-card"><div class="strat-card-title">The Super-App</div><div class="strat-card-desc">One gateway, thousands of categories inside. Just another horizontal platform.</div></div>
+    <div class="strat-card"><div class="strat-card-title">Subdomains</div><div class="strat-card-desc">tech.brand.com — no independent identity, no category authority.</div></div>
+    <div class="strat-card"><div class="strat-card-title">Random Domain Collection</div><div class="strat-card-desc">tech123.com yoga123.com — virtually impossible to complete a collection.</div></div>
+    <div class="strat-card"><div class="strat-card-title">Hybrid Model</div><div class="strat-card-desc">Smaller domain collection with sub-domains - branding will still be secondary.</div></div>
+  </div>
+</div>
+</section>
+
+<!-- 05 · THE ADVANTAGE -->
+<section class="card">
+<div class="card-inner">
+  <div class="card-num">05 · The Advantage</div>
+  <div class="card-illust"><svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g5a" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#E84D3A" stop-opacity="0.7"/><stop offset="50%" stop-color="#8B5CF6" stop-opacity="0.7"/><stop offset="100%" stop-color="#4A6CF7" stop-opacity="0.7"/></linearGradient></defs><g opacity="0.65"><rect x="70" y="55" width="80" height="100" rx="4" fill="none" stroke="#E84D3A" stroke-width="0.8"/><rect x="170" y="55" width="80" height="100" rx="4" fill="none" stroke="#8B5CF6" stroke-width="0.8"/><rect x="270" y="55" width="80" height="100" rx="4" fill="none" stroke="#4A6CF7" stroke-width="0.8"/></g><g font-family="'JetBrains Mono',monospace" font-size="9" fill="#ffffff" opacity="0.75" text-anchor="middle"><text x="110" y="100">FOUNDATION</text><text x="210" y="100">BRANDING</text><text x="310" y="100">PROTECTION</text></g><g font-family="'Plus Jakarta Sans',sans-serif" font-size="8" fill="#8a8b9e" opacity="0.5" text-anchor="middle"><text x="110" y="115">bedrock</text><text x="210" y="115">identity</text><text x="310" y="115">irreplicable</text></g><g stroke="url(#g5a)" stroke-width="0.8" opacity="0.5"><line x1="110" y1="155" x2="110" y2="185"/><line x1="210" y1="155" x2="210" y2="185"/><line x1="310" y1="155" x2="310" y2="185"/><line x1="110" y1="185" x2="310" y2="185"/></g><line x1="210" y1="185" x2="210" y2="205" stroke="url(#g5a)" stroke-width="0.8" opacity="0.5"/><circle cx="210" cy="215" r="3" fill="#d4a845" opacity="0.8"/><text x="210" y="240" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#d4a845" opacity="0.85" letter-spacing="3">DOMAINS</text></svg></div>
+  <h2>The advantage <em>and</em> the moat. In one asset class.</h2>
+  <p>The organizing layer can only be built on the bedrock of the internet itself — domains. Each one is the <strong>foundation</strong> everything else is developed on. Each one is instant <strong>branding</strong> — a micro-brand with category authority from day one. And each one is <strong>protection</strong> — impossible to replicate, impossible to take. The advantage and the moat are the same thing.</p>
+</div>
+</section>
+
+<!-- 06 · THE FORMULA -->
+<section class="card">
+<div class="card-inner">
+  <div class="card-num">06 · The Formula</div>
+  <div class="card-illust"><svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g7" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#E84D3A"/><stop offset="50%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#4A6CF7"/></linearGradient></defs><g opacity="0.9"><rect x="40" y="95" width="100" height="40" rx="8" fill="none" stroke="#E84D3A" stroke-width="1.2"/><text x="90" y="120" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#E84D3A" opacity="0.9">Chocolate</text></g><text x="158" y="120" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="16" fill="#ffffff" opacity="0.55">+</text><g opacity="0.9"><rect x="175" y="95" width="60" height="40" rx="8" fill="none" stroke="#8B5CF6" stroke-width="1.2"/><text x="205" y="120" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="14" fill="#8B5CF6" opacity="0.9" letter-spacing="2">XX</text></g><text x="253" y="120" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="16" fill="#ffffff" opacity="0.55">+</text><g opacity="0.9"><rect x="270" y="95" width="80" height="40" rx="8" fill="none" stroke="#4A6CF7" stroke-width="1.2"/><text x="310" y="120" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#4A6CF7" opacity="0.9">.com</text></g><text x="210" y="165" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="16" fill="#ffffff" opacity="0.55">=</text><rect x="120" y="175" width="180" height="44" rx="10" fill="none" stroke="url(#g7)" stroke-width="1.5" opacity="0.75"/><text x="210" y="202" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="14" fill="#e4e4ec" opacity="0.9" letter-spacing="1">ChocolateXX.com</text><g font-family="'JetBrains Mono',monospace" font-size="10" fill="#ffffff" opacity="0.65" text-anchor="middle"><text x="90" y="82">CATEGORY</text><text x="205" y="82">SIGNATURE</text><text x="310" y="82">STANDARD</text></g></svg></div>
+  <h2>A generic word. A .com. A <em>unifying signature.</em></h2>
+  <p>The category itself as the domain — direct, authoritative, unmistakable. The .com standard — there's a reason single-word .coms sell for millions. And a signature that unifies thousands of independent brands into one recognizable ecosystem — <strong>without diluting any of them.</strong></p>
+</div>
+</section>
+
+<!-- 07 · WHY XX -->
+<section class="card">
+<div class="card-inner">
+  <div class="card-num">07 · Why XX</div>
+  <div class="card-illust"><svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g8" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#E84D3A" stop-opacity="0.8"/><stop offset="50%" stop-color="#8B5CF6" stop-opacity="0.8"/><stop offset="100%" stop-color="#4A6CF7" stop-opacity="0.8"/></linearGradient><radialGradient id="glow8" cx="50%" cy="50%"><stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.3"/><stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/></radialGradient></defs><circle cx="210" cy="115" r="75" fill="url(#glow8)"/><text x="210" y="135" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="48" fill="url(#g8)" opacity="0.9" letter-spacing="8">XX</text><g font-family="'JetBrains Mono',monospace" font-size="8" fill="#8a8b9e" opacity="0.5" text-anchor="middle"><text x="100" y="55">TEDx</text><text x="210" y="40">SpaceX</text><text x="320" y="55">iPhone X</text><text x="75" y="105">StockX</text><text x="345" y="105">Twitter X</text><text x="90" y="165">LaTeX</text><text x="330" y="165">Xbox</text><text x="100" y="215">MasterClass X</text><text x="320" y="215">WeWork X</text></g><g stroke="#55566a" stroke-width="0.3" opacity="0.2"><line x1="125" y1="55" x2="175" y2="105"/><line x1="210" y1="45" x2="210" y2="95"/><line x1="295" y1="55" x2="245" y2="105"/><line x1="105" y1="105" x2="170" y2="115"/><line x1="315" y1="105" x2="250" y2="115"/><line x1="115" y1="165" x2="175" y2="135"/><line x1="305" y1="165" x2="245" y2="135"/></g><text x="210" y="245" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8B5CF6" opacity="0.7" letter-spacing="3">EVERYONE WANTS X · ONLY ONE CONTROLS XX</text></svg></div>
+  <h2>X is the most powerful letter <em>in culture.</em> XX is the signature <em>no one else can own.</em></h2>
+  <p>Everyone wants a piece of X — TEDx, SpaceX, iPhone X. It's the most culturally dominant letter in the alphabet. But that's the problem: <strong>X is fragmented. No one controls it.</strong> XX is the evolution. The double factor. Visually unmistakable. It doesn't distort the root word — it amplifies it. It carries warmth — kisses, love, human connection baked into the signature. And the collection is complete. <strong>10,000+ domains, 14 years assembled. Every alternative is near impossible to replicate.</strong></p>
+</div>
+</section>
+
+<!-- 08 · THE EDGE -->
+<section class="card">
+<div class="card-inner">
+  <div class="card-num">08 · The Edge</div>
+  <div class="card-illust"><svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g6" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#E84D3A"/><stop offset="50%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#4A6CF7"/></linearGradient></defs><g opacity="0.2" stroke="#55566a" stroke-width="0.5"><line x1="60" y1="140" x2="360" y2="138"/><line x1="60" y1="150" x2="360" y2="148"/><line x1="60" y1="160" x2="360" y2="158"/><line x1="60" y1="170" x2="360" y2="168"/><line x1="60" y1="180" x2="360" y2="178"/><line x1="60" y1="190" x2="360" y2="188"/><line x1="60" y1="200" x2="360" y2="198"/><line x1="60" y1="210" x2="360" y2="208"/><line x1="60" y1="220" x2="360" y2="218"/></g><path d="M 60,130 Q 150,125 210,105 Q 280,80 360,45" fill="none" stroke="url(#g6)" stroke-width="2.5" opacity="0.85"/><g opacity="0.85"><circle cx="110" cy="128" r="4" fill="#E84D3A"/><circle cx="170" cy="118" r="4" fill="#8B5CF6"/><circle cx="240" cy="95" r="4" fill="#4A6CF7"/><circle cx="310" cy="65" r="4" fill="#1b75bb"/></g><text x="60" y="240" font-family="'JetBrains Mono',monospace" font-size="10" fill="#ffffff" opacity="0.6">YEAR 1</text><text x="360" y="240" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="10" fill="#ffffff" opacity="0.6">YEAR 10</text><text x="360" y="40" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="12" fill="#4A6CF7" opacity="0.8" letter-spacing="2">EDGE</text></svg></div>
+  <h2>Not one brand. <em>Thousands of micro-brands</em> — each one a front door for its category.</h2>
+  <p>Each domain is its own gateway — a click away from a passionate, self-selecting community. The XX signature unites them <strong>without diluting any of them.</strong> Every category evolves independently, optimising for trends and audience. Shared traffic. Open web. PWA architecture. <strong>A living system that grows stronger as each micro-brand grows.</strong></p>
+</div>
+</section>
+
+<!-- CLOSE -->
+<section class="card">
+<div class="card-inner">
+  <div class="card-illust"><svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g9" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#E84D3A"/><stop offset="50%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#4A6CF7"/></linearGradient><radialGradient id="glow9" cx="50%" cy="50%"><stop offset="0%" stop-color="#4A6CF7" stop-opacity="0.45"/><stop offset="100%" stop-color="#4A6CF7" stop-opacity="0"/></radialGradient></defs><circle cx="210" cy="120" r="85" fill="url(#glow9)"/><g stroke="url(#g9)" stroke-width="1.0" opacity="0.55"><line x1="210" y1="120" x2="130" y2="55"/><line x1="210" y1="120" x2="290" y2="50"/><line x1="210" y1="120" x2="95" y2="120"/><line x1="210" y1="120" x2="325" y2="125"/><line x1="210" y1="120" x2="140" y2="190"/><line x1="210" y1="120" x2="280" y2="185"/><line x1="130" y1="55" x2="290" y2="50"/><line x1="95" y1="120" x2="140" y2="190"/><line x1="325" y1="125" x2="280" y2="185"/><line x1="130" y1="55" x2="95" y2="120"/><line x1="290" y1="50" x2="325" y2="125"/><line x1="140" y1="190" x2="280" y2="185"/></g><g opacity="0.85"><circle cx="130" cy="55" r="4" fill="#E84D3A"/><circle cx="290" cy="50" r="4" fill="#4A6CF7"/><circle cx="95" cy="120" r="4" fill="#8B5CF6"/><circle cx="325" cy="125" r="4" fill="#ff3e8e"/><circle cx="140" cy="190" r="4" fill="#4A6CF7"/><circle cx="280" cy="185" r="4" fill="#E84D3A"/></g><circle cx="210" cy="120" r="10" fill="url(#g9)" opacity="0.9"><animate attributeName="r" values="10;14;10" dur="3.5s" repeatCount="indefinite"/></circle><text x="210" y="125" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#fff" opacity="0.9" letter-spacing="3">XX</text><g font-family="'JetBrains Mono',monospace" text-anchor="middle" opacity="0.7"><text x="130" y="235" font-size="13" fill="#4A6CF7">10,000+</text><text x="130" y="248" font-size="7" fill="#55566a" letter-spacing="2">DOMAINS</text><text x="210" y="235" font-size="13" fill="#8B5CF6">14 yrs</text><text x="210" y="248" font-size="7" fill="#55566a" letter-spacing="2">ASSEMBLED</text><text x="290" y="235" font-size="13" fill="#E84D3A">Only 1</text><text x="290" y="248" font-size="7" fill="#55566a" letter-spacing="2">COLLECTION</text></g></svg></div>
+  <h2>There Can Only Be <span class="grad">One.</span></h2>
+  <a href="index.html" class="cta-btn">Return to the Hub &rarr;</a>
+</div>
+</section>
+
+<script>
+const cards=document.querySelectorAll('.card'),prog=document.getElementById('progress');
+cards.forEach((_,i)=>{const dot=document.createElement('button');dot.className='progress-dot';dot.setAttribute('aria-label',`Slide ${i+1}`);dot.onclick=()=>cards[i].scrollIntoView({behavior:'smooth'});prog.appendChild(dot)});
+const dots=document.querySelectorAll('.progress-dot');
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const idx=[...cards].indexOf(e.target);dots.forEach((d,i)=>d.classList.toggle('active',i===idx))}})},{threshold:0.55});
+cards.forEach(c=>obs.observe(c));
+const fadeObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}})},{threshold:0.3});
+document.querySelectorAll('.card-inner').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(30px)';el.style.transition='opacity 0.8s ease, transform 0.8s ease';fadeObs.observe(el)});
+</script>
+</body>
+</html>

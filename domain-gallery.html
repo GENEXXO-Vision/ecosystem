@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Domain Gallery — GENEXXO Collection</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0a0a0f;
+  --surface:rgba(255,255,255,0.03);
+  --border:rgba(255,255,255,0.06);
+  --text:#e4e4ec;
+  --text-dim:#8a8b9e;
+  --text-muted:#55566a;
+  --red:#E84D3A;
+  --purple:#8B5CF6;
+  --blue:#4A6CF7;
+  --coral:#ff3e8e;
+  --green:#34d399;
+  --orange:#f59e0b;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth;overflow-x:hidden;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);}
+
+/* ── Cards ── */
+.card{
+  min-height:100dvh;
+  scroll-snap-align:start;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+  overflow:hidden;
+}
+
+/* Hero image cards */
+.card-hero{padding:0;}
+.card-hero img{
+  width:100%;height:100dvh;
+  object-fit:cover;object-position:center;
+  display:block;
+}
+
+/* Domain list cards */
+.card-domains{
+  padding:60px 32px;
+  background:var(--bg);
+}
+.card-domains-inner{
+  max-width:540px;width:100%;
+  display:flex;flex-direction:column;
+  align-items:center;text-align:center;gap:32px;
+}
+.card-domains-header{
+  display:flex;flex-direction:column;
+  align-items:center;gap:10px;
+}
+.card-domains-cat{
+  font-family:var(--mono);font-size:10px;font-weight:400;
+  letter-spacing:4px;color:var(--text-muted);text-transform:uppercase;
+}
+.card-domains-title{
+  font-family:var(--sans);font-weight:600;
+  font-size:clamp(24px,4vw,36px);
+  letter-spacing:-0.3px;
+}
+.card-domains-title em{
+  font-style:normal;
+  background:linear-gradient(135deg,var(--red),var(--purple),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.card-domains-count{
+  font-family:var(--mono);font-size:11px;
+  color:var(--text-muted);letter-spacing:1px;
+}
+
+/* Pill grid */
+.pill-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:12px;width:100%;max-width:460px;
+}
+.pill{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 18px;border-radius:12px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  transition:all 0.3s ease;
+  position:relative;overflow:hidden;
+}
+.pill:hover{
+  background:rgba(255,255,255,0.05);
+  border-color:rgba(255,255,255,0.12);
+  transform:translateY(-2px);
+}
+.pill::before{
+  content:'';position:absolute;
+  left:0;top:0;bottom:0;width:3px;
+  border-radius:3px 0 0 3px;
+}
+.pill-dot{
+  width:8px;height:8px;border-radius:50%;
+  flex-shrink:0;box-shadow:0 0 8px currentColor;opacity:0.7;
+}
+.pill-name{
+  font-family:var(--mono);font-size:clamp(12px,2vw,14px);
+  font-weight:400;color:var(--text);letter-spacing:0.5px;
+}
+.pill-suffix{color:var(--text-muted);font-weight:300;}
+
+.pill.c1::before{background:var(--red);} .pill.c1 .pill-dot{color:var(--red);}
+.pill.c2::before{background:var(--coral);} .pill.c2 .pill-dot{color:var(--coral);}
+.pill.c3::before{background:var(--purple);} .pill.c3 .pill-dot{color:var(--purple);}
+.pill.c4::before{background:var(--blue);} .pill.c4 .pill-dot{color:var(--blue);}
+.pill.c5::before{background:#1b75bb;} .pill.c5 .pill-dot{color:#1b75bb;}
+.pill.c6::before{background:var(--green);} .pill.c6 .pill-dot{color:var(--green);}
+
+/* Title / closing cards */
+.card-title{padding:60px 32px;background:var(--bg);}
+.card-title-inner{
+  max-width:640px;width:100%;
+  display:flex;flex-direction:column;
+  align-items:center;text-align:center;gap:24px;
+}
+.card-title-inner h1{
+  font-family:var(--sans);font-weight:700;
+  font-size:clamp(32px,6vw,52px);line-height:1.15;
+  letter-spacing:-0.5px;
+}
+.card-title-inner h1 .grad{
+  background:linear-gradient(135deg,var(--red),var(--purple),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.card-title-inner p{
+  font-size:clamp(15px,2.2vw,17px);line-height:1.8;
+  color:var(--text-dim);font-weight:300;max-width:480px;
+}
+
+/* Scroll cue */
+.scroll-cue{
+  position:absolute;bottom:24px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  opacity:0.3;animation:bob 2.5s ease-in-out infinite;
+}
+.scroll-cue span{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--text-muted);text-transform:uppercase;}
+.scroll-cue::after{content:'';width:1px;height:20px;background:linear-gradient(to bottom,var(--text-muted),transparent);}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+
+/* CTA button */
+.cta-btn{
+  display:inline-flex;align-items:center;gap:10px;padding:14px 32px;
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  color:#fff;text-decoration:none;border-radius:10px;
+  font-size:15px;font-weight:600;transition:all 0.25s;margin-top:8px;
+  font-family:var(--sans);
+}
+.cta-btn:hover{transform:translateY(-2px);filter:brightness(1.15);}
+
+/* Back button */
+.back-btn{
+  position:fixed;top:20px;left:20px;z-index:100;
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 14px;border-radius:8px;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  color:var(--text-dim);font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:1px;
+  text-decoration:none;transition:all 0.25s;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.back-btn:hover{background:rgba(255,255,255,0.08);color:var(--text);border-color:rgba(255,255,255,0.15);}
+.back-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+
+/* Progress dots */
+.progress{position:fixed;right:16px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;z-index:100;}
+.progress-dot{width:6px;height:6px;border-radius:50%;background:var(--text-muted);opacity:0.2;transition:all 0.3s;cursor:pointer;border:none;padding:0;}
+.progress-dot.active{opacity:1;background:var(--blue);box-shadow:0 0 8px var(--blue);}
+
+/* Subtle divider between category groups */
+.card-domains + .card-hero::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:60px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--purple),transparent);
+  z-index:2;
+}
+
+@media(max-width:480px){
+  .pill-grid{grid-template-columns:1fr;gap:10px;}
+  .card-domains{padding:48px 20px;}
+  .card-title{padding:48px 20px;}
+  .progress{right:8px;gap:5px;}
+  .progress-dot{width:5px;height:5px;}
+}
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-btn"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>Back</a>
+<nav class="progress" id="progress"></nav>
+
+<!-- ── TITLE CARD ── -->
+<section class="card card-title">
+<div class="card-title-inner">
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:4px;color:var(--text-muted);text-transform:uppercase;">GENEXXO Collection</div>
+  <h1>The <span class="grad">Domain Gallery</span></h1>
+  <p>10,000+ XX-branded domains across 45 categories. Each one a gateway. Each one a micro-brand waiting to come alive.</p>
+</div>
+<div class="scroll-cue"><span>Scroll</span></div>
+</section>
+
+
+<!-- HERO IMAGE: ADVENTURE -->
+<section class="card card-hero">
+<img src="gallery/gallery-1.jpg" alt="ClimbXX.com" loading="lazy">
+</section>
+<!-- ── ADVENTURE ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Sports &amp; Adventure Category</div>
+    <div class="card-domains-title">The <em>Adventure</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">ClimbXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">SkiXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">SurfXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">CycleXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">SailXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">SwimXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── FASHION ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Style &amp; Editorial Category</div>
+    <div class="card-domains-title">The <em>Fashion</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">GothXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">DenimXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">HandbagXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">SneakerXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">DressXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">LingerieXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── WELLNESS ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Mind &amp; Body Category</div>
+    <div class="card-domains-title">The <em>Wellness</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">DietXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">SleepXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">SpaXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">StressXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">TherapyXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">VitaminXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+
+<!-- HERO IMAGE: FINANCE -->
+<section class="card card-hero">
+<img src="gallery/gallery-2.jpg" alt="StocksXX.com" loading="lazy">
+</section>
+<!-- ── FINANCE ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Markets &amp; Intelligence Category</div>
+    <div class="card-domains-title">The <em>Finance</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">StocksXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">CurrencyXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">CryptoXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">MortgageXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">PensionXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">LoanXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── EDUCATION ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Learning &amp; Development Category</div>
+    <div class="card-domains-title">The <em>Education</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">EnglishXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">HistoryXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">MathXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">MedicineXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">RoboticsXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">ScienceXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── CAREER ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Professional &amp; Growth Category</div>
+    <div class="card-domains-title">The <em>Career</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">AccountantXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">ChefXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">DoctorXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">JournalistXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">LawyerXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">PlumberXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+
+<!-- HERO IMAGE: HEALTH -->
+<section class="card card-hero">
+<img src="gallery/gallery-3.jpg" alt="ArthritisXX.com" loading="lazy">
+</section>
+<!-- ── HEALTH ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Conditions &amp; Science Category</div>
+    <div class="card-domains-title">The <em>Health</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">ArthritisXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">BloodXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">CholesterolXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">DiabetesXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">DrugXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">HealthXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── HOBBY ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Passions &amp; Pastimes Category</div>
+    <div class="card-domains-title">The <em>Hobby</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">BakeXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">ChessXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">CraftXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">DanceXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">HobbyXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">MusicXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── DESTINATIONS ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Destinations &amp; Adventure Category</div>
+    <div class="card-domains-title">The <em>Destinations</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">BeachXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">CruiseXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">FlightXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">HoneymoonXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">HotelXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">TravelXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+
+<!-- HERO IMAGE: SPORTS -->
+<section class="card card-hero">
+<img src="gallery/gallery-4.jpg" alt="BaseballXX.com" loading="lazy">
+</section>
+<!-- ── SPORTS ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Team Sports &amp; Fans Category</div>
+    <div class="card-domains-title">The <em>Sports</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">BaseballXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">BasketballXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">FootballXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">GolfXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">SoccerXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">TennisXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── BEAUTY ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Skincare &amp; Cosmetics Category</div>
+    <div class="card-domains-title">The <em>Beauty</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">BeautyXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">SkinXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">ShaveXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">CosmeticsXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">NailsXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">PerfumeXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── GIFT ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Giving &amp; Celebration Category</div>
+    <div class="card-domains-title">The <em>Gift</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">GiftXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">ArtXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">FlowersXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">WeddingXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">BirthdayXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">HamperXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+
+<!-- HERO IMAGE: FOOD & BEVERAGE -->
+<section class="card card-hero">
+<img src="gallery/gallery-5.jpg" alt="FoodXX.com" loading="lazy">
+</section>
+<!-- ── FOOD & BEVERAGE ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Cuisine &amp; Culture Category</div>
+    <div class="card-domains-title">The <em>Food &amp; Beverage</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">FoodXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">CoffeeXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">BeerXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">VeganXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">RecipeXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">ChocolateXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── HOME & GARDEN ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Home &amp; Interiors Category</div>
+    <div class="card-domains-title">The <em>Home &amp; Garden</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">GardenXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">KitchenXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">BathroomXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">FurnitureXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">InteriorsXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">ApplianceXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── PARENTING ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Family &amp; Childcare Category</div>
+    <div class="card-domains-title">The <em>Parenting</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">BabyXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">FamilyXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">MaternityXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">NurseryXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">PregnancyXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">ParentXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+
+<!-- HERO IMAGE: PETS & ANIMALS -->
+<section class="card card-hero">
+<img src="gallery/gallery-6.jpg" alt="PetXX.com" loading="lazy">
+</section>
+<!-- ── PETS & ANIMALS ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Animals &amp; Care Category</div>
+    <div class="card-domains-title">The <em>Pets &amp; Animals</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">PetXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">DogsXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">CatXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">HorseXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">ElephantXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">RabbitXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── LEISURE & HOSPITALITY ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Social &amp; Entertainment Category</div>
+    <div class="card-domains-title">The <em>Leisure &amp; Hospitality</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">BarXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">FestivalXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">GalleryXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">LeisureXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">RestaurantXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">TheaterXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── TRAVEL & TOURISM ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Holidays &amp; Getaways Category</div>
+    <div class="card-domains-title">The <em>Travel &amp; Tourism</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">TravelXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">FlightXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">HotelXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">SafariXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">CruiseXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">WanderlustXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+
+<!-- HERO IMAGE: LIFE & CULTURE -->
+<section class="card card-hero">
+<img src="gallery/gallery-7.jpg" alt="CultureXX.com" loading="lazy">
+</section>
+<!-- ── LIFE & CULTURE ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Identity &amp; Heritage Category</div>
+    <div class="card-domains-title">The <em>Life &amp; Culture</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">CultureXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">AfricanXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">IgboXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">NordicXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">GreekXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">PortugueseXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── MEDIA ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Content &amp; Broadcast Category</div>
+    <div class="card-domains-title">The <em>Media</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">BlogXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">FilmXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">MediaXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">StreamXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">JournalismXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">PodcastXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── GAMING & GAMBLING ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Play &amp; Strategy Category</div>
+    <div class="card-domains-title">The <em>Gaming &amp; Gambling</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">GamingXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">CasinoXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">EsportsXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">BettingXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">LotteryXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">SlotXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+
+<!-- HERO IMAGE: REAL ESTATE -->
+<section class="card card-hero">
+<img src="gallery/gallery-8.jpg" alt="RealestateXX.com" loading="lazy">
+</section>
+<!-- ── REAL ESTATE ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Property &amp; Development Category</div>
+    <div class="card-domains-title">The <em>Real Estate</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">RealestateXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">PropertyXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">ApartmentXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">HousingXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">OfficeXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">TimeshareXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── CONSUMER ENGAGEMENT ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Shopping &amp; Deals Category</div>
+    <div class="card-domains-title">The <em>Consumer Engagement</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">ClaimXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">CouponXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">DiscountXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">RentXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">SearchXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">SellXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── BUSINESS ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Enterprise &amp; Strategy Category</div>
+    <div class="card-domains-title">The <em>Business</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">BusinessXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">StartupXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">EntrepreneurXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">ResearchXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">FranchiseXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">ConsultingXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+
+<!-- HERO IMAGE: TECHNOLOGY -->
+<section class="card card-hero">
+<img src="gallery/gallery-9.jpg" alt="TechXX.com" loading="lazy">
+</section>
+<!-- ── TECHNOLOGY ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Innovation &amp; AI Category</div>
+    <div class="card-domains-title">The <em>Technology</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">TechXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">SoftwareXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">BlockchainXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">DataXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">EmailXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">NFTXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── LEGAL & LAW ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Legal &amp; Justice Category</div>
+    <div class="card-domains-title">The <em>Legal &amp; Law</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">LegalXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">LawyerXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">CopyrightXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">PatentXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">PolicyXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">TrademarkXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── RELIGION & SPIRITUALITY ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Faith &amp; Consciousness Category</div>
+    <div class="card-domains-title">The <em>Religion &amp; Spirituality</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">ReligionXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">ChurchXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">MosqueXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">MeditationXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">BibleXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">PrayerXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+
+<!-- HERO IMAGE: ENVIRONMENT -->
+<section class="card card-hero">
+<img src="gallery/gallery-10.jpg" alt="EnvironmentXX.com" loading="lazy">
+</section>
+<!-- ── ENVIRONMENT ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Planet &amp; Sustainability Category</div>
+    <div class="card-domains-title">The <em>Environment</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">EnvironmentXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">ClimateXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">RecyclingXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">ConservationXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">PollutionXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">SustainabilityXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── GLOBAL ISSUES ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Society &amp; Policy Category</div>
+    <div class="card-domains-title">The <em>Global Issues</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">CrimeXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">DiseaseXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">EconomyXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">EmploymentXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">EqualityXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">LiteracyXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── NONPROFIT ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Charity &amp; Giving Category</div>
+    <div class="card-domains-title">The <em>Nonprofit</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">NonprofitXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">CauseXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">CharityXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">CrowdfundXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">DonateXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">PhilanthropyXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+
+<!-- HERO IMAGE: AUTOMOTIVE -->
+<section class="card card-hero">
+<img src="gallery/gallery-11.jpg" alt="AutoXX.com" loading="lazy">
+</section>
+<!-- ── AUTOMOTIVE ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Vehicles &amp; Motorsport Category</div>
+    <div class="card-domains-title">The <em>Automotive</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">AutoXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">ElectricXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">HybridXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">ScooterXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">TireXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">TruckXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── TRANSPORTATION & LOGISTICS ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Freight &amp; Supply Chain Category</div>
+    <div class="card-domains-title">The <em>Transportation &amp; Logistics</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">TransportationXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">LogisticsXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">ShippingXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">FreightXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">SupplyChainXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">DeliveryXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── AEROSPACE & DEFENSE ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Space &amp; Military Category</div>
+    <div class="card-domains-title">The <em>Aerospace &amp; Defense</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">AerospaceXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">DefenseXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">MilitaryXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">SatelliteXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">DroneXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">JetXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+
+<!-- HERO IMAGE: CONSTRUCTION -->
+<section class="card card-hero">
+<img src="gallery/gallery-12.jpg" alt="ConstructionXX.com" loading="lazy">
+</section>
+<!-- ── CONSTRUCTION ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Building &amp; Infrastructure Category</div>
+    <div class="card-domains-title">The <em>Construction</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">ConstructionXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">AggregatesXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">BuildingXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">CementXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">RoadXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">TunnelXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── ENERGY & POWER ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Power &amp; Sustainability Category</div>
+    <div class="card-domains-title">The <em>Energy &amp; Power</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">EnergyXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">CarbonXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">GasXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">NuclearXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">SolarXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">BatteryXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── AGRICULTURE ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Farming &amp; Production Category</div>
+    <div class="card-domains-title">The <em>Agriculture</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">AgricultureXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">CottonXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">FarmingXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">LivestockXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">HarvestXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">AquacultureXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+
+<!-- HERO IMAGE: INDUSTRIAL EQUIPMENT -->
+<section class="card card-hero">
+<img src="gallery/gallery-13.jpg" alt="AutomationXX.com" loading="lazy">
+</section>
+<!-- ── INDUSTRIAL EQUIPMENT ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Manufacturing &amp; Machinery Category</div>
+    <div class="card-domains-title">The <em>Industrial Equipment</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">AutomationXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">EngineXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">FactoryXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">GeneratorXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">MachineryXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">SemiconductorXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── MATERIALS ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Metals &amp; Resources Category</div>
+    <div class="card-domains-title">The <em>Materials</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">MaterialXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">SteelXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">AluminumXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">CopperXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">CompositeXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">TextileXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+<!-- ── CHEMICAL ── -->
+<section class="card card-domains">
+<div class="card-domains-inner">
+  <div class="card-domains-header">
+    <div class="card-domains-cat">Compounds &amp; Processing Category</div>
+    <div class="card-domains-title">The <em>Chemical</em> Collection</div>
+    <div class="card-domains-count">6 sample domains from this category</div>
+  </div>
+  <div class="pill-grid">
+    <div class="pill c1"><div class="pill-dot"></div><span class="pill-name">AdditiveXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c2"><div class="pill-dot"></div><span class="pill-name">ChemicalXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c3"><div class="pill-dot"></div><span class="pill-name">DyeXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c4"><div class="pill-dot"></div><span class="pill-name">FertilizerXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c5"><div class="pill-dot"></div><span class="pill-name">PharmaceuticalXX<span class="pill-suffix">.com</span></span></div>
+    <div class="pill c6"><div class="pill-dot"></div><span class="pill-name">PlasticXX<span class="pill-suffix">.com</span></span></div>
+  </div>
+</div>
+</section>
+
+
+<!-- ── CLOSING CARD ── -->
+<section class="card card-title">
+<div class="card-title-inner">
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:4px;color:var(--text-muted);text-transform:uppercase;">45 Categories &middot; 400+ Sub-categories</div>
+  <h1>10,000+ <span class="grad">Gateways</span></h1>
+  <p>Every significant commercial category. Every meaningful term. The most comprehensive domain collection ever assembled &mdash; and it can never be replicated.</p>
+  <a href="index.html" class="cta-btn">Return to the Hub &rarr;</a>
+</div>
+</section>
+
+<script>
+const cards = document.querySelectorAll('.card');
+const prog = document.getElementById('progress');
+cards.forEach((_,i) => {
+  const dot = document.createElement('button');
+  dot.className = 'progress-dot';
+  dot.setAttribute('aria-label', 'Card '+(i+1));
+  dot.onclick = () => cards[i].scrollIntoView({behavior:'smooth'});
+  prog.appendChild(dot);
+});
+const dots = document.querySelectorAll('.progress-dot');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = [...cards].indexOf(e.target);
+      dots.forEach((d,i) => d.classList.toggle('active', i===idx));
+    }
+  });
+}, {threshold:0.55});
+cards.forEach(c => obs.observe(c));
+
+const fadeObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, {threshold:0.3});
+document.querySelectorAll('.card-domains-inner, .card-title-inner').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(30px)';
+  el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+  fadeObs.observe(el);
+});
+</script>
+</body>
+</html>
