@@ -12,7 +12,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
 
 /* ── TOPBAR + SIDEBAR NAV ── */
 .site-topbar{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;align-items:center;padding:0 20px;gap:14px;background:rgba(10,10,15,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.04)}
-.topbar-menu{width:36px;height:36px;background:none;border:1px solid rgba(255,255,255,.08);border-radius:8px;color:rgba(255,255,255,.4);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .2s;flex-shrink:0}
+.topbar-menu{width:42px;height:42px;background:none;border:1px solid rgba(255,255,255,.08);border-radius:8px;color:rgba(255,255,255,.4);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:24px;transition:all .2s;flex-shrink:0}
 .topbar-menu:hover{border-color:rgba(232,77,58,.3);color:rgba(255,255,255,.7);background:rgba(232,77,58,.06)}
 .topbar-logo svg{width:90px;height:auto}
 .topbar-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.25);text-transform:uppercase}
@@ -31,7 +31,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
 .nav-item{display:block;padding:10px 24px;color:#9394a5;text-decoration:none;font-size:14px;border-left:2px solid transparent;transition:all .2s}
 .nav-item:hover{color:#e8e8ed;background:rgba(232,77,58,.1);border-left-color:#E84D3A}
 .nav-item.active{color:#E84D3A;font-weight:600;background:rgba(232,77,58,.1);border-left-color:#E84D3A}
-.nav-group-label{padding:20px 24px 6px;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#E84D3A;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none;transition:opacity .2s}.nav-group-label:hover{opacity:.8}.nav-group-chevron{font-size:10px;transition:transform .3s ease;transform:rotate(0deg)}.nav-group-label.expanded .nav-group-chevron{transform:rotate(90deg)}.nav-group-items{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.nav-group-label{padding:20px 24px 6px;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#E84D3A;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none;transition:opacity .2s}.nav-group-label:hover{opacity:.8}.nav-group-chevron{font-size:10px;transition:transform .3s ease;transform:rotate(0deg)}.nav-group-label.expanded .nav-group-chevron{transform:rotate(90deg)}.nav-group-items{max-height:0;overflow:hidden;transition:max-height .35s ease}.nav-home{color:#E84D3A!important;font-weight:600;font-size:15px}.nav-about{color:#E84D3A!important;font-weight:700;font-size:12px;letter-spacing:2px;margin-top:12px}
 .nav-sub{padding-left:40px;font-size:13px}
 @media(min-width:768px){
   .site-topbar{padding:0 32px}
@@ -208,7 +208,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
 .opp-final p{font-size:.78rem;color:rgba(255,255,255,.45);line-height:1.8}
 .opp-final strong{color:rgba(255,255,255,.75);font-weight:600}
 .opp-final-divider{width:48px;height:1px;background:linear-gradient(90deg,#E84D3A,#8B5CF6);margin:20px auto;opacity:.5}
-.opp-final-line{font-size:.95rem;font-weight:600;font-style:italic;background:linear-gradient(135deg,#E84D3A,#8B5CF6,#4A6CF7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.opp-final-line{font-size:.95rem;font-weight:600;font-style:italic;background:linear-gradient(135deg,#E84D3A,#8B5CF6,#4A6CF7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.opp-final-line:hover{opacity:.7}
 @media(min-width:768px){
   .opp-section{padding:0 40px 60px}
   .opp-title{font-size:2rem}
@@ -267,6 +267,21 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
 .mobile-notice-desc{font-size:.82rem;color:rgba(255,255,255,.45);line-height:1.6;margin-bottom:20px}
 .mobile-notice-btn{display:inline-block;padding:10px 28px;border-radius:8px;border:1px solid rgba(139,92,246,.3);background:rgba(139,92,246,.1);color:#8B5CF6;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s}
 .mobile-notice-btn:hover{background:rgba(139,92,246,.2);border-color:rgba(139,92,246,.5)}
+
+/* ── Cookie Consent Banner ── */
+.cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:9998;background:#111118;border-top:1px solid rgba(139,92,246,.15);padding:20px 24px;transform:translateY(100%);transition:transform .4s ease;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+.cookie-banner.show{transform:translateY(0)}
+.cookie-banner-text{font-size:.82rem;color:rgba(255,255,255,.5);line-height:1.6;max-width:560px;text-align:center}
+.cookie-banner-text strong{color:rgba(255,255,255,.8);font-weight:600}
+.cookie-banner-text a{color:#8B5CF6;text-decoration:none;font-weight:500}
+.cookie-banner-text a:hover{color:#A78BFA}
+.cookie-banner-btns{display:flex;gap:10px;flex-shrink:0}
+.cookie-btn{padding:9px 20px;border-radius:8px;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .2s;border:none}
+.cookie-btn-accept{background:linear-gradient(135deg,#E84D3A,#8B5CF6);color:#fff}
+.cookie-btn-accept:hover{filter:brightness(1.15);transform:translateY(-1px)}
+.cookie-btn-reject{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45)}
+.cookie-btn-reject:hover{background:rgba(255,255,255,.08);color:rgba(255,255,255,.7)}
+@media(max-width:600px){.cookie-banner{flex-direction:column;padding:18px 20px}.cookie-banner-btns{width:100%;justify-content:center}}
 </style>
 </head>
 <body>
@@ -293,12 +308,12 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
     <button class="sidebar-close" onclick="toggleSidebar()">&#10005;</button>
   </div>
   <nav>
-    <a href="index.html" class="nav-item active">Home</a>
-    <a href="genexxo-deck.html" target="_blank" class="nav-item" onclick="return checkDesktop(event)">Supernova Application</a>
+    <a href="index.html" class="nav-item nav-home active">Home</a>
     <a href="collection.html" class="nav-item">The Collection</a>
     <a href="domain-gallery.html" class="nav-item">Domain Gallery</a>
     <a href="ultimate-asset.html" class="nav-item">One Organizing Layer</a>
     <a href="the-edge.html" class="nav-item">The Winning Edge</a>
+    <a href="genexxo-deck.html" target="_blank" class="nav-item" onclick="return checkDesktop(event)">GENEXXO Prototype</a>
     <div class="nav-group-label" onclick="toggleSeriesNav()">Vision Series <span class="nav-group-chevron">&#9654;</span></div>
     <a href="genexxo-vision-series.html" class="nav-item nav-sub">Series Overview</a>
     <div class="nav-group-items" id="seriesItems">
@@ -315,7 +330,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
       <a href="genexxo-vision-series/part-11-innovation.html" class="nav-item nav-sub">XI &mdash; Innovation</a>
       <a href="genexxo-vision-series/part-12-the-genexxo-vision.html" class="nav-item nav-sub">XII &mdash; The GENEXXO Vision</a>
     </div>
-    <a href="about.html" class="nav-item">About Us</a>
+    <a href="about.html" class="nav-item nav-about">ABOUT US</a>
   </nav>
 </aside>
 
@@ -341,10 +356,10 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
     </div>
     <div class="domain-ticker reveal reveal-delay-4">
       <div class="domain-ticker-inner">
-        <span class="d">ClimbXX.com</span><span class="d">SurfXX.com</span><span class="d">CryptoXX.com</span><span class="d">StyleXX.com</span><span class="d">DroneXX.com</span>
+        <span class="d">ClimbXX.com</span><span class="d">SurfXX.com</span><span class="d">CryptoXX.com</span><span class="d">FashionXX.com</span><span class="d">DroneXX.com</span>
         <span class="d">CycleXX.com</span><span class="d">SkiXX.com</span><span class="d">TechXX.com</span><span class="d">BeautyXX.com</span><span class="d">FoodXX.com</span>
-        <span class="d">PropertyXX.com</span><span class="d">SportXX.com</span><span class="d">MusicXX.com</span><span class="d">FinanceXX.com</span><span class="d">HealthXX.com</span>
-        <span class="d">ClimbXX.com</span><span class="d">SurfXX.com</span><span class="d">CryptoXX.com</span><span class="d">StyleXX.com</span><span class="d">DroneXX.com</span>
+        <span class="d">PropertyXX.com</span><span class="d">SportsXX.com</span><span class="d">MusicXX.com</span><span class="d">FinanceXX.com</span><span class="d">HealthXX.com</span>
+        <span class="d">ClimbXX.com</span><span class="d">SurfXX.com</span><span class="d">CryptoXX.com</span><span class="d">FashionXX.com</span><span class="d">DroneXX.com</span>
         <span class="d">CycleXX.com</span><span class="d">SkiXX.com</span><span class="d">TechXX.com</span><span class="d">BeautyXX.com</span><span class="d">FoodXX.com</span>
       </div>
     </div>
@@ -376,7 +391,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
         <div class="icon">&#x2728;</div>
         <div class="tag" style="color:#8B5CF6">The Branding</div>
         <div class="title">10,000 Domains, One Unified Signature</div>
-        <div class="desc">Every gateway is instantly recognisable. CycleXX, StyleXX, DroneXX &mdash; the XX becomes a universal mark of authority.</div>
+        <div class="desc">Every gateway is instantly recognisable. CycleXX, FashionXX, DroneXX &mdash; the XX becomes a universal mark of authority.</div>
       </div>
       <div class="pillar-card reveal reveal-delay-4" style="background:linear-gradient(180deg,rgba(74,108,247,.06),rgba(74,108,247,.02));border:1px solid rgba(74,108,247,.1)">
         <div class="bar" style="background:linear-gradient(90deg,#4A6CF7,#6B8CFF)"></div>
@@ -601,21 +616,9 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
   </div>
 </section>
 
-<!-- ── LIVE DEMO CARD ── -->
-<div class="demo-card-wrap reveal" style="padding-top:60px;padding-bottom:30px">
-  <a class="demo-card" href="genexxo-deck.html" target="_blank" onclick="return checkDesktop(event)">
-    <div class="demo-card-inner">
-      <div class="demo-card-badge">Live Demo</div>
-      <div class="demo-card-title">The Supernova Application</div>
-      <div class="demo-card-desc">Interactive demo &mdash; explore the hub and gateway ecosystem architecture in action</div>
-      <div class="demo-card-note">Desktop Prototype Only</div>
-      <div class="demo-card-arrow">LAUNCH DEMO &rarr;</div>
-    </div>
-  </a>
-</div>
-
 <!-- ── EXPLORE CARDS ── -->
-<div class="explore-grid reveal reveal-delay-1" style="padding-bottom:60px">
+<div class="opp-header reveal" style="padding-top:60px"><div class="opp-title">Explore The Vision</div></div>
+<div id="decks" class="explore-grid reveal" style="padding-top:30px;padding-bottom:30px">
   <a class="explore-card" href="collection.html">
     <div class="explore-card-tag" style="color:#8B5CF6">The Foundation</div>
     <span class="explore-card-arrow">&rarr;</span>
@@ -639,6 +642,20 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
     <span class="explore-card-arrow">&rarr;</span>
     <div class="explore-card-title">The Edge That Wins</div>
     <div class="explore-card-desc">Why the XX collection is the ultimate marketing asset &mdash; 10,000 micro-brands, each a gateway to its audience.</div>
+  </a>
+</div>
+
+<!-- ── LIVE DEMO CARD ── -->
+<div class="demo-card-wrap reveal" style="padding-bottom:60px">
+  <a class="demo-card" href="genexxo-deck.html" target="_blank" onclick="return checkDesktop(event)">
+    <div class="demo-card-inner">
+      <div class="demo-card-badge">Live Demo</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#E84D3A;margin-bottom:6px">GENEXXO Prototype</div>
+      <div class="demo-card-title">The Supernova Application</div>
+      <div class="demo-card-desc">Interactive demo &mdash; explore the hub and gateway ecosystem architecture in action</div>
+      <div class="demo-card-note">Desktop Prototype Only</div>
+      <div class="demo-card-arrow">LAUNCH DEMO &rarr;</div>
+    </div>
   </a>
 </div>
 
@@ -689,7 +706,12 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
   <div class="opp-final reveal">
     <p>This is not a typical startup seeking venture capital. GENEXXO is <strong>foundational infrastructure</strong> &mdash; 10,000+ anchors for a network that reaches into every category that exists. Interconnected. AI-native. Unreplicable at any price. <strong>The one-of-a-kind asset that will empower an entity to become the facilitator of digital commerce for decades to come.</strong></p>
     <div class="opp-final-divider"></div>
-    <p class="opp-final-line">Let's Connect &mdash; Team GENEXXO</p>
+    <a href="about.html" class="opp-final-line" style="text-decoration:none;display:inline-block;transition:opacity .2s">Let's Connect &mdash; Team GENEXXO</a>
+    <div style="margin-top:20px;display:flex;gap:16px;justify-content:center">
+      <a href="https://www.genexxovision.com/assets/terms-of-service.pdf" target="_blank" style="font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.1em;color:rgba(255,255,255,.25);text-decoration:none;transition:color .2s">Terms of Service</a>
+      <span style="color:rgba(255,255,255,.1)">&middot;</span>
+      <a href="https://www.genexxovision.com/assets/privacy-policy.pdf" target="_blank" style="font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.1em;color:rgba(255,255,255,.25);text-decoration:none;transition:color .2s">Privacy Policy</a>
+    </div>
   </div>
 </div>
 
@@ -769,7 +791,7 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   const snCtx = snCanvas.getContext('2d');
   let snW, snH, cx, cy;
   const COLORS = ['#E84D3A','#8B5CF6','#4A6CF7','#10B981','#F59E0B','#EC4899','#06B6D4','#F97316','#A855F7','#EF4444'];
-  const DOMAINS = ['ClimbXX','SurfXX','CryptoXX','StyleXX','FoodXX','HealthXX','CycleXX','SkiXX','TechXX','BeautyXX','RunXX','DroneXX','MusicXX','FinanceXX','YogaXX','DiveXX','SailXX','TrainXX','PropertyXX','SportXX','CookXX','GrowXX','FlyXX','HikeXX','KayakXX','ScubaXX','SwimXX','GlideXX','WineXX','FilmXX'];
+  const DOMAINS = ['ClimbXX','SurfXX','CryptoXX','FashionXX','FoodXX','HealthXX','CycleXX','SkiXX','TechXX','BeautyXX','SwimXX','DroneXX','MusicXX','FinanceXX','YogaXX','ScubaXX','SailXX','WellnessXX','PropertyXX','SportsXX','CookXX','TravelXX','FlyXX','HikeXX','KayakXX','ScubaXX','GiftXX','GlideXX','WineXX','FilmXX'];
   const RINGS_BASE = [
     {rPct:.12,count:5,nodeR:6.5,dash:[2,8],opacity:.1,labelAll:true,glowR:3},
     {rPct:.22,count:7,nodeR:5.5,dash:[3,9],opacity:.08,labelAll:true,glowR:2.5},
@@ -796,7 +818,7 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 (function(){
   const sc=document.getElementById('supernovaAppCanvas');if(!sc)return;const sx=sc.getContext('2d');
   const container=document.getElementById('appVisual');let W,H,cx,cy;
-  const RINGS=[{domains:[{name:'ClimbXX',color:'#E84D3A'},{name:'SurfXX',color:'#4A6CF7'},{name:'CryptoXX',color:'#F59E0B'},{name:'StyleXX',color:'#EC4899'}]},{domains:[{name:'CookXX',color:'#F97316'},{name:'BikeXX',color:'#10B981'},{name:'YogaXX',color:'#8B5CF6'},{name:'SkiXX',color:'#06B6D4'},{name:'GolfXX',color:'#4A6CF7'}]},{domains:[{name:'HikeXX',color:'#10B981'},{name:'SailXX',color:'#4A6CF7'},{name:'TrainXX',color:'#E84D3A'},{name:'FlyXX',color:'#06B6D4'},{name:'GrowXX',color:'#10B981'},{name:'BuildXX',color:'#F97316'}]}];
+  const RINGS=[{domains:[{name:'ClimbXX',color:'#E84D3A'},{name:'SurfXX',color:'#4A6CF7'},{name:'CryptoXX',color:'#F59E0B'},{name:'FashionXX',color:'#EC4899'}]},{domains:[{name:'CookXX',color:'#F97316'},{name:'CycleXX',color:'#10B981'},{name:'YogaXX',color:'#8B5CF6'},{name:'SkiXX',color:'#06B6D4'},{name:'GolfXX',color:'#4A6CF7'}]},{domains:[{name:'HikeXX',color:'#10B981'},{name:'SailXX',color:'#4A6CF7'},{name:'WellnessXX',color:'#E84D3A'},{name:'FlyXX',color:'#06B6D4'},{name:'TravelXX',color:'#10B981'},{name:'BuildXX',color:'#F97316'}]}];
   let ringData=[],startTime=0;const RING_DEPLOY_TIME=3000,RING_STAGGER=2500,TOTAL_CYCLE=RING_STAGGER*RINGS.length+RING_DEPLOY_TIME+2000;
   function easeOutCubic(t){return 1-Math.pow(1-t,3)}
   function init(){fitCanvas(sc,container);W=sc.width;H=sc.height;cx=W/2;cy=H/2;const minDim=Math.min(W,H);const radii=[minDim*.16,minDim*.28,minDim*.40];ringData=RINGS.map((ring,ri)=>{const r=radii[ri];const nodes=ring.domains.map((d,di)=>{const angle=(di/ring.domains.length)*Math.PI*2-Math.PI/2;return{finalX:cx+Math.cos(angle)*r,finalY:cy+Math.sin(angle)*r,angle,...d}});return{r,nodes,deployStart:ri*RING_STAGGER}});startTime=performance.now()}
@@ -825,7 +847,7 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 (function(){
   const nc=document.getElementById('networkCanvas');if(!nc)return;const nctx=nc.getContext('2d');
   const container=document.getElementById('networkVisual');
-  const GATEWAYS=[{name:'SurfXX',color:'#4A6CF7'},{name:'CryptoXX',color:'#F59E0B'},{name:'StyleXX',color:'#EC4899'},{name:'ClimbXX',color:'#10B981'},{name:'CookXX',color:'#F97316'},{name:'YogaXX',color:'#8B5CF6'},{name:'RunXX',color:'#EF4444'},{name:'BikeXX',color:'#10B981'},{name:'PokerXX',color:'#F59E0B'},{name:'BeautyXX',color:'#8B5CF6'},{name:'SkiXX',color:'#06B6D4'},{name:'DiveXX',color:'#4A6CF7'}];
+  const GATEWAYS=[{name:'SurfXX',color:'#4A6CF7'},{name:'CryptoXX',color:'#F59E0B'},{name:'TechXX',color:'#EC4899'},{name:'ClimbXX',color:'#10B981'},{name:'CookXX',color:'#F97316'},{name:'YogaXX',color:'#8B5CF6'},{name:'WellnessXX',color:'#EF4444'},{name:'FinanceXX',color:'#10B981'},{name:'BusinessXX',color:'#F59E0B'},{name:'BeautyXX',color:'#8B5CF6'},{name:'SkiXX',color:'#06B6D4'},{name:'ResortXX',color:'#4A6CF7'}];
   let cx,cy,innerR,outerR,nodes=[],edges=[],pulses=[],hubPulses=[];
   function init(){fitCanvas(nc,container);cx=nc.width/2;cy=nc.height/2;innerR=Math.min(nc.width,nc.height)*.22;outerR=Math.min(nc.width,nc.height)*.38;nodes=[];edges=[];pulses=[];hubPulses=[];for(let i=0;i<6;i++){const angle=(i/6)*Math.PI*2-Math.PI/2;nodes.push({x:cx+Math.cos(angle)*innerR,y:cy+Math.sin(angle)*innerR,angle,ring:0,...GATEWAYS[i]})}for(let i=0;i<6;i++){const angle=(i/6)*Math.PI*2-Math.PI/2+Math.PI/6;nodes.push({x:cx+Math.cos(angle)*outerR,y:cy+Math.sin(angle)*outerR,angle,ring:1,...GATEWAYS[6+i]})}for(let i=0;i<6;i++)edges.push({a:i,b:-1,type:'hub'});for(let i=6;i<12;i++)edges.push({a:i,b:-1,type:'hub'});for(let i=0;i<6;i++)edges.push({a:i,b:(i+1)%6,type:'peer'});for(let i=0;i<6;i++)edges.push({a:6+i,b:6+(i+1)%6,type:'peer'});for(let i=0;i<6;i++)edges.push({a:i,b:6+i,type:'cross'});for(let i=0;i<25;i++)pulses.push(newPulse());for(let i=0;i<3;i++)hubPulses.push({r:i*20,maxR:70,speed:.25+Math.random()*.12})}
   function newPulse(){const edge=edges[Math.floor(Math.random()*edges.length)];return{edge,t:0,speed:.003+Math.random()*.004,forward:Math.random()>.5,size:1.2+Math.random()*1.2}}
@@ -1243,6 +1265,26 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   function draw(time){cx2.clearRect(0,0,W,H);const breath=.3+Math.sin(time*.0008)*.1;const cg=cx2.createRadialGradient(mx,my,0,mx,my,Math.min(W,H)*.4);cg.addColorStop(0,`rgba(232,77,58,${breath*.12})`);cg.addColorStop(.3,`rgba(139,92,246,${breath*.06})`);cg.addColorStop(.6,`rgba(74,108,247,${breath*.03})`);cg.addColorStop(1,'transparent');cx2.fillStyle=cg;cx2.fillRect(0,0,W,H);rings.forEach(r=>{const alpha=.1*(1-r.r/r.maxR);cx2.beginPath();cx2.arc(mx,my,r.r,0,Math.PI*2);cx2.strokeStyle=`rgba(232,77,58,${alpha})`;cx2.lineWidth=.8;cx2.stroke();r.r+=r.speed;if(r.r>r.maxR)r.r=0});drifters.forEach(d=>{d.x+=d.vx;d.y+=d.vy;if(d.x<0||d.x>W)d.vx*=-1;if(d.y<0||d.y>H)d.vy*=-1;cx2.beginPath();cx2.arc(d.x,d.y,d.size,0,Math.PI*2);cx2.fillStyle=d.color;cx2.globalAlpha=d.alpha;cx2.fill();cx2.globalAlpha=1});requestAnimationFrame(draw)}
   init();requestAnimationFrame(draw);window.addEventListener('resize',init);
 })();
+</script>
+
+<!-- ── Cookie Consent Banner ── -->
+<div class="cookie-banner" id="cookieBanner">
+  <div class="cookie-banner-text"><strong>Cookie Preferences</strong><br>We use cookies to ensure the website functions properly and to analyze traffic. You can choose to allow only necessary cookies or enable optional cookies for analytics. Please read our <a href="https://www.genexxovision.com/assets/terms-of-service.pdf" target="_blank">Terms of Service</a> and <a href="https://www.genexxovision.com/assets/privacy-policy.pdf" target="_blank">Privacy Policy</a> before making your selection.</div>
+  <div class="cookie-banner-btns">
+    <button class="cookie-btn cookie-btn-accept" onclick="setCookieConsent('accepted')">Accept Optional</button>
+    <button class="cookie-btn cookie-btn-reject" onclick="setCookieConsent('rejected')">Reject Optional</button>
+  </div>
+</div>
+<script>
+(function(){
+  if(!localStorage.getItem('genexxo_cookies')){
+    setTimeout(function(){document.getElementById('cookieBanner').classList.add('show')},1500);
+  }
+})();
+function setCookieConsent(choice){
+  localStorage.setItem('genexxo_cookies',choice);
+  document.getElementById('cookieBanner').classList.remove('show');
+}
 </script>
 </body>
 </html>
