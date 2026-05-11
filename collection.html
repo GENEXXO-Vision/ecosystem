@@ -78,6 +78,21 @@ body{background:#0a0a0f;color:#e8e4df;font-family:'Plus Jakarta Sans',-apple-sys
 /* ── NOISE ── */
 .bg-noise{position:absolute;inset:0;opacity:.03;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
+/* ── SVG ANIMATIONS ── */
+@keyframes float1{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes float2{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+@keyframes domainFade{0%,100%{opacity:.25}50%{opacity:.55}}
+@keyframes barGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.slide-inner.visible .sector-bar-fill{animation:barGrow .8s ease-out forwards;transform-origin:left}
+.slide-inner.visible .sector-bar:nth-child(1) .sector-bar-fill{animation-delay:.1s}
+.slide-inner.visible .sector-bar:nth-child(2) .sector-bar-fill{animation-delay:.2s}
+.slide-inner.visible .sector-bar:nth-child(3) .sector-bar-fill{animation-delay:.3s}
+.slide-inner.visible .sector-bar:nth-child(4) .sector-bar-fill{animation-delay:.4s}
+.slide-inner.visible .sector-bar:nth-child(5) .sector-bar-fill{animation-delay:.5s}
+.slide-inner.visible .sector-bar:nth-child(6) .sector-bar-fill{animation-delay:.6s}
+.slide-inner.visible .sector-bar:nth-child(7) .sector-bar-fill{animation-delay:.7s}
+.sector-bar-fill{transform:scaleX(0);transform-origin:left}
+
 @media(max-width:480px){
   .slide{padding:48px 20px}
   .slide-illust{max-width:300px}
@@ -105,18 +120,36 @@ body{background:#0a0a0f;color:#e8e4df;font-family:'Plus Jakarta Sans',-apple-sys
     <div class="slide-illust">
       <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
         <defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#E84D3A" stop-opacity=".85"/><stop offset="50%" stop-color="#8B5CF6" stop-opacity=".85"/><stop offset="100%" stop-color="#4A6CF7" stop-opacity=".85"/></linearGradient></defs>
-        <rect x="40" y="30" width="340" height="200" rx="8" fill="none" stroke="url(#g1)" stroke-width=".7" opacity=".3"/>
-        <g font-family="'JetBrains Mono',monospace" font-size="10" opacity=".25" fill="#8a8b9e">
-          <text x="55" y="50">FINANCEXX</text><text x="140" y="50">BEAUTYXX</text><text x="220" y="50">TRAVELXX</text><text x="300" y="50">TECHXX</text>
-          <text x="55" y="70">SURFXX</text><text x="140" y="70">GIFTXX</text><text x="220" y="70">FOODXX</text><text x="300" y="70">SPORTSXX</text>
-          <text x="55" y="90">CRYPTOXX</text><text x="140" y="90">FASHIONXX</text><text x="220" y="90">MUSICXX</text><text x="300" y="90">LEGALXX</text>
-          <text x="55" y="110">YOGAXX</text><text x="140" y="110">PETXX</text><text x="220" y="110">FILMXX</text><text x="300" y="110">DRONEXX</text>
-          <text x="55" y="195">GOLFXX</text><text x="140" y="195">DANCEXX</text><text x="220" y="195">RUNNERXX</text><text x="300" y="195">COOKXX</text>
-          <text x="55" y="215">BINGOXX</text><text x="140" y="215">SKIXX</text><text x="220" y="215">BIKEXX</text><text x="300" y="215">CLIMBXX</text>
+        <rect x="40" y="30" width="340" height="200" rx="8" fill="none" stroke="url(#g1)" stroke-width=".7" opacity=".3" stroke-dasharray="8 4"><animate attributeName="stroke-dashoffset" values="0;-24" dur="3s" repeatCount="indefinite"/></rect>
+        <g font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b9e">
+          <text x="55" y="50" opacity=".25"><animate attributeName="opacity" values=".15;.55;.15" dur="4s" begin="0s" repeatCount="indefinite"/>FINANCEXX</text>
+          <text x="140" y="50" opacity=".25"><animate attributeName="opacity" values=".15;.5;.15" dur="3.5s" begin=".5s" repeatCount="indefinite"/>BEAUTYXX</text>
+          <text x="220" y="50" opacity=".25"><animate attributeName="opacity" values=".15;.55;.15" dur="4.2s" begin="1s" repeatCount="indefinite"/>TRAVELXX</text>
+          <text x="300" y="50" opacity=".25"><animate attributeName="opacity" values=".15;.5;.15" dur="3.8s" begin="1.5s" repeatCount="indefinite"/>TECHXX</text>
+          <text x="55" y="70" opacity=".25"><animate attributeName="opacity" values=".15;.5;.15" dur="3.7s" begin=".3s" repeatCount="indefinite"/>SURFXX</text>
+          <text x="140" y="70" opacity=".25"><animate attributeName="opacity" values=".15;.55;.15" dur="4.1s" begin=".8s" repeatCount="indefinite"/>GIFTXX</text>
+          <text x="220" y="70" opacity=".25"><animate attributeName="opacity" values=".15;.5;.15" dur="3.6s" begin="1.3s" repeatCount="indefinite"/>FOODXX</text>
+          <text x="300" y="70" opacity=".25"><animate attributeName="opacity" values=".15;.55;.15" dur="4.3s" begin="1.8s" repeatCount="indefinite"/>SPORTSXX</text>
+          <text x="55" y="90" opacity=".25"><animate attributeName="opacity" values=".15;.55;.15" dur="4s" begin=".6s" repeatCount="indefinite"/>CRYPTOXX</text>
+          <text x="140" y="90" opacity=".25"><animate attributeName="opacity" values=".15;.5;.15" dur="3.9s" begin="1.1s" repeatCount="indefinite"/>FASHIONXX</text>
+          <text x="220" y="90" opacity=".25"><animate attributeName="opacity" values=".15;.55;.15" dur="3.5s" begin="1.6s" repeatCount="indefinite"/>MUSICXX</text>
+          <text x="300" y="90" opacity=".25"><animate attributeName="opacity" values=".15;.5;.15" dur="4.4s" begin="2.1s" repeatCount="indefinite"/>LEGALXX</text>
+          <text x="55" y="110" opacity=".25"><animate attributeName="opacity" values=".15;.5;.15" dur="3.8s" begin=".9s" repeatCount="indefinite"/>YOGAXX</text>
+          <text x="140" y="110" opacity=".25"><animate attributeName="opacity" values=".15;.55;.15" dur="4.2s" begin="1.4s" repeatCount="indefinite"/>PETXX</text>
+          <text x="220" y="110" opacity=".25"><animate attributeName="opacity" values=".15;.5;.15" dur="3.7s" begin="1.9s" repeatCount="indefinite"/>FILMXX</text>
+          <text x="300" y="110" opacity=".25"><animate attributeName="opacity" values=".15;.55;.15" dur="4.1s" begin="2.4s" repeatCount="indefinite"/>DRONEXX</text>
+          <text x="55" y="195" opacity=".25"><animate attributeName="opacity" values=".15;.55;.15" dur="4.3s" begin=".4s" repeatCount="indefinite"/>GOLFXX</text>
+          <text x="140" y="195" opacity=".25"><animate attributeName="opacity" values=".15;.5;.15" dur="3.6s" begin=".9s" repeatCount="indefinite"/>DANCEXX</text>
+          <text x="220" y="195" opacity=".25"><animate attributeName="opacity" values=".15;.55;.15" dur="4s" begin="1.4s" repeatCount="indefinite"/>RUNNERXX</text>
+          <text x="300" y="195" opacity=".25"><animate attributeName="opacity" values=".15;.5;.15" dur="3.9s" begin="1.9s" repeatCount="indefinite"/>COOKXX</text>
+          <text x="55" y="215" opacity=".25"><animate attributeName="opacity" values=".15;.5;.15" dur="3.5s" begin=".7s" repeatCount="indefinite"/>BINGOXX</text>
+          <text x="140" y="215" opacity=".25"><animate attributeName="opacity" values=".15;.55;.15" dur="4.4s" begin="1.2s" repeatCount="indefinite"/>SKIXX</text>
+          <text x="220" y="215" opacity=".25"><animate attributeName="opacity" values=".15;.5;.15" dur="3.8s" begin="1.7s" repeatCount="indefinite"/>BIKEXX</text>
+          <text x="300" y="215" opacity=".25"><animate attributeName="opacity" values=".15;.55;.15" dur="4.1s" begin="2.2s" repeatCount="indefinite"/>CLIMBXX</text>
         </g>
         <g font-family="'JetBrains Mono',monospace" opacity=".9">
-          <text x="210" y="138" text-anchor="middle" font-size="16" fill="#e8e4df" letter-spacing="6">XX.COM</text>
-          <text x="210" y="160" text-anchor="middle" font-size="11" fill="#E84D3A" letter-spacing="3">10,000+</text>
+          <text x="210" y="138" text-anchor="middle" font-size="16" fill="#e8e4df" letter-spacing="6">XX.COM<animate attributeName="letter-spacing" values="6;8;6" dur="4s" repeatCount="indefinite"/></text>
+          <text x="210" y="160" text-anchor="middle" font-size="11" fill="#E84D3A" letter-spacing="3"><animate attributeName="opacity" values=".7;1;.7" dur="2.5s" repeatCount="indefinite"/>10,000+</text>
         </g>
       </svg>
     </div>
@@ -136,28 +169,32 @@ body{background:#0a0a0f;color:#e8e4df;font-family:'Plus Jakarta Sans',-apple-sys
     <div class="slide-illust">
       <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
         <defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#E84D3A"/><stop offset="50%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#4A6CF7"/></linearGradient></defs>
-        <circle cx="210" cy="125" r="95" fill="none" stroke="url(#g2)" stroke-width=".7" opacity=".35"/>
-        <circle cx="210" cy="125" r="62" fill="none" stroke="url(#g2)" stroke-width=".7" opacity=".4"/>
-        <circle cx="210" cy="125" r="28" fill="none" stroke="url(#g2)" stroke-width=".9" opacity=".35"/>
-        <g font-family="'JetBrains Mono',monospace" font-size="10" fill="rgba(255,255,255,.25)" text-anchor="middle">
-          <text x="210" y="22">DOMAINS</text><text x="210" y="57">SUBCATEGORIES</text><text x="210" y="95">CATEGORIES</text>
+        <circle cx="210" cy="125" r="95" fill="none" stroke="url(#g2)" stroke-width=".7" opacity=".35" stroke-dasharray="4 6"><animate attributeName="stroke-dashoffset" values="0;-20" dur="8s" repeatCount="indefinite"/></circle>
+        <circle cx="210" cy="125" r="62" fill="none" stroke="url(#g2)" stroke-width=".7" opacity=".4" stroke-dasharray="3 5"><animate attributeName="stroke-dashoffset" values="0;16" dur="6s" repeatCount="indefinite"/></circle>
+        <circle cx="210" cy="125" r="28" fill="none" stroke="url(#g2)" stroke-width=".9" opacity=".35"><animate attributeName="r" values="28;32;28" dur="4s" repeatCount="indefinite"/></circle>
+        <g font-family="'JetBrains Mono',monospace" font-size="11" fill="rgba(255,255,255,.5)" text-anchor="middle" letter-spacing="2">
+          <text x="210" y="22">DOMAINS</text>
+          <text x="210" y="57">SUBCATEGORIES</text>
+          <text x="210" y="95">CATEGORIES</text>
         </g>
         <g opacity=".45" fill="#E84D3A">
+          <g><animateTransform attributeName="transform" type="rotate" from="0 210 125" to="360 210 125" dur="30s" repeatCount="indefinite"/>
           <circle cx="130" cy="60" r="1.5"/><circle cx="165" cy="38" r="1.5"/><circle cx="255" cy="35" r="1.5"/>
           <circle cx="290" cy="55" r="1.5"/><circle cx="310" cy="90" r="1.5"/><circle cx="305" cy="140" r="1.5"/>
           <circle cx="290" cy="185" r="1.5"/><circle cx="250" cy="210" r="1.5"/><circle cx="170" cy="215" r="1.5"/>
           <circle cx="125" cy="190" r="1.5"/><circle cx="115" cy="140" r="1.5"/><circle cx="120" cy="95" r="1.5"/>
+          </g>
         </g>
-        <circle cx="210" cy="125" r="6" fill="url(#g2)" opacity=".8"/>
+        <circle cx="210" cy="125" r="6" fill="url(#g2)" opacity=".8"><animate attributeName="r" values="6;9;6" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values=".6;1;.6" dur="3s" repeatCount="indefinite"/></circle>
       </svg>
     </div>
-    <h2>Fourteen years. <em>One collection.</em></h2>
-    <p>Systematically acquired over 14 years, transforming scattered digital real estate into <strong>unified strategic infrastructure</strong> of unprecedented scale and coherence.</p>
-    <div class="stat-row">
-      <div class="stat-block"><div class="stat-val">10,000+</div><div class="stat-label">Domains</div></div>
-      <div class="stat-block"><div class="stat-val">45</div><div class="stat-label">Categories</div></div>
-      <div class="stat-block"><div class="stat-val">400+</div><div class="stat-label">Sub-categories</div></div>
-      <div class="stat-block"><div class="stat-val">14 yrs</div><div class="stat-label">Assembled</div></div>
+    <h2 style="font-size:clamp(1.8rem,5.5vw,3rem)">Fourteen years. <em>One collection.</em></h2>
+    <p style="font-size:clamp(.9rem,2.4vw,1.05rem);color:rgba(255,255,255,.55)">Systematically acquired over 14 years, transforming scattered digital real estate into <strong style="color:rgba(255,255,255,.9)">unified strategic infrastructure</strong> of unprecedented scale and coherence.</p>
+    <div class="stat-row" style="gap:36px;margin-top:8px">
+      <div class="stat-block"><div class="stat-val" style="font-size:clamp(1.5rem,4vw,2.2rem)">10,000+</div><div class="stat-label">Domains</div></div>
+      <div class="stat-block"><div class="stat-val" style="font-size:clamp(1.5rem,4vw,2.2rem)">45</div><div class="stat-label">Categories</div></div>
+      <div class="stat-block"><div class="stat-val" style="font-size:clamp(1.5rem,4vw,2.2rem)">400+</div><div class="stat-label">Sub-categories</div></div>
+      <div class="stat-block"><div class="stat-val" style="font-size:clamp(1.5rem,4vw,2.2rem)">14 yrs</div><div class="stat-label">Assembled</div></div>
     </div>
   </div>
 </section>
@@ -173,17 +210,24 @@ body{background:#0a0a0f;color:#e8e4df;font-family:'Plus Jakarta Sans',-apple-sys
       <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
         <defs><linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F59E0B" stop-opacity=".8"/><stop offset="100%" stop-color="#D97706" stop-opacity=".8"/></linearGradient></defs>
         <g stroke="url(#gold)" stroke-width=".7" opacity=".4">
-          <line x1="50" y1="20" x2="210" y2="230"/><line x1="80" y1="15" x2="210" y2="230"/>
-          <line x1="110" y1="12" x2="210" y2="230"/><line x1="145" y1="10" x2="210" y2="230"/>
-          <line x1="180" y1="10" x2="210" y2="230"/><line x1="215" y1="10" x2="210" y2="230"/>
-          <line x1="245" y1="10" x2="210" y2="230"/><line x1="275" y1="12" x2="210" y2="230"/>
-          <line x1="305" y1="15" x2="210" y2="230"/><line x1="330" y1="20" x2="210" y2="230"/>
-          <line x1="350" y1="28" x2="210" y2="230"/><line x1="365" y1="38" x2="210" y2="230"/>
-          <line x1="375" y1="52" x2="210" y2="230"/><line x1="380" y1="68" x2="210" y2="230"/>
+          <line x1="50" y1="20" x2="210" y2="230" stroke-dasharray="200" stroke-dashoffset="200"><animate attributeName="stroke-dashoffset" values="200;0" dur="2s" begin="0s" fill="freeze"/></line>
+          <line x1="80" y1="15" x2="210" y2="230" stroke-dasharray="200" stroke-dashoffset="200"><animate attributeName="stroke-dashoffset" values="200;0" dur="2s" begin=".15s" fill="freeze"/></line>
+          <line x1="110" y1="12" x2="210" y2="230" stroke-dasharray="200" stroke-dashoffset="200"><animate attributeName="stroke-dashoffset" values="200;0" dur="2s" begin=".3s" fill="freeze"/></line>
+          <line x1="145" y1="10" x2="210" y2="230" stroke-dasharray="200" stroke-dashoffset="200"><animate attributeName="stroke-dashoffset" values="200;0" dur="2s" begin=".45s" fill="freeze"/></line>
+          <line x1="180" y1="10" x2="210" y2="230" stroke-dasharray="200" stroke-dashoffset="200"><animate attributeName="stroke-dashoffset" values="200;0" dur="2s" begin=".6s" fill="freeze"/></line>
+          <line x1="215" y1="10" x2="210" y2="230" stroke-dasharray="200" stroke-dashoffset="200"><animate attributeName="stroke-dashoffset" values="200;0" dur="2s" begin=".75s" fill="freeze"/></line>
+          <line x1="245" y1="10" x2="210" y2="230" stroke-dasharray="200" stroke-dashoffset="200"><animate attributeName="stroke-dashoffset" values="200;0" dur="2s" begin=".9s" fill="freeze"/></line>
+          <line x1="275" y1="12" x2="210" y2="230" stroke-dasharray="200" stroke-dashoffset="200"><animate attributeName="stroke-dashoffset" values="200;0" dur="2s" begin="1.05s" fill="freeze"/></line>
+          <line x1="305" y1="15" x2="210" y2="230" stroke-dasharray="200" stroke-dashoffset="200"><animate attributeName="stroke-dashoffset" values="200;0" dur="2s" begin="1.2s" fill="freeze"/></line>
+          <line x1="330" y1="20" x2="210" y2="230" stroke-dasharray="200" stroke-dashoffset="200"><animate attributeName="stroke-dashoffset" values="200;0" dur="2s" begin="1.35s" fill="freeze"/></line>
+          <line x1="350" y1="28" x2="210" y2="230" stroke-dasharray="200" stroke-dashoffset="200"><animate attributeName="stroke-dashoffset" values="200;0" dur="2s" begin="1.5s" fill="freeze"/></line>
+          <line x1="365" y1="38" x2="210" y2="230" stroke-dasharray="200" stroke-dashoffset="200"><animate attributeName="stroke-dashoffset" values="200;0" dur="2s" begin="1.65s" fill="freeze"/></line>
+          <line x1="375" y1="52" x2="210" y2="230" stroke-dasharray="200" stroke-dashoffset="200"><animate attributeName="stroke-dashoffset" values="200;0" dur="2s" begin="1.8s" fill="freeze"/></line>
+          <line x1="380" y1="68" x2="210" y2="230" stroke-dasharray="200" stroke-dashoffset="200"><animate attributeName="stroke-dashoffset" values="200;0" dur="2s" begin="1.95s" fill="freeze"/></line>
         </g>
-        <path d="M 50,20 Q 210,-10 380,68" fill="none" stroke="url(#gold)" stroke-width="1" opacity=".35"/>
-        <circle cx="210" cy="230" r="5" fill="#F59E0B" opacity=".85"/>
-        <text x="210" y="250" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#F59E0B" opacity=".7" letter-spacing="3">14 RULES</text>
+        <path d="M 50,20 Q 210,-10 380,68" fill="none" stroke="url(#gold)" stroke-width="1" opacity=".35" stroke-dasharray="400" stroke-dashoffset="400"><animate attributeName="stroke-dashoffset" values="400;0" dur="3s" fill="freeze"/></path>
+        <circle cx="210" cy="230" r="5" fill="#F59E0B" opacity=".85"><animate attributeName="r" values="5;8;5" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values=".6;1;.6" dur="3s" repeatCount="indefinite"/></circle>
+        <text x="210" y="250" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#F59E0B" opacity=".7" letter-spacing="3"><animate attributeName="letter-spacing" values="3;5;3" dur="4s" repeatCount="indefinite"/>14 RULES</text>
       </svg>
     </div>
     <h2>The <em>14 Golden Rules</em></h2>
@@ -228,8 +272,8 @@ body{background:#0a0a0f;color:#e8e4df;font-family:'Plus Jakarta Sans',-apple-sys
           <rect x="119" y="179" width="28" height="18" rx="3" fill="none" stroke="rgba(255,255,255,.15)" stroke-width=".7"/>
           <rect x="153" y="179" width="28" height="18" rx="3" fill="none" stroke="rgba(255,255,255,.15)" stroke-width=".7"/>
         </g>
-        <text x="210" y="225" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="22" fill="#E84D3A" opacity=".85">90%+</text>
-        <text x="210" y="245" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="rgba(255,255,255,.3)" letter-spacing="2">IN 43 OF 45 CATEGORIES</text>
+        <text x="210" y="225" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="22" fill="#E84D3A" opacity=".85"><animate attributeName="opacity" values=".6;1;.6" dur="3s" repeatCount="indefinite"/>90%+</text>
+        <text x="210" y="245" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="rgba(255,255,255,.3)" letter-spacing="2"><animate attributeName="letter-spacing" values="2;4;2" dur="5s" repeatCount="indefinite"/>IN 43 OF 45 CATEGORIES</text>
       </svg>
     </div>
     <h2>Not just presence. <em>Market authority.</em></h2>
@@ -269,28 +313,51 @@ body{background:#0a0a0f;color:#e8e4df;font-family:'Plus Jakarta Sans',-apple-sys
     <div class="slide-illust">
       <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
         <g>
-          <circle cx="140" cy="130" r="65" fill="none" stroke="#E84D3A" stroke-width="1" opacity=".3"/>
+          <circle cx="140" cy="130" r="65" fill="none" stroke="#E84D3A" stroke-width="1" opacity=".3"><animate attributeName="r" values="65;68;65" dur="5s" repeatCount="indefinite"/></circle>
           <g fill="#E84D3A" opacity=".45">
-            <circle cx="110" cy="100" r="2"/><circle cx="130" cy="90" r="2"/><circle cx="155" cy="95" r="2"/>
-            <circle cx="170" cy="110" r="2"/><circle cx="160" cy="130" r="2"/><circle cx="140" cy="145" r="2"/>
-            <circle cx="115" cy="140" r="2"/><circle cx="105" cy="120" r="2"/><circle cx="135" cy="110" r="2"/>
-            <circle cx="150" cy="150" r="2"/><circle cx="125" cy="160" r="2"/><circle cx="145" cy="170" r="2"/>
-            <circle cx="120" cy="115" r="2"/><circle cx="165" cy="145" r="2"/><circle cx="130" cy="130" r="2"/>
+            <circle cx="110" cy="100" r="2"><animate attributeName="cy" values="100;96;100" dur="3s" repeatCount="indefinite"/></circle>
+            <circle cx="130" cy="90" r="2"><animate attributeName="cy" values="90;94;90" dur="3.5s" repeatCount="indefinite"/></circle>
+            <circle cx="155" cy="95" r="2"><animate attributeName="cx" values="155;159;155" dur="4s" repeatCount="indefinite"/></circle>
+            <circle cx="170" cy="110" r="2"><animate attributeName="cy" values="110;106;110" dur="3.2s" repeatCount="indefinite"/></circle>
+            <circle cx="160" cy="130" r="2"><animate attributeName="cx" values="160;156;160" dur="3.8s" repeatCount="indefinite"/></circle>
+            <circle cx="140" cy="145" r="2"><animate attributeName="cy" values="145;149;145" dur="4.2s" repeatCount="indefinite"/></circle>
+            <circle cx="115" cy="140" r="2"><animate attributeName="cx" values="115;111;115" dur="3.3s" repeatCount="indefinite"/></circle>
+            <circle cx="105" cy="120" r="2"><animate attributeName="cy" values="120;116;120" dur="3.7s" repeatCount="indefinite"/></circle>
+            <circle cx="135" cy="110" r="2"><animate attributeName="cx" values="135;139;135" dur="4.1s" repeatCount="indefinite"/></circle>
+            <circle cx="150" cy="150" r="2"><animate attributeName="cy" values="150;154;150" dur="3.6s" repeatCount="indefinite"/></circle>
+            <circle cx="125" cy="160" r="2"><animate attributeName="cx" values="125;121;125" dur="3.9s" repeatCount="indefinite"/></circle>
+            <circle cx="145" cy="170" r="2"><animate attributeName="cy" values="170;166;170" dur="4.3s" repeatCount="indefinite"/></circle>
+            <circle cx="120" cy="115" r="2"><animate attributeName="cx" values="120;124;120" dur="3.4s" repeatCount="indefinite"/></circle>
+            <circle cx="165" cy="145" r="2"><animate attributeName="cy" values="145;141;145" dur="3.1s" repeatCount="indefinite"/></circle>
+            <circle cx="130" cy="130" r="2"><animate attributeName="r" values="2;3;2" dur="3s" repeatCount="indefinite"/></circle>
           </g>
           <text x="140" y="215" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#E84D3A" opacity=".7" letter-spacing="2">FINITE</text>
         </g>
         <g>
-          <circle cx="290" cy="130" r="65" fill="none" stroke="#4A6CF7" stroke-width="1" opacity=".3" stroke-dasharray="3 3"/>
+          <circle cx="290" cy="130" r="65" fill="none" stroke="#4A6CF7" stroke-width="1" opacity=".3" stroke-dasharray="3 3"><animate attributeName="r" values="65;72;65" dur="6s" repeatCount="indefinite"/><animate attributeName="stroke-dashoffset" values="0;-12" dur="4s" repeatCount="indefinite"/></circle>
           <g fill="#4A6CF7" opacity=".45">
-            <circle cx="260" cy="100" r="2"/><circle cx="280" cy="88" r="2"/><circle cx="305" cy="92" r="2"/>
-            <circle cx="320" cy="108" r="2"/><circle cx="310" cy="130" r="2"/><circle cx="290" cy="145" r="2"/>
-            <circle cx="265" cy="140" r="2"/><circle cx="255" cy="118" r="2"/><circle cx="285" cy="110" r="2"/>
-            <circle cx="300" cy="152" r="2"/><circle cx="275" cy="160" r="2"/><circle cx="295" cy="170" r="2"/>
+            <circle cx="260" cy="100" r="2"><animate attributeName="cy" values="100;95;100" dur="3.5s" repeatCount="indefinite"/></circle>
+            <circle cx="280" cy="88" r="2"><animate attributeName="cx" values="280;284;280" dur="4s" repeatCount="indefinite"/></circle>
+            <circle cx="305" cy="92" r="2"><animate attributeName="cy" values="92;88;92" dur="3.2s" repeatCount="indefinite"/></circle>
+            <circle cx="320" cy="108" r="2"><animate attributeName="cx" values="320;324;320" dur="3.8s" repeatCount="indefinite"/></circle>
+            <circle cx="310" cy="130" r="2"><animate attributeName="cy" values="130;134;130" dur="4.2s" repeatCount="indefinite"/></circle>
+            <circle cx="290" cy="145" r="2"><animate attributeName="cx" values="290;286;290" dur="3.6s" repeatCount="indefinite"/></circle>
+            <circle cx="265" cy="140" r="2"><animate attributeName="cy" values="140;144;140" dur="3.3s" repeatCount="indefinite"/></circle>
+            <circle cx="255" cy="118" r="2"><animate attributeName="cx" values="255;251;255" dur="4.1s" repeatCount="indefinite"/></circle>
+            <circle cx="285" cy="110" r="2"><animate attributeName="cy" values="110;114;110" dur="3.7s" repeatCount="indefinite"/></circle>
+            <circle cx="300" cy="152" r="2"><animate attributeName="cx" values="300;304;300" dur="3.9s" repeatCount="indefinite"/></circle>
+            <circle cx="275" cy="160" r="2"><animate attributeName="cy" values="160;164;160" dur="4.3s" repeatCount="indefinite"/></circle>
+            <circle cx="295" cy="170" r="2"><animate attributeName="cx" values="295;291;295" dur="3.4s" repeatCount="indefinite"/></circle>
           </g>
           <g fill="#8B5CF6" opacity=".4">
-            <circle cx="340" cy="70" r="1.5"/><circle cx="355" cy="100" r="1.5"/><circle cx="360" cy="145" r="1.5"/>
-            <circle cx="345" cy="185" r="1.5"/><circle cx="235" cy="65" r="1.5"/><circle cx="225" cy="175" r="1.5"/>
-            <circle cx="310" cy="200" r="1.5"/><circle cx="260" cy="195" r="1.5"/>
+            <circle cx="340" cy="70" r="1.5"><animate attributeName="cx" values="340;346;340" dur="5s" repeatCount="indefinite"/></circle>
+            <circle cx="355" cy="100" r="1.5"><animate attributeName="cy" values="100;94;100" dur="5.5s" repeatCount="indefinite"/></circle>
+            <circle cx="360" cy="145" r="1.5"><animate attributeName="cx" values="360;367;360" dur="6s" repeatCount="indefinite"/></circle>
+            <circle cx="345" cy="185" r="1.5"><animate attributeName="cy" values="185;191;185" dur="5.2s" repeatCount="indefinite"/></circle>
+            <circle cx="235" cy="65" r="1.5"><animate attributeName="cx" values="235;228;235" dur="5.8s" repeatCount="indefinite"/></circle>
+            <circle cx="225" cy="175" r="1.5"><animate attributeName="cy" values="175;182;175" dur="5.3s" repeatCount="indefinite"/></circle>
+            <circle cx="310" cy="200" r="1.5"><animate attributeName="cy" values="200;207;200" dur="5.6s" repeatCount="indefinite"/></circle>
+            <circle cx="260" cy="195" r="1.5"><animate attributeName="cx" values="260;253;260" dur="5.4s" repeatCount="indefinite"/></circle>
           </g>
           <text x="290" y="215" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#4A6CF7" opacity=".7" letter-spacing="2">EXPANSIVE</text>
         </g>
@@ -310,14 +377,14 @@ body{background:#0a0a0f;color:#e8e4df;font-family:'Plus Jakarta Sans',-apple-sys
     <div class="slide-tag">06 &middot; The Hierarchy</div>
     <div class="slide-illust">
       <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
-        <rect x="165" y="45" width="90" height="32" rx="6" fill="none" stroke="#E84D3A" stroke-width="1" opacity=".6"/>
-        <text x="210" y="65" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#E84D3A" opacity=".75" letter-spacing="1">FOUNDATION</text>
-        <rect x="130" y="95" width="160" height="32" rx="6" fill="none" stroke="#8B5CF6" stroke-width="1" opacity=".45"/>
+        <rect x="165" y="45" width="90" height="32" rx="6" fill="none" stroke="#E84D3A" stroke-width="1" opacity=".6"><animate attributeName="opacity" values=".4;.8;.4" dur="3s" repeatCount="indefinite"/><animate attributeName="stroke-width" values="1;1.5;1" dur="3s" repeatCount="indefinite"/></rect>
+        <text x="210" y="65" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#E84D3A" opacity=".75" letter-spacing="1"><animate attributeName="letter-spacing" values="1;3;1" dur="4s" repeatCount="indefinite"/>FOUNDATION</text>
+        <rect x="130" y="95" width="160" height="32" rx="6" fill="none" stroke="#8B5CF6" stroke-width="1" opacity=".45"><animate attributeName="opacity" values=".3;.6;.3" dur="3s" begin="1s" repeatCount="indefinite"/></rect>
         <text x="210" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8B5CF6" opacity=".6" letter-spacing="1">PRIMARY</text>
-        <rect x="90" y="145" width="240" height="32" rx="6" fill="none" stroke="#4A6CF7" stroke-width="1" opacity=".4"/>
+        <rect x="90" y="145" width="240" height="32" rx="6" fill="none" stroke="#4A6CF7" stroke-width="1" opacity=".4"><animate attributeName="opacity" values=".25;.5;.25" dur="3s" begin="2s" repeatCount="indefinite"/></rect>
         <text x="210" y="165" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4A6CF7" opacity=".65" letter-spacing="1">SECONDARY</text>
-        <line x1="210" y1="77" x2="210" y2="95" stroke="#8B5CF6" stroke-width=".7" opacity=".4"/>
-        <line x1="210" y1="127" x2="210" y2="145" stroke="#4A6CF7" stroke-width=".7" opacity=".4"/>
+        <line x1="210" y1="77" x2="210" y2="95" stroke="#8B5CF6" stroke-width=".7" opacity=".4"><animate attributeName="opacity" values=".2;.6;.2" dur="2s" begin="1s" repeatCount="indefinite"/></line>
+        <line x1="210" y1="127" x2="210" y2="145" stroke="#4A6CF7" stroke-width=".7" opacity=".4"><animate attributeName="opacity" values=".2;.6;.2" dur="2s" begin="2s" repeatCount="indefinite"/></line>
       </svg>
     </div>
     <h2>Every domain has <em>its tier</em></h2>
@@ -349,24 +416,24 @@ body{background:#0a0a0f;color:#e8e4df;font-family:'Plus Jakarta Sans',-apple-sys
     <div class="slide-illust">
       <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
         <g opacity=".85">
-          <circle cx="105" cy="90" r="28" fill="none" stroke="#E84D3A" stroke-width=".7" opacity=".4"/>
-          <text x="105" y="80" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#E84D3A" opacity=".7">FilmXX</text>
-          <text x="105" y="100" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#E84D3A" opacity=".7">FilmsXX</text>
+          <circle cx="105" cy="90" r="28" fill="none" stroke="#E84D3A" stroke-width=".7" opacity=".4"><animate attributeName="r" values="28;31;28" dur="4s" repeatCount="indefinite"/></circle>
+          <text x="105" y="80" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#E84D3A" opacity=".7"><animate attributeName="opacity" values=".5;.9;.5" dur="3s" begin="0s" repeatCount="indefinite"/>FilmXX</text>
+          <text x="105" y="100" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#E84D3A" opacity=".7"><animate attributeName="opacity" values=".5;.9;.5" dur="3s" begin="1.5s" repeatCount="indefinite"/>FilmsXX</text>
         </g>
         <g opacity=".85">
-          <circle cx="210" cy="90" r="38" fill="none" stroke="#8B5CF6" stroke-width=".7" opacity=".4"/>
-          <text x="210" y="75" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8B5CF6" opacity=".7">SurfXX</text>
-          <text x="210" y="93" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8B5CF6" opacity=".8">SurferXX</text>
-          <text x="210" y="111" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8B5CF6" opacity=".7">SurfingXX</text>
+          <circle cx="210" cy="90" r="38" fill="none" stroke="#8B5CF6" stroke-width=".7" opacity=".4"><animate attributeName="r" values="38;42;38" dur="5s" repeatCount="indefinite"/></circle>
+          <text x="210" y="75" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8B5CF6" opacity=".7"><animate attributeName="opacity" values=".5;.9;.5" dur="3.5s" begin="0s" repeatCount="indefinite"/>SurfXX</text>
+          <text x="210" y="93" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8B5CF6" opacity=".8"><animate attributeName="opacity" values=".6;1;.6" dur="3.5s" begin="1s" repeatCount="indefinite"/>SurferXX</text>
+          <text x="210" y="111" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8B5CF6" opacity=".7"><animate attributeName="opacity" values=".5;.9;.5" dur="3.5s" begin="2s" repeatCount="indefinite"/>SurfingXX</text>
         </g>
         <g opacity=".85">
-          <circle cx="315" cy="90" r="38" fill="none" stroke="#4A6CF7" stroke-width=".7" opacity=".4"/>
-          <text x="315" y="75" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4A6CF7" opacity=".7">ClimbXX</text>
-          <text x="315" y="93" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4A6CF7" opacity=".8">HikeXX</text>
-          <text x="315" y="111" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4A6CF7" opacity=".7">TrekXX</text>
+          <circle cx="315" cy="90" r="38" fill="none" stroke="#4A6CF7" stroke-width=".7" opacity=".4"><animate attributeName="r" values="38;42;38" dur="4.5s" repeatCount="indefinite"/></circle>
+          <text x="315" y="75" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4A6CF7" opacity=".7"><animate attributeName="opacity" values=".5;.9;.5" dur="3.2s" begin=".5s" repeatCount="indefinite"/>ClimbXX</text>
+          <text x="315" y="93" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4A6CF7" opacity=".8"><animate attributeName="opacity" values=".6;1;.6" dur="3.2s" begin="1.5s" repeatCount="indefinite"/>HikeXX</text>
+          <text x="315" y="111" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4A6CF7" opacity=".7"><animate attributeName="opacity" values=".5;.9;.5" dur="3.2s" begin="2.5s" repeatCount="indefinite"/>TrekXX</text>
         </g>
-        <path d="M 133,90 Q 170,60 182,90" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
-        <path d="M 248,90 Q 280,60 287,90" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+        <path d="M 133,90 Q 170,60 182,90" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1" stroke-dasharray="60" stroke-dashoffset="60"><animate attributeName="stroke-dashoffset" values="60;0;-60" dur="4s" repeatCount="indefinite"/></path>
+        <path d="M 248,90 Q 280,60 287,90" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1" stroke-dasharray="60" stroke-dashoffset="60"><animate attributeName="stroke-dashoffset" values="60;0;-60" dur="4s" begin="2s" repeatCount="indefinite"/></path>
       </svg>
     </div>
     <h2>Strategic <em>depth</em> at every level</h2>
@@ -416,32 +483,38 @@ body{background:#0a0a0f;color:#e8e4df;font-family:'Plus Jakarta Sans',-apple-sys
       <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="g10" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#E84D3A"/><stop offset="50%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#4A6CF7"/></linearGradient>
-          <radialGradient id="glow10" cx="50%" cy="50%"><stop offset="0%" stop-color="#8B5CF6" stop-opacity=".18"/><stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/></radialGradient>
+          <radialGradient id="glow10" cx="50%" cy="50%"><stop offset="0%" stop-color="#8B5CF6" stop-opacity=".28"/><stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/></radialGradient>
         </defs>
         <circle cx="210" cy="110" r="85" fill="url(#glow10)"/>
         <g stroke="url(#g10)" stroke-width=".7" opacity=".15">
-          <line x1="210" y1="110" x2="130" y2="50"/><line x1="210" y1="110" x2="290" y2="45"/>
-          <line x1="210" y1="110" x2="95" y2="115"/><line x1="210" y1="110" x2="325" y2="120"/>
-          <line x1="210" y1="110" x2="140" y2="180"/><line x1="210" y1="110" x2="280" y2="175"/>
+          <line x1="210" y1="110" x2="130" y2="50" stroke-dasharray="100"><animate attributeName="stroke-dashoffset" values="0;-100" dur="6s" repeatCount="indefinite"/></line>
+          <line x1="210" y1="110" x2="290" y2="45" stroke-dasharray="100"><animate attributeName="stroke-dashoffset" values="0;-100" dur="6s" begin=".5s" repeatCount="indefinite"/></line>
+          <line x1="210" y1="110" x2="95" y2="115" stroke-dasharray="100"><animate attributeName="stroke-dashoffset" values="0;-100" dur="6s" begin="1s" repeatCount="indefinite"/></line>
+          <line x1="210" y1="110" x2="325" y2="120" stroke-dasharray="100"><animate attributeName="stroke-dashoffset" values="0;-100" dur="6s" begin="1.5s" repeatCount="indefinite"/></line>
+          <line x1="210" y1="110" x2="140" y2="180" stroke-dasharray="100"><animate attributeName="stroke-dashoffset" values="0;-100" dur="6s" begin="2s" repeatCount="indefinite"/></line>
+          <line x1="210" y1="110" x2="280" y2="175" stroke-dasharray="100"><animate attributeName="stroke-dashoffset" values="0;-100" dur="6s" begin="2.5s" repeatCount="indefinite"/></line>
           <line x1="130" y1="50" x2="290" y2="45"/><line x1="95" y1="115" x2="140" y2="180"/>
           <line x1="325" y1="120" x2="280" y2="175"/><line x1="130" y1="50" x2="95" y2="115"/>
           <line x1="290" y1="45" x2="325" y2="120"/><line x1="140" y1="180" x2="280" y2="175"/>
         </g>
         <g opacity=".55">
-          <circle cx="130" cy="50" r="4" fill="#E84D3A"/><circle cx="290" cy="45" r="4" fill="#4A6CF7"/>
-          <circle cx="95" cy="115" r="4" fill="#8B5CF6"/><circle cx="325" cy="120" r="4" fill="#EC4899"/>
-          <circle cx="140" cy="180" r="4" fill="#4A6CF7"/><circle cx="280" cy="175" r="4" fill="#E84D3A"/>
+          <circle cx="130" cy="50" r="4" fill="#E84D3A"><animate attributeName="r" values="4;6;4" dur="3s" begin="0s" repeatCount="indefinite"/></circle>
+          <circle cx="290" cy="45" r="4" fill="#4A6CF7"><animate attributeName="r" values="4;6;4" dur="3s" begin=".5s" repeatCount="indefinite"/></circle>
+          <circle cx="95" cy="115" r="4" fill="#8B5CF6"><animate attributeName="r" values="4;6;4" dur="3s" begin="1s" repeatCount="indefinite"/></circle>
+          <circle cx="325" cy="120" r="4" fill="#EC4899"><animate attributeName="r" values="4;6;4" dur="3s" begin="1.5s" repeatCount="indefinite"/></circle>
+          <circle cx="140" cy="180" r="4" fill="#4A6CF7"><animate attributeName="r" values="4;6;4" dur="3s" begin="2s" repeatCount="indefinite"/></circle>
+          <circle cx="280" cy="175" r="4" fill="#E84D3A"><animate attributeName="r" values="4;6;4" dur="3s" begin="2.5s" repeatCount="indefinite"/></circle>
         </g>
-        <circle cx="210" cy="110" r="6" fill="url(#g10)" opacity=".8"><animate attributeName="r" values="6;9;6" dur="3.5s" repeatCount="indefinite"/></circle>
-        <g font-family="'JetBrains Mono',monospace" text-anchor="middle" opacity=".55">
-          <text x="120" y="230" font-size="16" fill="#E84D3A">10,000+</text><text x="120" y="245" font-size="7" fill="rgba(255,255,255,.25)" letter-spacing="2">DOMAINS</text>
-          <text x="210" y="230" font-size="16" fill="#8B5CF6">90%+</text><text x="210" y="245" font-size="7" fill="rgba(255,255,255,.25)" letter-spacing="2">COVERAGE</text>
-          <text x="300" y="230" font-size="16" fill="#E84D3A">Validated</text><text x="300" y="245" font-size="7" fill="rgba(255,255,255,.25)" letter-spacing="2">INDEPENDENTLY</text>
+        <circle cx="210" cy="110" r="6" fill="url(#g10)" opacity=".8"><animate attributeName="r" values="6;10;6" dur="3.5s" repeatCount="indefinite"/><animate attributeName="opacity" values=".6;1;.6" dur="3.5s" repeatCount="indefinite"/></circle>
+        <g font-family="'JetBrains Mono',monospace" text-anchor="middle" opacity=".8">
+          <text x="120" y="228" font-size="20" font-weight="700" fill="#E84D3A"><animate attributeName="opacity" values=".5;1;.5" dur="3s" begin="0s" repeatCount="indefinite"/>10,000+</text><text x="120" y="246" font-size="8" fill="rgba(255,255,255,.4)" letter-spacing="2">DOMAINS</text>
+          <text x="210" y="228" font-size="20" font-weight="700" fill="#8B5CF6"><animate attributeName="opacity" values=".5;1;.5" dur="3s" begin="1s" repeatCount="indefinite"/>90%+</text><text x="210" y="246" font-size="8" fill="rgba(255,255,255,.4)" letter-spacing="2">COVERAGE</text>
+          <text x="300" y="228" font-size="20" font-weight="700" fill="#E84D3A"><animate attributeName="opacity" values=".5;1;.5" dur="3s" begin="2s" repeatCount="indefinite"/>Validated</text><text x="300" y="246" font-size="8" fill="rgba(255,255,255,.4)" letter-spacing="2">INDEPENDENTLY</text>
         </g>
       </svg>
     </div>
-    <h2><span class="grad">Linguistic infrastructure.</span> The ultimate foundation.</h2>
-    <p>More than a collection of digital assets &mdash; this is the <strong>linguistic infrastructure for the organizing layer of the internet.</strong> Independently validated. Unreplicable at any price. The foundation that the GENEXXO Vision is built on.</p>
+    <h2 style="font-size:clamp(1.8rem,5.5vw,3rem)"><span class="grad">Linguistic infrastructure.</span> The ultimate foundation.</h2>
+    <p style="font-size:clamp(.9rem,2.4vw,1.05rem);color:rgba(255,255,255,.55)">More than a collection of digital assets &mdash; this is the <strong style="color:rgba(255,255,255,.9)">linguistic infrastructure for the organizing layer of the internet.</strong> Independently validated. Unreplicable at any price. The foundation that the GENEXXO Vision is built on.</p>
     <a href="domain-gallery.html" class="cta-btn">Domain Gallery &rarr;</a>
   </div>
 </section>
