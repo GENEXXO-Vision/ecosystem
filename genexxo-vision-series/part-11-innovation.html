@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part XI — Innovation | The GENEXXO Vision Series</title>
+<meta name="description" content="Part XI of The GENEXXO Vision series. Innovation — where everything connects. The emergent property that proves the architecture works: cross-pollination at internet scale, a perpetual innovation engine, and the bedrock moat of an unreplicable domain collection.">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg-primary:#f9f8f6;--bg-secondary:#fcfbf9;--bg-card:#fcfbf9;--bg-card-hover:#f4f2ef;--bg-sidebar:#111118;--border:rgba(74,108,247,0.09);--border-mid:rgba(74,108,247,0.13);--border-hover:rgba(74,108,247,0.28);--border-dark:rgba(74,108,247,0.12);--text-primary:#1a1a2e;--text-secondary:#5a5b6e;--text-muted:#908e9a;--accent:#4A6CF7;--accent-light:#6B8AF8;--accent-glow:rgba(74,108,247,0.07);--purple:#8B5CF6;--purple-light:#A78BFA;--coral:#ff3e8e;--font-body:'Plus Jakarta Sans',-apple-system,sans-serif;--font-mono:'JetBrains Mono',monospace}*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg-primary);color:var(--text-primary);font-family:var(--font-body);line-height:1.75;overflow-x:hidden}.topbar{position:fixed;top:0;left:0;right:0;height:56px;background:rgba(252,251,249,0.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border-mid);z-index:200;display:flex;align-items:center;padding:0 32px;gap:16px}.topbar-menu{width:36px;height:36px;background:0 0;border:1px solid var(--border-mid);border-radius:8px;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .2s;flex-shrink:0}.topbar-menu:hover{border-color:var(--border-hover);color:var(--text-primary);background:var(--accent-glow)}.topbar-xx{width:28px;height:22px;flex-shrink:0}.topbar-xx svg{width:100%;height:100%;display:block}.topbar-label{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase}.sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:299;opacity:0;pointer-events:none;transition:opacity .3s}.sidebar-overlay.open{opacity:1;pointer-events:all}.sidebar{position:fixed;top:0;left:0;width:300px;height:100vh;background:var(--bg-sidebar);border-right:1px solid var(--border-dark);z-index:300;display:flex;flex-direction:column;overflow-y:auto;transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.sidebar-header{padding:24px 24px 20px;border-bottom:1px solid var(--border-dark);display:flex;align-items:center;justify-content:space-between}.sidebar-header-left{display:flex;align-items:center;gap:14px}.sidebar-xx-mark{width:36px;height:28px;flex-shrink:0}.sidebar-xx-mark svg{width:100%;height:100%;display:block}.sidebar-subtitle{font-size:12px;color:#9394a5;letter-spacing:2px;text-transform:uppercase;font-family:var(--font-mono);font-weight:500}.sidebar-close{width:32px;height:32px;background:0 0;border:1px solid var(--border-dark);border-radius:8px;color:#5e5f72;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}.sidebar-close:hover{color:#e8e8ed;border-color:rgba(74,108,247,.3)}.sidebar nav{padding:16px 0;flex:1}.nav-item{display:block;padding:10px 24px;color:#9394a5;text-decoration:none;font-size:14px;border-left:2px solid transparent;transition:all .2s}.nav-item:hover{color:#e8e8ed;background:rgba(74,108,247,.15);border-left-color:var(--accent)}.nav-item.active{color:var(--accent-light);font-weight:600;background:rgba(74,108,247,.15);border-left-color:var(--accent)}.nav-group-label{padding:20px 24px 6px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#5e5f72;font-weight:600}.nav-sub{padding-left:40px;font-size:13px}.main{min-height:100vh;padding-top:56px}.breadcrumb-bar{padding:14px 56px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:8px;background:var(--bg-secondary)}.breadcrumb-bar a{color:var(--accent);text-decoration:none;font-weight:500}.article-header{padding:56px 56px 40px;max-width:820px}.article-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(74,108,247,.07);border:1px solid var(--border-mid);border-radius:100px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:20px}.article-badge::before{content:'';width:5px;height:5px;background:var(--accent);border-radius:50%}.article-header h1{font-size:clamp(30px,4vw,42px);font-weight:700;line-height:1.2;letter-spacing:-.5px}.article-strapline{margin-top:8px;font-size:17px;color:var(--purple);font-weight:500;font-style:italic}.article-meta{margin-top:16px;font-size:13px;color:var(--text-muted);display:flex;gap:20px}.article-meta-dot{width:3px;height:3px;background:var(--text-muted);border-radius:50%;opacity:.5;align-self:center}.article-body{padding:0 56px 60px;max-width:820px}.article-body h2{font-size:22px;font-weight:700;margin:44px 0 14px;padding-top:20px;border-top:1px solid var(--border)}.article-body h2:first-child{margin-top:0;padding-top:0;border-top:none}.article-body p{font-size:15.5px;color:var(--text-secondary);line-height:1.85;margin-bottom:18px}.article-body p.intro{font-style:italic}.article-body strong{color:var(--text-primary);font-weight:600}.article-body blockquote{margin:28px 0;padding:24px 28px;background:linear-gradient(135deg,rgba(74,108,247,.04),rgba(139,92,246,.03));border-left:3px solid var(--purple);border-radius:0 12px 12px 0;font-size:15px;color:var(--text-primary);line-height:1.7;font-style:italic}.article-body hr{border:none;height:1px;background:var(--border);margin:40px 0}.series-table{width:100%;border-collapse:collapse;margin:24px 0}.series-table th{text-align:left;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);padding:10px 16px;border-bottom:2px solid var(--border-mid)}.series-table td{padding:12px 16px;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-secondary)}.series-table td:first-child{font-family:var(--font-mono);font-size:12px;color:var(--text-muted);width:56px;font-weight:600}.series-table a{color:var(--accent);text-decoration:none;font-weight:500}.series-table a:hover{color:var(--accent-light)}.series-table tr:hover td{background:var(--accent-glow)}.series-table .current td{color:var(--text-primary);font-weight:700}.series-table .current td:first-child{color:var(--accent)}.page-nav{margin:0 56px 48px;padding-top:32px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:16px;max-width:720px}.page-nav a{display:flex;flex-direction:column;gap:4px;padding:16px 20px;background:var(--bg-card);border:1px solid var(--border-mid);border-radius:12px;text-decoration:none;transition:all .2s;min-width:180px}.page-nav a:hover{border-color:var(--border-hover);background:var(--bg-card-hover)}.page-nav-label{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted)}.page-nav-title{font-size:14px;font-weight:600;color:var(--accent)}.page-nav-next{text-align:right;margin-left:auto}.footer{padding:28px 56px;border-top:1px solid var(--border)}.footer-company{font-size:12px;color:var(--text-muted);text-align:center}.footer-company strong{color:var(--text-secondary);font-weight:500}@media(max-width:768px){.topbar{padding:0 16px}.article-header,.article-body{padding-left:24px;padding-right:24px}.breadcrumb-bar{padding:12px 24px}.page-nav{margin:0 24px 40px;flex-direction:column}.footer{padding:24px}}
+</style>
+</head>
+<body>
+<header class="topbar"><button class="topbar-menu" onclick="toggleSidebar()">&#9776;</button><div class="topbar-xx"><svg viewBox="484 0 176 138" xmlns="http://www.w3.org/2000/svg"><path fill="#8B5CF6" fill-rule="evenodd" d="M 616,69.25 L 604.8,85.9 L 583.2,118.7 L 572.3,135.3 L 561.4,118.7 L 539.7,85.9 L 506.9,135.6 L 484.8,135.6 L 526.3,72.7 L 528.6,69.25 L 539.5,52.6 L 561.1,19.8 L 572,3.16 L 583,19.8 L 604.6,52.6 L 637.4,2.9 L 659.5,2.9 L 615.8,69.25 Z M 593.9,69.25 L 572.3,36.45 L 550.7,69.25 L 572.3,102.04 Z"/><path fill="#8B5CF6" d="M 610.5,94.6 L 637.6,135.6 L 659.7,135.6 L 621.7,77.9 Z"/><path fill="#8B5CF6" d="M 506.9,2.9 L 484.8,2.9 L 522.8,60.3 L 534.3,44.2 Z"/></svg></div><span class="topbar-label">GENEXXO</span></header>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<aside class="sidebar" id="sidebar"><div class="sidebar-header"><div class="sidebar-header-left"><div class="sidebar-xx-mark"><svg viewBox="484 0 176 138" xmlns="http://www.w3.org/2000/svg"><path fill="#8B5CF6" fill-rule="evenodd" d="M 616,69.25 L 604.8,85.9 L 583.2,118.7 L 572.3,135.3 L 561.4,118.7 L 539.7,85.9 L 506.9,135.6 L 484.8,135.6 L 526.3,72.7 L 528.6,69.25 L 539.5,52.6 L 561.1,19.8 L 572,3.16 L 583,19.8 L 604.6,52.6 L 637.4,2.9 L 659.5,2.9 L 615.8,69.25 Z M 593.9,69.25 L 572.3,36.45 L 550.7,69.25 L 572.3,102.04 Z"/><path fill="#8B5CF6" d="M 610.5,94.6 L 637.6,135.6 L 659.7,135.6 L 621.7,77.9 Z"/><path fill="#8B5CF6" d="M 506.9,2.9 L 484.8,2.9 L 522.8,60.3 L 534.3,44.2 Z"/></svg></div><div class="sidebar-subtitle">GENEXXO</div></div><button class="sidebar-close" onclick="toggleSidebar()">&#10005;</button></div>
+<nav>
+<a href="../index.html" class="nav-item">Home</a>
+<a href="../genexxo-deck.html" class="nav-item">Supernova Application</a>
+<a href="../collection.html" class="nav-item">The Collection</a>
+<a href="../domain-gallery.html" class="nav-item">Domain Gallery</a>
+<a href="../ultimate-asset.html" class="nav-item">One Organizing Layer</a>
+<a href="../the-edge.html" class="nav-item">The Winning Edge</a>
+<div class="nav-group-label">Vision Series</div>
+<a href="../genexxo-vision-series.html" class="nav-item nav-sub">Series Overview</a>
+<a href="part-1-the-collection.html" class="nav-item nav-sub">I &mdash; The Collection</a>
+<a href="part-2-the-supernova-application.html" class="nav-item nav-sub">II &mdash; The Supernova Application</a>
+<a href="part-3-the-facilitator-model.html" class="nav-item nav-sub">III &mdash; The Facilitator Model</a>
+<a href="part-4-the-multi-dimensional-network.html" class="nav-item nav-sub">IV &mdash; The Multi-Dimensional Network</a>
+<a href="part-5-content.html" class="nav-item nav-sub">V &mdash; Content</a>
+<a href="part-6-community.html" class="nav-item nav-sub">VI &mdash; Community</a>
+<a href="part-7-commerce-brand-zones.html" class="nav-item nav-sub">VII &mdash; Commerce &amp; Brand Zones</a>
+<a href="part-8-ai-the-ecosystem.html" class="nav-item nav-sub">VIII &mdash; AI: The Ecosystem</a>
+<a href="part-9-ai-agentic-intelligence.html" class="nav-item nav-sub">IX &mdash; AI: Agentic Intelligence</a>
+<a href="part-10-network-effects.html" class="nav-item nav-sub">X &mdash; Network Effects</a>
+<a href="part-11-innovation.html" class="nav-item nav-sub active">XI &mdash; Innovation</a>
+<a href="part-12-the-genexxo-vision.html" class="nav-item nav-sub">XII &mdash; The GENEXXO Vision</a>
+</nav></aside>
+
+<div class="main">
+<div class="breadcrumb-bar"><a href="../index.html">Home</a><span>&#8250;</span><a href="../genexxo-vision-series.html">The GENEXXO Vision Series</a><span>&#8250;</span><span>Part XI — Innovation</span></div>
+<header class="article-header">
+<div class="article-badge">Part XI of XII — The GENEXXO Vision Series</div>
+<h1>Innovation</h1>
+<p class="article-strapline">Where Everything Connects</p>
+<div class="article-meta"><span>The Organizing Layer for the Internet</span><span class="article-meta-dot"></span><span>~11 min read</span></div>
+</header>
+
+<article class="article-body">
+
+<p class="intro">This is the eleventh instalment in a series mapping the complete architecture of the GENEXXO Vision — a multi-dimensional organizing layer above the current AI stack, assembled in stealth over fourteen years by a UK team nobody has heard of yet. The GENEXXO Collection is an asset of over 10,000 single-word, XX-branded .com domains spanning 45 categories — the foundation for a multi-dimensional organizing layer for the internet. The Supernova Application delivers it. The Facilitator Model makes the economics work. The Multi-Dimensional Network connects it all. Content fuels it. Community gives it life. Commerce makes it economically self-sustaining. AI runs through the foundations — as ecosystem intelligence and as an autonomous agentic workforce. Network effects compound every dimension simultaneously, with thousands of gateways all leading to GENEXXO. Now we arrive at the emergent property that proves the entire architecture works. Not a feature. Not a strategy. Innovation itself — the natural output of an organising layer where everything finally connects.</p>
+
+<hr>
+
+<h2>The Fourth Function</h2>
+<p>Throughout history, the frameworks that have transformed civilisation share a common pattern. They advance four essential functions simultaneously: connection, communication, commerce, and innovation.</p>
+<p>The internet is the most recent example. Global connection. Instant communication. Digital commerce at scale. And an explosion of innovation that continues to reshape every industry on earth. But before the internet, the printing press did the same — liberating ideas from handwritten limitation, enabling international publishing networks, and accelerating innovation as knowledge could build systematically across generations. And before the printing press, Roman roads connected isolated settlements, enabling communication, trade, and the cross-pollination of engineering, agriculture, law, and culture across an empire.</p>
+<p>Each of these was a generational framework — a rare organising system that didn't just improve one function but advanced all four together. When all four advance simultaneously, civilisations don't just grow. They transform.</p>
+<p>The GENEXXO Vision is built to advance all four functions across the entire digital landscape — and innovation is the proof that the framework is working.</p>
+
+<hr>
+
+<h2>Why Innovation Emerges</h2>
+<p>Innovation is not something you programme. It is not a department within a corporation or a line item on a strategy document. Innovation is what emerges when the conditions are right — when the right people are connected, communicating within the right context, supported by the right commercial infrastructure, and powered by intelligence that can see patterns invisible to any individual perspective.</p>
+<p>The GENEXXO ecosystem creates these conditions across 45 categories simultaneously.</p>
+<p>Connection — thousands of specialised domains interconnected through a multi-dimensional network, linking people, brands, and AI agents across every category of human activity. Not algorithmic recommendations within a single feed, but structural pathways between specialised environments where genuine expertise concentrates.</p>
+<p>Communication — authentic, expert-led discussion within purpose-built domains where depth is rewarded and noise is filtered. Practitioners communicating with practitioners. Researchers with researchers. Enthusiasts with enthusiasts.</p>
+<p>Commerce — a trusted commercial layer where brands earn their position, buyers purchase with confidence, and the economics of the ecosystem reward quality and innovation over volume and price.</p>
+<p>When these three functions operate together within a network spanning the full breadth of human interest, the fourth function — innovation — doesn't need to be engineered. It emerges.</p>
+
+<hr>
+
+<h2>Cross-Pollination at Internet Scale</h2>
+<p>Most innovation does not happen within a single discipline. It happens at the intersection of disciplines — when an idea from one field collides with a problem in another.</p>
+<p>The GENEXXO ecosystem is the first digital infrastructure designed to enable cross-pollination at this scale.</p>
+<p>A materials science breakthrough on STEELXX surfaces on ARCHITECTXX because the AI recognises implications for structural engineering. A therapeutic approach developed within THERAPISTXX informs educational methodology on TEACHERXX because the cross-domain intelligence detects the connection. A nutritional research finding on NUTRITIONXX reaches ATHLETEXX, DIABETESXX, and WELLNESSXX simultaneously — informing sports performance, chronic disease management, and preventive health in parallel.</p>
+<p>These connections don't happen by accident. They happen because the architecture is designed for them. The multi-dimensional network provides the pathways. The AI provides the pattern recognition. The communities provide the expertise to evaluate whether a cross-domain insight is genuinely valuable. And the commerce layer provides the economic incentive to develop innovations that serve real needs within real communities.</p>
+<p>On the current internet, cross-pollination is almost entirely accidental — a researcher stumbling upon a relevant paper from another field, an entrepreneur happening to read an article outside their industry. Within the GENEXXO ecosystem, cross-pollination is structural. Continuous. Powered by intelligence that operates at machine speed across thousands of specialised environments.</p>
+<blockquote>"Innovation doesn't just happen within categories — it happens between them. And the organising layer is where those connections are made."</blockquote>
+
+<hr>
+
+<h2>The Perpetual Innovation Engine</h2>
+<p>When network effects compound, AI accelerates, communities drive domain-level evolution, cross-pollination connects breakthroughs across categories, commerce rewards quality and invention, and the App Store enables instant deployment — what emerges is something that transcends any individual innovation.</p>
+<p>It is a perpetual innovation engine. A system that produces innovation not as a periodic event but as a continuous, self-sustaining property of the infrastructure itself.</p>
+<p>Every domain operates as a living innovation lab for its sector. CLIMBXX evolves as climbing evolves. CRYPTOXX evolves as the crypto landscape shifts. Each one continuously generating new ideas, new products, new content, new tools — driven not by centralised planning but by the communities, brands, content creators, and AI intelligence that power each domain. And all of this domain-level innovation feeds into the broader constellation, where cross-domain intelligence surfaces the most promising developments to every corner of the ecosystem that could benefit from them.</p>
+<p>The AI intelligence described in Parts VIII and IX doesn't just serve users and orchestrate agents — it accelerates the entire cycle. An AI operating across thousands of specialised domains can detect patterns that connect fields which have never been connected before. It can surface insights from one domain that solve problems in another. It can identify emerging trends across multiple categories simultaneously and recognise their combined implications before any individual participant could see the full picture. And the agent swarms described in Part IX take this further — when specialist agents collaborate across domains, the act of cross-domain coordination itself produces new connections, new correlations, new understanding that didn't exist before.</p>
+<p>What makes this engine distinctive is the speed of the innovation cycle within the GENEXXO ecosystem. On the open internet, an insight in one field can take years to reach an adjacent field — if it ever does. Within the GENEXXO ecosystem, the full cycle exists within one infrastructure. The community identifies the need. The AI spots the cross-domain connection. The App Store deploys the solution. The Brand Zones commercialise it. From insight to deployment within a single ecosystem, at the speed of the network rather than the speed of chance.</p>
+<p>The ecosystem doesn't need an innovation strategy. It doesn't need a chief innovation officer. Innovation is built into the architecture — into the way content is produced, communities interact, commerce rewards quality, AI learns and connects, and network effects compound across every dimension of the system.</p>
+<blockquote>"Innovation not as a strategy. Innovation as a permanent property of the infrastructure. The natural output of an organising layer where everything finally connects."</blockquote>
+
+<hr>
+
+<h2>The Moat</h2>
+<p>Throughout this series, every element of the GENEXXO Vision has traced back to one foundational reality: the Collection.</p>
+<p>The Supernova Application exists because the Collection provides the gateways. The Facilitator Model works because the Collection provides the breadth. The Multi-Dimensional Network connects because the Collection spans every category. Content thrives because the Collection creates purpose-built environments. Communities form because the Collection gives them natural homes. Commerce flows because the Collection positions brands within contextually perfect audiences. AI compounds because the Collection generates the richest data environments on the internet. Network effects multiply because the Collection provides thousands of interconnected entry points. And innovation emerges because the Collection enables cross-pollination at a scale that nothing else on the internet can match.</p>
+<p>Remove the Collection, and none of this is possible.</p>
+<p>And the Collection cannot be replicated. Over 10,000 single-word .com domains with the XX signature, spanning 45 categories and over 400 sub-categories, assembled systematically over fourteen years. This collection exists once. The opportunity to assemble it has closed. The domains are taken. The taxonomy is complete. The namespace is locked.</p>
+<p>This is not a technology moat that can be leapfrogged by the next generation of engineering. It is not a network effect moat that can be overcome by a competitor with sufficient users. It is not a data moat that can be matched by training on a larger dataset. It is a linguistic, structural, permanent fact — the XX namespace across the .com registry belongs to GENEXXO, and it will never be available again.</p>
+<p>In an era where every technology company is searching for defensible competitive advantage — where billions are spent building moats that erode within years — this is a moat built on bedrock.</p>
+
+<hr>
+
+<h2>What Comes Next</h2>
+<p>Innovation is the proof that the architecture works. The Moat is the proof that it can't be replicated. Together they complete the structural case — an ecosystem that produces continuous innovation across every category it touches, built on a foundation that no competitor can reconstruct.</p>
+<p>In Part XII — the final instalment of this series — we bring the complete GENEXXO Vision together. Every element, every pillar, every emergent property — assembled into one unified picture. That is the concluding piece.</p>
+
+<hr>
+
+<h2>The Complete Series</h2>
+<table class="series-table">
+<thead><tr><th>Part</th><th>Title</th></tr></thead>
+<tbody>
+<tr><td>I</td><td><a href="part-1-the-collection.html">The Collection</a></td></tr>
+<tr><td>II</td><td><a href="part-2-the-supernova-application.html">The Supernova Application</a></td></tr>
+<tr><td>III</td><td><a href="part-3-the-facilitator-model.html">The Facilitator Model</a></td></tr>
+<tr><td>IV</td><td><a href="part-4-the-multi-dimensional-network.html">The Multi-Dimensional Network</a></td></tr>
+<tr><td>V</td><td><a href="part-5-content.html">Content</a></td></tr>
+<tr><td>VI</td><td><a href="part-6-community.html">Community</a></td></tr>
+<tr><td>VII</td><td><a href="part-7-commerce-brand-zones.html">Commerce &amp; Brand Zones</a></td></tr>
+<tr><td>VIII</td><td><a href="part-8-ai-the-ecosystem.html">AI: The Ecosystem</a></td></tr>
+<tr><td>IX</td><td><a href="part-9-ai-agentic-intelligence.html">AI: Agentic Intelligence</a></td></tr>
+<tr><td>X</td><td><a href="part-10-network-effects.html">Network Effects</a></td></tr>
+<tr class="current"><td>XI</td><td>Innovation</td></tr>
+<tr><td>XII</td><td><a href="part-12-the-genexxo-vision.html">The GENEXXO Vision</a></td></tr>
+</tbody>
+</table>
+<p style="font-size:13px;color:var(--text-muted);margin-top:8px;"><em>The GENEXXO Vision series is published by GENEXXO Vision Limited. For more information, visit <a href="https://genexxovision.com" style="color:var(--accent);">genexxovision.com</a></em></p>
+
+</article>
+
+<nav class="page-nav">
+<a href="part-10-network-effects.html"><span class="page-nav-label">&larr; Previous</span><span class="page-nav-title">Part X — Network Effects</span></a>
+<a href="part-12-the-genexxo-vision.html" class="page-nav-next"><span class="page-nav-label">Next &rarr;</span><span class="page-nav-title">Part XII — The GENEXXO Vision</span></a>
+</nav>
+
+<footer class="footer"><div class="footer-company">&copy; 2025 <strong>GENEXXO Vision Limited</strong> &middot; Company No. 022622V &middot; Isle of Man</div></footer>
+</div>
+<script>function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open')}</script>
+</body>
+</html>
