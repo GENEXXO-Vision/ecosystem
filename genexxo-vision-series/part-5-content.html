@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part V — Content | The GENEXXO Vision Series</title>
+<meta name="description" content="Part V of The GENEXXO Vision series. Content — the fuel that powers every gateway. How purpose-built domain environments produce richer, more contextual content than any horizontal platform, with a dual-feed architecture delivering both breadth and specialist depth.">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg-primary:#f9f8f6;--bg-secondary:#fcfbf9;--bg-card:#fcfbf9;--bg-card-hover:#f4f2ef;--bg-sidebar:#111118;--border:rgba(74,108,247,0.09);--border-mid:rgba(74,108,247,0.13);--border-hover:rgba(74,108,247,0.28);--border-dark:rgba(74,108,247,0.12);--text-primary:#1a1a2e;--text-secondary:#5a5b6e;--text-muted:#908e9a;--accent:#4A6CF7;--accent-light:#6B8AF8;--accent-glow:rgba(74,108,247,0.07);--purple:#8B5CF6;--purple-light:#A78BFA;--coral:#ff3e8e;--font-body:'Plus Jakarta Sans',-apple-system,sans-serif;--font-mono:'JetBrains Mono',monospace}*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg-primary);color:var(--text-primary);font-family:var(--font-body);line-height:1.75;overflow-x:hidden}.topbar{position:fixed;top:0;left:0;right:0;height:56px;background:rgba(252,251,249,0.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border-mid);z-index:200;display:flex;align-items:center;padding:0 32px;gap:16px}.topbar-menu{width:36px;height:36px;background:0 0;border:1px solid var(--border-mid);border-radius:8px;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .2s;flex-shrink:0}.topbar-menu:hover{border-color:var(--border-hover);color:var(--text-primary);background:var(--accent-glow)}.topbar-xx{width:28px;height:22px;flex-shrink:0}.topbar-xx svg{width:100%;height:100%;display:block}.topbar-label{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase}.sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:299;opacity:0;pointer-events:none;transition:opacity .3s}.sidebar-overlay.open{opacity:1;pointer-events:all}.sidebar{position:fixed;top:0;left:0;width:300px;height:100vh;background:var(--bg-sidebar);border-right:1px solid var(--border-dark);z-index:300;display:flex;flex-direction:column;overflow-y:auto;transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.sidebar-header{padding:24px 24px 20px;border-bottom:1px solid var(--border-dark);display:flex;align-items:center;justify-content:space-between}.sidebar-header-left{display:flex;align-items:center;gap:14px}.sidebar-xx-mark{width:36px;height:28px;flex-shrink:0}.sidebar-xx-mark svg{width:100%;height:100%;display:block}.sidebar-subtitle{font-size:12px;color:#9394a5;letter-spacing:2px;text-transform:uppercase;font-family:var(--font-mono);font-weight:500}.sidebar-close{width:32px;height:32px;background:0 0;border:1px solid var(--border-dark);border-radius:8px;color:#5e5f72;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}.sidebar-close:hover{color:#e8e8ed;border-color:rgba(74,108,247,.3)}.sidebar nav{padding:16px 0;flex:1}.nav-item{display:block;padding:10px 24px;color:#9394a5;text-decoration:none;font-size:14px;border-left:2px solid transparent;transition:all .2s}.nav-item:hover{color:#e8e8ed;background:rgba(74,108,247,.15);border-left-color:var(--accent)}.nav-item.active{color:var(--accent-light);font-weight:600;background:rgba(74,108,247,.15);border-left-color:var(--accent)}.nav-group-label{padding:20px 24px 6px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#5e5f72;font-weight:600}.nav-sub{padding-left:40px;font-size:13px}.main{min-height:100vh;padding-top:56px}.breadcrumb-bar{padding:14px 56px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:8px;background:var(--bg-secondary)}.breadcrumb-bar a{color:var(--accent);text-decoration:none;font-weight:500}.article-header{padding:56px 56px 40px;max-width:820px}.article-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(74,108,247,.07);border:1px solid var(--border-mid);border-radius:100px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:20px}.article-badge::before{content:'';width:5px;height:5px;background:var(--accent);border-radius:50%}.article-header h1{font-size:clamp(30px,4vw,42px);font-weight:700;line-height:1.2;letter-spacing:-.5px}.article-strapline{margin-top:8px;font-size:17px;color:var(--purple);font-weight:500;font-style:italic}.article-meta{margin-top:16px;font-size:13px;color:var(--text-muted);display:flex;gap:20px}.article-meta-dot{width:3px;height:3px;background:var(--text-muted);border-radius:50%;opacity:.5;align-self:center}.article-body{padding:0 56px 60px;max-width:820px}.article-body h2{font-size:22px;font-weight:700;margin:44px 0 14px;padding-top:20px;border-top:1px solid var(--border)}.article-body h2:first-child{margin-top:0;padding-top:0;border-top:none}.article-body h3{font-size:17px;font-weight:600;margin:28px 0 10px}.article-body p{font-size:15.5px;color:var(--text-secondary);line-height:1.85;margin-bottom:18px}.article-body p.intro{font-style:italic}.article-body strong{color:var(--text-primary);font-weight:600}.article-body blockquote{margin:28px 0;padding:24px 28px;background:linear-gradient(135deg,rgba(74,108,247,.04),rgba(139,92,246,.03));border-left:3px solid var(--purple);border-radius:0 12px 12px 0;font-size:15px;color:var(--text-primary);line-height:1.7;font-style:italic}.article-body hr{border:none;height:1px;background:var(--border);margin:40px 0}.series-table{width:100%;border-collapse:collapse;margin:24px 0}.series-table th{text-align:left;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);padding:10px 16px;border-bottom:2px solid var(--border-mid)}.series-table td{padding:12px 16px;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-secondary)}.series-table td:first-child{font-family:var(--font-mono);font-size:12px;color:var(--text-muted);width:56px;font-weight:600}.series-table a{color:var(--accent);text-decoration:none;font-weight:500}.series-table a:hover{color:var(--accent-light)}.series-table tr:hover td{background:var(--accent-glow)}.series-table .current td{color:var(--text-primary);font-weight:700}.series-table .current td:first-child{color:var(--accent)}.page-nav{margin:0 56px 48px;padding-top:32px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:16px;max-width:720px}.page-nav a{display:flex;flex-direction:column;gap:4px;padding:16px 20px;background:var(--bg-card);border:1px solid var(--border-mid);border-radius:12px;text-decoration:none;transition:all .2s;min-width:180px}.page-nav a:hover{border-color:var(--border-hover);background:var(--bg-card-hover)}.page-nav-label{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted)}.page-nav-title{font-size:14px;font-weight:600;color:var(--accent)}.page-nav-next{text-align:right;margin-left:auto}.footer{padding:28px 56px;border-top:1px solid var(--border)}.footer-company{font-size:12px;color:var(--text-muted);text-align:center}.footer-company strong{color:var(--text-secondary);font-weight:500}@media(max-width:768px){.topbar{padding:0 16px}.article-header,.article-body{padding-left:24px;padding-right:24px}.breadcrumb-bar{padding:12px 24px}.page-nav{margin:0 24px 40px;flex-direction:column}.footer{padding:24px}}
+</style>
+</head>
+<body>
+<header class="topbar"><button class="topbar-menu" onclick="toggleSidebar()">&#9776;</button><div class="topbar-xx"><svg viewBox="484 0 176 138" xmlns="http://www.w3.org/2000/svg"><path fill="#8B5CF6" fill-rule="evenodd" d="M 616,69.25 L 604.8,85.9 L 583.2,118.7 L 572.3,135.3 L 561.4,118.7 L 539.7,85.9 L 506.9,135.6 L 484.8,135.6 L 526.3,72.7 L 528.6,69.25 L 539.5,52.6 L 561.1,19.8 L 572,3.16 L 583,19.8 L 604.6,52.6 L 637.4,2.9 L 659.5,2.9 L 615.8,69.25 Z M 593.9,69.25 L 572.3,36.45 L 550.7,69.25 L 572.3,102.04 Z"/><path fill="#8B5CF6" d="M 610.5,94.6 L 637.6,135.6 L 659.7,135.6 L 621.7,77.9 Z"/><path fill="#8B5CF6" d="M 506.9,2.9 L 484.8,2.9 L 522.8,60.3 L 534.3,44.2 Z"/></svg></div><span class="topbar-label">GENEXXO</span></header>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<aside class="sidebar" id="sidebar"><div class="sidebar-header"><div class="sidebar-header-left"><div class="sidebar-xx-mark"><svg viewBox="484 0 176 138" xmlns="http://www.w3.org/2000/svg"><path fill="#8B5CF6" fill-rule="evenodd" d="M 616,69.25 L 604.8,85.9 L 583.2,118.7 L 572.3,135.3 L 561.4,118.7 L 539.7,85.9 L 506.9,135.6 L 484.8,135.6 L 526.3,72.7 L 528.6,69.25 L 539.5,52.6 L 561.1,19.8 L 572,3.16 L 583,19.8 L 604.6,52.6 L 637.4,2.9 L 659.5,2.9 L 615.8,69.25 Z M 593.9,69.25 L 572.3,36.45 L 550.7,69.25 L 572.3,102.04 Z"/><path fill="#8B5CF6" d="M 610.5,94.6 L 637.6,135.6 L 659.7,135.6 L 621.7,77.9 Z"/><path fill="#8B5CF6" d="M 506.9,2.9 L 484.8,2.9 L 522.8,60.3 L 534.3,44.2 Z"/></svg></div><div class="sidebar-subtitle">GENEXXO</div></div><button class="sidebar-close" onclick="toggleSidebar()">&#10005;</button></div>
+<nav>
+<a href="../index.html" class="nav-item">Home</a>
+<a href="../genexxo-deck.html" class="nav-item">Supernova Application</a>
+<a href="../collection.html" class="nav-item">The Collection</a>
+<a href="../domain-gallery.html" class="nav-item">Domain Gallery</a>
+<a href="../ultimate-asset.html" class="nav-item">One Organizing Layer</a>
+<a href="../the-edge.html" class="nav-item">The Winning Edge</a>
+<div class="nav-group-label">Vision Series</div>
+<a href="../genexxo-vision-series.html" class="nav-item nav-sub">Series Overview</a>
+<a href="part-1-the-collection.html" class="nav-item nav-sub">I &mdash; The Collection</a>
+<a href="part-2-the-supernova-application.html" class="nav-item nav-sub">II &mdash; The Supernova Application</a>
+<a href="part-3-the-facilitator-model.html" class="nav-item nav-sub">III &mdash; The Facilitator Model</a>
+<a href="part-4-the-multi-dimensional-network.html" class="nav-item nav-sub">IV &mdash; The Multi-Dimensional Network</a>
+<a href="part-5-content.html" class="nav-item nav-sub active">V &mdash; Content</a>
+<a href="part-6-community.html" class="nav-item nav-sub">VI &mdash; Community</a>
+<a href="part-7-commerce-brand-zones.html" class="nav-item nav-sub">VII &mdash; Commerce &amp; Brand Zones</a>
+<a href="part-8-ai-the-ecosystem.html" class="nav-item nav-sub">VIII &mdash; AI: The Ecosystem</a>
+<a href="part-9-ai-agentic-intelligence.html" class="nav-item nav-sub">IX &mdash; AI: Agentic Intelligence</a>
+<a href="part-10-network-effects.html" class="nav-item nav-sub">X &mdash; Network Effects</a>
+<a href="part-11-innovation.html" class="nav-item nav-sub">XI &mdash; Innovation</a>
+<a href="part-12-the-genexxo-vision.html" class="nav-item nav-sub">XII &mdash; The GENEXXO Vision</a>
+</nav></aside>
+
+<div class="main">
+<div class="breadcrumb-bar"><a href="../index.html">Home</a><span>&#8250;</span><a href="../genexxo-vision-series.html">The GENEXXO Vision Series</a><span>&#8250;</span><span>Part V — Content</span></div>
+<header class="article-header">
+<div class="article-badge">Part V of XII — The GENEXXO Vision Series</div>
+<h1>Content</h1>
+<p class="article-strapline">The Fuel That Powers Every Gateway</p>
+<div class="article-meta"><span>The Organizing Layer for the Internet</span><span class="article-meta-dot"></span><span>~11 min read</span></div>
+</header>
+
+<article class="article-body">
+
+<p class="intro">The Collection is the asset. The Supernova delivers it. The Facilitator Model makes the economics work. The Multi-Dimensional Network connects it all. But architecture without substance is an empty framework. Now we turn to the first of four pillars that give the network its life — and we begin with content.</p>
+
+<hr>
+
+<h2>The Content Problem Nobody Has Solved</h2>
+<p>The internet is drowning in content. Every platform, every feed, every algorithm is designed to surface more of it — faster, louder, more insistently. And yet, despite the volume, finding content that is genuinely relevant, genuinely expert, and genuinely valuable remains one of the most frustrating experiences in digital life.</p>
+<p>You've felt it yourself. Your posts don't reach the people they used to. Organic visibility declines year on year. Creators work harder for less engagement. The compression model — everything forced into a single feed, competing for algorithmic attention — is straining under its own weight. Too much content. Too little context. Too many voices fighting for space on one plane.</p>
+<p>The reason is architectural.</p>
+<p>Horizontal platforms treat all content equally. On a social feed, a world-class cancer researcher shares space with a celebrity endorsement, a political argument, and a video of someone's cat. The algorithm doesn't understand the difference. It measures engagement — clicks, likes, shares, time spent — and optimises for attention, not for value. The result is an information environment where depth is systematically punished and surface-level content is systematically rewarded.</p>
+<p>Vertical platforms solve the quality problem but create an isolation problem. A specialist cancer forum may contain extraordinary content — genuine clinical insight, patient experience, research discussion — but it reaches almost nobody outside its walls. It exists in a silo, disconnected from the nutrition content it relates to, the fitness content it could inform, and the pharmaceutical commerce it could enable.</p>
+<p>The answer is not a better algorithm. It is expansion. Content that finds its natural audience within purpose-built environments — specialised domains where the right people are already gathered — connected through a network that gives every piece of content reach without sacrificing depth.</p>
+<p>That is how the GENEXXO Vision solves the content problem.</p>
+
+<hr>
+
+<h2>Content Created Within Context</h2>
+<p>The defining characteristic of content within the GENEXXO ecosystem is that it is created, curated, and consumed within purpose-built environments designed for its subject.</p>
+<p>Content on CANCERXX is not scraped from the open web. It is not aggregated from scattered sources by a crawler. It is produced by practitioners, patients, researchers, and subject-matter experts operating within a domain that exists solely to serve their field. The environment attracts the people who know the subject best, and those people produce content that reflects genuine expertise.</p>
+<p>On a horizontal platform, a cancer post competes with everything else for algorithmic attention. The incentive is to be provocative, not accurate. To be shareable, not useful. Within CANCERXX, the content exists in context. The audience is already there because they care about cancer. The creators are already there because this is their domain of expertise. The community provides feedback that surfaces the most genuinely valuable content rather than the most attention-grabbing. The entire environment is structured to reward depth, accuracy, and usefulness.</p>
+<blockquote>"Content created within context is inherently more valuable than content harvested from chaos."</blockquote>
+<p>This is the content moat. Every domain in the ecosystem — thousands of them — produces native content within an environment designed for that subject. The aggregate across 45 categories and 400+ sub-categories represents a content library of a depth and contextual richness that no AI model surfing the open web can match. Not because the technology isn't capable, but because the environments that produce the content don't exist anywhere else.</p>
+
+<hr>
+
+<h2>Two Feeds, One Architecture</h2>
+<p>The GENEXXO ecosystem operates with a dual-feed architecture that reflects how people actually engage with content — sometimes broadly, sometimes deeply.</p>
+<p>The Hub feed is the user's panoramic view. When a user opens the Supernova Hub, their personalised feed draws from every domain they've engaged with across the constellation. Sneaker culture from SNEAKERXX, health insights from CANCERXX, travel inspiration from TRAVELXX, cooking content from COOKXX — all flowing into a single scrolling experience curated by AI that understands the user's full constellation of interests. By design, the richest content experience on the internet — because the sources feeding it are purpose-built depth environments, not a flat web of competing voices all shouting into the same void.</p>
+<p>The domain feed narrows the lens. Navigate to SNEAKERXX and the same architecture focuses entirely on sneaker content — new releases, community discussions, expert reviews, brand stories, culture pieces — all within the context of a domain that exists to serve sneaker enthusiasts.</p>
+<p>The user doesn't experience a jarring transition between the two. They experience the same intelligent, personalised content delivery — simply zoomed in or zoomed out depending on where they are in the constellation. The Hub is the wide-angle lens. Each domain is the macro lens. Same camera. Same quality. Different depth of field.</p>
+
+<hr>
+
+<h2>Where Content Creates Value</h2>
+<p>On today's internet, content is largely extractive. Platforms extract value from creators. Creators extract value from audiences. Everyone is taking. The GENEXXO ecosystem inverts this. Content within the network is generative — every piece creates value that compounds.</p>
+<p>A practitioner publishing a clinical insight on CANCERXX creates content value — an article that serves patients and informs the community. That content attracts more practitioners and patients to the domain, creating community value. The growing community attracts healthcare brands to establish Brand Zones, creating commerce value. The commerce activity generates interaction patterns that AI learns from, creating intelligence value. The intelligence improves everything — content recommendations, community connections, commercial relevance — which attracts more practitioners, which produces more content.</p>
+<p>The cycle is self-reinforcing. And it operates simultaneously across every active domain in the constellation.</p>
+<blockquote>"The ecosystem doesn't find value. It generates value — within environments designed to produce the richest, most contextual content possible."</blockquote>
+
+<hr>
+
+<h2>Content Types Within Each Domain</h2>
+<p>The content architecture within each domain is not limited to articles and posts. Every gateway supports a full spectrum of content that serves its subject from multiple angles.</p>
+<p><strong>Expert content</strong> — long-form analysis, research summaries, clinical insights, professional commentary. The anchor content that establishes each domain's authority. A specialist discussing emerging treatment protocols on CANCERXX. An engineer analysing new alloy developments on STEELXX. A designer exploring next season's direction on FASHIONXX.</p>
+<p><strong>Community content</strong> — user-generated discussion, experience sharing, questions and answers, reviews. The living content that keeps each domain active and current. The community on SNEAKERXX discussing a new release. Patients on ARTHRITISXX sharing what works for them. Climbers on CLIMBXX posting route conditions.</p>
+<p><strong>Brand content</strong> — and this is where the content economy shifts fundamentally. Within the GENEXXO ecosystem, brands don't simply advertise. They produce. A heritage climbing brand creating a documentary for CLIMBXX isn't running a marketing campaign — it's programming a channel. A premium cookware company producing a masterclass series for COOKXX isn't buying placement — it's building authority within a community that cares deeply about the craft. The environment incentivises brands to become media companies within their categories — because that is how they build trust and connect with audiences authentically.</p>
+<p><strong>AI-curated content</strong> — the Supernova Host and domain-level intelligence surfacing connections across the ecosystem. A breakthrough in sports science appearing on ATHLETEXX even though it originated on SCIENCEXX. A materials innovation from STEELXX surfacing on ARCHITECTXX because the AI recognises the cross-domain relevance. Content discovery that no single-domain platform could achieve — intelligence flowing across the constellation, connecting insights that would otherwise remain siloed.</p>
+<p>Together, these content types create an environment where every domain is simultaneously a publishing platform, a community forum, a curated marketplace, and an intelligence hub — all focused on one subject, all feeding into the broader network.</p>
+
+<hr>
+
+<h2>Brands as Content Creators</h2>
+<p>On today's internet, brands produce content for social media feeds where it competes with everything else for algorithmic attention. A climbing brand's beautifully shot expedition film sits in the same feed as political commentary, memes, and unrelated advertisements. The content may be exceptional, but the context is hostile. Brands spend millions producing content that disappears into the algorithmic void within hours.</p>
+<p>Within the GENEXXO ecosystem, the incentive structure inverts entirely. A brand producing content for CLIMBXX knows exactly who will see it — people who are passionate about climbing. The context is perfect. The audience is pre-qualified. And the content doesn't disappear — it lives within a domain where it continues to build brand authority over time.</p>
+<p>Established brands become the programming engines of their categories — documentaries, event coverage, athlete partnerships, long-form storytelling — all within a permanent, contextual home. Up-and-coming brands that cannot compete on traditional advertising budgets suddenly have a stage — produce exceptional content that the community values, and you build your brand through quality rather than spend. Independent creators and personal brands become domain-native experts — the specialist running coach on RUNNINGXX, the nutritionist on NUTRITIONXX, the retired engineer sharing decades of insight on STEELXX. No algorithm to fight. Just expertise rewarded within an environment that values it.</p>
+<blockquote>"Every participant in the ecosystem — from global brands to independent creators — is incentivised to produce the best possible content, because the architecture rewards quality within context."</blockquote>
+<p>The result is a content economy that didn't exist before. Brands become media companies. Creators become domain authorities. And the content they collectively produce feeds both the domain experience and the Supernova Hub — the richest, most contextually relevant content library on the internet, produced not by scraping but by genuine investment from people and brands who care about their subjects.</p>
+
+<hr>
+
+<h2>What Comes Next</h2>
+<p>Content gives the network its substance. But content without people is just information sitting on a server. What transforms content into something alive — something that evolves, debates, recommends, and creates — is community. The people who gather within each specialised domain, the relationships they form, and the culture they build are what make the GENEXXO ecosystem genuinely irreplaceable.</p>
+<p>In Part VI, we turn to Community — the human dimension that no algorithm can replicate. That is the subject of the next instalment.</p>
+
+<hr>
+
+<h2>The Complete Series</h2>
+<table class="series-table">
+<thead><tr><th>Part</th><th>Title</th></tr></thead>
+<tbody>
+<tr><td>I</td><td><a href="part-1-the-collection.html">The Collection</a></td></tr>
+<tr><td>II</td><td><a href="part-2-the-supernova-application.html">The Supernova Application</a></td></tr>
+<tr><td>III</td><td><a href="part-3-the-facilitator-model.html">The Facilitator Model</a></td></tr>
+<tr><td>IV</td><td><a href="part-4-the-multi-dimensional-network.html">The Multi-Dimensional Network</a></td></tr>
+<tr class="current"><td>V</td><td>Content</td></tr>
+<tr><td>VI</td><td><a href="part-6-community.html">Community</a></td></tr>
+<tr><td>VII</td><td><a href="part-7-commerce-brand-zones.html">Commerce &amp; Brand Zones</a></td></tr>
+<tr><td>VIII</td><td><a href="part-8-ai-the-ecosystem.html">AI — The Ecosystem</a></td></tr>
+<tr><td>IX</td><td><a href="part-9-ai-agentic-intelligence.html">AI — Agentic Intelligence</a></td></tr>
+<tr><td>X</td><td><a href="part-10-network-effects.html">Network Effects</a></td></tr>
+<tr><td>XI</td><td><a href="part-11-innovation.html">Innovation</a></td></tr>
+<tr><td>XII</td><td><a href="part-12-the-genexxo-vision.html">The GENEXXO Vision</a></td></tr>
+</tbody>
+</table>
+<p style="font-size:13px;color:var(--text-muted);margin-top:8px;"><em>The GENEXXO Vision series is published by GENEXXO Vision Limited. For more information, visit <a href="https://genexxovision.com" style="color:var(--accent);">genexxovision.com</a></em></p>
+
+</article>
+
+<nav class="page-nav">
+<a href="part-4-the-multi-dimensional-network.html"><span class="page-nav-label">&larr; Previous</span><span class="page-nav-title">Part IV — The Multi-Dimensional Network</span></a>
+<a href="part-6-community.html" class="page-nav-next"><span class="page-nav-label">Next &rarr;</span><span class="page-nav-title">Part VI — Community</span></a>
+</nav>
+
+<footer class="footer"><div class="footer-company">&copy; 2025 <strong>GENEXXO Vision Limited</strong> &middot; Company No. 022622V &middot; Isle of Man</div></footer>
+</div>
+<script>function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open')}</script>
+</body>
+</html>
