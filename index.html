@@ -256,6 +256,17 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
 /* ── Footer ── */
 .site-footer{padding:40px 20px;text-align:center;border-top:1px solid rgba(255,255,255,.04)}
 .site-footer p{font-size:.65rem;color:rgba(255,255,255,.2);letter-spacing:.1em;text-transform:uppercase}
+
+/* ── Mobile Notice Modal ── */
+.mobile-notice-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:24px}
+.mobile-notice-overlay.show{opacity:1;pointer-events:all}
+.mobile-notice{background:#16161e;border:1px solid rgba(139,92,246,.2);border-radius:16px;padding:36px 28px;text-align:center;max-width:340px;width:100%;position:relative;transform:scale(.95);transition:transform .3s}
+.mobile-notice-overlay.show .mobile-notice{transform:scale(1)}
+.mobile-notice-icon{font-size:2rem;margin-bottom:14px;display:block}
+.mobile-notice-title{font-size:1rem;font-weight:700;color:rgba(255,255,255,.9);margin-bottom:8px}
+.mobile-notice-desc{font-size:.82rem;color:rgba(255,255,255,.45);line-height:1.6;margin-bottom:20px}
+.mobile-notice-btn{display:inline-block;padding:10px 28px;border-radius:8px;border:1px solid rgba(139,92,246,.3);background:rgba(139,92,246,.1);color:#8B5CF6;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.mobile-notice-btn:hover{background:rgba(139,92,246,.2);border-color:rgba(139,92,246,.5)}
 </style>
 </head>
 <body>
@@ -283,7 +294,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
   </div>
   <nav>
     <a href="index.html" class="nav-item active">Home</a>
-    <a href="genexxo-deck.html" class="nav-item">Supernova Application</a>
+    <a href="genexxo-deck.html" class="nav-item" onclick="return checkDesktop(event)">Supernova Application</a>
     <a href="collection.html" class="nav-item">The Collection</a>
     <a href="domain-gallery.html" class="nav-item">Domain Gallery</a>
     <a href="ultimate-asset.html" class="nav-item">One Organizing Layer</a>
@@ -589,7 +600,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
 
 <!-- ── LIVE DEMO CARD ── -->
 <div class="demo-card-wrap reveal" style="padding-top:60px;padding-bottom:30px">
-  <a class="demo-card" href="genexxo-deck.html" target="_blank">
+  <a class="demo-card" href="genexxo-deck.html" target="_blank" onclick="return checkDesktop(event)">
     <div class="demo-card-inner">
       <div class="demo-card-badge">Live Demo</div>
       <div class="demo-card-title">The Supernova Application</div>
@@ -679,6 +690,16 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
   </div>
 </div>
 
+<!-- ── Mobile Notice Modal ── -->
+<div class="mobile-notice-overlay" id="mobileNotice" onclick="closeMobileNotice(event)">
+  <div class="mobile-notice">
+    <span class="mobile-notice-icon">&#9889;</span>
+    <div class="mobile-notice-title">Desktop Prototype Only</div>
+    <div class="mobile-notice-desc">The Supernova Application demo is built for desktop browsers. Please visit on a laptop or desktop for the full experience.</div>
+    <button class="mobile-notice-btn" onclick="closeMobileNotice(event)">Got It</button>
+  </div>
+</div>
+
 <footer class="site-footer">
   <p>GENEXXO &mdash; The Organizing Layer for the Internet</p>
 </footer>
@@ -698,6 +719,22 @@ function fitCanvas(canvas, container) {
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('open');
   document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+
+/* ══════════════════════════════════════════════
+   MOBILE CHECK FOR SUPERNOVA DEMO
+   ══════════════════════════════════════════════ */
+function checkDesktop(e) {
+  if (window.innerWidth < 768) {
+    e.preventDefault();
+    document.getElementById('mobileNotice').classList.add('show');
+    return false;
+  }
+  return true;
+}
+function closeMobileNotice(e) {
+  if (e.target.closest('.mobile-notice') && !e.target.closest('.mobile-notice-btn')) return;
+  document.getElementById('mobileNotice').classList.remove('show');
 }
 
 /* ══════════════════════════════════════════════
