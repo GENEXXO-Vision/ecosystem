@@ -31,7 +31,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
 .nav-item{display:block;padding:10px 24px;color:#9394a5;text-decoration:none;font-size:14px;border-left:2px solid transparent;transition:all .2s}
 .nav-item:hover{color:#e8e8ed;background:rgba(232,77,58,.1);border-left-color:#E84D3A}
 .nav-item.active{color:#E84D3A;font-weight:600;background:rgba(232,77,58,.1);border-left-color:#E84D3A}
-.nav-group-label{padding:20px 24px 6px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#5e5f72;font-weight:600}
+.nav-group-label{padding:20px 24px 6px;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#E84D3A;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none;transition:opacity .2s}.nav-group-label:hover{opacity:.8}.nav-group-chevron{font-size:10px;transition:transform .3s ease;transform:rotate(0deg)}.nav-group-label.expanded .nav-group-chevron{transform:rotate(90deg)}.nav-group-items{max-height:0;overflow:hidden;transition:max-height .35s ease}
 .nav-sub{padding-left:40px;font-size:13px}
 @media(min-width:768px){
   .site-topbar{padding:0 32px}
@@ -294,25 +294,28 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
   </div>
   <nav>
     <a href="index.html" class="nav-item active">Home</a>
-    <a href="genexxo-deck.html" class="nav-item" onclick="return checkDesktop(event)">Supernova Application</a>
+    <a href="genexxo-deck.html" target="_blank" class="nav-item" onclick="return checkDesktop(event)">Supernova Application</a>
     <a href="collection.html" class="nav-item">The Collection</a>
     <a href="domain-gallery.html" class="nav-item">Domain Gallery</a>
     <a href="ultimate-asset.html" class="nav-item">One Organizing Layer</a>
     <a href="the-edge.html" class="nav-item">The Winning Edge</a>
-    <div class="nav-group-label">Vision Series</div>
+    <div class="nav-group-label" onclick="toggleSeriesNav()">Vision Series <span class="nav-group-chevron">&#9654;</span></div>
     <a href="genexxo-vision-series.html" class="nav-item nav-sub">Series Overview</a>
-    <a href="genexxo-vision-series/part-1-the-collection.html" class="nav-item nav-sub">I &mdash; The Collection</a>
-    <a href="genexxo-vision-series/part-2-the-supernova-application.html" class="nav-item nav-sub">II &mdash; The Supernova Application</a>
-    <a href="genexxo-vision-series/part-3-the-facilitator-model.html" class="nav-item nav-sub">III &mdash; The Facilitator Model</a>
-    <a href="genexxo-vision-series/part-4-the-multi-dimensional-network.html" class="nav-item nav-sub">IV &mdash; The Multi-Dimensional Network</a>
-    <a href="genexxo-vision-series/part-5-content.html" class="nav-item nav-sub">V &mdash; Content</a>
-    <a href="genexxo-vision-series/part-6-community.html" class="nav-item nav-sub">VI &mdash; Community</a>
-    <a href="genexxo-vision-series/part-7-commerce-brand-zones.html" class="nav-item nav-sub">VII &mdash; Commerce &amp; Brand Zones</a>
-    <a href="genexxo-vision-series/part-8-ai-the-ecosystem.html" class="nav-item nav-sub">VIII &mdash; AI: The Ecosystem</a>
-    <a href="genexxo-vision-series/part-9-ai-agentic-intelligence.html" class="nav-item nav-sub">IX &mdash; AI: Agentic Intelligence</a>
-    <a href="genexxo-vision-series/part-10-network-effects.html" class="nav-item nav-sub">X &mdash; Network Effects</a>
-    <a href="genexxo-vision-series/part-11-innovation.html" class="nav-item nav-sub">XI &mdash; Innovation</a>
-    <a href="genexxo-vision-series/part-12-the-genexxo-vision.html" class="nav-item nav-sub">XII &mdash; The GENEXXO Vision</a>
+    <div class="nav-group-items" id="seriesItems">
+      <a href="genexxo-vision-series/part-1-the-collection.html" class="nav-item nav-sub">I &mdash; The Collection</a>
+      <a href="genexxo-vision-series/part-2-the-supernova-application.html" class="nav-item nav-sub">II &mdash; The Supernova Application</a>
+      <a href="genexxo-vision-series/part-3-the-facilitator-model.html" class="nav-item nav-sub">III &mdash; The Facilitator Model</a>
+      <a href="genexxo-vision-series/part-4-the-multi-dimensional-network.html" class="nav-item nav-sub">IV &mdash; The Multi-Dimensional Network</a>
+      <a href="genexxo-vision-series/part-5-content.html" class="nav-item nav-sub">V &mdash; Content</a>
+      <a href="genexxo-vision-series/part-6-community.html" class="nav-item nav-sub">VI &mdash; Community</a>
+      <a href="genexxo-vision-series/part-7-commerce-brand-zones.html" class="nav-item nav-sub">VII &mdash; Commerce &amp; Brand Zones</a>
+      <a href="genexxo-vision-series/part-8-ai-the-ecosystem.html" class="nav-item nav-sub">VIII &mdash; AI: The Ecosystem</a>
+      <a href="genexxo-vision-series/part-9-ai-agentic-intelligence.html" class="nav-item nav-sub">IX &mdash; AI: Agentic Intelligence</a>
+      <a href="genexxo-vision-series/part-10-network-effects.html" class="nav-item nav-sub">X &mdash; Network Effects</a>
+      <a href="genexxo-vision-series/part-11-innovation.html" class="nav-item nav-sub">XI &mdash; Innovation</a>
+      <a href="genexxo-vision-series/part-12-the-genexxo-vision.html" class="nav-item nav-sub">XII &mdash; The GENEXXO Vision</a>
+    </div>
+    <a href="about.html" class="nav-item">About Us</a>
   </nav>
 </aside>
 
@@ -719,6 +722,19 @@ function fitCanvas(canvas, container) {
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('open');
   document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+
+/* ══════════════════════════════════════════════
+   SERIES NAV TOGGLE
+   ══════════════════════════════════════════════ */
+function toggleSeriesNav(){
+  var el=document.getElementById('seriesItems');
+  var label=document.querySelector('.nav-group-label');
+  if(el.style.maxHeight&&el.style.maxHeight!=='0px'){
+    el.style.maxHeight='0px';label.classList.remove('expanded');
+  }else{
+    el.style.maxHeight=el.scrollHeight+'px';label.classList.add('expanded');
+  }
 }
 
 /* ══════════════════════════════════════════════
