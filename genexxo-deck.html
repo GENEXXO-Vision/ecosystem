@@ -4442,7 +4442,7 @@ function renderMainNav(opts = {}) {
   const activeColor = opts.dark ? '#fff' : '#1a1a2e';
   return `<div class="top-bar" style="background:${bg};border-bottom:1px solid ${borderColor}">
     <div class="top-bar-inner">
-      <div class="gx-logo" style="cursor:pointer;display:flex;align-items:center" onclick="nav('hub')">${gxLogo(28)}</div>
+      <div class="gx-logo" style="cursor:pointer;display:flex;align-items:center;gap:10px" onclick="nav('hub')">${gxLogo(28)}<span style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.4">DEMO</span></div>
       <div style="display:flex;gap:28px;align-items:center">
         <span style="font-size:.85rem;font-weight:600;color:${state.view==='hub'&&state.hubTab==='home'?activeColor:mutedColor};cursor:pointer" onclick="nav('hub')">Home</span>
         <span style="font-size:.85rem;font-weight:600;color:${state.showAIHost?activeColor:mutedColor};cursor:pointer" onclick="toggleAIHost()">AI Host</span>
