@@ -387,15 +387,15 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
         <div class="feature-cards reveal reveal-delay-3" style="margin-top:16px">
           <div class="feature-card" style="border-left:2px solid #E84D3A">
             <div class="fc-icon">&#x1F3D7;</div>
-            <div><div class="fc-title" style="color:#E84D3A">The Foundation</div><div class="fc-desc">The Bedrock of the Organizing Layer</div></div>
+            <div><div class="fc-title" style="color:#E84D3A">The Foundation</div><div class="fc-desc">Domains are the Bedrock of the Internet</div></div>
           </div>
           <div class="feature-card" style="border-left:2px solid #8B5CF6">
             <div class="fc-icon">&#x2728;</div>
-            <div><div class="fc-title" style="color:#8B5CF6">The Branding</div><div class="fc-desc">One Unified Signature</div></div>
+            <div><div class="fc-title" style="color:#8B5CF6">The Branding</div><div class="fc-desc">The XX unifies the ecosystem</div></div>
           </div>
           <div class="feature-card" style="border-left:2px solid #4A6CF7">
             <div class="fc-icon">&#x1F6E1;</div>
-            <div><div class="fc-title" style="color:#4A6CF7">The Protection</div><div class="fc-desc">Impossible to Assemble Again</div></div>
+            <div><div class="fc-title" style="color:#4A6CF7">The Protection</div><div class="fc-desc">A linguistic moat that cannot be crossed</div></div>
           </div>
         </div>
       </div>
@@ -795,7 +795,7 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     {word:'Health',color:'#10B981'},
     {word:'Fashion',color:'#8B5CF6'}
   ];
-  const CYCLE=4500,PAUSE=1200,TOTAL=DOMAINS.length*(CYCLE+PAUSE);
+  const CYCLE=2200,PAUSE=400,TOTAL=DOMAINS.length*(CYCLE+PAUSE);
   let startTime=0;
   const particles=[];
 
@@ -837,25 +837,25 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
         if(showFromPrev){
           wordAlpha=1;xxAlpha=1;comAlpha=1;glowAlpha=.15;
         } else {
-          // Phase 1: word fades in (0-800ms)
-          const p1=Math.min(slotElapsed/800,1);
+          // Phase 1: word fades in (0-400ms)
+          const p1=Math.min(slotElapsed/400,1);
           wordAlpha=p1;
-          // Phase 2: XX drops in (800-1800ms)
-          if(slotElapsed>800){
-            const p2=Math.min((slotElapsed-800)/1000,1);
+          // Phase 2: XX drops in (400-900ms)
+          if(slotElapsed>400){
+            const p2=Math.min((slotElapsed-400)/500,1);
             const ease=1-Math.pow(1-p2,3);
             xxAlpha=ease;
             xxOffsetY=-30*(1-ease);
             if(p2>=.95&&p2<1)spawnBurst(cx+(_dc?8:4),cy+xxOffsetY,d.color);
           }
-          // Phase 3: .com slides in (1800-2600ms)
-          if(slotElapsed>1800){
-            const p3=Math.min((slotElapsed-1800)/800,1);
+          // Phase 3: .com slides in (900-1400ms)
+          if(slotElapsed>900){
+            const p3=Math.min((slotElapsed-900)/500,1);
             comAlpha=p3;
           }
-          // Phase 4: glow settles (2600-3500ms)
-          if(slotElapsed>2600){
-            const p4=Math.min((slotElapsed-2600)/900,1);
+          // Phase 4: glow settles (1400-2000ms)
+          if(slotElapsed>1400){
+            const p4=Math.min((slotElapsed-1400)/600,1);
             glowAlpha=.15*p4;
           }
         }
