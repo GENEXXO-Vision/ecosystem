@@ -990,10 +990,10 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     fitCanvas(bc,container);W=bc.width;H=bc.height;cx=W/2;cy=H/2;
     const cardW=Math.min(W*.22,90);const cardH=cardW*.7;const gap=Math.min(W*.18,80);
     const gapV=Math.min(H*.18,75);
-    cardL={x:cx-gap-cardW/2,y:cy,w:cardW,h:cardH,label:'BRAND',label2:'ZONES',color:'#8B5CF6'};
-    cardR={x:cx+gap+cardW/2,y:cy,w:cardW,h:cardH,label:'PWA',label2:'STORE',color:'#4A6CF7'};
+    cardL={x:cx-gap-cardW/2,y:cy,w:cardW,h:cardH,label:'BRANDS',label2:'',color:'#8B5CF6'};
+    cardR={x:cx+gap+cardW/2,y:cy,w:cardW,h:cardH,label:'CONSUMERS',label2:'',color:'#4A6CF7'};
     cardT={x:cx,y:cy-gapV-cardH/2,w:cardW,h:cardH,label:'AI',label2:'AGENTS',color:'#10B981'};
-    cardB={x:cx,y:cy+gapV+cardH/2,w:cardW,h:cardH,label:'DEVELOPER',label2:'TOOLS',color:'#F97316'};
+    cardB={x:cx,y:cy+gapV+cardH/2,w:cardW,h:cardH,label:'DEVELOPERS',label2:'',color:'#F97316'};
     flowParticles=[];
     [cardL,cardR,cardT,cardB].forEach(c=>{for(let i=0;i<4;i++)flowParticles.push(newFlow(c,true))})
   }
@@ -1059,11 +1059,6 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     // Bright center
     bx.beginPath();bx.arc(cx,cy,4,0,Math.PI*2);bx.fillStyle='#ffffffee';bx.fill();
 
-    // Label
-    bx.font='800 7px "Plus Jakarta Sans",sans-serif';
-    bx.fillStyle='rgba(255,255,255,.7)';bx.textAlign='center';
-    bx.fillText('DOMAIN',cx,cy+22);
-    bx.fillText('GATEWAY',cx,cy+32);
   }
 
   function draw(time){
