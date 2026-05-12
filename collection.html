@@ -16,9 +16,9 @@ body{background:#0a0a0f;color:#e8e4df;font-family:'Plus Jakarta Sans',-apple-sys
 .back-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 
 /* ── PROGRESS DOTS ── */
-.progress{position:fixed;right:16px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:100}
-.progress-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);opacity:.4;transition:all .3s;cursor:pointer;border:none;padding:0}
-.progress-dot.active{opacity:1;background:#E84D3A;box-shadow:0 0 8px rgba(232,77,58,.5)}
+.progress{position:fixed;right:20px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:14px;z-index:100}
+.progress-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.25);opacity:.5;transition:all .3s;cursor:pointer;border:none;padding:0}
+.progress-dot.active{opacity:1;background:#E84D3A;box-shadow:0 0 12px rgba(232,77,58,.6)}
 
 /* ── SLIDES ── */
 .slide{min-height:100dvh;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 24px;position:relative;overflow:hidden}
@@ -96,8 +96,8 @@ body{background:#0a0a0f;color:#e8e4df;font-family:'Plus Jakarta Sans',-apple-sys
 @media(max-width:480px){
   .slide{padding:48px 20px}
   .slide-illust{max-width:300px}
-  .progress{right:8px;gap:8px}
-  .progress-dot{width:5px;height:5px}
+  .progress{right:10px;gap:10px}
+  .progress-dot{width:8px;height:8px}
   .rules-grid{grid-template-columns:1fr;gap:2px}
   .sector-bar-label{width:65px;font-size:.5rem}
   .stat-row{gap:20px}

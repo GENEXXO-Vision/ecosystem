@@ -175,8 +175,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);}
 
 /* Progress dots */
 .progress{position:fixed;right:16px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;z-index:100;}
-.progress-dot{width:6px;height:6px;border-radius:50%;background:var(--text-muted);opacity:0.2;transition:all 0.3s;cursor:pointer;border:none;padding:0;}
-.progress-dot.active{opacity:1;background:var(--blue);box-shadow:0 0 8px var(--blue);}
+.progress-dot{width:10px;height:10px;border-radius:50%;background:var(--text-muted);opacity:.5;transition:all 0.3s;cursor:pointer;border:none;padding:0;}
+.progress-dot.active{opacity:1;background:var(--blue);box-shadow:0 0 12px var(--blue);}
 
 /* Subtle divider between category groups */
 .card-domains + .card-hero::before{
@@ -191,7 +191,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);}
   .card-domains{padding:48px 20px;}
   .card-title{padding:48px 20px;}
   .progress{right:8px;gap:5px;}
-  .progress-dot{width:5px;height:5px;}
+  .progress-dot{width:8px;height:8px;}
 }
 </style>
 </head>
