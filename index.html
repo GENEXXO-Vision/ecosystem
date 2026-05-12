@@ -370,35 +370,34 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
      THE COLLECTION
      ══════════════════════════════════════════════ -->
 <div class="section-divider"></div>
-<section class="collection section" id="collection">
+<section class="canvas-section section" id="collection">
   <div class="bg-noise"></div>
-  <div class="bg-radial" style="background:radial-gradient(circle,rgba(232,77,58,.2),transparent);top:-150px;right:-150px"></div>
   <div class="container">
-    <div class="section-tag reveal">The Collection</div>
-    <div class="headline reveal">The Asset That Makes It All Possible<br><span class="gradient">10,000 Branded Gateways</span></div>
-    <div class="body-text reveal reveal-delay-1">Technology is a commodity. Namespace is scarce. Over 10,000 premium single-word .com domains, each branded with the XX signature.</div>
-
-    <div class="pillar-grid">
-      <div class="pillar-card reveal reveal-delay-2" style="background:linear-gradient(180deg,rgba(232,77,58,.06),rgba(232,77,58,.02));border:1px solid rgba(232,77,58,.1)">
-        <div class="bar" style="background:linear-gradient(90deg,#E84D3A,#FF6B4A)"></div>
-        <div class="icon">&#x1F3D7;</div>
-        <div class="tag" style="color:#E84D3A">The Foundation</div>
-        <div class="title">The Bedrock of the Organizing Layer</div>
-        <div class="desc">The internet's organizing layer demands premium, category-native namespace. Every domain a foundation stone.</div>
+    <div class="opp-header reveal" style="padding-bottom:40px"><div class="opp-title" style="color:#fff">This is the Organizing Layer</div></div>
+    <div class="canvas-row reverse">
+      <div class="canvas-visual reveal" id="collectionVisual">
+        <canvas id="collectionCanvas"></canvas>
       </div>
-      <div class="pillar-card reveal reveal-delay-3" style="background:linear-gradient(180deg,rgba(139,92,246,.06),rgba(139,92,246,.02));border:1px solid rgba(139,92,246,.1)">
-        <div class="bar" style="background:linear-gradient(90deg,#8B5CF6,#A78BFA)"></div>
-        <div class="icon">&#x2728;</div>
-        <div class="tag" style="color:#8B5CF6">The Branding</div>
-        <div class="title">10,000 Domains, One Unified Signature</div>
-        <div class="desc">Every category, every niche &mdash; the XX unifies the ecosystem &mdash; a universal mark of authority.</div>
+      <div class="canvas-header">
+        <div class="section-tag reveal">The Collection</div>
+        <div class="headline reveal reveal-delay-1"><span class="gradient">The Asset That Makes</span><br>It All Possible</div>
       </div>
-      <div class="pillar-card reveal reveal-delay-4" style="background:linear-gradient(180deg,rgba(74,108,247,.06),rgba(74,108,247,.02));border:1px solid rgba(74,108,247,.1)">
-        <div class="bar" style="background:linear-gradient(90deg,#4A6CF7,#6B8CFF)"></div>
-        <div class="icon">&#x1F6E1;</div>
-        <div class="tag" style="color:#4A6CF7">The Protection</div>
-        <div class="title">Impossible to Assemble Again</div>
-        <div class="desc">Impossible to assemble a competing collection of this quality &amp; depth &mdash; a linguistic moat that cannot be crossed.</div>
+      <div class="canvas-body">
+        <div class="body-text reveal reveal-delay-2">Over 10,000 branded single word dot com domains.</div>
+        <div class="feature-cards reveal reveal-delay-3" style="margin-top:16px">
+          <div class="feature-card" style="border-left:2px solid #E84D3A">
+            <div class="fc-icon">&#x1F3D7;</div>
+            <div><div class="fc-title" style="color:#E84D3A">The Foundation</div><div class="fc-desc">The Bedrock of the Organizing Layer</div></div>
+          </div>
+          <div class="feature-card" style="border-left:2px solid #8B5CF6">
+            <div class="fc-icon">&#x2728;</div>
+            <div><div class="fc-title" style="color:#8B5CF6">The Branding</div><div class="fc-desc">One Unified Signature</div></div>
+          </div>
+          <div class="feature-card" style="border-left:2px solid #4A6CF7">
+            <div class="fc-icon">&#x1F6E1;</div>
+            <div><div class="fc-title" style="color:#4A6CF7">The Protection</div><div class="fc-desc">Impossible to Assemble Again</div></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -583,38 +582,6 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════
-     CLOSING — THE VISION
-     ══════════════════════════════════════════════ -->
-<div class="section-divider"></div>
-<section class="closing section" id="vision">
-  <div class="bg-noise"></div>
-  <canvas class="closing-canvas" id="closingCanvas"></canvas>
-  <div class="closing-content">
-    <div class="section-tag reveal" style="justify-content:center">The Vision</div>
-    <div class="closing-wordmark reveal">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 57.2" style="width:100%;height:auto">
-        <defs><linearGradient id="gEnd" x1="74.1" y1="-57.4" x2="245.8" y2="114.3" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#E84D3A"/><stop offset=".6" stop-color="#8B5CF6"/><stop offset="1" stop-color="#4A6CF7"/></linearGradient></defs>
-        <path fill="url(#gEnd)" d="M230.1,1.8h0c0,.1,0,0,0,0h.1ZM203.7,1.8h-8.9l15.3,23.1,4.6-6.5-11-16.6ZM245.5,38.8l10.9,16.5h8.9l-15.3-23.1-4.5,6.7ZM247.6,28.5l-4.5,6.7h0l-8.7,13.2-4.4,6.7-4.4-6.7-8.7-13.2-13.2,20h-8.9l16.7-25.3h0s.9-1.4.9-1.4h0l4.4-6.7,8.7-13.2,4.4-6.7,4.4,6.7,8.7,13.2,13.2-20h8.9l-17.6,26.7ZM238.7,28.5l-8.7-13.2-8.7,13.2,8.7,13.2,8.7-13.2ZM211.6,29.9h0s0,0,0,0ZM212.5,28.5h0l-.9,1.3.9-1.3ZM52.2,17.2c-2-5.1-5.2-9.1-9.7-11.9-4.4-2.8-9.5-4.2-15.2-4.2s-9.6,1.2-13.8,3.5c-4.2,2.3-7.5,5.6-9.9,9.7C1.2,18.5,0,23.2,0,28.4s1.2,9.9,3.7,14.1c2.4,4.2,5.7,7.4,9.9,9.7,4.2,2.3,8.8,3.5,13.8,3.5s8.9-1,12.8-3.1c3.8-2.1,6.9-4.9,9.3-8.4,2.4-3.5,3.9-7.3,4.4-11.5v-6.9h-29.5v7h20.1c-.7,4.6-2.5,8.2-5.5,10.9-3,2.7-6.9,4-11.6,4s-6.7-.8-9.5-2.4c-2.8-1.6-4.9-3.9-6.5-6.8-1.6-3-2.4-6.4-2.4-10.2s.8-7.2,2.4-10.2c1.6-2.9,3.7-5.2,6.5-6.8,2.8-1.6,5.9-2.4,9.5-2.4s6.1.7,8.6,2c2.5,1.4,4.4,3.4,5.8,6h10.6ZM92.1,8.8V1.7h-29.6v53.6h29.6v-7.2h-20.8v-16.4h18.5v-7.2h-18.5v-15.7h20.8ZM146.9,1.7h-8.8v39.9L111.7,1.7h-8.8v53.6h8.8V15.3l26.4,40h8.8V1.7ZM188,8.8V1.7h-29.6v53.6h29.6v-7.2h-20.8v-16.4h18.5v-7.2h-18.5v-15.7h20.8ZM292.5,55.8c5,0,9.6-1.2,13.8-3.5,4.2-2.3,7.5-5.6,9.9-9.8,2.4-4.2,3.6-8.9,3.6-14.1s-1.2-9.9-3.6-14.1c-2.4-4.2-5.7-7.4-9.9-9.7-4.2-2.3-8.8-3.5-13.8-3.5s-9.6,1.2-13.8,3.5c-4.2,2.3-7.5,5.6-9.9,9.7-2.4,4.2-3.7,8.9-3.7,14.1s1.2,10,3.7,14.1c2.4,4.2,5.8,7.5,9.9,9.8,4.2,2.3,8.8,3.5,13.8,3.5ZM292.5,48.2c-3.5,0-6.7-.8-9.5-2.4-2.8-1.6-4.9-3.9-6.5-6.9-1.6-3-2.4-6.5-2.4-10.4s.8-7.4,2.4-10.4c1.6-3,3.7-5.3,6.5-6.9,2.8-1.6,5.9-2.4,9.5-2.4s6.7.8,9.5,2.4c2.8,1.6,4.9,3.9,6.5,6.9,1.6,3,2.4,6.4,2.4,10.4s-.8,7.4-2.4,10.4c-1.6,3-3.7,5.3-6.5,6.9-2.8,1.6-5.9,2.4-9.5,2.4Z"/>
-      </svg>
-    </div>
-    <div class="closing-title reveal reveal-delay-1">
-      This is <span style="background:linear-gradient(135deg,#E84D3A,#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent">The Organizing Layer</span>
-    </div>
-    <div class="closing-text reveal reveal-delay-2">
-      A place where everything finds its natural home.<br>
-      Where content, communities, and commerce converge.<br>
-      Where artificial intelligence can learn, evolve, and mature.<br><br>
-      <span style="color:rgba(255,255,255,.7);font-weight:600">The layer that connects the physical and digital worlds.</span>
-    </div>
-    <div class="closing-stats reveal reveal-delay-3">
-      <div><div class="val" style="background:linear-gradient(135deg,#E84D3A,#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent">10,000+</div><div class="lbl">Gateways</div></div>
-      <div><div class="val" style="background:linear-gradient(135deg,#4A6CF7,#10B981);-webkit-background-clip:text;-webkit-text-fill-color:transparent">45</div><div class="lbl">Sectors</div></div>
-      <div><div class="val" style="background:linear-gradient(135deg,#F59E0B,#EC4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent">14 yrs</div><div class="lbl">Assembled</div></div>
-      <div><div class="val" style="font-size:1.5rem;line-height:1;background:linear-gradient(135deg,#8B5CF6,#4A6CF7);-webkit-background-clip:text;-webkit-text-fill-color:transparent">&infin;</div><div class="lbl">Possibilities</div></div>
-    </div>
-  </div>
-</section>
 
 <!-- ── EXPLORE CARDS ── -->
 <div class="opp-header reveal" style="padding-top:60px"><div class="opp-title">Explore The Vision</div></div>
@@ -813,6 +780,149 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   function drawRings(t){RINGS.forEach((ring,i)=>{ringRotations[i]+=(i%2===0?.00008:-.00006);snCtx.save();snCtx.translate(cx,cy);snCtx.rotate(ringRotations[i]);snCtx.beginPath();snCtx.arc(0,0,ring.r,0,Math.PI*2);snCtx.strokeStyle=`rgba(255,255,255,${ring.opacity})`;snCtx.setLineDash(ring.dash);snCtx.lineWidth=.6;snCtx.stroke();snCtx.restore()});snCtx.setLineDash([])}
   function animate(t){snCtx.clearRect(0,0,snW,snH);hubPulses.forEach(p=>{p.update();p.draw()});drawRings(t);drawCobweb(t);travelers.forEach(tp=>{tp.update();tp.draw()});nodes.forEach(n=>n.draw(t));drawHubCore(t);requestAnimationFrame(animate)}
   initSupernova();animate(0);window.addEventListener('resize',initSupernova);
+})();
+
+/* ══════════════════════════════════════════════
+   COLLECTION CANVAS — Domain assembly animation
+   ══════════════════════════════════════════════ */
+(function(){
+  const cc=document.getElementById('collectionCanvas');if(!cc)return;
+  const ctx=cc.getContext('2d');
+  const container=document.getElementById('collectionVisual');
+  let W,H;
+  const DOMAINS=[
+    {word:'Beauty',color:'#EC4899'},
+    {word:'Health',color:'#10B981'},
+    {word:'Fashion',color:'#8B5CF6'}
+  ];
+  const CYCLE=4500,PAUSE=1200,TOTAL=DOMAINS.length*(CYCLE+PAUSE);
+  let startTime=0;
+  const particles=[];
+
+  function init(){
+    fitCanvas(cc,container);W=cc.width;H=cc.height;
+    startTime=performance.now();
+    particles.length=0;
+  }
+
+  function spawnBurst(x,y,color){
+    for(let i=0;i<12;i++){
+      const angle=Math.random()*Math.PI*2;
+      const speed=1+Math.random()*3;
+      particles.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1,color,size:1.5+Math.random()*2});
+    }
+  }
+
+  function draw(time){
+    ctx.clearRect(0,0,W,H);
+    const elapsed=(time-startTime)%TOTAL;
+    const _dc=W>500;
+    const baseY=H/2;
+    const spacing=_dc?70:50;
+    const startY=baseY-(DOMAINS.length-1)*spacing/2;
+
+    // Draw all domains
+    DOMAINS.forEach((d,i)=>{
+      const slotStart=i*(CYCLE+PAUSE);
+      const slotElapsed=elapsed-slotStart;
+      const cy=startY+i*spacing;
+      const cx=W/2;
+
+      // Determine phase
+      let wordAlpha=0,xxAlpha=0,comAlpha=0,xxOffsetY=0,glowAlpha=0;
+      const showFromPrev=elapsed>=slotStart+CYCLE+PAUSE;
+      const isBeforeTurn=elapsed<slotStart;
+
+      if(showFromPrev||(!isBeforeTurn&&slotElapsed>=0)){
+        if(showFromPrev){
+          wordAlpha=1;xxAlpha=1;comAlpha=1;glowAlpha=.15;
+        } else {
+          // Phase 1: word fades in (0-800ms)
+          const p1=Math.min(slotElapsed/800,1);
+          wordAlpha=p1;
+          // Phase 2: XX drops in (800-1800ms)
+          if(slotElapsed>800){
+            const p2=Math.min((slotElapsed-800)/1000,1);
+            const ease=1-Math.pow(1-p2,3);
+            xxAlpha=ease;
+            xxOffsetY=-30*(1-ease);
+            if(p2>=.95&&p2<1)spawnBurst(cx+(_dc?8:4),cy+xxOffsetY,d.color);
+          }
+          // Phase 3: .com slides in (1800-2600ms)
+          if(slotElapsed>1800){
+            const p3=Math.min((slotElapsed-1800)/800,1);
+            comAlpha=p3;
+          }
+          // Phase 4: glow settles (2600-3500ms)
+          if(slotElapsed>2600){
+            const p4=Math.min((slotElapsed-2600)/900,1);
+            glowAlpha=.15*p4;
+          }
+        }
+      }
+
+      if(wordAlpha<=0)return;
+
+      const fontSize=_dc?28:18;
+      const xxSize=_dc?28:18;
+      const comSize=_dc?20:14;
+
+      // Measure text widths for positioning
+      ctx.font=`700 ${fontSize}px "Plus Jakarta Sans",sans-serif`;
+      const wordW=ctx.measureText(d.word).width;
+      ctx.font=`800 ${xxSize}px "Plus Jakarta Sans",sans-serif`;
+      const xxW=ctx.measureText('XX').width;
+      ctx.font=`600 ${comSize}px "Plus Jakarta Sans",sans-serif`;
+      const comW=ctx.measureText('.com').width;
+
+      const totalW=wordW+xxW+comW+(_dc?6:4);
+      const leftX=cx-totalW/2;
+
+      // Glow behind
+      if(glowAlpha>0){
+        const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,_dc?120:80);
+        grd.addColorStop(0,d.color+Math.round(glowAlpha*255).toString(16).padStart(2,'0'));
+        grd.addColorStop(1,'transparent');
+        ctx.fillStyle=grd;ctx.beginPath();ctx.arc(cx,cy,_dc?120:80,0,Math.PI*2);ctx.fill();
+      }
+
+      // Word
+      ctx.font=`700 ${fontSize}px "Plus Jakarta Sans",sans-serif`;
+      ctx.fillStyle=`rgba(255,255,255,${wordAlpha*.9})`;
+      ctx.textAlign='left';ctx.textBaseline='middle';
+      ctx.fillText(d.word,leftX,cy);
+
+      // XX
+      if(xxAlpha>0){
+        ctx.font=`800 ${xxSize}px "Plus Jakarta Sans",sans-serif`;
+        ctx.fillStyle=d.color+Math.round(xxAlpha*255).toString(16).padStart(2,'0');
+        ctx.shadowColor=d.color;ctx.shadowBlur=xxAlpha*15;
+        ctx.fillText('XX',leftX+wordW,cy+xxOffsetY);
+        ctx.shadowBlur=0;
+      }
+
+      // .com
+      if(comAlpha>0){
+        ctx.font=`600 ${comSize}px "Plus Jakarta Sans",sans-serif`;
+        ctx.fillStyle=`rgba(255,255,255,${comAlpha*.5})`;
+        ctx.fillText('.com',leftX+wordW+xxW+(_dc?6:4),cy);
+      }
+    });
+
+    // Particles
+    for(let i=particles.length-1;i>=0;i--){
+      const p=particles[i];
+      p.x+=p.vx;p.y+=p.vy;p.vx*=.96;p.vy*=.96;p.life-=.025;
+      if(p.life<=0){particles.splice(i,1);continue}
+      ctx.beginPath();ctx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);
+      ctx.fillStyle=p.color;ctx.globalAlpha=p.life*.6;ctx.fill();ctx.globalAlpha=1;
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  init();startTime=performance.now();requestAnimationFrame(draw);
+  window.addEventListener('resize',()=>{init();startTime=performance.now()});
 })();
 
 /* ══════════════════════════════════════════════
