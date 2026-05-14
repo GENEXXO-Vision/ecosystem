@@ -4444,7 +4444,7 @@ function renderMainNav(opts = {}) {
     <div class="top-bar-inner">
       <div class="gx-logo" style="cursor:pointer;display:flex;align-items:center;gap:10px" onclick="nav('hub')">${gxLogo(28)}<span style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.4">DEMO</span></div>
       <div style="display:flex;gap:28px;align-items:center">
-        <span style="font-size:.85rem;font-weight:600;color:${state.view==='hub'&&state.hubTab==='home'?activeColor:mutedColor};cursor:pointer" onclick="nav('hub')">Home</span>
+        <span style="font-size:.85rem;font-weight:600;color:${state.view==='hub'&&!state.sectorFilter&&(state.hubTab==='home'||(state.hubTab==='brands'&&(state.brandStoreScope||'hub')==='hub')||(state.hubTab==='apps'&&(state.appStoreScope||'hub')==='hub'))?'#C93D2E':mutedColor};cursor:pointer;${state.view==='hub'&&!state.sectorFilter&&(state.hubTab==='home'||(state.hubTab==='brands'&&(state.brandStoreScope||'hub')==='hub')||(state.hubTab==='apps'&&(state.appStoreScope||'hub')==='hub'))?'background:#C93D2E12;padding:4px 10px;border-radius:6px;':''}" onclick="nav('hub')">Home</span>
         <span style="font-size:.85rem;font-weight:600;color:${state.showAIHost?activeColor:mutedColor};cursor:pointer" onclick="toggleAIHost()">AI Host</span>
         <span style="font-size:.85rem;font-weight:600;color:${isAppsActive()?activeColor:mutedColor};cursor:pointer" onclick="handleAppsClick()">Apps</span>
         <span style="font-size:.85rem;font-weight:600;color:${isBrandsActive()?activeColor:mutedColor};cursor:pointer" onclick="handleBrandsClick()">Brands</span>
@@ -5351,7 +5351,7 @@ function renderHub() {
     const ctx = state.appStoreContext || null;
     const scopeLabel = scope === 'gateway' && ctx ? GATEWAYS[ctx]?.name : scope === 'sector' && ctx ? SECTORS[ctx]?.name : 'GENEXXO';
     const accentColor = scope === 'gateway' && ctx ? GATEWAYS[ctx]?.theme.accent || '#4338CA' : scope === 'sector' && ctx ? SECTORS[ctx]?.color || '#4338CA' : '#4338CA';
-    const headerGradient = scope === 'gateway' && ctx ? GATEWAYS[ctx]?.gradient : scope === 'sector' && ctx ? SECTORS[ctx]?.gradient : 'linear-gradient(135deg,#1a1a2e,#4338CA)';
+    const headerGradient = scope === 'gateway' && ctx ? GATEWAYS[ctx]?.gradient : scope === 'sector' && ctx ? SECTORS[ctx]?.gradient : 'linear-gradient(135deg,#1a1a2e,#C93D2E)';
     const storeTitle = scope === 'gateway' && ctx ? `${GATEWAYS[ctx]?.name} Apps` : scope === 'sector' && ctx ? `${SECTORS[ctx]?.name} Apps` : 'GENEXXO Apps';
     const storeDesc = scope === 'gateway' && ctx ? `Apps and tools for the ${GATEWAYS[ctx]?.name} community` : scope === 'sector' && ctx ? `The best apps from across the ${SECTORS[ctx]?.name} sector` : 'Discover apps across the entire GENEXXO ecosystem';
     feedArea = `<div style="flex:1;min-width:0">
@@ -5375,7 +5375,7 @@ function renderHub() {
     const ctx = state.brandStoreContext || null;
     const scopeLabel = scope === 'gateway' && ctx ? GATEWAYS[ctx]?.name : scope === 'sector' && ctx ? SECTORS[ctx]?.name : 'GENEXXO';
     const accentColor = scope === 'gateway' && ctx ? GATEWAYS[ctx]?.theme.accent || '#E84D3A' : scope === 'sector' && ctx ? SECTORS[ctx]?.color || '#E84D3A' : '#E84D3A';
-    const headerGradient = scope === 'gateway' && ctx ? GATEWAYS[ctx]?.gradient : scope === 'sector' && ctx ? SECTORS[ctx]?.gradient : 'linear-gradient(135deg,#1a1a2e,#E84D3A)';
+    const headerGradient = scope === 'gateway' && ctx ? GATEWAYS[ctx]?.gradient : scope === 'sector' && ctx ? SECTORS[ctx]?.gradient : 'linear-gradient(135deg,#1a1a2e,#C93D2E)';
     const storeTitle = scope === 'gateway' && ctx ? `${GATEWAYS[ctx]?.name} Brands` : scope === 'sector' && ctx ? `${SECTORS[ctx]?.name} Brands` : 'GENEXXO Brands';
     const storeDesc = scope === 'gateway' && ctx ? `Brand partners and founding members of ${GATEWAYS[ctx]?.name}` : scope === 'sector' && ctx ? `The brand ecosystem across the ${SECTORS[ctx]?.name} sector` : 'Discover brands across the entire GENEXXO ecosystem';
     feedArea = `<div style="flex:1;min-width:0">
@@ -5443,9 +5443,9 @@ function renderHub() {
     // Home feed
     feedArea = `<div class="hub-feed">
       <div style="position:sticky;top:60px;z-index:90;background:#FAFAFA;padding-top:20px;padding-bottom:2px;box-shadow:0 1px 0 rgba(0,0,0,.06)">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;background:#C93D2E12;border-radius:10px;padding:10px 14px;border-left:3px solid #C93D2E">
           <span style="font-size:1.1rem">\uD83C\uDFE0</span>
-          <span style="font-size:1.05rem;font-weight:800;color:#1a1a2e">GENEXXO Hub</span>
+          <span style="font-size:1.05rem;font-weight:800"><span style="color:#C93D2E">GENEXXO</span> <span style="color:#1a1a2e">Hub</span></span>
         </div>
         <div class="feed-tabs"><div class="feed-tab active">For You</div><div class="feed-tab">Trending</div><div class="feed-tab">Following</div></div>
       </div>
