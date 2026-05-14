@@ -5476,9 +5476,9 @@ function renderYourWorlds(activeSector) {
     const isActive = s.key === activeSector;
     const sData = SECTORS[s.key];
     if (isLive && sData) {
-      html += `<div class="sec-btn" style="${isActive?'background:rgba(0,0,0,.04);':''}" onclick="setSector('${s.key}')">
+      html += `<div class="sec-btn" style="${isActive?`background:${sData.color}12;border-left:3px solid ${sData.color};`:''}" onclick="setSector('${s.key}')">
         <div class="icon" style="background:${sData.gradient}">${sData.icon}</div>
-        <div><div class="label" style="${isActive?'font-weight:800;':''}color:#1a1a2e">${sData.name}</div><div class="sub">${sData.tagline}</div></div>
+        <div><div class="label" style="${isActive?`font-weight:800;color:${sData.color};`:''}color:#1a1a2e">${sData.name}</div><div class="sub">${sData.tagline}</div></div>
       </div>`;
     } else {
       html += `<div class="sec-btn" style="opacity:.4;${isActive?'background:rgba(0,0,0,.04);opacity:.7;':''}" onclick="setSector('${s.key}')">
