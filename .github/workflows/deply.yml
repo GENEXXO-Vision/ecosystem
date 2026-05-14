@@ -42,7 +42,7 @@ jobs:
         # The standard network port used for FTP/FTPS connections
         port: 21
         # The destination folder on the server
-        server-dir: /public_html/
+        server-dir: /
 
     # STEP 3: Purge Cloudflare cache so the updated site appears immediately
     - name: 🧹 Purge Cloudflare cache
