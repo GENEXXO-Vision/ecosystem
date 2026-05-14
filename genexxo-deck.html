@@ -5113,7 +5113,7 @@ function renderHub() {
   let sectorRightHtml = '';
   if (s) {
     sectorRightHtml += `<div class="widget light">
-      <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;color:#aaa;text-transform:uppercase;margin-bottom:12px">Gateways</div>`;
+      <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;color:${s.color};text-transform:uppercase;margin-bottom:12px;background:${s.color}12;border-radius:8px;padding:8px 12px;border-left:3px solid ${s.color}">Gateways</div>`;
     s.deepGateways.forEach(k => {
       const g = GATEWAYS[k];
       sectorRightHtml += `<div class="sh-gw-item" onclick="nav('gateway',{gateway:'${k}'})">
@@ -5401,9 +5401,9 @@ function renderHub() {
       // Live sector — show feed content
       feedArea = `<div class="hub-feed">
         <div style="position:sticky;top:60px;z-index:90;background:#FAFAFA;padding-top:20px;padding-bottom:2px;box-shadow:0 1px 0 rgba(0,0,0,.06)">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;background:${s.color}12;border-radius:10px;padding:10px 14px;border-left:3px solid ${s.color}">
             <span style="font-size:1.1rem">${s.icon}</span>
-            <span style="font-size:1.05rem;font-weight:800;color:#1a1a2e">${s.name} Sector</span>
+            <span style="font-size:1.05rem;font-weight:800;color:${s.color}">${s.name} Sector</span>
             <span style="font-size:.78rem;color:#999">${Object.entries(s.stats).map(([k,v])=>v+' '+k).join(' \u00B7 ')}</span>
           </div>
           <div class="feed-tabs">
