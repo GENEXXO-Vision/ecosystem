@@ -161,8 +161,9 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
 .demo-card-title{font-size:1.1rem;font-weight:800;color:rgba(255,255,255,.95);margin-bottom:10px;background:linear-gradient(135deg,#E84D3A,#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .demo-card-desc{font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:16px}
 .demo-card-note{font-size:.6rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.25)}
-.demo-card-arrow{display:inline-block;margin-top:12px;font-size:.7rem;font-weight:700;color:#8B5CF6;letter-spacing:.06em;transition:letter-spacing .3s}
-.demo-card:hover .demo-card-arrow{letter-spacing:.16em}
+.demo-card-arrow{display:inline-block;margin-top:12px;font-size:.85rem;font-weight:800;color:#8B5CF6;letter-spacing:.08em;animation:pulseLaunch 1.5s ease-in-out infinite;transition:letter-spacing .3s}
+.demo-card:hover .demo-card-arrow{letter-spacing:.16em;animation:none}
+@keyframes pulseLaunch{0%,100%{opacity:.6}50%{opacity:1}}
 @media(min-width:768px){.demo-card-wrap{padding:0}.demo-card-title{font-size:1.25rem}.demo-card-inner{padding:40px 36px}}
 
 /* ── EXPLORE CARDS GRID ── */
@@ -174,8 +175,9 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
 .explore-card-tag{font-size:.5rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
 .explore-card-title{font-size:.82rem;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:4px}
 .explore-card-desc{font-size:.68rem;color:rgba(255,255,255,.4);line-height:1.5}
-.explore-card-arrow{position:absolute;top:18px;right:18px;font-size:.65rem;color:rgba(255,255,255,.2);transition:all .25s}
-.explore-card:hover .explore-card-arrow{color:#8B5CF6;transform:translateX(3px)}
+.explore-card-arrow{position:absolute;top:16px;right:18px;font-size:1.1rem;color:#E84D3A;animation:pulseArrow 1.5s ease-in-out infinite;transition:all .25s}
+.explore-card:hover .explore-card-arrow{color:#8B5CF6;transform:translateX(5px)}
+@keyframes pulseArrow{0%,100%{opacity:.5;transform:translateX(0)}50%{opacity:1;transform:translateX(4px)}}
 @media(min-width:768px){.explore-grid{grid-template-columns:1fr 1fr;padding:0}.explore-card{padding:20px 22px}}
 
 /* ── OPPORTUNITY SECTION ── */
@@ -504,7 +506,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
         <div class="hub-grid reveal reveal-delay-3">
           <div class="hub-row"><div class="hub-dot" style="background:#E84D3A"></div><div><div class="hub-title">Personalised Feed</div><div class="hub-desc">The best of the network curated for you.</div></div></div>
           <div class="hub-row"><div class="hub-dot" style="background:#8B5CF6"></div><div><div class="hub-title">AI Supernova Host</div><div class="hub-desc">Your intelligent guide across the ecosystem.</div></div></div>
-          <div class="hub-row"><div class="hub-dot" style="background:#4A6CF7"></div><div><div class="hub-title">One Profile. One Wallet.</div><div class="hub-desc">A single identity across the ecosystem..</div></div></div>
+          <div class="hub-row"><div class="hub-dot" style="background:#4A6CF7"></div><div><div class="hub-title">One Profile. One Wallet.</div><div class="hub-desc">A single identity across the ecosystem.</div></div></div>
           <div class="hub-row"><div class="hub-dot" style="background:#10B981"></div><div><div class="hub-title">Discovery Engine</div><div class="hub-desc">Where new journeys begin and passions develop.</div></div></div>
         </div>
       </div>
