@@ -4456,10 +4456,10 @@ function renderMainNav(opts = {}) {
 
 function renderContextBar(opts) {
   return `<div style="background:${opts.bg||'#fff'};border-bottom:1px solid ${opts.borderColor||'rgba(0,0,0,.06)'}">
-    <div style="max-width:1280px;margin:0 auto;padding:8px 40px;display:flex;align-items:center;justify-content:space-between">
-      <div>${opts.leftHtml||''}</div>
-      <div>${opts.centerHtml||''}</div>
-      <div>${opts.rightHtml||''}</div>
+    <div style="max-width:1280px;margin:0 auto;padding:8px 40px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;column-gap:20px">
+      <div style="justify-self:start">${opts.leftHtml||''}</div>
+      <div style="justify-self:center">${opts.centerHtml||''}</div>
+      <div style="justify-self:end">${opts.rightHtml||''}</div>
     </div>
   </div>`;
 }
@@ -5770,7 +5770,7 @@ function renderGatewayHeader(gw, key, extraBar) {
       bg:t.headerBg,
       borderColor:t.cardBorder,
       leftHtml:`<span style="font-size:.82rem;font-weight:600;color:${t.muted};cursor:pointer" onclick="setSector('${sectorKey}')">\u2190 ${SECTORS[sectorKey].name}</span>`,
-      centerHtml:`<span style="display:flex;align-items:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer" onclick="state.gwTab='Feed';render()"><span style="font-size:1.2rem">${gw.emoji}</span><span style="font-size:1rem;font-weight:700;color:${t.accent}">${gw.domain}</span></span>`,
+      centerHtml:`<span style="display:flex;align-items:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer" onclick="state.gwTab='Feed';render()"><span style="font-size:1.2rem">${gw.emoji}</span><span style="font-size:1.2rem;font-weight:700;color:${t.accent}">${gw.domain}</span></span>`,
       rightHtml
     })}
     ${extraBar || ''}
