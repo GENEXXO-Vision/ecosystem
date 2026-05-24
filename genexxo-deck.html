@@ -5338,6 +5338,7 @@ function renderSidebar(gw) {
         <div style="display:flex;align-items:center;gap:10px;padding-left:39px;margin-top:5px">
           <span style="font-size:.62rem;color:${t.muted}">👥 ${b.followers}</span>
           ${b.products ? `<span style="font-size:.62rem;color:${t.muted}">📦 ${b.products}</span>` : ''}
+          <span style="flex:1"></span>
           <span style="font-size:.58rem;padding:2px 6px;border-radius:4px;background:${b.color}18;color:${b.color};font-weight:600">${b.tier}</span>
         </div>
       </div>`;
@@ -5422,6 +5423,7 @@ function renderRightSidebar(gw) {
         <div style="display:flex;align-items:center;gap:10px;padding-left:39px;margin-top:5px">
           ${a.users ? `<span style="font-size:.62rem;color:${t.muted}">👥 ${a.users}</span>` : ''}
           ${a.rating ? `<span style="font-size:.62rem;color:${t.muted}">⭐ ${a.rating}</span>` : ''}
+          <span style="flex:1"></span>
           <span style="font-size:.58rem;padding:2px 6px;border-radius:4px;background:${typeBg};color:${typeColor};font-weight:600">${typeIcon} ${a.type}</span>
         </div>
       </div>`;
