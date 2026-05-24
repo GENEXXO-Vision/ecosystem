@@ -4446,6 +4446,80 @@ const BRAND_DIRECTORY = [
   {id:'br-soren-berg',name:'Soren Berg',logo:'SB',tagline:'Designer and creative director',gateway:'sneaker',sector:'fashion',tier:'Brand Zone',followers:'19.8K',products:8,color:'#6366F1',zoneKey:'soren-berg',recentPost:'Q2 collaboration announced \u2014 the brand I have wanted to work with since I was 14'},
 ];
 
+const APP_DIRECTORY = [
+  // ClimbXX
+  {id:'app-mapped-peaks',name:'Mapped Peaks',icon:'MP',type:'App',tagline:'Route database & topo viewer',gateway:'climb',brand:'Mapped Peaks',brandZone:'mapped-peaks',color:'#16A34A',users:'340K',rating:'4.8'},
+  {id:'app-lithos-fit',name:'Lithos Fit',icon:'LS',type:'App',tagline:'AI shoe fitting & foot analysis',gateway:'climb',brand:'Lithos Sport',brandZone:'lithos-sport',color:'#E84D3A',users:'28K',rating:'4.6'},
+  {id:'app-pinzon-check',name:'Pinzon GearCheck',icon:'Pz',type:'Tool',tagline:'Safety equipment inspection log',gateway:'climb',brand:'Pinzon',brandZone:'pinzon',color:'#3B82F6',users:'12K',rating:'4.7'},
+  {id:'tool-climb-curator',name:'ClimbXX Curator',icon:'CX',type:'Agent',tagline:'AI content curation — 2,400 articles/day',gateway:'climb',brand:'ClimbXX',brandZone:null,color:'#E85D3A',users:'340K',rating:null},
+  {id:'tool-climb-scout',name:'ClimbXX Scout',icon:'CS',type:'Agent',tagline:'Brand monitoring — 89 brands tracked',gateway:'climb',brand:'ClimbXX',brandZone:null,color:'#FF8C42',users:null,rating:null},
+  // SkiXX
+  {id:'app-arctika-snow',name:'Arctika Snow Report',icon:'Ar',type:'App',tagline:'Real-time conditions & webcams',gateway:'ski',brand:'Arctika',brandZone:'arctika',color:'#1A1A1A',users:'480K',rating:'4.7'},
+  {id:'app-sabran-quiver',name:'Sabran Quiver',icon:'Sa',type:'App',tagline:'Ski selector & demo booking',gateway:'ski',brand:'Sabran',brandZone:'sabran',color:'#3B82F6',users:'56K',rating:'4.5'},
+  {id:'tool-ski-avalanche',name:'SkiXX Avalanche Agent',icon:'AV',type:'Agent',tagline:'Real-time avalanche risk analysis',gateway:'ski',brand:'SkiXX',brandZone:null,color:'#EF4444',users:null,rating:null},
+  {id:'tool-ski-curator',name:'SkiXX Curator',icon:'SX',type:'Agent',tagline:'AI content curation — 2,800 articles/day',gateway:'ski',brand:'SkiXX',brandZone:null,color:'#8B5CF6',users:null,rating:null},
+  // SurfXX
+  {id:'app-marine-swells',name:'Marine Swells',icon:'MS',type:'App',tagline:'Surf forecast & swell alerts',gateway:'surf',brand:'Marine Swells',brandZone:'marine-swells',color:'#0066CC',users:'890K',rating:'4.9'},
+  {id:'app-quayside-sessions',name:'Quayside Sessions',icon:'Qk',type:'App',tagline:'Surf session tracker & wave count',gateway:'surf',brand:'Quayside Surf',brandZone:'quayside-surf',color:'#0A1628',users:'67K',rating:'4.4'},
+  {id:'tool-surf-curator',name:'SurfXX Curator',icon:'SX',type:'Agent',tagline:'AI content curation — 1,800 articles/day',gateway:'surf',brand:'SurfXX',brandZone:null,color:'#0EA5E9',users:null,rating:null},
+  // CycleXX
+  {id:'app-whirl-connect',name:'Whirl Connect',icon:'Wh',type:'App',tagline:'Smart trainer control & workout data',gateway:'cycle',brand:'Whirl',brandZone:'whirl',color:'#F5C400',users:'312K',rating:'4.6'},
+  {id:'app-spectra-ride',name:'Spectra Ride',icon:'Sp',type:'App',tagline:'Route planner & ride analytics',gateway:'cycle',brand:'Spectra Cycles',brandZone:'spectra-cycles',color:'#CF0A2C',users:'89K',rating:'4.5'},
+  {id:'tool-cycle-curator',name:'CycleXX Curator',icon:'CX',type:'Agent',tagline:'AI content curation — 2,100 articles/day',gateway:'cycle',brand:'CycleXX',brandZone:null,color:'#10B981',users:null,rating:null},
+  // SailXX
+  {id:'app-gimbal-nav',name:'Gimbal ChartPro',icon:'GM',type:'App',tagline:'AI weather routing & navigation',gateway:'sail',brand:'Gimbal Marine',brandZone:'gimbal-marine',color:'#1B3A6B',users:'198K',rating:'4.8'},
+  {id:'tool-sail-curator',name:'SailXX Curator',icon:'SX',type:'Agent',tagline:'AI content curation — 1,200 articles/day',gateway:'sail',brand:'SailXX',brandZone:null,color:'#0EA5E9',users:null,rating:null},
+  // StocksXX
+  {id:'app-charterly',name:'Charterly',icon:'TV',type:'App',tagline:'Live charts & community ideas',gateway:'stocks',brand:'Charterly',brandZone:'charterly',color:'#2563EB',users:'678K',rating:'4.7'},
+  {id:'app-sparktrade',name:'Sparktrade',icon:'FT',type:'App',tagline:'Commission-free investing',gateway:'stocks',brand:'Sparktrade',brandZone:'sparktrade',color:'#6D28D9',users:'1.4M',rating:'4.5'},
+  {id:'tool-stocks-curator',name:'StocksXX Curator',icon:'SX',type:'Agent',tagline:'AI market analysis — real-time',gateway:'stocks',brand:'StocksXX',brandZone:null,color:'#10B981',users:null,rating:null},
+  // CurrencyXX
+  {id:'app-sygma',name:'Sygma FX',icon:'OA',type:'App',tagline:'FX trading & analysis',gateway:'currency',brand:'Sygma FX',brandZone:'sygma-fx',color:'#16A34A',users:'234K',rating:'4.6'},
+  {id:'tool-currency-curator',name:'CurrencyXX Curator',icon:'CX',type:'Agent',tagline:'AI macro analysis — 24/7',gateway:'currency',brand:'CurrencyXX',brandZone:null,color:'#16A34A',users:null,rating:null},
+  // CryptoXX
+  {id:'app-coinhub',name:'Coinhub',icon:'CB',type:'App',tagline:'Crypto exchange & portfolio',gateway:'crypto',brand:'Coinhub',brandZone:'coinhub',color:'#F59E0B',users:'2.3M',rating:'4.4'},
+  {id:'app-chainforge',name:'Chainforge',icon:'GN',type:'App',tagline:'On-chain analytics dashboard',gateway:'crypto',brand:'Chainforge',brandZone:'chainforge',color:'#4ADE80',users:'894K',rating:'4.7'},
+  {id:'tool-crypto-curator',name:'CryptoXX Curator',icon:'CX',type:'Agent',tagline:'AI on-chain monitoring — real-time',gateway:'crypto',brand:'CryptoXX',brandZone:null,color:'#F59E0B',users:null,rating:null},
+  // MortgageXX
+  {id:'app-habitnow',name:'Habitnow',icon:'Ha',type:'App',tagline:'Mortgage comparison & application',gateway:'mortgage',brand:'Habitnow',brandZone:'habitnow',color:'#2563EB',users:'784K',rating:'4.8'},
+  {id:'tool-mortgage-curator',name:'MortgageXX Curator',icon:'MX',type:'Agent',tagline:'AI rate tracking — daily',gateway:'mortgage',brand:'MortgageXX',brandZone:null,color:'#2563EB',users:null,rating:null},
+  // PensionXX
+  {id:'app-pensionhive',name:'PensionHive',icon:'PB',type:'App',tagline:'Pension finder & consolidator',gateway:'pension',brand:'PensionHive',brandZone:'pensionhive',color:'#F59E0B',users:'568K',rating:'4.6'},
+  {id:'tool-pension-curator',name:'PensionXX Curator',icon:'PX',type:'Agent',tagline:'AI fund analysis — daily',gateway:'pension',brand:'PensionXX',brandZone:null,color:'#0F766E',users:null,rating:null},
+  // GothXX
+  {id:'app-kohlstar',name:'Kohlstar',icon:'KS',type:'App',tagline:'Alternative fashion & drops calendar',gateway:'goth',brand:'Kohlstar',brandZone:'kohlstar',color:'#9333EA',users:'187K',rating:'4.5'},
+  {id:'tool-goth-curator',name:'GothXX Curator',icon:'GX',type:'Agent',tagline:'AI subculture curation',gateway:'goth',brand:'GothXX',brandZone:null,color:'#9333EA',users:null,rating:null},
+  // DenimXX
+  {id:'app-iron-hall',name:'Iron Hall Fade Tracker',icon:'IH',type:'App',tagline:'Document your fade journey',gateway:'denim',brand:'Iron Hall',brandZone:'iron-hall',color:'#8B4513',users:'98K',rating:'4.7'},
+  {id:'tool-denim-curator',name:'DenimXX Curator',icon:'DX',type:'Agent',tagline:'AI heritage denim curation',gateway:'denim',brand:'DenimXX',brandZone:null,color:'#8B4513',users:null,rating:null},
+  // DietXX
+  {id:'app-myflexplate',name:'MyFlexPlate',icon:'MF',type:'App',tagline:'Nutrition tracking & AI meal planning',gateway:'diet',brand:'MyFlexPlate',brandZone:'myflexplate',color:'#2D7A3A',users:'1.8M',rating:'4.7'},
+  {id:'tool-diet-curator',name:'DietXX Curator',icon:'DX',type:'Agent',tagline:'AI nutrition research curation',gateway:'diet',brand:'DietXX',brandZone:null,color:'#2D7A3A',users:null,rating:null},
+  // SleepXX
+  {id:'app-whim',name:'Whim',icon:'Wh',type:'App',tagline:'Sleep tracking & recovery scores',gateway:'sleep',brand:'Whim',brandZone:'whim',color:'#7C6FF7',users:'568K',rating:'4.6'},
+  {id:'app-calma',name:'Calma',icon:'Ca',type:'App',tagline:'Sleep stories & meditation',gateway:'sleep',brand:'Calma',brandZone:'calma',color:'#312E81',users:'2.3M',rating:'4.8'},
+  {id:'tool-sleep-curator',name:'SleepXX Curator',icon:'SX',type:'Agent',tagline:'AI sleep science curation',gateway:'sleep',brand:'SleepXX',brandZone:null,color:'#7C6FF7',users:null,rating:null},
+  // YogaXX
+  {id:'app-inner-tide',name:'Inner Tide',icon:'IT',type:'App',tagline:'Free meditation & mindfulness',gateway:'yoga',brand:'Inner Tide',brandZone:'inner-tide',color:'#C4845A',users:'1.3M',rating:'4.9'},
+  {id:'tool-yoga-curator',name:'YogaXX Curator',icon:'YX',type:'Agent',tagline:'AI wellness curation',gateway:'yoga',brand:'YogaXX',brandZone:null,color:'#C4845A',users:null,rating:null},
+  // SpaXX
+  {id:'app-thermarum',name:'Thermarum',icon:'TG',type:'App',tagline:'Book thermal experiences & track wellness',gateway:'spa',brand:'Thermarum Group',brandZone:'therme',color:'#1A0E1F',users:'672K',rating:'4.7'},
+  {id:'tool-spa-curator',name:'SpaXX Curator',icon:'SX',type:'Agent',tagline:'AI thermal wellness curation',gateway:'spa',brand:'SpaXX',brandZone:null,color:'#1A0E1F',users:null,rating:null},
+  // TherapyXX
+  {id:'app-balancehelp',name:'BalanceHelp',icon:'BH',type:'App',tagline:'Online therapy & modality matching',gateway:'therapy',brand:'BalanceHelp',brandZone:'balancehelp',color:'#2D6A4F',users:'1.2M',rating:'4.6'},
+  {id:'tool-therapy-curator',name:'TherapyXX Curator',icon:'TX',type:'Agent',tagline:'AI mental health research curation',gateway:'therapy',brand:'TherapyXX',brandZone:null,color:'#2D6A4F',users:null,rating:null},
+  // DressXX
+  {id:'app-aspire',name:'Aspire',icon:'AS',type:'App',tagline:'Browse & shop thousands of dresses',gateway:'dress',brand:'Aspire',brandZone:'aspire-dress',color:'#1A0812',users:'672K',rating:'4.5'},
+  {id:'tool-dress-curator',name:'DressXX Curator',icon:'DX',type:'Agent',tagline:'AI fashion curation',gateway:'dress',brand:'DressXX',brandZone:null,color:'#1A0812',users:null,rating:null},
+  // HandbagXX
+  {id:'app-enverif',name:'Enverif',icon:'En',type:'App',tagline:'AI luxury authentication',gateway:'handbag',brand:'Enverif',brandZone:'enverif',color:'#B8860B',users:'124K',rating:'4.8'},
+  {id:'app-rebloom',name:'Rebloom',icon:'RB',type:'App',tagline:'Buy & sell authenticated luxury',gateway:'handbag',brand:'Rebloom',brandZone:'rebloom',color:'#1C1008',users:'187K',rating:'4.6'},
+  {id:'tool-handbag-curator',name:'HandbagXX Curator',icon:'HX',type:'Agent',tagline:'AI luxury market curation',gateway:'handbag',brand:'HandbagXX',brandZone:null,color:'#B8860B',users:null,rating:null},
+  // SneakerXX
+  {id:'app-flashpoint-drops',name:'Flashpoint Drops',icon:'FB',type:'App',tagline:'Release calendar & instant cop',gateway:'sneaker',brand:'Flashpoint',brandZone:'flashpoint',color:'#E84D3A',users:'284K',rating:'4.4'},
+  {id:'tool-sneaker-curator',name:'SneakerXX Curator',icon:'SX',type:'Agent',tagline:'AI sneaker culture curation',gateway:'sneaker',brand:'SneakerXX',brandZone:null,color:'#E84D3A',users:null,rating:null},
+];
+
 /* ────── ALL SECTORS (for sidebar and Hub) ────── */
 const ALL_SECTORS = [
     {key:'adventure',name:'Adventure',icon:'\u26A1',tag:'Sports & Adventure',g:'linear-gradient(135deg,#E85D3A,#FF8C42)'},
@@ -5212,26 +5286,64 @@ function renderFeedCard(item, gw) {
 
 function renderSidebar(gw) {
   const t = gw.theme;
-  let html = `<div class="gw-side">`;
-  html += `<div style="font-size:.7rem;font-weight:700;letter-spacing:.14em;color:${t.muted};text-transform:uppercase;margin-bottom:10px;padding:0 12px">Spaces</div>`;
-  gw.spaces.forEach(s => {
-    html += `<div class="space-item ${s.active?'active':''}" style="color:${s.active?t.text:t.muted}"><div class="space-dot" style="background:${s.color}"></div>${s.name}</div>`;
-  });
+  const gwKey = Object.keys(GATEWAYS).find(k => GATEWAYS[k] === gw);
+  const gwBrands = BRAND_DIRECTORY.filter(b => b.gateway === gwKey);
+  const activeTab = state.brandZoneTab || 'all';
+  const searchTerm = (state.brandZoneSearch || '').toLowerCase();
 
-  if (gw.brandZones) {
-    html += `<div style="font-size:.7rem;font-weight:700;letter-spacing:.14em;color:${t.muted};text-transform:uppercase;margin:18px 12px 10px">Brand Activity</div>`;
-    const gwKey = Object.keys(GATEWAYS).find(k => GATEWAYS[k] === gw);
-    const gwBrands = BRAND_DIRECTORY.filter(b => b.gateway === gwKey);
-    gwBrands.slice(0, 4).forEach(b => {
+  let html = `<div class="gw-side">`;
+
+  // Brand Zones header
+  html += `<div style="padding:0 12px 8px">
+    <div style="font-size:.7rem;font-weight:700;letter-spacing:.14em;color:${t.accent};text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px">
+      <span style="font-size:.85rem">◆</span> BRAND ZONES
+    </div>
+    <div style="position:relative;margin-bottom:10px">
+      <input type="text" placeholder="Search brands..." value="${state.brandZoneSearch||''}" oninput="state.brandZoneSearch=this.value;render()" style="width:100%;box-sizing:border-box;padding:7px 10px 7px 30px;border-radius:8px;border:1px solid ${t.cardBorder};background:${t.cardBg};color:${t.text};font-size:.78rem;outline:none;font-family:${t.bodyFont||'inherit'}"/>
+      <span style="position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:.72rem;color:${t.muted};pointer-events:none">🔍</span>
+    </div>
+    <div style="display:flex;gap:0;border-radius:7px;overflow:hidden;border:1px solid ${t.cardBorder};margin-bottom:6px">
+      ${['all','trending','new'].map(tab => {
+        const label = tab === 'all' ? 'All' : tab === 'trending' ? 'Trending' : 'New';
+        const isActive = activeTab === tab;
+        return `<div onclick="state.brandZoneTab='${tab}';render()" style="flex:1;text-align:center;padding:5px 0;font-size:.68rem;font-weight:${isActive?'700':'500'};cursor:pointer;background:${isActive?t.accent:'transparent'};color:${isActive?'#fff':t.muted};transition:all .15s;letter-spacing:.02em">${label}</div>`;
+      }).join('')}
+    </div>
+  </div>`;
+
+  // Filter brands based on tab and search
+  let filteredBrands = gwBrands;
+  if (activeTab === 'trending') {
+    filteredBrands = gwBrands.filter(b => b.tier === 'Founding Partner' || parseInt(b.followers) > 10);
+  } else if (activeTab === 'new') {
+    filteredBrands = gwBrands.filter(b => b.tier === 'Brand Zone');
+  }
+  if (searchTerm) {
+    filteredBrands = filteredBrands.filter(b => b.name.toLowerCase().includes(searchTerm) || b.tagline.toLowerCase().includes(searchTerm));
+  }
+
+  // Brand cards
+  if (filteredBrands.length > 0) {
+    filteredBrands.forEach(b => {
       const onclick = b.zoneKey ? `onclick="nav('brandZone',{brandZone:'${b.zoneKey}'})"` : '';
-      html += `<div style="padding:8px 12px;border-radius:9px;margin-bottom:3px;cursor:pointer;transition:background .15s" ${onclick} onmouseover="this.style.background='rgba(128,128,128,.08)'" onmouseout="this.style.background='transparent'">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
-          <div style="width:24px;height:24px;border-radius:7px;background:${b.color};display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:800;color:#fff">${b.logo}</div>
-          <span style="font-size:.86rem;font-weight:600;color:${t.text}">${b.name}</span>
+      html += `<div style="margin:0 8px 6px;padding:10px 12px;border-radius:10px;background:${t.cardBg};border:1px solid ${t.cardBorder};cursor:pointer;transition:all .18s" ${onclick} onmouseover="this.style.borderColor='${t.accent}';this.style.boxShadow='0 2px 8px ${t.accent}18'" onmouseout="this.style.borderColor='${t.cardBorder}';this.style.boxShadow='none'">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:5px">
+          <div style="width:30px;height:30px;border-radius:8px;background:${b.color};display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;color:#fff;flex-shrink:0">${b.logo}</div>
+          <div style="min-width:0;overflow:hidden">
+            <div style="font-size:.82rem;font-weight:700;color:${t.text};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.name}</div>
+            <div style="font-size:.66rem;color:${t.muted};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.tagline}</div>
+          </div>
         </div>
-        <div style="font-size:.74rem;color:${t.muted};line-height:1.3;padding-left:32px">${b.recentPost.length > 50 ? b.recentPost.slice(0,50) + '...' : b.recentPost}</div>
+        <div style="font-size:.72rem;color:${t.muted};line-height:1.35;padding-left:39px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.recentPost.length > 55 ? b.recentPost.slice(0,55) + '…' : b.recentPost}</div>
+        <div style="display:flex;align-items:center;gap:10px;padding-left:39px;margin-top:5px">
+          <span style="font-size:.62rem;color:${t.muted}">👥 ${b.followers}</span>
+          ${b.products ? `<span style="font-size:.62rem;color:${t.muted}">📦 ${b.products}</span>` : ''}
+          <span style="font-size:.58rem;padding:2px 6px;border-radius:4px;background:${b.color}18;color:${b.color};font-weight:600">${b.tier}</span>
+        </div>
       </div>`;
     });
+  } else {
+    html += `<div style="padding:20px 12px;text-align:center;font-size:.78rem;color:${t.muted}">No brands found</div>`;
   }
 
   // Info panel
@@ -5255,32 +5367,67 @@ function renderSidebar(gw) {
 
 function renderRightSidebar(gw) {
   const t = gw.theme;
+  const gwKey = Object.keys(GATEWAYS).find(k => GATEWAYS[k] === gw);
+  const gwApps = APP_DIRECTORY.filter(a => a.gateway === gwKey);
+  const activeTab = state.appZoneTab || 'all';
+  const searchTerm = (state.appZoneSearch || '').toLowerCase();
+
   let html = `<div class="gw-right">`;
 
-  // Cross-pollination
-  if (gw.crossContent) {
-    html += `<div class="widget" style="background:${t.cardBg};border:1px solid ${t.cardBorder}">`;
-    html += `<div class="w-title" style="color:${t.muted}">⚡ Cross-Pollination</div>`;
-    gw.crossContent.forEach((c,i) => {
-      html += `<div style="padding:8px 0;${i?'border-top:1px solid '+t.cardBorder:''}">
-        <div style="font-size:.66rem;font-weight:700;color:${c.color};letter-spacing:.06em;margin-bottom:3px">FROM ${c.from.toUpperCase()}</div>
-        <div style="font-size:.8rem;color:${t.muted};line-height:1.4;font-family:${t.bodyFont}">${c.title}</div>
-      </div>`;
-    });
-    html += `</div>`;
+  // Apps & Tools header
+  html += `<div style="padding:0 12px 8px">
+    <div style="font-size:.7rem;font-weight:700;letter-spacing:.14em;color:${t.accent};text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px">
+      <span style="font-size:.85rem">⚙</span> APPS & TOOLS
+    </div>
+    <div style="position:relative;margin-bottom:10px">
+      <input type="text" placeholder="Search apps & tools..." value="${state.appZoneSearch||''}" oninput="state.appZoneSearch=this.value;render()" style="width:100%;box-sizing:border-box;padding:7px 10px 7px 30px;border-radius:8px;border:1px solid ${t.cardBorder};background:${t.cardBg};color:${t.text};font-size:.78rem;outline:none;font-family:${t.bodyFont||'inherit'}"/>
+      <span style="position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:.72rem;color:${t.muted};pointer-events:none">🔍</span>
+    </div>
+    <div style="display:flex;gap:0;border-radius:7px;overflow:hidden;border:1px solid ${t.cardBorder};margin-bottom:6px">
+      ${['all','trending','new'].map(tab => {
+        const label = tab === 'all' ? 'All' : tab === 'trending' ? 'Trending' : 'New';
+        const isActive = activeTab === tab;
+        return `<div onclick="state.appZoneTab='${tab}';render()" style="flex:1;text-align:center;padding:5px 0;font-size:.68rem;font-weight:${isActive?'700':'500'};cursor:pointer;background:${isActive?t.accent:'transparent'};color:${isActive?'#fff':t.muted};transition:all .15s;letter-spacing:.02em">${label}</div>`;
+      }).join('')}
+    </div>
+  </div>`;
+
+  // Filter apps based on tab and search
+  let filteredApps = gwApps;
+  if (activeTab === 'trending') {
+    filteredApps = gwApps.filter(a => a.type === 'App' && a.users && parseInt(a.users) > 100);
+  } else if (activeTab === 'new') {
+    filteredApps = gwApps.filter(a => a.type === 'Tool' || a.type === 'Agent');
+  }
+  if (searchTerm) {
+    filteredApps = filteredApps.filter(a => a.name.toLowerCase().includes(searchTerm) || a.tagline.toLowerCase().includes(searchTerm) || a.brand.toLowerCase().includes(searchTerm));
   }
 
-  // Agents
-  if (gw.agents) {
-    html += `<div class="widget" style="background:${t.cardBg};border:1px solid ${t.cardBorder}">`;
-    html += `<div class="w-title" style="color:${t.muted}">Active Agents</div>`;
-    gw.agents.forEach((a,i) => {
-      html += `<div style="padding:7px 0;${i?'border-top:1px solid '+t.cardBorder:''}">
-        <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px"><span class="green-dot"></span><span style="font-size:.76rem;font-weight:600">${a.name}</span></div>
-        <div style="font-size:.7rem;color:${t.muted}">${a.metric}</div>
+  // App/Tool cards
+  if (filteredApps.length > 0) {
+    filteredApps.forEach(a => {
+      const onclick = a.brandZone ? `onclick="nav('brandZone',{brandZone:'${a.brandZone}'})"` : '';
+      const typeIcon = a.type === 'Agent' ? '🤖' : a.type === 'Tool' ? '🔧' : '📱';
+      const typeBg = a.type === 'Agent' ? '#4ADE8018' : a.type === 'Tool' ? '#F59E0B18' : `${a.color}18`;
+      const typeColor = a.type === 'Agent' ? '#4ADE80' : a.type === 'Tool' ? '#F59E0B' : a.color;
+      html += `<div style="margin:0 8px 6px;padding:10px 12px;border-radius:10px;background:${t.cardBg};border:1px solid ${t.cardBorder};cursor:pointer;transition:all .18s" ${onclick} onmouseover="this.style.borderColor='${t.accent}';this.style.boxShadow='0 2px 8px ${t.accent}18'" onmouseout="this.style.borderColor='${t.cardBorder}';this.style.boxShadow='none'">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:5px">
+          <div style="width:30px;height:30px;border-radius:8px;background:${a.color};display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;color:#fff;flex-shrink:0">${a.icon}</div>
+          <div style="min-width:0;overflow:hidden">
+            <div style="font-size:.82rem;font-weight:700;color:${t.text};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.name}</div>
+            <div style="font-size:.66rem;color:${t.muted};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.tagline}</div>
+          </div>
+        </div>
+        <div style="font-size:.72rem;color:${t.muted};line-height:1.35;padding-left:39px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">by ${a.brand}</div>
+        <div style="display:flex;align-items:center;gap:10px;padding-left:39px;margin-top:5px">
+          ${a.users ? `<span style="font-size:.62rem;color:${t.muted}">👥 ${a.users}</span>` : ''}
+          ${a.rating ? `<span style="font-size:.62rem;color:${t.muted}">⭐ ${a.rating}</span>` : ''}
+          <span style="font-size:.58rem;padding:2px 6px;border-radius:4px;background:${typeBg};color:${typeColor};font-weight:600">${typeIcon} ${a.type}</span>
+        </div>
       </div>`;
     });
-    html += `</div>`;
+  } else {
+    html += `<div style="padding:20px 12px;text-align:center;font-size:.78rem;color:${t.muted}">No apps or tools found</div>`;
   }
 
   html += `</div>`;
@@ -6544,16 +6691,18 @@ function renderGatewayFeed(key) {
   if (state.gwTab === 'Feed' || !gw.tabs) {
     // Community-only feed — filter to community, event, cross types
     const communityItems = (gw.feed||[]).filter(i => i.type !== 'news' && i.type !== 'editorial');
-    let trendHtml = `<div class="trend-row"><span class="trend-label" style="color:${t.muted}">TRENDING</span>`;
-    (gw.trending||[]).forEach(tag => { trendHtml += `<span class="trend-tag" style="background:${t.accent}18;color:${t.accent}">${tag}</span>`; });
-    trendHtml += `</div>`;
+    let spacePills = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">`;
+    (gw.spaces||[]).forEach(s => {
+      spacePills += `<span style="padding:5px 14px;border-radius:20px;font-size:.74rem;font-weight:${s.active?'700':'500'};cursor:pointer;transition:all .15s;background:${s.active?s.color:'transparent'};color:${s.active?'#fff':t.muted};border:1px solid ${s.active?s.color:t.cardBorder}" onmouseover="if(!${!!s.active})this.style.borderColor='${s.color}'" onmouseout="if(!${!!s.active})this.style.borderColor='${t.cardBorder}'">${s.name}</span>`;
+    });
+    spacePills += `</div>`;
     let feedHtml = '';
     communityItems.forEach((item) => {
       feedHtml += renderFeedCard(item, gw);
     });
     tabContent = `<div class="gw-body">
       ${renderSidebar(gw)}
-      <div class="gw-main">${renderComposeBox(gw)}${trendHtml}${feedHtml}</div>
+      <div class="gw-main">${renderComposeBox(gw)}${spacePills}${feedHtml}</div>
       ${renderRightSidebar(gw)}
     </div>`;
   } else if (state.gwTab === 'AI Hub') {
@@ -6595,16 +6744,16 @@ function renderGatewayFinance(key) {
   } else if (state.gwTab === 'Feed' || !state.gwTab) {
     // Standard three-column feed layout — matches all other gateways
     const communityItems = (gw.feed||[]).filter(i => i.type !== 'news' && i.type !== 'editorial');
-    let trendHtml = `<div class="trend-row"><span class="trend-label" style="color:${t.muted}">TRENDING</span>`;
-    ['#FedDecision','#Earnings','#RateCuts','#MacroAlert'].forEach(tag => {
-      trendHtml += `<span class="trend-tag" style="background:${t.accent}18;color:${t.accent}">${tag}</span>`;
+    let spacePills = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">`;
+    (gw.spaces||[]).forEach(s => {
+      spacePills += `<span style="padding:5px 14px;border-radius:20px;font-size:.74rem;font-weight:${s.active?'700':'500'};cursor:pointer;transition:all .15s;background:${s.active?s.color:'transparent'};color:${s.active?'#fff':t.muted};border:1px solid ${s.active?s.color:t.cardBorder}" onmouseover="if(!${!!s.active})this.style.borderColor='${s.color}'" onmouseout="if(!${!!s.active})this.style.borderColor='${t.cardBorder}'">${s.name}</span>`;
     });
-    trendHtml += `</div>`;
+    spacePills += `</div>`;
     let feedHtml = '';
     communityItems.forEach(item => { feedHtml += renderFeedCard(item, gw); });
     tabContent = `<div class="gw-body">
       ${renderSidebar(gw)}
-      <div class="gw-main">${renderComposeBox(gw)}${trendHtml}${feedHtml}</div>
+      <div class="gw-main">${renderComposeBox(gw)}${spacePills}${feedHtml}</div>
       ${renderRightSidebar(gw)}
     </div>`;
   } else {
