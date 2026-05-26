@@ -5780,23 +5780,65 @@ function renderHub() {
   </div>`;
 
   // ── Hub right sidebar ──
-  let hubRightHtml = `<div class="widget light"><div class="w-title" style="color:#aaa">Recent Purchases</div>
-    <div style="display:flex;align-items:center;gap:11px;padding:9px 0;cursor:pointer" onclick="nav('brandDirect')">
-      <div style="width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,#3D2B1F,#2A1F18);display:flex;align-items:center;justify-content:center;font-size:1.1rem">\uD83E\uDD7E</div>
-      <div><div style="font-size:.82rem;font-weight:600">Vertex Comp</div><div style="font-size:.7rem;color:#999">Lithos Sport</div></div>
-      <span class="pill" style="background:rgba(232,77,58,.1);color:#E85D3A;margin-left:auto;font-size:.65rem">ClimbXX</span>
+  // ── Best Of the Network ──
+  const networkFeed = [
+    { gw:'surf', type:'Live', icon:'🔴', title:'Pipeline Masters — Semi-Finals', desc:'Watch the world\'s best surfers battle 15ft Pipeline. Filipe Toledo vs John John Florence up next.', time:'Live Now', live:true },
+    { gw:'climb', type:'Podcast', icon:'🎙️', title:'Summit Stories EP.47 — Alex Honnold', desc:'Free solo legend on risk, fear and his new Patagonia expedition. Hosted by ClimbXX.', time:'3pm Today', live:false },
+    { gw:'stocks', type:'Breaking', icon:'⚡', title:'Fed Interest Rate Announcement', desc:'Federal Reserve decision at 3pm EST. Markets bracing for potential hold. Live analysis on StocksXX.', time:'3pm EST', live:false },
+    { gw:'dress', type:'Live', icon:'🔴', title:'Paris Couture Week — Live Catwalk', desc:'FASHIONXX brings you front row at the Dior Haute Couture show, live from Avenue Montaigne.', time:'Live Now', live:true },
+    { gw:'climb', type:'Drop', icon:'🔥', title:'Lithos Reveal — Vertex Pro 2026', desc:'The next-gen climbing shoe everyone has been waiting for. First look exclusive on ClimbXX.', time:'Dropping in 1hr', live:false },
+    { gw:'ski', type:'Event', icon:'📅', title:'Méribel Season Pass — Early Bird', desc:'Three Valleys unlimited pass at 30% off. Early bird window closes Friday. Book via SkiXX.', time:'Ends Fri', live:false },
+    { gw:null, type:'Deal', icon:'💰', title:'100 New-Gen Laptops from £399', desc:'ComputerXX Deal Drop — curated specs for creators, coders and students. Today only.', time:'Today Only', accent:'#E84D3A', label:'ComputerXX' },
+    { gw:'yoga', type:'Live', icon:'🔴', title:'Morning Flow — 10K Practicing Live', desc:'Join the global morning session with YogaXX. Breathwork focus today with instructor Nadia Lee.', time:'Live Now', live:true },
+    { gw:'goth', type:'Drop', icon:'🔥', title:'Nocturne x Killstar Capsule Collection', desc:'Limited 200-piece dark couture capsule. Preview now, drops midnight. Only on GothXX.', time:'Midnight Drop', live:false },
+    { gw:'currency', type:'Alert', icon:'📊', title:'GBP/USD Hits 6-Month High', desc:'Sterling surges past $1.32 on strong PMI data. CurrencyXX AI Agent flags travel buying opportunity.', time:'2 min ago', live:false },
+    { gw:null, type:'Bookmark', icon:'🔖', title:'UFC 312 — Main Card', desc:'Your bookmarked reminder: Pereira vs Adesanya III. SportsXX coverage starts at 10pm.', time:'Saturday 10pm', accent:'#F59E0B', label:'SportsXX' },
+    { gw:'denim', type:'Event', icon:'📅', title:'Selvedge Masterclass — Tokyo', desc:'DenimXX hosts a live Q&A with Momotaro\'s head artisan. Indigo dyeing deep-dive.', time:'Tomorrow 8am', live:false },
+    { gw:null, type:'Bookmark', icon:'🔖', title:'Ski Season Opener — Val d\'Isère', desc:'Your bookmarked reminder: first lifts of the season. SkiXX live coverage and snow reports.', time:'30 Nov', accent:'#F59E0B', label:'SkiXX' },
+    { gw:'stocks', type:'Alert', icon:'📊', title:'NVIDIA Earnings Beat — +8% After Hours', desc:'Q3 revenue $42B vs $38B expected. AI chip demand accelerating. Full breakdown on StocksXX.', time:'12 min ago', live:false },
+    { gw:'surf', type:'Drop', icon:'🔥', title:'Firewire x Slater — Gamma 2.0', desc:'Kelly Slater\'s new eco board drops exclusively on SurfXX. Recycled EPS core, bio-resin finish.', time:'Tomorrow 9am', live:false },
+  ];
+
+  let hubRightHtml = `<div class="widget light" style="padding:0;overflow:hidden">
+    <div style="padding:14px 16px 10px;border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="width:7px;height:7px;border-radius:50%;background:#EF4444;animation:livePulse 2s ease-in-out infinite"></div>
+        <span style="font-size:.78rem;font-weight:700;color:#1a1a2e;letter-spacing:.03em">Best Of the Network</span>
+      </div>
+      <span style="font-size:.65rem;color:#aaa;font-weight:500">${networkFeed.filter(i=>i.live).length} Live Now</span>
     </div>
-  </div>`;
-  hubRightHtml += `<div class="widget light"><div class="w-title" style="color:#aaa">Cross-Pollination</div>
-    <div style="padding:7px 0;border-bottom:1px solid rgba(0,0,0,.04)"><div style="font-size:.66rem;font-weight:700;color:#8B5CF6;letter-spacing:.06em;margin-bottom:3px">FROM SKIXX</div><div style="font-size:.8rem;color:#666;line-height:1.4">Off-season training for climbers</div></div>
-    <div style="padding:7px 0"><div style="font-size:.66rem;font-weight:700;color:#3B82F6;letter-spacing:.06em;margin-bottom:3px">FROM CURRENCYXX</div><div style="font-size:.8rem;color:#666;line-height:1.4">GBP strength impacts your travel budget</div></div>
-  </div>`;
-  hubRightHtml += `<div class="widget light"><div class="w-title" style="color:#aaa">Active Gateways</div><div style="display:flex;flex-wrap:wrap;gap:7px">`;
-  ['climb','ski','stocks','currency','goth','denim'].forEach(k => {
-    const g = GATEWAYS[k];
-    hubRightHtml += `<span class="pill" style="background:${g.theme.accent}15;color:${g.theme.accent};cursor:pointer" onclick="nav('gateway',{gateway:'${k}'})">${g.name}</span>`;
+    <div style="padding:6px 0;max-height:calc(100vh - 140px);overflow-y:auto">`;
+
+  networkFeed.forEach((item, i) => {
+    const gw = item.gw ? GATEWAYS[item.gw] : null;
+    const accent = gw ? gw.theme.accent : (item.accent || '#E84D3A');
+    const gwLabel = gw ? gw.name : (item.label || 'GENEXXO');
+    const gwClick = gw ? `onclick="nav('gateway',{gateway:'${item.gw}'})"` : '';
+    const isLive = item.live;
+    const typeBg = item.type === 'Live' ? 'rgba(239,68,68,.1)' : item.type === 'Drop' ? 'rgba(249,115,22,.1)' : item.type === 'Breaking' ? 'rgba(239,68,68,.1)' : item.type === 'Bookmark' ? 'rgba(245,158,11,.1)' : item.type === 'Deal' ? 'rgba(232,77,58,.1)' : item.type === 'Alert' ? 'rgba(59,130,246,.1)' : 'rgba(0,0,0,.05)';
+    const typeColor = item.type === 'Live' ? '#EF4444' : item.type === 'Drop' ? '#F97316' : item.type === 'Breaking' ? '#EF4444' : item.type === 'Bookmark' ? '#F59E0B' : item.type === 'Deal' ? '#E84D3A' : item.type === 'Alert' ? '#3B82F6' : '#666';
+
+    hubRightHtml += `
+      <div style="padding:10px 16px;border-bottom:1px solid rgba(0,0,0,.04);cursor:pointer;transition:background .15s${isLive?' ;background:rgba(239,68,68,.02)':''}" ${gwClick} onmouseover="this.style.background='rgba(0,0,0,.03)'" onmouseout="this.style.background='${isLive?'rgba(239,68,68,.02)':'transparent'}'">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
+          <span style="font-size:.6rem;font-weight:700;color:${accent};letter-spacing:.05em">${gwLabel.toUpperCase()}</span>
+          <span style="font-size:.55rem;padding:1px 6px;border-radius:8px;background:${typeBg};color:${typeColor};font-weight:700;letter-spacing:.03em">${item.icon} ${item.type.toUpperCase()}</span>
+          <span style="margin-left:auto;font-size:.6rem;color:${isLive?'#EF4444':'#aaa'};font-weight:${isLive?'700':'500'}">${item.time}</span>
+        </div>
+        <div style="font-size:.78rem;font-weight:700;color:#1a1a2e;line-height:1.3;margin-bottom:3px">${item.title}</div>
+        <div style="font-size:.7rem;color:#888;line-height:1.4">${item.desc}</div>
+      </div>`;
   });
+
   hubRightHtml += `</div></div>`;
+
+  // Add live pulse animation if not already present
+  if (!document.getElementById('best-of-network-styles')) {
+    const style = document.createElement('style');
+    style.id = 'best-of-network-styles';
+    style.textContent = '@keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}';
+    document.head.appendChild(style);
+  }
 
   // ── Determine what to show in the feed area ──
   let feedArea = '';
