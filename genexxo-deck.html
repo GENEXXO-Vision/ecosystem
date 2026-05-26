@@ -4618,7 +4618,9 @@ let _sectorScrollReset = false;
 
 
 function nav(view, opts={}) {
-  if (view === 'gateway' || view === 'hub') state.gwTab = 'Feed';
+  // Preserve gwTab when switching between gateways (e.g., stay in Apps when changing sector)
+  if (view === 'hub') state.gwTab = 'Feed';
+  if (view === 'gateway' && state.view !== 'gateway') state.gwTab = 'Feed';
   if (view === 'brandZone') {
     // Capture where user came from so close button can return them
     if (state.view === 'brandZone') {
@@ -4644,6 +4646,9 @@ function nav(view, opts={}) {
     state.appStoreContext = opts.gateway;
     state.brandStoreScope = 'gateway';
     state.brandStoreContext = opts.gateway;
+    // If current gwTab doesn't exist on the new gateway, fall back to Feed
+    const newGw = GATEWAYS[opts.gateway];
+    if (newGw && newGw.tabs && !newGw.tabs.includes(state.gwTab)) state.gwTab = 'Feed';
   }
   // Update info level tracking - only reopen panel on genuine level change
   let newLevel = view === 'gateway' ? 'gateway' : 'hub';
@@ -4666,10 +4671,13 @@ function setSector(key) {
     state.infoLevel = 'sector';
     state.infoContext = key;
   }
+  // Preserve tabs when switching between sectors (e.g., stay in Apps/Brands store)
+  const preserveHubTab = (state.view === 'hub' && (state.hubTab === 'apps' || state.hubTab === 'brands')) ? state.hubTab : 'home';
+  const preserveGwTab = (state.view === 'hub' && state.sectorFilter) ? state.gwTab : 'Feed';
   state.view = 'hub';
   state.sectorFilter = key;
-  state.hubTab = 'home';
-  state.gwTab = 'Feed';
+  state.hubTab = preserveHubTab;
+  state.gwTab = preserveGwTab;
   state.appDetail = null;
   state.navOrigin = null;
   state.appStoreScope = 'sector';
@@ -4783,9 +4791,21 @@ function handleAppsClick() {
   // Stay in hub frame but keep origin
   state.view = 'hub';
   state.hubTab = 'apps';
-  state.sectorFilter = null;
+  // Keep sectorFilter so sidebar highlights the active sector
+  if (state.appStoreScope !== 'sector') state.sectorFilter = null;
   state.gwTab = 'Feed';
   state.appDetail = null;
+  render();
+  window.scrollTo(0,0);
+}
+
+function closeStore(sectorKey) {
+  state.hubTab = 'home';
+  state.gwTab = 'Feed';
+  state.appDetail = null;
+  if (sectorKey) {
+    state.sectorFilter = sectorKey;
+  }
   render();
   window.scrollTo(0,0);
 }
@@ -5117,7 +5137,8 @@ function handleBrandsClick() {
   }
   state.view = 'hub';
   state.hubTab = 'brands';
-  state.sectorFilter = null;
+  // Keep sectorFilter so sidebar highlights the active sector
+  if (state.brandStoreScope !== 'sector') state.sectorFilter = null;
   state.gwTab = 'Feed';
   state.appDetail = null;
   render();
@@ -5792,7 +5813,7 @@ function renderHub() {
     feedArea = `<div style="flex:1;min-width:0">
       <div style="background:${headerGradient};padding:${scope==='gateway'&&ctx?'18px 36px 24px':'28px 36px 24px'};margin-bottom:0;position:relative">
         ${scope==='gateway'&&ctx ? `<div style="margin-bottom:14px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.7);padding:5px 10px;border-radius:7px;background:rgba(255,255,255,.12)" onclick="nav('gateway',{gateway:'${ctx}'})">← ${GATEWAYS[ctx]?.name}</div>` : ''}
-        ${(() => { let _xClick = scope==='gateway'&&ctx ? "nav('gateway',{gateway:'"+ctx+"'})" : scope==='sector'&&ctx ? "setSector('"+ctx+"')" : "nav('hub')"; return `<div style="position:absolute;top:14px;right:18px;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;color:rgba(255,255,255,.85);transition:background .15s" onclick="${_xClick}" onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'" title="Close">✕</div>`; })()}
+        ${(() => { let _xClick = scope==='gateway'&&ctx ? "nav('gateway',{gateway:'"+ctx+"'})" : scope==='sector'&&ctx ? "closeStore('"+ctx+"')" : "nav('hub')"; return `<div style="position:absolute;top:14px;right:18px;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;color:rgba(255,255,255,.85);transition:background .15s" onclick="${_xClick}" onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'" title="Close">✕</div>`; })()}
         <div style="display:flex;align-items:center;gap:14px">
           <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.3rem">📱</div>
           <div>
@@ -5816,7 +5837,7 @@ function renderHub() {
     feedArea = `<div style="flex:1;min-width:0">
       <div style="background:${headerGradient};padding:${scope==='gateway'&&ctx?'18px 36px 24px':'28px 36px 24px'};margin-bottom:0;position:relative">
         ${scope==='gateway'&&ctx ? `<div style="margin-bottom:14px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.7);padding:5px 10px;border-radius:7px;background:rgba(255,255,255,.12)" onclick="nav('gateway',{gateway:'${ctx}'})">← ${GATEWAYS[ctx]?.name}</div>` : ''}
-        ${(() => { let _xClick = scope==='gateway'&&ctx ? "nav('gateway',{gateway:'"+ctx+"'})" : scope==='sector'&&ctx ? "setSector('"+ctx+"')" : "nav('hub')"; return `<div style="position:absolute;top:14px;right:18px;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;color:rgba(255,255,255,.85);transition:background .15s" onclick="${_xClick}" onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'" title="Close">✕</div>`; })()}
+        ${(() => { let _xClick = scope==='gateway'&&ctx ? "nav('gateway',{gateway:'"+ctx+"'})" : scope==='sector'&&ctx ? "closeStore('"+ctx+"')" : "nav('hub')"; return `<div style="position:absolute;top:14px;right:18px;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;color:rgba(255,255,255,.85);transition:background .15s" onclick="${_xClick}" onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'" title="Close">✕</div>`; })()}
         <div style="display:flex;align-items:center;gap:14px">
           <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.3rem">🏪</div>
           <div>
