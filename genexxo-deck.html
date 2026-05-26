@@ -592,9 +592,49 @@ const SECTORS = {
     stats:{ members:'1.34M', brands:'5,100+', agents:'320' },
     deepGateways:['climb','ski','surf','cycle','sail'],
     moreGateways:[
-      {name:'SwimXX',emoji:'\uD83C\uDFCA',domain:'swimxx.com'},{name:'HikeXX',emoji:'\uD83E\uDD7E',domain:'hikexx.com'},
-      {name:'GlideXX',emoji:'\uD83E\uDE82',domain:'glidexx.com'},{name:'KayakXX',emoji:'\uD83D\uDEF6',domain:'kayakxx.com'},
-      {name:'ScubaXX',emoji:'\uD83E\uDD3F',domain:'scubaxx.com'},
+      // WATER
+      {name:'FishingXX',emoji:'🎣',domain:'fishingxx.com'},{name:'RaftXX',emoji:'🛶',domain:'raftxx.com'},
+      {name:'KiteXX',emoji:'🪁',domain:'kitexx.com'},{name:'FoilXX',emoji:'🏄',domain:'foilxx.com'},
+      {name:'WakeXX',emoji:'🏄‍♂️',domain:'wakexx.com'},{name:'JetSkiXX',emoji:'🚤',domain:'jetskixx.com'},
+      {name:'BoatXX',emoji:'⛵',domain:'boatxx.com'},{name:'WindsurfXX',emoji:'🌊',domain:'windsurfxx.com'},
+      {name:'PaddleboardXX',emoji:'🏄‍♀️',domain:'paddleboardxx.com'},{name:'CanoeXX',emoji:'🛶',domain:'canoexx.com'},
+      {name:'RowXX',emoji:'🚣',domain:'rowxx.com'},{name:'YachtXX',emoji:'🛥️',domain:'yachtxx.com'},
+      {name:'BodyboardXX',emoji:'🌊',domain:'bodyboardxx.com'},{name:'SpearfishingXX',emoji:'🤿',domain:'spearfishingxx.com'},
+      {name:'WingfoilXX',emoji:'🪁',domain:'wingfoilxx.com'},
+      // SNOW & ICE
+      {name:'SnowboardXX',emoji:'🏂',domain:'snowboardxx.com'},{name:'HeliskiXX',emoji:'🚁',domain:'heliskixx.com'},
+      {name:'IceSkateXX',emoji:'⛸️',domain:'iceskatexx.com'},{name:'SnowmobileXX',emoji:'🏔️',domain:'snowmobilexx.com'},
+      {name:'SkijumpXX',emoji:'⛷️',domain:'skijumpxx.com'},{name:'SnowkiteXX',emoji:'🪁',domain:'snowkitexx.com'},
+      // AIR
+      {name:'SkydiveXX',emoji:'🪂',domain:'skydivexx.com'},{name:'ParaglideXX',emoji:'🪂',domain:'paraglidexx.com'},
+      {name:'BalloonXX',emoji:'🎈',domain:'balloonxx.com'},{name:'ZiplineXX',emoji:'⚡',domain:'ziplinexx.com'},
+      {name:'BasejumpXX',emoji:'🦅',domain:'basejumpxx.com'},{name:'WingsuitXX',emoji:'🦇',domain:'wingsuitxx.com'},
+      {name:'HangglideXX',emoji:'🪂',domain:'hangglidexx.com'},{name:'MicrolightXX',emoji:'✈️',domain:'microlightxx.com'},
+      // CLIMBING & HEIGHTS
+      {name:'BoulderXX',emoji:'🪨',domain:'boulderxx.com'},{name:'CanyonXX',emoji:'🏜️',domain:'canyonxx.com'},
+      {name:'SlacklineXX',emoji:'🤸',domain:'slacklinexx.com'},{name:'ViaFerrataXX',emoji:'⛰️',domain:'viaferrataxx.com'},
+      // LAND & TRAIL
+      {name:'TrekXX',emoji:'🥾',domain:'trekxx.com'},{name:'TrailXX',emoji:'🏃',domain:'trailxx.com'},
+      {name:'CampXX',emoji:'⛺',domain:'campxx.com'},{name:'ParkourXX',emoji:'🤸‍♂️',domain:'parkourxx.com'},
+      {name:'OrienteeringXX',emoji:'🧭',domain:'orienteeringxx.com'},{name:'GeocacheXX',emoji:'📍',domain:'geocachexx.com'},
+      {name:'BushcraftXX',emoji:'🔥',domain:'bushcraftxx.com'},
+      // EQUESTRIAN
+      {name:'HorseXX',emoji:'🐎',domain:'horsexx.com'},{name:'RodeoXX',emoji:'🤠',domain:'rodeoxx.com'},
+      {name:'PoloXX',emoji:'🏇',domain:'poloxx.com'},
+      // COMBAT & MARTIAL ARTS
+      {name:'BoxingXX',emoji:'🥊',domain:'boxingxx.com'},{name:'MuayThaiXX',emoji:'🥊',domain:'muaythaixx.com'},
+      {name:'JiuJitsuXX',emoji:'🥋',domain:'jiujitsuxx.com'},{name:'WrestlingXX',emoji:'🤼',domain:'wrestlingxx.com'},
+      {name:'KickboxingXX',emoji:'🦵',domain:'kickboxingxx.com'},{name:'JudoXX',emoji:'🥋',domain:'judoxx.com'},
+      {name:'KarateXX',emoji:'🥋',domain:'karatexx.com'},{name:'TaekwondoXX',emoji:'🥋',domain:'taekwondoxx.com'},
+      {name:'KungFuXX',emoji:'🐉',domain:'kungfuxx.com'},{name:'KravMagaXX',emoji:'💪',domain:'kravmagaxx.com'},
+      {name:'FencingXX',emoji:'🤺',domain:'fencingxx.com'},{name:'SumoXX',emoji:'🏋️',domain:'sumoxx.com'},
+      // MOTOR & WHEELS
+      {name:'DirtbikeXX',emoji:'🏍️',domain:'dirtbikexx.com'},{name:'ATVXX',emoji:'🏎️',domain:'atvxx.com'},
+      {name:'PowerboatXX',emoji:'🚤',domain:'powerboatxx.com'},
+      // MISC ADVENTURE
+      {name:'BungeeXX',emoji:'🪢',domain:'bungeexx.com'},{name:'CaveXX',emoji:'🦇',domain:'cavexx.com'},
+      {name:'ObstacleXX',emoji:'🏅',domain:'obstaclexx.com'},{name:'XtremeXX',emoji:'⚡',domain:'xtremexx.com'},
+      {name:'CliffjumpXX',emoji:'🧗',domain:'cliffjumpxx.com'},{name:'SandboardXX',emoji:'🏜️',domain:'sandboardxx.com'},
     ],
     feed:[
       // SurfXX — image post
@@ -5568,8 +5608,9 @@ function renderHub() {
   // ── Build sector right sidebar ──
   let sectorRightHtml = '';
   if (s) {
-    sectorRightHtml += `<div class="widget light">
-      <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;color:${s.color};text-transform:uppercase;margin-bottom:12px;background:${s.color}12;border-radius:8px;padding:8px 12px;border-left:3px solid ${s.color}">Gateways</div>`;
+    sectorRightHtml += `<div class="widget light" style="padding-bottom:0;overflow:hidden">
+      <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;color:${s.color};text-transform:uppercase;margin-bottom:12px;background:${s.color}12;border-radius:8px;padding:8px 12px;border-left:3px solid ${s.color}">Gateways</div>
+      <div style="max-height:460px;overflow-y:auto;-webkit-mask-image:linear-gradient(to bottom,#000 85%,transparent 100%);mask-image:linear-gradient(to bottom,#000 85%,transparent 100%);padding-bottom:16px">`;
     s.deepGateways.forEach(k => {
       const g = GATEWAYS[k];
       sectorRightHtml += `<div class="sh-gw-item" onclick="nav('gateway',{gateway:'${k}'})">
@@ -5579,14 +5620,7 @@ function renderHub() {
     s.moreGateways.forEach(mg => {
       sectorRightHtml += `<div class="sh-gw-item" style="opacity:.5"><span class="emoji">${mg.emoji}</span><span class="name">${mg.name}</span></div>`;
     });
-    sectorRightHtml += `</div>`;
-    sectorRightHtml += `<div class="widget light">
-      <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;color:#aaa;text-transform:uppercase;margin-bottom:12px">Sector Spaces</div>
-      <div class="sh-gw-item"><span class="space-dot" style="background:${s.color}"></span><span class="name">General</span></div>
-      <div class="sh-gw-item"><span class="space-dot" style="background:#EF4444"></span><span class="name">${sf==='adventure'?'Injury Recovery':sf==='finance'?'Market Outlook':sf==='education'?'Study Groups':sf==='career'?'Salary Insights':sf==='health'?'Patient Stories':sf==='hobby'?'Show & Tell':sf==='travel'?'Trip Reports':sf==='sports'?'Fan Debates':sf==='beauty'?'Glow Routines':sf==='gift'?'Gift Ideas':sf==='food'?'Restaurant Reviews':sf==='living'?'Room Reveals':sf==='parenting'?'Sleep Support':sf==='pet'?'Vet Advice':sf==='leisure'?'Event Listings':sf==='tourism'?'Trip Reports':sf==='culture'?'Oral Histories':sf==='media'?'Watch Party':sf==='gaming'?'High Rollers':sf==='realestate'?'Market Watch':sf==='consumer'?'Deal Alerts':sf==='business'?'Pitch Deck Lab':sf==='tech'?'Ship It':sf==='law'?'Case Watch':sf==='spirituality'?'Interfaith Circle':sf==='environment'?'Action Hub':sf==='issues'?'Solution Lab':sf==='nonprofit'?'Impact Stories':sf==='automotive'?'Garage Talk':sf==='transportation'?'Route Planner':sf==='aerospace'?'Mission Control':sf==='construction'?'Site Manager':sf==='energy'?'Grid Monitor':sf==='agriculture'?'Crop Watch':sf==='industrial'?'Shop Floor':sf==='materials'?'Commodity Desk':sf==='chemical'?'Lab Bench':sf==='wellness'?'Nutrition & Diet':'Style Advice'}</span></div>
-      <div class="sh-gw-item"><span class="space-dot" style="background:#3B82F6"></span><span class="name">${sf==='adventure'?'Gear Tech':sf==='finance'?'Portfolio Strategy':sf==='education'?'Research & Papers':sf==='career'?'Career Transitions':sf==='health'?'Treatment Updates':sf==='hobby'?'Gear & Materials':sf==='travel'?'Flight Deals':sf==='sports'?'Transfer Rumours':sf==='beauty'?'Product Reviews':sf==='gift'?'Occasion Planner':sf==='food'?'Recipe Exchange':sf==='living'?'Renovation Diaries':sf==='parenting'?'Milestone Tracker':sf==='pet'?'Conservation Watch':sf==='leisure'?'Table Talk':sf==='tourism'?'Flight Deals':sf==='culture'?'Language Exchange':sf==='media'?'Pitch Room':sf==='gaming'?'Tournament Hub':sf==='realestate'?'Planning Alerts':sf==='consumer'?'Cashback Club':sf==='business'?'Founder Stories':sf==='tech'?'Open Source':sf==='law'?'Contract Clinic':sf==='spirituality'?'Daily Practice':sf==='environment'?'Good News Feed':sf==='issues'?'Fact Check Desk':sf==='nonprofit'?'Grant Finder':sf==='automotive'?'EV Charging Map':sf==='transportation'?'Freight Exchange':sf==='aerospace'?'Threat Intel':sf==='construction'?'Trade Board':sf==='energy'?'Carbon Tracker':sf==='agriculture'?'Market Prices':sf==='industrial'?'Parts Finder':sf==='materials'?'Price Charts':sf==='chemical'?'MSDS Vault':sf==='wellness'?'Sleep & Recovery':'Sustainable Fashion'}</span></div>
-      <div class="sh-gw-item"><span class="space-dot" style="background:#F59E0B"></span><span class="name">${sf==='adventure'?'Travel & Trips':sf==='finance'?'Beginner Q&A':sf==='education'?'Exam Prep':sf==='career'?'Interview Prep':sf==='health'?'Wearables & Data':sf==='hobby'?'Beginner Corner':sf==='travel'?'Hidden Gems':sf==='sports'?'Fantasy & Stats':sf==='beauty'?'K-Beauty Lab':sf==='gift'?'Handmade & DIY':sf==='food'?'Tasting Notes':sf==='living'?'Plant Corner':sf==='parenting'?'Parent Hacks':sf==='pet'?'Breed Corner':sf==='leisure'?'Behind the Scenes':sf==='tourism'?'Hotel Reviews':sf==='culture'?'Diaspora Stories':sf==='media'?'Newsroom':sf==='gaming'?'Retro Corner':sf==='realestate'?'Landlord Lounge':sf==='consumer'?'Review Board':sf==='business'?'Market Intel':sf==='tech'?'Privacy & Ethics':sf==='law'?'Regulation Radar':sf==='spirituality'?'Sacred Texts':sf==='environment'?'River Watch':sf==='issues'?'Policy Tracker':sf==='nonprofit'?'Volunteer Board':sf==='automotive'?'Track Days':sf==='transportation'?'Fleet Dashboard':sf==='aerospace'?'Launch Tracker':sf==='construction'?'Blueprint Hub':sf==='energy'?'Price Index':sf==='agriculture'?'Farm Forum':sf==='industrial'?'Maintenance Log':sf==='materials'?'Supply Index':sf==='chemical'?'Reaction Forum':sf==='wellness'?'Mindfulness & Stress':'Archive & Vintage'}</span></div>
-    </div>`;
+    sectorRightHtml += `</div></div>`;
   }
 
   // ── Hub algorithmic feed ──
