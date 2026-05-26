@@ -603,7 +603,7 @@ const SECTORS = {
       {name:'WingfoilXX',emoji:'🪁',domain:'wingfoilxx.com'},
       // SNOW & ICE
       {name:'SnowboardXX',emoji:'🏂',domain:'snowboardxx.com'},{name:'HeliskiXX',emoji:'🚁',domain:'heliskixx.com'},
-      {name:'IceSkateXX',emoji:'⛸️',domain:'iceskatexx.com'},{name:'SnowmobileXX',emoji:'🏔️',domain:'snowmobilexx.com'},
+      {name:'SnowmobileXX',emoji:'🏔️',domain:'snowmobilexx.com'},
       {name:'SkijumpXX',emoji:'⛷️',domain:'skijumpxx.com'},{name:'SnowkiteXX',emoji:'🪁',domain:'snowkitexx.com'},
       // AIR
       {name:'SkydiveXX',emoji:'🪂',domain:'skydivexx.com'},{name:'ParaglideXX',emoji:'🪂',domain:'paraglidexx.com'},
@@ -618,16 +618,6 @@ const SECTORS = {
       {name:'CampXX',emoji:'⛺',domain:'campxx.com'},{name:'ParkourXX',emoji:'🤸‍♂️',domain:'parkourxx.com'},
       {name:'OrienteeringXX',emoji:'🧭',domain:'orienteeringxx.com'},{name:'GeocacheXX',emoji:'📍',domain:'geocachexx.com'},
       {name:'BushcraftXX',emoji:'🔥',domain:'bushcraftxx.com'},
-      // EQUESTRIAN
-      {name:'HorseXX',emoji:'🐎',domain:'horsexx.com'},{name:'RodeoXX',emoji:'🤠',domain:'rodeoxx.com'},
-      {name:'PoloXX',emoji:'🏇',domain:'poloxx.com'},
-      // COMBAT & MARTIAL ARTS
-      {name:'BoxingXX',emoji:'🥊',domain:'boxingxx.com'},{name:'MuayThaiXX',emoji:'🥊',domain:'muaythaixx.com'},
-      {name:'JiuJitsuXX',emoji:'🥋',domain:'jiujitsuxx.com'},{name:'WrestlingXX',emoji:'🤼',domain:'wrestlingxx.com'},
-      {name:'KickboxingXX',emoji:'🦵',domain:'kickboxingxx.com'},{name:'JudoXX',emoji:'🥋',domain:'judoxx.com'},
-      {name:'KarateXX',emoji:'🥋',domain:'karatexx.com'},{name:'TaekwondoXX',emoji:'🥋',domain:'taekwondoxx.com'},
-      {name:'KungFuXX',emoji:'🐉',domain:'kungfuxx.com'},{name:'KravMagaXX',emoji:'💪',domain:'kravmagaxx.com'},
-      {name:'FencingXX',emoji:'🤺',domain:'fencingxx.com'},{name:'SumoXX',emoji:'🏋️',domain:'sumoxx.com'},
       // MOTOR & WHEELS
       {name:'DirtbikeXX',emoji:'🏍️',domain:'dirtbikexx.com'},{name:'ATVXX',emoji:'🏎️',domain:'atvxx.com'},
       {name:'PowerboatXX',emoji:'🚤',domain:'powerboatxx.com'},
@@ -1967,7 +1957,7 @@ const GATEWAYS_ADVENTURE = {
       {author:'@ocean_anna',avatar:'linear-gradient(135deg,#16A34A,#15803D)',time:'5h ago',text:'Bali surf trip complete. Uluwatu at 6am with nobody out, Padang Padang at high tide, Keramas for the reef break experience. 14 days, 11 sessions.'},
     ],
     crossContent:[{from:'SkiXX',color:'#8B5CF6',title:'Off-season cross-training for big wave surfers'},{from:'ClimbXX',color:'#E85D3A',title:'Mental preparation: what climbers and surfers have in common'}],
-    tabs:['Feed','AI Hub','Wave Reports','Travel'],
+    tabs:['Feed','AI Hub','Business','Wave Reports','Travel'],
   },
 
   cycle: {
@@ -2010,7 +2000,24 @@ const GATEWAYS_ADVENTURE = {
       {author:'@gravel_grace',avatar:'linear-gradient(135deg,#D97706,#B45309)',time:'4h ago',text:'Bikepacking the Pyrenees: 8 days, 640km, 18,000m of climbing. No power meter, no Strava, no targets. Just riding. Highly recommend.'},
     ],
     crossContent:[{from:'SkiXX',color:'#8B5CF6',title:'Off-season cross-training: how ProLeague cyclists use ski touring'},{from:'ClimbXX',color:'#E85D3A',title:'The mental overlap between elite climbing and professional cycling'}],
-    tabs:['Feed','AI Hub','Race Reports','Training'],
+    tabs:['Feed','AI Hub','Business','Race Reports','Training'],
+    businesses:[
+      // Tier 3 — Brand Zone
+      {slug:'your-company',name:'Your Company',tier:3,tagline:'Your company tagline here',category:'Components & tech',location:'Your Location',logoColor:'#F5C400',logoInitials:'YC',verified:true,activity:{type:'LAUNCH',age:'3h',text:'Your latest product launch or announcement goes here'},stats:{followers:'42.1K',content:'890',products:'124'}},
+      {slug:'your-company',name:'Your Company',tier:3,tagline:'Your company tagline here',category:'Apparel & kit',location:'Your Location',logoColor:'#CC0000',logoInitials:'YC',verified:true,activity:{type:'PARTNER',age:'6h',text:'Your latest partnership or collaboration goes here'},stats:{followers:'28.4K',content:'560',products:'34'}},
+      {slug:'your-company',name:'Your Company',tier:3,tagline:'Your company tagline here',category:'Frame builders',location:'Your Location',logoColor:'#2563EB',logoInitials:'YC',verified:true,activity:{type:'LAUNCH',age:'1d',text:'Your latest news or product drop goes here'},stats:{followers:'67.8K',content:'1,240',products:'89'}},
+      // Tier 2 — Claimed & verified
+      {slug:'your-company',name:'Your Company',tier:2,tagline:'Your company tagline here',category:'Frame builders',location:'Your Location',logoColor:'#7C3AED',logoInitials:'YC',verified:true,activity:{type:'RFQ',age:'14m',text:'Your latest request for quote or enquiry goes here'},stats:{followers:'12.4K',content:'234',products:'12'}},
+      {slug:'your-company',name:'Your Company',tier:2,tagline:'Your company tagline here',category:'Manufacturers',location:'Your Location',logoColor:'#059669',logoInitials:'YC',verified:true,activity:{type:'EVENT',age:'2h',text:'Your upcoming event or demo day goes here'},stats:{followers:'8.1K',content:'156',products:'8'}},
+      {slug:'your-company',name:'Your Company',tier:2,tagline:'Your company tagline here',category:'Software & data',location:'Your Location',logoColor:'#0891B2',logoInitials:'YC',verified:true,activity:{type:'HIRING',age:'4h',text:'Your latest job opening or hiring post goes here'},stats:{followers:'5.2K',content:'89',products:'3'}},
+      {slug:'your-company',name:'Your Company',tier:2,tagline:'Your company tagline here',category:'Paint & finish',location:'Your Location',logoColor:'#DC2626',logoInitials:'YC',verified:true,activity:{type:'LAUNCH',age:'8h',text:'Your latest product or service launch goes here'},stats:{followers:'9.8K',content:'445',products:'45'}},
+      {slug:'your-company',name:'Your Company',tier:2,tagline:'Your company tagline here',category:'Shops',location:'Your Location',logoColor:'#16A34A',logoInitials:'YC',verified:true,activity:{type:'EVENT',age:'5h',text:'Your community event or social gathering goes here'},stats:{followers:'3.4K',content:'78',products:'0'}},
+      {slug:'your-company',name:'Your Company',tier:2,tagline:'Your company tagline here',category:'Components & tech',location:'Your Location',logoColor:'#9333EA',logoInitials:'YC',verified:true,activity:{type:'RFQ',age:'1h',text:'Your supplier request or procurement need goes here'},stats:{followers:'15.6K',content:'312',products:'28'}},
+      // Tier 1 — Listed (unclaimed)
+      {slug:'your-company',name:'Your Company',tier:1,tagline:'Your company tagline here',category:'Shops',location:'Your Location',logoColor:'#6B7280',logoInitials:'YC',verified:false,activity:null,stats:null},
+      {slug:'your-company',name:'Your Company',tier:1,tagline:'Your company tagline here',category:'Logistics',location:'Your Location',logoColor:'#6B7280',logoInitials:'YC',verified:false,activity:null,stats:null},
+      {slug:'your-company',name:'Your Company',tier:1,tagline:'Your company tagline here',category:'Events',location:'Your Location',logoColor:'#6B7280',logoInitials:'YC',verified:false,activity:null,stats:null},
+    ],
   },
 
   sail: {
@@ -2053,7 +2060,7 @@ const GATEWAYS_ADVENTURE = {
       {author:'@regatta_roger',avatar:'linear-gradient(135deg,#1B3A6B,#0A1628)',time:'5h ago',text:'Cowes Week results in. Our J/70 finished second in class after six days of racing. The Solent delivered everything.'},
     ],
     crossContent:[{from:'SkiXX',color:'#8B5CF6',title:'Mental fortitude: solo ocean passages vs ski mountaineering'},{from:'SurfXX',color:'#0066CC',title:'Reading ocean conditions \u2014 what surfers and sailors see differently'}],
-    tabs:['Feed','AI Hub','Race Reports','Weather'],
+    tabs:['Feed','AI Hub','Business','Race Reports','Weather'],
   },
 
   climb: {
@@ -2087,7 +2094,7 @@ const GATEWAYS_ADVENTURE = {
         {bg:'linear-gradient(135deg,#1E3A5F,#0B0F1A)',emoji:'\u26F0\uFE0F',url:'https://images.unsplash.com/photo-1507034589631-9433cc6bc453?w=500&h=300&fit=crop&q=80',tag:'Routes \u00B7 Community',title:'Top 50 Bouldering Problems in Europe'},
       ],
     },
-    tabs:['Feed','AI Hub','Editorial','Routes'],
+    tabs:['Feed','AI Hub','Business','Editorial','Routes'],
   },
 
   ski: {
@@ -2120,7 +2127,7 @@ const GATEWAYS_ADVENTURE = {
         {bg:'linear-gradient(135deg,#1E3A5F,#0B0F1A)',emoji:'\uD83C\uDFD4\uFE0F',url:'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=500&h=300&fit=crop&q=80',tag:'Backcountry',title:'Chamonix \u2014 80cm Overnight Powder Report'},
       ],
     },
-    tabs:['Feed','AI Hub','Editorial','Resorts'],
+    tabs:['Feed','AI Hub','Business','Editorial','Resorts'],
     destinations:['Méribel','Chamonix','Verbier','Val d\'Isère','St Anton','Zermatt'],
     utility:{
       'Méribel':[
@@ -4650,7 +4657,7 @@ const SECTOR_GATEWAYS = {
 /* ═══════════════════════════════════════════════════════════
    ██████  STATE  ██████
    ═══════════════════════════════════════════════════════════ */
-let state = { view:'hub', sector:null, gateway:null, brandZone:null, gwTab:'Feed', bzTab:'Feed', bzProdFilter:'All', bzProductDetail:null, selectedDest:'Méribel', tradePlatform:0, appStoreScope:'hub', appStoreContext:null, appDetail:null, hubTab:'home', sectorFilter:null, brandStoreScope:'hub', brandStoreContext:null, navOrigin:null, showProfile:false, profileTab:'posts', favourites:['climb'], activeWalletApp:null, appStoreTab:'destination', showSidebarInfo:true, infoLevel:'hub', infoContext:null, showAIHost:false };
+let state = { view:'hub', sector:null, gateway:null, brandZone:null, gwTab:'Feed', bzTab:'Feed', bzProdFilter:'All', bzProductDetail:null, selectedDest:'Méribel', tradePlatform:0, appStoreScope:'hub', appStoreContext:null, appDetail:null, hubTab:'home', sectorFilter:null, brandStoreScope:'hub', brandStoreContext:null, navOrigin:null, showProfile:false, profileTab:'posts', favourites:['climb'], activeWalletApp:null, appStoreTab:'destination', showSidebarInfo:true, infoLevel:'hub', infoContext:null, showAIHost:false, bizFilter:'All' };
 let wallet = { ski:['Ski Pass','Piste Map','Snow Report'], stocks:['Inteq','Charterly'] };
 let purchaseState = 'buy'; // buy | confirm
 let _sectorScrollTop = 0;
@@ -4665,6 +4672,8 @@ function nav(view, opts={}) {
     // Capture where user came from so close button can return them
     if (state.view === 'brandZone') {
       // Navigating between brand zones (prev/next) — keep existing origin
+    } else if (state.view === 'gateway' && state.gwTab === 'Business') {
+      state.brandZoneOrigin = { type:'business', key:state.gateway };
     } else if (state.view === 'gateway' && state.gateway) {
       state.brandZoneOrigin = { type:'gateway', key:state.gateway };
     } else if (state.view === 'hub' && state.hubTab === 'brands') {
@@ -4760,6 +4769,13 @@ function closeBrandZone() {
   if (!o) { nav('hub'); return; }
   if (o.type === 'gateway') {
     nav('gateway', { gateway: o.key });
+  } else if (o.type === 'business') {
+    state.view = 'gateway';
+    state.gateway = o.key;
+    state.gwTab = 'Business';
+    state.appDetail = null;
+    render();
+    window.scrollTo(0,0);
   } else if (o.type === 'brands') {
     state.brandStoreScope = o.brandStoreScope || 'hub';
     state.brandStoreContext = o.brandStoreContext || null;
@@ -6259,6 +6275,269 @@ function renderTradeTab(gw, key) {
   </div>`;
 }
 
+function renderBusinessTab(gw, key) {
+  const t = gw.theme;
+  const isDark = isGatewayDark(t);
+  const accent = t.accent;
+  const defaultBusinesses = [
+    {slug:'your-company',name:'Your Company',tier:3,tagline:'Your company tagline here',category:'Products & equipment',location:'Your Location',logoColor:accent,logoInitials:'YC',verified:true,activity:{type:'LAUNCH',age:'3h',text:'Your latest product launch or announcement goes here'},stats:{followers:'42.1K',content:'890',products:'124'}},
+    {slug:'your-company',name:'Your Company',tier:3,tagline:'Your company tagline here',category:'Apparel & kit',location:'Your Location',logoColor:accent+'99',logoInitials:'YC',verified:true,activity:{type:'PARTNER',age:'6h',text:'Your latest partnership or collaboration goes here'},stats:{followers:'28.4K',content:'560',products:'34'}},
+    {slug:'your-company',name:'Your Company',tier:3,tagline:'Your company tagline here',category:'Services',location:'Your Location',logoColor:accent+'cc',logoInitials:'YC',verified:true,activity:{type:'LAUNCH',age:'1d',text:'Your latest news or product drop goes here'},stats:{followers:'67.8K',content:'1,240',products:'89'}},
+    {slug:'your-company',name:'Your Company',tier:2,tagline:'Your company tagline here',category:'Products & equipment',location:'Your Location',logoColor:'#7C3AED',logoInitials:'YC',verified:true,activity:{type:'RFQ',age:'14m',text:'Your latest request for quote or enquiry goes here'},stats:{followers:'12.4K',content:'234',products:'12'}},
+    {slug:'your-company',name:'Your Company',tier:2,tagline:'Your company tagline here',category:'Manufacturers',location:'Your Location',logoColor:'#059669',logoInitials:'YC',verified:true,activity:{type:'EVENT',age:'2h',text:'Your upcoming event or demo day goes here'},stats:{followers:'8.1K',content:'156',products:'8'}},
+    {slug:'your-company',name:'Your Company',tier:2,tagline:'Your company tagline here',category:'Software & data',location:'Your Location',logoColor:'#0891B2',logoInitials:'YC',verified:true,activity:{type:'HIRING',age:'4h',text:'Your latest job opening or hiring post goes here'},stats:{followers:'5.2K',content:'89',products:'3'}},
+    {slug:'your-company',name:'Your Company',tier:2,tagline:'Your company tagline here',category:'Services',location:'Your Location',logoColor:'#DC2626',logoInitials:'YC',verified:true,activity:{type:'LAUNCH',age:'8h',text:'Your latest product or service launch goes here'},stats:{followers:'9.8K',content:'445',products:'45'}},
+    {slug:'your-company',name:'Your Company',tier:2,tagline:'Your company tagline here',category:'Shops & retail',location:'Your Location',logoColor:'#16A34A',logoInitials:'YC',verified:true,activity:{type:'EVENT',age:'5h',text:'Your community event or social gathering goes here'},stats:{followers:'3.4K',content:'78',products:'0'}},
+    {slug:'your-company',name:'Your Company',tier:2,tagline:'Your company tagline here',category:'Apparel & kit',location:'Your Location',logoColor:'#9333EA',logoInitials:'YC',verified:true,activity:{type:'RFQ',age:'1h',text:'Your supplier request or procurement need goes here'},stats:{followers:'15.6K',content:'312',products:'28'}},
+    {slug:'your-company',name:'Your Company',tier:1,tagline:'Your company tagline here',category:'Shops & retail',location:'Your Location',logoColor:'#6B7280',logoInitials:'YC',verified:false,activity:null,stats:null},
+    {slug:'your-company',name:'Your Company',tier:1,tagline:'Your company tagline here',category:'Logistics',location:'Your Location',logoColor:'#6B7280',logoInitials:'YC',verified:false,activity:null,stats:null},
+    {slug:'your-company',name:'Your Company',tier:1,tagline:'Your company tagline here',category:'Events',location:'Your Location',logoColor:'#6B7280',logoInitials:'YC',verified:false,activity:null,stats:null},
+  ];
+  const businesses = gw.businesses || defaultBusinesses;
+  const categories = [...new Set(businesses.map(b => b.category))];
+  const activeFilter = state.bizFilter || 'All';
+  const filtered = activeFilter === 'All' ? businesses.slice() : businesses.filter(b => b.category === activeFilter);
+  filtered.sort((a,b) => b.tier - a.tier);
+
+  const cardBg = isDark ? '#131313' : '#fff';
+  const cardBorder = isDark ? '#1f1f1f' : 'rgba(0,0,0,.08)';
+  const cardHover = isDark ? '#2a2a2a' : 'rgba(0,0,0,.12)';
+  const textPrimary = isDark ? '#fff' : '#1a1a2e';
+  const textSecondary = isDark ? 'rgba(255,255,255,.6)' : '#666';
+  const textMuted = isDark ? 'rgba(255,255,255,.4)' : '#999';
+  const stripBg = isDark ? '#0a0a0a' : '#f5f5f5';
+  const sideBg = isDark ? 'rgba(255,255,255,.03)' : 'rgba(0,0,0,.02)';
+  const sideBorder = isDark ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.06)';
+
+  const typeColors = {RFQ:'#22C55E',LAUNCH:'#F59E0B',HIRING:'#3B82F6',PARTNER:'#EC4899',EVENT:'#8B5CF6'};
+
+  // Filter pills
+  let filterHtml = `<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px">`;
+  filterHtml += `<span style="padding:6px 16px;border-radius:20px;font-size:.74rem;font-weight:600;cursor:pointer;transition:all .15s;background:${activeFilter==='All'?accent:'transparent'};color:${activeFilter==='All'?(isDark?'#000':'#fff'):textMuted};border:1px solid ${activeFilter==='All'?accent:cardBorder}" onclick="state.bizFilter='All';render()">All</span>`;
+  categories.forEach(cat => {
+    const isActive = activeFilter === cat;
+    filterHtml += `<span style="padding:6px 16px;border-radius:20px;font-size:.74rem;font-weight:500;cursor:pointer;transition:all .15s;background:${isActive?accent:'transparent'};color:${isActive?(isDark?'#000':'#fff'):textMuted};border:1px solid ${isActive?accent:cardBorder}" onclick="state.bizFilter='${cat}';render()">${cat}</span>`;
+  });
+  filterHtml += `</div>`;
+
+  // Company cards
+  let cardsHtml = '';
+  filtered.forEach(biz => {
+    const tc = typeColors[biz.activity?.type] || '#666';
+    const isBrandZone = biz.tier === 3;
+    const isClaimed = biz.tier >= 2;
+    const verifiedHtml = biz.verified ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><circle cx="12" cy="12" r="9" stroke="${isBrandZone?accent:textMuted}" stroke-width="2" fill="none"/><path d="M9 12l2 2 4-4" stroke="${isBrandZone?accent:textMuted}" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>` : '';
+
+    let activityHtml = '';
+    if (biz.activity) {
+      activityHtml = `<div style="background:${stripBg};border-radius:8px;padding:10px 12px;margin:10px 0">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="padding:2px 8px;border-radius:6px;font-size:.6rem;font-weight:700;letter-spacing:.05em;background:${tc}20;color:${tc}">${biz.activity.type} · ${biz.activity.age}</span>
+          <span style="font-size:.72rem;color:${textSecondary};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${biz.activity.text}</span>
+        </div>
+      </div>`;
+    } else {
+      activityHtml = `<div style="background:${stripBg};border-radius:8px;padding:10px 12px;margin:10px 0">
+        <span style="font-size:.72rem;color:${textMuted}">No recent activity</span>
+      </div>`;
+    }
+
+    const ctaLabel = isBrandZone ? 'View brand zone' : isClaimed ? 'View company' : 'Claim this page';
+    const ctaStyle = isBrandZone
+      ? `background:${accent};color:${isDark?'#000':'#fff'};border:none;font-weight:700`
+      : `background:transparent;color:${isClaimed?textSecondary:textMuted};border:1px solid ${cardBorder};font-weight:600`;
+    const clickAction = (isBrandZone || isClaimed) ? `onclick="openPlaceholderBrandZone('your-company','${key}')"` : '';
+
+    cardsHtml += `
+      <div style="background:${cardBg};border:1px solid ${cardBorder};border-radius:12px;padding:16px;cursor:pointer;transition:border-color .15s" ${clickAction} onmouseover="this.style.borderColor='${cardHover}'" onmouseout="this.style.borderColor='${cardBorder}'">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:2px">
+          <div style="width:44px;height:44px;border-radius:10px;background:${biz.logoColor};display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;color:#fff;flex-shrink:0;letter-spacing:-.02em">${biz.logoInitials}</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="font-size:.88rem;font-weight:600;color:${textPrimary}">${biz.name}</span>
+              ${verifiedHtml}
+            </div>
+            <div style="font-size:.7rem;color:${textMuted}">${biz.tagline} · ${biz.location}</div>
+          </div>
+          ${isBrandZone ? `<span style="padding:3px 10px;border-radius:8px;font-size:.6rem;font-weight:700;letter-spacing:.06em;background:${accent}20;color:${accent};white-space:nowrap">BRAND ZONE</span>` : ''}
+        </div>
+        ${activityHtml}
+        <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+          <button style="flex:1;padding:8px;border-radius:8px;font-size:.72rem;cursor:pointer;${ctaStyle};font-family:inherit">${ctaLabel}</button>
+          ${isClaimed ? `<div style="width:34px;height:34px;border-radius:8px;border:1px solid ${cardBorder};display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0" title="Message"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${textMuted}" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>` : ''}
+        </div>
+      </div>`;
+  });
+
+  // Sidebar: Activity now
+  const sidebarActivity = [
+    {company:'A company',action:'posted a new product launch',time:'14 min ago'},
+    {company:'A company',action:'joined '+gw.name,time:'38 min ago'},
+    {company:'A company',action:'replied to 3 quotes',time:'1h ago'},
+    {company:'A company',action:'published an editorial post',time:'2h ago'},
+    {company:'A company',action:'posted a job listing',time:'3h ago'},
+    {company:'A company',action:'updated their product catalogue',time:'4h ago'},
+  ];
+  let activityNowHtml = `<div style="background:${sideBg};border:1px solid ${sideBorder};border-radius:12px;padding:16px;margin-bottom:14px">
+    <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${textMuted};margin-bottom:12px">Activity now</div>`;
+  sidebarActivity.forEach(item => {
+    activityNowHtml += `<div style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid ${sideBorder}">
+      <div style="width:6px;height:6px;border-radius:50%;background:#22C55E;margin-top:6px;flex-shrink:0"></div>
+      <div style="flex:1;min-width:0">
+        <div><span style="font-size:.74rem;font-weight:600;color:${textPrimary}">${item.company}</span> <span style="font-size:.68rem;color:${textMuted}">${item.action}</span></div>
+        <div style="font-size:.62rem;color:${textMuted};margin-top:2px">${item.time}</div>
+      </div>
+    </div>`;
+  });
+  activityNowHtml += `</div>`;
+
+  // Sidebar: Browse categories
+  let categoriesHtml = `<div style="background:${sideBg};border:1px solid ${sideBorder};border-radius:12px;padding:16px;margin-bottom:14px">
+    <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${textMuted};margin-bottom:12px">Browse categories</div>`;
+  categories.forEach(cat => {
+    const count = businesses.filter(b => b.category === cat).length;
+    categoriesHtml += `<div style="display:flex;justify-content:space-between;padding:5px 0;font-size:.74rem;cursor:pointer;color:${textSecondary}" onclick="state.bizFilter='${cat}';render()" onmouseover="this.style.color='${accent}'" onmouseout="this.style.color='${textSecondary}'">
+      <span>${cat}</span><span style="color:${textMuted}">${count}</span>
+    </div>`;
+  });
+  categoriesHtml += `<div style="margin-top:10px;font-size:.72rem;font-weight:600;color:${accent};cursor:pointer" onclick="state.bizFilter='All';render()">All ${categories.length} categories &rarr;</div></div>`;
+
+  // Sidebar: This week
+  let weekHtml = `<div style="background:${accent}10;border:1px solid ${accent}25;border-radius:12px;padding:16px">
+    <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${accent};margin-bottom:12px">This week on ${gw.name}</div>
+    <div style="font-size:.78rem;color:${textSecondary};line-height:2">
+      47 new companies joined<br>128 RFQs posted<br>&pound;412k in matched deals
+    </div>
+  </div>`;
+
+  // Hero band
+  const heroHtml = `<div style="background:${gw.gradient};padding:32px 40px 28px;position:relative">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px">
+      <div style="width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0">${gw.emoji}</div>
+      <div>
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.6);text-transform:uppercase">${gw.name} · BUSINESS</div>
+        <div style="font-size:1.4rem;font-weight:600;color:#fff;letter-spacing:-.01em">The home of the ${gw.name.replace('XX','')} industry</div>
+      </div>
+    </div>
+    <div style="font-size:.82rem;color:rgba(255,255,255,.7);max-width:540px;line-height:1.5;margin-bottom:20px">Every shop, builder, supplier and brand in one place. Find them. Talk to them. Stay connected.</div>
+    <div style="position:relative;max-width:520px;margin-bottom:20px">
+      <input type="text" placeholder="Who?  What?  Where?  —  tell us more!" style="width:100%;padding:16px 52px 16px 20px;border-radius:14px;border:none;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);color:#fff;font-size:1rem;font-family:inherit;font-weight:500;outline:none;transition:background .2s;letter-spacing:.02em" onfocus="this.style.background='rgba(0,0,0,.5)'" onblur="this.style.background='rgba(0,0,0,.35)'">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" style="position:absolute;right:18px;top:50%;transform:translateY(-50%);pointer-events:none"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    </div>
+    <div style="display:flex;gap:16px">
+      <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:10px 18px;text-align:center"><div style="font-size:1.1rem;font-weight:800;color:#fff">5,247</div><div style="font-size:.65rem;color:rgba(255,255,255,.6);font-weight:600">Companies</div></div>
+      <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:10px 18px;text-align:center"><div style="font-size:1.1rem;font-weight:800;color:#fff">142</div><div style="font-size:.65rem;color:rgba(255,255,255,.6);font-weight:600">Active today</div></div>
+      <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:10px 18px;text-align:center"><div style="font-size:1.1rem;font-weight:800;color:#fff">47</div><div style="font-size:.65rem;color:rgba(255,255,255,.6);font-weight:600">New this week</div></div>
+    </div>
+  </div>`;
+
+  // CTA banner
+  const ctaBanner = `<div style="border:2px dashed ${cardBorder};border-radius:12px;padding:28px;text-align:center;margin-top:20px">
+    <div style="font-size:1rem;font-weight:700;color:${textPrimary};margin-bottom:6px">List your business on ${gw.name}</div>
+    <div style="font-size:.78rem;color:${textMuted};margin-bottom:16px">Free company page · upgrade to Brand Zone when ready</div>
+    <button style="padding:10px 28px;border-radius:10px;background:${accent};color:${isDark?'#000':'#fff'};border:none;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit">Claim your page</button>
+  </div>`;
+
+  return `${heroHtml}
+    <div style="max-width:1200px;margin:0 auto;padding:28px 32px;display:flex;gap:28px">
+      <div style="flex:1;min-width:0">
+        ${filterHtml}
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">${cardsHtml}</div>
+        ${ctaBanner}
+      </div>
+      <div style="width:250px;flex-shrink:0">
+        ${activityNowHtml}
+        ${categoriesHtml}
+        ${weekHtml}
+      </div>
+    </div>`;
+}
+
+function openPlaceholderBrandZone(bizSlug, gwKey) {
+  // Capture origin so close returns to Business tab
+  state.brandZoneOrigin = { type:'business', key:gwKey };
+  state.view = 'placeholderBrandZone';
+  state.placeholderBiz = bizSlug;
+  state.placeholderGw = gwKey;
+  state.bzTab = 'Feed';
+  render();
+  window.scrollTo(0,0);
+}
+
+function renderPlaceholderBrandZone() {
+  const gwKey = state.placeholderGw;
+  const gw = GATEWAYS[gwKey];
+  const t = gw.theme;
+  const accent = t.accent;
+
+  const tabs = ['Feed','Products','Apps','Community','About'];
+
+  return `
+    <div style="background:${t.bg};color:${t.text};min-height:100vh">
+      ${renderMainNav()}
+      <div class="bz-header" style="background:${gw.gradient};position:relative">
+        <div class="bz-header-inner">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+            <div style="cursor:pointer;font-size:.84rem;font-weight:600;color:rgba(255,255,255,.8)" onclick="closeBrandZone()">\u2190 Back</div>
+            <div style="cursor:pointer;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:rgba(255,255,255,.9);transition:background .15s;backdrop-filter:blur(8px)" onclick="closeBrandZone()" onmouseover="this.style.background='rgba(255,255,255,.3)'" onmouseout="this.style.background='rgba(255,255,255,.15)'" title="Close brand page">\u2715</div>
+          </div>
+          <div class="bz-hero-row">
+            <div>
+              <div class="bz-logo-big" style="background:rgba(255,255,255,.15)">YC</div>
+              <div class="bz-brand-name" style="font-family:${t.bodyFont}">Your Company</div>
+              <div class="bz-tagline">Your company tagline here — Brand Zone Partner on ${gw.name}</div>
+              <div class="bz-stats-row">
+                <div class="bz-stat"><div class="bz-stat-v">12.4K</div><div class="bz-stat-l">followers</div></div>
+                <div class="bz-stat"><div class="bz-stat-v">340+</div><div class="bz-stat-l">content</div></div>
+                <div class="bz-stat"><div class="bz-stat-v">89</div><div class="bz-stat-l">products</div></div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div class="bz-verified"><span class="green-dot"></span> Verified Brand Zone</div>
+                <div class="bz-stat" style="cursor:pointer;display:flex;align-items:center;gap:7px"><span style="font-size:.85rem">💬</span><div><div class="bz-stat-v" style="font-size:.82rem">Chat</div><div class="bz-stat-l">Brand Direct</div></div></div>
+                <div class="bz-stat" style="cursor:pointer;display:flex;align-items:center;gap:7px"><span style="font-size:.85rem">📦</span><div><div class="bz-stat-v" style="font-size:.82rem">Orders</div><div class="bz-stat-l">Track & History</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bz-tabs">${tabs.map(tab=>`<div class="bz-tab ${state.bzTab===tab?'active':''}" style="--accent:${accent};${state.bzTab===tab?'color:#fff;border-bottom-color:'+accent:''}" onclick="state.bzTab='${tab}';render()">${tab}</div>`).join('')}</div>
+      <div class="bz-body">
+        <div class="bz-main">
+          <div class="card" style="background:${t.cardBg};border:1px solid ${t.cardBorder};padding:48px;text-align:center">
+            <div style="width:64px;height:64px;border-radius:16px;background:${accent};display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:800;color:#fff;margin:0 auto 20px">YC</div>
+            <div style="font-size:1.2rem;font-weight:700;color:${t.text};font-family:${t.bodyFont};margin-bottom:8px">Your Company Brand Zone</div>
+            <div style="font-size:.86rem;color:${t.muted};font-family:${t.bodyFont};line-height:1.6;max-width:460px;margin:0 auto 24px">This is your company's home on ${gw.name} — product catalogue, editorial content, community engagement, and direct commerce all in one place.</div>
+            <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
+              ${tabs.filter(t=>t!=='Feed').map(tab=>`<span style="padding:8px 18px;border-radius:10px;background:${accent}15;color:${accent};font-size:.78rem;font-weight:600;cursor:pointer" onclick="state.bzTab='${tab}';render()">${tab}</span>`).join('')}
+            </div>
+          </div>
+        </div>
+        <div class="bz-aside">
+          <div class="widget" style="background:${accent}0A;border:1px solid ${accent}20">
+            <div class="w-title" style="color:${t.muted}">About Your Company</div>
+            <div style="font-size:.8rem;color:${t.muted};line-height:1.6;font-family:${t.bodyFont}">
+              <div style="margin-bottom:8px">Your category · Your location</div>
+              <div>Brand Zone partner on the ${gw.name} gateway. Verified business with full product catalogue, editorial feed, and Brand Direct messaging.</div>
+            </div>
+          </div>
+          <div class="agent-w" style="background:${accent}0A;border:1px solid ${accent}20">
+            <div class="agent-head">
+              <div class="agent-av" style="background:${accent}">🤖</div>
+              <div><div style="font-size:.82rem;font-weight:700;font-family:${t.bodyFont}">Your Company Agent</div><div style="font-size:.68rem;color:#4ADE80;display:flex;align-items:center;gap:4px"><span class="green-dot"></span> Online</div></div>
+            </div>
+            <div class="agent-msg" style="background:rgba(128,128,128,.06);color:${t.muted};font-family:${t.bodyFont}">Hi! I'm your company's AI assistant. Ask me about products, sizing, availability, or anything else.</div>
+            <div class="agent-input-row">
+              <input class="agent-input" style="background:rgba(128,128,128,.08);border:1px solid ${t.cardBorder};color:${t.text}" placeholder="Ask about products, sizing...">
+              <button class="agent-send" style="background:${accent}">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
 function renderGatewayTabs(gw, key) {
   const t = gw.theme;
   const tabs = gw.tabs || ['Feed'];
@@ -6812,6 +7091,8 @@ function renderGatewayFeed(key) {
     tabContent = renderSignalsTab(gw, key);
   } else if (state.gwTab === 'Trade') {
     tabContent = renderTradeTab(gw, key);
+  } else if (state.gwTab === 'Business') {
+    tabContent = renderBusinessTab(gw, key);
   } else {
     tabContent = `<div style="max-width:1280px;margin:0 auto;padding:60px 40px;text-align:center;opacity:.3;font-size:.9rem">${state.gwTab} tab — coming soon to ${gw.name}</div>`;
   }
@@ -8229,6 +8510,7 @@ function render() {
       if (gw) document.body.style.background = gw.theme.bg;
       html = renderGateway(state.gateway); break;
     case 'brandZone': html = renderBrandZoneView(state.brandZone); document.body.style.background = '#fafafa'; break;
+    case 'placeholderBrandZone': html = renderPlaceholderBrandZone(); document.body.style.background = '#fafafa'; break;
     case 'brandDirect': html = renderBrandDirectView(); document.body.style.background = '#fafafa'; break;
   }
   // App detail overlay
