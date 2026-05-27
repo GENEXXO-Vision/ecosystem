@@ -1957,7 +1957,7 @@ const GATEWAYS_ADVENTURE = {
       {author:'@ocean_anna',avatar:'linear-gradient(135deg,#16A34A,#15803D)',time:'5h ago',text:'Bali surf trip complete. Uluwatu at 6am with nobody out, Padang Padang at high tide, Keramas for the reef break experience. 14 days, 11 sessions.'},
     ],
     crossContent:[{from:'SkiXX',color:'#8B5CF6',title:'Off-season cross-training for big wave surfers'},{from:'ClimbXX',color:'#E85D3A',title:'Mental preparation: what climbers and surfers have in common'}],
-    tabs:['Feed','AI Hub','Business','Wave Reports','Travel'],
+    tabs:['Feed','AI Hub','Community','Business','Wave Reports','Travel'],
   },
 
   cycle: {
@@ -2000,7 +2000,7 @@ const GATEWAYS_ADVENTURE = {
       {author:'@gravel_grace',avatar:'linear-gradient(135deg,#D97706,#B45309)',time:'4h ago',text:'Bikepacking the Pyrenees: 8 days, 640km, 18,000m of climbing. No power meter, no Strava, no targets. Just riding. Highly recommend.'},
     ],
     crossContent:[{from:'SkiXX',color:'#8B5CF6',title:'Off-season cross-training: how ProLeague cyclists use ski touring'},{from:'ClimbXX',color:'#E85D3A',title:'The mental overlap between elite climbing and professional cycling'}],
-    tabs:['Feed','AI Hub','Business','Race Reports','Training'],
+    tabs:['Feed','AI Hub','Community','Business','Race Reports','Training'],
     businesses:[
       // Tier 3 — Brand Zone
       {slug:'your-company',name:'Your Company',tier:3,tagline:'Your company tagline here',category:'Components & tech',location:'Your Location',logoColor:'#F5C400',logoInitials:'YC',verified:true,activity:{type:'LAUNCH',age:'3h',text:'Your latest product launch or announcement goes here'},stats:{followers:'42.1K',content:'890',products:'124'}},
@@ -2060,7 +2060,7 @@ const GATEWAYS_ADVENTURE = {
       {author:'@regatta_roger',avatar:'linear-gradient(135deg,#1B3A6B,#0A1628)',time:'5h ago',text:'Cowes Week results in. Our J/70 finished second in class after six days of racing. The Solent delivered everything.'},
     ],
     crossContent:[{from:'SkiXX',color:'#8B5CF6',title:'Mental fortitude: solo ocean passages vs ski mountaineering'},{from:'SurfXX',color:'#0066CC',title:'Reading ocean conditions \u2014 what surfers and sailors see differently'}],
-    tabs:['Feed','AI Hub','Business','Race Reports','Weather'],
+    tabs:['Feed','AI Hub','Community','Business','Race Reports','Weather'],
   },
 
   climb: {
@@ -2094,7 +2094,7 @@ const GATEWAYS_ADVENTURE = {
         {bg:'linear-gradient(135deg,#1E3A5F,#0B0F1A)',emoji:'\u26F0\uFE0F',url:'https://images.unsplash.com/photo-1507034589631-9433cc6bc453?w=500&h=300&fit=crop&q=80',tag:'Routes \u00B7 Community',title:'Top 50 Bouldering Problems in Europe'},
       ],
     },
-    tabs:['Feed','AI Hub','Business','Editorial','Routes'],
+    tabs:['Feed','AI Hub','Community','Business','Editorial','Routes'],
   },
 
   ski: {
@@ -2127,7 +2127,7 @@ const GATEWAYS_ADVENTURE = {
         {bg:'linear-gradient(135deg,#1E3A5F,#0B0F1A)',emoji:'\uD83C\uDFD4\uFE0F',url:'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=500&h=300&fit=crop&q=80',tag:'Backcountry',title:'Chamonix \u2014 80cm Overnight Powder Report'},
       ],
     },
-    tabs:['Feed','AI Hub','Business','Editorial','Resorts'],
+    tabs:['Feed','AI Hub','Community','Business','Editorial','Resorts'],
     destinations:['Méribel','Chamonix','Verbier','Val d\'Isère','St Anton','Zermatt'],
     utility:{
       'Méribel':[
@@ -6420,14 +6420,44 @@ function renderBusinessTab(gw, key) {
       </div>
     </div>
     <div style="font-size:.82rem;color:rgba(255,255,255,.7);max-width:540px;line-height:1.5;margin-bottom:20px">Every shop, builder, supplier and brand in one place. Find them. Talk to them. Stay connected.</div>
-    <div style="position:relative;max-width:520px;margin-bottom:20px">
+    <div style="position:relative;max-width:484px;margin-bottom:12px">
       <input type="text" placeholder="Who?  What?  Where?  —  tell us more!" style="width:100%;padding:16px 52px 16px 20px;border-radius:14px;border:none;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);color:#fff;font-size:1rem;font-family:inherit;font-weight:500;outline:none;transition:background .2s;letter-spacing:.02em" onfocus="this.style.background='rgba(0,0,0,.5)'" onblur="this.style.background='rgba(0,0,0,.35)'">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" style="position:absolute;right:18px;top:50%;transform:translateY(-50%);pointer-events:none"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
     </div>
-    <div style="display:flex;gap:16px">
-      <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:10px 18px;text-align:center"><div style="font-size:1.1rem;font-weight:800;color:#fff">5,247</div><div style="font-size:.65rem;color:rgba(255,255,255,.6);font-weight:600">Companies</div></div>
-      <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:10px 18px;text-align:center"><div style="font-size:1.1rem;font-weight:800;color:#fff">142</div><div style="font-size:.65rem;color:rgba(255,255,255,.6);font-weight:600">Active today</div></div>
-      <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:10px 18px;text-align:center"><div style="font-size:1.1rem;font-weight:800;color:#fff">47</div><div style="font-size:.65rem;color:rgba(255,255,255,.6);font-weight:600">New this week</div></div>
+    <div style="display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap">
+      <div style="background:rgba(0,0,0,.25);backdrop-filter:blur(8px);border-radius:14px;padding:14px 18px;flex:1;min-width:300px;max-width:520px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55)">My Business Apps</div>
+          <span style="font-size:.68rem;font-weight:600;color:rgba(255,255,255,.7);cursor:pointer">View all (8) &rarr;</span>
+        </div>
+        <div style="display:flex;gap:10px">
+          <div style="text-align:center;cursor:pointer" title="Saved Suppliers">
+            <div style="width:42px;height:42px;border-radius:12px;background:${accent};display:flex;align-items:center;justify-content:center;margin-bottom:4px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+            <div style="font-size:.54rem;color:rgba(255,255,255,.6);font-weight:500;max-width:48px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Suppliers</div>
+          </div>
+          <div style="text-align:center;cursor:pointer" title="RFQ Tracker">
+            <div style="width:42px;height:42px;border-radius:12px;background:#22C55E;display:flex;align-items:center;justify-content:center;margin-bottom:4px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+            <div style="font-size:.54rem;color:rgba(255,255,255,.6);font-weight:500;max-width:48px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">RFQ Track</div>
+          </div>
+          <div style="text-align:center;cursor:pointer" title="Order History">
+            <div style="width:42px;height:42px;border-radius:12px;background:#8B5CF6;display:flex;align-items:center;justify-content:center;margin-bottom:4px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg></div>
+            <div style="font-size:.54rem;color:rgba(255,255,255,.6);font-weight:500;max-width:48px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Orders</div>
+          </div>
+          <div style="text-align:center;cursor:pointer" title="Shortlist">
+            <div style="width:42px;height:42px;border-radius:12px;background:#3B82F6;display:flex;align-items:center;justify-content:center;margin-bottom:4px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></div>
+            <div style="font-size:.54rem;color:rgba(255,255,255,.6);font-weight:500;max-width:48px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Shortlist</div>
+          </div>
+          <div style="text-align:center;cursor:pointer" title="Messages">
+            <div style="width:42px;height:42px;border-radius:12px;background:#F59E0B;display:flex;align-items:center;justify-content:center;margin-bottom:4px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+            <div style="font-size:.54rem;color:rgba(255,255,255,.6);font-weight:500;max-width:48px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Messages</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px">
+        <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:10px 16px;text-align:center"><div style="font-size:1rem;font-weight:800;color:#fff">5,247</div><div style="font-size:.6rem;color:rgba(255,255,255,.6);font-weight:600">Companies</div></div>
+        <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:10px 16px;text-align:center"><div style="font-size:1rem;font-weight:800;color:#fff">142</div><div style="font-size:.6rem;color:rgba(255,255,255,.6);font-weight:600">Active today</div></div>
+        <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:10px 16px;text-align:center"><div style="font-size:1rem;font-weight:800;color:#fff">47</div><div style="font-size:.6rem;color:rgba(255,255,255,.6);font-weight:600">New this week</div></div>
+      </div>
     </div>
   </div>`;
 
@@ -6449,6 +6479,228 @@ function renderBusinessTab(gw, key) {
         ${activityNowHtml}
         ${categoriesHtml}
         ${weekHtml}
+      </div>
+    </div>`;
+}
+
+function renderCommunityTab(gw, key) {
+  const t = gw.theme;
+  const isDark = isGatewayDark(t);
+  const accent = t.accent;
+  const sectorName = gw.name.replace('XX','');
+
+  const cardBg = isDark ? '#131313' : '#fff';
+  const cardBorder = isDark ? '#1f1f1f' : 'rgba(0,0,0,.08)';
+  const cardHover = isDark ? '#2a2a2a' : 'rgba(0,0,0,.12)';
+  const textPrimary = isDark ? '#fff' : '#1a1a2e';
+  const textSecondary = isDark ? 'rgba(255,255,255,.6)' : '#666';
+  const textMuted = isDark ? 'rgba(255,255,255,.4)' : '#999';
+  const sideBg = isDark ? 'rgba(255,255,255,.03)' : 'rgba(0,0,0,.02)';
+  const sideBorder = isDark ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.06)';
+
+  const typeColors = {EVENT_HUB:'#d8442e',TOPIC:'#22C55E',PHOTOS:'#8B5CF6',ROUTES:'#22C55E',GEAR:'#F59E0B',TOOL:'#3B82F6',QA:'#EC4899',LEADERBOARD:'#F59E0B'};
+
+  // Featured app
+  const featuredHtml = `<div style="background:linear-gradient(135deg,${accent}30 0%,${cardBg} 70%);border:1px solid ${accent}40;border-radius:14px;padding:24px;margin-bottom:28px">
+    <div style="display:flex;align-items:flex-start;gap:16px">
+      <div style="width:56px;height:56px;border-radius:14px;background:${accent};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 010-5C7 4 7 7 7 7"/><path d="M18 9h1.5a2.5 2.5 0 000-5C17 4 17 7 17 7"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px">
+          <span style="padding:3px 10px;border-radius:8px;font-size:.6rem;font-weight:700;letter-spacing:.05em;background:${accent}25;color:${accent}">EVENT HUB · LIVE</span>
+          <span style="font-size:.68rem;color:${textMuted}">created by @community_member · 4 days ago</span>
+        </div>
+        <div style="font-size:1.2rem;font-weight:600;color:${textPrimary};margin-bottom:6px">${sectorName} Festival '26 · Leaderboard</div>
+        <div style="font-size:.8rem;color:${textSecondary};max-width:520px;line-height:1.5;margin-bottom:14px">Track standings, check in at locations, log your sessions and compete on the community leaderboard. Updated live throughout the event.</div>
+        <div style="background:rgba(0,0,0,.3);border-radius:8px;padding:12px 16px;display:flex;gap:20px;flex-wrap:wrap;margin-bottom:14px">
+          <div style="text-align:center"><div style="font-size:1rem;font-weight:800;color:${textPrimary}">847</div><div style="font-size:.6rem;color:${textMuted};font-weight:600">Participants</div></div>
+          <div style="text-align:center"><div style="font-size:1rem;font-weight:800;color:${textPrimary}">12,408</div><div style="font-size:.6rem;color:${textMuted};font-weight:600">Check-ins</div></div>
+          <div style="text-align:center"><div style="font-size:1rem;font-weight:800;color:${textPrimary}">3</div><div style="font-size:.6rem;color:${textMuted};font-weight:600">Days left</div></div>
+          <div style="text-align:center"><div style="font-size:1rem;font-weight:800;color:${textPrimary}">2.4k</div><div style="font-size:.6rem;color:${textMuted};font-weight:600">Votes</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <button style="padding:10px 24px;border-radius:10px;background:${accent};color:${isDark?'#000':'#fff'};border:none;font-size:.8rem;font-weight:700;cursor:pointer;font-family:inherit">Open app &rarr;</button>
+          <button style="padding:10px 20px;border-radius:10px;background:transparent;color:${textSecondary};border:1px solid ${cardBorder};font-size:.8rem;font-weight:600;cursor:pointer;font-family:inherit">&uarr; Vote</button>
+          <span style="margin-left:auto;padding:4px 12px;border-radius:8px;font-size:.62rem;font-weight:600;background:${accent}15;color:${accent}">Sponsored by a Brand Zone partner</span>
+        </div>
+      </div>
+    </div>
+  </div>`;
+
+  // Trending this week
+  const trendingApps = [
+    {title:'Best gear for beginners?',type:'TOPIC',typeLabel:'Topic',color:typeColors.TOPIC,votes:'1.1k',desc:'Community-voted recommendations for newcomers getting started',contributors:'312 contributors'},
+    {title:`${sectorName} Championship '26 — fan photos`,type:'PHOTOS',typeLabel:'Photos',color:typeColors.PHOTOS,votes:'894',desc:'Share your best shots from this season\'s events',contributors:'203 photos'},
+    {title:`Hidden routes — community picks`,type:'ROUTES',typeLabel:'Routes',color:typeColors.ROUTES,votes:'672',desc:'Off-the-beaten-track routes shared by locals and regulars',contributors:'128 contributors'},
+  ];
+
+  let trendingHtml = `<div style="margin-bottom:28px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${textMuted}">Trending this week</div>
+      <span style="font-size:.72rem;font-weight:600;color:${accent};cursor:pointer">See all 47 &rarr;</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">`;
+
+  trendingApps.forEach(app => {
+    trendingHtml += `<div style="background:${cardBg};border:1px solid ${cardBorder};border-radius:12px;padding:14px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='${cardHover}'" onmouseout="this.style.borderColor='${cardBorder}'">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <span style="padding:2px 8px;border-radius:6px;font-size:.58rem;font-weight:700;letter-spacing:.05em;background:${app.color}20;color:${app.color}">${app.typeLabel.toUpperCase()}</span>
+        <span style="display:flex;align-items:center;gap:3px;font-size:.72rem"><svg width="12" height="12" viewBox="0 0 24 24" fill="${accent}" stroke="none"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" transform="rotate(-90 12 12)"/></svg><span style="color:${textPrimary};font-weight:600">${app.votes}</span></span>
+      </div>
+      <div style="font-size:.82rem;font-weight:600;color:${textPrimary};margin-bottom:6px;line-height:1.3">${app.title}</div>
+      <div style="font-size:.68rem;color:${textSecondary};line-height:1.4;margin-bottom:10px">${app.desc}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:.64rem;color:${textMuted}">${app.contributors}</span>
+        <span style="font-size:.72rem;font-weight:600;color:${accent};cursor:pointer">Open &rarr;</span>
+      </div>
+    </div>`;
+  });
+  trendingHtml += `</div></div>`;
+
+  // Always on — top voted of all time
+  const evergreenApps = [
+    {title:'Community Q&A — ask anything',meta:'Topic thread · 8 months live · 2,847 posts',votes:'14.2k',color:typeColors.TOPIC,icon:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>`},
+    {title:'Gear compatibility checker',meta:'Tool · 14 contributors · updated weekly',votes:'9.6k',color:typeColors.TOOL,icon:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>`},
+    {title:`Best ${sectorName.toLowerCase()} gear of 2026 — voted`,meta:'Gear comparison · 38 items · features brands from Business tab',votes:'7.1k',color:typeColors.GEAR,icon:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3v18M3 12h18M8 8l8 8M16 8l-8 8"/></svg>`},
+  ];
+
+  let evergreenHtml = `<div>
+    <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${textMuted};margin-bottom:14px">Always on · Top voted of all time</div>`;
+
+  evergreenApps.forEach(app => {
+    evergreenHtml += `<div style="display:flex;align-items:center;gap:14px;background:${cardBg};border:1px solid ${cardBorder};border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='${cardHover}'" onmouseout="this.style.borderColor='${cardBorder}'">
+      <div style="width:44px;text-align:center;flex-shrink:0">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="${accent}" stroke="none" style="display:block;margin:0 auto 4px"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" transform="rotate(-90 12 12)"/></svg>
+        <div style="font-size:.88rem;font-weight:800;color:${accent}">${app.votes}</div>
+      </div>
+      <div style="width:32px;height:32px;border-radius:8px;background:${app.color};display:flex;align-items:center;justify-content:center;flex-shrink:0">${app.icon}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:.82rem;font-weight:600;color:${textPrimary}">${app.title}</div>
+        <div style="font-size:.66rem;color:${textMuted};margin-top:2px">${app.meta}</div>
+      </div>
+      <span style="font-size:.72rem;font-weight:600;color:${accent};cursor:pointer;flex-shrink:0">Open &rarr;</span>
+    </div>`;
+  });
+  evergreenHtml += `</div>`;
+
+  // Sidebar: Start an app from a template
+  const templates = [
+    {label:'Event Hub',icon:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${textSecondary}" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 010-5C7 4 7 7 7 7"/><path d="M18 9h1.5a2.5 2.5 0 000-5C17 4 17 7 17 7"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg>`},
+    {label:'Topic Thread',icon:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${textSecondary}" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>`},
+    {label:'Leaderboard',icon:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${textSecondary}" stroke-width="2"><rect x="3" y="12" width="4" height="8"/><rect x="10" y="4" width="4" height="16"/><rect x="17" y="8" width="4" height="12"/></svg>`},
+    {label:'Photo Collection',icon:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${textSecondary}" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>`},
+    {label:'Gear Comparison',icon:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${textSecondary}" stroke-width="2"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22V8"/><path d="M20 4l-8 8-8-8"/></svg>`},
+    {label:'Route Log',icon:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${textSecondary}" stroke-width="2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>`},
+    {label:'Q&A',icon:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${textSecondary}" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`},
+  ];
+
+  let templatesHtml = `<div style="background:${sideBg};border:1px solid ${sideBorder};border-radius:12px;padding:16px;margin-bottom:14px">
+    <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${textMuted};margin-bottom:12px">Start an app from a template</div>`;
+  templates.forEach(tpl => {
+    templatesHtml += `<div style="display:flex;align-items:center;gap:10px;padding:7px 10px;margin-bottom:4px;border-radius:8px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='${isDark?'rgba(255,255,255,.05)':'rgba(0,0,0,.04)'}'" onmouseout="this.style.background='transparent'">
+      ${tpl.icon}
+      <span style="font-size:.76rem;color:${textSecondary};font-weight:500">${tpl.label}</span>
+    </div>`;
+  });
+  templatesHtml += `<button style="width:100%;margin-top:10px;padding:10px;border-radius:10px;background:${accent};color:${isDark?'#000':'#fff'};border:none;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit">+ Create an app</button></div>`;
+
+  // Sidebar: Most active members
+  const members = [
+    {initials:'GK',color:'#22C55E',handle:'@community_member',meta:'built 4 apps'},
+    {initials:'BW',color:'#3B82F6',handle:'@active_user',meta:'2,847 votes given'},
+    {initials:'DC',color:'#8B5CF6',handle:'@moderator',meta:`moderator · ${gw.name}`},
+  ];
+
+  let membersHtml = `<div style="background:${sideBg};border:1px solid ${sideBorder};border-radius:12px;padding:16px;margin-bottom:14px">
+    <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${textMuted};margin-bottom:12px">Most active members</div>`;
+  members.forEach(m => {
+    membersHtml += `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid ${sideBorder}">
+      <div style="width:22px;height:22px;border-radius:50%;background:${m.color};display:flex;align-items:center;justify-content:center;font-size:.52rem;font-weight:800;color:#fff;flex-shrink:0">${m.initials}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:.72rem;color:${textSecondary};font-weight:500">${m.handle}</div>
+        <div style="font-size:.62rem;color:${textMuted}">${m.meta}</div>
+      </div>
+    </div>`;
+  });
+  membersHtml += `</div>`;
+
+  // Sidebar: Brands in community
+  const brandColors = [accent, '#3B82F6', '#8B5CF6', '#22C55E', '#F59E0B'];
+  let brandsRow = '';
+  brandColors.forEach(c => {
+    brandsRow += `<div style="width:28px;height:28px;border-radius:6px;background:${c};display:flex;align-items:center;justify-content:center;font-size:.48rem;font-weight:800;color:#fff">YC</div>`;
+  });
+  brandsRow += `<div style="width:28px;height:28px;border-radius:6px;background:${isDark?'rgba(255,255,255,.08)':'rgba(0,0,0,.06)'};display:flex;align-items:center;justify-content:center;font-size:.52rem;font-weight:700;color:${textMuted}">+12</div>`;
+
+  let brandsHtml = `<div style="background:${accent}10;border:1px solid ${accent}25;border-radius:12px;padding:16px">
+    <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${accent};margin-bottom:10px">Brands in community</div>
+    <div style="font-size:.72rem;color:${textSecondary};line-height:1.55;margin-bottom:12px">Verified businesses from the Business tab show up inside community content — answering questions, sponsoring events, sharing gear.</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">${brandsRow}</div>
+  </div>`;
+
+  // Hero band
+  const heroHtml = `<div style="background:${gw.gradient};padding:32px 40px 28px;position:relative">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px">
+      <div style="width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0">${gw.emoji}</div>
+      <div>
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.6);text-transform:uppercase">${gw.name} · COMMUNITY</div>
+        <div style="font-size:1.4rem;font-weight:600;color:#fff;letter-spacing:-.01em">Built by the community, for the community</div>
+      </div>
+    </div>
+    <div style="font-size:.82rem;color:rgba(255,255,255,.7);max-width:540px;line-height:1.5;margin-bottom:20px">Apps the ${sectorName.toLowerCase()} community creates around events, topics, and shared questions. Vote them up. Open them in a click. Build your own.</div>
+    <div style="position:relative;max-width:484px;margin-bottom:12px">
+      <input type="text" placeholder="Search apps, topics, members..." style="width:100%;padding:16px 52px 16px 20px;border-radius:14px;border:none;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);color:#fff;font-size:1rem;font-family:inherit;font-weight:500;outline:none;transition:background .2s;letter-spacing:.02em" onfocus="this.style.background='rgba(0,0,0,.5)'" onblur="this.style.background='rgba(0,0,0,.35)'">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" style="position:absolute;right:18px;top:50%;transform:translateY(-50%);pointer-events:none"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    </div>
+    <div style="display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap">
+      <div style="background:rgba(0,0,0,.25);backdrop-filter:blur(8px);border-radius:14px;padding:14px 18px;flex:1;min-width:300px;max-width:520px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55)">My Community Apps</div>
+          <span style="font-size:.68rem;font-weight:600;color:rgba(255,255,255,.7);cursor:pointer">View all (12) &rarr;</span>
+        </div>
+        <div style="display:flex;gap:10px">
+          <div style="text-align:center;cursor:pointer" title="Festival Leaderboard">
+            <div style="width:42px;height:42px;border-radius:12px;background:${accent};display:flex;align-items:center;justify-content:center;margin-bottom:4px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 010-5C7 4 7 7 7 7"/><path d="M18 9h1.5a2.5 2.5 0 000-5C17 4 17 7 17 7"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg></div>
+            <div style="font-size:.54rem;color:rgba(255,255,255,.6);font-weight:500;max-width:48px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Leaderboard</div>
+          </div>
+          <div style="text-align:center;cursor:pointer" title="Gear Q&A">
+            <div style="width:42px;height:42px;border-radius:12px;background:#22C55E;display:flex;align-items:center;justify-content:center;margin-bottom:4px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+            <div style="font-size:.54rem;color:rgba(255,255,255,.6);font-weight:500;max-width:48px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Gear Q&A</div>
+          </div>
+          <div style="text-align:center;cursor:pointer" title="Fan Photos">
+            <div style="width:42px;height:42px;border-radius:12px;background:#8B5CF6;display:flex;align-items:center;justify-content:center;margin-bottom:4px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+            <div style="font-size:.54rem;color:rgba(255,255,255,.6);font-weight:500;max-width:48px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Fan Photos</div>
+          </div>
+          <div style="text-align:center;cursor:pointer" title="Hidden Routes">
+            <div style="width:42px;height:42px;border-radius:12px;background:#3B82F6;display:flex;align-items:center;justify-content:center;margin-bottom:4px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg></div>
+            <div style="font-size:.54rem;color:rgba(255,255,255,.6);font-weight:500;max-width:48px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Routes</div>
+          </div>
+          <div style="text-align:center;cursor:pointer" title="Gear Checker">
+            <div style="width:42px;height:42px;border-radius:12px;background:#F59E0B;display:flex;align-items:center;justify-content:center;margin-bottom:4px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
+            <div style="font-size:.54rem;color:rgba(255,255,255,.6);font-weight:500;max-width:48px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Gear Check</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px">
+        <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:10px 16px;text-align:center"><div style="font-size:1rem;font-weight:800;color:#fff">47</div><div style="font-size:.6rem;color:rgba(255,255,255,.6);font-weight:600">Live apps</div></div>
+        <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:10px 16px;text-align:center"><div style="font-size:1rem;font-weight:800;color:#fff">8,924</div><div style="font-size:.6rem;color:rgba(255,255,255,.6);font-weight:600">Members</div></div>
+        <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:10px 16px;text-align:center"><div style="font-size:1rem;font-weight:800;color:#fff">1.2K</div><div style="font-size:.6rem;color:rgba(255,255,255,.6);font-weight:600">Votes today</div></div>
+      </div>
+    </div>
+  </div>`;
+
+  return `${heroHtml}
+    <div style="max-width:1200px;margin:0 auto;padding:28px 32px;display:flex;gap:28px">
+      <div style="flex:1;min-width:0">
+        ${featuredHtml}
+        ${trendingHtml}
+        ${evergreenHtml}
+      </div>
+      <div style="width:250px;flex-shrink:0">
+        ${templatesHtml}
+        ${membersHtml}
+        ${brandsHtml}
       </div>
     </div>`;
 }
@@ -7093,6 +7345,8 @@ function renderGatewayFeed(key) {
     tabContent = renderTradeTab(gw, key);
   } else if (state.gwTab === 'Business') {
     tabContent = renderBusinessTab(gw, key);
+  } else if (state.gwTab === 'Community') {
+    tabContent = renderCommunityTab(gw, key);
   } else {
     tabContent = `<div style="max-width:1280px;margin:0 auto;padding:60px 40px;text-align:center;opacity:.3;font-size:.9rem">${state.gwTab} tab — coming soon to ${gw.name}</div>`;
   }
