@@ -102,13 +102,6 @@ input{font-family:inherit}
 /* ═══════════════════════════════════════════════════
    SECTOR HUB
    ═══════════════════════════════════════════════════ */
-.sh-body{max-width:1280px;margin:0 auto;padding:28px 40px}
-.sh-hero{border-radius:18px;padding:36px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between}
-.sh-hero h1{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
-.sh-hero p{font-size:.95rem;opacity:.65;max-width:500px;line-height:1.6}
-.sh-stats{display:flex;gap:22px}
-.sh-stat-v{font-size:1.4rem;font-weight:800}
-.sh-stat-l{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;font-weight:600;opacity:.5}
 .gw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:28px}
 .gw-card{border-radius:18px;overflow:hidden;cursor:pointer;transition:all .25s;border:1px solid rgba(0,0,0,.06)}
 .gw-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.1)}
@@ -133,9 +126,6 @@ input{font-family:inherit}
 .gw-main{flex:1;padding:22px 28px;min-width:0;max-width:680px}
 .gw-right{width:280px;flex-shrink:0;padding:22px 0;font-family:'Plus Jakarta Sans',sans-serif;position:sticky;top:var(--gw-header-h,152px);max-height:calc(100vh - var(--gw-header-h,152px));overflow-y:auto;align-self:flex-start}
 
-.space-item{display:flex;align-items:center;gap:9px;padding:8px 12px;border-radius:9px;font-size:.88rem;font-weight:600;cursor:pointer;transition:background .15s;margin-bottom:2px}
-.space-item:hover,.space-item.active{background:rgba(128,128,128,.08)}
-.space-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 
 .trend-row{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
 .trend-label{font-size:.72rem;font-weight:600;opacity:.35}
@@ -485,12 +475,6 @@ input{font-family:inherit}
 .sh-layout{display:flex;gap:28px}
 .sh-feed{flex:1;min-width:0}
 .sh-nav{width:280px;flex-shrink:0}
-.sh-gw-nav{border-radius:14px;padding:16px;margin-bottom:14px}
-.sh-gw-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;cursor:pointer;transition:all .15s;margin-bottom:3px}
-.sh-gw-item:hover{background:rgba(0,0,0,.04)}
-.sh-gw-item .emoji{font-size:1.2rem}
-.sh-gw-item .name{font-size:.86rem;font-weight:700}
-.sh-gw-item .live{font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:auto}
 
 
 /* ═══════════════════════════════════════════════════
@@ -507,6 +491,12 @@ input{font-family:inherit}
 .aihost-backdrop.open .aihost-panel{transform:translateY(0) scale(1);opacity:1}
 .aihost-close{position:absolute;top:16px;right:18px;width:32px;height:32px;border-radius:8px;background:rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;color:#666;z-index:2;transition:background .15s}
 .aihost-close:hover{background:rgba(0,0,0,.12)}
+.events-backdrop{position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .22s ease}
+.events-backdrop.open{opacity:1;pointer-events:auto}
+.events-panel{width:min(65vw,900px);height:80vh;background:#FAFAFA;border-radius:20px;box-shadow:0 30px 90px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.08);display:flex;flex-direction:column;transform:translateY(16px) scale(.96);transition:transform .22s ease,opacity .22s ease;opacity:0;overflow:hidden;position:relative}
+.events-backdrop.open .events-panel{transform:translateY(0) scale(1);opacity:1}
+.events-close{position:absolute;top:16px;right:18px;width:32px;height:32px;border-radius:8px;background:rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;color:#666;z-index:2;transition:background .15s}
+.events-close:hover{background:rgba(0,0,0,.12)}
 .cmd-input-wrap{padding:16px 20px 12px;border-bottom:1px solid rgba(255,255,255,.08)}
 .cmd-input{width:100%;background:none;border:none;outline:none;font-size:1.15rem;font-weight:500;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;caret-color:#8B5CF6}
 .cmd-input::placeholder{color:rgba(255,255,255,.3)}
@@ -4657,7 +4647,7 @@ const SECTOR_GATEWAYS = {
 /* ═══════════════════════════════════════════════════════════
    ██████  STATE  ██████
    ═══════════════════════════════════════════════════════════ */
-let state = { view:'hub', sector:null, gateway:null, brandZone:null, gwTab:'Feed', bzTab:'Feed', bzProdFilter:'All', bzProductDetail:null, selectedDest:'Méribel', tradePlatform:0, appStoreScope:'hub', appStoreContext:null, appDetail:null, hubTab:'home', sectorFilter:null, brandStoreScope:'hub', brandStoreContext:null, navOrigin:null, showProfile:false, profileTab:'posts', favourites:['climb'], activeWalletApp:null, appStoreTab:'destination', showSidebarInfo:true, infoLevel:'hub', infoContext:null, showAIHost:false, bizFilter:'All', brandFilter:'All', appFilter:'All' };
+let state = { view:'hub', sector:null, gateway:null, brandZone:null, gwTab:'Feed', bzTab:'Feed', bzProdFilter:'All', bzProductDetail:null, selectedDest:'Méribel', tradePlatform:0, appStoreScope:'hub', appStoreContext:null, appDetail:null, hubTab:'home', sectorFilter:null, brandStoreScope:'hub', brandStoreContext:null, navOrigin:null, showProfile:false, profileTab:'posts', favourites:['climb'], activeWalletApp:null, appStoreTab:'destination', showSidebarInfo:true, infoLevel:'hub', infoContext:null, showAIHost:false, showEvents:false, bizFilter:'All', brandFilter:'All', appFilter:'All' };
 let wallet = { ski:['Ski Pass','Piste Map','Snow Report'], stocks:['Inteq','Charterly'] };
 let purchaseState = 'buy'; // buy | confirm
 let _sectorScrollTop = 0;
@@ -4724,7 +4714,7 @@ function setSector(key) {
   }
   // Preserve tabs when switching between sectors (e.g., stay in Apps/Brands store)
   const preserveHubTab = (state.view === 'hub' && (state.hubTab === 'apps' || state.hubTab === 'brands')) ? state.hubTab : 'home';
-  const preserveGwTab = (state.view === 'hub' && state.sectorFilter) ? state.gwTab : 'Feed';
+  const preserveGwTab = (state.view === 'hub' && state.sectorFilter) ? state.gwTab : 'Trending';
   state.view = 'hub';
   state.sectorFilter = key;
   state.hubTab = preserveHubTab;
@@ -4902,10 +4892,11 @@ function renderMainNav(opts = {}) {
     <div class="top-bar-inner">
       <div class="gx-logo" style="cursor:pointer;display:flex;align-items:center;gap:10px" onclick="nav('hub')">${gxLogo(28)}<span style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.4">DEMO</span></div>
       <div style="display:flex;gap:28px;align-items:center">
-        <span style="font-size:.85rem;font-weight:600;color:${state.view==='hub'&&!state.sectorFilter&&(state.hubTab==='home'||(state.hubTab==='brands'&&(state.brandStoreScope||'hub')==='hub')||(state.hubTab==='apps'&&(state.appStoreScope||'hub')==='hub'))?'#C93D2E':mutedColor};cursor:pointer;${state.view==='hub'&&!state.sectorFilter&&(state.hubTab==='home'||(state.hubTab==='brands'&&(state.brandStoreScope||'hub')==='hub')||(state.hubTab==='apps'&&(state.appStoreScope||'hub')==='hub'))?'background:#C93D2E12;padding:4px 10px;border-radius:6px;':''}" onclick="nav('hub')">Home</span>
+        <span style="font-size:.85rem;font-weight:600;color:${state.view==='hub'&&!state.sectorFilter&&(state.hubTab==='home'||(state.hubTab==='brands'&&(state.brandStoreScope||'hub')==='hub')||(state.hubTab==='apps'&&(state.appStoreScope||'hub')==='hub'))?'#1a1a1a':mutedColor};cursor:pointer;${state.view==='hub'&&!state.sectorFilter&&(state.hubTab==='home'||(state.hubTab==='brands'&&(state.brandStoreScope||'hub')==='hub')||(state.hubTab==='apps'&&(state.appStoreScope||'hub')==='hub'))?'background:#1a1a1a12;padding:4px 10px;border-radius:6px;':''}" onclick="nav('hub')">Hub</span>
         <span style="font-size:.85rem;font-weight:600;color:${state.showAIHost?activeColor:mutedColor};cursor:pointer" onclick="toggleAIHost()">AI Host</span>
         <span style="font-size:.85rem;font-weight:600;color:${isBrandsActive()?activeColor:mutedColor};cursor:pointer" onclick="handleBrandsClick()">Brands</span>
         <span style="font-size:.85rem;font-weight:600;color:${isAppsActive()?activeColor:mutedColor};cursor:pointer" onclick="handleAppsClick()">Apps</span>
+        <span style="font-size:.85rem;font-weight:600;color:${state.showEvents?activeColor:mutedColor};cursor:pointer" onclick="toggleEvents()">Events</span>
       </div>
       ${searchAndProfile(opts.dark || false)}
     </div>
@@ -5659,18 +5650,49 @@ function renderHub() {
   // ── Build sector right sidebar ──
   let sectorRightHtml = '';
   if (s) {
-    sectorRightHtml += `<div class="widget light" style="padding-bottom:0;overflow:hidden">
-      <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;color:${s.color};text-transform:uppercase;margin-bottom:12px;background:${s.color}12;border-radius:8px;padding:8px 12px;border-left:3px solid ${s.color}">Gateways</div>
-      <div style="max-height:460px;overflow-y:auto;-webkit-mask-image:linear-gradient(to bottom,#000 85%,transparent 100%);mask-image:linear-gradient(to bottom,#000 85%,transparent 100%);padding-bottom:16px">`;
+    sectorRightHtml += `<div class="widget light" style="padding:0;overflow:hidden">
+      <div style="padding:14px 16px 10px;border-bottom:1px solid ${s.color}20;background:${s.color}08;display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:.72rem">${s.icon}</span>
+          <span style="font-size:.78rem;font-weight:700;color:${s.color};letter-spacing:.03em">${s.name} Gateways</span>
+        </div>
+        <span style="font-size:.65rem;color:${s.color};font-weight:500;opacity:.6">${s.deepGateways.length} Live</span>
+      </div>
+      <div style="max-height:460px;overflow-y:auto;-webkit-mask-image:linear-gradient(to bottom,#000 85%,transparent 100%);mask-image:linear-gradient(to bottom,#000 85%,transparent 100%)">`;
+
+    // Live gateways
     s.deepGateways.forEach(k => {
       const g = GATEWAYS[k];
-      sectorRightHtml += `<div class="sh-gw-item" onclick="nav('gateway',{gateway:'${k}'})">
-        <span class="emoji">${g.emoji}</span><span class="name" style="color:${g.theme.accent}">${g.name}</span>
-      </div>`;
+      const initials = g.name.replace('XX','').slice(0,2).toUpperCase();
+      sectorRightHtml += `
+        <div style="padding:6px 16px;cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:10px" onclick="nav('gateway',{gateway:'${k}'})" onmouseover="this.style.background='rgba(0,0,0,.03)'" onmouseout="this.style.background='transparent'">
+          <div style="width:28px;height:28px;border-radius:8px;background:${g.theme.gradient};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <span style="font-size:.62rem;font-weight:800;color:#fff">${initials}</span>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:.78rem;font-weight:700;color:#1a1a2e;line-height:1.2">${g.name}</div>
+            <div style="font-size:.62rem;color:#aaa">${g.domain}</div>
+          </div>
+          <span style="font-size:.58rem;color:${g.theme.accent}">${g.emoji}</span>
+        </div>`;
     });
+
+    // Divider
+    sectorRightHtml += `<div style="height:1px;background:rgba(0,0,0,.06);margin:8px 16px"></div>
+      <div style="padding:6px 16px 4px"><span style="font-size:.6rem;font-weight:700;letter-spacing:.08em;color:#bbb;text-transform:uppercase">Coming soon</span></div>`;
+
+    // More gateways
     s.moreGateways.forEach(mg => {
-      sectorRightHtml += `<div class="sh-gw-item" style="opacity:.5"><span class="emoji">${mg.emoji}</span><span class="name">${mg.name}</span></div>`;
+      sectorRightHtml += `
+        <div style="padding:5px 16px 5px 54px;display:flex;align-items:center;gap:10px;opacity:.45">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:.78rem;font-weight:600;color:#1a1a2e;line-height:1.2">${mg.name}</div>
+            <div style="font-size:.62rem;color:#aaa">${mg.domain}</div>
+          </div>
+          <span style="font-size:.58rem">${mg.emoji}</span>
+        </div>`;
     });
+
     sectorRightHtml += `</div></div>`;
   }
 
@@ -5865,65 +5887,63 @@ function renderHub() {
   </div>`;
 
   // ── Hub right sidebar ──
-  // ── Best Of the Network ──
-  const networkFeed = [
-    { gw:'surf', type:'Live', icon:'🔴', title:'Pipeline Masters — Semi-Finals', desc:'Watch the world\'s best surfers battle 15ft Pipeline. Filipe Toledo vs John John Florence up next.', time:'Live Now', live:true },
-    { gw:'climb', type:'Podcast', icon:'🎙️', title:'Summit Stories EP.47 — Alex Honnold', desc:'Free solo legend on risk, fear and his new Patagonia expedition. Hosted by ClimbXX.', time:'3pm Today', live:false },
-    { gw:'stocks', type:'Breaking', icon:'⚡', title:'Fed Interest Rate Announcement', desc:'Federal Reserve decision at 3pm EST. Markets bracing for potential hold. Live analysis on StocksXX.', time:'3pm EST', live:false },
-    { gw:'dress', type:'Live', icon:'🔴', title:'Paris Couture Week — Live Catwalk', desc:'FASHIONXX brings you front row at the Dior Haute Couture show, live from Avenue Montaigne.', time:'Live Now', live:true },
-    { gw:'climb', type:'Drop', icon:'🔥', title:'Lithos Reveal — Vertex Pro 2026', desc:'The next-gen climbing shoe everyone has been waiting for. First look exclusive on ClimbXX.', time:'Dropping in 1hr', live:false },
-    { gw:'ski', type:'Event', icon:'📅', title:'Méribel Season Pass — Early Bird', desc:'Three Valleys unlimited pass at 30% off. Early bird window closes Friday. Book via SkiXX.', time:'Ends Fri', live:false },
-    { gw:null, type:'Deal', icon:'💰', title:'100 New-Gen Laptops from £399', desc:'ComputerXX Deal Drop — curated specs for creators, coders and students. Today only.', time:'Today Only', accent:'#E84D3A', label:'ComputerXX' },
-    { gw:'yoga', type:'Live', icon:'🔴', title:'Morning Flow — 10K Practicing Live', desc:'Join the global morning session with YogaXX. Breathwork focus today with instructor Nadia Lee.', time:'Live Now', live:true },
-    { gw:'goth', type:'Drop', icon:'🔥', title:'Nocturne x Killstar Capsule Collection', desc:'Limited 200-piece dark couture capsule. Preview now, drops midnight. Only on GothXX.', time:'Midnight Drop', live:false },
-    { gw:'currency', type:'Alert', icon:'📊', title:'GBP/USD Hits 6-Month High', desc:'Sterling surges past $1.32 on strong PMI data. CurrencyXX AI Agent flags travel buying opportunity.', time:'2 min ago', live:false },
-    { gw:null, type:'Bookmark', icon:'🔖', title:'UFC 312 — Main Card', desc:'Your bookmarked reminder: Pereira vs Adesanya III. SportsXX coverage starts at 10pm.', time:'Saturday 10pm', accent:'#F59E0B', label:'SportsXX' },
-    { gw:'denim', type:'Event', icon:'📅', title:'Selvedge Masterclass — Tokyo', desc:'DenimXX hosts a live Q&A with Momotaro\'s head artisan. Indigo dyeing deep-dive.', time:'Tomorrow 8am', live:false },
-    { gw:null, type:'Bookmark', icon:'🔖', title:'Ski Season Opener — Val d\'Isère', desc:'Your bookmarked reminder: first lifts of the season. SkiXX live coverage and snow reports.', time:'30 Nov', accent:'#F59E0B', label:'SkiXX' },
-    { gw:'stocks', type:'Alert', icon:'📊', title:'NVIDIA Earnings Beat — +8% After Hours', desc:'Q3 revenue $42B vs $38B expected. AI chip demand accelerating. Full breakdown on StocksXX.', time:'12 min ago', live:false },
-    { gw:'surf', type:'Drop', icon:'🔥', title:'Firewire x Slater — Gamma 2.0', desc:'Kelly Slater\'s new eco board drops exclusively on SurfXX. Recycled EPS core, bio-resin finish.', time:'Tomorrow 9am', live:false },
-  ];
+  // ── Gateways Panel ──
+  const sectorOrder = ['adventure','fashion','wellness','finance'];
+  const sectorMeta = {
+    adventure: { name:'Adventure', icon:'⚡', color:'#E85D3A' },
+    wellness: { name:'Wellness', icon:'🧘', color:'#16A34A' },
+    finance: { name:'Finance', icon:'📈', color:'#3B82F6' },
+    fashion: { name:'Fashion', icon:'👗', color:'#9B2335' }
+  };
 
   let hubRightHtml = `<div class="widget light" style="padding:0;overflow:hidden">
     <div style="padding:14px 16px 10px;border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between">
       <div style="display:flex;align-items:center;gap:8px">
-        <div style="width:7px;height:7px;border-radius:50%;background:#EF4444;animation:livePulse 2s ease-in-out infinite"></div>
-        <span style="font-size:.78rem;font-weight:700;color:#1a1a2e;letter-spacing:.03em">Best Of the Network</span>
+        <span style="font-size:.78rem;font-weight:700;color:#1a1a2e;letter-spacing:.03em">Gateways</span>
       </div>
-      <span style="font-size:.65rem;color:#aaa;font-weight:500">${networkFeed.filter(i=>i.live).length} Live Now</span>
+      <span style="font-size:.65rem;color:#aaa;font-weight:500">${Object.keys(GATEWAYS).length} Live</span>
     </div>
-    <div style="padding:6px 0;max-height:460px;overflow-y:auto;-webkit-mask-image:linear-gradient(to bottom,#000 85%,transparent 100%);mask-image:linear-gradient(to bottom,#000 85%,transparent 100%)">`;
+    <div style="max-height:460px;overflow-y:auto;-webkit-mask-image:linear-gradient(to bottom,#000 85%,transparent 100%);mask-image:linear-gradient(to bottom,#000 85%,transparent 100%)">`;
 
-  networkFeed.forEach((item, i) => {
-    const gw = item.gw ? GATEWAYS[item.gw] : null;
-    const accent = gw ? gw.theme.accent : (item.accent || '#E84D3A');
-    const gwLabel = gw ? gw.name : (item.label || 'GENEXXO');
-    const gwClick = gw ? `onclick="nav('gateway',{gateway:'${item.gw}'})"` : '';
-    const isLive = item.live;
-    const typeBg = item.type === 'Live' ? 'rgba(239,68,68,.1)' : item.type === 'Drop' ? 'rgba(249,115,22,.1)' : item.type === 'Breaking' ? 'rgba(239,68,68,.1)' : item.type === 'Bookmark' ? 'rgba(245,158,11,.1)' : item.type === 'Deal' ? 'rgba(232,77,58,.1)' : item.type === 'Alert' ? 'rgba(59,130,246,.1)' : 'rgba(0,0,0,.05)';
-    const typeColor = item.type === 'Live' ? '#EF4444' : item.type === 'Drop' ? '#F97316' : item.type === 'Breaking' ? '#EF4444' : item.type === 'Bookmark' ? '#F59E0B' : item.type === 'Deal' ? '#E84D3A' : item.type === 'Alert' ? '#3B82F6' : '#666';
-
+  sectorOrder.forEach(sKey => {
+    const sm = sectorMeta[sKey];
+    const sectorGateways = Object.entries(GATEWAYS).filter(([k,g]) => g.sector === sKey);
     hubRightHtml += `
-      <div style="padding:10px 16px;border-bottom:1px solid rgba(0,0,0,.04);cursor:pointer;transition:background .15s${isLive?' ;background:rgba(239,68,68,.02)':''}" ${gwClick} onmouseover="this.style.background='rgba(0,0,0,.03)'" onmouseout="this.style.background='${isLive?'rgba(239,68,68,.02)':'transparent'}'">
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
-          <span style="font-size:.6rem;font-weight:700;color:${accent};letter-spacing:.05em">${gwLabel.toUpperCase()}</span>
-          <span style="font-size:.55rem;padding:1px 6px;border-radius:8px;background:${typeBg};color:${typeColor};font-weight:700;letter-spacing:.03em">${item.icon} ${item.type.toUpperCase()}</span>
-          <span style="margin-left:auto;font-size:.6rem;color:${isLive?'#EF4444':'#aaa'};font-weight:${isLive?'700':'500'}">${item.time}</span>
+      <div style="padding:10px 16px 4px">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+          <span style="font-size:.72rem">${sm.icon}</span>
+          <span style="font-size:.65rem;font-weight:700;letter-spacing:.08em;color:${sm.color};text-transform:uppercase">${sm.name}</span>
+          <span style="font-size:.58rem;color:#bbb;margin-left:auto">${sectorGateways.length} gateways</span>
         </div>
-        <div style="font-size:.78rem;font-weight:700;color:#1a1a2e;line-height:1.3;margin-bottom:3px">${item.title}</div>
-        <div style="font-size:.7rem;color:#888;line-height:1.4">${item.desc}</div>
       </div>`;
+    sectorGateways.forEach(([k, g]) => {
+      const initials = g.name.replace('XX','').slice(0,2).toUpperCase();
+      hubRightHtml += `
+        <div style="padding:6px 16px;cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:10px" onclick="nav('gateway',{gateway:'${k}'})" onmouseover="this.style.background='rgba(0,0,0,.03)'" onmouseout="this.style.background='transparent'">
+          <div style="width:28px;height:28px;border-radius:8px;background:${g.theme.gradient};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <span style="font-size:.62rem;font-weight:800;color:#fff">${initials}</span>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:.78rem;font-weight:700;color:#1a1a2e;line-height:1.2">${g.name}</div>
+            <div style="font-size:.62rem;color:#aaa">${g.domain}</div>
+          </div>
+          <span style="font-size:.58rem;color:${g.theme.accent}">${g.emoji}</span>
+        </div>`;
+    });
+    hubRightHtml += `<div style="height:6px;border-bottom:1px solid rgba(0,0,0,.04)"></div>`;
   });
 
-  hubRightHtml += `</div></div>`;
+  // More gateways teaser
+  const totalMore = sectorOrder.reduce((sum, sKey) => {
+    const s = SECTORS[sKey];
+    return sum + (s && s.moreGateways ? s.moreGateways.length : 0);
+  }, 0);
+  hubRightHtml += `
+    <div style="padding:12px 16px;text-align:center">
+      <div style="font-size:.72rem;color:#999;line-height:1.5">+${totalMore} more gateways coming soon across all sectors</div>
+    </div>`;
 
-  // Add live pulse animation if not already present
-  if (!document.getElementById('best-of-network-styles')) {
-    const style = document.createElement('style');
-    style.id = 'best-of-network-styles';
-    style.textContent = '@keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}';
-    document.head.appendChild(style);
-  }
+  hubRightHtml += `</div></div>`;
 
   // ── Determine what to show in the feed area ──
   let feedArea = '';
@@ -5934,7 +5954,7 @@ function renderHub() {
     const ctx = state.appStoreContext || null;
     const scopeLabel = scope === 'gateway' && ctx ? GATEWAYS[ctx]?.name : scope === 'sector' && ctx ? SECTORS[ctx]?.name : 'GENEXXO';
     const accentColor = scope === 'gateway' && ctx ? GATEWAYS[ctx]?.theme.accent || '#4338CA' : scope === 'sector' && ctx ? SECTORS[ctx]?.color || '#4338CA' : '#4338CA';
-    const headerGradient = scope === 'gateway' && ctx ? GATEWAYS[ctx]?.gradient : scope === 'sector' && ctx ? SECTORS[ctx]?.gradient : 'linear-gradient(135deg,#1a1a2e,#C93D2E)';
+    const headerGradient = scope === 'gateway' && ctx ? GATEWAYS[ctx]?.gradient : scope === 'sector' && ctx ? SECTORS[ctx]?.gradient : 'linear-gradient(135deg,#1a1a1a,#444)';
     const storeTitle = scope === 'gateway' && ctx ? `${GATEWAYS[ctx]?.name} Apps` : scope === 'sector' && ctx ? `${SECTORS[ctx]?.name} Apps` : 'GENEXXO Apps';
     const storeDesc = scope === 'gateway' && ctx ? `Apps and tools for the ${GATEWAYS[ctx]?.name} community` : scope === 'sector' && ctx ? `The best apps from across the ${SECTORS[ctx]?.name} sector` : 'Discover apps across the entire GENEXXO ecosystem';
     feedArea = `<div style="flex:1;min-width:0">
@@ -5958,7 +5978,7 @@ function renderHub() {
     const ctx = state.brandStoreContext || null;
     const scopeLabel = scope === 'gateway' && ctx ? GATEWAYS[ctx]?.name : scope === 'sector' && ctx ? SECTORS[ctx]?.name : 'GENEXXO';
     const accentColor = scope === 'gateway' && ctx ? GATEWAYS[ctx]?.theme.accent || '#E84D3A' : scope === 'sector' && ctx ? SECTORS[ctx]?.color || '#E84D3A' : '#E84D3A';
-    const headerGradient = scope === 'gateway' && ctx ? GATEWAYS[ctx]?.gradient : scope === 'sector' && ctx ? SECTORS[ctx]?.gradient : 'linear-gradient(135deg,#1a1a2e,#C93D2E)';
+    const headerGradient = scope === 'gateway' && ctx ? GATEWAYS[ctx]?.gradient : scope === 'sector' && ctx ? SECTORS[ctx]?.gradient : 'linear-gradient(135deg,#1a1a1a,#444)';
     const storeTitle = scope === 'gateway' && ctx ? `${GATEWAYS[ctx]?.name} Brands` : scope === 'sector' && ctx ? `${SECTORS[ctx]?.name} Brands` : 'GENEXXO Brands';
     const storeDesc = scope === 'gateway' && ctx ? `Brand partners and founding members of ${GATEWAYS[ctx]?.name}` : scope === 'sector' && ctx ? `The brand ecosystem across the ${SECTORS[ctx]?.name} sector` : 'Discover brands across the entire GENEXXO ecosystem';
     feedArea = `<div style="flex:1;min-width:0">
@@ -5981,23 +6001,31 @@ function renderHub() {
     // Sector filter active
     const sectorGws = SECTOR_GATEWAYS[sf] || [];
     if (s) {
-      // Live sector — show feed content
+      // Live sector — tab controls header and feed
+      const isNetworkTab = state.gwTab === 'Feed';
+      const headerHtml = isNetworkTab
+        ? `<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;background:#1a1a1a12;border-radius:10px;padding:10px 14px;border-left:3px solid #1a1a1a">
+            <span style="font-size:1.1rem">\uD83C\uDFE0</span>
+            <span style="font-size:1.05rem;font-weight:800"><span style="color:#1a1a1a">GENEXXO</span> <span style="color:#1a1a1a">Hub</span></span>
+          </div>`
+        : `<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;background:${s.color}12;border-radius:10px;padding:10px 14px;border-left:3px solid ${s.color}">
+            <span style="font-size:1.1rem">${s.icon}</span>
+            <span style="font-size:1.05rem;font-weight:800"><span style="color:${s.color}">GENEXXO</span> <span style="color:#1a1a2e">Hub</span></span>
+            <span style="font-size:.72rem;color:#999;font-weight:500">&mdash;</span>
+            <span style="font-size:.92rem;font-weight:700;color:${s.color}">${s.name}</span>
+          </div>`;
       feedArea = `<div class="hub-feed">
         <div style="position:sticky;top:60px;z-index:90;background:#FAFAFA;padding-top:20px;padding-bottom:2px;box-shadow:0 1px 0 rgba(0,0,0,.06)">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;background:${s.color}12;border-radius:10px;padding:10px 14px;border-left:3px solid ${s.color}">
-            <span style="font-size:1.1rem">${s.icon}</span>
-            <span style="font-size:1.05rem;font-weight:800;color:${s.color}">${s.name} Sector</span>
-            <span style="font-size:.78rem;color:#999">${Object.entries(s.stats).map(([k,v])=>v+' '+k).join(' \u00B7 ')}</span>
-          </div>
+          ${headerHtml}
           <div class="feed-tabs">
-            <div class="feed-tab ${state.gwTab==='Feed'?'active':''}" onclick="state.gwTab='Feed';render()">Sector Feed</div>
-            <div class="feed-tab ${state.gwTab==='Trending'?'active':''}" onclick="state.gwTab='Trending';render()">Trending</div>
-            <div class="feed-tab ${state.gwTab==='Spaces'?'active':''}" onclick="state.gwTab='Spaces';render()">Spaces</div>
+            <div class="feed-tab ${state.gwTab==='Feed'?'active':''}" onclick="state.gwTab='Feed';state.sectorFilter=null;state.infoLevel='hub';state.infoContext=null;render()">Network</div>
+            <div class="feed-tab ${state.gwTab==='Trending'?'active':''}" onclick="state.gwTab='Trending';render()">Sector</div>
+            <div class="feed-tab ${state.gwTab==='Spaces'?'active':''}" onclick="state.gwTab='Spaces';render()">Following</div>
           </div>
         </div>
-        <div style="padding-top:20px">${sectorFeedHtml}</div>
+        <div style="padding-top:20px">${isNetworkTab ? hubFeedHtml : sectorFeedHtml}</div>
       </div>`;
-      rightArea = `<div class="hub-right">${sectorRightHtml}</div>`;
+      rightArea = `<div class="hub-right">${isNetworkTab ? hubRightHtml : sectorRightHtml}</div>`;
     } else {
       // Non-live sector — show gateways preview
       const sInfo = ALL_SECTORS.find(x => x.key === sf);
@@ -6023,16 +6051,54 @@ function renderHub() {
       </div>`;
     }
   } else {
-    // Home feed
+    // Home feed — no sector selected, Sector tab defaults to Adventure
+    const isNetworkTab = !state.gwTab || state.gwTab === 'Feed';
+    const isSectorTab = state.gwTab === 'Trending';
+    const defaultSector = SECTORS['adventure'];
+
+    let defaultSectorFeedHtml = '';
+    if (isSectorTab && defaultSector) {
+      (defaultSector.feed || []).forEach(item => {
+        const gwKey = item.gateway;
+        const clickAction = gwKey ? `nav('gateway',{gateway:'${gwKey}'})` : '';
+        defaultSectorFeedHtml += `<div class="card" style="background:#fff;border:1px solid rgba(0,0,0,.06);padding:18px;${clickAction?'cursor:pointer':''}" ${clickAction?`onclick="${clickAction}"`:''}>
+          <div class="card-header">
+            <div class="card-av" style="background:${item.avatar.bg}">${item.avatar.text||''}</div>
+            <div><div class="card-name">${item.author}</div><div class="card-meta" style="color:#bbb">${item.authorSub}</div></div>
+            <span class="pill" style="background:${item.gwAccent}15;color:${item.gwAccent};font-size:.65rem">${item.gwName}</span>
+            ${item.badge ? `<span class="card-badge" style="background:${item.badge.bg};color:${item.badge.color}">${item.badge.text}</span>` : ''}
+          </div>
+          <div style="font-size:.9rem;color:#444;line-height:1.6;margin-bottom:${item.img||item.videoUrl?'10':'0'}px">${item.text}</div>
+          ${item.img ? `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px;height:200px"><img src="${item.img.url}" style="width:100%;height:100%;object-fit:cover;display:block"></div>` : ''}
+          ${item.videoUrl ? (item.videoUrl.endsWith('.mp4') ? `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px"><video autoplay loop muted playsinline style="width:100%;height:200px;object-fit:cover;display:block" src="${item.videoUrl}"></video></div>` : `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px;height:200px"><img src="${item.videoUrl}" style="width:100%;height:100%;object-fit:cover;display:block"></div>`) : ''}
+          ${item.videoSrc ? `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px"><video autoplay loop muted playsinline style="width:100%;height:200px;object-fit:cover;display:block" src="${item.videoSrc}"></video></div>` : ''}
+          ${item.engagement ? `<div class="card-actions" style="color:#bbb;margin-top:8px">${item.engagement.split('|').map(e=>`<span>${e.trim()}</span>`).join('')}</div>` : ''}
+        </div>`;
+      });
+    }
+
+    const headerHtml = isSectorTab
+      ? `<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;background:${defaultSector.color}12;border-radius:10px;padding:10px 14px;border-left:3px solid ${defaultSector.color}">
+          <span style="font-size:1.1rem">${defaultSector.icon}</span>
+          <span style="font-size:1.05rem;font-weight:800"><span style="color:${defaultSector.color}">GENEXXO</span> <span style="color:#1a1a2e">Hub</span></span>
+          <span style="font-size:.72rem;color:#999;font-weight:500">&mdash;</span>
+          <span style="font-size:.92rem;font-weight:700;color:${defaultSector.color}">${defaultSector.name}</span>
+        </div>`
+      : `<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;background:#1a1a1a12;border-radius:10px;padding:10px 14px;border-left:3px solid #1a1a1a">
+          <span style="font-size:1.1rem">\uD83C\uDFE0</span>
+          <span style="font-size:1.05rem;font-weight:800"><span style="color:#1a1a1a">GENEXXO</span> <span style="color:#1a1a1a">Hub</span></span>
+        </div>`;
+
     feedArea = `<div class="hub-feed">
       <div style="position:sticky;top:60px;z-index:90;background:#FAFAFA;padding-top:20px;padding-bottom:2px;box-shadow:0 1px 0 rgba(0,0,0,.06)">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;background:#C93D2E12;border-radius:10px;padding:10px 14px;border-left:3px solid #C93D2E">
-          <span style="font-size:1.1rem">\uD83C\uDFE0</span>
-          <span style="font-size:1.05rem;font-weight:800"><span style="color:#C93D2E">GENEXXO</span> <span style="color:#1a1a2e">Hub</span></span>
+        ${headerHtml}
+        <div class="feed-tabs">
+          <div class="feed-tab ${isNetworkTab?'active':''}" onclick="state.gwTab='Feed';state.sectorFilter=null;state.infoLevel='hub';state.infoContext=null;render()">Network</div>
+          <div class="feed-tab ${isSectorTab?'active':''}" onclick="if(!state.sectorFilter){setSector('adventure')}else{state.gwTab='Trending';render()}">Sector</div>
+          <div class="feed-tab ${state.gwTab==='Spaces'?'active':''}" onclick="state.gwTab='Spaces';render()">Following</div>
         </div>
-        <div class="feed-tabs"><div class="feed-tab active">For You</div><div class="feed-tab">Trending</div><div class="feed-tab">Following</div></div>
       </div>
-      <div style="padding-top:20px">${hubFeedHtml}</div>
+      <div style="padding-top:20px">${isSectorTab ? defaultSectorFeedHtml : hubFeedHtml}</div>
     </div>`;
     rightArea = `<div class="hub-right">${hubRightHtml}</div>`;
   }
@@ -6097,110 +6163,6 @@ function renderYourWorlds(activeSector) {
     </div>
   </div>`;
   return html;
-}
-
-function renderSectorHub(key) {
-  const s = SECTORS[key];
-
-  // Gateway navigation sidebar
-  let gwNav = `<div class="sh-gw-nav" style="background:#fff;border:1px solid rgba(0,0,0,.06)">
-    <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;color:#aaa;text-transform:uppercase;margin-bottom:12px">Gateways</div>`;
-  s.deepGateways.forEach(k => {
-    const g = GATEWAYS[k];
-    gwNav += `<div class="sh-gw-item" onclick="nav('gateway',{gateway:'${k}'})">
-      <span class="emoji">${g.emoji}</span><span class="name" style="color:${g.theme.accent}">${g.name}</span>
-    </div>`;
-  });
-  s.moreGateways.forEach(mg => {
-    gwNav += `<div class="sh-gw-item" style="opacity:.5"><span class="emoji">${mg.emoji}</span><span class="name">${mg.name}</span></div>`;
-  });
-  gwNav += `<div style="text-align:center;padding:10px 0;font-size:.72rem;color:#bbb;margin-top:4px">+${s.moreGateways.length>4?'more':'...'} gateways</div></div>`;
-
-  // Cross-gateway spaces
-  gwNav += `<div class="sh-gw-nav" style="background:#fff;border:1px solid rgba(0,0,0,.06)">
-    <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;color:#aaa;text-transform:uppercase;margin-bottom:12px">Sector Spaces</div>
-    <div class="sh-gw-item"><span class="space-dot" style="background:${s.color}"></span><span class="name">General</span></div>
-    <div class="sh-gw-item"><span class="space-dot" style="background:#EF4444"></span><span class="name">${key==='adventure'?'Injury Recovery':key==='finance'?'Market Outlook':key==='wellness'?'Nutrition & Diet':'Style Advice'}</span></div>
-    <div class="sh-gw-item"><span class="space-dot" style="background:#3B82F6"></span><span class="name">${key==='adventure'?'Gear Tech':key==='finance'?'Portfolio Strategy':key==='wellness'?'Sleep & Recovery':'Sustainable Fashion'}</span></div>
-    <div class="sh-gw-item"><span class="space-dot" style="background:#F59E0B"></span><span class="name">${key==='adventure'?'Travel & Trips':key==='finance'?'Beginner Q&A':key==='wellness'?'Mindfulness & Stress':'Archive & Vintage'}</span></div>
-  </div>`;
-
-  // Sector feed — pull from deep gateways
-  let feedHtml = '';
-  const allFeedItems = [];
-  s.deepGateways.forEach(gwKey => {
-    const g = GATEWAYS[gwKey];
-    (g.feed||[]).slice(0,2).forEach(item => {
-      allFeedItems.push({item, gwKey, gw:g});
-    });
-  });
-  // Interleave items from different gateways
-  allFeedItems.forEach(({item, gwKey, gw}) => {
-    const t = gw.theme;
-    const isLight = true; // sector hub is always light
-    feedHtml += `<div class="card" style="background:#fff;border:1px solid rgba(0,0,0,.06);padding:18px;cursor:pointer" onclick="nav('gateway',{gateway:'${gwKey}'})">
-      <div class="card-header">`;
-    if (item.type==='cross') {
-      feedHtml += `<div class="card-av" style="background:${item.fromColor}">${item.fromEmoji}</div>
-        <div><div class="card-name" style="color:${item.fromColor}">From ${item.from}</div><div class="card-meta" style="color:#bbb">Cross-pollination</div></div>`;
-    } else {
-      feedHtml += `<div class="card-av" style="background:${item.avatar.bg}">${item.avatar.text||''}</div>
-        <div><div class="card-name">${item.author}</div><div class="card-meta" style="color:#bbb">${item.authorSub}</div></div>`;
-    }
-    feedHtml += `<span class="pill" style="background:${gw.theme.accent}15;color:${gw.theme.accent};font-size:.65rem">${gw.name}</span>`;
-    if (item.badge) feedHtml += `<span class="card-badge" style="background:${item.badge.bg};color:${item.badge.color}">${item.badge.text}</span>`;
-    feedHtml += `</div>
-      <div style="font-size:.9rem;color:#444;line-height:1.6;margin-bottom:8px">${item.text}</div>`;
-    if (item.img) feedHtml += `<div class="card-img placeholder" style="background:${item.img.bg};${item.img.url?`background-image:url('${item.img.url}');`:''}aspect-ratio:16/9;height:auto;max-height:480px;background-size:cover;background-repeat:no-repeat">${item.img.url?'':item.img.emoji}</div>`;
-    if (item.engagement) feedHtml += `<div class="card-actions" style="color:#bbb;margin-top:8px">${item.engagement.split('|').map(e=>`<span>${e.trim()}</span>`).join('')}</div>`;
-    feedHtml += `</div>`;
-  });
-
-  return `
-    <div style="background:${s.bg};min-height:100vh">
-      ${renderMainNav()}
-      ${renderContextBar({
-        bg:'#fff',
-        borderColor:'rgba(0,0,0,.06)',
-        leftHtml:`<span style="font-size:.82rem;font-weight:600;color:#999;cursor:pointer" onclick="nav('hub')">\u2190 Hub</span>`,
-        centerHtml:`<span style="font-size:1rem;font-weight:800;color:${s.color};letter-spacing:.03em">${s.icon} ${s.name.toUpperCase()}</span>`,
-        rightHtml:`<span style="font-size:.72rem;color:#999">${Object.values(s.stats).join(' \u00B7 ')}</span>`
-      })}
-      <div style="max-width:1280px;margin:0 auto;padding:0 40px">
-        <div class="sh-hero" style="background:#fff;border:1px solid rgba(0,0,0,.06);margin-top:24px">
-          <div><h1 style="font-family:'Plus Jakarta Sans',sans-serif">The ${s.name} Sector</h1><p>${s.desc}</p></div>
-          <div class="sh-stats">
-            ${Object.entries(s.stats).map(([k,v])=>`<div style="text-align:center"><div class="sh-stat-v" style="color:${s.color}">${v}</div><div class="sh-stat-l">${k}</div></div>`).join('')}
-          </div>
-        </div>
-      </div>
-      <div style="max-width:1280px;margin:0 auto;padding:0 40px;display:flex">
-        ${renderYourWorlds(key)}
-        <div style="flex:1;padding:20px 28px;min-width:0">
-          <div class="feed-tabs" style="position:sticky;top:60px;z-index:90;background:${s.bg};padding-top:4px;padding-bottom:2px;box-shadow:0 1px 0 rgba(0,0,0,.06);margin-bottom:20px">
-            <div class="feed-tab ${state.gwTab==='Feed'?'active':''}" onclick="state.gwTab='Feed';render()">Sector Feed</div>
-            <div class="feed-tab ${state.gwTab==='Trending'?'active':''}" onclick="state.gwTab='Trending';render()">Trending</div>
-            <div class="feed-tab ${state.gwTab==='Spaces'?'active':''}" onclick="state.gwTab='Spaces';render()">Spaces</div>
-            <div class="feed-tab ${state.gwTab==='Apps'?'active':''}" onclick="state.gwTab='Apps';render()">Apps</div>
-          </div>
-          ${state.gwTab==='Apps' ? `<div style="margin:-20px -28px 0">
-            <div style="background:${s.gradient};padding:24px 28px 20px">
-              <div style="display:flex;align-items:center;gap:12px">
-                <div style="width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.2rem">📱</div>
-                <div>
-                  <div style="font-size:1.2rem;font-weight:800;color:#fff">${s.name} Apps</div>
-                  <div style="font-size:.78rem;color:rgba(255,255,255,.65)">The best apps from across the ${s.name} sector</div>
-                </div>
-              </div>
-            </div>
-            ${renderAppStore('sector', key, {bg:'#F7F7F8',text:'#1a1a2e',cardBg:'#fff',cardBorder:'rgba(0,0,0,.06)',accent:s.color,muted:'#999',bodyFont:"'Plus Jakarta Sans',sans-serif"})}
-          </div>` : feedHtml}
-        </div>
-        <div style="width:260px;flex-shrink:0;padding:20px 0">
-          ${gwNav}
-        </div>
-      </div>
-    </div>`;
 }
 
 function renderUtilityTab(gw, key) {
@@ -9895,6 +9857,107 @@ function renderAIHostOverlay() {
           <button style="padding:12px 20px;background:linear-gradient(135deg,#E84D3A,#8B5CF6);color:#fff;border-radius:12px;font-weight:700;font-size:.84rem;cursor:pointer;font-family:inherit;border:none">Send</button>
         </div>
         <div style="text-align:center;margin-top:8px;font-size:.68rem;color:#bbb">GENEXXO watches your full ecosystem activity \u2014 commerce, content, community, and cross-gateway signals</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ██████  EVENTS OVERLAY  ██████
+   ═══════════════════════════════════════════════════════════ */
+
+function toggleEvents() {
+  state.showEvents = !state.showEvents;
+  if (state.showEvents) {
+    renderEventsOverlay();
+    setTimeout(() => document.getElementById('events-overlay').classList.add('open'), 10);
+  } else {
+    closeEvents();
+  }
+}
+function closeEvents() {
+  const el = document.getElementById('events-overlay');
+  if (el) el.classList.remove('open');
+  state.showEvents = false;
+  render();
+}
+function renderEventsOverlay() {
+  let existing = document.getElementById('events-overlay');
+  if (!existing) {
+    existing = document.createElement('div');
+    existing.id = 'events-overlay';
+    existing.className = 'events-backdrop';
+    existing.onclick = function(e) { if (e.target === existing) closeEvents(); };
+    document.body.appendChild(existing);
+  }
+
+  const networkFeed = [
+    { gw:'surf', type:'Live', icon:'🔴', title:'Pipeline Masters — Semi-Finals', desc:'Watch the world\'s best surfers battle 15ft Pipeline. Filipe Toledo vs John John Florence up next.', time:'Live Now', live:true },
+    { gw:'climb', type:'Podcast', icon:'🎙️', title:'Summit Stories EP.47 — Alex Honnold', desc:'Free solo legend on risk, fear and his new Patagonia expedition. Hosted by ClimbXX.', time:'3pm Today', live:false },
+    { gw:'stocks', type:'Breaking', icon:'⚡', title:'Fed Interest Rate Announcement', desc:'Federal Reserve decision at 3pm EST. Markets bracing for potential hold. Live analysis on StocksXX.', time:'3pm EST', live:false },
+    { gw:'dress', type:'Live', icon:'🔴', title:'Paris Couture Week — Live Catwalk', desc:'FASHIONXX brings you front row at the Dior Haute Couture show, live from Avenue Montaigne.', time:'Live Now', live:true },
+    { gw:'climb', type:'Drop', icon:'🔥', title:'Lithos Reveal — Vertex Pro 2026', desc:'The next-gen climbing shoe everyone has been waiting for. First look exclusive on ClimbXX.', time:'Dropping in 1hr', live:false },
+    { gw:'ski', type:'Event', icon:'📅', title:'Méribel Season Pass — Early Bird', desc:'Three Valleys unlimited pass at 30% off. Early bird window closes Friday. Book via SkiXX.', time:'Ends Fri', live:false },
+    { gw:null, type:'Deal', icon:'💰', title:'100 New-Gen Laptops from £399', desc:'ComputerXX Deal Drop — curated specs for creators, coders and students. Today only.', time:'Today Only', accent:'#E84D3A', label:'ComputerXX' },
+    { gw:'yoga', type:'Live', icon:'🔴', title:'Morning Flow — 10K Practicing Live', desc:'Join the global morning session with YogaXX. Breathwork focus today with instructor Nadia Lee.', time:'Live Now', live:true },
+    { gw:'goth', type:'Drop', icon:'🔥', title:'Nocturne x Killstar Capsule Collection', desc:'Limited 200-piece dark couture capsule. Preview now, drops midnight. Only on GothXX.', time:'Midnight Drop', live:false },
+    { gw:'currency', type:'Alert', icon:'📊', title:'GBP/USD Hits 6-Month High', desc:'Sterling surges past $1.32 on strong PMI data. CurrencyXX AI Agent flags travel buying opportunity.', time:'2 min ago', live:false },
+    { gw:null, type:'Bookmark', icon:'🔖', title:'UFC 312 — Main Card', desc:'Your bookmarked reminder: Pereira vs Adesanya III. SportsXX coverage starts at 10pm.', time:'Saturday 10pm', accent:'#F59E0B', label:'SportsXX' },
+    { gw:'denim', type:'Event', icon:'📅', title:'Selvedge Masterclass — Tokyo', desc:'DenimXX hosts a live Q&A with Momotaro\'s head artisan. Indigo dyeing deep-dive.', time:'Tomorrow 8am', live:false },
+    { gw:null, type:'Bookmark', icon:'🔖', title:'Ski Season Opener — Val d\'Isère', desc:'Your bookmarked reminder: first lifts of the season. SkiXX live coverage and snow reports.', time:'30 Nov', accent:'#F59E0B', label:'SkiXX' },
+    { gw:'stocks', type:'Alert', icon:'📊', title:'NVIDIA Earnings Beat — +8% After Hours', desc:'Q3 revenue $42B vs $38B expected. AI chip demand accelerating. Full breakdown on StocksXX.', time:'12 min ago', live:false },
+    { gw:'surf', type:'Drop', icon:'🔥', title:'Firewire x Slater — Gamma 2.0', desc:'Kelly Slater\'s new eco board drops exclusively on SurfXX. Recycled EPS core, bio-resin finish.', time:'Tomorrow 9am', live:false },
+  ];
+
+  const liveCount = networkFeed.filter(i => i.live).length;
+
+  let feedCards = '';
+  networkFeed.forEach(item => {
+    const gw = item.gw ? GATEWAYS[item.gw] : null;
+    const accent = gw ? gw.theme.accent : (item.accent || '#E84D3A');
+    const gwLabel = gw ? gw.name : (item.label || 'GENEXXO');
+    const isLive = item.live;
+    const typeBg = item.type === 'Live' ? 'rgba(239,68,68,.1)' : item.type === 'Drop' ? 'rgba(249,115,22,.1)' : item.type === 'Breaking' ? 'rgba(239,68,68,.1)' : item.type === 'Bookmark' ? 'rgba(245,158,11,.1)' : item.type === 'Deal' ? 'rgba(232,77,58,.1)' : item.type === 'Alert' ? 'rgba(59,130,246,.1)' : 'rgba(0,0,0,.05)';
+    const typeColor = item.type === 'Live' ? '#EF4444' : item.type === 'Drop' ? '#F97316' : item.type === 'Breaking' ? '#EF4444' : item.type === 'Bookmark' ? '#F59E0B' : item.type === 'Deal' ? '#E84D3A' : item.type === 'Alert' ? '#3B82F6' : '#666';
+    const gwClick = gw ? `onclick="closeEvents();nav('gateway',{gateway:'${item.gw}'})"` : '';
+
+    feedCards += `
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:14px;margin-bottom:10px;padding:14px 16px;cursor:pointer;transition:all .15s${isLive?';border-color:rgba(239,68,68,.2);background:rgba(239,68,68,.015)':''}" ${gwClick} onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,.08)'" onmouseout="this.style.boxShadow='none'">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:7px">
+          <span style="font-size:.62rem;font-weight:700;color:${accent};letter-spacing:.05em">${gwLabel.toUpperCase()}</span>
+          <span style="font-size:.56rem;padding:2px 7px;border-radius:8px;background:${typeBg};color:${typeColor};font-weight:700;letter-spacing:.03em">${item.icon} ${item.type.toUpperCase()}</span>
+          <span style="margin-left:auto;font-size:.62rem;color:${isLive?'#EF4444':'#aaa'};font-weight:${isLive?'700':'500'}">${item.time}</span>
+        </div>
+        <div style="font-size:.86rem;font-weight:700;color:#1a1a2e;line-height:1.3;margin-bottom:4px">${item.title}</div>
+        <div style="font-size:.76rem;color:#777;line-height:1.5">${item.desc}</div>
+      </div>`;
+  });
+
+  existing.innerHTML = `<div class="events-panel">
+    <div class="events-close" onclick="closeEvents()">✕</div>
+    <div style="display:flex;flex-direction:column;height:100%;padding:28px 36px 20px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-shrink:0">
+        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#EF4444,#F97316,#F59E0B);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="12" cy="16" r="2"/></svg>
+        </div>
+        <div>
+          <div style="font-size:1.05rem;font-weight:800;letter-spacing:.02em">Events</div>
+          <div style="font-size:.76rem;color:#999">Live, upcoming and breaking across the network</div>
+        </div>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:5px;font-size:.72rem;color:#EF4444;font-weight:600"><span style="width:7px;height:7px;border-radius:50%;background:#EF4444;animation:livePulse 2s ease-in-out infinite;display:inline-block"></span> ${liveCount} Live Now</div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-shrink:0">
+        <span style="font-size:.72rem;font-weight:700;padding:5px 12px;border-radius:8px;background:#E84D3A;color:#fff;cursor:pointer">All</span>
+        <span style="font-size:.72rem;font-weight:600;padding:5px 12px;border-radius:8px;background:rgba(239,68,68,.08);color:#EF4444;cursor:pointer">Live</span>
+        <span style="font-size:.72rem;font-weight:600;padding:5px 12px;border-radius:8px;background:rgba(0,0,0,.04);color:#666;cursor:pointer">Drops</span>
+        <span style="font-size:.72rem;font-weight:600;padding:5px 12px;border-radius:8px;background:rgba(0,0,0,.04);color:#666;cursor:pointer">Alerts</span>
+        <span style="font-size:.72rem;font-weight:600;padding:5px 12px;border-radius:8px;background:rgba(0,0,0,.04);color:#666;cursor:pointer">Bookmarks</span>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding-right:4px;padding-bottom:8px">
+        ${feedCards}
+      </div>
+      <div style="flex-shrink:0;padding-top:14px;border-top:1px solid rgba(0,0,0,.06)">
+        <div style="text-align:center;font-size:.7rem;color:#bbb">Events from ${Object.keys(GATEWAYS).length} gateways across the GENEXXO network</div>
       </div>
     </div>
   </div>`;
