@@ -59,7 +59,7 @@ input{font-family:inherit}
 .hub-side{width:232px;flex-shrink:0;padding:24px 0;position:sticky;top:60px;align-self:flex-start}
 .sector-scroll{max-height:460px;overflow-y:auto;position:relative;-webkit-mask-image:linear-gradient(to bottom,#000 85%,transparent 100%);mask-image:linear-gradient(to bottom,#000 85%,transparent 100%)}
 .hub-feed{flex:1;padding:24px 36px;min-width:0;max-width:680px}
-.hub-right{width:250px;flex-shrink:0;padding:24px 0;position:sticky;top:60px;align-self:flex-start}
+.hub-right{width:250px;flex-shrink:0;padding:18px 0 24px;position:sticky;top:60px;align-self:flex-start}
 
 .sec-label{font-size:.68rem;font-weight:700;letter-spacing:.14em;color:#aaa;text-transform:uppercase;margin-bottom:14px}
 .sec-btn{display:flex;align-items:center;gap:11px;width:100%;padding:9px 12px;border-radius:11px;transition:background .15s;margin-bottom:3px;cursor:pointer}
@@ -5651,7 +5651,7 @@ function renderHub() {
   let sectorRightHtml = '';
   if (s) {
     sectorRightHtml += `<div class="widget light" style="padding:0;overflow:hidden">
-      <div style="padding:14px 16px 10px;border-bottom:1px solid ${s.color}20;background:${s.color}08;display:flex;align-items:center;justify-content:space-between">
+      <div style="padding:14px 16px 10px;border-bottom:1px solid ${s.color}20;background:${s.color}12;display:flex;align-items:center;justify-content:space-between">
         <div style="display:flex;align-items:center;gap:8px">
           <span style="font-size:.72rem">${s.icon}</span>
           <span style="font-size:.78rem;font-weight:700;color:${s.color};letter-spacing:.03em">${s.name} Gateways</span>
@@ -6025,7 +6025,7 @@ function renderHub() {
         </div>
         <div style="padding-top:20px">${isNetworkTab ? hubFeedHtml : sectorFeedHtml}</div>
       </div>`;
-      rightArea = `<div class="hub-right">${isNetworkTab ? hubRightHtml : sectorRightHtml}</div>`;
+      rightArea = `<div class="hub-right" style="padding-top:40px">${isNetworkTab ? hubRightHtml : sectorRightHtml}</div>`;
     } else {
       // Non-live sector — show gateways preview
       const sInfo = ALL_SECTORS.find(x => x.key === sf);
@@ -6100,7 +6100,7 @@ function renderHub() {
       </div>
       <div style="padding-top:20px">${isSectorTab ? defaultSectorFeedHtml : hubFeedHtml}</div>
     </div>`;
-    rightArea = `<div class="hub-right">${hubRightHtml}</div>`;
+    rightArea = `<div class="hub-right" style="padding-top:40px">${hubRightHtml}</div>`;
   }
 
   return `
