@@ -4875,6 +4875,13 @@ function nav(view, opts={}) {
     state.appStoreContext = opts.gateway;
     state.brandStoreScope = 'gateway';
     state.brandStoreContext = opts.gateway;
+    // Fresh entry: reset sidebar rail filters and searches
+    if (state.gateway !== opts.gateway) {
+      state.brandZoneTab = 'all';
+      state.appZoneTab = 'all';
+      state.brandZoneSearch = '';
+      state.appZoneSearch = '';
+    }
     // If current gwTab doesn't exist on the new gateway, fall back to Feed
     const newGw = GATEWAYS[opts.gateway];
     if (newGw && newGw.tabs && !newGw.tabs.includes(state.gwTab)) state.gwTab = 'Feed';
@@ -9442,7 +9449,7 @@ function renderModal() {
       <h3>Order Confirmed by ${bz.name}</h3>
       <p>Your ${p.name} is on its way.<br>Confirmation email and fulfilment direct from ${bz.name} \u2014 they own the relationship from here.</p>
       <p style="color:${bz.color};font-weight:600;font-size:.78rem;margin-top:6px">GENEXXO's part was the discovery \u2014 referral attributed to ${gw.name}.</p>
-      <div class="done" onclick="document.getElementById('purchaseModal').classList.remove('show');nav('hub')">Return to Hub</div>
+      <div class="done" onclick="document.getElementById('purchaseModal').classList.remove('show')">Continue Browsing</div>
     </div></div>`;
   }
   document.getElementById('purchaseModal').innerHTML = html;
