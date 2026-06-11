@@ -122,9 +122,9 @@ input{font-family:inherit}
    ═══════════════════════════════════════════════════ */
 .gw-wrap{min-height:100vh;transition:background .3s}
 .gw-body{max-width:1280px;margin:0 auto;padding:0 40px;display:flex;align-items:flex-start}
-.gw-side{width:220px;flex-shrink:0;padding:22px 0;font-family:'Plus Jakarta Sans',sans-serif;position:sticky;top:var(--gw-header-h,152px);max-height:calc(100vh - var(--gw-header-h,152px));overflow-y:auto;align-self:flex-start}
+.gw-side{width:220px;flex-shrink:0;margin:22px 0;padding:16px 4px;background:rgba(128,128,128,.055);border:1px solid rgba(128,128,128,.1);border-radius:16px;font-family:'Plus Jakarta Sans',sans-serif;position:sticky;top:var(--gw-header-h,152px);max-height:calc(100vh - var(--gw-header-h,152px) - 30px);overflow-y:auto;align-self:flex-start}
 .gw-main{flex:1;padding:22px 28px;min-width:0;max-width:680px}
-.gw-right{width:280px;flex-shrink:0;padding:22px 0;font-family:'Plus Jakarta Sans',sans-serif;position:sticky;top:var(--gw-header-h,152px);max-height:calc(100vh - var(--gw-header-h,152px));overflow-y:auto;align-self:flex-start}
+.gw-right{width:280px;flex-shrink:0;margin:22px 0;padding:16px 4px;background:rgba(128,128,128,.055);border:1px solid rgba(128,128,128,.1);border-radius:16px;font-family:'Plus Jakarta Sans',sans-serif;position:sticky;top:var(--gw-header-h,152px);max-height:calc(100vh - var(--gw-header-h,152px) - 30px);overflow-y:auto;align-self:flex-start}
 
 
 .trend-row{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
@@ -201,13 +201,21 @@ input{font-family:inherit}
 .bz-stat-v{font-size:1rem;font-weight:800;color:#fff}
 .bz-stat-l{font-size:.62rem;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.07em;font-weight:600}
 .bz-verified{background:rgba(255,255,255,.12);backdrop-filter:blur(10px);border-radius:10px;padding:9px 15px;font-size:.76rem;font-weight:600;color:rgba(255,255,255,.85);display:flex;align-items:center;gap:7px}
-.bz-tabs{display:flex;gap:4px;border-bottom:1px solid rgba(255,255,255,.06);max-width:1280px;margin:0 auto;padding:0 40px}
+.bz-tabs-wrap{position:sticky;top:52px;z-index:60;backdrop-filter:blur(14px);border-bottom:1px solid rgba(128,128,128,.12)}
+.bz-tabs{display:flex;gap:4px;max-width:1280px;margin:0 auto;padding:0 40px}
 .bz-tab{padding:13px 18px;font-size:.82rem;font-weight:600;opacity:.4;border-bottom:2px solid transparent;cursor:pointer;transition:all .15s}
 .bz-tab.active{opacity:1;border-bottom-color:var(--accent,#E84D3A)}
 .bz-tab:hover{opacity:.7}
 .bz-body{max-width:1280px;margin:0 auto;padding:22px 40px;display:flex;gap:28px}
-.bz-main{flex:1;min-width:0}
-.bz-aside{width:310px;flex-shrink:0}
+.bz-main{flex:1;min-width:0;max-width:680px}
+.bz-main-wide{flex:1;min-width:0}
+.bz-side{width:220px;flex-shrink:0;align-self:flex-start;position:sticky;top:112px;max-height:calc(100vh - 112px);overflow-y:auto}
+.bz-side-title{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px;padding:0 12px}
+.bz-side-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:9px;font-size:.82rem;font-weight:600;cursor:pointer;margin-bottom:2px;transition:background .15s}
+.bz-side-item:hover{background:rgba(128,128,128,.08)}
+.bz-side-count{font-size:.66rem;font-weight:600;opacity:.45}
+.bz-side-note{margin-top:16px;padding:10px 12px;border-radius:10px;font-size:.68rem;line-height:1.5}
+.bz-aside{width:310px;flex-shrink:0;align-self:flex-start;position:sticky;top:112px;max-height:calc(100vh - 112px);overflow-y:auto}
 
 /* Product cards */
 .prod-card{border-radius:13px;overflow:hidden;cursor:pointer;transition:all .2s}
@@ -2974,13 +2982,13 @@ const GATEWAYS = {
 
 const BRAND_ZONES = {
   'aspire-dress': {
-    gateway:'dress', name:'Aspire', tagline:'Fashion for all \u2014 thousands of dresses for every occasion and budget',
+    gateway:'dress', tier:'Founding Partner', name:'Aspire', tagline:'Fashion for all \u2014 thousands of dresses for every occasion and budget',
     color:'#1A0812', gradient:'linear-gradient(135deg,#1A0812,#2D0F1E)', logo:'AS',
     stats:{ followers:'67.2K', content:'2,400+', products:'8,500+' },
     products:[
-      {name:'Satin Cowl Midi',desc:'Blush satin \u00B7 Cowl neck \u00B7 Occasion ready',price:'\u00A375.00',emoji:'\uD83D\uDC57'},
-      {name:'Wrap Maxi Dress',desc:'Floral print \u00B7 Tiered skirt \u00B7 Sizes 4-26',price:'\u00A365.00',emoji:'\uD83D\uDC57'},
-      {name:'Velvet Slip Dress',desc:'Midnight blue \u00B7 Adjustable straps \u00B7 Lined',price:'\u00A355.00',emoji:'\uD83D\uDC57'},
+      {name:'Satin Cowl Midi',desc:'Blush satin \u00B7 Cowl neck \u00B7 Occasion ready',price:'\u00A375.00',emoji:'\uD83D\uDC57',img:'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=600&h=600&fit=crop&q=80'},
+      {name:'Wrap Maxi Dress',desc:'Floral print \u00B7 Tiered skirt \u00B7 Sizes 4-26',price:'\u00A365.00',emoji:'\uD83D\uDC57',img:'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=600&fit=crop&q=80'},
+      {name:'Velvet Slip Dress',desc:'Midnight blue \u00B7 Adjustable straps \u00B7 Lined',price:'\u00A355.00',emoji:'\uD83D\uDC57',img:'https://images.unsplash.com/photo-1566479179817-c0b5c4b5a98e?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Aspire',authorSub:'Official \u00B7 Just now',text:'New season occasion edit just dropped. 340 new dresses from mini to maxi, across every budget. Free next-day delivery for Aspire Premier members. Returns always free.',img:{fit:true,bg:'linear-gradient(135deg,#1A0812,#2D0F1E)',url:'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 8.4K|\uD83D\uDCAC 1.1K|\u2197 567'},
@@ -2992,13 +3000,13 @@ const BRAND_ZONES = {
   },
 
   'refold': {
-    gateway:'dress', name:'Refold', tagline:'Making killer clothes that don\u2019t kill the planet \u2014 Brand Zone Partner on DressXX',
+    gateway:'dress', tier:'Full Brand Zone', name:'Refold', tagline:'Making killer clothes that don\u2019t kill the planet \u2014 Brand Zone Partner on DressXX',
     color:'#9B2335', gradient:'linear-gradient(135deg,#9B2335,#C4384F,#7A1A28)', logo:'Rf',
     stats:{ followers:'42.8K', content:'1,100+', products:'180+' },
     products:[
-      {name:'Wilmore Dress',desc:'Deadstock fabric \u00B7 Midi length \u00B7 Six colourways',price:'\u00A3248.00',emoji:'\uD83D\uDC57'},
-      {name:'Christie Midi',desc:'Linen blend \u00B7 Wrap style \u00B7 Carbon neutral shipping',price:'\u00A3218.00',emoji:'\uD83D\uDC57'},
-      {name:'Remy Mini',desc:'Sustainable viscose \u00B7 Ruched detail \u00B7 Lined',price:'\u00A3188.00',emoji:'\uD83D\uDC57'},
+      {name:'Wilmore Dress',desc:'Deadstock fabric \u00B7 Midi length \u00B7 Six colourways',price:'\u00A3248.00',emoji:'\uD83D\uDC57',img:'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=600&fit=crop&q=80'},
+      {name:'Christie Midi',desc:'Linen blend \u00B7 Wrap style \u00B7 Carbon neutral shipping',price:'\u00A3218.00',emoji:'\uD83D\uDC57',img:'https://images.unsplash.com/photo-1566479179817-c0b5c4b5a98e?w=600&h=600&fit=crop&q=80'},
+      {name:'Remy Mini',desc:'Sustainable viscose \u00B7 Ruched detail \u00B7 Lined',price:'\u00A3188.00',emoji:'\uD83D\uDC57',img:'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Refold',authorSub:'Official \u00B7 2h ago',text:'The Wilmore is back. Six new colourways including clay, forest, and our first ever print. Made from deadstock fabric in our LA facility. Carbon neutral. Every single one.',img:{fit:true,bg:'linear-gradient(135deg,#7A1A28,#9B2335)',url:'https://images.unsplash.com/photo-1566479179817-c0b5c4b5a98e?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 9.8K|\uD83D\uDCAC 1.2K|\u2197 678'},
@@ -3010,13 +3018,13 @@ const BRAND_ZONES = {
   },
 
   'silvere-paris': {
-    gateway:'dress', name:'Silvere Paris', tagline:'Contemporary occasion wear — architectural lace and structured elegance since 2013',
+    gateway:'dress', tier:'Claimed & Verified', name:'Silvere Paris', tagline:'Contemporary occasion wear — architectural lace and structured elegance since 2013',
     color:'#2C1810', gradient:'linear-gradient(135deg,#2C1810,#4A2C20,#D4A574)', logo:'SP',
     stats:{ followers:'36.4K', content:'870+', products:'220+' },
     products:[
-      {name:'Flower Lace Midi Dress',desc:'Guipure lace · Fitted bodice · Flared skirt · Ivory',price:'£380.00',emoji:'👗'},
-      {name:'Tailored Crepe Jumpsuit',desc:'Wide leg · Belted waist · Back zip · Black',price:'£320.00',emoji:'👗'},
-      {name:'Crystal-Embellished Mini',desc:'Hand-placed crystals · Mesh overlay · Lined · Navy',price:'£450.00',emoji:'✨'},
+      {name:'Flower Lace Midi Dress',desc:'Guipure lace · Fitted bodice · Flared skirt · Ivory',price:'£380.00',emoji:'👗',img:'https://images.unsplash.com/photo-1566479179817-c0b5c4b5a98e?w=600&h=600&fit=crop&q=80'},
+      {name:'Tailored Crepe Jumpsuit',desc:'Wide leg · Belted waist · Back zip · Black',price:'£320.00',emoji:'👗',img:'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=600&h=600&fit=crop&q=80'},
+      {name:'Crystal-Embellished Mini',desc:'Hand-placed crystals · Mesh overlay · Lined · Navy',price:'£450.00',emoji:'✨',img:'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Silvere Paris',authorSub:'Official · Just now',text:'The Flower Lace Midi. Our most requested silhouette reimagined for SS26. Architectural guipure lace cut with laser precision. Fitted through the bodice, falling into a structured flare. Made for the moments that matter — weddings, galas, the nights you remember.',img:{fit:true,bg:'linear-gradient(135deg,#2C1810,#4A2C20)',url:'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&h=400&fit=crop&q=80'},engagement:'♡ 11.2K|💬 1.4K|↗ 678'},
@@ -3028,13 +3036,13 @@ const BRAND_ZONES = {
   },
 
   'northbound': {
-    gateway:'sneaker', name:'Northbound', tagline:'Made in USA & UK since 1906 \u2014 performance footwear for those who run the world',
+    gateway:'sneaker', tier:'Founding Partner', name:'Northbound', tagline:'Made in USA & UK since 1906 \u2014 performance footwear for those who run the world',
     color:'#EF4444', gradient:'linear-gradient(135deg,#991B1B,#EF4444,#F87171)', logo:'NB',
     stats:{ followers:'41.2K', content:'1,800+', products:'234+' },
     products:[
-      {name:'770v6 Made in USA',desc:'Premium USA construction \u00B7 ENCAP midsole \u00B7 Pigskin suede',price:'\u00A3249.00',emoji:'\uD83D\uDC5F'},
-      {name:'2002R Protection Pack',desc:'N2 Foam \u00B7 ABZORB cushioning \u00B7 Weather-treated upper',price:'\u00A3149.00',emoji:'\uD83D\uDC5F'},
-      {name:'1906R Sea Salt',desc:'Metallic upper \u00B7 ABZORB SBS \u00B7 Reflective details',price:'\u00A3139.00',emoji:'\uD83D\uDC5F'},
+      {name:'770v6 Made in USA',desc:'Premium USA construction \u00B7 ENCAP midsole \u00B7 Pigskin suede',price:'\u00A3249.00',emoji:'\uD83D\uDC5F',img:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=600&fit=crop&q=80'},
+      {name:'2002R Protection Pack',desc:'N2 Foam \u00B7 ABZORB cushioning \u00B7 Weather-treated upper',price:'\u00A3149.00',emoji:'\uD83D\uDC5F',img:'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&h=600&fit=crop&q=80'},
+      {name:'1906R Sea Salt',desc:'Metallic upper \u00B7 ABZORB SBS \u00B7 Reflective details',price:'\u00A3139.00',emoji:'\uD83D\uDC5F',img:'https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Northbound',authorSub:'Official \u00B7 Just now',text:'The 770v6. Six months of wear testing in New England. Every upper panel refined. The ENCAP midsole updated for 2026. Made in our Flimby, UK and Lawrence, USA factories by craftspeople who have been building these shoes for decades. Worth every penny and every wait.',img:{fit:true,bg:'linear-gradient(135deg,#991B1B,#EF4444)',url:'https://images.unsplash.com/photo-1755194757953-a9301005114b?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 18.4K|\uD83D\uDCAC 2.4K|\u2197 1.2K'},
@@ -3046,13 +3054,13 @@ const BRAND_ZONES = {
   },
 
   'soren-berg': {
-    gateway:'sneaker', name:'Soren Berg', tagline:'Designer, creative director, and the most distinctive collab voice in footwear',
+    gateway:'sneaker', tier:'Full Brand Zone', name:'Soren Berg', tagline:'Designer, creative director, and the most distinctive collab voice in footwear',
     color:'#6366F1', gradient:'linear-gradient(135deg,#4338CA,#6366F1,#818CF8)', logo:'SB',
     stats:{ followers:'19.8K', content:'234+', products:'8' },
     products:[
-      {name:'NB 2002R Collab',desc:'Hand-textured suede \u00B7 Custom ENCAP \u00B7 Limited',price:'\u00A3189.00',emoji:'\uD83D\uDC5F'},
-      {name:'Crocs Pollex Clog',desc:'Salehe x Crocs \u00B7 Sculpted form \u00B7 Four colourways',price:'\u00A3115.00',emoji:'\uD83E\uDDB4'},
-      {name:'Versace Chain Reaction',desc:'Salehe x Versace \u00B7 Luxury collab \u00B7 Limited run',price:'\u00A3890.00',emoji:'\uD83D\uDC5F'},
+      {name:'NB 2002R Collab',desc:'Hand-textured suede \u00B7 Custom ENCAP \u00B7 Limited',price:'\u00A3189.00',emoji:'\uD83D\uDC5F',img:'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&h=600&fit=crop&q=80'},
+      {name:'Crocs Pollex Clog',desc:'Salehe x Crocs \u00B7 Sculpted form \u00B7 Four colourways',price:'\u00A3115.00',emoji:'\uD83E\uDDB4',img:'https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=600&h=600&fit=crop&q=80'},
+      {name:'Versace Chain Reaction',desc:'Salehe x Versace \u00B7 Luxury collab \u00B7 Limited run',price:'\u00A3890.00',emoji:'\uD83D\uDC5F',img:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Soren Berg',authorSub:'Official \u00B7 Just now',text:'Q2 collaboration announcement: I cannot say who yet. But I can say it is the brand I have wanted to work with since I was 14 years old. The story we are telling with this shoe is unlike anything I have done before. Follow for the drop.',img:{fit:true,bg:'linear-gradient(135deg,#4338CA,#6366F1)',url:'https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 34.2K|\uD83D\uDCAC 6.8K|\u2197 3.4K'},
@@ -3064,13 +3072,13 @@ const BRAND_ZONES = {
   },
 
   'atrion': {
-    gateway:'ski', name:'Atrion', tagline:'Race and freeride technology engineered at the limit \u2014 Founding Partner on SkiXX',
+    gateway:'ski', tier:'Founding Partner', name:'Atrion', tagline:'Race and freeride technology engineered at the limit \u2014 Founding Partner on SkiXX',
     color:'#EF4444', gradient:'linear-gradient(135deg,#EF4444,#DC2626,#B91C1C)', logo:'At',
     stats:{ followers:'28.4K', content:'1,100+', products:'140+' },
     products:[
-      {name:'Stratos X9S Carbon',desc:'World Cup race ski \u00B7 Full carbon \u00B7 Titanal frame',price:'\u00A3899.00',emoji:'\u26F7\uFE0F'},
-      {name:'Bent 100',desc:'All-mountain freeride \u00B7 100mm waist \u00B7 Poplar core',price:'\u00A3649.00',emoji:'\u26F7\uFE0F'},
-      {name:'Hawx Ultra 130',desc:'Race boot \u00B7 130 flex \u00B7 Full Tilt technology',price:'\u00A3549.00',emoji:'\uD83D\uDC5F'},
+      {name:'Stratos X9S Carbon',desc:'World Cup race ski \u00B7 Full carbon \u00B7 Titanal frame',price:'\u00A3899.00',emoji:'\u26F7\uFE0F',img:'https://images.unsplash.com/photo-1565992441121-4367c2967103?w=600&h=600&fit=crop&q=80'},
+      {name:'Bent 100',desc:'All-mountain freeride \u00B7 100mm waist \u00B7 Poplar core',price:'\u00A3649.00',emoji:'\u26F7\uFE0F',img:'https://images.unsplash.com/photo-1551524559-8af4e6624178?w=600&h=600&fit=crop&q=80'},
+      {name:'Hawx Ultra 130',desc:'Race boot \u00B7 130 flex \u00B7 Full Tilt technology',price:'\u00A3549.00',emoji:'\uD83D\uDC5F',img:'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Atrion',authorSub:'Official \u00B7 Just now',text:'The Stratos X9S Carbon. Developed with Marcel Hirscher\u2019s Van Deer team and validated on the World Cup circuit. Full carbon cap construction, Titanal reinforcement, race-tuned geometry. The fastest Atrion we have ever made.',img:{fit:true,bg:'linear-gradient(135deg,#B91C1C,#DC2626)',url:'https://images.unsplash.com/photo-1551524559-8af4e6624178?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 12.4K|\uD83D\uDCAC 1.8K|\u2197 890'},
@@ -3082,13 +3090,13 @@ const BRAND_ZONES = {
   },
 
   'sabran': {
-    gateway:'ski', name:'Sabran', tagline:'All-mountain equipment trusted from first run to last light \u2014 Brand Zone Partner on SkiXX',
+    gateway:'ski', tier:'Full Brand Zone', name:'Sabran', tagline:'All-mountain equipment trusted from first run to last light \u2014 Brand Zone Partner on SkiXX',
     color:'#3B82F6', gradient:'linear-gradient(135deg,#1D4ED8,#3B82F6,#60A5FA)', logo:'Sa',
     stats:{ followers:'41.2K', content:'1,400+', products:'180+' },
     products:[
-      {name:'AM 106',desc:'All-mountain freeride \u00B7 106mm waist \u00B7 Lightweight poplar',price:'\u00A3699.00',emoji:'\u26F7\uFE0F'},
-      {name:'Stance 96',desc:'Versatile all-rounder \u00B7 96mm waist \u00B7 Carbon fibre reinforced',price:'\u00A3599.00',emoji:'\u26F7\uFE0F'},
-      {name:'S/Pro Alpha 120',desc:'High-performance boot \u00B7 120 flex \u00B7 Customisable liner',price:'\u00A3499.00',emoji:'\uD83D\uDC5F'},
+      {name:'AM 106',desc:'All-mountain freeride \u00B7 106mm waist \u00B7 Lightweight poplar',price:'\u00A3699.00',emoji:'\u26F7\uFE0F',img:'https://images.unsplash.com/photo-1551524559-8af4e6624178?w=600&h=600&fit=crop&q=80'},
+      {name:'Stance 96',desc:'Versatile all-rounder \u00B7 96mm waist \u00B7 Carbon fibre reinforced',price:'\u00A3599.00',emoji:'\u26F7\uFE0F',img:'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&h=600&fit=crop&q=80'},
+      {name:'S/Pro Alpha 120',desc:'High-performance boot \u00B7 120 flex \u00B7 Customisable liner',price:'\u00A3499.00',emoji:'\uD83D\uDC5F',img:'https://images.unsplash.com/photo-1565992441121-4367c2967103?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Sabran',authorSub:'Official \u00B7 Just now',text:'The AM 106 for 2026. Redesigned tip rocker for better float in variable snow. Poplar-paulownia core for weight reduction without sacrificing torsional rigidity. Tested from Chamonix Vall\u00E9e Blanche to Verbier off-piste. This is what all-mountain means.',img:{fit:true,bg:'linear-gradient(135deg,#1D4ED8,#3B82F6)',url:'https://images.unsplash.com/photo-1548777123-e216912df7d8?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 9.8K|\uD83D\uDCAC 1.3K|\u2197 678'},
@@ -3100,13 +3108,13 @@ const BRAND_ZONES = {
   },
 
   'quayside-surf': {
-    gateway:'surf', name:'Quayside Surf', tagline:'Born in the surf \u2014 outfitting ocean athletes since 1969',
+    gateway:'surf', tier:'Founding Partner', name:'Quayside Surf', tagline:'Born in the surf \u2014 outfitting ocean athletes since 1969',
     color:'#0A1628', gradient:'linear-gradient(135deg,#0A1628,#001A3D,#0066CC)', logo:'Qk',
     stats:{ followers:'22.4K', content:'678', products:'340+' },
     products:[
-      {name:'Highline Pro 19\u201d Boardshort',desc:'Recycled stretch fabric \u00B7 Competition fit \u00B7 5 colourways',price:'\u00A385.00',emoji:'\uD83C\uDFC4'},
-      {name:'Syncro 4/3 Wetsuit',desc:'FluidFlex neoprene \u00B7 Chest zip \u00B7 Thermal lining',price:'\u00A3320.00',emoji:'\uD83C\uDF0A'},
-      {name:'Radical Surf Cap',desc:'UPF 50+ \u00B7 Quick dry \u00B7 Adjustable fit',price:'\u00A328.00',emoji:'\uD83E\uDDE2'},
+      {name:'Highline Pro 19\u201d Boardshort',desc:'Recycled stretch fabric \u00B7 Competition fit \u00B7 5 colourways',price:'\u00A385.00',emoji:'\uD83C\uDFC4',img:'https://images.unsplash.com/photo-1505459668311-8dfac7952bf0?w=600&h=600&fit=crop&q=80'},
+      {name:'Syncro 4/3 Wetsuit',desc:'FluidFlex neoprene \u00B7 Chest zip \u00B7 Thermal lining',price:'\u00A3320.00',emoji:'\uD83C\uDF0A',img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=600&fit=crop&q=80'},
+      {name:'Radical Surf Cap',desc:'UPF 50+ \u00B7 Quick dry \u00B7 Adjustable fit',price:'\u00A328.00',emoji:'\uD83E\uDDE2',img:'https://images.unsplash.com/photo-1455729552865-3658a5d39692?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Quayside Surf',authorSub:'Official \u00B7 Just now',text:'The 2026 Highline Pro is here. Developed with our WST athletes over 18 months of testing from Pipeline to Teahupoo. Recycled four-way stretch, bonded seams, competition cut. The best boardshort we have ever made.',img:{fit:true,bg:'linear-gradient(135deg,#0A1628,#001A3D)',url:'https://images.unsplash.com/photo-1505459668311-8dfac7952bf0?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 7.8K|\uD83D\uDCAC 934|\u2197 445'},
@@ -3118,13 +3126,13 @@ const BRAND_ZONES = {
   },
 
   'marine-swells': {
-    gateway:'surf', name:'Marine Swells', tagline:'The world\u2019s most trusted surf forecast \u2014 since 1999',
+    gateway:'surf', tier:'Full Brand Zone', name:'Marine Swells', tagline:'The world\u2019s most trusted surf forecast \u2014 since 1999',
     color:'#0066CC', gradient:'linear-gradient(135deg,#0066CC,#0088FF,#004499)', logo:'MS',
     stats:{ followers:'89.4K', content:'2,400+', products:'3' },
     products:[
-      {name:'MSW Pro Forecast',desc:'7-day HD forecast \u00B7 Swell period breakdown \u00B7 Wind mapping',price:'\u00A39.99/mo',emoji:'\uD83C\uDF0A'},
-      {name:'Annual Pro Pass',desc:'Full year access \u00B7 All features \u00B7 Best value',price:'\u00A379.99/yr',emoji:'\u2B50'},
-      {name:'API Access',desc:'Integrate MSW data into your platform or app',price:'Custom',emoji:'\uD83D\uDD27'},
+      {name:'MSW Pro Forecast',desc:'7-day HD forecast \u00B7 Swell period breakdown \u00B7 Wind mapping',price:'\u00A39.99/mo',emoji:'\uD83C\uDF0A',img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=600&fit=crop&q=80'},
+      {name:'Annual Pro Pass',desc:'Full year access \u00B7 All features \u00B7 Best value',price:'\u00A379.99/yr',emoji:'\u2B50',img:'https://images.unsplash.com/photo-1455729552865-3658a5d39692?w=600&h=600&fit=crop&q=80'},
+      {name:'API Access',desc:'Integrate MSW data into your platform or app',price:'Custom',emoji:'\uD83D\uDD27',img:'https://images.unsplash.com/photo-1516092553335-4b6e4e1e4b98?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Marine Swells',authorSub:'Official \u00B7 Just now',text:'SWELL ALERT: North Atlantic generating exceptional energy. Nazare north canyon showing 40-50ft wave faces by Saturday. Hossegor 10-12ft Friday through Sunday. Cornwall 6-8ft weekend. Full break-by-break detail in the Brand Zone.',img:{fit:true,bg:'linear-gradient(135deg,#004499,#0066CC)',url:'https://images.unsplash.com/photo-1505459668311-8dfac7952bf0?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 34.2K|\uD83D\uDCAC 4.8K|\u2197 2.4K'},
@@ -3136,13 +3144,13 @@ const BRAND_ZONES = {
   },
 
   'whirl': {
-    gateway:'cycle', name:'Whirl', tagline:'Smart trainers and cycling computers for those obsessed with watts',
+    gateway:'cycle', tier:'Founding Partner', name:'Whirl', tagline:'Smart trainers and cycling computers for those obsessed with watts',
     color:'#F5C400', gradient:'linear-gradient(135deg,#F5C400,#FFD700,#D4A800)', logo:'Wh',
     stats:{ followers:'31.2K', content:'890+', products:'24' },
     products:[
-      {name:'Cadence Core Smart Trainer',desc:'1500w resistance \u00B7 ±1% power accuracy \u00B7 ERG mode',price:'\u00A3699.00',emoji:'\uD83D\uDEB4'},
-      {name:'ELEMNT Roam 2 GPS',desc:'3.5\u201d colour display \u00B7 17hr battery \u00B7 Climb pro',price:'\u00A3349.00',emoji:'\uD83D\uDCF1'},
-      {name:'TICKR X Heart Rate',desc:'Running dynamics \u00B7 ANT+ & Bluetooth \u00B7 Built-in memory',price:'\u00A379.00',emoji:'\u2764\uFE0F'},
+      {name:'Cadence Core Smart Trainer',desc:'1500w resistance \u00B7 ±1% power accuracy \u00B7 ERG mode',price:'\u00A3699.00',emoji:'\uD83D\uDEB4',img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=600&fit=crop&q=80'},
+      {name:'ELEMNT Roam 2 GPS',desc:'3.5\u201d colour display \u00B7 17hr battery \u00B7 Climb pro',price:'\u00A3349.00',emoji:'\uD83D\uDCF1',img:'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=600&fit=crop&q=80'},
+      {name:'TICKR X Heart Rate',desc:'Running dynamics \u00B7 ANT+ & Bluetooth \u00B7 Built-in memory',price:'\u00A379.00',emoji:'\u2764\uFE0F',img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Whirl',authorSub:'Official \u00B7 Just now',text:'Cadence Move is here. The first smart trainer that moves with you \u2014 10 degrees of fore/aft and lateral motion. Your indoor rides now engage the same stabilising muscles as outdoor cycling. Game changing.',img:{fit:true,bg:'linear-gradient(135deg,#1a1a00,#0F0F0F)',url:'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 12.4K|\uD83D\uDCAC 1.8K|\u2197 890'},
@@ -3154,13 +3162,13 @@ const BRAND_ZONES = {
   },
 
   'ravelin': {
-    gateway:'cycle', name:'Ravelin', tagline:'Premium cycling apparel for those who ride because they must',
+    gateway:'cycle', tier:'Full Brand Zone', name:'Ravelin', tagline:'Premium cycling apparel for those who ride because they must',
     color:'#CC0000', gradient:'linear-gradient(135deg,#CC0000,#991A1A,#7A0000)', logo:'Ra',
     stats:{ followers:'45.6K', content:'1,200+', products:'180+' },
     products:[
-      {name:'Pro Team Aero Jersey',desc:'Wind tunnel tested \u00B7 UCI legal \u00B7 AlpineShell SHAKEDRY',price:'\u00A3260.00',emoji:'\uD83D\uDEB4'},
-      {name:'Classic Bib Short II',desc:'Elastic Interface pad \u00B7 4-way stretch \u00B7 6 panel',price:'\u00A3220.00',emoji:'\uD83D\uDEB4'},
-      {name:'Core Rain Jacket',desc:'100% recycled \u00B7 Packable \u00B7 Taped seams',price:'\u00A3145.00',emoji:'\uD83E\uDDE5'},
+      {name:'Pro Team Aero Jersey',desc:'Wind tunnel tested \u00B7 UCI legal \u00B7 AlpineShell SHAKEDRY',price:'\u00A3260.00',emoji:'\uD83D\uDEB4',img:'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=600&fit=crop&q=80'},
+      {name:'Classic Bib Short II',desc:'Elastic Interface pad \u00B7 4-way stretch \u00B7 6 panel',price:'\u00A3220.00',emoji:'\uD83D\uDEB4',img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=600&fit=crop&q=80'},
+      {name:'Core Rain Jacket',desc:'100% recycled \u00B7 Packable \u00B7 Taped seams',price:'\u00A3145.00',emoji:'\uD83E\uDDE5',img:'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Ravelin',authorSub:'Official \u00B7 Just now',text:'The Pro Team Aero Jersey for 2026. Six ProLeague teams. Wind tunnel at TotalEnergies. Every gram of fabric validated against performance data. Available only through Ravelin Brand Zones. This is what racing looks like.',img:{fit:true,bg:'linear-gradient(135deg,#7A0000,#CC0000)',url:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 11.2K|\uD83D\uDCAC 1.6K|\u2197 778'},
@@ -3172,13 +3180,13 @@ const BRAND_ZONES = {
   },
 
   'gimbal-marine': {
-    gateway:'sail', name:'Gimbal Marine', tagline:'Navigation technology trusted by ocean racers and weekend sailors alike',
+    gateway:'sail', tier:'Founding Partner', name:'Gimbal Marine', tagline:'Navigation technology trusted by ocean racers and weekend sailors alike',
     color:'#1B3A6B', gradient:'linear-gradient(135deg,#0A1628,#1B3A6B,#2A4A8B)', logo:'GM',
     stats:{ followers:'19.8K', content:'456', products:'67' },
     products:[
-      {name:'ChartPro 923xsv',desc:'9\u201d chartplotter \u00B7 Built-in sonar \u00B7 BlueChart g3',price:'\u00A31,299.00',emoji:'\uD83D\uDDFA\uFE0F'},
-      {name:'Quatix 7 Sapphire',desc:'Marine smartwatch \u00B7 Auto-tack \u00B7 Sailing analytics',price:'\u00A3799.00',emoji:'\u231A'},
-      {name:'VHF 315i Radio',desc:'Built-in GPS \u00B7 DSC distress \u00B7 Floating design',price:'\u00A3299.00',emoji:'\uD83D\uDCE1'},
+      {name:'ChartPro 923xsv',desc:'9\u201d chartplotter \u00B7 Built-in sonar \u00B7 BlueChart g3',price:'\u00A31,299.00',emoji:'\uD83D\uDDFA\uFE0F',img:'https://images.unsplash.com/photo-1500514966906-fe245eea9344?w=600&h=600&fit=crop&q=80'},
+      {name:'Quatix 7 Sapphire',desc:'Marine smartwatch \u00B7 Auto-tack \u00B7 Sailing analytics',price:'\u00A3799.00',emoji:'\u231A',img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=600&fit=crop&q=80'},
+      {name:'VHF 315i Radio',desc:'Built-in GPS \u00B7 DSC distress \u00B7 Floating design',price:'\u00A3299.00',emoji:'\uD83D\uDCE1',img:'https://images.unsplash.com/photo-1516939884455-1445c8652f83?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Gimbal Marine',authorSub:'Official \u00B7 Just now',text:'ChartPro 923xsv firmware update: new AI weather routing integrates GRIB files directly into the chartplotter. Route around developing systems without leaving the helm. Tested by the Global Ocean fleet.',img:{fit:true,bg:'linear-gradient(135deg,#0A1628,#1B3A6B)',url:'https://images.unsplash.com/photo-1516939884455-1445c8652f83?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 4.2K|\uD83D\uDCAC 523|\u2197 189'},
@@ -3190,13 +3198,13 @@ const BRAND_ZONES = {
   },
 
   'halcyon-harbor': {
-    gateway:'sail', name:'Halcyon Harbor', tagline:'Protecting those who work, race and play in the harshest ocean conditions since 1877',
+    gateway:'sail', tier:'Full Brand Zone', name:'Halcyon Harbor', tagline:'Protecting those who work, race and play in the harshest ocean conditions since 1877',
     color:'#C9A84C', gradient:'linear-gradient(135deg,#C9A84C,#B8963A,#8B6914)', logo:'HH',
     stats:{ followers:'28.4K', content:'890+', products:'240+' },
     products:[
-      {name:'Aegir Ocean Jacket',desc:'20,000mm waterproofing \u00B7 Sealed seams \u00B7 Harness compatible',price:'\u00A3649.00',emoji:'\uD83E\uDDE5'},
-      {name:'Foil Pro Bib Trouser',desc:'Racing cut \u00B7 4-way stretch \u00B7 Reinforced seat',price:'\u00A3349.00',emoji:'\uD83E\uDDE5'},
-      {name:'Lifa Active Base Layer',desc:'Moisture transport \u00B7 Anti-odour \u00B7 Quick dry',price:'\u00A389.00',emoji:'\uD83E\uDDE5'},
+      {name:'Aegir Ocean Jacket',desc:'20,000mm waterproofing \u00B7 Sealed seams \u00B7 Harness compatible',price:'\u00A3649.00',emoji:'\uD83E\uDDE5',img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=600&fit=crop&q=80'},
+      {name:'Foil Pro Bib Trouser',desc:'Racing cut \u00B7 4-way stretch \u00B7 Reinforced seat',price:'\u00A3349.00',emoji:'\uD83E\uDDE5',img:'https://images.unsplash.com/photo-1516939884455-1445c8652f83?w=600&h=600&fit=crop&q=80'},
+      {name:'Lifa Active Base Layer',desc:'Moisture transport \u00B7 Anti-odour \u00B7 Quick dry',price:'\u00A389.00',emoji:'\uD83E\uDDE5',img:'https://images.unsplash.com/photo-1500514966906-fe245eea9344?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Halcyon Harbor',authorSub:'Official \u00B7 Just now',text:'The Aegir Ocean Jacket \u2014 born in the Southern Ocean, refined by 12 Global Ocean campaigns. 20,000mm hydrostatic head. Double-sealed seams. Integrated harness compatibility. When conditions turn critical, this is what stands between you and the sea.',img:{fit:true,bg:'linear-gradient(135deg,#0A1628,#1B3A6B)',url:'https://images.unsplash.com/photo-1500514966906-fe245eea9344?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 6.8K|\uD83D\uDCAC 789|\u2197 334'},
@@ -3208,13 +3216,13 @@ const BRAND_ZONES = {
   },
 
   'reefcurl': {
-    gateway:'surf', name:'Reefcurl', tagline:'The ultimate surfing company — live the search since 1969',
+    gateway:'surf', tier:'Claimed & Verified', name:'Reefcurl', tagline:'The ultimate surfing company — live the search since 1969',
     color:'#00262B', gradient:'linear-gradient(135deg,#00262B,#004D40,#00897B)', logo:'RC',
     stats:{ followers:'34.8K', content:'920+', products:'280+' },
     products:[
-      {name:'WaveSync 2 Surf Watch',desc:'Tide charts · Wave count · GPS speed · 48hr battery',price:'£329.00',emoji:'⌚'},
-      {name:'FlashBomb 4/3 Chest Zip',desc:'E7 Flash Lining · 30-sec dry time · Triple glued seams',price:'£360.00',emoji:'🌊'},
-      {name:'Mirage Ultimate Boardshort',desc:'Laser-cut · 4-way stretch · No wax needed',price:'£65.00',emoji:'🩳'},
+      {name:'WaveSync 2 Surf Watch',desc:'Tide charts · Wave count · GPS speed · 48hr battery',price:'£329.00',emoji:'⌚',img:'https://images.unsplash.com/photo-1455729552865-3658a5d39692?w=600&h=600&fit=crop&q=80'},
+      {name:'FlashBomb 4/3 Chest Zip',desc:'E7 Flash Lining · 30-sec dry time · Triple glued seams',price:'£360.00',emoji:'🌊',img:'https://images.unsplash.com/photo-1516092553335-4b6e4e1e4b98?w=600&h=600&fit=crop&q=80'},
+      {name:'Mirage Ultimate Boardshort',desc:'Laser-cut · 4-way stretch · No wax needed',price:'£65.00',emoji:'🩳',img:'https://images.unsplash.com/photo-1505459668311-8dfac7952bf0?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Reefcurl',authorSub:'Official · Just now',text:'The WaveSync 2 doesn\'t just track your session — it understands it. Wave count, top speed, distance paddled, and tide sync all on your wrist. Developed with WST athletes across 3 years of testing from Bells Beach to Pipeline. The search never ends.',img:{fit:true,bg:'linear-gradient(135deg,#00262B,#004D40)',url:'https://images.unsplash.com/photo-1502680390049-dc4466855e62?w=800&h=400&fit=crop&q=80'},engagement:'♡ 8.4K|💬 967|↗ 445'},
@@ -3226,13 +3234,13 @@ const BRAND_ZONES = {
   },
 
   'spectra-cycles': {
-    gateway:'cycle', name:'Spectra Cycles', tagline:'Innovate or die — pushing the boundaries of cycling performance since 1974',
+    gateway:'cycle', tier:'Claimed & Verified', name:'Spectra Cycles', tagline:'Innovate or die — pushing the boundaries of cycling performance since 1974',
     color:'#CF0A2C', gradient:'linear-gradient(135deg,#CF0A2C,#8B0000,#1A1A1A)', logo:'Sp',
     stats:{ followers:'52.8K', content:'1,100+', products:'460+' },
     products:[
-      {name:'Veloce SL8 Pro',desc:'FACT 12r carbon · Aero ride quality · 6.4kg · Shimano Dura-Ace',price:'£10,500.00',emoji:'🚴'},
-      {name:'Stumpjumper EVO Expert',desc:'170mm travel · FACT 11m carbon · SWAT storage · Coil compatible',price:'£6,200.00',emoji:'🚵'},
-      {name:'S-Works Prevail 3',desc:'ANGi crash sensor · MIPS Air Node · 198g · Tour de France tested',price:'£260.00',emoji:'⛑️'},
+      {name:'Veloce SL8 Pro',desc:'FACT 12r carbon · Aero ride quality · 6.4kg · Shimano Dura-Ace',price:'£10,500.00',emoji:'🚴',img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=600&fit=crop&q=80'},
+      {name:'Stumpjumper EVO Expert',desc:'170mm travel · FACT 11m carbon · SWAT storage · Coil compatible',price:'£6,200.00',emoji:'🚵',img:'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=600&fit=crop&q=80'},
+      {name:'S-Works Prevail 3',desc:'ANGi crash sensor · MIPS Air Node · 198g · Tour de France tested',price:'£260.00',emoji:'⛑️',img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Spectra Cycles',authorSub:'Official · Just now',text:'The Veloce SL8 doesn\'t compromise. We merged the Veloce\'s aero efficiency with the Aero ride quality into one frame. 6.4kg. Zero aero penalty. The fastest all-round race bike we\'ve ever made — and it climbs like a feather. Ask any of our 8 ProLeague teams.',img:{fit:true,bg:'linear-gradient(135deg,#CF0A2C,#8B0000)',url:'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=800&h=400&fit=crop&q=80'},engagement:'♡ 14.2K|💬 1.8K|↗ 890'},
@@ -3244,13 +3252,13 @@ const BRAND_ZONES = {
   },
 
   'mussol': {
-    gateway:'sail', name:'Mussol', tagline:'Official technical clothing partner to Britannia Racing — built for the ocean since 1965',
+    gateway:'sail', tier:'Claimed & Verified', name:'Mussol', tagline:'Official technical clothing partner to Britannia Racing — built for the ocean since 1965',
     color:'#1C2541', gradient:'linear-gradient(135deg,#1C2541,#2C3E6B,#C41E3A)', logo:'Mu',
     stats:{ followers:'18.6K', content:'640+', products:'190+' },
     products:[
-      {name:'HPX Pro Series Smock',desc:'AlpineShell Pro · Ocean tested · Reinforced forearms · Articulated hood',price:'£595.00',emoji:'🧥'},
-      {name:'MPX Offshore Trouser',desc:'3-layer AlpineShell · Seat reinforcement · Adjustable braces',price:'£449.00',emoji:'🧥'},
-      {name:'Dynamic Pro Shoe',desc:'Non-marking outsole · Drainage system · Grip in all conditions',price:'£135.00',emoji:'👟'},
+      {name:'HPX Pro Series Smock',desc:'AlpineShell Pro · Ocean tested · Reinforced forearms · Articulated hood',price:'£595.00',emoji:'🧥',img:'https://images.unsplash.com/photo-1516939884455-1445c8652f83?w=600&h=600&fit=crop&q=80'},
+      {name:'MPX Offshore Trouser',desc:'3-layer AlpineShell · Seat reinforcement · Adjustable braces',price:'£449.00',emoji:'🧥',img:'https://images.unsplash.com/photo-1500514966906-fe245eea9344?w=600&h=600&fit=crop&q=80'},
+      {name:'Dynamic Pro Shoe',desc:'Non-marking outsole · Drainage system · Grip in all conditions',price:'£135.00',emoji:'👟',img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Mussol',authorSub:'Official · Just now',text:'The HPX Pro Series. Developed alongside Britannia Racing for the 37th America\'s Cup. AlpineShell Pro membrane. Reinforced high-wear zones. Articulated storm hood. When Sir Ben Ainslie\'s crew push the AC75 to 50 knots, this is what they trust.',img:{fit:true,bg:'linear-gradient(135deg,#1C2541,#2C3E6B)',url:'https://images.unsplash.com/photo-1534854638093-bada1813ca19?w=800&h=400&fit=crop&q=80'},engagement:'♡ 5.8K|💬 678|↗ 312'},
@@ -3262,13 +3270,13 @@ const BRAND_ZONES = {
   },
 
   'arctika': {
-    gateway:'ski', name:"Arctika", tagline:'Design obsession for the alpine — precision-engineered outerwear from the Coast Mountains',
+    gateway:'ski', tier:'Claimed & Verified', name:"Arctika", tagline:'Design obsession for the alpine — precision-engineered outerwear from the Coast Mountains',
     color:'#1A1A1A', gradient:'linear-gradient(135deg,#1A1A1A,#2D2D2D,#D4A843)', logo:'Ar',
     stats:{ followers:'38.2K', content:'780+', products:'320+' },
     products:[
-      {name:'Apex SV Jacket',desc:'AlpineShell Pro Most Rugged · N100p-X face · 3L · Expedition grade',price:'£700.00',emoji:'🧥'},
-      {name:'Rush IS Jacket',desc:'Coreloft insulation · AlpineShell · Freeride cut · Powder skirt',price:'£620.00',emoji:'🎿'},
-      {name:'Voltair 20 Avalanche Pack',desc:'Electronic airbag · Lithium capacitor · Ski carry · 20L',price:'£1,100.00',emoji:'🎒'},
+      {name:'Apex SV Jacket',desc:'AlpineShell Pro Most Rugged · N100p-X face · 3L · Expedition grade',price:'£700.00',emoji:'🧥',img:'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&h=600&fit=crop&q=80'},
+      {name:'Rush IS Jacket',desc:'Coreloft insulation · AlpineShell · Freeride cut · Powder skirt',price:'£620.00',emoji:'🎿',img:'https://images.unsplash.com/photo-1565992441121-4367c2967103?w=600&h=600&fit=crop&q=80'},
+      {name:'Voltair 20 Avalanche Pack',desc:'Electronic airbag · Lithium capacitor · Ski carry · 20L',price:'£1,100.00',emoji:'🎒',img:'https://images.unsplash.com/photo-1551524559-8af4e6624178?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:"Arctika",authorSub:'Official · Just now',text:'The Apex SV. Our most protective shell — full stop. AlpineShell Pro Most Rugged with N100p-X face fabric. Every seam micro-taped. Every zipper WaterTight™. Built in our own factory in Vancouver. When the mountain gives you everything it has, this jacket gives you everything back.',img:{fit:true,bg:'linear-gradient(135deg,#1A1A1A,#2D2D2D)',url:'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=800&h=400&fit=crop&q=80'},engagement:'♡ 12.4K|💬 1.6K|↗ 734'},
@@ -3280,13 +3288,13 @@ const BRAND_ZONES = {
   },
 
   'myflexplate': {
-    gateway:'diet', name:'MyFlexPlate', tagline:'The world\u2019s most trusted nutrition tracking platform \u2014 14 million foods',
+    gateway:'diet', tier:'Founding Partner', name:'MyFlexPlate', tagline:'The world\u2019s most trusted nutrition tracking platform \u2014 14 million foods',
     color:'#2D7A3A', gradient:'linear-gradient(135deg,#2D7A3A,#4CAF50,#1A5C28)', logo:'MF',
     stats:{ followers:'178.4K', content:'3,200+', products:'3' },
     products:[
-      {name:'Premium Annual',desc:'AI meal planning \u00B7 Advanced analytics \u00B7 No ads',price:'\u00A379.99/yr',emoji:'\uD83E\uDD57'},
-      {name:'Premium Monthly',desc:'Full premium access \u00B7 Cancel anytime',price:'\u00A39.99/mo',emoji:'\uD83D\uDCCA'},
-      {name:'Family Plan',desc:'Up to 6 accounts \u00B7 Shared meal planning \u00B7 Best value',price:'\u00A3119.99/yr',emoji:'\uD83D\uDC68\u200D\uD83D\uDC69\u200D\uD83D\uDC67'},
+      {name:'Premium Annual',desc:'AI meal planning \u00B7 Advanced analytics \u00B7 No ads',price:'\u00A379.99/yr',emoji:'\uD83E\uDD57',img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=600&fit=crop&q=80'},
+      {name:'Premium Monthly',desc:'Full premium access \u00B7 Cancel anytime',price:'\u00A39.99/mo',emoji:'\uD83D\uDCCA',img:'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&h=600&fit=crop&q=80'},
+      {name:'Family Plan',desc:'Up to 6 accounts \u00B7 Shared meal planning \u00B7 Best value',price:'\u00A3119.99/yr',emoji:'\uD83D\uDC68\u200D\uD83D\uDC69\u200D\uD83D\uDC67',img:'https://images.unsplash.com/photo-1543352634-99a5d50ae78e?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'MyFlexPlate',authorSub:'Official \u00B7 Just now',text:'AI meal planning is live for Premium members. Input your macros, your food preferences, your schedule \u2014 your week is built automatically. 14 million foods. Barcode scanning. Restaurant menus. Nutrition has never been this effortless.',img:{fit:true,bg:'linear-gradient(135deg,#0A1A0A,#2D7A3A)',url:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 22.4K|\uD83D\uDCAC 3.1K|\u2197 1.6K'},
@@ -3298,12 +3306,12 @@ const BRAND_ZONES = {
   },
 
   'zoia': {
-    gateway:'diet', name:'Zoia', tagline:'Personalised nutrition science \u2014 your body is unique, your diet should be too',
+    gateway:'diet', tier:'Full Brand Zone', name:'Zoia', tagline:'Personalised nutrition science \u2014 your body is unique, your diet should be too',
     color:'#0A1A0A', gradient:'linear-gradient(135deg,#0A1A0A,#1A3A1A,#2D7A3A)', logo:'Zo',
     stats:{ followers:'45.6K', content:'890+', products:'2' },
     products:[
-      {name:'Full Nutrition Test',desc:'Gut microbiome \u00B7 Blood sugar \u00B7 Blood fat \u00B7 Personalised scores',price:'\u00A3299.00',emoji:'\uD83E\uDDA0'},
-      {name:'Zoia Membership',desc:'12 months personalised guidance \u00B7 App \u00B7 Expert support',price:'\u00A324.99/mo',emoji:'\uD83D\uDCF1'},
+      {name:'Full Nutrition Test',desc:'Gut microbiome \u00B7 Blood sugar \u00B7 Blood fat \u00B7 Personalised scores',price:'\u00A3299.00',emoji:'\uD83E\uDDA0',img:'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&h=600&fit=crop&q=80'},
+      {name:'Zoia Membership',desc:'12 months personalised guidance \u00B7 App \u00B7 Expert support',price:'\u00A324.99/mo',emoji:'\uD83D\uDCF1',img:'https://images.unsplash.com/photo-1543352634-99a5d50ae78e?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Zoia',authorSub:'Official \u00B7 Just now',text:'INSIGHT study update: we have now analysed over 1 million gut microbiome samples. The variation in how individuals respond to identical foods is more dramatic than we initially found. The era of personalised nutrition is not coming. It is here.',img:{fit:true,bg:'linear-gradient(135deg,#0A1A0A,#1A3A1A)',url:'https://images.unsplash.com/photo-1543352634-99a5d50ae78e?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 31.2K|\uD83D\uDCAC 4.8K|\u2197 2.4K'},
@@ -3315,13 +3323,13 @@ const BRAND_ZONES = {
   },
 
   'whim': {
-    gateway:'sleep', name:'Whim', tagline:'The health and fitness wearable that tells you how recovered you really are',
+    gateway:'sleep', tier:'Founding Partner', name:'Whim', tagline:'The health and fitness wearable that tells you how recovered you really are',
     color:'#7C6FF7', gradient:'linear-gradient(135deg,#7C6FF7,#A89BFF,#312E81)', logo:'Wh',
     stats:{ followers:'56.8K', content:'1,200+', products:'4' },
     products:[
-      {name:'Whim 4.0 Band',desc:'Continuous monitoring \u00B7 5-day battery \u00B7 Waterproof',price:'\u00A3239.00',emoji:'\u231A'},
-      {name:'Monthly Membership',desc:'Full data access \u00B7 AI coaching \u00B7 Community',price:'\u00A330.00/mo',emoji:'\uD83D\uDCCA'},
-      {name:'Annual Membership',desc:'12 months \u00B7 Best value \u00B7 Includes device',price:'\u00A3239.00/yr',emoji:'\u2B50'},
+      {name:'Whim 4.0 Band',desc:'Continuous monitoring \u00B7 5-day battery \u00B7 Waterproof',price:'\u00A3239.00',emoji:'\u231A',img:'https://images.unsplash.com/photo-1541480601022-2308c0f02487?w=600&h=600&fit=crop&q=80'},
+      {name:'Monthly Membership',desc:'Full data access \u00B7 AI coaching \u00B7 Community',price:'\u00A330.00/mo',emoji:'\uD83D\uDCCA',img:'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&h=600&fit=crop&q=80'},
+      {name:'Annual Membership',desc:'12 months \u00B7 Best value \u00B7 Includes device',price:'\u00A3239.00/yr',emoji:'\u2B50',img:'https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Whim',authorSub:'Official \u00B7 Just now',text:'Whim 4.0 sleep staging accuracy: 93.4% validated against polysomnography in our latest clinical study. REM, light, deep and awake \u2014 all tracked without a sleep lab. Your recovery score is built on data your doctor would trust.',img:{fit:true,bg:'linear-gradient(135deg,#312E81,#7C6FF7)',url:'https://images.unsplash.com/photo-1541480601022-2308c0f02487?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 12.4K|\uD83D\uDCAC 1.8K|\u2197 890'},
@@ -3333,13 +3341,13 @@ const BRAND_ZONES = {
   },
 
   'calma': {
-    gateway:'sleep', name:'Calma', tagline:'The world\u2019s leading app for sleep and meditation \u2014 100 million downloads',
+    gateway:'sleep', tier:'Full Brand Zone', name:'Calma', tagline:'The world\u2019s leading app for sleep and meditation \u2014 100 million downloads',
     color:'#312E81', gradient:'linear-gradient(135deg,#312E81,#4338CA,#6366F1)', logo:'Ca',
     stats:{ followers:'234.8K', content:'2,800+', products:'3' },
     products:[
-      {name:'Calma Premium Annual',desc:'Full library \u00B7 New content daily \u00B7 Offline access',price:'\u00A354.99/yr',emoji:'\uD83C\uDF19'},
-      {name:'Calma Family Plan',desc:'Up to 6 accounts \u00B7 Family Sleep Stories \u00B7 Kids content',price:'\u00A399.99/yr',emoji:'\uD83D\uDC68\u200D\uD83D\uDC69\u200D\uD83D\uDC67'},
-      {name:'Calma for Teams',desc:'Employee wellbeing \u00B7 Analytics \u00B7 Group licences',price:'Custom',emoji:'\uD83C\uDFE2'},
+      {name:'Calma Premium Annual',desc:'Full library \u00B7 New content daily \u00B7 Offline access',price:'\u00A354.99/yr',emoji:'\uD83C\uDF19',img:'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&h=600&fit=crop&q=80'},
+      {name:'Calma Family Plan',desc:'Up to 6 accounts \u00B7 Family Sleep Stories \u00B7 Kids content',price:'\u00A399.99/yr',emoji:'\uD83D\uDC68\u200D\uD83D\uDC69\u200D\uD83D\uDC67',img:'https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=600&h=600&fit=crop&q=80'},
+      {name:'Calma for Teams',desc:'Employee wellbeing \u00B7 Analytics \u00B7 Group licences',price:'Custom',emoji:'\uD83C\uDFE2',img:'https://images.unsplash.com/photo-1541480601022-2308c0f02487?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Calma',authorSub:'Official \u00B7 Just now',text:'New: Henry Fairburn narrates \u2018The Moonlit Garden\u2019 \u2014 our most requested Sleep Story of all time, finally recorded. 38 minutes. Beautifully written, perfectly narrated. Your best night\u2019s sleep starts here.',img:{fit:true,bg:'linear-gradient(135deg,#312E81,#4338CA)',url:'https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 45.2K|\uD83D\uDCAC 6.8K|\u2197 3.4K'},
@@ -3351,13 +3359,13 @@ const BRAND_ZONES = {
   },
 
   'lumenara': {
-    gateway:'yoga', name:'Lumenara', tagline:'Technical apparel designed for the practice \u2014 Founding Partner on YogaXX',
+    gateway:'yoga', tier:'Founding Partner', name:'Lumenara', tagline:'Technical apparel designed for the practice \u2014 Founding Partner on YogaXX',
     color:'#1A0E00', gradient:'linear-gradient(135deg,#1A0E00,#2C1A00,#3D2800)', logo:'Lu',
     stats:{ followers:'89.4K', content:'1,400+', products:'340+' },
     products:[
-      {name:'Align Pant 28\u201d',desc:'Numara fabric \u00B7 Buttery soft \u00B7 14 colourways',price:'\u00A3128.00',emoji:'\uD83E\uDDD8'},
-      {name:'Swiftly Tech Long Sleeve',desc:'Swiftly fabric \u00B7 Anti-odour \u00B7 Four-way stretch',price:'\u00A368.00',emoji:'\uD83E\uDDD8'},
-      {name:'Flow Y Numara Bra',desc:'Light support \u00B7 Buttery soft \u00B7 Adjustable straps',price:'\u00A358.00',emoji:'\uD83E\uDDD8'},
+      {name:'Align Pant 28\u201d',desc:'Numara fabric \u00B7 Buttery soft \u00B7 14 colourways',price:'\u00A3128.00',emoji:'\uD83E\uDDD8',img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=600&fit=crop&q=80'},
+      {name:'Swiftly Tech Long Sleeve',desc:'Swiftly fabric \u00B7 Anti-odour \u00B7 Four-way stretch',price:'\u00A368.00',emoji:'\uD83E\uDDD8',img:'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&h=600&fit=crop&q=80'},
+      {name:'Flow Y Numara Bra',desc:'Light support \u00B7 Buttery soft \u00B7 Adjustable straps',price:'\u00A358.00',emoji:'\uD83E\uDDD8',img:'https://images.unsplash.com/photo-1591291621164-2c6367723315?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Lumenara',authorSub:'Official \u00B7 Just now',text:'The new Align collection. Fourteen colourways, same Numara fabric you already love. Designed for your deepest forward fold, your longest hold, your most ambitious inversion. Zero distractions. Pure practice.',img:{fit:true,bg:'linear-gradient(135deg,#1A0E00,#2C1A00)',url:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 18.4K|\uD83D\uDCAC 2.1K|\u2197 1.2K'},
@@ -3369,13 +3377,13 @@ const BRAND_ZONES = {
   },
 
   'inner-tide': {
-    gateway:'yoga', name:'Inner Tide', tagline:'The world\u2019s largest free meditation app \u2014 6 million practitioners daily',
+    gateway:'yoga', tier:'Full Brand Zone', name:'Inner Tide', tagline:'The world\u2019s largest free meditation app \u2014 6 million practitioners daily',
     color:'#C4845A', gradient:'linear-gradient(135deg,#C4845A,#8B5E3C,#6B4428)', logo:'IT',
     stats:{ followers:'134.2K', content:'180,000+', products:'3' },
     products:[
-      {name:'Inner Tide Pro',desc:'Unlimited courses \u00B7 Offline access \u00B7 Advanced sleep tools',price:'\u00A359.99/yr',emoji:'\uD83E\uDDD0'},
-      {name:'Teacher Pro',desc:'Publish courses \u00B7 Analytics \u00B7 Revenue sharing',price:'\u00A389.99/yr',emoji:'\uD83E\uDDD8'},
-      {name:'Groups Premium',desc:'Private studio communities \u00B7 Live sessions \u00B7 Member management',price:'\u00A3149.99/yr',emoji:'\uD83D\uDC65'},
+      {name:'Inner Tide Pro',desc:'Unlimited courses \u00B7 Offline access \u00B7 Advanced sleep tools',price:'\u00A359.99/yr',emoji:'\uD83E\uDDD0',img:'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&h=600&fit=crop&q=80'},
+      {name:'Teacher Pro',desc:'Publish courses \u00B7 Analytics \u00B7 Revenue sharing',price:'\u00A389.99/yr',emoji:'\uD83E\uDDD8',img:'https://images.unsplash.com/photo-1591291621164-2c6367723315?w=600&h=600&fit=crop&q=80'},
+      {name:'Groups Premium',desc:'Private studio communities \u00B7 Live sessions \u00B7 Member management',price:'\u00A3149.99/yr',emoji:'\uD83D\uDC65',img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Inner Tide',authorSub:'Official \u00B7 Just now',text:'6 million people meditated on Inner Tide today. 180,000 guided sessions available. 10,000 teachers from 190 countries. Free for ever for the core practice. Because access to a calma mind should not depend on income.',img:{fit:true,bg:'linear-gradient(135deg,#6B4428,#8B5E3C)',url:'https://images.unsplash.com/photo-1591291621164-2c6367723315?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 34.2K|\uD83D\uDCAC 4.8K|\u2197 2.4K'},
@@ -3388,13 +3396,13 @@ const BRAND_ZONES = {
 
 
   'therme': {
-    gateway:'spa', name:'Thermarum Group', tagline:'Urban thermal wellbeing resorts \u2014 Founding Partner on SpaXX',
+    gateway:'spa', tier:'Founding Partner', name:'Thermarum Group', tagline:'Urban thermal wellbeing resorts \u2014 Founding Partner on SpaXX',
     color:'#1A0E1F', gradient:'linear-gradient(135deg,#1A0E1F,#2A1A38,#3D2850)', logo:'TG',
     stats:{ followers:'67.2K', content:'890+', products:'12' },
     products:[
-      {name:'Founding Membership',desc:'Unlimited access \u00B7 All thermal zones \u00B7 Priority booking',price:'\u00A3149.00/mo',emoji:'\uD83D\uDEC1'},
-      {name:'Day Pass Bundle (10)',desc:'10 full-day passes \u00B7 All facilities',price:'\u00A3450.00',emoji:'\u2728'},
-      {name:'Corporate Wellness',desc:'Team wellness days \u00B7 Private zones',price:'Custom',emoji:'\uD83C\uDFE2'},
+      {name:'Founding Membership',desc:'Unlimited access \u00B7 All thermal zones \u00B7 Priority booking',price:'\u00A3149.00/mo',emoji:'\uD83D\uDEC1',img:'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=600&h=600&fit=crop&q=80'},
+      {name:'Day Pass Bundle (10)',desc:'10 full-day passes \u00B7 All facilities',price:'\u00A3450.00',emoji:'\u2728',img:'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&h=600&fit=crop&q=80'},
+      {name:'Corporate Wellness',desc:'Team wellness days \u00B7 Private zones',price:'Custom',emoji:'\uD83C\uDFE2',img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Thermarum Group',authorSub:'Official \u00B7 Just now',text:'Thermarum Manchester: 28 pools, 35 saunas, 30,000 sqm. Opening Q3 2026.',img:{fit:true,bg:'linear-gradient(135deg,#1A0E1F,#2A1A38)',url:'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 18.4K|\uD83D\uDCAC 2.4K|\u2197 1.2K'},
@@ -3404,12 +3412,12 @@ const BRAND_ZONES = {
   },
 
   'cryo-plunge': {
-    gateway:'spa', name:'Cryo Plunge', tagline:'Professional-grade cold water immersion \u2014 Brand Zone Partner on SpaXX',
+    gateway:'spa', tier:'Full Brand Zone', name:'Cryo Plunge', tagline:'Professional-grade cold water immersion \u2014 Brand Zone Partner on SpaXX',
     color:'#3B82F6', gradient:'linear-gradient(135deg,#1E3A5F,#2563EB,#3B82F6)', logo:'CP',
     stats:{ followers:'34.8K', content:'560+', products:'8' },
     products:[
-      {name:'Cold Plunge Pro',desc:'40\u00B0F capable \u00B7 Self-cleaning \u00B7 Wi-Fi enabled',price:'\u00A34,995.00',emoji:'\u2744\uFE0F'},
-      {name:'Cold Plunge Standard',desc:'Built-in chiller \u00B7 Ozone sanitation',price:'\u00A32,995.00',emoji:'\u2744\uFE0F'},
+      {name:'Cold Plunge Pro',desc:'40\u00B0F capable \u00B7 Self-cleaning \u00B7 Wi-Fi enabled',price:'\u00A34,995.00',emoji:'\u2744\uFE0F',img:'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&h=600&fit=crop&q=80'},
+      {name:'Cold Plunge Standard',desc:'Built-in chiller \u00B7 Ozone sanitation',price:'\u00A32,995.00',emoji:'\u2744\uFE0F',img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Cryo Plunge',authorSub:'Official \u00B7 Just now',text:'The Cold Plunge Pro: chills to 2\u00B0C in 4 hours, self-cleaning, whisper-quiet, Wi-Fi control.',img:{fit:true,bg:'linear-gradient(135deg,#1E3A5F,#0D1F33)',url:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 8.4K|\uD83D\uDCAC 1.1K|\u2197 567'},
@@ -3419,12 +3427,12 @@ const BRAND_ZONES = {
   },
 
   'balancehelp': {
-    gateway:'therapy', name:'BalanceHelp', tagline:'The world\u2019s largest online therapy platform \u2014 Founding Partner on TherapyXX',
+    gateway:'therapy', tier:'Founding Partner', name:'BalanceHelp', tagline:'The world\u2019s largest online therapy platform \u2014 Founding Partner on TherapyXX',
     color:'#2D6A4F', gradient:'linear-gradient(135deg,#2D6A4F,#1B3D2F,#0D1F18)', logo:'BH',
     stats:{ followers:'124.8K', content:'2,400+', products:'6' },
     products:[
-      {name:'Monthly Therapy Plan',desc:'Weekly live sessions \u00B7 Unlimited messaging',price:'\u00A3260.00/mo',emoji:'\uD83D\uDCAC'},
-      {name:'Couples Therapy',desc:'Joint and individual sessions',price:'\u00A3340.00/mo',emoji:'\uD83D\uDC9A'},
+      {name:'Monthly Therapy Plan',desc:'Weekly live sessions \u00B7 Unlimited messaging',price:'\u00A3260.00/mo',emoji:'\uD83D\uDCAC',img:'https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=600&h=600&fit=crop&q=80'},
+      {name:'Couples Therapy',desc:'Joint and individual sessions',price:'\u00A3340.00/mo',emoji:'\uD83D\uDC9A',img:'https://images.unsplash.com/photo-1527137342181-19aab11a8ee8?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'BalanceHelp',authorSub:'Official \u00B7 Just now',text:'BalanceHelp now matches you based on therapeutic modality. 4.2 million people served. 35,000 licensed therapists.',img:{fit:true,bg:'linear-gradient(135deg,#2D6A4F,#1B3D2F)',url:'https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 24.8K|\uD83D\uDCAC 3.2K|\u2197 1.8K'},
@@ -3434,12 +3442,12 @@ const BRAND_ZONES = {
   },
 
   'calma-therapy': {
-    gateway:'therapy', name:'Calma', tagline:'Sleep, meditation, and mental wellness \u2014 Brand Zone Partner on TherapyXX',
+    gateway:'therapy', tier:'Full Brand Zone', name:'Calma', tagline:'Sleep, meditation, and mental wellness \u2014 Brand Zone Partner on TherapyXX',
     color:'#312E81', gradient:'linear-gradient(135deg,#312E81,#1E1B4B,#0F0D29)', logo:'Ca',
     stats:{ followers:'234.8K', content:'4,200+', products:'4' },
     products:[
-      {name:'Calma Premium Annual',desc:'Sleep Stories \u00B7 Meditation \u00B7 Masterclasses',price:'\u00A349.99/yr',emoji:'\uD83C\uDF19'},
-      {name:'Calma Health',desc:'Evidence-based CBT exercises',price:'\u00A389.99/yr',emoji:'\uD83E\uDDE0'},
+      {name:'Calma Premium Annual',desc:'Sleep Stories \u00B7 Meditation \u00B7 Masterclasses',price:'\u00A349.99/yr',emoji:'\uD83C\uDF19',img:'https://images.unsplash.com/photo-1527137342181-19aab11a8ee8?w=600&h=600&fit=crop&q=80'},
+      {name:'Calma Health',desc:'Evidence-based CBT exercises',price:'\u00A389.99/yr',emoji:'\uD83E\uDDE0',img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Calma',authorSub:'Official \u00B7 Just now',text:'Calma Health: clinically validated CBT and DBT exercises. 87% of users report reduced anxiety within 4 weeks.',img:{fit:true,bg:'linear-gradient(135deg,#312E81,#1E1B4B)',url:'https://images.unsplash.com/photo-1527137342181-19aab11a8ee8?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 18.6K|\uD83D\uDCAC 2.4K|\u2197 1.2K'},
@@ -3449,13 +3457,13 @@ const BRAND_ZONES = {
   },
 
   'hunova': {
-    gateway:'diet', name:'Hunova', tagline:'Complete nutrition made simple \u2014 everything your body needs in one meal',
+    gateway:'diet', tier:'Claimed & Verified', name:'Hunova', tagline:'Complete nutrition made simple \u2014 everything your body needs in one meal',
     color:'#1A1A1A', gradient:'linear-gradient(135deg,#1A1A1A,#2D2D2D,#F5F5DC)', logo:'Hu',
     stats:{ followers:'67.2K', content:'1,400+', products:'28' },
     products:[
-      {name:'Hunova Black Edition',desc:'40g protein \u00B7 Low carb \u00B7 27 vitamins & minerals \u00B7 Vegan',price:'\u00A345.00',emoji:'\uD83E\uDD64'},
-      {name:'Hunova Daily Greens',desc:'91 vitamins, minerals & whole foods \u00B7 One daily scoop \u00B7 Gut health',price:'\u00A330.00',emoji:'\uD83E\uDD66'},
-      {name:'Hunova Complete Protein Bar',desc:'20g protein \u00B7 Low sugar \u00B7 Plant-based \u00B7 Box of 12',price:'\u00A336.00',emoji:'\uD83C\uDF6B'},
+      {name:'Hunova Black Edition',desc:'40g protein \u00B7 Low carb \u00B7 27 vitamins & minerals \u00B7 Vegan',price:'\u00A345.00',emoji:'\uD83E\uDD64',img:'https://images.unsplash.com/photo-1543352634-99a5d50ae78e?w=600&h=600&fit=crop&q=80'},
+      {name:'Hunova Daily Greens',desc:'91 vitamins, minerals & whole foods \u00B7 One daily scoop \u00B7 Gut health',price:'\u00A330.00',emoji:'\uD83E\uDD66',img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=600&fit=crop&q=80'},
+      {name:'Hunova Complete Protein Bar',desc:'20g protein \u00B7 Low sugar \u00B7 Plant-based \u00B7 Box of 12',price:'\u00A336.00',emoji:'\uD83C\uDF6B',img:'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Hunova',authorSub:'Official \u00B7 Just now',text:'Black Edition v2.0. 40g protein per serving. Low carb. 27 essential vitamins and minerals. Everything your body needs, nothing it doesn\u2019t. One meal, perfectly balanced. Made in the UK from sustainably sourced plant-based ingredients. Nutrition shouldn\u2019t be complicated.',img:{fit:true,bg:'linear-gradient(135deg,#1A1A1A,#2D2D2D)',url:'https://images.unsplash.com/photo-1622485831930-34f01c9e37cb?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 8.4K|\uD83D\uDCAC 1.1K|\u2197 523'},
@@ -3467,13 +3475,13 @@ const BRAND_ZONES = {
   },
 
   '8slumber': {
-    gateway:'sleep', name:'8Slumber', tagline:'The sleep fitness company \u2014 temperature-controlled smart mattress technology',
+    gateway:'sleep', tier:'Claimed & Verified', name:'8Slumber', tagline:'The sleep fitness company \u2014 temperature-controlled smart mattress technology',
     color:'#0A0A2E', gradient:'linear-gradient(135deg,#0A0A2E,#1A1A4E,#4F46E5)', logo:'8S',
     stats:{ followers:'42.8K', content:'680+', products:'6' },
     products:[
-      {name:'Slumber Pod 4',desc:'Cooling & heating -7\u00B0 to +7\u00B0 \u00B7 Autopilot AI \u00B7 Sleep & health tracking',price:'\u00A32,295.00',emoji:'\uD83D\uDECF\uFE0F'},
-      {name:'Pod 4 Cover',desc:'Fits any mattress \u00B7 Dual zone cooling \u00B7 Vibration alarm \u00B7 App controlled',price:'\u00A31,595.00',emoji:'\u2744\uFE0F'},
-      {name:'Autopilot Membership',desc:'AI temperature adjustment \u00B7 Sleep coaching \u00B7 Health insights',price:'\u00A319/mo',emoji:'\uD83E\uDD16'},
+      {name:'Slumber Pod 4',desc:'Cooling & heating -7\u00B0 to +7\u00B0 \u00B7 Autopilot AI \u00B7 Sleep & health tracking',price:'\u00A32,295.00',emoji:'\uD83D\uDECF\uFE0F',img:'https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=600&h=600&fit=crop&q=80'},
+      {name:'Pod 4 Cover',desc:'Fits any mattress \u00B7 Dual zone cooling \u00B7 Vibration alarm \u00B7 App controlled',price:'\u00A31,595.00',emoji:'\u2744\uFE0F',img:'https://images.unsplash.com/photo-1541480601022-2308c0f02487?w=600&h=600&fit=crop&q=80'},
+      {name:'Autopilot Membership',desc:'AI temperature adjustment \u00B7 Sleep coaching \u00B7 Health insights',price:'\u00A319/mo',emoji:'\uD83E\uDD16',img:'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'8Slumber',authorSub:'Official \u00B7 Just now',text:'Slumber Pod 4. Cools to -7\u00B0C or warms to +7\u00B0C on each side independently. Autopilot AI learns your thermal needs and adjusts temperature throughout the night. Clinical studies show 32% improvement in deep sleep. The bedroom should be a sleep lab, not a guessing game.',img:{fit:true,bg:'linear-gradient(135deg,#0A0A2E,#1A1A4E)',url:'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 11.2K|\uD83D\uDCAC 1.4K|\u2197 678'},
@@ -3485,13 +3493,13 @@ const BRAND_ZONES = {
   },
 
   'ao-flow': {
-    gateway:'yoga', name:'Ao Flow', tagline:'Studio-to-street yoga apparel \u2014 mindful movement meets modern design',
+    gateway:'yoga', tier:'Claimed & Verified', name:'Ao Flow', tagline:'Studio-to-street yoga apparel \u2014 mindful movement meets modern design',
     color:'#1A0A1A', gradient:'linear-gradient(135deg,#1A0A1A,#2D1A2D,#9B59B6)', logo:'Ao',
     stats:{ followers:'78.4K', content:'1,200+', products:'420+' },
     products:[
-      {name:'Aerolift High-Waist Legging',desc:'Buttery smooth \u00B7 Compression fit \u00B7 4-way stretch \u00B7 No front seam',price:'\u00A3108.00',emoji:'\uD83E\uDDD8'},
-      {name:'Accolade Hoodie',desc:'Heavyweight fleece \u00B7 Oversized fit \u00B7 Studio to street \u00B7 8 colours',price:'\u00A3138.00',emoji:'\uD83E\uDDE5'},
-      {name:'Alo Moves Annual',desc:'Unlimited yoga, Pilates, HIIT \u00B7 World-class instructors \u00B7 New daily',price:'\u00A3149.00/yr',emoji:'\uD83D\uDCF1'},
+      {name:'Aerolift High-Waist Legging',desc:'Buttery smooth \u00B7 Compression fit \u00B7 4-way stretch \u00B7 No front seam',price:'\u00A3108.00',emoji:'\uD83E\uDDD8',img:'https://images.unsplash.com/photo-1591291621164-2c6367723315?w=600&h=600&fit=crop&q=80'},
+      {name:'Accolade Hoodie',desc:'Heavyweight fleece \u00B7 Oversized fit \u00B7 Studio to street \u00B7 8 colours',price:'\u00A3138.00',emoji:'\uD83E\uDDE5',img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=600&fit=crop&q=80'},
+      {name:'Alo Moves Annual',desc:'Unlimited yoga, Pilates, HIIT \u00B7 World-class instructors \u00B7 New daily',price:'\u00A3149.00/yr',emoji:'\uD83D\uDCF1',img:'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Ao Flow',authorSub:'Official \u00B7 Just now',text:'The Aerolift Legging. Our #1 bestseller for four consecutive years. Buttery Aerolift fabric that compresses without restricting. No front seam. High waist stays put through inversions. From hot yoga to coffee runs \u2014 one legging that does everything.',img:{fit:true,bg:'linear-gradient(135deg,#1A0A1A,#2D1A2D)',url:'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 14.2K|\uD83D\uDCAC 1.8K|\u2197 890'},
@@ -3503,13 +3511,13 @@ const BRAND_ZONES = {
   },
 
   'tendabody': {
-    gateway:'spa', name:'Tendabody', tagline:'Percussive therapy and wellness technology \u2014 science-backed recovery for everybody',
+    gateway:'spa', tier:'Claimed & Verified', name:'Tendabody', tagline:'Percussive therapy and wellness technology \u2014 science-backed recovery for everybody',
     color:'#0A0A0A', gradient:'linear-gradient(135deg,#0A0A0A,#1A1A1A,#E63946)', logo:'Tb',
     stats:{ followers:'45.6K', content:'890+', products:'24' },
     products:[
-      {name:'Tendagun PRO Plus',desc:'Smart percussive therapy \u00B7 Bluetooth app \u00B7 6 attachments \u00B7 16mm amplitude',price:'\u00A3549.00',emoji:'\uD83D\uDCAA'},
-      {name:'RecoveryAir JetBoots',desc:'Pneumatic compression \u00B7 4 zones \u00B7 Full leg coverage \u00B7 Portable',price:'\u00A3899.00',emoji:'\uD83E\uDD7E'},
-      {name:'SmartGoggles',desc:'Heated vibration massage \u00B7 Sound therapy \u00B7 Guided relaxation \u00B7 15min reset',price:'\u00A3199.00',emoji:'\uD83E\uDD7D'},
+      {name:'Tendagun PRO Plus',desc:'Smart percussive therapy \u00B7 Bluetooth app \u00B7 6 attachments \u00B7 16mm amplitude',price:'\u00A3549.00',emoji:'\uD83D\uDCAA',img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=600&fit=crop&q=80'},
+      {name:'RecoveryAir JetBoots',desc:'Pneumatic compression \u00B7 4 zones \u00B7 Full leg coverage \u00B7 Portable',price:'\u00A3899.00',emoji:'\uD83E\uDD7E',img:'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=600&h=600&fit=crop&q=80'},
+      {name:'SmartGoggles',desc:'Heated vibration massage \u00B7 Sound therapy \u00B7 Guided relaxation \u00B7 15min reset',price:'\u00A3199.00',emoji:'\uD83E\uDD7D',img:'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Tendabody',authorSub:'Official \u00B7 Just now',text:'Tendagun PRO Plus. 16mm amplitude that reaches 60% deeper into muscle than consumer devices. Bluetooth app with guided routines for every body part. Used by 250+ professional sports teams. The difference between soreness and recovery is in the science.',img:{fit:true,bg:'linear-gradient(135deg,#0A0A0A,#1A1A1A)',url:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 9.4K|\uD83D\uDCAC 1.2K|\u2197 567'},
@@ -3521,13 +3529,13 @@ const BRAND_ZONES = {
   },
 
   'headcalm': {
-    gateway:'therapy', name:'Headcalm', tagline:'Mindfulness and mental health \u2014 meditation made simple for the modern world',
+    gateway:'therapy', tier:'Claimed & Verified', name:'Headcalm', tagline:'Mindfulness and mental health \u2014 meditation made simple for the modern world',
     color:'#F47D31', gradient:'linear-gradient(135deg,#F47D31,#FF6B35,#FFA62F)', logo:'Hs',
     stats:{ followers:'156.8K', content:'2,400+', products:'4' },
     products:[
-      {name:'Headcalm Premium Annual',desc:'1,000+ meditations \u00B7 Sleep content \u00B7 Focus music \u00B7 Move workouts',price:'\u00A349.99/yr',emoji:'\uD83E\uDDD8'},
-      {name:'Headcalm for Work',desc:'Team mindfulness \u00B7 Stress management \u00B7 Manager tools \u00B7 Analytics',price:'\u00A312/user/mo',emoji:'\uD83C\uDFE2'},
-      {name:'Headcalm Health',desc:'Clinical-grade CBT \u00B7 Coaching \u00B7 Psychiatry referral \u00B7 EAP integration',price:'Via employer',emoji:'\uD83E\uDDE0'},
+      {name:'Headcalm Premium Annual',desc:'1,000+ meditations \u00B7 Sleep content \u00B7 Focus music \u00B7 Move workouts',price:'\u00A349.99/yr',emoji:'\uD83E\uDDD8',img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=600&fit=crop&q=80'},
+      {name:'Headcalm for Work',desc:'Team mindfulness \u00B7 Stress management \u00B7 Manager tools \u00B7 Analytics',price:'\u00A312/user/mo',emoji:'\uD83C\uDFE2',img:'https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=600&h=600&fit=crop&q=80'},
+      {name:'Headcalm Health',desc:'Clinical-grade CBT \u00B7 Coaching \u00B7 Psychiatry referral \u00B7 EAP integration',price:'Via employer',emoji:'\uD83E\uDDE0',img:'https://images.unsplash.com/photo-1527137342181-19aab11a8ee8?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Headcalm',authorSub:'Official \u00B7 Just now',text:'Headcalm Health: clinical-grade mental health support integrated with mindfulness. CBT. Coaching. Psychiatry referral when needed. 65 million users trust us with their mental health. From a 3-minute breathing exercise to full clinical support \u2014 we meet you where you are.',img:{fit:true,bg:'linear-gradient(135deg,#F47D31,#FF6B35)',url:'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 14.8K|\uD83D\uDCAC 1.9K|\u2197 890'},
@@ -3539,12 +3547,12 @@ const BRAND_ZONES = {
   },
 
   'habitnow': {
-    gateway:'mortgage', name:'Habitnow', tagline:'The UK\u2019s best online mortgage broker \u2014 Founding Partner on MortgageXX',
+    gateway:'mortgage', tier:'Founding Partner', name:'Habitnow', tagline:'The UK\u2019s best online mortgage broker \u2014 Founding Partner on MortgageXX',
     color:'#2563EB', gradient:'linear-gradient(135deg,#2563EB,#1E3A5F,#0D1B2A)', logo:'Ha',
     stats:{ followers:'78.4K', content:'1,200+', products:'4' },
     products:[
-      {name:'Free Mortgage Search',desc:'20,000+ products compared in seconds',price:'Free',emoji:'\uD83D\uDD0D'},
-      {name:'Habitnow Plus',desc:'Full conveyancing and legal services',price:'\u00A31,999',emoji:'\u2B50'},
+      {name:'Free Mortgage Search',desc:'20,000+ products compared in seconds',price:'Free',emoji:'\uD83D\uDD0D',img:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=600&fit=crop&q=80'},
+      {name:'Habitnow Plus',desc:'Full conveyancing and legal services',price:'\u00A31,999',emoji:'\u2B50',img:'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Habitnow',authorSub:'Official \u00B7 Just now',text:'Habitnow searches 20,000+ mortgage products in seconds. AI matching. No broker fees. Average saving: \u00A31,200 over the fixed term.',img:{fit:true,bg:'linear-gradient(135deg,#2563EB,#1E3A5F)',url:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 12.4K|\uD83D\uDCAC 1.8K|\u2197 934'},
@@ -3554,12 +3562,12 @@ const BRAND_ZONES = {
   },
 
   'northwide-mortgage': {
-    gateway:'mortgage', name:'Northwide', tagline:'The world\u2019s largest building society \u2014 Brand Zone Partner on MortgageXX',
+    gateway:'mortgage', tier:'Full Brand Zone', name:'Northwide', tagline:'The world\u2019s largest building society \u2014 Brand Zone Partner on MortgageXX',
     color:'#1E3A5F', gradient:'linear-gradient(135deg,#1E3A5F,#0D1B2A,#061018)', logo:'NW',
     stats:{ followers:'45.6K', content:'890+', products:'12' },
     products:[
-      {name:'5-Year Fixed 3.89%',desc:'First-time buyer \u00B7 Up to 95% LTV',price:'Apply',emoji:'\uD83C\uDFE0'},
-      {name:'2-Year Fixed 3.94%',desc:'Remortgage \u00B7 Free valuation \u00B7 No arrangement fee',price:'Apply',emoji:'\uD83C\uDFE0'},
+      {name:'5-Year Fixed 3.89%',desc:'First-time buyer \u00B7 Up to 95% LTV',price:'Apply',emoji:'\uD83C\uDFE0',img:'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&h=600&fit=crop&q=80'},
+      {name:'2-Year Fixed 3.94%',desc:'Remortgage \u00B7 Free valuation \u00B7 No arrangement fee',price:'Apply',emoji:'\uD83C\uDFE0',img:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Northwide',authorSub:'Official \u00B7 Just now',text:'Northwide First Step mortgage: 5% deposit, 5-year fixed, no minimum income requirement. Available to first-time buyers only.',img:{fit:true,bg:'linear-gradient(135deg,#1E3A5F,#0D1B2A)',url:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 14.8K|\uD83D\uDCAC 2.4K|\u2197 1.2K'},
@@ -3569,12 +3577,12 @@ const BRAND_ZONES = {
   },
 
   'vanstead-pension': {
-    gateway:'pension', name:'Vanstead', tagline:'Low-cost index investing \u2014 Founding Partner on PensionXX',
+    gateway:'pension', tier:'Founding Partner', name:'Vanstead', tagline:'Low-cost index investing \u2014 Founding Partner on PensionXX',
     color:'#0F766E', gradient:'linear-gradient(135deg,#0F766E,#042F2E,#021716)', logo:'VG',
     stats:{ followers:'89.4K', content:'1,400+', products:'24' },
     products:[
-      {name:'Global Total Cap Index',desc:'6,000+ stocks worldwide \u00B7 0.23% annual charge',price:'0.23%/yr',emoji:'\uD83C\uDF0D'},
-      {name:'LifeStrategy 80% Equity',desc:'80/20 equity/bond blend \u00B7 Auto-rebalancing',price:'0.22%/yr',emoji:'\u2696\uFE0F'},
+      {name:'Global Total Cap Index',desc:'6,000+ stocks worldwide \u00B7 0.23% annual charge',price:'0.23%/yr',emoji:'\uD83C\uDF0D',img:'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&h=600&fit=crop&q=80'},
+      {name:'LifeStrategy 80% Equity',desc:'80/20 equity/bond blend \u00B7 Auto-rebalancing',price:'0.22%/yr',emoji:'\u2696\uFE0F',img:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Vanstead',authorSub:'Official \u00B7 Just now',text:'Vanstead Global Total Cap: 6,000+ stocks, 49 countries, 0.23% annual charge. The community\u2019s most popular pension fund \u2014 and the maths explains why.',img:{fit:true,bg:'linear-gradient(135deg,#0F766E,#042F2E)',url:'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 18.6K|\uD83D\uDCAC 2.8K|\u2197 1.4K'},
@@ -3584,12 +3592,12 @@ const BRAND_ZONES = {
   },
 
   'pensionhive': {
-    gateway:'pension', name:'PensionHive', tagline:'Combine your pensions into one simple plan \u2014 Brand Zone Partner on PensionXX',
+    gateway:'pension', tier:'Full Brand Zone', name:'PensionHive', tagline:'Combine your pensions into one simple plan \u2014 Brand Zone Partner on PensionXX',
     color:'#F59E0B', gradient:'linear-gradient(135deg,#F59E0B,#D97706,#92400E)', logo:'PB',
     stats:{ followers:'56.8K', content:'780+', products:'6' },
     products:[
-      {name:'Tracker Plan',desc:'Low-cost global tracker \u00B7 0.5% annual charge',price:'0.5%/yr',emoji:'\uD83D\uDCC8'},
-      {name:'Tailored Plan',desc:'Balanced fund \u00B7 Active management',price:'0.7%/yr',emoji:'\u2B50'},
+      {name:'Tracker Plan',desc:'Low-cost global tracker \u00B7 0.5% annual charge',price:'0.5%/yr',emoji:'\uD83D\uDCC8',img:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=600&fit=crop&q=80'},
+      {name:'Tailored Plan',desc:'Balanced fund \u00B7 Active management',price:'0.7%/yr',emoji:'\u2B50',img:'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'PensionHive',authorSub:'Official \u00B7 Just now',text:'Average customer has 4 lost pension pots worth \u00A323,000. We find them, combine them, invest them. Simple.',img:{fit:true,bg:'linear-gradient(135deg,#F59E0B,#D97706)',url:'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 12.4K|\uD83D\uDCAC 1.8K|\u2197 934'},
@@ -3599,13 +3607,13 @@ const BRAND_ZONES = {
   },
 
   'inteq': {
-    gateway:'stocks', name:'Inteq', tagline:'The UK\u2019s #1 trading platform \u2014 CFDs, spread betting, and share dealing since 1974',
+    gateway:'stocks', tier:'Founding Partner', name:'Inteq', tagline:'The UK\u2019s #1 trading platform \u2014 CFDs, spread betting, and share dealing since 1974',
     color:'#EF4444', gradient:'linear-gradient(135deg,#EF4444,#B91C1C,#1A0A0A)', logo:'IG',
     stats:{ followers:'45.6K', content:'2,400+', products:'0' },
     products:[
-      {name:'Share Dealing Account',desc:'Zero commission on US shares \u00B7 \u00A38 UK trades \u00B7 12,000+ stocks',price:'Free to open',emoji:'\uD83D\uDCC8'},
-      {name:'CFD Trading Account',desc:'16,000+ markets \u00B7 Leverage trading \u00B7 ProRealTime charts',price:'Free to open',emoji:'\uD83D\uDCCA'},
-      {name:'IG Academy',desc:'Free trading courses \u00B7 Beginner to advanced \u00B7 Certified',price:'Free',emoji:'\uD83C\uDF93'},
+      {name:'Share Dealing Account',desc:'Zero commission on US shares \u00B7 \u00A38 UK trades \u00B7 12,000+ stocks',price:'Free to open',emoji:'\uD83D\uDCC8',img:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=600&fit=crop&q=80'},
+      {name:'CFD Trading Account',desc:'16,000+ markets \u00B7 Leverage trading \u00B7 ProRealTime charts',price:'Free to open',emoji:'\uD83D\uDCCA',img:'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=600&h=600&fit=crop&q=80'},
+      {name:'IG Academy',desc:'Free trading courses \u00B7 Beginner to advanced \u00B7 Certified',price:'Free',emoji:'\uD83C\uDF93',img:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Inteq',authorSub:'Official \u00B7 Just now',text:'Zero commission on US equities is live. Apple. Nvidia. Tesla. Amazon. Trade the world\u2019s biggest companies with no dealing fees. 50 years of trust. FRC regulated. \u00A3360 billion in client assets under management.',img:{fit:true,bg:'linear-gradient(135deg,#1A0A0A,#EF4444)',url:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 8.4K|\uD83D\uDCAC 1.1K|\u2197 523'},
@@ -3617,13 +3625,13 @@ const BRAND_ZONES = {
   },
 
   'charterly': {
-    gateway:'stocks', name:'Charterly', tagline:'Where the world charts, chats, and trades \u2014 60 million monthly active users',
+    gateway:'stocks', tier:'Full Brand Zone', name:'Charterly', tagline:'Where the world charts, chats, and trades \u2014 60 million monthly active users',
     color:'#2563EB', gradient:'linear-gradient(135deg,#2563EB,#1D4ED8,#0A0A2E)', logo:'TV',
     stats:{ followers:'67.8K', content:'3,200+', products:'3' },
     products:[
-      {name:'Premium Plan',desc:'8 charts per tab \u00B7 25 indicators \u00B7 Second-based alerts \u00B7 No ads',price:'\u00A349.95/mo',emoji:'\uD83D\uDCCA'},
-      {name:'Pine Script Editor',desc:'Create custom indicators \u00B7 Backtest strategies \u00B7 Publish to library',price:'Free',emoji:'\uD83D\uDDA5\uFE0F'},
-      {name:'Paper Trading',desc:'Simulated trading \u00B7 Real market data \u00B7 No risk',price:'Free',emoji:'\uD83D\uDCDD'},
+      {name:'Premium Plan',desc:'8 charts per tab \u00B7 25 indicators \u00B7 Second-based alerts \u00B7 No ads',price:'\u00A349.95/mo',emoji:'\uD83D\uDCCA',img:'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=600&h=600&fit=crop&q=80'},
+      {name:'Pine Script Editor',desc:'Create custom indicators \u00B7 Backtest strategies \u00B7 Publish to library',price:'Free',emoji:'\uD83D\uDDA5\uFE0F',img:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=600&fit=crop&q=80'},
+      {name:'Paper Trading',desc:'Simulated trading \u00B7 Real market data \u00B7 No risk',price:'Free',emoji:'\uD83D\uDCDD',img:'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Charterly',authorSub:'Official \u00B7 Just now',text:'AI Pattern Recognition is now in public beta. Our neural network scans every chart you open for head-and-shoulders, double bottoms, wedges, and 23 other patterns in real-time. Backtested against 10 years of data. Accuracy rates published transparently.',img:{fit:true,bg:'linear-gradient(135deg,#0A0A2E,#2563EB)',url:'https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 14.2K|\uD83D\uDCAC 1.8K|\u2197 890'},
@@ -3635,13 +3643,13 @@ const BRAND_ZONES = {
   },
 
   'sparktrade': {
-    gateway:'stocks', name:'Sparktrade', tagline:'Commission-free investing for everyone \u2014 stocks, ETFs, and ISAs from \u00A30',
+    gateway:'stocks', tier:'Claimed & Verified', name:'Sparktrade', tagline:'Commission-free investing for everyone \u2014 stocks, ETFs, and ISAs from \u00A30',
     color:'#6D28D9', gradient:'linear-gradient(135deg,#6D28D9,#7C3AED,#A78BFA)', logo:'FT',
     stats:{ followers:'34.8K', content:'1,100+', products:'4' },
     products:[
-      {name:'Stocks & Shares ISA',desc:'Tax-free investing \u00B7 6,000+ stocks & ETFs \u00B7 Fractional shares',price:'\u00A35.99/mo',emoji:'\uD83C\uDF31'},
-      {name:'General Investment Account',desc:'Commission-free \u00B7 Instant deposits \u00B7 No minimum',price:'Free',emoji:'\uD83D\uDCB0'},
-      {name:'Sparktrade Plus',desc:'Priority orders \u00B7 SIPP \u00B7 Advanced analytics \u00B7 Limit orders',price:'\u00A39.99/mo',emoji:'\u2B50'},
+      {name:'Stocks & Shares ISA',desc:'Tax-free investing \u00B7 6,000+ stocks & ETFs \u00B7 Fractional shares',price:'\u00A35.99/mo',emoji:'\uD83C\uDF31',img:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=600&fit=crop&q=80'},
+      {name:'General Investment Account',desc:'Commission-free \u00B7 Instant deposits \u00B7 No minimum',price:'Free',emoji:'\uD83D\uDCB0',img:'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=600&h=600&fit=crop&q=80'},
+      {name:'Sparktrade Plus',desc:'Priority orders \u00B7 SIPP \u00B7 Advanced analytics \u00B7 Limit orders',price:'\u00A39.99/mo',emoji:'\u2B50',img:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Sparktrade',authorSub:'Official \u00B7 Just now',text:'6,200 stocks and ETFs. Zero commission. From your first \u00A31 in a Vanstead ETF to building a serious portfolio \u2014 we believe investing should be accessible to everyone, not just the wealthy. FRC regulated. FSCS protected up to \u00A385,000.',img:{fit:true,bg:'linear-gradient(135deg,#6D28D9,#7C3AED)',url:'https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 7.2K|\uD83D\uDCAC 890|\u2197 445'},
@@ -3653,13 +3661,13 @@ const BRAND_ZONES = {
   },
 
   'sygma-fx': {
-    gateway:'currency', name:'Sygma FX', tagline:'Trusted FX and CFD trading since 1996 \u2014 tight spreads, fast execution, global regulation',
+    gateway:'currency', tier:'Founding Partner', name:'Sygma FX', tagline:'Trusted FX and CFD trading since 1996 \u2014 tight spreads, fast execution, global regulation',
     color:'#16A34A', gradient:'linear-gradient(135deg,#16A34A,#15803D,#0A1A0A)', logo:'OA',
     stats:{ followers:'23.4K', content:'1,800+', products:'3' },
     products:[
-      {name:'Sygma FX Trade Platform',desc:'71 FX pairs \u00B7 Tight spreads from 0.6 \u00B7 Charterly integration',price:'Free to open',emoji:'\uD83D\uDCB1'},
-      {name:'Sygma FX Premium',desc:'Advanced tools \u00B7 Priority execution \u00B7 Dedicated support',price:'\u00A39.99/mo',emoji:'\u2B50'},
-      {name:'Sygma FX Currency Converter',desc:'190+ currencies \u00B7 25 years of historical rates \u00B7 API access',price:'Free',emoji:'\uD83C\uDF10'},
+      {name:'Sygma FX Trade Platform',desc:'71 FX pairs \u00B7 Tight spreads from 0.6 \u00B7 Charterly integration',price:'Free to open',emoji:'\uD83D\uDCB1',img:'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=600&h=600&fit=crop&q=80'},
+      {name:'Sygma FX Premium',desc:'Advanced tools \u00B7 Priority execution \u00B7 Dedicated support',price:'\u00A39.99/mo',emoji:'\u2B50',img:'https://images.unsplash.com/photo-1569025743873-ea3a9ade89f9?w=600&h=600&fit=crop&q=80'},
+      {name:'Sygma FX Currency Converter',desc:'190+ currencies \u00B7 25 years of historical rates \u00B7 API access',price:'Free',emoji:'\uD83C\uDF10',img:'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Sygma FX',authorSub:'Official \u00B7 Just now',text:'Tight spreads on JPY pairs during CBJ volatility. While other brokers widen spreads in fast markets, we maintain competitive pricing. 71 currency pairs. Average EUR/USD spread 0.6 pips. FRC, ASIC, MAS regulated across 8 jurisdictions.',img:{fit:true,bg:'linear-gradient(135deg,#0A1A0A,#16A34A)',url:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 5.4K|\uD83D\uDCAC 678|\u2197 312'},
@@ -3671,13 +3679,13 @@ const BRAND_ZONES = {
   },
 
   'soren-bank': {
-    gateway:'currency', name:'Soren Bank', tagline:'Multi-asset trading and investing \u2014 185 FX pairs, institutional-grade platforms',
+    gateway:'currency', tier:'Full Brand Zone', name:'Soren Bank', tagline:'Multi-asset trading and investing \u2014 185 FX pairs, institutional-grade platforms',
     color:'#0055A4', gradient:'linear-gradient(135deg,#0055A4,#003D7A,#0A1A2E)', logo:'SX',
     stats:{ followers:'31.2K', content:'1,400+', products:'4' },
     products:[
-      {name:'SorenTraderPro',desc:'185 FX pairs \u00B7 Multi-asset \u00B7 Advanced orders \u00B7 Mobile & desktop',price:'Free with account',emoji:'\uD83D\uDCCA'},
-      {name:'SorenTraderPRO',desc:'Algorithmic trading \u00B7 Full API \u00B7 Multi-screen \u00B7 Professional tools',price:'Free with \u00A3200K+ AUM',emoji:'\uD83D\uDDA5\uFE0F'},
-      {name:'Soren Managed Portfolios',desc:'Professionally managed \u00B7 Risk-rated \u00B7 Diversified global allocation',price:'From 0.75% p.a.',emoji:'\uD83C\uDFE6'},
+      {name:'SorenTraderPro',desc:'185 FX pairs \u00B7 Multi-asset \u00B7 Advanced orders \u00B7 Mobile & desktop',price:'Free with account',emoji:'\uD83D\uDCCA',img:'https://images.unsplash.com/photo-1569025743873-ea3a9ade89f9?w=600&h=600&fit=crop&q=80'},
+      {name:'SorenTraderPRO',desc:'Algorithmic trading \u00B7 Full API \u00B7 Multi-screen \u00B7 Professional tools',price:'Free with \u00A3200K+ AUM',emoji:'\uD83D\uDDA5\uFE0F',img:'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=600&h=600&fit=crop&q=80'},
+      {name:'Soren Managed Portfolios',desc:'Professionally managed \u00B7 Risk-rated \u00B7 Diversified global allocation',price:'From 0.75% p.a.',emoji:'\uD83C\uDFE6',img:'https://images.unsplash.com/photo-1569025743873-ea3a9ade89f9?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Soren Bank',authorSub:'Official \u00B7 Just now',text:'185 currency pairs. From major G10 crosses to exotic emerging market pairs. SorenTraderPro gives you institutional execution with retail simplicity. Regulated in 15 jurisdictions. \u00A3120 billion in daily FX volume across our platform.',img:{fit:true,bg:'linear-gradient(135deg,#0A1A2E,#0055A4)',url:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 6.8K|\uD83D\uDCAC 845|\u2197 389'},
@@ -3689,13 +3697,13 @@ const BRAND_ZONES = {
   },
 
   'pebbleridge': {
-    gateway:'currency', name:'Pebbleridge', tagline:'Award-winning FX & CFD broker \u2014 raw spreads from 0.0 pips',
+    gateway:'currency', tier:'Claimed & Verified', name:'Pebbleridge', tagline:'Award-winning FX & CFD broker \u2014 raw spreads from 0.0 pips',
     color:'#1E40AF', gradient:'linear-gradient(135deg,#1E40AF,#1E3A8A,#0F172A)', logo:'Pp',
     stats:{ followers:'28.4K', content:'1,200+', products:'3' },
     products:[
-      {name:'Edge Account',desc:'Raw spreads from 0.0 \u00B7 \u00A32.60/lot commission \u00B7 ECN pricing',price:'Free to open',emoji:'\u26A1'},
-      {name:'Standard Account',desc:'Spread-only pricing \u00B7 No commission \u00B7 From 1.0 pips',price:'Free to open',emoji:'\uD83D\uDCCA'},
-      {name:'Charterly Integration',desc:'Trade directly from Charterly charts \u00B7 One-click execution',price:'Free',emoji:'\uD83D\uDCC8'},
+      {name:'Edge Account',desc:'Raw spreads from 0.0 \u00B7 \u00A32.60/lot commission \u00B7 ECN pricing',price:'Free to open',emoji:'\u26A1',img:'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=600&h=600&fit=crop&q=80'},
+      {name:'Standard Account',desc:'Spread-only pricing \u00B7 No commission \u00B7 From 1.0 pips',price:'Free to open',emoji:'\uD83D\uDCCA',img:'https://images.unsplash.com/photo-1569025743873-ea3a9ade89f9?w=600&h=600&fit=crop&q=80'},
+      {name:'Charterly Integration',desc:'Trade directly from Charterly charts \u00B7 One-click execution',price:'Free',emoji:'\uD83D\uDCC8',img:'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Pebbleridge',authorSub:'Official \u00B7 Just now',text:'Edge Account: raw ECN spreads from 0.0 pips. \u00A32.60 per lot commission. Average EUR/USD spread 0.09 pips during London session. When the spread is the edge, every tenth of a pip matters. FRC regulated. 400,000+ traders worldwide.',img:{fit:true,bg:'linear-gradient(135deg,#0F172A,#1E40AF)',url:'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 5.8K|\uD83D\uDCAC 712|\u2197 334'},
@@ -3707,13 +3715,13 @@ const BRAND_ZONES = {
   },
 
   'coinhub': {
-    gateway:'crypto', name:'Coinhub', tagline:'The most trusted cryptocurrency exchange \u2014 110 million verified users worldwide',
+    gateway:'crypto', tier:'Founding Partner', name:'Coinhub', tagline:'The most trusted cryptocurrency exchange \u2014 110 million verified users worldwide',
     color:'#F59E0B', gradient:'linear-gradient(135deg,#F59E0B,#D97706,#1A1000)', logo:'CB',
     stats:{ followers:'234.8K', content:'4,200+', products:'6' },
     products:[
-      {name:'Coinhub One',desc:'Zero trading fees \u00B7 Priority support \u00B7 Advanced analytics',price:'\u00A329.99/mo',emoji:'\u2B50'},
-      {name:'Coinhub Wallet',desc:'Self-custody \u00B7 DeFi access \u00B7 NFT support \u00B7 Multi-chain',price:'Free',emoji:'\uD83D\uDCF1'},
-      {name:'Coinhub Advanced',desc:'Professional trading \u00B7 Limit orders \u00B7 API \u00B7 Low fees',price:'Free',emoji:'\uD83D\uDCCA'},
+      {name:'Coinhub One',desc:'Zero trading fees \u00B7 Priority support \u00B7 Advanced analytics',price:'\u00A329.99/mo',emoji:'\u2B50',img:'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=600&h=600&fit=crop&q=80'},
+      {name:'Coinhub Wallet',desc:'Self-custody \u00B7 DeFi access \u00B7 NFT support \u00B7 Multi-chain',price:'Free',emoji:'\uD83D\uDCF1',img:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=600&fit=crop&q=80'},
+      {name:'Coinhub Advanced',desc:'Professional trading \u00B7 Limit orders \u00B7 API \u00B7 Low fees',price:'Free',emoji:'\uD83D\uDCCA',img:'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Coinhub',authorSub:'Official \u00B7 Just now',text:'Bitcoin ETF inflows hit $2.1B this week. Institutional adoption is accelerating and we\u2019re the custodian for 8 of the 11 approved spot Bitcoin ETFs. 110 million verified users. Publicly listed. SOC 2 Type II certified. Trust is the foundation of crypto.',img:{fit:true,bg:'linear-gradient(135deg,#1A1000,#F59E0B)',url:'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 18.4K|\uD83D\uDCAC 2.4K|\u2197 1.2K'},
@@ -3725,13 +3733,13 @@ const BRAND_ZONES = {
   },
 
   'chainforge': {
-    gateway:'crypto', name:'Chainforge', tagline:'On-chain analytics and market intelligence for digital assets',
+    gateway:'crypto', tier:'Full Brand Zone', name:'Chainforge', tagline:'On-chain analytics and market intelligence for digital assets',
     color:'#4ADE80', gradient:'linear-gradient(135deg,#4ADE80,#16A34A,#0A1A0A)', logo:'GN',
     stats:{ followers:'89.4K', content:'1,800+', products:'3' },
     products:[
-      {name:'Advanced Plan',desc:'200+ on-chain metrics \u00B7 Entity-adjusted data \u00B7 Real-time alerts',price:'\u00A339/mo',emoji:'\uD83D\uDCC8'},
-      {name:'Professional Plan',desc:'Full API access \u00B7 Exchange flow data \u00B7 Derivatives analytics',price:'\u00A3799/mo',emoji:'\uD83D\uDDA5\uFE0F'},
-      {name:'Chainforge Studio',desc:'Custom dashboards \u00B7 Chart sharing \u00B7 Community insights',price:'Free tier available',emoji:'\uD83D\uDCCA'},
+      {name:'Advanced Plan',desc:'200+ on-chain metrics \u00B7 Entity-adjusted data \u00B7 Real-time alerts',price:'\u00A339/mo',emoji:'\uD83D\uDCC8',img:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=600&fit=crop&q=80'},
+      {name:'Professional Plan',desc:'Full API access \u00B7 Exchange flow data \u00B7 Derivatives analytics',price:'\u00A3799/mo',emoji:'\uD83D\uDDA5\uFE0F',img:'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=600&h=600&fit=crop&q=80'},
+      {name:'Chainforge Studio',desc:'Custom dashboards \u00B7 Chart sharing \u00B7 Community insights',price:'Free tier available',emoji:'\uD83D\uDCCA',img:'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Chainforge',authorSub:'Official \u00B7 Just now',text:'Long-term holder supply hits ATH. Entities holding BTC 155+ days now control 78% of circulating supply. This is the tightest supply squeeze we\u2019ve measured since 2017. ETF demand is hitting a shrinking float. The math is straightforward.',img:{fit:true,bg:'linear-gradient(135deg,#0A1A0A,#4ADE80)',url:'https://images.unsplash.com/photo-1622630998477-20aa696ecb05?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 12.8K|\uD83D\uDCAC 1.6K|\u2197 789'},
@@ -3743,13 +3751,13 @@ const BRAND_ZONES = {
   },
 
   'vaultkey': {
-    gateway:'crypto', name:'Vaultkey', tagline:'Hardware security for digital assets \u2014 6 million wallets sold, protecting $50B+ in crypto',
+    gateway:'crypto', tier:'Claimed & Verified', name:'Vaultkey', tagline:'Hardware security for digital assets \u2014 6 million wallets sold, protecting $50B+ in crypto',
     color:'#1A1A1A', gradient:'linear-gradient(135deg,#1A1A1A,#2D2D2D,#F59E0B)', logo:'Le',
     stats:{ followers:'56.8K', content:'1,400+', products:'8' },
     products:[
-      {name:'Vaultkey Vault X',desc:'Bluetooth \u00B7 100+ app capacity \u00B7 Certified secure element \u00B7 USB-C',price:'\u00A3139.00',emoji:'\uD83D\uDD10'},
-      {name:'Vaultkey Stax',desc:'E-ink touchscreen \u00B7 Wireless charging \u00B7 NFT display \u00B7 Premium design',price:'\u00A3279.00',emoji:'\uD83D\uDCF1'},
-      {name:'Vaultkey Recover',desc:'Encrypted seed phrase backup \u00B7 3-fragment security \u00B7 ID verification',price:'\u00A39.99/mo',emoji:'\uD83D\uDEE1\uFE0F'},
+      {name:'Vaultkey Vault X',desc:'Bluetooth \u00B7 100+ app capacity \u00B7 Certified secure element \u00B7 USB-C',price:'\u00A3139.00',emoji:'\uD83D\uDD10',img:'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=600&h=600&fit=crop&q=80'},
+      {name:'Vaultkey Stax',desc:'E-ink touchscreen \u00B7 Wireless charging \u00B7 NFT display \u00B7 Premium design',price:'\u00A3279.00',emoji:'\uD83D\uDCF1',img:'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=600&h=600&fit=crop&q=80'},
+      {name:'Vaultkey Recover',desc:'Encrypted seed phrase backup \u00B7 3-fragment security \u00B7 ID verification',price:'\u00A39.99/mo',emoji:'\uD83D\uDEE1\uFE0F',img:'https://images.unsplash.com/photo-1569025743873-ea3a9ade89f9?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Vaultkey',authorSub:'Official \u00B7 Just now',text:'Your keys. Your crypto. Hardware wallets keep your private keys offline \u2014 physically disconnected from the internet. 6 million Vaultkey devices sold. Zero hacks of our secure element chip. In a world of exchange hacks and rug pulls, self-custody is the only real security.',img:{fit:true,bg:'linear-gradient(135deg,#1A1A1A,#2D2D2D)',url:'https://images.unsplash.com/photo-1622630998477-20aa696ecb05?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 14.8K|\uD83D\uDCAC 1.9K|\u2197 890'},
@@ -3761,13 +3769,13 @@ const BRAND_ZONES = {
   },
 
   'coinbox': {
-    gateway:'mortgage', name:'Coinbox', tagline:'Save, invest, and buy your first home \u2014 the UK\u2019s favourite money app for first-time buyers',
+    gateway:'mortgage', tier:'Claimed & Verified', name:'Coinbox', tagline:'Save, invest, and buy your first home \u2014 the UK\u2019s favourite money app for first-time buyers',
     color:'#3CC8C8', gradient:'linear-gradient(135deg,#3CC8C8,#2BA3A3,#0A1A1A)', logo:'Mx',
     stats:{ followers:'42.8K', content:'890+', products:'6' },
     products:[
-      {name:'Lifetime ISA',desc:'\u00A31,000 government bonus/year \u00B7 First home or retirement \u00B7 Tax-free',price:'Free',emoji:'\uD83C\uDFE0'},
-      {name:'First Home Mortgage',desc:'95% LTV \u00B7 LISA deposit accepted \u00B7 Dedicated first-time buyer support',price:'Fee-free option available',emoji:'\uD83D\uDD11'},
-      {name:'Round-Ups Investing',desc:'Round up purchases to invest spare change \u00B7 Stocks & Shares ISA',price:'From \u00A31/mo',emoji:'\uD83D\uDCB0'},
+      {name:'Lifetime ISA',desc:'\u00A31,000 government bonus/year \u00B7 First home or retirement \u00B7 Tax-free',price:'Free',emoji:'\uD83C\uDFE0',img:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=600&fit=crop&q=80'},
+      {name:'First Home Mortgage',desc:'95% LTV \u00B7 LISA deposit accepted \u00B7 Dedicated first-time buyer support',price:'Fee-free option available',emoji:'\uD83D\uDD11',img:'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&h=600&fit=crop&q=80'},
+      {name:'Round-Ups Investing',desc:'Round up purchases to invest spare change \u00B7 Stocks & Shares ISA',price:'From \u00A31/mo',emoji:'\uD83D\uDCB0',img:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Coinbox',authorSub:'Official \u00B7 Just now',text:'Lifetime ISA: save up to \u00A34,000/year, get \u00A31,000 free from the government. Use it as your deposit for your first home. 1.2 million customers have saved \u00A34.8 billion with Coinbox \u2014 and \u00A3890 million of that is free government bonus money.',img:{fit:true,bg:'linear-gradient(135deg,#0A1A1A,#3CC8C8)',url:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 9.4K|\uD83D\uDCAC 1.2K|\u2197 567'},
@@ -3779,13 +3787,13 @@ const BRAND_ZONES = {
   },
 
   'aj-belmont': {
-    gateway:'pension', name:'AJ Belmont', tagline:'Award-winning SIPP and investment platform \u2014 low-cost pensions for self-directed investors',
+    gateway:'pension', tier:'Claimed & Verified', name:'AJ Belmont', tagline:'Award-winning SIPP and investment platform \u2014 low-cost pensions for self-directed investors',
     color:'#7B2D8E', gradient:'linear-gradient(135deg,#7B2D8E,#5B1D6E,#1A0A1A)', logo:'AJ',
     stats:{ followers:'34.8K', content:'1,100+', products:'8' },
     products:[
-      {name:'AJ Belmont SIPP',desc:'Full self-select \u00B7 \u00A39.95 share trades \u00B7 0.25% platform fee \u00B7 Tax relief',price:'\u00A39.95/trade',emoji:'\uD83C\uDFE6'},
-      {name:'AJ Belmont Ready-Made Portfolios',desc:'Risk-rated \u00B7 Managed \u00B7 From 0.45% total cost \u00B7 ISA or SIPP',price:'From 0.45% p.a.',emoji:'\uD83D\uDCCA'},
-      {name:'Dodl by AJ Belmont',desc:'Simple investing \u00B7 Curated funds \u00B7 No jargon \u00B7 From \u00A31',price:'\u00A31/mo under \u00A3500',emoji:'\uD83D\uDCF1'},
+      {name:'AJ Belmont SIPP',desc:'Full self-select \u00B7 \u00A39.95 share trades \u00B7 0.25% platform fee \u00B7 Tax relief',price:'\u00A39.95/trade',emoji:'\uD83C\uDFE6',img:'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&h=600&fit=crop&q=80'},
+      {name:'AJ Belmont Ready-Made Portfolios',desc:'Risk-rated \u00B7 Managed \u00B7 From 0.45% total cost \u00B7 ISA or SIPP',price:'From 0.45% p.a.',emoji:'\uD83D\uDCCA',img:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=600&fit=crop&q=80'},
+      {name:'Dodl by AJ Belmont',desc:'Simple investing \u00B7 Curated funds \u00B7 No jargon \u00B7 From \u00A31',price:'\u00A31/mo under \u00A3500',emoji:'\uD83D\uDCF1',img:'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'AJ Belmont',authorSub:'Official \u00B7 Just now',text:'AJ Belmont SIPP: take control of your retirement. Choose from 4,500+ funds, shares, and ETFs. 0.25% platform fee \u2014 one of the lowest in the UK. Tax relief at your marginal rate. Over \u00A386 billion in assets under management. Your pension, your choices.',img:{fit:true,bg:'linear-gradient(135deg,#1A0A1A,#7B2D8E)',url:'https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 6.8K|\uD83D\uDCAC 845|\u2197 412'},
@@ -3797,13 +3805,13 @@ const BRAND_ZONES = {
   },
 
   'rebloom': {
-    gateway:'handbag', name:'Rebloom', tagline:"The world's leading luxury handbag resale platform \u2014 Brand Zone Partner on HandbagXX",
+    gateway:'handbag', tier:'Founding Partner', name:'Rebloom', tagline:"The world's leading luxury handbag resale platform \u2014 Brand Zone Partner on HandbagXX",
     color:'#1C1008', gradient:'linear-gradient(135deg,#1C1008,#2A1A08,#3D2B1F)', logo:'RB',
     stats:{ followers:'18.7K', content:'892', products:'2,400+' },
     products:[
-      {name:'Herm\u00E8s Bowery 25 Togo',desc:'Gold hardware \u00B7 Authenticated \u00B7 Grade A condition',price:'\u00A318,500',emoji:'\uD83D\uDC5C'},
-      {name:'Chastel Classic Flap M',desc:'Black caviar \u00B7 Silver HW \u00B7 Full set \u00B7 Authenticated',price:'\u00A36,200',emoji:'\uD83D\uDC5C'},
-      {name:'Laurent Voutier Neverfull MM',desc:'Damier ebene \u00B7 Like new \u00B7 Authenticated',price:'\u00A31,850',emoji:'\uD83D\uDC5C'},
+      {name:'Herm\u00E8s Bowery 25 Togo',desc:'Gold hardware \u00B7 Authenticated \u00B7 Grade A condition',price:'\u00A318,500',emoji:'\uD83D\uDC5C',img:'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&h=600&fit=crop&q=80'},
+      {name:'Chastel Classic Flap M',desc:'Black caviar \u00B7 Silver HW \u00B7 Full set \u00B7 Authenticated',price:'\u00A36,200',emoji:'\uD83D\uDC5C',img:'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&h=600&fit=crop&q=80'},
+      {name:'Laurent Voutier Neverfull MM',desc:'Damier ebene \u00B7 Like new \u00B7 Authenticated',price:'\u00A31,850',emoji:'\uD83D\uDC5C',img:'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Rebloom',authorSub:'Official \u00B7 Just now',text:'47 new Herm\u00E8s pieces authenticated and listed this morning. Bowery 25, 30 and 35 across togo and epsom. Every piece carries Rebloom certification, full provenance documentation, and a 14-day return window.',img:{fit:true,bg:'linear-gradient(135deg,#1C1008,#2A1A08)',url:'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 6.2K|\uD83D\uDCAC 789|\u2197 334'},
@@ -3815,13 +3823,13 @@ const BRAND_ZONES = {
   },
 
   'enverif': {
-    gateway:'handbag', name:'Enverif', tagline:'AI-powered luxury authentication \u2014 verified in seconds',
+    gateway:'handbag', tier:'Full Brand Zone', name:'Enverif', tagline:'AI-powered luxury authentication \u2014 verified in seconds',
     color:'#B8860B', gradient:'linear-gradient(135deg,#B8860B,#D4A843,#8B6914)', logo:'En',
     stats:{ followers:'12.4K', content:'445', products:'3' },
     products:[
-      {name:'Authentication Certificate',desc:'Single item AI authentication with certificate',price:'\u00A325.00',emoji:'\uD83D\uDD0D'},
-      {name:'Pro Subscription',desc:'Unlimited authentications + priority processing',price:'\u00A389/mo',emoji:'\u2B50'},
-      {name:'API Access',desc:'Integrate Enverif authentication into your platform',price:'Custom',emoji:'\uD83D\uDD27'},
+      {name:'Authentication Certificate',desc:'Single item AI authentication with certificate',price:'\u00A325.00',emoji:'\uD83D\uDD0D',img:'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&h=600&fit=crop&q=80'},
+      {name:'Pro Subscription',desc:'Unlimited authentications + priority processing',price:'\u00A389/mo',emoji:'\u2B50',img:'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=600&h=600&fit=crop&q=80'},
+      {name:'API Access',desc:'Integrate Enverif authentication into your platform',price:'Custom',emoji:'\uD83D\uDD27',img:'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Enverif',authorSub:'Official \u00B7 1h ago',text:'99.1% accuracy across 1.2 million authenticated pieces. Herm\u00E8s, Chastel, Laurent Voutier, Goccia, Prazia, Borgo Vivere \u2014 our AI is trained on microscopic material analysis that no counterfeit can replicate.',img:{fit:true,bg:'linear-gradient(135deg,#8B6914,#B8860B)',url:'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 5.4K|\uD83D\uDCAC 678|\u2197 289'},
@@ -3833,13 +3841,13 @@ const BRAND_ZONES = {
   },
 
   'marbury': {
-    gateway:'handbag', name:'Marbury', tagline:'British luxury leather goods — handcrafted in Somerset since 1971',
+    gateway:'handbag', tier:'Claimed & Verified', name:'Marbury', tagline:'British luxury leather goods — handcrafted in Somerset since 1971',
     color:'#2D1B0E', gradient:'linear-gradient(135deg,#2D1B0E,#4A3020,#8B5E3C)', logo:'Mb',
     stats:{ followers:'31.2K', content:'720+', products:'160+' },
     products:[
-      {name:'Belgravia Bag',desc:'Postman\'s lock · Natural grain leather · Brass hardware · Made in England',price:'£1,295.00',emoji:'👜'},
-      {name:'Alexa Satchel',desc:'Soft buffalo leather · Turnlock closure · Detachable strap',price:'£1,095.00',emoji:'👜'},
-      {name:'Darley Small Classic',desc:'Cross-grain leather · Chain strap · Compact design',price:'£795.00',emoji:'👜'},
+      {name:'Belgravia Bag',desc:'Postman\'s lock · Natural grain leather · Brass hardware · Made in England',price:'£1,295.00',emoji:'👜',img:'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=600&h=600&fit=crop&q=80'},
+      {name:'Alexa Satchel',desc:'Soft buffalo leather · Turnlock closure · Detachable strap',price:'£1,095.00',emoji:'👜',img:'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&h=600&fit=crop&q=80'},
+      {name:'Darley Small Classic',desc:'Cross-grain leather · Chain strap · Compact design',price:'£795.00',emoji:'👜',img:'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Marbury',authorSub:'Official · Just now',text:'The Belgravia. Designed in 2003, handcrafted in Somerset ever since. Natural grain leather that ages into your story. Postman\'s lock hardware cast in solid brass. Made by hand in our carbon-neutral factories in England. Some things get better when you refuse to rush them.',img:{fit:true,bg:'linear-gradient(135deg,#2D1B0E,#4A3020)',url:'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&h=400&fit=crop&q=80'},engagement:'♡ 9.4K|💬 1.2K|↗ 567'},
@@ -3851,13 +3859,13 @@ const BRAND_ZONES = {
   },
 
   'kohlstar': {
-    gateway:'goth', name:'Kohlstar', tagline:'Alternative fashion & lifestyle — darkness is a state of mind',
+    gateway:'goth', tier:'Founding Partner', name:'Kohlstar', tagline:'Alternative fashion & lifestyle — darkness is a state of mind',
     color:'#9333EA', gradient:'linear-gradient(135deg,#9333EA,#6B21A8,#1A0A2E)', logo:'KS',
     stats:{ followers:'18.7K', content:'560+', products:'342' },
     products:[
-      {name:'Hex Mesh Maxi Dress',desc:'Sheer mesh \u00B7 Floor length \u00B7 Moon phase embroidery \u00B7 Black',price:'\u00A378.00',emoji:'\uD83D\uDC57'},
-      {name:'Bloodmoon Platform Boots',desc:'Vegan leather \u00B7 Chunky sole \u00B7 Buckle detail \u00B7 14-eye',price:'\u00A3115.00',emoji:'\uD83E\uDD7E'},
-      {name:'Coven Velvet Corset',desc:'Steel boned \u00B7 Lace trim \u00B7 Back lacing \u00B7 Purple',price:'\u00A365.00',emoji:'\uD83D\uDDA4'},
+      {name:'Hex Mesh Maxi Dress',desc:'Sheer mesh \u00B7 Floor length \u00B7 Moon phase embroidery \u00B7 Black',price:'\u00A378.00',emoji:'\uD83D\uDC57',img:'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&h=600&fit=crop&q=80'},
+      {name:'Bloodmoon Platform Boots',desc:'Vegan leather \u00B7 Chunky sole \u00B7 Buckle detail \u00B7 14-eye',price:'\u00A3115.00',emoji:'\uD83E\uDD7E',img:'https://images.unsplash.com/photo-1508361001413-7a9dca21d08a?w=600&h=600&fit=crop&q=80'},
+      {name:'Coven Velvet Corset',desc:'Steel boned \u00B7 Lace trim \u00B7 Back lacing \u00B7 Purple',price:'\u00A365.00',emoji:'\uD83D\uDDA4',img:'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Kohlstar',authorSub:'Official \u00B7 Just now',text:'The Hex Collection just dropped. Mesh, moon phases, and midnight rituals. Floor-length dresses that move like shadows. Platform boots built for dancing until 4am. Every piece is vegan and ethically produced. Darkness doesn\u2019t require cruelty.',img:{fit:true,bg:'linear-gradient(135deg,#1A0A2E,#9333EA)',url:'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 7.8K|\uD83D\uDCAC 890|\u2197 445'},
@@ -3869,13 +3877,13 @@ const BRAND_ZONES = {
   },
 
   'darkbloom': {
-    gateway:'goth', name:'Darkbloom', tagline:'Subculture clothing for the misfits \u2014 punk, goth, and everything in between',
+    gateway:'goth', tier:'Full Brand Zone', name:'Darkbloom', tagline:'Subculture clothing for the misfits \u2014 punk, goth, and everything in between',
     color:'#EC4899', gradient:'linear-gradient(135deg,#EC4899,#BE185D,#1A0A1A)', logo:'Db',
     stats:{ followers:'11.2K', content:'380+', products:'198' },
     products:[
-      {name:'Nosferatu Oversized Tee',desc:'Heavyweight cotton \u00B7 Vintage horror print \u00B7 Dropped shoulder',price:'\u00A342.00',emoji:'\uD83E\uDDE3'},
-      {name:'Ritual Cargo Pants',desc:'Washed black \u00B7 Chain detail \u00B7 Wide leg \u00B7 Adjustable hem',price:'\u00A368.00',emoji:'\uD83D\uDC56'},
-      {name:'Vex Studded Harness',desc:'Vegan leather \u00B7 Silver hardware \u00B7 Adjustable \u00B7 Layering piece',price:'\u00A345.00',emoji:'\uD83D\uDDA4'},
+      {name:'Nosferatu Oversized Tee',desc:'Heavyweight cotton \u00B7 Vintage horror print \u00B7 Dropped shoulder',price:'\u00A342.00',emoji:'\uD83E\uDDE3',img:'https://images.unsplash.com/photo-1508361001413-7a9dca21d08a?w=600&h=600&fit=crop&q=80'},
+      {name:'Ritual Cargo Pants',desc:'Washed black \u00B7 Chain detail \u00B7 Wide leg \u00B7 Adjustable hem',price:'\u00A368.00',emoji:'\uD83D\uDC56',img:'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=600&fit=crop&q=80'},
+      {name:'Vex Studded Harness',desc:'Vegan leather \u00B7 Silver hardware \u00B7 Adjustable \u00B7 Layering piece',price:'\u00A345.00',emoji:'\uD83D\uDDA4',img:'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Darkbloom',authorSub:'Official \u00B7 Just now',text:'The Beksi\u0144ski collaboration is here. Zdzis\u0142aw Beksi\u0144ski\u2019s nightmarish paintings printed on heavyweight cotton. Limited to 500 pieces. When art and fashion collide in the darkest possible way. Once they\u2019re gone, they\u2019re gone forever.',img:{fit:true,bg:'linear-gradient(135deg,#1A0A1A,#EC4899)',url:'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 6.2K|\uD83D\uDCAC 789|\u2197 356'},
@@ -3887,13 +3895,13 @@ const BRAND_ZONES = {
   },
 
   'roman-onyx': {
-    gateway:'goth', name:'Roman Onyx', tagline:'Dark luxury \u2014 brutalist fashion from the avant-garde since 1994',
+    gateway:'goth', tier:'Claimed & Verified', name:'Roman Onyx', tagline:'Dark luxury \u2014 brutalist fashion from the avant-garde since 1994',
     color:'#666666', gradient:'linear-gradient(135deg,#666666,#333333,#0A0A0A)', logo:'RO',
     stats:{ followers:'28.9K', content:'440+', products:'87' },
     products:[
-      {name:'Geobasket High-Top',desc:'Full-grain leather \u00B7 Shark sole \u00B7 Made in Italy \u00B7 Milk/Black',price:'\u00A3980.00',emoji:'\uD83E\uDD7E'},
-      {name:'Champion Bomber Jacket',desc:'Waxed cotton \u00B7 Oversized \u00B7 Horn buttons \u00B7 Draping hem',price:'\u00A32,400.00',emoji:'\uD83E\uDDE5'},
-      {name:'Drkshdw Cargo Pod Shorts',desc:'Heavyweight jersey \u00B7 Drop crotch \u00B7 Garment dyed',price:'\u00A3520.00',emoji:'\uD83D\uDDA4'},
+      {name:'Geobasket High-Top',desc:'Full-grain leather \u00B7 Shark sole \u00B7 Made in Italy \u00B7 Milk/Black',price:'\u00A3980.00',emoji:'\uD83E\uDD7E',img:'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=600&fit=crop&q=80'},
+      {name:'Champion Bomber Jacket',desc:'Waxed cotton \u00B7 Oversized \u00B7 Horn buttons \u00B7 Draping hem',price:'\u00A32,400.00',emoji:'\uD83E\uDDE5',img:'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&h=600&fit=crop&q=80'},
+      {name:'Drkshdw Cargo Pod Shorts',desc:'Heavyweight jersey \u00B7 Drop crotch \u00B7 Garment dyed',price:'\u00A3520.00',emoji:'\uD83D\uDDA4',img:'https://images.unsplash.com/photo-1508361001413-7a9dca21d08a?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Roman Onyx',authorSub:'AW27 \u00B7 Just now',text:'AW27: PORTVM. Brutal silhouettes. Raw leather cut against the grain. Throbbing Vein on the soundtrack. Models walked a concrete labyrinth in darkness. Fashion as architecture. Clothing as armour. The collection strips everything back to structure and shadow.',img:{fit:true,bg:'linear-gradient(135deg,#0A0A0A,#333333)',url:'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 18.4K|\uD83D\uDCAC 2.4K|\u2197 1.2K'},
@@ -3905,13 +3913,13 @@ const BRAND_ZONES = {
   },
 
   'iron-hall': {
-    gateway:'denim', name:'Iron Hall', tagline:'Japanese heavyweight selvedge denim \u2014 21oz and beyond since 2003',
+    gateway:'denim', tier:'Founding Partner', name:'Iron Hall', tagline:'Japanese heavyweight selvedge denim \u2014 21oz and beyond since 2003',
     color:'#8B4513', gradient:'linear-gradient(135deg,#8B4513,#5C2D0A,#1A0A00)', logo:'IH',
     stats:{ followers:'9.8K', content:'320+', products:'56' },
     products:[
-      {name:'534S 21oz Selvedge Straight',desc:'Unsanforized \u00B7 Hidden rivets \u00B7 Chain-stitch hem \u00B7 Made in Japan',price:'\u00A3395.00',emoji:'\uD83D\uDC56'},
-      {name:'555 Super Slim 25oz',desc:'Extra heavyweight \u00B7 One-wash \u00B7 Selvedge \u00B7 Indigo/Black',price:'\u00A3425.00',emoji:'\uD83D\uDC56'},
-      {name:'IHJ-069 Rider Jacket',desc:'14oz selvedge denim \u00B7 Blanket lined \u00B7 Made in Japan',price:'\u00A3595.00',emoji:'\uD83E\uDDE5'},
+      {name:'534S 21oz Selvedge Straight',desc:'Unsanforized \u00B7 Hidden rivets \u00B7 Chain-stitch hem \u00B7 Made in Japan',price:'\u00A3395.00',emoji:'\uD83D\uDC56',img:'https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&h=600&fit=crop&q=80'},
+      {name:'555 Super Slim 25oz',desc:'Extra heavyweight \u00B7 One-wash \u00B7 Selvedge \u00B7 Indigo/Black',price:'\u00A3425.00',emoji:'\uD83D\uDC56',img:'https://images.unsplash.com/photo-1565084888279-aca607ecce0c?w=600&h=600&fit=crop&q=80'},
+      {name:'IHJ-069 Rider Jacket',desc:'14oz selvedge denim \u00B7 Blanket lined \u00B7 Made in Japan',price:'\u00A3595.00',emoji:'\uD83E\uDDE5',img:'https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Iron Hall',authorSub:'Official \u00B7 Just now',text:'534S 21oz back in stock. Our signature straight cut in 21oz unsanforized selvedge from Nakamura Mill mill. Hidden rivets. Chain-stitch hem. Every pair made in our own Yokohama workshop. The denim that started the heavyweight revolution.',img:{fit:true,bg:'linear-gradient(135deg,#1A0A00,#8B4513)',url:'https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 4.8K|\uD83D\uDCAC 567|\u2197 289'},
@@ -3923,13 +3931,13 @@ const BRAND_ZONES = {
   },
 
   'loomweave-vintage': {
-    gateway:'denim', name:"Loomweave Vintage Clothing", tagline:'Heritage reproductions \u2014 the original American jean, faithfully remade',
+    gateway:'denim', tier:'Full Brand Zone', name:"Loomweave Vintage Clothing", tagline:'Heritage reproductions \u2014 the original American jean, faithfully remade',
     color:'#1E3A5F', gradient:'linear-gradient(135deg,#1E3A5F,#2C5282,#8B4513)', logo:'LV',
     stats:{ followers:'14.5K', content:'410+', products:'34' },
     products:[
-      {name:'1947 447XX Jean',desc:'Granite Mills selvedge \u00B7 Hidden rivets \u00B7 Cinch back \u00B7 Deadstock reproduction',price:'\u00A3285.00',emoji:'\uD83D\uDC56'},
-      {name:'1953 Type II Trucker',desc:'12.5oz selvedge \u00B7 Pleated front \u00B7 Two-pocket \u00B7 Made in USA',price:'\u00A3345.00',emoji:'\uD83E\uDDE5'},
-      {name:'1955 501Z Jean',desc:'Zip fly \u00B7 Relaxed straight \u00B7 10.25oz selvedge \u00B7 Vintage wash',price:'\u00A3245.00',emoji:'\uD83D\uDC56'},
+      {name:'1947 447XX Jean',desc:'Granite Mills selvedge \u00B7 Hidden rivets \u00B7 Cinch back \u00B7 Deadstock reproduction',price:'\u00A3285.00',emoji:'\uD83D\uDC56',img:'https://images.unsplash.com/photo-1565084888279-aca607ecce0c?w=600&h=600&fit=crop&q=80'},
+      {name:'1953 Type II Trucker',desc:'12.5oz selvedge \u00B7 Pleated front \u00B7 Two-pocket \u00B7 Made in USA',price:'\u00A3345.00',emoji:'\uD83E\uDDE5',img:'https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=600&h=600&fit=crop&q=80'},
+      {name:'1955 501Z Jean',desc:'Zip fly \u00B7 Relaxed straight \u00B7 10.25oz selvedge \u00B7 Vintage wash',price:'\u00A3245.00',emoji:'\uD83D\uDC56',img:'https://images.unsplash.com/photo-1558171813-4c088753af8f?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:"Loomweave Vintage Clothing",authorSub:'Official \u00B7 Just now',text:'The 1947 447XX. The jean that built America. Reproduced stitch-for-stitch from an original pair in our archive. Granite Mills selvedge. Hidden rivets from the factory-standard era. Cinch back. This is not fashion \u2014 this is history you can wear.',img:{fit:true,bg:'linear-gradient(135deg,#1E3A5F,#2C5282)',url:'https://images.unsplash.com/photo-1542272604-787c3835535d?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 8.4K|\uD83D\uDCAC 1.1K|\u2197 534'},
@@ -3941,13 +3949,13 @@ const BRAND_ZONES = {
   },
 
   '316works': {
-    gateway:'denim', name:'316works', tagline:'New York selvedge \u2014 thoughtful denim made with intention since 2008',
+    gateway:'denim', tier:'Claimed & Verified', name:'316works', tagline:'New York selvedge \u2014 thoughtful denim made with intention since 2008',
     color:'#444444', gradient:'linear-gradient(135deg,#444444,#2A2A2A,#0A0A0A)', logo:'3s',
     stats:{ followers:'7.2K', content:'280+', products:'28' },
     products:[
-      {name:'CT-200xk Kibata',desc:'Unsanforized shadow selvedge \u00B7 14.5oz \u00B7 Classic tapered \u00B7 Japanese fabric',price:'\u00A3265.00',emoji:'\uD83D\uDC56'},
-      {name:'ST-100x Indigo Selvedge',desc:'Sanforized \u00B7 14.5oz \u00B7 Slim tapered \u00B7 Kuroki Mills',price:'\u00A3228.00',emoji:'\uD83D\uDC56'},
-      {name:'Type 3s Denim Jacket',desc:'14oz selvedge \u00B7 Shadow selvedge lining \u00B7 Raw indigo',price:'\u00A3295.00',emoji:'\uD83E\uDDE5'},
+      {name:'CT-200xk Kibata',desc:'Unsanforized shadow selvedge \u00B7 14.5oz \u00B7 Classic tapered \u00B7 Japanese fabric',price:'\u00A3265.00',emoji:'\uD83D\uDC56',img:'https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=600&h=600&fit=crop&q=80'},
+      {name:'ST-100x Indigo Selvedge',desc:'Sanforized \u00B7 14.5oz \u00B7 Slim tapered \u00B7 Kuroki Mills',price:'\u00A3228.00',emoji:'\uD83D\uDC56',img:'https://images.unsplash.com/photo-1558171813-4c088753af8f?w=600&h=600&fit=crop&q=80'},
+      {name:'Type 3s Denim Jacket',desc:'14oz selvedge \u00B7 Shadow selvedge lining \u00B7 Raw indigo',price:'\u00A3295.00',emoji:'\uD83E\uDDE5',img:'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'316works',authorSub:'Official \u00B7 Just now',text:'CT-200xk Kibata. Unsanforized shadow selvedge from our partner mill in Okayama. Kibata means \u201Cloom state\u201D \u2014 completely untreated fabric that shrinks and shapes to your body over time. The purest denim experience we can offer.',img:{fit:true,bg:'linear-gradient(135deg,#0A0A0A,#444444)',url:'https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 3.4K|\uD83D\uDCAC 445|\u2197 212'},
@@ -3959,13 +3967,13 @@ const BRAND_ZONES = {
   },
 
   'telston': {
-    gateway:'denim', name:'Telston', tagline:'San Francisco-made denim \u2014 American selvedge, no outsourcing since 2008',
+    gateway:'denim', tier:'Claimed & Verified', name:'Telston', tagline:'San Francisco-made denim \u2014 American selvedge, no outsourcing since 2008',
     color:'#A0522D', gradient:'linear-gradient(135deg,#A0522D,#6B3410,#2D1A0A)', logo:'Te',
     stats:{ followers:'5.1K', content:'190+', products:'18' },
     products:[
-      {name:'Ankara 14.75oz Selvedge',desc:'White Oak Granite Mills tribute \u00B7 Slim straight \u00B7 Made in San Francisco',price:'\u00A3218.00',emoji:'\uD83D\uDC56'},
-      {name:'Sheffield 12.5oz Selvedge',desc:'Straight fit \u00B7 Japanese selvedge \u00B7 Organic cotton',price:'\u00A3198.00',emoji:'\uD83D\uDC56'},
-      {name:'Coverall Jacket 12.5oz',desc:'Blanket-lined \u00B7 Made in SF \u00B7 Selvedge denim \u00B7 Workwear cut',price:'\u00A3285.00',emoji:'\uD83E\uDDE5'},
+      {name:'Ankara 14.75oz Selvedge',desc:'White Oak Granite Mills tribute \u00B7 Slim straight \u00B7 Made in San Francisco',price:'\u00A3218.00',emoji:'\uD83D\uDC56',img:'https://images.unsplash.com/photo-1558171813-4c088753af8f?w=600&h=600&fit=crop&q=80'},
+      {name:'Sheffield 12.5oz Selvedge',desc:'Straight fit \u00B7 Japanese selvedge \u00B7 Organic cotton',price:'\u00A3198.00',emoji:'\uD83D\uDC56',img:'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=600&fit=crop&q=80'},
+      {name:'Coverall Jacket 12.5oz',desc:'Blanket-lined \u00B7 Made in SF \u00B7 Selvedge denim \u00B7 Workwear cut',price:'\u00A3285.00',emoji:'\uD83E\uDDE5',img:'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Telston',authorSub:'Official \u00B7 Just now',text:'Ankara 14.75oz. Named for the Turkish capital where Granite Mills originally sourced their cotton. This is our tribute to White Oak \u2014 the American mill that closed in 2017. Every pair made in our San Francisco workshop. American denim, American made, no compromises.',img:{fit:true,bg:'linear-gradient(135deg,#2D1A0A,#A0522D)',url:'https://images.unsplash.com/photo-1542272604-787c3835535d?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 2.8K|\uD83D\uDCAC 334|\u2197 178'},
@@ -3977,13 +3985,13 @@ const BRAND_ZONES = {
   },
 
   'flashpoint': {
-    gateway:'sneaker', name:'Flashpoint', tagline:'Performance footwear for those who collect and compete — Founding Partner on SneakerXX',
+    gateway:'sneaker', tier:'Claimed & Verified', name:'Flashpoint', tagline:'Performance footwear for those who collect and compete — Founding Partner on SneakerXX',
     color:'#E84D3A', gradient:'linear-gradient(135deg,#E84D3A,#C4371F,#8B1A0A)', logo:'FB',
     stats:{ followers:'28.4K', content:'156', products:'12' },
     products:[
-      {name:'2026 Edition Trainer',desc:'Carbon plate · Recycled Primeknit · Hand-finished sole · Limited 2,000',price:'£185.00',emoji:'👟'},
-      {name:'Core Runner v3',desc:'Daily performance trainer · Responsive foam · Wide fit available',price:'£135.00',emoji:'👟'},
-      {name:'Slide 001',desc:'Post-run recovery slide · Contoured footbed · Two colourways',price:'£85.00',emoji:'🩴'},
+      {name:'2026 Edition Trainer',desc:'Carbon plate · Recycled Primeknit · Hand-finished sole · Limited 2,000',price:'£185.00',emoji:'👟',img:'https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=600&h=600&fit=crop&q=80'},
+      {name:'Core Runner v3',desc:'Daily performance trainer · Responsive foam · Wide fit available',price:'£135.00',emoji:'👟',img:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=600&fit=crop&q=80'},
+      {name:'Slide 001',desc:'Post-run recovery slide · Contoured footbed · Two colourways',price:'£85.00',emoji:'🩴',img:'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&h=600&fit=crop&q=80'},
     ],
     feed:[
       {author:'Flashpoint',authorSub:'Official \u00B7 Just now',text:'The 2026 Edition Trainer is live. Fourteen months of development. Carbon fibre plate for propulsion. Recycled Primeknit upper constructed without waste. Hand-finished vulcanised sole. 2,000 pairs. No restocks. Ever.',img:{bg:'linear-gradient(135deg,#0D0D0D,#1a0505)',emoji:'\uD83D\uDC5F',url:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 12.4K|\uD83D\uDCAC 1.8K|\u2197 945'},
@@ -3995,7 +4003,7 @@ const BRAND_ZONES = {
   },
 
   'lithos-sport': {
-    gateway:'climb', name:'Lithos Sport', tagline:'Climbing footwear since 1928 — Founding Partner on ClimbXX',
+    gateway:'climb', tier:'Founding Partner', name:'Lithos Sport', tagline:'Climbing footwear since 1928 — Founding Partner on ClimbXX',
     color:'#E84D3A', gradient:'linear-gradient(135deg,#E84D3A,#C4371F)', logo:'LS',
     stats:{ followers:'12.4K', content:'342', products:'89' },
     products:[
@@ -4091,8 +4099,8 @@ const BRAND_ZONES = {
       ]
     },
     feed:[
-      {author:'Lithos Sport',authorSub:'Official \u00B7 3h ago',text:'Introducing the Vertex Comp \u2014 our most advanced competition shoe. AI-analysed foot data from 10,000 climbers, No-Edge 2.0 technology.',img:{bg:'linear-gradient(135deg,#3D2B1F,#2A1F18,#4A3728)',emoji:'\uD83E\uDD7E',url:'https://images.unsplash.com/photo-1573789023421-c8c3bef34190?w=800&h=400&fit=crop&q=80',pos:'30% center'},products:[{name:'Vertex Comp',desc:'Competition climbing shoe \u2014 No-Edge 2.0',price:'\u00A3165',emoji:'\uD83E\uDD7E'}],engagement:'\u2661 3.1K|\uD83D\uDCAC 234|\u2197 156'},
-      {author:'Lithos Sport',authorSub:'Athlete Feature · 1d ago',text:'Adam Olafsson on the Vertex Comp: "The sensitivity is unlike anything I\'ve climbed in. On comp-style volumes, the difference is measurable."',products:[{name:'Vertex Comp',desc:'Competition climbing shoe \u2014 No-Edge 2.0',price:'\u00A3165',emoji:'\uD83E\uDD7E'},{name:'TC Pro',desc:'Adam Olafsson edition — high-top trad',price:'\u00A3175',emoji:'\uD83C\uDFD4\uFE0F'}],engagement:'♡ 5.2K|💬 412|↗ 289'},
+      {author:'Lithos Sport',authorSub:'Official \u00B7 3h ago',text:'Introducing the Vertex Comp \u2014 our most advanced competition shoe. AI-analysed foot data from 10,000 climbers, No-Edge 2.0 technology.',img:{bg:'linear-gradient(135deg,#3D2B1F,#2A1F18,#4A3728)',emoji:'\uD83E\uDD7E',url:'https://images.unsplash.com/photo-1573789023421-c8c3bef34190?w=800&h=400&fit=crop&q=80',pos:'30% center'},products:[{name:'Vertex Comp',desc:'Competition climbing shoe \u2014 No-Edge 2.0',price:'\u00A3165',emoji:'\uD83E\uDD7E',img:'https://images.unsplash.com/photo-1522163182402-834f871fd851?w=600&h=600&fit=crop&q=80'}],engagement:'\u2661 3.1K|\uD83D\uDCAC 234|\u2197 156'},
+      {author:'Lithos Sport',authorSub:'Athlete Feature · 1d ago',text:'Adam Olafsson on the Vertex Comp: "The sensitivity is unlike anything I\'ve climbed in. On comp-style volumes, the difference is measurable."',products:[{name:'Vertex Comp',desc:'Competition climbing shoe \u2014 No-Edge 2.0',price:'\u00A3165',emoji:'\uD83E\uDD7E',img:'https://images.unsplash.com/photo-1660687562984-0ec8fcf0b68a?w=600&h=600&fit=crop&q=80'},{name:'TC Pro',desc:'Adam Olafsson edition — high-top trad',price:'\u00A3175',emoji:'\uD83C\uDFD4\uFE0F',img:'https://images.unsplash.com/photo-1573789023421-c8c3bef34190?w=600&h=600&fit=crop&q=80'}],engagement:'♡ 5.2K|💬 412|↗ 289'},
     ],
     communityPost:{author:'@sendhard_pete',time:'8h ago',avatar:'linear-gradient(135deg,#F59E0B,#D97706)',text:'Just got my Vertex Comps. Sizing question — half size down from Brava, snug but not painful. Do they stretch?',reply:{text:'Great question! The P3 Platform means minimal stretch — maybe 5% over the first few sessions. Half size down from Brava is perfect for performance fit. Enjoy the sends! 🧗',time:'6h ago'}},
     agent:{greeting:'Hi! I\'m Lithos Sport\'s AI assistant on ClimbXX. I can help with sizing, product recommendations, care instructions, or warranty queries.'},
@@ -4156,7 +4164,7 @@ const BRAND_ZONES = {
   },
 
   'pinzon': {
-    gateway:'climb', name:'Pinzon', tagline:'Vertical safety equipment since 1975 — Brand Zone Partner on ClimbXX',
+    gateway:'climb', tier:'Full Brand Zone', name:'Pinzon', tagline:'Vertical safety equipment since 1975 — Brand Zone Partner on ClimbXX',
     color:'#3B82F6', gradient:'linear-gradient(135deg,#1D4ED8,#3B82F6)', logo:'Pz',
     stats:{ followers:'8.9K', content:'218', products:'124' },
     products:[
@@ -4252,9 +4260,9 @@ const BRAND_ZONES = {
       ]
     },
     feed:[
-      {author:'Pinzon',authorSub:'Official \u00B7 2h ago',text:'Introducing AutoLock+ with anti-panic technology. When panic gripping occurs, the braking cam engages automatically. Eight years of development with professional guides and rescue teams.',img:{bg:'linear-gradient(135deg,#1E3A8A,#1D4ED8)',emoji:'\u2699\uFE0F',url:'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&h=400&fit=crop&q=80'},products:[{name:'AutoLock+',desc:'Assisted braking belay device — anti-panic',price:'\u00A389',emoji:'\u2699\uFE0F'}],engagement:'\u2661 4.2K|\uD83D\uDCAC 389|\u2197 198'},
+      {author:'Pinzon',authorSub:'Official \u00B7 2h ago',text:'Introducing AutoLock+ with anti-panic technology. When panic gripping occurs, the braking cam engages automatically. Eight years of development with professional guides and rescue teams.',img:{bg:'linear-gradient(135deg,#1E3A8A,#1D4ED8)',emoji:'\u2699\uFE0F',url:'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&h=400&fit=crop&q=80'},products:[{name:'AutoLock+',desc:'Assisted braking belay device — anti-panic',price:'\u00A389',emoji:'\u2699\uFE0F',img:'https://images.unsplash.com/photo-1660687562984-0ec8fcf0b68a?w=600&h=600&fit=crop&q=80'}],engagement:'\u2661 4.2K|\uD83D\uDCAC 389|\u2197 198'},
       {author:'Pinzon',authorSub:'Safety Feature \u00B7 6h ago',text:'How to inspect your harness before every session. Most gear failures are preventable. Our safety team walks through the five-point check that every climber should know. Save this post — it could save a life.',engagement:'\u2661 6.8K|\uD83D\uDCAC 712|\u2197 445'},
-      {author:'Pinzon',authorSub:'New Arrival \u00B7 1d ago',text:'Actik Core rechargeable headlamp. 450 lumens. USB-C charging. Red lighting mode for night vision preservation. Everything you need for alpine starts and cave climbing.',img:{bg:'linear-gradient(135deg,#0F172A,#1E3A8A)',emoji:'\uD83D\uDD26',url:'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=800&h=400&fit=crop&q=80'},products:[{name:'Actik Core',desc:'Rechargeable headlamp — 450 lumens',price:'\u00A359',emoji:'\uD83D\uDD26'}],engagement:'\u2661 2.1K|\uD83D\uDCAC 167|\u2197 89'},
+      {author:'Pinzon',authorSub:'New Arrival \u00B7 1d ago',text:'Actik Core rechargeable headlamp. 450 lumens. USB-C charging. Red lighting mode for night vision preservation. Everything you need for alpine starts and cave climbing.',img:{bg:'linear-gradient(135deg,#0F172A,#1E3A8A)',emoji:'\uD83D\uDD26',url:'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=800&h=400&fit=crop&q=80'},products:[{name:'Actik Core',desc:'Rechargeable headlamp — 450 lumens',price:'\u00A359',emoji:'\uD83D\uDD26',img:'https://images.unsplash.com/photo-1573789023421-c8c3bef34190?w=600&h=600&fit=crop&q=80'}],engagement:'\u2661 2.1K|\uD83D\uDCAC 167|\u2197 89'},
     ],
     communityPost:{author:'@trad_tomasz',time:'4h ago',avatar:'linear-gradient(135deg,#8B6914,#A0841A)',text:'Question for Pinzon — heading to the Dolomites for 14 days trad climbing. AutoLock+ or Reverso for the rack? Mostly multi-pitch with occasional single pitch.',reply:{text:'For 14 days multi-pitch trad, the Reverso 4 is your friend — lighter, guides mode for bringing up a second, and no mechanical parts to worry about in alpine conditions. Save the AutoLock+ for single pitch sport. Have an incredible trip! \uD83C\uDFD4\uFE0F',time:'3h ago'}},
     agent:{greeting:'Hi! I\'m Pinzon\'s AI assistant on ClimbXX. I can help with gear selection, safety checks, product compatibility, or technical questions about vertical equipment.'},
@@ -4318,7 +4326,7 @@ const BRAND_ZONES = {
   },
 
   'mapped-peaks': {
-    gateway:'climb', name:'Mapped Peaks', tagline:'The climber\'s route database — 500,000+ routes worldwide',
+    gateway:'climb', tier:'Claimed & Verified', name:'Mapped Peaks', tagline:'The climber\'s route database — 500,000+ routes worldwide',
     color:'#16A34A', gradient:'linear-gradient(135deg,#15803D,#16A34A)', logo:'MP',
     stats:{ followers:'34.2K', content:'1,200+', products:'6' },
     products:[
@@ -4412,7 +4420,7 @@ const BRAND_ZONES = {
     },
     feed:[
       {author:'Mapped Peaks',authorSub:'Official \u00B7 1h ago',text:'500,000th route just added to the database \u2014 a new 7b+ sport line in the Costa Blanca submitted by @rock_ramona. Every route matters. Thank you to our 2.4 million contributors worldwide.',img:{bg:'linear-gradient(135deg,#14532D,#15803D)',emoji:'\uD83C\uDFD4\uFE0F',url:'https://images.unsplash.com/photo-1507034589631-9433cc6bc453?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 18.4K|\uD83D\uDCAC 2.1K|\u2197 1.4K'},
-      {author:'Mapped Peaks',authorSub:'Feature \u00B7 4h ago',text:'New: AI-powered route conditions. Our model analyses recent trip reports, weather data, and seasonal patterns to give you a real-time conditions score for any route in the database. Now in beta for ClimbXX members.',products:[{name:'Conditions AI',desc:'Real-time route scoring',price:'Included with Pro',emoji:'\uD83C\uDF24\uFE0F'}],engagement:'\u2661 9.2K|\uD83D\uDCAC 1.3K|\u2197 678'},
+      {author:'Mapped Peaks',authorSub:'Feature \u00B7 4h ago',text:'New: AI-powered route conditions. Our model analyses recent trip reports, weather data, and seasonal patterns to give you a real-time conditions score for any route in the database. Now in beta for ClimbXX members.',products:[{name:'Conditions AI',desc:'Real-time route scoring',price:'Included with Pro',emoji:'\uD83C\uDF24\uFE0F',img:'https://images.unsplash.com/photo-1573789023421-c8c3bef34190?w=600&h=600&fit=crop&q=80'}],engagement:'\u2661 9.2K|\uD83D\uDCAC 1.3K|\u2197 678'},
       {author:'Mapped Peaks',authorSub:'Community \u00B7 8h ago',text:'Kalymnos has just crossed 2,400 routes in the database. The most comprehensively documented limestone destination on earth. Full topo coverage now available offline with Pro.',img:{bg:'linear-gradient(135deg,#1a3320,#15803D)',emoji:'\uD83C\uDDEC\uD83C\uDDF7',url:'https://images.unsplash.com/photo-1522163182402-834f871fd851?w=800&h=400&fit=crop&q=80'},engagement:'\u2661 5.6K|\uD83D\uDCAC 567|\u2197 312'},
     ],
     communityPost:{author:'@sendit_sarah',time:'2h ago',avatar:'linear-gradient(135deg,#F59E0B,#D97706)',text:'Mapped Peaks just saved my Kalymnos trip. Downloaded the offline topos before the ferry, had full route info even with no signal on the cliff. 2,400 routes and every single one accurate. This is the tool.',reply:{text:'That\u2019s exactly what we built it for \u2014 no signal, no problem. We\u2019re adding 50 new Kalymnos routes this month from our local contributors. Glad it delivered! See you on the rock. \uD83E\uDDD7',time:'1h ago'}},
@@ -5074,8 +5082,8 @@ function renderMainNav(opts = {}) {
       <div style="display:flex;gap:28px;align-items:center">
         <span style="font-size:.85rem;font-weight:600;color:${state.view==='hub'&&!state.sectorFilter&&(state.hubTab==='home'||(state.hubTab==='brands'&&(state.brandStoreScope||'hub')==='hub')||(state.hubTab==='apps'&&(state.appStoreScope||'hub')==='hub'))?'#1a1a1a':mutedColor};cursor:pointer;${state.view==='hub'&&!state.sectorFilter&&(state.hubTab==='home'||(state.hubTab==='brands'&&(state.brandStoreScope||'hub')==='hub')||(state.hubTab==='apps'&&(state.appStoreScope||'hub')==='hub'))?'background:#1a1a1a12;padding:4px 10px;border-radius:6px;':''}" onclick="nav('hub')">Hub</span>
         <span style="font-size:.85rem;font-weight:600;color:${state.showAIHost?activeColor:mutedColor};cursor:pointer" onclick="toggleAIHost()">AI Host</span>
-        <span style="font-size:.85rem;font-weight:600;color:${isBrandsActive()?activeColor:mutedColor};cursor:pointer" onclick="handleBrandsClick()">Brands</span>
-        <span style="font-size:.85rem;font-weight:600;color:${isAppsActive()?activeColor:mutedColor};cursor:pointer" onclick="handleAppsClick()">Apps</span>
+        ${(state.view==='gateway'||state.view==='brandZone'||state.view==='placeholderBrandZone')?'':`<span style="font-size:.85rem;font-weight:600;color:${isBrandsActive()?activeColor:mutedColor};cursor:pointer" onclick="handleBrandsClick()">Brands</span>
+        <span style="font-size:.85rem;font-weight:600;color:${isAppsActive()?activeColor:mutedColor};cursor:pointer" onclick="handleAppsClick()">Apps</span>`}
         <span style="font-size:.85rem;font-weight:600;color:${state.showEvents?activeColor:mutedColor};cursor:pointer" onclick="toggleEvents()">Events</span>
       </div>
       ${searchAndProfile(opts.dark || false)}
@@ -5561,6 +5569,12 @@ function renderFeedCard(item, gw) {
     html += `<div class="card-actions" style="margin-top:10px;color:${t.muted}">`;
     item.engagement.split('|').forEach(e => html += `<span>${e.trim()}</span>`);
     html += `</div>`;
+  }
+
+  // Brand Zone cross-link footer
+  if (item.brandZone) {
+    const bzColor = item.badge ? item.badge.color : t.accent;
+    html += `<div style="margin-top:12px;padding-top:11px;border-top:1px solid ${t.cardBorder};display:flex;align-items:center;gap:7px;font-size:.72rem;font-weight:700;color:${bzColor}"><span style="font-size:.8rem">\u25C6</span> From the ${item.author} Brand Zone<span style="margin-left:auto;font-weight:600;opacity:.75">Visit \u2192</span></div>`;
   }
 
   html += `</div>`;
@@ -7870,7 +7884,7 @@ function renderGatewayTabs(gw, key) {
   const t = gw.theme;
   const tabs = gw.tabs || ['Feed'];
   return `<div class="gw-tabs" style="background:${t.bg};border-bottom:1px solid ${t.cardBorder}">
-    ${tabs.map(tab => `<div class="gw-tab ${state.gwTab===tab?'active':''}" style="color:${t.text};border-bottom-color:${state.gwTab===tab?t.accent:'transparent'}" onclick="state.gwTab='${tab}';render()">${tab}</div>`).join('')}
+    ${tabs.map(tab => `<div class="gw-tab ${state.gwTab===tab?'active':''}" style="color:${t.text};border-bottom-color:${state.gwTab===tab?t.accent:'transparent'}" onclick="state.gwTab='${tab}';render();window.scrollTo(0,0)">${tab}</div>`).join('')}
   </div>`;
 }
 
@@ -9066,7 +9080,7 @@ function renderBzProducts(bz, t, key) {
           </div>
           ${p.sizes?`<div style="margin-bottom:6px"><div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${t.muted};margin-bottom:8px">Select Size (EU)</div><div class="pd-sizes">${sizeHtml}</div></div>`:''}
           <div class="pd-actions">
-            <button class="pd-buy-btn" style="background:${bz.color}" onclick="showPurchase()">Add to Bag — ${p.price}</button>
+            <button class="pd-buy-btn" style="background:${bz.color}" onclick="showPurchase('${key}', ${bz.products.indexOf(p)})">Add to Bag — ${p.price}</button>
             <div class="pd-wish-btn" style="background:${bz.color}15;border:1px solid ${bz.color}30">♡</div>
           </div>
           ${featHtml?`<div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${t.muted};margin-bottom:10px">Key Features</div><div class="bz-pd-features">${featHtml}</div>`:''}
@@ -9123,7 +9137,14 @@ function renderBzProducts(bz, t, key) {
   const gearCount = bz.products.filter(p=>p.category==='Gear').length;
   const accCount = bz.products.filter(p=>p.category==='Accessories').length;
 
-  return `<div style="max-width:1280px;margin:0 auto;padding:24px 40px">
+  return `<div class="bz-body">
+    <div class="bz-side">
+      <div class="bz-side-title" style="color:${bz.color}"><span style="font-size:.85rem">\u25C6</span> PRODUCT RANGE</div>
+      <div class="bz-side-item" style="color:${t.text};${filter==='All'?'background:'+bz.color+'14;color:'+bz.color:''}" onclick="state.bzProdFilter='All';state.bzProductDetail=null;render()"><span>All Products</span><span class="bz-side-count">${bz.products?bz.products.length:''}</span></div>
+      ${(bz.productCategories&&bz.productCategories.filter(c=>c!=='All').length>0) ? bz.productCategories.filter(c=>c!=='All').map(c=>`<div class="bz-side-item" style="color:${t.text};${filter===c?'background:'+bz.color+'14;color:'+bz.color:''}" onclick="state.bzProdFilter='${c}';state.bzProductDetail=null;render()"><span>${c}</span><span class="bz-side-count">${bz.products?bz.products.filter(p=>p.category===c).length:''}</span></div>`).join('') : (bz.products||[]).map((p,pi)=>`<div class="bz-side-item" style="color:${t.text}" onclick="state.bzProductDetail=${pi};render();window.scrollTo(0,0)"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.emoji?p.emoji+' ':''}${p.name}</span></div>`).join('')}
+      <div class="bz-side-note" style="background:${bz.color}0A;border:1px solid ${bz.color}20;color:${t.muted}">Commerce flows through ${bz.name}'s own checkout.</div>
+    </div>
+    <div class="bz-main-wide">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
       <div>
         <div style="font-size:1.2rem;font-weight:800;color:${t.text};font-family:${t.bodyFont}">${bz.name} Products</div>
@@ -9143,6 +9164,7 @@ function renderBzProducts(bz, t, key) {
       </div>
       <div style="padding:9px 16px;border-radius:9px;background:${bz.color};color:#fff;font-size:.78rem;font-weight:700;cursor:pointer">Ask the AI →</div>
     </div>`:''}
+    </div>
   </div>`;
 }
 
@@ -9208,8 +9230,8 @@ function renderBrandZoneView(key) {
   }
 
   let prodsHtml = '';
-  bz.products.forEach(p => {
-    prodsHtml += `<div class="prod-card" style="background:${t.cardBg};border:1px solid ${t.cardBorder}" onclick="showPurchase()">
+  bz.products.forEach((p, pi) => {
+    prodsHtml += `<div class="prod-card" style="background:${t.cardBg};border:1px solid ${t.cardBorder}" onclick="showPurchase('${key}', ${pi})">
       <div class="img placeholder" style="background:linear-gradient(135deg,#3D2B1F,#2A1F18);${p.img?`background-image:url('${p.img}');background-size:cover;background-position:center`:''}">${p.img?'':p.emoji}</div>
       <div class="body"><div class="pname" style="font-family:${t.bodyFont}">${p.name}</div><div class="pdesc" style="color:${t.muted};font-family:${t.bodyFont}">${p.desc}</div>
         <div class="prow"><div class="pprice" style="color:${bz.color};font-family:${t.bodyFont}">${p.price}</div><button class="pbuy" style="background:${bz.color}">Buy</button></div>
@@ -9237,7 +9259,7 @@ function renderBrandZoneView(key) {
             </div>
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px">
               <div style="display:flex;align-items:center;gap:8px">
-                <div class="bz-verified"><span class="green-dot"></span> Verified Brand Zone</div>
+                <div class="bz-verified" style="${bz.tier==='Founding Partner'?'border-color:rgba(212,168,69,.5);color:#E8C56E':''}"><span class="green-dot"></span> ${bz.tier ? bz.tier + ' \u00B7 Verified' : 'Verified Brand Zone'}</div>
                 <div class="bz-stat" style="cursor:pointer;display:flex;align-items:center;gap:7px" onclick="event.stopPropagation()"><span style="font-size:.85rem">💬</span><div><div class="bz-stat-v" style="font-size:.82rem">Chat</div><div class="bz-stat-l">Brand Direct</div></div></div>
                 <div class="bz-stat" style="cursor:pointer;display:flex;align-items:center;gap:7px" onclick="event.stopPropagation()"><span style="font-size:.85rem">📦</span><div><div class="bz-stat-v" style="font-size:.82rem">Orders</div><div class="bz-stat-l">Track & History</div></div></div>
               </div>
@@ -9246,8 +9268,14 @@ function renderBrandZoneView(key) {
           </div>
         </div>
       </div>
-      <div class="bz-tabs">${['Feed','Products','Apps','Community','About'].map(tab=>`<div class="bz-tab ${state.bzTab===tab?'active':''}" style="--accent:${bz.color};${state.bzTab===tab?'color:#fff;border-bottom-color:'+bz.color:''}" onclick="state.bzTab='${tab}';state.bzProductDetail=null;state.bzProdFilter='All';render()">${tab}</div>`).join('')}</div>
+      <div class="bz-tabs-wrap" style="background:${t.headerBg}"><div class="bz-tabs">${['Feed','Products','Apps','Community','About'].map(tab=>`<div class="bz-tab ${state.bzTab===tab?'active':''}" style="--accent:${bz.color};${state.bzTab===tab?'color:${bz.color};border-bottom-color:'+bz.color:''}" onclick="state.bzTab='${tab}';state.bzProductDetail=null;state.bzProdFilter='All';render();window.scrollTo(0,0)">${tab}</div>`).join('')}</div></div>
       ${state.bzTab === 'Products' ? renderBzProducts(bz, t, key) : state.bzTab === 'Apps' ? renderBzApps(bz, t, key) : state.bzTab === 'Community' ? renderBzCommunity(bz, t, key) : state.bzTab === 'About' ? renderBzAbout(bz, t, key) : state.bzTab === 'Feed' ? `<div class="bz-body">
+        <div class="bz-side">
+          <div class="bz-side-title" style="color:${bz.color}"><span style="font-size:.85rem">\u25C6</span> PRODUCT RANGE</div>
+          <div class="bz-side-item" style="color:${t.text}" onclick="state.bzTab='Products';state.bzProdFilter='All';render()"><span>All Products</span><span class="bz-side-count">${bz.products?bz.products.length:''}</span></div>
+          ${(bz.productCategories&&bz.productCategories.filter(c=>c!=='All').length>0) ? bz.productCategories.filter(c=>c!=='All').map(c=>`<div class="bz-side-item" style="color:${t.text}" onclick="state.bzTab='Products';state.bzProdFilter='${c}';render()"><span>${c}</span><span class="bz-side-count">${bz.products?bz.products.filter(p=>p.category===c).length:''}</span></div>`).join('') : (bz.products||[]).map((p,pi)=>`<div class="bz-side-item" style="color:${t.text}" onclick="state.bzTab='Products';state.bzProductDetail=${pi};render();window.scrollTo(0,0)"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.emoji?p.emoji+' ':''}${p.name}</span></div>`).join('')}
+          <div class="bz-side-note" style="background:${bz.color}0A;border:1px solid ${bz.color}20;color:${t.muted}">Posts from this Brand Zone also appear in the ${gw.name} feed.</div>
+        </div>
         <div class="bz-main">${feedHtml}</div>
         <div class="bz-aside">
           <div class="widget" style="background:${bz.color}10;border:1px solid ${bz.color}25">
@@ -9319,7 +9347,7 @@ function renderBzApps(bz, t, key) {
         <div style="font-size:.8rem;color:${t.muted};font-family:${t.bodyFont};max-width:440px;margin:0 auto;line-height:1.6">When ${bz.name} publishes apps to their zone, they'll appear here as Progressive Web Apps \u2014 and auto-list in the ${gwName} app store, the ${bz.sector || 'sector'} app store, and the main GENEXXO app store.</div>
       </div>`;
 
-  return `<div class="bz-body"><div class="bz-main" style="grid-column:1/-1">
+  return `<div class="bz-body"><div class="bz-main-wide" style="grid-column:1/-1">
     ${builtBlock}
   </div></div>`;
 }
@@ -9368,36 +9396,52 @@ function renderBrandDirectView() {
 /* ═══════════════════════════════════════════════════════════
    ██████  PURCHASE MODAL  ██████
    ═══════════════════════════════════════════════════════════ */
-function showPurchase() {
+let purchaseBzKey = 'lithos-sport';
+let purchaseProductIdx = 0;
+
+function showPurchase(bzKey, productIdx) {
+  purchaseBzKey = bzKey || 'lithos-sport';
+  purchaseProductIdx = productIdx || 0;
   purchaseState = 'buy';
   renderModal();
   document.getElementById('purchaseModal').classList.add('show');
 }
 
 function renderModal() {
-  const bz = BRAND_ZONES['lithos-sport'];
-  const p = bz.products[0];
+  const bz = BRAND_ZONES[purchaseBzKey] || BRAND_ZONES['lithos-sport'];
+  const gw = GATEWAYS[bz.gateway];
+  const p = bz.products[purchaseProductIdx] || bz.products[0];
   let html;
   if (purchaseState === 'buy') {
     html = `<div class="modal">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.08)">
+        <div style="width:30px;height:30px;border-radius:8px;background:${bz.gradient};display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:#fff">${bz.logo}</div>
+        <div style="font-size:.82rem;font-weight:700">${bz.name} Checkout</div>
+        <div style="margin-left:auto;font-size:.62rem;opacity:.45;display:flex;align-items:center;gap:5px"><span style="color:#4ADE80">\uD83D\uDD12</span> ${bz.name.toLowerCase().replace(/ /g,'')}.com</div>
+      </div>
       <div style="display:flex;gap:14px;margin-bottom:20px">
-        <div style="width:90px;height:90px;border-radius:12px;background:linear-gradient(135deg,#3D2B1F,#2A1F18);display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0">${p.emoji}</div>
+        <div style="width:90px;height:90px;border-radius:12px;background:${bz.gradient};${p.img?`background-image:url('${p.img}');background-size:cover;background-position:center;`:''}display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0">${p.img?'':p.emoji}</div>
         <div><h3>${p.name}</h3><p style="font-size:.82rem;opacity:.5">${p.desc}</p><div class="mprice" style="color:${bz.color}">${p.price}</div></div>
       </div>
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <div style="flex:1;background:#000;border-radius:10px;padding:10px;text-align:center;font-size:.8rem;font-weight:700;color:#fff;cursor:pointer">\uF8FF Pay</div>
+        <div style="flex:1;background:#fff;border-radius:10px;padding:10px;text-align:center;font-size:.8rem;font-weight:700;color:#1a1a2e;cursor:pointer">G Pay</div>
+        <div style="flex:1;background:#5A31F4;border-radius:10px;padding:10px;text-align:center;font-size:.8rem;font-weight:700;color:#fff;cursor:pointer">Shop Pay</div>
+      </div>
       <div class="mdiv"></div>
-      <div class="mlabel">Payment Method</div>
+      <div class="mlabel">Or Pay By Card</div>
       <div class="mcard">💳 <span style="font-size:.86rem">Visa •••• 4821</span><span style="margin-left:auto;color:#4ADE80;font-weight:700">✓</span></div>
       <div class="mlabel">Delivery</div>
-      <div class="mcard">📦 <span style="font-size:.86rem">Standard — 3-5 days</span></div>
+      <div class="mcard">📦 <span style="font-size:.86rem">Standard — 3-5 days · Fulfilled by ${bz.name}</span></div>
       <button class="mbuy" style="background:${bz.color}" onclick="purchaseState='confirm';renderModal()">Buy Now — ${p.price}</button>
-      <div class="mnote">Transaction processed by GENEXXO · Fulfilled by ${bz.name}<br>Supernova stored payment used across the ecosystem</div>
+      <div class="mnote">Checkout powered by ${bz.name}'s own store \u00B7 GENEXXO never processes payments or holds card data<br>Referral attributed to ${gw.name} \u2014 discovery by GENEXXO, commerce by the brand</div>
     </div>`;
   } else {
     html = `<div class="modal"><div class="modal-confirm">
       <div class="icon">✓</div>
-      <h3>Purchase Complete</h3>
-      <p>Your ${p.name} is on its way.<br>Fulfilment by ${bz.name}.</p>
-      <p style="color:${bz.color};font-weight:600;font-size:.78rem;margin-top:6px">You're now part of ${bz.name}'s community — access support from your Hub.</p>
+      <h3>Order Confirmed by ${bz.name}</h3>
+      <p>Your ${p.name} is on its way.<br>Confirmation email and fulfilment direct from ${bz.name} \u2014 they own the relationship from here.</p>
+      <p style="color:${bz.color};font-weight:600;font-size:.78rem;margin-top:6px">GENEXXO's part was the discovery \u2014 referral attributed to ${gw.name}.</p>
       <div class="done" onclick="document.getElementById('purchaseModal').classList.remove('show');nav('hub')">Return to Hub</div>
     </div></div>`;
   }
