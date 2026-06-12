@@ -11284,7 +11284,27 @@ document.addEventListener('keydown', function(e) {
 });
 
 
+
+/* ── Background cache warmer: pre-fetch featured films in priority order ── */
+const FEATURED_FILMS = ['sailxx','climbxx','yogaxx','cryptoxx','sneaker','cyclexx','surfxx','skixx','spaxx','gothxx','denimxx','therapyxx','currencyxx'].map(n => 'genexxo-videos/' + n + '.mp4');
+let _filmsWarmed = false;
+function warmFilmCache() {
+  if (_filmsWarmed) return;
+  _filmsWarmed = true;
+  let i = 0;
+  const next = () => {
+    if (i >= FEATURED_FILMS.length) return;
+    const url = FEATURED_FILMS[i++];
+    try {
+      fetch(url, { priority: 'low' }).then(r => r.blob()).catch(() => {}).finally(() => setTimeout(next, 400));
+    } catch(e) { setTimeout(next, 400); }
+  };
+  // wait for the initial view to settle before warming
+  setTimeout(next, 2500);
+}
+
 render();
+warmFilmCache();
 
 </script>
 </body>
