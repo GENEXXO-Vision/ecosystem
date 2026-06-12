@@ -6096,14 +6096,14 @@ function renderFeedCard(item, gw) {
   // Image
   if (item.img) {
     if (item.img.fit && item.img.url) {
-      html += `<div style="border-radius:10px;overflow:hidden;margin-bottom:10px;height:200px"><img src="${item.img.url}" style="width:100%;height:100%;object-fit:cover;display:block"></div>`;
+      html += `<div style="border-radius:10px;overflow:hidden;margin-bottom:10px;height:200px"><img src="${item.img.url}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block"></div>`;
     } else {
       html += `<div class="card-img placeholder" style="background:${item.img.bg};${item.img.url?`background-image:url('${item.img.url}');`:''}aspect-ratio:16/9;height:auto;max-height:480px;background-size:cover;background-repeat:no-repeat;background-position:${item.img.pos||'center'}">${item.img.url?'':item.img.emoji}</div>`;
     }
   }
 
   // Video support
-  if (item.videoSrc) html += `<div style="border-radius:10px;overflow:hidden;margin-bottom:10px;position:relative;background:#000"><video autoplay loop muted playsinline style="width:100%;height:240px;object-fit:cover;display:block" src="${item.videoSrc}"></video></div>`;
+  if (item.videoSrc) html += `<div style="border-radius:10px;overflow:hidden;margin-bottom:10px;position:relative;background:#000"><video autoplay loop muted playsinline preload="none" style="width:100%;height:240px;object-fit:cover;display:block" data-vsrc="${item.videoSrc}"></video></div>`;
 
   // Products (brand cards)
   if (item.products) {
@@ -6393,9 +6393,9 @@ function renderHub() {
           ${item.badge ? `<span class="card-badge" style="background:${item.badge.bg};color:${item.badge.color}">${item.badge.text}</span>` : ''}
         </div>
         <div style="font-size:.9rem;color:#444;line-height:1.6;margin-bottom:${item.img||item.videoUrl?'10':'0'}px">${item.text}</div>
-        ${item.img ? `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px;height:200px"><img src="${item.img.url}" style="width:100%;height:100%;object-fit:cover;display:block"></div>` : ''}
-        ${item.videoUrl ? (item.videoUrl.endsWith('.mp4') ? `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px"><video autoplay loop muted playsinline style="width:100%;height:200px;object-fit:cover;display:block" src="${item.videoUrl}"></video></div>` : `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px;height:200px"><img src="${item.videoUrl}" style="width:100%;height:100%;object-fit:cover;display:block"></div>`) : ''}
-        ${item.videoSrc ? `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px"><video autoplay loop muted playsinline style="width:100%;height:200px;object-fit:cover;display:block" src="${item.videoSrc}"></video></div>` : ''}
+        ${item.img ? `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px;height:200px"><img src="${item.img.url}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block"></div>` : ''}
+        ${item.videoUrl ? (item.videoUrl.endsWith('.mp4') ? `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px"><video autoplay loop muted playsinline preload="none" style="width:100%;height:200px;object-fit:cover;display:block" data-vsrc="${item.videoUrl}"></video></div>` : `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px;height:200px"><img src="${item.videoUrl}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block"></div>`) : ''}
+        ${item.videoSrc ? `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px"><video autoplay loop muted playsinline preload="none" style="width:100%;height:200px;object-fit:cover;display:block" data-vsrc="${item.videoSrc}"></video></div>` : ''}
         ${item.engagement ? `<div class="card-actions" style="color:#bbb;margin-top:8px">${item.engagement.split('|').map(e=>`<span>${e.trim()}</span>`).join('')}</div>` : ''}
       </div>`;
     });
@@ -6424,7 +6424,7 @@ function renderHub() {
             <span style="font-size:.62rem;font-weight:800;color:#fff">${initials}</span>
           </div>
           <div style="flex:1;min-width:0">
-            <div style="font-size:.78rem;font-weight:700;color:#1a1a2e;line-height:1.2">${g.name}</div>
+            <div style="font-size:.78rem;font-weight:700;color:#1a1a2e;line-height:1.2;position:relative"><span style="position:absolute;left:-10px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:#22C55E;box-shadow:0 0 5px rgba(34,197,94,.8)"></span>${g.name}</div>
             <div style="font-size:.62rem;color:#aaa">${g.domain}</div>
           </div>
           <span style="font-size:.58rem;color:${g.theme.accent}">${g.emoji}</span>
@@ -6534,7 +6534,7 @@ function renderHub() {
       <span class="algo-badge">&uarr; Trending</span>
     </div>
     <div style="font-size:.9rem;color:#444;line-height:1.6;margin-bottom:10px">Just two friends out having the best day on the rock. This is why we climb &#x1F9D7;&zwj;&#x2640;&#xFE0F;&#x1F9D7;</div>
-    <div style="border-radius:10px;overflow:hidden;margin-bottom:10px;height:200px"><video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;display:block" src="genexxo-videos/climb2.mp4"></video></div>
+    <div style="border-radius:10px;overflow:hidden;margin-bottom:10px;height:200px"><video autoplay loop muted playsinline preload="none" style="width:100%;height:100%;object-fit:cover;display:block" data-vsrc="genexxo-videos/climb2.mp4"></video></div>
     <div style="display:flex;justify-content:space-between;align-items:center"><div class="card-actions" style="color:#bbb"><span>&#x2661; 2.1K</span><span>&#x1F4AC; 187</span><span>&#x2197; Share</span></div><span style="font-size:.62rem;color:#bbb">Rose from ClimbXX community</span></div>
   </div>`;
 
@@ -6563,7 +6563,7 @@ function renderHub() {
       <span class="algo-badge">&#x1F525; Trending</span>
     </div>
     <div style="font-size:.9rem;color:#444;line-height:1.6;margin-bottom:10px">Powder alert: Chamonix reporting 80cm overnight. Grands Montets looking absolutely stacked for tomorrow. Avalanche risk moderate above 2800m — check your beacons.</div>
-    <div style="border-radius:10px;overflow:hidden;margin-bottom:10px;height:200px"><video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;display:block" src="genexxo-videos/climb2.mp4"></video></div>
+    <div style="border-radius:10px;overflow:hidden;margin-bottom:10px;height:200px"><video autoplay loop muted playsinline preload="none" style="width:100%;height:100%;object-fit:cover;display:block" data-vsrc="genexxo-videos/climb2.mp4"></video></div>
     <div style="display:flex;justify-content:space-between;align-items:center"><div class="card-actions" style="color:#bbb"><span>&#x2661; 3.4K</span><span>&#x1F4AC; 289</span><span>&#x2197; Share</span></div><span style="font-size:.62rem;color:#bbb">Rose from SkiXX community</span></div>
   </div>`;
 
@@ -6636,7 +6636,7 @@ function renderHub() {
       <span class="algo-badge">&#x2B06; Rising</span>
     </div>
     <div style="font-size:.9rem;color:#444;line-height:1.6;margin-bottom:10px">This season in motion. The way a great dress moves is something no photograph can capture. This is why we come back to the runway every single time.</div>
-    <div style="border-radius:10px;overflow:hidden;margin-bottom:10px;height:200px"><video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;display:block" src="genexxo-videos/dress2.mp4"></video></div>
+    <div style="border-radius:10px;overflow:hidden;margin-bottom:10px;height:200px"><video autoplay loop muted playsinline preload="none" style="width:100%;height:100%;object-fit:cover;display:block" data-vsrc="genexxo-videos/dress2.mp4"></video></div>
     <div style="display:flex;justify-content:space-between;align-items:center"><div class="card-actions" style="color:#bbb"><span>&#x2661; 14.2K</span><span>&#x1F4AC; 1.8K</span><span>&#x2197; Share</span></div><span style="font-size:.62rem;color:#bbb">Rose from DressXX community</span></div>
   </div>`;
 
@@ -6678,7 +6678,7 @@ function renderHub() {
             <span style="font-size:.62rem;font-weight:800;color:#fff">${initials}</span>
           </div>
           <div style="flex:1;min-width:0">
-            <div style="font-size:.78rem;font-weight:700;color:#1a1a2e;line-height:1.2">${g.name}</div>
+            <div style="font-size:.78rem;font-weight:700;color:#1a1a2e;line-height:1.2;position:relative"><span style="position:absolute;left:-10px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:#22C55E;box-shadow:0 0 5px rgba(34,197,94,.8)"></span>${g.name}</div>
             <div style="font-size:.62rem;color:#aaa">${g.domain}</div>
           </div>
           <span style="font-size:.58rem;color:${g.theme.accent}">${g.emoji}</span>
@@ -6823,9 +6823,9 @@ function renderHub() {
             ${item.badge ? `<span class="card-badge" style="background:${item.badge.bg};color:${item.badge.color}">${item.badge.text}</span>` : ''}
           </div>
           <div style="font-size:.9rem;color:#444;line-height:1.6;margin-bottom:${item.img||item.videoUrl?'10':'0'}px">${item.text}</div>
-          ${item.img ? `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px;height:200px"><img src="${item.img.url}" style="width:100%;height:100%;object-fit:cover;display:block"></div>` : ''}
-          ${item.videoUrl ? (item.videoUrl.endsWith('.mp4') ? `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px"><video autoplay loop muted playsinline style="width:100%;height:200px;object-fit:cover;display:block" src="${item.videoUrl}"></video></div>` : `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px;height:200px"><img src="${item.videoUrl}" style="width:100%;height:100%;object-fit:cover;display:block"></div>`) : ''}
-          ${item.videoSrc ? `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px"><video autoplay loop muted playsinline style="width:100%;height:200px;object-fit:cover;display:block" src="${item.videoSrc}"></video></div>` : ''}
+          ${item.img ? `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px;height:200px"><img src="${item.img.url}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block"></div>` : ''}
+          ${item.videoUrl ? (item.videoUrl.endsWith('.mp4') ? `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px"><video autoplay loop muted playsinline preload="none" style="width:100%;height:200px;object-fit:cover;display:block" data-vsrc="${item.videoUrl}"></video></div>` : `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px;height:200px"><img src="${item.videoUrl}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block"></div>`) : ''}
+          ${item.videoSrc ? `<div style="border-radius:10px;overflow:hidden;margin-bottom:8px"><video autoplay loop muted playsinline preload="none" style="width:100%;height:200px;object-fit:cover;display:block" data-vsrc="${item.videoSrc}"></video></div>` : ''}
           ${item.engagement ? `<div class="card-actions" style="color:#bbb;margin-top:8px">${item.engagement.split('|').map(e=>`<span>${e.trim()}</span>`).join('')}</div>` : ''}
         </div>`;
       });
@@ -6879,9 +6879,11 @@ function renderYourWorlds(activeSector) {
     const isActive = s.key === activeSector;
     const sData = SECTORS[s.key];
     if (isLive && sData) {
+      const hasLiveGw = ['adventure','wellness','finance','fashion'].includes(s.key);
+      const liveDot = hasLiveGw ? '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#22C55E;box-shadow:0 0 5px rgba(34,197,94,.8);margin-left:7px;vertical-align:middle"></span>' : '';
       html += `<div class="sec-btn" style="${isActive?`background:${sData.color}12;border-left:3px solid ${sData.color};`:''}" onclick="setSector('${s.key}')">
         <div class="icon" style="background:${sData.gradient}">${sData.icon}</div>
-        <div><div class="label" style="${isActive?`font-weight:800;color:${sData.color};`:''}color:#1a1a2e">${sData.name}</div><div class="sub">${sData.tagline}</div></div>
+        <div><div class="label" style="${isActive?`font-weight:800;color:${sData.color};`:''}color:#1a1a2e">${sData.name}${liveDot}</div><div class="sub">${sData.tagline}</div></div>
       </div>`;
     } else {
       html += `<div class="sec-btn" style="opacity:.4;${isActive?'background:rgba(0,0,0,.04);opacity:.7;':''}" onclick="setSector('${s.key}')">
@@ -10709,6 +10711,29 @@ function renderProfile() {
   </div>`;
 }
 
+
+/* ── Lazy video loading: viewport-first priority ── */
+let _vidObserver = null;
+function lazyMedia() {
+  const vids = document.querySelectorAll('video[data-vsrc]');
+  if (!vids.length) return;
+  if (!('IntersectionObserver' in window)) {
+    vids.forEach(v => { v.src = v.dataset.vsrc; v.removeAttribute('data-vsrc'); });
+    return;
+  }
+  if (_vidObserver) _vidObserver.disconnect();
+  _vidObserver = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        const v = en.target;
+        if (v.dataset.vsrc) { v.src = v.dataset.vsrc; v.removeAttribute('data-vsrc'); v.play().catch(()=>{}); }
+        _vidObserver.unobserve(v);
+      }
+    });
+  }, { rootMargin: '400px 0px' });
+  vids.forEach(v => _vidObserver.observe(v));
+}
+
 function render() {
   const app = document.getElementById('app');
   let html = '';
@@ -10733,6 +10758,7 @@ function render() {
   app.style.animation = 'none';
   app.offsetHeight;
   app.style.animation = 'viewIn .3s ease';
+  lazyMedia();
   // Restore sector sidebar scroll position
   if (_sectorScrollTop) {
     const _newScroll = document.querySelector('.sector-scroll');
