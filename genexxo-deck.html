@@ -595,6 +595,7 @@ input{font-family:inherit}
 </script>
 <div id="app"></div>
 <div class="modal-bg" id="purchaseModal"><div class="modal" id="modalContent"></div></div>
+<div class="modal-bg" id="signupModal"><div id="signupContent"></div></div>
 <script>
 /* ═══════════════════════════════════════════════════════════
    ██████  CONFIGURATION — Add new gateways/sectors here  ██████
@@ -7208,6 +7209,7 @@ function renderBrandsTab(gw, key) {
         <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.6);text-transform:uppercase">${gw.name} · BRANDS</div>
         <div style="font-size:1.4rem;font-weight:600;color:#fff;letter-spacing:-.01em">The brands of ${sectorName.toLowerCase()}</div>
       </div>
+      <div style="margin-left:auto;flex-shrink:0;padding:10px 18px;border-radius:10px;background:rgba(255,255,255,.16);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.28)'" onmouseout="this.style.background='rgba(255,255,255,.16)'" onclick="showSignup('brand','${key}')">Become a Brand Partner \u2192</div>
     </div>
     <div style="font-size:.82rem;color:rgba(255,255,255,.7);max-width:540px;line-height:1.5;margin-bottom:20px">Discover the brands shaping ${sectorName.toLowerCase()}. Follow them. Shop their drops. Connect directly.</div>
     <div style="position:relative;max-width:484px;margin-bottom:12px">
@@ -7423,6 +7425,7 @@ function renderAppsGwTab(gw, key) {
         <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.6);text-transform:uppercase">${gw.name} · APPS</div>
         <div style="font-size:1.4rem;font-weight:600;color:#fff;letter-spacing:-.01em">Apps for ${sectorName.toLowerCase()}</div>
       </div>
+      <div style="margin-left:auto;flex-shrink:0;padding:10px 18px;border-radius:10px;background:rgba(255,255,255,.16);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.28)'" onmouseout="this.style.background='rgba(255,255,255,.16)'" onclick="showSignup('developer','${key}')">Submit Your App \u2192</div>
     </div>
     <div style="font-size:.82rem;color:rgba(255,255,255,.7);max-width:540px;line-height:1.5;margin-bottom:20px">Tools, trackers, and experiences built for the ${sectorName.toLowerCase()} community. Install in a click. Use anywhere.</div>
     <div style="position:relative;max-width:484px;margin-bottom:12px">
@@ -7610,6 +7613,7 @@ function renderBusinessTab(gw, key) {
         <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.4);text-transform:uppercase">${gw.name} · BUSINESS</div>
         <div style="font-size:1.4rem;font-weight:600;color:#fff;letter-spacing:-.01em">The home of the ${gw.name.replace('XX','')} industry</div>
       </div>
+      <div style="margin-left:auto;flex-shrink:0;padding:10px 18px;border-radius:10px;background:rgba(255,255,255,.16);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.28)'" onmouseout="this.style.background='rgba(255,255,255,.16)'" onclick="showSignup('business','${key}')">List Your Company \u2192</div>
     </div>
     <div style="font-size:.82rem;color:rgba(255,255,255,.5);max-width:540px;line-height:1.5;margin-bottom:20px">Every shop, builder, supplier and brand in one place. Find them. Talk to them. Stay connected.</div>
     <div style="position:relative;max-width:484px;margin-bottom:12px">
@@ -8134,6 +8138,7 @@ function renderCommunityTab(gw, key) {
         <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.6);text-transform:uppercase">${gw.name} · COMMUNITY</div>
         <div style="font-size:1.4rem;font-weight:600;color:#fff;letter-spacing:-.01em">Built by the community, for the community</div>
       </div>
+      <div style="margin-left:auto;flex-shrink:0;padding:10px 18px;border-radius:10px;background:rgba(255,255,255,.16);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.28)'" onmouseout="this.style.background='rgba(255,255,255,.16)'" onclick="showSignup('community','${key}')">Claim Your Community \u2192</div>
     </div>
     <div style="font-size:.82rem;color:rgba(255,255,255,.7);max-width:540px;line-height:1.5;margin-bottom:20px">Apps the ${sectorName.toLowerCase()} community creates around events, topics, and shared questions. Vote them up. Open them in a click. Build your own.</div>
     <div style="position:relative;max-width:484px;margin-bottom:12px">
@@ -9214,6 +9219,7 @@ function renderProsTab(gw, key) {
         <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.6);text-transform:uppercase">${gw.name} \u00B7 PROS</div>
         <div style="font-size:1.4rem;font-weight:600;color:#fff;letter-spacing:-.01em">The pros of ${sectorName.toLowerCase()}</div>
       </div>
+      <div style="margin-left:auto;flex-shrink:0;padding:10px 18px;border-radius:10px;background:rgba(255,255,255,.16);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.28)'" onmouseout="this.style.background='rgba(255,255,255,.16)'" onclick="showSignup('pro','${key}')">Become a Pro \u2192</div>
     </div>
     <div style="font-size:.82rem;color:rgba(255,255,255,.7);max-width:540px;line-height:1.5;margin-bottom:20px">Verified professionals \u2014 coaches, guides, practitioners and experts whose credentials have been checked. Not everyone is accepted. That is the point.</div>
     <div style="position:relative;max-width:484px;margin-bottom:12px">
@@ -9224,7 +9230,7 @@ function renderProsTab(gw, key) {
       <div style="background:rgba(0,0,0,.25);backdrop-filter:blur(8px);border-radius:14px;padding:14px 18px;flex:1;min-width:300px;max-width:520px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
           <span style="font-size:.62rem;font-weight:700;letter-spacing:.1em;color:rgba(255,255,255,.55);text-transform:uppercase">Verified Pros</span>
-          <span style="font-size:.62rem;font-weight:600;color:rgba(255,255,255,.45);cursor:pointer">\u2713 Become a Verified Pro</span>
+          <span style="font-size:.62rem;font-weight:600;color:rgba(255,255,255,.45);cursor:pointer" onclick="event.stopPropagation();showSignup('pro','${key}')">\u2713 Become a Verified Pro</span>
         </div>
         <div style="display:flex;gap:14px">
           ${pros.map(p=>`<div style="text-align:center;${p.flagship?'cursor:pointer;':''}" title="${p.name}" ${p.flagship?`onclick="state.proDetail='${p.key}';state.proTab='Feed';render();window.scrollTo(0,0)"`:''}>
@@ -10226,6 +10232,91 @@ function renderBrandDirectView() {
       </div>
     </div>`;
 }
+
+
+/* ═══════════════════════════════════════════════════════════
+   ██████  JOIN / SIGN-UP WIZARD — one flow, every participant  ██████
+   ═══════════════════════════════════════════════════════════ */
+let signupState = { step: 1, type: 'brand', gw: null };
+
+const SIGNUP_TYPES = {
+  brand:     { emoji:'\uD83C\uDFF7\uFE0F', label:'Brand',         sub:'Your space, your products, your story',        field:'Brand website',                    ph:'yourbrand.com' },
+  pro:       { emoji:'\u2713',               label:'Pro',           sub:'Verified expertise, your own page',            field:'Your credential or qualification', ph:'e.g. UIAA coach, CFA, IFMGA guide\u2026' },
+  developer: { emoji:'\uD83D\uDCF1',        label:'App Developer', sub:'Your app, in front of the right audience',     field:'App URL or store link',            ph:'yourapp.com' },
+  business:  { emoji:'\uD83C\uDFE2',        label:'Business',      sub:'Your company in the industry network',         field:'Company name',                     ph:'Your company' },
+  community: { emoji:'\uD83D\uDC65',        label:'Community',     sub:'Bring your community home',                    field:'Where your community lives today', ph:'Link to forum / Discord / group' },
+};
+
+function showSignup(type, gwKey) {
+  signupState = { step: 1, type: type || 'brand', gw: gwKey || state.gateway || null };
+  renderSignup();
+  document.getElementById('signupModal').classList.add('show');
+}
+
+function renderSignup() {
+  const gwS = signupState.gw && GATEWAYS[signupState.gw] ? GATEWAYS[signupState.gw] : null;
+  const accent = gwS ? gwS.theme.accent : '#8B5CF6';
+  const gwName = gwS ? gwS.name : 'GENEXXO';
+  const meta = SIGNUP_TYPES[signupState.type];
+  let html = '';
+
+  if (signupState.step === 1) {
+    html = `<div class="modal" style="max-width:520px">
+      <div style="font-size:.66rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:${accent};margin-bottom:8px">Join ${gwName}</div>
+      <h3 style="margin-bottom:6px">Who are you?</h3>
+      <p style="font-size:.8rem;opacity:.55;margin-bottom:18px">One sign-up, every participant. Choose your place on the canvas.</p>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px">
+        ${Object.entries(SIGNUP_TYPES).map(([k,v])=>`<div onclick="signupState.type='${k}';renderSignup()" style="padding:14px;border-radius:12px;cursor:pointer;border:1px solid ${signupState.type===k?accent:'rgba(255,255,255,.1)'};background:${signupState.type===k?accent+'1A':'rgba(255,255,255,.03)'};transition:all .15s">
+          <div style="font-size:1.1rem;margin-bottom:6px">${v.emoji}</div>
+          <div style="font-size:.84rem;font-weight:700;${signupState.type===k?'color:'+accent:''}">${v.label}</div>
+          <div style="font-size:.66rem;opacity:.5;line-height:1.4;margin-top:2px">${v.sub}</div>
+        </div>`).join('')}
+      </div>
+      <button class="mbuy" style="background:${accent}" onclick="signupState.step=2;renderSignup()">Continue \u2192</button>
+      <div class="mnote">Self-serve from start to finish \u2014 no sales process, no onboarding team.</div>
+    </div>`;
+  } else if (signupState.step === 2) {
+    html = `<div class="modal" style="max-width:520px">
+      <div style="font-size:.66rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:${accent};margin-bottom:8px">Join ${gwName} \u00B7 ${meta.label}</div>
+      <h3 style="margin-bottom:6px">Claim your place</h3>
+      <p style="font-size:.8rem;opacity:.55;margin-bottom:18px">The basics \u2014 you\u2019ll build your space after verification.</p>
+      <div class="mlabel">Your name</div>
+      <input style="width:100%;box-sizing:border-box;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#E8E4DF;font-size:.88rem;outline:none;margin-bottom:12px" placeholder="Full name">
+      <div class="mlabel">Email</div>
+      <input style="width:100%;box-sizing:border-box;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#E8E4DF;font-size:.88rem;outline:none;margin-bottom:12px" placeholder="you@example.com">
+      <div class="mlabel">${meta.field}</div>
+      <input style="width:100%;box-sizing:border-box;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#E8E4DF;font-size:.88rem;outline:none;margin-bottom:18px" placeholder="${meta.ph}">
+      <button class="mbuy" style="background:${accent}" onclick="signupState.step=3;renderSignup()">Submit \u2192</button>
+      <div class="mnote" style="cursor:pointer" onclick="signupState.step=1;renderSignup()">\u2190 Back \u00B7 change participant type</div>
+    </div>`;
+  } else {
+    const journey = [
+      { k:'EXIST', d:'You\u2019re on the canvas \u2014 your listing is created', done:true },
+      { k:'CLAIM', d:'Build your space \u2014 identity, content, links', done:false },
+      { k:'VERIFY', d:'We check every participant \u2014 the badge means something', done:false },
+      { k:'CONTRIBUTE', d:'Post into the ${\u200B}feed \u2014 your voice, verified', done:false },
+    ];
+    html = `<div class="modal" style="max-width:520px"><div class="modal-confirm">
+      <div class="icon">\u2713</div>
+      <h3>Welcome to ${gwName}</h3>
+      <p style="margin-bottom:16px">Application received \u2014 you now <b>exist</b> on the canvas. Here\u2019s the journey ahead:</p>
+      <div style="text-align:left;margin-bottom:16px">
+        ${journey.map((j,i)=>`<div style="display:flex;gap:12px;align-items:flex-start;padding:8px 0;${i<journey.length-1?'border-bottom:1px solid rgba(255,255,255,.06)':''}">
+          <span style="flex-shrink:0;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;background:${j.done?accent:'rgba(255,255,255,.08)'};color:${j.done?'#fff':'rgba(255,255,255,.4)'}">${i+1}</span>
+          <div><div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;color:${j.done?accent:'rgba(255,255,255,.7)'}">${j.k}</div><div style="font-size:.74rem;opacity:.5;line-height:1.4">${j.d.replace('${\u200B}','')}</div></div>
+        </div>`).join('')}
+      </div>
+      <p style="font-size:.72rem;opacity:.45;margin-bottom:14px">Not everyone is accepted. That\u2019s the point \u2014 verification is what makes every voice on ${gwName} worth trusting.</p>
+      <div class="done" onclick="document.getElementById('signupModal').classList.remove('show')">Done</div>
+    </div></div>`;
+  }
+  document.getElementById('signupContent').innerHTML = html;
+}
+
+document.addEventListener('click', function(e) {
+  const m = document.getElementById('signupModal');
+  if (m && e.target === m) m.classList.remove('show');
+});
 
 /* ═══════════════════════════════════════════════════════════
    ██████  PURCHASE MODAL  ██████
