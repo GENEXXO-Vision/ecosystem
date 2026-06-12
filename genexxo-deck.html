@@ -5382,7 +5382,7 @@ const PROS = {
   ],
 };
 
-let state = { view:'hub', sector:null, gateway:null, brandZone:null, gwTab:'Feed', proDetail:null, bzTab:'Feed', bzProdFilter:'All', bzProductDetail:null, selectedDest:'Méribel', tradePlatform:0, appStoreScope:'hub', appStoreContext:null, appDetail:null, hubTab:'home', sectorFilter:null, brandStoreScope:'hub', brandStoreContext:null, navOrigin:null, showProfile:false, profileTab:'posts', favourites:['climb'], activeWalletApp:null, appStoreTab:'destination', showSidebarInfo:true, infoLevel:'hub', infoContext:null, showAIHost:false, showEvents:false, bizFilter:'All', brandFilter:'All', appFilter:'All' };
+let state = { view:'hub', sector:null, gateway:null, brandZone:null, gwTab:'Feed', proDetail:null, proTab:'Feed', bzTab:'Feed', bzProdFilter:'All', bzProductDetail:null, selectedDest:'Méribel', tradePlatform:0, appStoreScope:'hub', appStoreContext:null, appDetail:null, hubTab:'home', sectorFilter:null, brandStoreScope:'hub', brandStoreContext:null, navOrigin:null, showProfile:false, profileTab:'posts', favourites:['climb'], activeWalletApp:null, appStoreTab:'destination', showSidebarInfo:true, infoLevel:'hub', infoContext:null, showAIHost:false, showEvents:false, bizFilter:'All', brandFilter:'All', appFilter:'All' };
 let wallet = { ski:['Ski Pass','Piste Map','Snow Report'], stocks:['Inteq','Charterly'] };
 let purchaseState = 'buy'; // buy | confirm
 let _sectorScrollTop = 0;
@@ -6128,7 +6128,7 @@ function renderFeedCard(item, gw) {
   // Pro Page cross-link footer
   if (item.proKey) {
     const proColor = item.badge ? item.badge.color : t.accent;
-    html += `<div style="margin-top:12px;padding-top:11px;border-top:1px solid ${t.cardBorder};display:flex;align-items:center;gap:7px;font-size:.72rem;font-weight:700;color:${proColor};cursor:pointer" onclick="state.gwTab='Pros';state.proDetail='${item.proKey}';render();window.scrollTo(0,0)"><span style="font-size:.8rem">\u2713</span> From ${item.author}'s Pro Page<span style="margin-left:auto;font-weight:600;opacity:.75">Visit \u2192</span></div>`;
+    html += `<div style="margin-top:12px;padding-top:11px;border-top:1px solid ${t.cardBorder};display:flex;align-items:center;gap:7px;font-size:.72rem;font-weight:700;color:${proColor};cursor:pointer" onclick="state.gwTab='Pros';state.proDetail='${item.proKey}';state.proTab='Feed';render();window.scrollTo(0,0)"><span style="font-size:.8rem">\u2713</span> From ${item.author}'s Pro Page<span style="margin-left:auto;font-weight:600;opacity:.75">Visit \u2192</span></div>`;
   }
 
   // Brand Zone cross-link footer
@@ -8966,6 +8966,12 @@ function renderGatewayFeed(key) {
   const t = gw.theme;
   const sectorKey = gw.sector;
 
+  // Pro page open — render as its own full view, like a Brand Zone
+  if (state.gwTab === 'Pros' && state.proDetail) {
+    return `<div style="background:${t.bg};color:${t.text};min-height:100vh">${renderMainNav()}${renderProsTab(gw, key)}</div>`;
+  }
+
+
   // Tab content
   let tabContent = '';
   if (state.gwTab === 'Feed' || !gw.tabs) {
@@ -9026,11 +9032,22 @@ function renderProsTab(gw, key) {
   const t = gw.theme;
   const pros = PROS[key] || [];
 
-  // ── Pro Page (detail view) ──
+  // ── Pro Page (detail view) — the universal participant template ──
   if (state.proDetail) {
     const p = pros.find(x => x.key === state.proDetail);
     if (p) {
       const tier = PRO_TIERS[p.tier] || {};
+      const proTab = state.proTab || 'Feed';
+      const first = p.name.split(' ')[0];
+
+      // media pool — vertical imagery from the gateway
+      const imgs = [];
+      const push = u => { if (u) { const b = u.split('?')[0]; if (!imgs.includes(b)) imgs.push(b); } };
+      (gw.feed||[]).forEach(i => { if (i.img) push(i.img.url); });
+      if (gw.hero && gw.hero.main) push(gw.hero.main.url);
+      ((gw.hero && gw.hero.side) || []).forEach(sd => push(sd.url));
+      const show = imgs.slice(0, 9);
+
       let archiveHtml = '';
       (p.archive||[]).forEach(a => {
         archiveHtml += `<div class="card" style="background:${t.cardBg};border:1px solid ${t.cardBorder}">
@@ -9040,56 +9057,110 @@ function renderProsTab(gw, key) {
             <span class="card-badge" style="background:${tier.bg};color:${tier.color}">\u2713 ${p.tier.toUpperCase()}</span>
           </div>
           <div class="card-text" style="color:${t.text};opacity:.85;font-family:${t.bodyFont}">${a.text}</div>
-          <div class="card-actions" style="margin-top:10px;color:${t.muted}">${a.engagement.split('|').map(e=>`<span>${e.trim()}</span>`).join('')}</div>
+          <div class="card-actions" style="margin-top:10px;color:${t.muted}">${a.engagement.split('|').map(x=>`<span>${x.trim()}</span>`).join('')}</div>
         </div>`;
       });
-      return `<div style="max-width:1280px;margin:0 auto;padding:24px 40px">
-        <div style="cursor:pointer;font-size:.82rem;font-weight:600;color:${t.accent};margin-bottom:18px" onclick="state.proDetail=null;render();window.scrollTo(0,0)">\u2190 All Pros</div>
-        <div style="border-radius:18px;padding:34px 36px;background:${p.gradient};color:#fff;margin-bottom:22px">
-          <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:18px">
-            <div>
-              <div style="width:64px;height:64px;border-radius:16px;background:rgba(255,255,255,.18);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;margin-bottom:12px">${p.initials}</div>
-              <div style="font-size:1.8rem;font-weight:800;margin-bottom:2px">${p.name}</div>
-              <div style="font-size:.9rem;opacity:.85;margin-bottom:14px">${p.role} \u00B7 ${p.location}</div>
-              <div style="display:flex;gap:14px">${Object.entries(p.stats).map(([k,v])=>`<div style="background:rgba(255,255,255,.12);backdrop-filter:blur(10px);border-radius:10px;padding:8px 14px"><div style="font-size:.95rem;font-weight:800">${v}</div><div style="font-size:.6rem;text-transform:uppercase;letter-spacing:.07em;opacity:.6;font-weight:600">${k}</div></div>`).join('')}</div>
-            </div>
-            <div style="background:rgba(255,255,255,.14);backdrop-filter:blur(10px);border-radius:10px;padding:9px 15px;font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:7px;color:${tier.color}"><span class="green-dot"></span> ${p.tier} \u00B7 Verified</div>
+
+      const credsHtml = p.credentials ? `<div class="widget" style="background:${t.cardBg};border:1px solid ${t.cardBorder}">
+          <div class="w-title" style="color:${t.muted}">Verified Credentials</div>
+          ${p.credentials.map(c=>`<div style="font-size:.76rem;color:${t.text};opacity:.8;padding:5px 0;display:flex;gap:8px;font-family:${t.bodyFont}"><span style="color:#4ADE80">\u2713</span><span>${c}</span></div>`).join('')}
+        </div>` : '';
+
+      const partnerHtml = p.partnership ? `<div class="widget" style="background:${t.cardBg};border:1px solid ${t.cardBorder}">
+          <div class="w-title" style="color:${t.muted}">Brand Partnership</div>
+          <div style="display:flex;align-items:center;gap:10px;cursor:pointer" onclick="nav('brandZone',{brandZone:'${p.partnership.zone}'})">
+            <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#E84D3A,#C4371F);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:#fff">${p.partnership.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+            <div><div style="font-size:.82rem;font-weight:700;color:${t.text};font-family:${t.bodyFont}">${p.partnership.name}</div><div style="font-size:.68rem;color:${t.muted}">${p.partnership.note}</div></div>
+            <span style="margin-left:auto;color:${t.muted}">\u2192</span>
           </div>
-        </div>
-        <div style="display:flex;gap:28px;align-items:flex-start">
-          <div style="flex:1;min-width:0;max-width:680px">
+        </div>` : '';
+
+      let tabContent = '';
+      if (proTab === 'Feed') {
+        tabContent = `<div class="bz-body">
+          <div class="bz-main">
+            <div style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:${t.muted};margin:0 0 12px">Posts \u2014 also appearing in the ${gw.name} feed</div>
+            ${archiveHtml || `<div class="card" style="background:${t.cardBg};border:1px solid ${t.cardBorder};padding:30px;text-align:center;color:${t.muted};font-size:.85rem">Posts coming soon</div>`}
+          </div>
+          <div class="bz-aside">
+            ${credsHtml}
+            ${partnerHtml}
+          </div>
+        </div>`;
+      } else if (proTab === 'Services') {
+        tabContent = `<div style="max-width:1280px;margin:0 auto;padding:24px 40px">
+          <div style="font-size:1.1rem;font-weight:800;color:${t.text};font-family:${t.bodyFont};margin-bottom:4px">Services</div>
+          <div style="font-size:.78rem;color:${t.muted};margin-bottom:20px;font-family:${t.bodyFont}">Booked directly on ${first}\u2019s own platform \u2014 GENEXXO provides the discovery, referral attributed to ${gw.name}.</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">
+            ${(p.services||[]).map(sv=>`<div class="card" style="background:${t.cardBg};border:1px solid ${t.cardBorder}">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:.95rem;font-weight:700;color:${t.text};font-family:${t.bodyFont}">${sv.name}</span><span style="font-size:.95rem;font-weight:700;color:${t.accent}">${sv.price}</span></div>
+              <div style="font-size:.8rem;color:${t.muted};line-height:1.6;margin-bottom:14px;font-family:${t.bodyFont}">${sv.desc}</div>
+              <div style="text-align:center;padding:10px;border-radius:9px;background:${t.accent};color:#fff;font-size:.8rem;font-weight:700;cursor:pointer">Book via ${sv.via} \u2192</div>
+            </div>`).join('')}
+          </div>
+        </div>`;
+      } else if (proTab === 'Media') {
+        tabContent = `<div style="max-width:1280px;margin:0 auto;padding:24px 40px">
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px">
+            <div>
+              <div style="font-size:1.1rem;font-weight:800;color:${t.text};font-family:${t.bodyFont}">Media</div>
+              <div style="font-size:.78rem;color:${t.muted};margin-top:3px;font-family:${t.bodyFont}">${first}\u2019s showcase \u2014 the best of the archive, curated</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:9px;background:${t.accent}0A;border:1px solid ${t.accent}20;font-size:.74rem;font-weight:600;color:${t.accent}">\u2605 Curated Showcase</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+            ${show.map((u,i)=>`<div style="border-radius:14px;overflow:hidden;aspect-ratio:4/3;background:#0a0a0a;${i===0?'grid-column:span 2;aspect-ratio:8/4.5;':''}"><img src="${u}?w=800&h=500&fit=crop&q=80" style="width:100%;height:100%;object-fit:cover;display:block"></div>`).join('')}
+          </div>
+        </div>`;
+      } else {
+        tabContent = `<div class="bz-body">
+          <div class="bz-main">
             <div class="card" style="background:${t.cardBg};border:1px solid ${t.cardBorder}">
-              <div style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:${t.accent};margin-bottom:10px">About</div>
+              <div style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:${t.accent};margin-bottom:10px">About ${p.name}</div>
               <div style="font-size:.88rem;line-height:1.7;color:${t.text};opacity:.85;font-family:${t.bodyFont}">${p.bio||''}</div>
             </div>
-            <div style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:${t.muted};margin:6px 0 12px">Recent Posts \u2014 also appearing in the ${gw.name} feed</div>
-            ${archiveHtml}
-          </div>
-          <div style="width:310px;flex-shrink:0">
-            <div class="widget" style="background:${t.accent}0A;border:1px solid ${t.accent}20">
-              <div class="w-title" style="color:${t.muted}">Services</div>
-              ${(p.services||[]).map(s=>`<div style="background:${t.cardBg};border:1px solid ${t.cardBorder};border-radius:10px;padding:12px 14px;margin-bottom:8px">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:.82rem;font-weight:700;color:${t.text};font-family:${t.bodyFont}">${s.name}</span><span style="font-size:.82rem;font-weight:700;color:${t.accent}">${s.price}</span></div>
-                <div style="font-size:.72rem;color:${t.muted};line-height:1.5;margin-bottom:8px;font-family:${t.bodyFont}">${s.desc}</div>
-                <div style="text-align:center;padding:7px;border-radius:8px;background:${t.accent};color:#fff;font-size:.74rem;font-weight:700;cursor:pointer">Book via ${s.via} \u2192</div>
-              </div>`).join('')}
-              <div style="font-size:.66rem;color:${t.muted};line-height:1.5;margin-top:4px">Bookings happen on ${p.name.split(' ')[0]}'s own platform \u2014 referral attributed to ${gw.name}.</div>
+            <div class="card" style="background:${t.cardBg};border:1px solid ${t.cardBorder}">
+              <div style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:${t.muted};margin-bottom:10px">Verification</div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"><span style="display:inline-flex;align-items:center;gap:6px;padding:5px 13px;border-radius:20px;background:${tier.bg};color:${tier.color};font-size:.72rem;font-weight:700">\u2713 ${p.tier.toUpperCase()}</span><span style="font-size:.74rem;color:${t.muted}">Credentials checked \u00B7 identity verified</span></div>
+              ${(p.credentials||[]).map(c=>`<div style="font-size:.8rem;color:${t.text};opacity:.8;padding:5px 0;display:flex;gap:8px;font-family:${t.bodyFont}"><span style="color:#4ADE80">\u2713</span><span>${c}</span></div>`).join('')}
             </div>
-            ${p.credentials?`<div class="widget" style="background:${t.cardBg};border:1px solid ${t.cardBorder}">
-              <div class="w-title" style="color:${t.muted}">Verified Credentials</div>
-              ${p.credentials.map(c=>`<div style="font-size:.76rem;color:${t.text};opacity:.8;padding:5px 0;display:flex;gap:8px;font-family:${t.bodyFont}"><span style="color:#4ADE80">\u2713</span><span>${c}</span></div>`).join('')}
-            </div>`:''}
-            ${p.partnership?`<div class="widget" style="background:${t.cardBg};border:1px solid ${t.cardBorder}">
-              <div class="w-title" style="color:${t.muted}">Brand Partnership</div>
-              <div style="display:flex;align-items:center;gap:10px;cursor:pointer" onclick="nav('brandZone',{brandZone:'${p.partnership.zone}'})">
-                <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#E84D3A,#C4371F);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:#fff">LS</div>
-                <div><div style="font-size:.82rem;font-weight:700;color:${t.text};font-family:${t.bodyFont}">${p.partnership.name}</div><div style="font-size:.68rem;color:${t.muted}">${p.partnership.note}</div></div>
-                <span style="margin-left:auto;color:${t.muted}">\u2192</span>
+          </div>
+          <div class="bz-aside">
+            <div class="widget" style="background:${t.cardBg};border:1px solid ${t.cardBorder}">
+              <div class="w-title" style="color:${t.muted}">Details</div>
+              <div style="font-size:.78rem;color:${t.text};opacity:.85;line-height:2;font-family:${t.bodyFont}">${p.role}<br>${p.location}<br>${(p.specialisms||[]).join(' \u00B7 ')}</div>
+            </div>
+            ${partnerHtml}
+          </div>
+        </div>`;
+      }
+
+      return `<div class="bz-header" style="background:${p.gradient};position:relative">
+        <div class="bz-header-inner">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+            <div style="cursor:pointer;font-size:.84rem;font-weight:600;color:rgba(255,255,255,.8)" onclick="state.proDetail=null;state.proTab='Feed';render();window.scrollTo(0,0)">\u2190 All Pros</div>
+            <div style="cursor:pointer;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:rgba(255,255,255,.9);transition:background .15s;backdrop-filter:blur(8px)" onclick="state.proDetail=null;state.proTab='Feed';render();window.scrollTo(0,0)" onmouseover="this.style.background='rgba(255,255,255,.3)'" onmouseout="this.style.background='rgba(255,255,255,.15)'" title="Close pro page">\u2715</div>
+          </div>
+          <div class="bz-hero-row">
+            <div>
+              <div class="bz-logo-big" style="background:rgba(255,255,255,.15)">${p.initials}</div>
+              <div class="bz-brand-name" style="font-family:${t.bodyFont}">${p.name}</div>
+              <div class="bz-tagline">${p.role} \u00B7 ${p.location}</div>
+              <div class="bz-stats-row">
+                ${Object.entries(p.stats).map(([k,v])=>`<div class="bz-stat"><div class="bz-stat-v">${v}</div><div class="bz-stat-l">${k}</div></div>`).join('')}
               </div>
-            </div>`:''}
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div class="bz-verified" style="color:${tier.color}"><span class="green-dot"></span> ${p.tier} \u00B7 Verified</div>
+                <div class="bz-stat" style="cursor:pointer;display:flex;align-items:center;gap:7px" onclick="event.stopPropagation()"><span style="font-size:.85rem">\uD83D\uDCAC</span><div><div class="bz-stat-v" style="font-size:.82rem">Chat</div><div class="bz-stat-l">Pro Direct</div></div></div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>`;
+      </div>
+      <div class="bz-tabs-wrap" style="background:${t.headerBg}"><div class="bz-tabs">${['Feed','Services','Media','About'].map(tab=>`<div class="bz-tab ${proTab===tab?'active':''}" style="--accent:${t.accent};${proTab===tab?'color:'+t.accent+';border-bottom-color:'+t.accent:''}" onclick="state.proTab='${tab}';render();window.scrollTo(0,0)">${tab}</div>`).join('')}</div></div>
+      ${tabContent}`;
     }
   }
 
@@ -9097,7 +9168,7 @@ function renderProsTab(gw, key) {
   let cards = '';
   pros.forEach(p => {
     const tier = PRO_TIERS[p.tier] || {};
-    const click = p.flagship ? `onclick="state.proDetail='${p.key}';render();window.scrollTo(0,0)"` : '';
+    const click = p.flagship ? `onclick="state.proDetail='${p.key}';state.proTab='Feed';render();window.scrollTo(0,0)"` : '';
     cards += `<div style="background:${t.cardBg};border:1px solid ${t.cardBorder};border-radius:14px;padding:22px;${p.flagship?'cursor:pointer;':''}transition:all .18s" ${click} ${p.flagship?`onmouseover="this.style.borderColor='${t.accent}';this.style.boxShadow='0 4px 16px ${t.accent}20'" onmouseout="this.style.borderColor='${t.cardBorder}';this.style.boxShadow='none'"`:''}>
       <div style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
         <div style="width:50px;height:50px;border-radius:13px;background:${p.gradient};display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;color:#fff;flex-shrink:0">${p.initials}</div>
@@ -9137,7 +9208,7 @@ function renderProsTab(gw, key) {
           <span style="font-size:.62rem;font-weight:600;color:rgba(255,255,255,.45);cursor:pointer">\u2713 Become a Verified Pro</span>
         </div>
         <div style="display:flex;gap:14px">
-          ${pros.map(p=>`<div style="text-align:center;${p.flagship?'cursor:pointer;':''}" title="${p.name}" ${p.flagship?`onclick="state.proDetail='${p.key}';render();window.scrollTo(0,0)"`:''}>
+          ${pros.map(p=>`<div style="text-align:center;${p.flagship?'cursor:pointer;':''}" title="${p.name}" ${p.flagship?`onclick="state.proDetail='${p.key}';state.proTab='Feed';render();window.scrollTo(0,0)"`:''}>
             <div style="width:42px;height:42px;border-radius:12px;background:${p.gradient};display:flex;align-items:center;justify-content:center;margin-bottom:4px;font-size:.7rem;font-weight:800;color:#fff">${p.initials}</div>
             <div style="font-size:.54rem;color:rgba(255,255,255,.6);font-weight:500;max-width:48px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.name.split(' ')[0]}</div>
           </div>`).join('')}
@@ -9162,6 +9233,12 @@ function renderGatewayFinance(key) {
   const gw = GATEWAYS[key];
   const t = gw.theme;
   const sectorKey = gw.sector;
+
+  // Pro page open — render as its own full view, like a Brand Zone
+  if (state.gwTab === 'Pros' && state.proDetail) {
+    return `<div style="background:${t.bg};color:${t.text};min-height:100vh">${renderMainNav()}${renderProsTab(gw, key)}</div>`;
+  }
+
 
   let tickerHtml = '';
   (gw.ticker||[]).forEach(ti => {
@@ -9219,6 +9296,12 @@ function renderGatewayEditorial(key) {
   const gw = GATEWAYS[key];
   const t = gw.theme;
   const sectorKey = gw.sector;
+
+  // Pro page open — render as its own full view, like a Brand Zone
+  if (state.gwTab === 'Pros' && state.proDetail) {
+    return `<div style="background:${t.bg};color:${t.text};min-height:100vh">${renderMainNav()}${renderProsTab(gw, key)}</div>`;
+  }
+
 
   let heroHtml = '';
   if (gw.hero) {
@@ -9872,6 +9955,34 @@ function renderBzProducts(bz, t, key) {
   </div>`;
 }
 
+
+function renderBzMedia(bz, t, key) {
+  const gwm = GATEWAYS[bz.gateway];
+  const imgs = [];
+  const push = u => { if (u) { const b = u.split('?')[0]; if (!imgs.includes(b)) imgs.push(b); } };
+  (bz.products||[]).forEach(p => push(p.img));
+  (bz.feed||[]).forEach(i => { if (i.img) push(i.img.url); });
+  (gwm.feed||[]).forEach(i => { if (i.img) push(i.img.url); });
+  if (gwm.hero && gwm.hero.main) push(gwm.hero.main.url);
+  ((gwm.hero && gwm.hero.side) || []).forEach(s => push(s.url));
+  const show = imgs.slice(0, 9);
+  return `<div class="bz-body"><div class="bz-main-wide">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:6px">
+      <div>
+        <div style="font-size:1.2rem;font-weight:800;color:${t.text};font-family:${t.bodyFont}">${bz.name} Media</div>
+        <div style="font-size:.78rem;color:${t.muted};margin-top:3px;font-family:${t.bodyFont}">The showcase \u2014 the best imagery and films, curated by the brand</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:9px;background:${bz.color}0A;border:1px solid ${bz.color}20;font-size:.74rem;font-weight:600;color:${bz.color}">\u2605 Curated Showcase</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px">
+      ${show.map((u,i) => `<div style="border-radius:14px;overflow:hidden;aspect-ratio:4/3;background:#0a0a0a;position:relative;${i===0?'grid-column:span 2;aspect-ratio:8/4.5;':''}">
+        <img src="${u}?w=800&h=500&fit=crop&q=80" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>`).join('')}
+    </div>
+    <div style="font-size:.7rem;color:${t.muted};margin-top:14px;font-family:${t.bodyFont}">Showcase media is curated by ${bz.name} \u2014 distinct from the feed: the feed is what\u2019s happening, Media is the best of it.</div>
+  </div></div>`;
+}
+
 function renderBrandZoneView(key) {
   const bz = BRAND_ZONES[key];
   const gw = GATEWAYS[bz.gateway];
@@ -9972,8 +10083,8 @@ function renderBrandZoneView(key) {
           </div>
         </div>
       </div>
-      <div class="bz-tabs-wrap" style="background:${t.headerBg}"><div class="bz-tabs">${['Feed','Products','Apps','Community','About'].map(tab=>`<div class="bz-tab ${state.bzTab===tab?'active':''}" style="--accent:${bz.color};${state.bzTab===tab?'color:${bz.color};border-bottom-color:'+bz.color:''}" onclick="state.bzTab='${tab}';state.bzProductDetail=null;state.bzProdFilter='All';render();window.scrollTo(0,0)">${tab}</div>`).join('')}</div></div>
-      ${state.bzTab === 'Products' ? renderBzProducts(bz, t, key) : state.bzTab === 'Apps' ? renderBzApps(bz, t, key) : state.bzTab === 'Community' ? renderBzCommunity(bz, t, key) : state.bzTab === 'About' ? renderBzAbout(bz, t, key) : state.bzTab === 'Feed' ? `<div class="bz-body">
+      <div class="bz-tabs-wrap" style="background:${t.headerBg}"><div class="bz-tabs">${['Feed','Products','Apps','Media','Community','About'].map(tab=>`<div class="bz-tab ${state.bzTab===tab?'active':''}" style="--accent:${bz.color};${state.bzTab===tab?'color:${bz.color};border-bottom-color:'+bz.color:''}" onclick="state.bzTab='${tab}';state.bzProductDetail=null;state.bzProdFilter='All';render();window.scrollTo(0,0)">${tab}</div>`).join('')}</div></div>
+      ${state.bzTab === 'Products' ? renderBzProducts(bz, t, key) : state.bzTab === 'Apps' ? renderBzApps(bz, t, key) : state.bzTab === 'Media' ? renderBzMedia(bz, t, key) : state.bzTab === 'Community' ? renderBzCommunity(bz, t, key) : state.bzTab === 'About' ? renderBzAbout(bz, t, key) : state.bzTab === 'Feed' ? `<div class="bz-body">
         <div class="bz-side">
           <div class="bz-side-title" style="color:${bz.color}"><span style="font-size:.85rem">\u25C6</span> PRODUCT RANGE</div>
           <div class="bz-side-item" style="color:${t.text}" onclick="state.bzTab='Products';state.bzProdFilter='All';render()"><span>All Products</span><span class="bz-side-count">${bz.products?bz.products.length:''}</span></div>
