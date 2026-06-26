@@ -3175,6 +3175,7 @@ const BRAND_ZONES = {
     gateway:'dress', tier:'Claimed & Verified', name:'Silvere Paris', tagline:'Contemporary occasion wear — architectural lace and structured elegance since 2013',
     color:'#2C1810', gradient:'linear-gradient(135deg,#2C1810,#4A2C20,#D4A574)', logo:'SP',
     stats:{ followers:'36.4K', content:'870+', products:'220+' },
+    event:{ live:true, tag:'Silvere Live', title:'Couture SS27 — Live from Avenue Montaigne', subtitle:'The architectural-lace collection, walked live · front row', location:'Paris Couture Week', viewers:'8,907', now:'Look 14 on the runway · finale next', poster:'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1280&h=720&fit=crop&q=80', chat:[{u:'atelier_anais',m:'that lace work is insane 😍',c:'#D4A574'},{u:'front_row_fern',m:'Look 12 stopped my heart',c:'#9B2335'},{u:'mode_muse',m:'the silhouette on this collection!!',c:'#7C3AED'},{u:'couture_cara',m:'need the ivory column gown immediately',c:'#EC4899'},{u:'paris_pov',m:'the finale is going to be unreal',c:'#0EA5E9'}] },
     products:[
       {name:'Flower Lace Midi Dress',desc:'Guipure lace · Fitted bodice · Flared skirt · Ivory',price:'£380.00',emoji:'👗',img:'https://images.unsplash.com/photo-1566479179817-c0b5c4b5a98e?w=600&h=600&fit=crop&q=80'},
       {name:'Tailored Crepe Jumpsuit',desc:'Wide leg · Belted waist · Back zip · Black',price:'£320.00',emoji:'👗',img:'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=600&h=600&fit=crop&q=80'},
@@ -3373,6 +3374,7 @@ const BRAND_ZONES = {
     gateway:'surf', tier:'Claimed & Verified', name:'Reefcurl', tagline:'The ultimate surfing company — live the search since 1969',
     color:'#00262B', gradient:'linear-gradient(135deg,#00262B,#004D40,#00897B)', logo:'RC',
     stats:{ followers:'34.8K', content:'920+', products:'280+' },
+    event:{ live:true, tag:'Reefcurl Live', title:'The Search — Live at Pipeline', subtitle:'Team riders on the WaveSync 2 · 15ft and pumping', location:'Banzai Pipeline, Oʻahu', viewers:'3,412', now:'Heat 2 live · Toledo vs Florence', poster:'https://images.unsplash.com/photo-1502680390049-dc4466855e62?w=1280&h=720&fit=crop&q=80', chat:[{u:'dawn_patrol_kai',m:'Toledo is on fire today 🔥',c:'#0EA5E9'},{u:'surf_sista',m:'that backhand barrel?! unreal',c:'#F43F5E'},{u:'reef_regular',m:'my WaveSync just buzzed the swell alert',c:'#22C55E'},{u:'pipe_dreamer',m:'15ft and clean, perfect conditions',c:'#A855F7'},{u:'grom_watch',m:'who is in the next heat?',c:'#F59E0B'}] },
     products:[
       {name:'WaveSync 2 Surf Watch',desc:'Tide charts · Wave count · GPS speed · 48hr battery',price:'£329.00',emoji:'⌚',img:'https://images.unsplash.com/photo-1455729552865-3658a5d39692?w=600&h=600&fit=crop&q=80'},
       {name:'FlashBomb 4/3 Chest Zip',desc:'E7 Flash Lining · 30-sec dry time · Triple glued seams',price:'£360.00',emoji:'🌊',img:'https://images.unsplash.com/photo-1516092553335-4b6e4e1e4b98?w=600&h=600&fit=crop&q=80'},
@@ -3650,6 +3652,7 @@ const BRAND_ZONES = {
     gateway:'yoga', tier:'Claimed & Verified', name:'Ao Flow', tagline:'Studio-to-street yoga apparel \u2014 mindful movement meets modern design',
     color:'#1A0A1A', gradient:'linear-gradient(135deg,#1A0A1A,#2D1A2D,#9B59B6)', logo:'Ao',
     stats:{ followers:'78.4K', content:'1,200+', products:'420+' },
+    event:{ live:true, tag:'Ao Flow Live', title:'Morning Flow — Live Global Session', subtitle:'Breathwork + vinyasa with Nadia Lee · 10,000 practising together', location:'Streaming worldwide', viewers:'10,284', now:'Sun salutations · cool-down in 12 min', poster:'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1280&h=720&fit=crop&q=80', chat:[{u:'mat_morning',m:'breathing with you from Lisbon 🌅',c:'#9B59B6'},{u:'flow_state_fi',m:'that transition felt so good',c:'#22C55E'},{u:'calm_co',m:'Nadia cues are everything',c:'#F59E0B'},{u:'sun_salute_sam',m:'10k of us breathing together, love this',c:'#0EA5E9'},{u:'zen_den',m:'one more round of sun sals please',c:'#EF4444'}] },
     products:[
       {name:'Aerolift High-Waist Legging',desc:'Buttery smooth \u00B7 Compression fit \u00B7 4-way stretch \u00B7 No front seam',price:'\u00A3108.00',emoji:'\uD83E\uDDD8',img:'https://images.unsplash.com/photo-1591291621164-2c6367723315?w=600&h=600&fit=crop&q=80'},
       {name:'Accolade Hoodie',desc:'Heavyweight fleece \u00B7 Oversized fit \u00B7 Studio to street \u00B7 8 colours',price:'\u00A3138.00',emoji:'\uD83E\uDDE5',img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=600&fit=crop&q=80'},
@@ -8066,9 +8069,42 @@ function renderMediaTab(gw, key) {
     </div>
   </div>`;
 
+  // Live & featured from the brands — notable brand-created media surfaced on the gateway Media
+  // tab, each linking through to the brand's own page ("best of" pulls up from the brand canvases).
+  const liveBrands = (gw.brandZones||[])
+    .filter(b => BRAND_ZONES[b.key] && BRAND_ZONES[b.key].event)
+    .map(b => ({ key:b.key, bz:BRAND_ZONES[b.key] }));
+  let brandLiveHtml = '';
+  if (liveBrands.length) {
+    brandLiveHtml = `<div style="margin-bottom:28px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:13px">
+        <span style="width:7px;height:7px;border-radius:50%;background:#EF4444;animation:livePulse 2s ease-in-out infinite"></span>
+        <span style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${textMuted}">Live now · hosted by the brands on ${gw.name}</span>
+      </div>` + liveBrands.map(({key:bk, bz}) => {
+        const ev = bz.event;
+        return `<div style="position:relative;border-radius:14px;overflow:hidden;min-height:220px;cursor:pointer;margin-bottom:12px;box-shadow:0 8px 28px rgba(0,0,0,.14);transition:transform .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'" onclick="state.brandZoneOrigin={type:'brandsTab',key:'${key}'};nav('brandZone',{brandZone:'${bk}',bzTab:'Media'})">
+          <img src="${ev.poster}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.05) 35%,rgba(0,0,0,.85))"></div>
+          <div style="position:absolute;top:14px;left:15px;right:15px;display:flex;align-items:center;gap:8px">
+            <span style="display:flex;align-items:center;gap:5px;background:#EF4444;color:#fff;font-size:.6rem;font-weight:800;letter-spacing:.08em;padding:4px 9px;border-radius:6px"><span style="width:6px;height:6px;border-radius:50%;background:#fff;animation:livePulse 2s ease-in-out infinite"></span>LIVE</span>
+            <span style="margin-left:auto;display:flex;align-items:center;gap:5px;background:rgba(0,0,0,.4);backdrop-filter:blur(6px);color:#fff;font-size:.62rem;font-weight:600;padding:4px 9px;border-radius:6px">${ev.viewers} watching</span>
+          </div>
+          <div style="position:absolute;left:18px;right:18px;bottom:15px;color:#fff">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <div style="width:26px;height:26px;border-radius:7px;background:${bz.gradient||bz.color};display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:800;border:1px solid rgba(255,255,255,.25)">${bz.logo}</div>
+              <span style="font-size:.64rem;color:rgba(255,255,255,.82);font-weight:600">${bz.name} · live on ${gw.name}</span>
+            </div>
+            <div style="font-size:1.15rem;font-weight:800;line-height:1.12;margin-bottom:8px;text-shadow:0 2px 14px rgba(0,0,0,.5)">${ev.title}</div>
+            <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;color:#111;font-size:.7rem;font-weight:800;padding:7px 14px;border-radius:8px">Watch on ${bz.name} &rarr;</span>
+          </div>
+        </div>`;
+      }).join('') + `</div>`;
+  }
+
   return `${heroHtml}
     <div style="max-width:1200px;margin:0 auto;padding:28px 32px;display:flex;gap:28px">
       <div style="flex:1;min-width:0">
+        ${brandLiveHtml}
         ${featuredHtml}
         ${latestHtml}
         ${podcastHtml}
@@ -8080,6 +8116,20 @@ function renderMediaTab(gw, key) {
         ${weekHtml}
       </div>
     </div>`;
+}
+
+// Filters the community fast-link cards in place (no re-render). Theme colours
+// are read from the wrapper's data-* attrs so it stays gateway-agnostic.
+function cxxFilterComm(el) {
+  const wrap = el.closest('[data-cxxcomm]');
+  if (!wrap) return;
+  const { accent, activetext, idlebg, idletext } = wrap.dataset;
+  wrap.querySelectorAll('.cxx-chip').forEach(c => { c.style.background = idlebg; c.style.color = idletext; });
+  el.style.background = accent; el.style.color = activetext;
+  const f = el.dataset.f;
+  wrap.querySelectorAll('[data-cat]').forEach(card => {
+    card.style.display = (f === 'All' || card.dataset.cat === f) ? '' : 'none';
+  });
 }
 
 function renderCommunityTab(gw, key) {
@@ -8329,9 +8379,87 @@ function renderCommunityTab(gw, key) {
     </div>
   </div>`;
 
+  // ── Communities fast-links (CycleXX only for now) ──────────────────────
+  // Card grid surfacing real external cycling communities. CycleXX as the
+  // front door to the wider cycling web. Sits above the native community
+  // content, which slides down untouched.
+  let communitiesHtml = '';
+  if (key === 'cycle') {
+    const chipIdleBg = isDark ? 'rgba(255,255,255,.05)' : 'rgba(0,0,0,.04)';
+    const activeText = isDark ? '#000' : '#fff';
+
+    const communities = [
+      {name:'Strava Clubs', desc:'Log in to Strava to join local clubs, follow group rides and share routes.', cat:'Global', plat:'Strava', platColor:'#FC4C02', members:'120M+ athletes', cta:'Log in to Strava', url:'https://www.strava.com/'},
+      {name:'Ride London Weekly', desc:'Casual social rides leaving central London every Saturday.', cat:'Local', plat:'Meetup', platColor:'#F64060', members:'890 members', active:12, url:'https://www.meetup.com/'},
+      {name:'Global MTB Explorers', desc:'Trail talk, builds and ride meetups for mountain bikers worldwide.', cat:'Global', plat:'Discord', platColor:'#5865F2', members:'5.2k members', active:213, url:'https://discord.gg/mtbexplorers'},
+      {name:'r/cycling', desc:'The internet’s biggest cycling forum — everything two wheels.', cat:'Global', plat:'Reddit', platColor:'#FF4500', members:'2.1M members', url:'https://www.reddit.com/r/cycling/'},
+      {name:'British Cycling Club Finder', desc:'Official directory — find an accredited club near you.', cat:'National', plat:'Official', platColor:accent, members:'1,800+ clubs', url:'https://www.britishcycling.org.uk/clubs'},
+      {name:'Komoot Cycling Community', desc:'Route discovery and Highlights shared by riders everywhere.', cat:'Global', plat:'Komoot', platColor:'#6AA127', members:'Global network', url:'https://www.komoot.com/community'},
+      {name:'Trailforks', desc:'The global trail database — MTB & gravel routes, conditions and ratings.', cat:'Global', plat:'Trailforks', platColor:'#0096C7', members:'1.5M+ trails', cta:'Explore trails', url:'https://www.trailforks.com/'},
+      {name:'Zwift', desc:'Train and race indoors with riders worldwide. Group rides every hour.', cat:'Global', plat:'Zwift', platColor:'#FC6719', members:'4M+ riders', cta:'Open Zwift', url:'https://www.zwift.com/uk'},
+      {name:'Singletracks', desc:'MTB news, trail reviews and a long-running community forum.', cat:'Global', plat:'Singletracks', platColor:'#E03A3E', members:'Worldwide forum', url:'https://www.singletracks.com/'},
+      {name:'MTB Project', desc:'Crowdsourced mountain bike trail maps, photos and route beta.', cat:'Global', plat:'MTB Project', platColor:'#5B8A2B', members:'80k+ trails', cta:'Explore trails', url:'https://www.mtbproject.com/'},
+      {name:'RideLondon 2026', desc:'Ballot open — the UK’s flagship festival of cycling, May 2026.', cat:'Events', plat:'Official', platColor:accent, members:'25,000 riders', url:'https://www.ridelondon.co.uk/'},
+      {name:'Tour de France Femmes', desc:'Follow the race, fan rides and watch parties this summer.', cat:'Events', plat:'Official', platColor:accent, members:'Global event', url:'https://www.letourfemmes.fr/en/'},
+    ];
+
+    // AI recommendation strip — reuses the GENEXXO Host Intelligence identity
+    const aiStrip = `<div style="display:flex;align-items:flex-start;gap:13px;background:linear-gradient(120deg,${accent}1f,${cardBg} 70%);border:1px solid ${accent}40;border-radius:14px;padding:15px 17px;margin-bottom:18px">
+      <div style="width:34px;height:34px;border-radius:10px;background:${accent};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${activeText}" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><circle cx="5" cy="5" r="1.5"/><circle cx="19" cy="5" r="1.5"/><circle cx="5" cy="19" r="1.5"/><circle cx="19" cy="19" r="1.5"/><line x1="12" y1="12" x2="5" y2="5"/><line x1="12" y1="12" x2="19" y2="5"/><line x1="12" y1="12" x2="5" y2="19"/><line x1="12" y1="12" x2="19" y2="19"/></svg>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <span style="font-size:.8rem;font-weight:700;color:${textPrimary}">GENEXXO</span>
+          <span style="padding:2px 7px;border-radius:6px;font-size:.54rem;font-weight:700;letter-spacing:.06em;background:${accent}20;color:${accent}">HOST INTELLIGENCE</span>
+        </div>
+        <div style="font-size:.78rem;color:${textSecondary};line-height:1.5">Near London, Sean — group rides are out this weekend. <strong style="color:${textPrimary}">Ride London Weekly</strong> has a social run Saturday 8am, and <strong style="color:${textPrimary}">r/cycling</strong> is buzzing about the new season.</div>
+      </div>
+      <span style="font-size:.62rem;color:${textMuted};font-weight:500;white-space:nowrap;flex-shrink:0;align-self:center">📍 Near London · <span style="color:${accent};cursor:pointer">Change</span></span>
+    </div>`;
+
+    // Filter chips
+    const filters = ['All','Local','National','Global','Events'];
+    let chipsHtml = '';
+    filters.forEach((f,i) => {
+      const isActive = i === 0;
+      chipsHtml += `<button class="cxx-chip" data-f="${f}" onclick="cxxFilterComm(this)" style="padding:7px 15px;border-radius:999px;border:1px solid ${cardBorder};font-size:.74rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;background:${isActive?accent:chipIdleBg};color:${isActive?activeText:textSecondary}">${f}</button>`;
+    });
+
+    // Cards
+    let cardsHtml = '';
+    communities.forEach(c => {
+      const activeHtml = c.active ? `<span style="display:inline-flex;align-items:center;gap:5px;font-size:.62rem;color:#22C55E;font-weight:600"><span style="width:6px;height:6px;border-radius:50%;background:#22C55E;box-shadow:0 0 0 3px rgba(34,197,94,.15)"></span>Active · ${c.active}</span>` : '';
+      cardsHtml += `<div data-cat="${c.cat}" style="display:flex;flex-direction:column;background:${cardBg};border:1px solid ${cardBorder};border-radius:14px;padding:16px;transition:border-color .15s,transform .15s" onmouseover="this.style.borderColor='${cardHover}';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='${cardBorder}';this.style.transform='none'">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:11px">
+          <span style="padding:3px 9px;border-radius:7px;font-size:.6rem;font-weight:700;letter-spacing:.03em;background:${c.platColor}22;color:${c.platColor}">${c.plat}</span>
+          <span style="padding:2px 8px;border-radius:6px;font-size:.55rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:${isDark?'rgba(255,255,255,.06)':'rgba(0,0,0,.05)'};color:${textMuted}">${c.cat}</span>
+        </div>
+        <div style="font-size:.92rem;font-weight:700;color:${textPrimary};margin-bottom:5px;line-height:1.25">${c.name}</div>
+        <div style="font-size:.72rem;color:${textSecondary};line-height:1.45;margin-bottom:12px;flex:1">${c.desc}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;min-height:16px">
+          <span style="font-size:.66rem;color:${textMuted};font-weight:500">${c.members}</span>
+          ${activeHtml}
+        </div>
+        <button onclick="window.open('${c.url}','_blank','noopener')" style="width:100%;padding:9px;border-radius:10px;background:${accent};color:${activeText};border:none;font-size:.74rem;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;transition:filter .15s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='none'">${c.cta || 'Open Community'} <span style="font-size:.85rem">&rarr;</span></button>
+      </div>`;
+    });
+
+    communitiesHtml = `<div data-cxxcomm data-accent="${accent}" data-activetext="${activeText}" data-idlebg="${chipIdleBg}" data-idletext="${textSecondary}" style="margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid ${cardBorder}">
+      <div style="margin-bottom:14px">
+        <div style="font-size:1.15rem;font-weight:700;color:${textPrimary};letter-spacing:-.01em">Communities</div>
+        <div style="font-size:.76rem;color:${textSecondary};margin-top:2px">Discover cycling groups, clubs &amp; rides — surfaced from across the web</div>
+      </div>
+      ${aiStrip}
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">${chipsHtml}</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:14px">${cardsHtml}</div>
+    </div>`;
+  }
+
   return `${heroHtml}
     <div style="max-width:1200px;margin:0 auto;padding:28px 32px;display:flex;gap:28px">
       <div style="flex:1;min-width:0">
+        ${communitiesHtml}
         ${featuredHtml}
         ${trendingHtml}
         ${evergreenHtml}
@@ -10138,7 +10266,54 @@ function renderBzMedia(bz, t, key) {
   if (gwm.hero && gwm.hero.main) push(gwm.hero.main.url);
   ((gwm.hero && gwm.hero.side) || []).forEach(s => push(s.url));
   const show = imgs.slice(0, 9);
-  return `<div class="bz-body"><div class="bz-main-wide">
+  const ev = bz.event;
+  const evHero = ev ? `<style>@keyframes bzKenburns{from{transform:scale(1.03)}to{transform:scale(1.16) translate(-2%,-2%)}}@keyframes bzEq{0%,100%{height:4px}50%{height:14px}}@keyframes bzMsgIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}@keyframes bzBlink{0%,60%,100%{opacity:.25}30%{opacity:1}}.bzdot{width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block;animation:bzBlink 1.2s infinite}.bzdot:nth-child(2){animation-delay:.2s}.bzdot:nth-child(3){animation-delay:.4s}</style>
+    <div style="display:flex;gap:14px;margin-bottom:24px;align-items:stretch;flex-wrap:wrap">
+    <div style="flex:1 1 520px;position:relative;border-radius:18px;overflow:hidden;min-height:360px;background:#000;box-shadow:0 14px 44px rgba(0,0,0,.20)">
+      <img src="${ev.poster}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:bzKenburns 20s ease-in-out infinite alternate">
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.04) 38%,rgba(0,0,0,.83))"></div>
+      <div style="position:absolute;top:16px;left:18px;right:18px;display:flex;align-items:center;gap:9px;z-index:2">
+        <span style="display:flex;align-items:center;gap:6px;background:#EF4444;color:#fff;font-size:.66rem;font-weight:800;letter-spacing:.09em;padding:5px 11px;border-radius:7px"><span style="width:7px;height:7px;border-radius:50%;background:#fff;animation:livePulse 2s ease-in-out infinite"></span>LIVE</span>
+        <span style="background:rgba(0,0,0,.4);backdrop-filter:blur(8px);color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.08em;padding:5px 11px;border-radius:7px;text-transform:uppercase">${ev.tag}</span>
+        <span style="margin-left:auto;display:flex;align-items:center;gap:6px;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);color:#fff;font-size:.66rem;font-weight:600;padding:5px 11px;border-radius:7px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>${ev.viewers} watching</span>
+      </div>
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:62px;height:62px;border-radius:50%;background:rgba(255,255,255,.16);backdrop-filter:blur(10px);border:1.5px solid rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2" onmouseover="this.style.background='rgba(255,255,255,.30)'" onmouseout="this.style.background='rgba(255,255,255,.16)'"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></div>
+      <div style="position:absolute;left:22px;right:22px;bottom:18px;color:#fff;z-index:2">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">
+          <div style="width:30px;height:30px;border-radius:8px;background:${bz.gradient||bz.color};display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;border:1px solid rgba(255,255,255,.25)">${bz.logo}</div>
+          <div style="font-size:.66rem;color:rgba(255,255,255,.82);font-weight:600">Hosted by ${bz.name} · live on ${gwm.name}</div>
+        </div>
+        <div style="font-size:1.55rem;font-weight:800;line-height:1.08;margin-bottom:4px;font-family:${t.bodyFont};text-shadow:0 2px 18px rgba(0,0,0,.5)">${ev.title}</div>
+        <div style="font-size:.82rem;color:rgba(255,255,255,.85);margin-bottom:15px">${ev.subtitle} · ${ev.location}</div>
+        <div style="display:flex;align-items:center;gap:11px;flex-wrap:wrap">
+          <span style="display:flex;align-items:center;gap:8px;background:rgba(239,68,68,.92);color:#fff;font-size:.7rem;font-weight:700;padding:8px 13px;border-radius:9px"><span style="display:flex;align-items:flex-end;gap:2px;height:14px"><span style="width:3px;height:4px;background:#fff;border-radius:2px;animation:bzEq .9s ease-in-out infinite"></span><span style="width:3px;height:4px;background:#fff;border-radius:2px;animation:bzEq .9s ease-in-out infinite .3s"></span><span style="width:3px;height:4px;background:#fff;border-radius:2px;animation:bzEq .9s ease-in-out infinite .6s"></span></span>${ev.now}</span>
+          <button onclick="state.bzTab='Products';render();window.scrollTo(0,0)" style="background:#fff;color:#111;font-size:.74rem;font-weight:800;padding:9px 17px;border:none;border-radius:9px;cursor:pointer;font-family:${t.bodyFont}">Shop the session →</button>
+        </div>
+      </div>
+    </div>
+    <div style="flex:1 1 270px;max-width:340px;min-width:240px;display:flex;flex-direction:column;border:1px solid ${t.cardBorder||'rgba(0,0,0,.08)'};border-radius:18px;overflow:hidden;background:${t.cardBg||'#fff'};min-height:360px">
+      <div style="display:flex;align-items:center;gap:8px;padding:13px 15px;border-bottom:1px solid ${t.cardBorder||'rgba(0,0,0,.06)'};flex-shrink:0">
+        <span style="width:7px;height:7px;border-radius:50%;background:#EF4444;animation:livePulse 2s ease-in-out infinite"></span>
+        <span style="font-size:.8rem;font-weight:800;color:${t.text};font-family:${t.bodyFont}">Live chat</span>
+        <span style="margin-left:auto;font-size:.66rem;color:${t.muted}">1.2k chatting</span>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:13px 15px;display:flex;flex-direction:column;gap:12px">
+        ${(ev.chat||[]).map((c,i) => `<div style="display:flex;gap:9px;${i===(ev.chat.length-1)?'animation:bzMsgIn .5s ease':''}">
+          <div style="width:26px;height:26px;border-radius:50%;background:${c.c};flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;color:#fff">${c.u.charAt(0).toUpperCase()}</div>
+          <div style="min-width:0"><span style="font-size:.72rem;font-weight:700;color:${t.text}">@${c.u}</span> <span style="font-size:.78rem;color:${t.muted};line-height:1.45">${c.m}</span></div>
+        </div>`).join('')}
+        <div style="display:flex;gap:9px;align-items:center;color:${t.muted}">
+          <div style="width:26px;height:26px;border-radius:50%;background:${bz.color};flex-shrink:0;opacity:.45"></div>
+          <div style="display:flex;gap:3px;padding:5px 0"><span class="bzdot"></span><span class="bzdot"></span><span class="bzdot"></span></div>
+        </div>
+      </div>
+      <div style="padding:11px 13px;border-top:1px solid ${t.cardBorder||'rgba(0,0,0,.06)'};display:flex;gap:8px;align-items:center;flex-shrink:0">
+        <input placeholder="Say something…" style="flex:1;min-width:0;border:1px solid ${t.cardBorder||'rgba(0,0,0,.12)'};border-radius:8px;padding:8px 11px;font-size:.76rem;outline:none;background:transparent;color:${t.text};font-family:${t.bodyFont}">
+        <button style="background:${bz.color};color:#fff;border:none;border-radius:8px;padding:8px 13px;font-size:.74rem;font-weight:700;cursor:pointer;font-family:${t.bodyFont}">Send</button>
+      </div>
+    </div>
+    </div>` : '';
+  return `<div class="bz-body"><div class="bz-main-wide">${evHero}
     <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:6px">
       <div>
         <div style="font-size:1.2rem;font-weight:800;color:${t.text};font-family:${t.bodyFont}">${bz.name} Media</div>
@@ -11212,14 +11387,14 @@ function renderEventsOverlay() {
   }
 
   const networkFeed = [
-    { gw:'surf', type:'Live', icon:'🔴', title:'Pipeline Masters — Semi-Finals', desc:'Watch the world\'s best surfers battle 15ft Pipeline. Filipe Toledo vs John John Florence up next.', time:'Live Now', live:true },
+    { gw:'surf', type:'Live', icon:'🔴', title:'Reefcurl Live · The Search — Pipeline', desc:'Reefcurl presents a live broadcast from 15ft Pipeline — team riders on the WaveSync 2, streamed from their SurfXX home. Watch live and shop the session.', time:'Live Now', live:true, brandZone:'reefcurl' },
     { gw:'climb', type:'Podcast', icon:'🎙️', title:'Summit Stories EP.47 — Alex Honnold', desc:'Free solo legend on risk, fear and his new Patagonia expedition. Hosted by ClimbXX.', time:'3pm Today', live:false },
     { gw:'stocks', type:'Breaking', icon:'⚡', title:'Fed Interest Rate Announcement', desc:'Federal Reserve decision at 3pm EST. Markets bracing for potential hold. Live analysis on StocksXX.', time:'3pm EST', live:false },
-    { gw:'dress', type:'Live', icon:'🔴', title:'Paris Couture Week — Live Catwalk', desc:'FASHIONXX brings you front row at the Dior Haute Couture show, live from Avenue Montaigne.', time:'Live Now', live:true },
+    { gw:'dress', type:'Live', icon:'🔴', title:'Silvere Paris Live · Couture SS27', desc:'Silvere Paris walks its architectural-lace couture collection live from Avenue Montaigne — front row on DressXX. Watch live and shop the looks.', time:'Live Now', live:true, brandZone:'silvere-paris' },
     { gw:'climb', type:'Drop', icon:'🔥', title:'Lithos Reveal — Vertex Pro 2026', desc:'The next-gen climbing shoe everyone has been waiting for. First look exclusive on ClimbXX.', time:'Dropping in 1hr', live:false },
     { gw:'ski', type:'Event', icon:'📅', title:'Méribel Season Pass — Early Bird', desc:'Three Valleys unlimited pass at 30% off. Early bird window closes Friday. Book via SkiXX.', time:'Ends Fri', live:false },
     { gw:null, type:'Deal', icon:'💰', title:'100 New-Gen Laptops from £399', desc:'ComputerXX Deal Drop — curated specs for creators, coders and students. Today only.', time:'Today Only', accent:'#E84D3A', label:'ComputerXX' },
-    { gw:'yoga', type:'Live', icon:'🔴', title:'Morning Flow — 10K Practicing Live', desc:'Join the global morning session with YogaXX. Breathwork focus today with instructor Nadia Lee.', time:'Live Now', live:true },
+    { gw:'yoga', type:'Live', icon:'🔴', title:'Ao Flow Live · Morning Flow', desc:'Ao Flow hosts the global morning session — breathwork and vinyasa with Nadia Lee, live on YogaXX. Roll out your mat and shop the kit.', time:'Live Now', live:true, brandZone:'ao-flow' },
     { gw:'goth', type:'Drop', icon:'🔥', title:'Nocturne x Killstar Capsule Collection', desc:'Limited 200-piece dark couture capsule. Preview now, drops midnight. Only on GothXX.', time:'Midnight Drop', live:false },
     { gw:'currency', type:'Alert', icon:'📊', title:'GBP/USD Hits 6-Month High', desc:'Sterling surges past $1.32 on strong PMI data. CurrencyXX AI Agent flags travel buying opportunity.', time:'2 min ago', live:false },
     { gw:null, type:'Bookmark', icon:'🔖', title:'UFC 312 — Main Card', desc:'Your bookmarked reminder: Pereira vs Adesanya III. SportsXX coverage starts at 10pm.', time:'Saturday 10pm', accent:'#F59E0B', label:'SportsXX' },
@@ -11229,6 +11404,7 @@ function renderEventsOverlay() {
     { gw:'surf', type:'Drop', icon:'🔥', title:'Firewire x Slater — Gamma 2.0', desc:'Kelly Slater\'s new eco board drops exclusively on SurfXX. Recycled EPS core, bio-resin finish.', time:'Tomorrow 9am', live:false },
   ];
 
+  networkFeed.sort((a, b) => (b.live ? 1 : 0) - (a.live ? 1 : 0)); // float Live cards to the top (stable)
   const liveCount = networkFeed.filter(i => i.live).length;
 
   let feedCards = '';
@@ -11239,7 +11415,9 @@ function renderEventsOverlay() {
     const isLive = item.live;
     const typeBg = item.type === 'Live' ? 'rgba(239,68,68,.1)' : item.type === 'Drop' ? 'rgba(249,115,22,.1)' : item.type === 'Breaking' ? 'rgba(239,68,68,.1)' : item.type === 'Bookmark' ? 'rgba(245,158,11,.1)' : item.type === 'Deal' ? 'rgba(232,77,58,.1)' : item.type === 'Alert' ? 'rgba(59,130,246,.1)' : 'rgba(0,0,0,.05)';
     const typeColor = item.type === 'Live' ? '#EF4444' : item.type === 'Drop' ? '#F97316' : item.type === 'Breaking' ? '#EF4444' : item.type === 'Bookmark' ? '#F59E0B' : item.type === 'Deal' ? '#E84D3A' : item.type === 'Alert' ? '#3B82F6' : '#666';
-    const gwClick = gw ? `onclick="closeEvents();nav('gateway',{gateway:'${item.gw}'})"` : '';
+    const gwClick = item.brandZone
+      ? `onclick="closeEvents();nav('brandZone',{brandZone:'${item.brandZone}',bzTab:'Media'})"`
+      : (gw ? `onclick="closeEvents();nav('gateway',{gateway:'${item.gw}'})"` : '');
 
     feedCards += `
       <div style="background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:14px;margin-bottom:10px;padding:14px 16px;cursor:pointer;transition:all .15s${isLive?';border-color:rgba(239,68,68,.2);background:rgba(239,68,68,.015)':''}" ${gwClick} onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,.08)'" onmouseout="this.style.boxShadow='none'">
