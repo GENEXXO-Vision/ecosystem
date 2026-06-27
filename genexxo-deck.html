@@ -6819,11 +6819,11 @@ function renderHub() {
   };
 
   let hubRightHtml = `<div class="widget light" style="padding:0;overflow:hidden">
-    <div style="padding:14px 16px 10px;border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between">
+    <div style="padding:14px 16px 10px;border-bottom:1px solid #1a1a1a20;background:#1a1a1a12;display:flex;align-items:center;justify-content:space-between">
       <div style="display:flex;align-items:center;gap:8px">
-        <span style="font-size:.78rem;font-weight:700;color:#1a1a2e;letter-spacing:.03em">Gateways</span>
+        <span style="font-size:.78rem;font-weight:700;color:#1a1a1a;letter-spacing:.03em">Favorite Gateways</span>
       </div>
-      <span style="font-size:.65rem;color:#aaa;font-weight:500">${Object.keys(GATEWAYS).length} Live</span>
+      <span style="font-size:.65rem;color:#F59E0B;font-weight:600">★ ${Object.keys(GATEWAYS).length}</span>
     </div>
     <div style="max-height:460px;overflow-y:auto;-webkit-mask-image:linear-gradient(to bottom,#000 85%,transparent 100%);mask-image:linear-gradient(to bottom,#000 85%,transparent 100%)">`;
 
@@ -6846,7 +6846,7 @@ function renderHub() {
             <span style="font-size:.62rem;font-weight:800;color:#fff">${initials}</span>
           </div>
           <div style="flex:1;min-width:0">
-            <div style="font-size:.78rem;font-weight:700;color:#1a1a2e;line-height:1.2;position:relative"><span style="position:absolute;left:-10px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:#22C55E;box-shadow:0 0 5px rgba(34,197,94,.8)"></span>${g.name}</div>
+            <div style="font-size:.78rem;font-weight:700;color:#1a1a2e;line-height:1.2;position:relative"><span style="position:absolute;left:-12px;top:50%;transform:translateY(-50%);font-size:.62rem;line-height:1;color:#F59E0B">★</span>${g.name}</div>
             <div style="font-size:.62rem;color:#aaa">${g.domain}</div>
           </div>
           <span style="font-size:.58rem;color:${g.theme.accent}">${g.emoji}</span>
@@ -6940,14 +6940,13 @@ function renderHub() {
         <div style="position:sticky;top:60px;z-index:90;background:#FAFAFA;padding-top:20px;padding-bottom:2px;box-shadow:0 1px 0 rgba(0,0,0,.06)">
           ${headerHtml}
           <div class="feed-tabs">
-            <div class="feed-tab ${state.gwTab==='Feed'?'active':''}" onclick="state.gwTab='Feed';state.sectorFilter=null;state.infoLevel='hub';state.infoContext=null;render()">Network</div>
             <div class="feed-tab ${state.gwTab==='Trending'?'active':''}" onclick="state.gwTab='Trending';render()">Sector</div>
             <div class="feed-tab ${state.gwTab==='Spaces'?'active':''}" onclick="state.gwTab='Spaces';render()">Following</div>
           </div>
         </div>
         <div style="padding-top:20px">${isNetworkTab ? hubFeedHtml : sectorFeedHtml}</div>
       </div>`;
-      rightArea = `<div class="hub-right" style="padding-top:40px">${isNetworkTab ? hubRightHtml : sectorRightHtml}</div>`;
+      rightArea = `<div class="hub-right" style="padding-top:44px">${isNetworkTab ? hubRightHtml : sectorRightHtml}</div>`;
     } else {
       // Non-live sector — show gateways preview
       const sInfo = ALL_SECTORS.find(x => x.key === sf);
@@ -7008,21 +7007,22 @@ function renderHub() {
         </div>`
       : `<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;background:#1a1a1a12;border-radius:10px;padding:10px 14px;border-left:3px solid #1a1a1a">
           <span style="font-size:1.1rem">\uD83C\uDFE0</span>
-          <span style="font-size:1.05rem;font-weight:800"><span style="color:#1a1a1a">GENEXXO</span> <span style="color:#1a1a1a">Hub</span></span>
+          <span style="font-size:1.05rem;font-weight:800"><span style="color:#1a1a1a">GENEXXO</span> <span style="color:#1a1a2e">Hub</span></span>
+          <span style="font-size:.72rem;color:#999;font-weight:500">&mdash;</span>
+          <span style="font-size:.92rem;font-weight:700;color:#555">Network</span>
         </div>`;
 
     feedArea = `<div class="hub-feed">
       <div style="position:sticky;top:60px;z-index:90;background:#FAFAFA;padding-top:20px;padding-bottom:2px;box-shadow:0 1px 0 rgba(0,0,0,.06)">
         ${headerHtml}
         <div class="feed-tabs">
-          <div class="feed-tab ${isNetworkTab?'active':''}" onclick="state.gwTab='Feed';state.sectorFilter=null;state.infoLevel='hub';state.infoContext=null;render()">Network</div>
           <div class="feed-tab ${isSectorTab?'active':''}" onclick="if(!state.sectorFilter){setSector('adventure')}else{state.gwTab='Trending';render()}">Sector</div>
           <div class="feed-tab ${state.gwTab==='Spaces'?'active':''}" onclick="state.gwTab='Spaces';render()">Following</div>
         </div>
       </div>
       <div style="padding-top:20px">${isSectorTab ? defaultSectorFeedHtml : hubFeedHtml}</div>
     </div>`;
-    rightArea = `<div class="hub-right" style="padding-top:40px">${hubRightHtml}</div>`;
+    rightArea = `<div class="hub-right" style="padding-top:44px">${hubRightHtml}</div>`;
   }
 
   return `
@@ -7039,7 +7039,11 @@ function renderHub() {
 function renderYourWorlds(activeSector) {
   const liveSectors = ['adventure','finance','fashion','wellness','education','career','health','hobby','travel','sports','beauty','gift','food','living','parenting','pet','leisure','tourism','culture','media','gaming','realestate','consumer','business','tech','law','spirituality','environment','issues','nonprofit','automotive','transportation','aerospace','construction','energy','agriculture','industrial','materials','chemical'];
 
-  let html = `<div class="hub-side" style="padding-top:20px">
+  let html = `<div class="hub-side" style="padding-top:44px">
+    <div class="sec-btn" style="${!activeSector?'background:rgba(0,0,0,.07);border-left:3px solid #000;':''}" onclick="state.sectorFilter=null;state.infoLevel='hub';state.infoContext=null;state.gwTab='Feed';render()">
+      <div class="icon" style="background:linear-gradient(135deg,#000,#262626)">🏠</div>
+      <div><div class="label" style="${!activeSector?'font-weight:800;':''}color:#1a1a2e">Network</div><div class="sub">The GENEXXO Hub</div></div>
+    </div>
     <div class="sec-label">Sectors</div>
     <div class="sector-scroll">`;
   ALL_SECTORS.forEach(s => {
