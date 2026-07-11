@@ -8263,7 +8263,7 @@ function renderHub() {
 }
 
 function renderYourWorlds(activeSector) {
-  const liveSectors = ['adventure','finance','fashion','wellness','education','career','health','hobby','travel','sports','beauty','gift','food','living','parenting','pet','leisure','tourism','culture','media','gaming','realestate','consumer','business','tech','law','spirituality','environment','issues','nonprofit','automotive','transportation','aerospace','construction','energy','agriculture','industrial','materials','chemical'];
+  const liveSectors = ['adventure','finance','fashion','wellness','education','career','health','hobby','travel','sports','beauty','gift','food','living','parenting','pet','leisure','tourism','culture','media','gaming','realestate','consumer','business','tech','law','spirituality','environment','issues','nonprofit','automotive','transportation','aerospace','construction','energy','agriculture','industrial','materials','chemical','language'];
 
   let html = `<div class="hub-side" style="padding-top:44px">
     <div class="sec-btn" style="${!activeSector?'background:rgba(0,0,0,.07);border-left:3px solid #000;':''}" onclick="state.sectorFilter=null;state.infoLevel='hub';state.infoContext=null;state.gwTab='Feed';render()">
