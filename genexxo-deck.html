@@ -585,8 +585,14 @@ input{font-family:inherit}
 </div>
 <script>
 (function(){
+  // Show the notice only on real mobile/touch devices — NOT on desktop
+  // browsers that merely happen to have a narrow or scaled window.
+  var ua = navigator.userAgent || '';
+  var isMobileUA = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(ua);
+  var coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
   var w = window.innerWidth || document.documentElement.clientWidth;
-  if(w < 1024) {
+  var isMobile = isMobileUA || (coarse && w < 768);
+  if(isMobile) {
     var el = document.getElementById('mobileNotice');
     el.style.display = 'flex';
     document.body.style.overflow = 'hidden';
