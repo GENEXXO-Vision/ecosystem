@@ -629,7 +629,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
       <div class="demo-card-badge" style="font-size:.75rem;padding:7px 18px;margin-bottom:16px">Live Demo</div>
       <div class="demo-card-title">The Supernova Application</div>
       <div class="demo-card-desc">Interactive demo &mdash; explore the hub and gateway ecosystem architecture in action</div>
-      <div class="demo-card-note">Desktop Prototype Only</div>
+      <div class="demo-card-note" id="demoCardNote">Desktop Prototype Only</div>
       <div class="demo-card-arrow">LAUNCH DEMO &rarr;</div>
     </div>
   </a>
@@ -749,14 +749,28 @@ function toggleSeriesNav(){
 /* ══════════════════════════════════════════════
    MOBILE CHECK FOR SUPERNOVA DEMO
    ══════════════════════════════════════════════ */
+function isMobileVisitor() {
+  // Phones (iOS/Android/etc.) get the dedicated mobile app; width < 768 is a fallback
+  // for odd user-agents and narrow windows. Tablets/desktop keep the full deck.
+  var ua = navigator.userAgent || '';
+  var phone = /iPhone|iPod|Android.*Mobile|Windows Phone|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+  return phone || window.innerWidth < 768;
+}
 function checkDesktop(e) {
-  if (window.innerWidth < 768) {
+  if (isMobileVisitor()) {
+    // Mobile visitors get the dedicated mobile app instead of the desktop deck.
     e.preventDefault();
-    document.getElementById('mobileNotice').classList.add('show');
+    window.location.href = 'genexxo-mobile.html';
     return false;
   }
   return true;
 }
+// On phones, the demo is fully supported — reflect that on the demo card.
+document.addEventListener('DOMContentLoaded', function () {
+  if (!isMobileVisitor()) return;
+  var note = document.getElementById('demoCardNote');
+  if (note) { note.textContent = 'Optimised for Mobile'; }
+});
 function closeMobileNotice(e) {
   if (e.target.closest('.mobile-notice') && !e.target.closest('.mobile-notice-btn')) return;
   document.getElementById('mobileNotice').classList.remove('show');
