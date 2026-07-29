@@ -320,107 +320,54 @@
   #infoFeed .if-scroll{ flex:1; min-height:0; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:12px 13px calc(28px + var(--safe-b)); }
   #infoFeed .feedwrap{ animation:ifFade .32s ease; }
   @keyframes ifFade{ from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
-  #infoFeed .pcard{ background:var(--card); border:1px solid var(--line); border-radius:19px; padding:17px 17px 16px; margin-bottom:12px; box-shadow:0 1px 2px rgba(0,0,0,.02); }
-  #infoFeed .phead{ display:flex; align-items:center; gap:10px; margin-bottom:13px; }
-  #infoFeed .pav{ width:38px; height:38px; border-radius:12px; background:var(--grad); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--cond); font-weight:700; font-size:15px; letter-spacing:.03em; flex-shrink:0; }
+  /* slide-as-post cards — Intro · Model · Platform decks (2026-07-30) */
+  #infoFeed .scard{ background:var(--card); border:1px solid var(--line); border-radius:19px; margin-bottom:14px; overflow:hidden; box-shadow:0 1px 2px rgba(0,0,0,.02); }
+  #infoFeed .scard .bar{ height:3px; }
+  #infoFeed .scard .in{ padding:17px 17px 18px; }
+  #infoFeed .prow{ display:flex; align-items:center; gap:9px; margin-bottom:14px; }
+  #infoFeed .pav{ width:36px; height:36px; border-radius:11px; color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--cond); font-weight:700; font-size:14px; letter-spacing:.03em; flex-shrink:0; }
   #infoFeed .pmeta{ flex:1; min-width:0; }
   #infoFeed .pname{ font-size:13px; font-weight:800; line-height:1.15; display:flex; align-items:center; gap:5px; }
-  #infoFeed .pname .v{ color:var(--blue); }
+  #infoFeed .pname .v{ color:var(--blue); font-size:11px; }
   #infoFeed .psub{ font-size:10.5px; color:var(--muted); font-weight:600; margin-top:1px; }
-  #infoFeed .pbadge{ font-size:9px; font-weight:800; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); background:rgba(17,17,22,.05); padding:5px 9px; border-radius:99px; white-space:nowrap; flex-shrink:0; }
-  #infoFeed .pcard h3{ font-family:var(--cond); font-weight:700; font-size:24px; line-height:1.12; letter-spacing:.005em; margin-bottom:9px; color:var(--ink); }
-  #infoFeed .pcard p{ font-size:13.5px; line-height:1.6; color:#3a3a44; margin-bottom:11px; }
-  #infoFeed .pcard p:last-child{ margin-bottom:0; }
-  #infoFeed .pcard strong{ font-weight:800; color:var(--ink); }
-  #infoFeed .pchips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:13px; padding-top:13px; border-top:1px solid var(--line); }
-  #infoFeed .pchip{ font-size:10.5px; font-weight:700; color:var(--muted); background:rgba(17,17,22,.045); padding:5px 10px; border-radius:99px; }
-  #infoFeed .pchip.g{ color:#15803d; background:#e8f5ec; }
-  #infoFeed .pcard.grad{ background:var(--grad); border:none; color:#fff; padding:22px 19px 20px; }
-  #infoFeed .pcard.grad h3, #infoFeed .pcard.grad p, #infoFeed .pcard.grad strong{ color:#fff; }
-  #infoFeed .pcard.grad .pbadge{ background:rgba(255,255,255,.16); color:rgba(255,255,255,.85); }
-  #infoFeed .pcard.grad .pname{ color:#fff; }
-  #infoFeed .pcard.grad .psub{ color:rgba(255,255,255,.7); }
-  #infoFeed .pcard.grad .pav{ background:rgba(255,255,255,.16); }
-  #infoFeed .statement{ font-family:var(--cond); font-weight:600; font-size:25px; line-height:1.28; letter-spacing:.005em; }
-  #infoFeed .statement .dim{ color:rgba(255,255,255,.66); }
-  #infoFeed .hero{ background:var(--grad); border:none; color:#fff; border-radius:22px; padding:24px 20px 22px; margin-bottom:12px; position:relative; overflow:hidden; }
-  #infoFeed .hero::after{ content:""; position:absolute; right:-40px; top:-40px; width:180px; height:180px; border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,.16),transparent 70%); }
-  #infoFeed .hero .hw{ font-family:var(--cond); font-weight:700; font-size:26px; letter-spacing:.05em; color:#fff; }
-  #infoFeed .hero .hw b{ color:rgba(255,255,255,.55); }
-  #infoFeed .hero .hco{ font-size:10px; letter-spacing:.09em; color:rgba(255,255,255,.6); margin-top:3px; text-transform:uppercase; }
-  #infoFeed .hero h2{ font-family:var(--cond); font-weight:700; font-size:33px; line-height:1.08; color:#fff; margin:16px 0 10px; position:relative; }
-  #infoFeed .hero .hsub{ font-size:12.5px; line-height:1.6; color:rgba(255,255,255,.82); margin-bottom:18px; max-width:330px; position:relative; }
-  #infoFeed .hstats{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.16); border-radius:12px; overflow:hidden; position:relative; }
-  #infoFeed .hstat{ background:rgba(255,255,255,.08); padding:12px 9px; text-align:center; }
-  #infoFeed .hstat .n{ font-size:17px; font-weight:800; color:#fff; font-family:var(--cond); letter-spacing:.02em; }
-  #infoFeed .hstat .l{ font-size:8.5px; color:rgba(255,255,255,.62); margin-top:2px; letter-spacing:.04em; text-transform:uppercase; }
-  #infoFeed .duo{ display:grid; grid-template-columns:1fr; gap:10px; margin-top:4px; }
-  #infoFeed .mini{ border:1px solid var(--line); border-radius:13px; padding:14px; background:#fbfbfc; }
-  #infoFeed .mini.b{ border-left:3px solid var(--blue); }
-  #infoFeed .mini.r{ border-left:3px solid var(--red); }
-  #infoFeed .mini .ml{ font-size:9px; font-weight:800; letter-spacing:.13em; text-transform:uppercase; color:var(--faint); margin-bottom:6px; }
-  #infoFeed .mini h4{ font-size:13px; font-weight:800; margin-bottom:6px; line-height:1.25; }
-  #infoFeed .mini p{ font-size:11.5px; line-height:1.55; color:#555; margin:0; }
-  #infoFeed .pgrid{ display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-top:4px; }
-  #infoFeed .pcell{ border:1px solid var(--line); border-radius:12px; padding:12px; }
-  #infoFeed .pcell .num{ font-size:9px; font-weight:800; color:var(--faint); letter-spacing:.1em; margin-bottom:5px; }
-  #infoFeed .pcell h4{ font-size:12.5px; font-weight:800; margin-bottom:4px; }
-  #infoFeed .pcell p{ font-size:10.5px; line-height:1.5; color:#666; margin:0; }
-  #infoFeed .quote{ border:1px solid var(--line); border-radius:12px; padding:13px; margin-bottom:9px; }
-  #infoFeed .quote:last-child{ margin-bottom:0; }
-  #infoFeed .quote.b{ border-left:3px solid var(--blue); } #infoFeed .quote.n{ border-left:3px solid var(--navy); } #infoFeed .quote.r{ border-left:3px solid var(--red); }
-  #infoFeed .quote .who{ font-size:9px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--faint); margin-bottom:5px; }
-  #infoFeed .quote h4{ font-size:13px; font-weight:800; margin-bottom:4px; }
-  #infoFeed .quote p{ font-size:11px; line-height:1.5; color:#555; margin:0; }
-  #infoFeed .atable{ width:100%; border-collapse:collapse; font-size:11px; margin-top:2px; }
-  #infoFeed .atable thead tr{ background:var(--navy); }
-  #infoFeed .atable th{ color:#fff; text-align:left; padding:8px 9px; font-size:9.5px; font-weight:700; letter-spacing:.04em; }
-  #infoFeed .atable td{ padding:8px 9px; border-bottom:1px solid var(--line); color:#444; vertical-align:top; }
-  #infoFeed .atable tr:last-child td{ border-bottom:none; }
-  #infoFeed .atable td b{ color:var(--navy); }
-  #infoFeed .acqbox{ background:#f8f4ff; border:1px solid #e0d4fb; border-left:4px solid var(--violet); border-radius:0 12px 12px 0; padding:14px 15px; margin-top:4px; }
-  #infoFeed .acqbox .al{ font-size:9px; font-weight:800; letter-spacing:.13em; text-transform:uppercase; color:#7c3aed; margin-bottom:7px; }
-  #infoFeed .acqbox p{ font-size:12px; line-height:1.6; color:#444; margin:0; }
-  #infoFeed .iplist{ border:1px solid var(--line); border-radius:12px; overflow:hidden; margin-top:2px; }
-  #infoFeed .iprow{ display:flex; align-items:center; gap:12px; padding:11px 14px; border-bottom:1px solid var(--line); font-size:12.5px; }
-  #infoFeed .iprow:last-child{ border-bottom:none; }
-  #infoFeed .ipjur{ flex:1; font-weight:700; color:var(--navy); }
-  #infoFeed .ipok{ font-size:10px; font-weight:800; letter-spacing:.03em; color:#15803d; }
-  #infoFeed .tl{ margin-top:2px; }
-  #infoFeed .tlrow{ display:flex; gap:13px; margin-bottom:12px; }
-  #infoFeed .tlrow:last-child{ margin-bottom:0; }
-  #infoFeed .tll{ flex-shrink:0; display:flex; flex-direction:column; align-items:center; }
-  #infoFeed .tldot{ width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:#fff; flex-shrink:0; }
-  #infoFeed .tldot.done{ background:var(--navy); } #infoFeed .tldot.now{ background:var(--blue); } #infoFeed .tldot.next{ background:#15803d; } #infoFeed .tldot.fut{ background:#9aa; }
-  #infoFeed .tlline{ width:2px; flex:1; background:var(--line); margin:3px 0; min-height:10px; }
-  #infoFeed .tlc{ padding-top:3px; }
-  #infoFeed .tltag{ display:inline-block; font-size:8.5px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; padding:2px 7px; border-radius:4px; margin-bottom:4px; }
-  #infoFeed .tag-done{ background:#e8f5ec; color:#15803d; } #infoFeed .tag-now{ background:#e3f0fb; color:var(--blue); }
-  #infoFeed .tag-nx{ background:#fff3e0; color:#e65100; } #infoFeed .tag-fu{ background:#f3e9fb; color:#7b1fa2; }
-  #infoFeed .tlc h4{ font-size:12.5px; font-weight:800; margin-bottom:2px; }
-  #infoFeed .tlc p{ font-size:11px; line-height:1.5; color:#666; margin:0; }
-  #infoFeed .cta-links{ display:flex; flex-direction:column; gap:8px; margin-top:6px; }
-  #infoFeed .cta-links a{ display:flex; align-items:center; gap:9px; padding:12px 15px; border-radius:11px; font-size:12.5px; font-weight:700; text-decoration:none; color:#fff; background:rgba(255,255,255,.13); border:1px solid rgba(255,255,255,.28); }
-  #infoFeed .cta-links a.primary{ background:#fff; color:var(--navy); border-color:#fff; }
-  #infoFeed .cta-foot{ margin-top:15px; font-size:10px; line-height:1.7; color:rgba(255,255,255,.62); }
-  #infoFeed .secgrid{ display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-top:2px; }
-  #infoFeed .sectile{ border:1px solid var(--line); border-radius:13px; padding:13px 13px 12px; background:#fff; position:relative; overflow:hidden; }
-  #infoFeed .sectile .dot{ width:26px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; margin-bottom:9px; }
-  #infoFeed .sectile .sn{ font-family:var(--cond); font-weight:700; font-size:16px; letter-spacing:.01em; }
-  #infoFeed .sectile .sn b{ color:var(--gold); }
-  #infoFeed .sectile .sc{ font-size:9.5px; color:var(--muted); font-weight:700; margin-top:1px; }
-  #infoFeed .gwcard{ border:1px solid var(--line); border-radius:16px; overflow:hidden; margin-bottom:12px; background:#fff; }
-  #infoFeed .gwtop{ padding:15px 16px; color:#fff; position:relative; }
-  #infoFeed .gwtop .gname{ font-family:var(--cond); font-weight:700; font-size:22px; letter-spacing:.02em; }
-  #infoFeed .gwtop .gname b{ opacity:.6; }
-  #infoFeed .gwtop .gdesc{ font-size:11px; color:rgba(255,255,255,.85); margin-top:3px; line-height:1.5; }
-  #infoFeed .gwbody{ padding:12px 14px; }
-  #infoFeed .gwrow{ display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--line); font-size:12px; }
-  #infoFeed .gwrow:last-child{ border-bottom:none; }
-  #infoFeed .gwrow .gi{ width:26px; height:26px; border-radius:8px; background:rgba(17,17,22,.05); display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; }
-  #infoFeed .gwrow .gt{ flex:1; }
-  #infoFeed .gwrow .gt b{ font-weight:800; } #infoFeed .gwrow .gt span{ color:var(--muted); font-weight:600; }
-  #infoFeed .gwrow .gcount{ font-size:10.5px; font-weight:800; color:var(--muted); }
+  #infoFeed .pnum{ font-size:10px; font-weight:800; letter-spacing:.08em; color:var(--muted); white-space:nowrap; flex-shrink:0; }
+  #infoFeed .stitle{ font-family:var(--cond); font-weight:700; font-size:28px; line-height:1.1; letter-spacing:.006em; color:var(--ink); margin:0; }
+  #infoFeed .slead{ font-size:18.5px; font-weight:800; line-height:1.28; letter-spacing:-.01em; color:var(--ink); margin-top:11px; }
+  #infoFeed .sbody{ font-size:15px; line-height:1.62; color:#3b3b45; font-weight:500; margin-top:11px; margin-bottom:0; }
+  #infoFeed .snote{ margin-top:15px; padding-top:14px; border-top:1px solid var(--line); font-size:13.5px; font-weight:800; line-height:1.4; color:var(--ink); }
+  #infoFeed .schips{ display:flex; flex-wrap:wrap; gap:7px; margin-top:13px; }
+  #infoFeed .schip{ font-size:12.5px; font-weight:700; color:var(--ink); background:rgba(17,17,22,.05); padding:8px 13px; border-radius:99px; }
+  #infoFeed .pillgrid{ display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-top:14px; }
+  #infoFeed .pill{ position:relative; border:1px solid var(--line); border-radius:14px; padding:15px 14px 13px; background:#fbfbfc; }
+  #infoFeed .pill .pn{ display:block; font-size:10px; font-weight:800; letter-spacing:.1em; color:var(--muted); margin-bottom:6px; }
+  #infoFeed .pill .pt{ font-family:var(--cond); font-weight:700; font-size:19px; letter-spacing:.01em; }
+  #infoFeed .statrow{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; margin-top:14px; background:var(--line); border:1px solid var(--line); border-radius:13px; overflow:hidden; }
+  #infoFeed .stat{ background:#fff; padding:13px 8px; text-align:center; }
+  #infoFeed .stat .sn{ font-family:var(--cond); font-weight:700; font-size:21px; color:var(--ink); letter-spacing:.01em; }
+  #infoFeed .stat .sl{ font-size:8.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin-top:2px; }
+  #infoFeed .steps{ display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin-top:14px; }
+  #infoFeed .step{ font-size:12.5px; font-weight:800; padding:7px 12px; border-radius:99px; background:rgba(17,17,22,.05); color:var(--ink); }
+  #infoFeed .step:last-child{ background:var(--ink); color:#fff; }
+  #infoFeed .sarr{ color:var(--muted); font-weight:800; font-size:13px; }
+  #infoFeed .duo{ display:flex; flex-direction:column; gap:9px; margin-top:14px; }
+  #infoFeed .duocard{ border-radius:13px; padding:13px 14px; font-size:13.5px; font-weight:700; line-height:1.45; }
+  #infoFeed .scard.grad{ border:none; color:#fff; position:relative; }
+  #infoFeed .scard.grad::after{ content:""; position:absolute; right:-50px; top:-50px; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,.16),transparent 70%); pointer-events:none; }
+  #infoFeed .scard.grad .in{ padding:20px 18px; position:relative; z-index:1; }
+  #infoFeed .scard.grad .pav{ background:rgba(255,255,255,.18); }
+  #infoFeed .scard.grad .pname, #infoFeed .scard.grad .stitle{ color:#fff; }
+  #infoFeed .scard.grad .pname .v{ color:#fff; }
+  #infoFeed .scard.grad .psub{ color:rgba(255,255,255,.72); }
+  #infoFeed .scard.grad .pnum{ color:rgba(255,255,255,.72); }
+  #infoFeed .scard.grad .stitle{ font-size:24px; }
+  #infoFeed .scard.grad .slead{ color:#fff; font-family:var(--cond); font-weight:700; font-size:30px; line-height:1.08; letter-spacing:.01em; margin-top:12px; }
+  #infoFeed .scard.grad .sbody{ color:rgba(255,255,255,.92); }
+  #infoFeed .scard.grad .snote{ color:#fff; border-top-color:rgba(255,255,255,.24); }
+  #infoFeed .scard.grad .duocard{ background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.28); color:#fff; }
+  #infoFeed .scard.grad .schip{ background:rgba(255,255,255,.17); color:#fff; }
+  #infoFeed .scard.grad .step{ background:rgba(255,255,255,.17); color:#fff; }
+  #infoFeed .scard.grad .step:last-child{ background:#fff; color:var(--ink); }
+  #infoFeed .scard.grad .sarr{ color:rgba(255,255,255,.7); }
   #infoFeed .foot-note{ text-align:center; font-size:10.5px; color:var(--faint); font-weight:600; padding:6px 20px 4px; line-height:1.6; }
 </style>
 </head>
@@ -1109,7 +1056,7 @@ const state = {
   wallet:[{name:'Route Logger',color:'#4ADE80',gw:'ClimbXX'}],
   favs:[...FAVS_INIT.favs],        // seeded from YOUR_GATEWAYS on first run, else restored from localStorage
   showFavs:false,
-  showApply:false, showInfo:false, infoTab:'network',   // home top-bar overlays: person→Apply, ⓘ→Info feed (2026-07-29)
+  showApply:false, showInfo:false, infoTab:'intro',   // home top-bar overlays: person→Apply, ⓘ→Info feed (2026-07-29)
   brandFavs:[...FAVS_INIT.brandFavs],   // favourite BRANDS (zone keys) — persisted alongside gateway favs
   returnGw:null,   // set when popping out of a gateway for a glimpse of its sector
   entryDomain: (ENTRY && GATEWAYS[ENTRY]) ? GATEWAYS[ENTRY].domain : 'genexxo.com',
@@ -1262,7 +1209,7 @@ function toggleFavPanel(){
    mutually exclusive with the favourites panel and with each other; tap the icon
    again (or the backdrop / ×) to close. */
 function toggleApply(){ const on=!state.showApply; state.showFavs=false; state.showInfo=false; state.showApply=on; render(); }
-function toggleInfo(){ const on=!state.showInfo; state.showFavs=false; state.showApply=false; state.showInfo=on; if(on) state.infoTab='network'; render(); }
+function toggleInfo(){ const on=!state.showInfo; state.showFavs=false; state.showApply=false; state.showInfo=on; if(on) state.infoTab='intro'; render(); }
 /* The favourites drop-panel — one unified display for gateways AND brands, shared by the star
    on every screen (Network · Sector · Gateway · Zone). Dark frosted glass, theme-independent.
    Rows are kept tight: a gold ★ (tap to unpin) + the name, no avatars. The "add this…" row
@@ -1332,217 +1279,174 @@ function applyPanelHtml(){
     </div>`;
 }
 
-/* ══════════════ ⓘ THE CASE — full-screen info feed (Network·Sectors·Gateways pitch, 2026-07-29) ══════════════
-   Replaces the vision slide-deck. Operates exactly like the app's own feed, but every card is GENEXXO's
-   own case. Rendered inside #screen, gated on state.showInfo, tabbed via state.infoTab. Ports cleanly from
-   genexxo-info-feed.html — all globals renamed (infoPost / infoChips / INFO_SECTORS / INFO_GWS / infoNetwork …)
-   so they never clash with the shell's own SECTORS/render/card names.                                        */
+/* ══════════════ ⓘ THE PRESENTATION — full-screen info feed (Intro · Model · Platform, 2026-07-30) ══════════════
+   The GENEXXO pitch, presented as the app's own feed: every investor slide is a post you scroll.
+   Three decks tabbed via state.infoTab — Intro (slides.md, 11) · Model (The Model.md, 10) · Platform
+   (The Platform.md, 10). Gated on state.showInfo. All globals prefixed IF_/if* (IF_DECKS, ifDeck, ifSlide,
+   IF_INTRO/IF_MODEL/IF_PLATFORM) so they never clash with the shell's own SECTORS/render/card names.
+   Card CSS is #infoFeed-scoped (.scard/.slead/.sbody/.snote/…). Prototype: genexxo-slides-feed.html.       */
 function infoPanelHtml(){
   if(!state.showInfo) return '';
-  const tabs = [['network','Network'],['sectors','Sectors'],['gateways','Gateways']];
-  const view = ({network:infoNetwork, sectors:infoSectors, gateways:infoGateways}[state.infoTab]) || infoNetwork;
+  const tabs = [['intro','Intro'],['model','Model'],['platform','Platform']];
+  const deck = IF_DECKS[state.infoTab] || IF_INTRO;
   const subbar = tabs.map(([k,label])=>`<div class="if-stab ${state.infoTab===k?'on':''}" onclick="setInfoTab('${k}')">${label}</div>`).join('');
   return `
   <div id="infoFeed">
     <div class="if-top">
       <div class="if-toprow">
         <div class="if-wm">GENE<b>XX</b>O</div>
-        <div class="if-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="7.5" r="1" fill="currentColor" stroke="none"/></svg> THE CASE</div>
+        <div class="if-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="7.5" r="1" fill="currentColor" stroke="none"/></svg> INTRO</div>
         <div class="if-x" onclick="toggleInfo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></div>
       </div>
       <div class="if-subbar">${subbar}</div>
     </div>
-    <div class="if-scroll" id="infoScroll">${view()}</div>
+    <div class="if-scroll" id="infoScroll">${ifDeck(deck)}</div>
   </div>`;
 }
-function setInfoTab(t){ if(state.infoTab===t) return; state.infoTab=t; render(); }
+function setInfoTab(t){ if(state.infoTab===t) return; state.infoTab=t; render(); const s=$('infoScroll'); if(s) s.scrollTo(0,0); }
 
-/* ─── card helpers ─── */
-function infoPost(badge, inner, opts={}){
-  const grad = opts.grad ? ' grad' : '';
-  return `<article class="pcard${grad}">
-    <div class="phead">
-      <div class="pav">GX</div>
-      <div class="pmeta">
-        <div class="pname">GENEXXO Vision <span class="v" title="Verified">✔</span></div>
-        <div class="psub">${opts.sub || 'The Case · genexxovision.com'}</div>
-      </div>
-      <div class="pbadge">${badge}</div>
-    </div>
-    <div class="pbody">${inner}</div>
-  </article>`;
-}
-function infoChips(list){ return `<div class="pchips">${list.map(c=>`<span class="pchip${c.g?' g':''}">${c.t}</span>`).join('')}</div>`; }
-
-/* ─── NETWORK feed (the pitch) ─── */
-function infoNetwork(){
-  const hero = `
-  <div class="hero">
-    <div class="hw">GENE<b>XX</b>O <span style="font-size:12px;font-weight:500;opacity:.7">Vision Limited</span></div>
-    <div class="hco">Company No. 022622V · Isle of Man</div>
-    <h2>The Organizing Layer<br>for the Internet</h2>
-    <div class="hsub">A 14-year assembled network of 10,000+ XX-branded domains across 45 sectors — the asset that makes the organizing layer possible. Scroll to see the case.</div>
-    <div class="hstats">
-      <div class="hstat"><div class="n">10,000+</div><div class="l">XX Domains</div></div>
-      <div class="hstat"><div class="n">45</div><div class="l">Sectors</div></div>
-      <div class="hstat"><div class="n">5</div><div class="l">TM Jurisdictions</div></div>
-      <div class="hstat"><div class="n">400+</div><div class="l">Sub-categories</div></div>
-      <div class="hstat"><div class="n">14 yrs</div><div class="l">Assembled</div></div>
-      <div class="hstat"><div class="n">4</div><div class="l">Directors</div></div>
-    </div>
-  </div>`;
-
-  const thesis = infoPost('The Thesis', `
-    <div class="statement">The internet needs an organizing layer. Built domain by domain, sector by sector, over fourteen years. <span class="dim">Nothing comparable exists.</span></div>`,
-    {grad:true, sub:'The Thesis · pinned'});
-
-  const problem = infoPost('The Problem', `
-    <h3>The problem GENEXXO solves</h3>
-    <p>The digital universe is fragmenting. Brands are flattened on social. Communities scatter across Discord and forums. Professionals are invisible. B2B supply chains are lost in the noise.</p>
-    <p>And it's about to compound: <strong>AI is unleashing a tsunami</strong> of content, commerce, tools and agents that will overwhelm today's structures. The need doesn't just exist — it grows every month.</p>
-    ${infoChips([{t:'Fragmentation'},{t:'AI tsunami'},{t:'No incumbent owns it'}])}`);
-
-  const solution = infoPost('The Solution', `
-    <div class="statement">The GENEXXO Collection does — and it is <strong>already assembled.</strong></div>`,
-    {grad:true, sub:'The Solution'});
-
-  const opportunity = infoPost('The Vision', `
-    <h3>The opportunity</h3>
-    <p>Turn the assembled foundation into the organizing layer itself — provide the canvas, the structure and the intelligence, then invite the world to build everything else on top.</p>
-    <div class="duo">
-      <div class="mini b"><div class="ml">The Vision provides</div><h4>Canvas · Structure · Intelligence</h4><p>A template that renders every gateway. An AI editorial engine. Feed composition. Self-onboarding. Verification. Affiliate tracking.</p></div>
-      <div class="mini r"><div class="ml">Participants provide</div><h4>Everything else — at their cost</h4><p>Products, checkout, payments, service, moderation, apps. No payment processing. No inventory. No fulfilment. Scales by configuration, not headcount.</p></div>
-    </div>`);
-
-  const six = infoPost('The Model', `
-    <h3>Six participants. One canvas.</h3>
-    <div class="pgrid">
-      <div class="pcell"><div class="num">01</div><h4>Brands</h4><p>Commerce and brand content in their natural sector home.</p></div>
-      <div class="pcell"><div class="num">02</div><h4>Communities</h4><p>Engagement and events around shared identity.</p></div>
-      <div class="pcell"><div class="num">03</div><h4>Professionals</h4><p>Verified expertise, visible inside the gateway.</p></div>
-      <div class="pcell"><div class="num">04</div><h4>B2B Companies</h4><p>Supply chains in every vertical.</p></div>
-      <div class="pcell"><div class="num">05</div><h4>App Developers</h4><p>Vertical tools deployed inside the gateway.</p></div>
-      <div class="pcell"><div class="num">06</div><h4>The Audience</h4><p>Attention and purchase intent, aggregated.</p></div>
-    </div>`);
-
-  const ai = infoPost('The Moment', `
-    <h3>AI has changed the game</h3>
-    <p>The most influential voices in tech converge on one point: AI has permanently altered what a small team can achieve.</p>
-    <div class="quote b"><div class="who">Sam Altman · OpenAI</div><h4>"Inevitable, not hypothetical"</h4><p>The first one-person billion-dollar company is coming — he's running a betting pool on when.</p></div>
-    <div class="quote n"><div class="who">Mike Krieger · Anthropic CPO</div><h4>"Closer than you think"</h4><p>Agentic AI dissolves the barriers that once required large teams.</p></div>
-    <div class="quote r"><div class="who">Dario Amodei · Anthropic CEO</div><h4>70–80% odds by 2026</h4><p>A near-term structural shift, not a distant prediction.</p></div>
-    <p style="margin-top:11px">Two to four AI-fluent people now execute at the scale of a 50–100 person org. <strong>GENEXXO is built for exactly this moment.</strong></p>`);
-
-  const acq = infoPost('The Destination', `
-    <h3>The acquisition zone</h3>
-    <p>The biggest tech acquisitions weren't purchases of finished empires — they bought a <strong>single dominant strength, just before scale.</strong></p>
-    <table class="atable">
-      <thead><tr><th>Company</th><th>Team</th><th>Acquirer · Price</th></tr></thead>
-      <tbody>
-        <tr><td><b>WhatsApp</b></td><td>~55</td><td>Facebook · $19B</td></tr>
-        <tr><td><b>Instagram</b></td><td>13</td><td>Facebook · $1B</td></tr>
-        <tr><td><b>YouTube</b></td><td>~65</td><td>Google · $1.65B</td></tr>
-        <tr><td><b>LinkedIn</b></td><td>single-silo</td><td>Microsoft · $26.2B</td></tr>
-      </tbody>
-    </table>`);
-
-  const acquirer = infoPost('The Acquirer', `
-    <h3>The natural acquirer</h3>
-    <p>GENEXXO's position is different in kind — not users, not content, not a network. <strong>Infrastructure.</strong> The organizing layer itself.</p>
-    <div class="acqbox"><div class="al">The natural acquirer</div><p>A Big Tech titan or frontier-AI platform — Microsoft, Meta, OpenAI or Anthropic — already at the scale the Vision requires. For them the Collection is a structural necessity, impossible to replicate regardless of resources.</p></div>
-    ${infoChips([{t:'Foundation proven'},{t:'Thesis de-risked'},{t:'Scaling barely begun'}])}`);
-
-  const ip = infoPost('The Protection', `
-    <h3>Trademarked across jurisdictions</h3>
-    <p>The GENEXXO brand is protected globally — all filings managed by Keystone Law.</p>
-    <div class="iplist">
-      <div class="iprow"><div class="ipjur">United Kingdom</div><div class="ipok">✓ REGISTERED</div></div>
-      <div class="iprow"><div class="ipjur">European Union</div><div class="ipok">✓ REGISTERED</div></div>
-      <div class="iprow"><div class="ipjur">United States</div><div class="ipok">✓ REGISTERED</div></div>
-      <div class="iprow"><div class="ipjur">China — Word Mark</div><div class="ipok">✓ ALL 7 CLASSES</div></div>
-    </div>`);
-
-  const roadmap = infoPost('The Roadmap', `
-    <h3>Where we are, where we're going</h3>
-    <div class="tl">
-      <div class="tlrow"><div class="tll"><div class="tldot done">1</div><div class="tlline"></div></div><div class="tlc"><span class="tltag tag-done">Complete</span><h4>Foundation built</h4><p>Incorporated, 10,000+ domains verified, trademarks filed across 5 jurisdictions.</p></div></div>
-      <div class="tlrow"><div class="tll"><div class="tldot done">2</div><div class="tlline"></div></div><div class="tlc"><span class="tltag tag-done">Complete</span><h4>IP secured</h4><p>UK, EU, US registered. China Word Mark — all 7 classes.</p></div></div>
-      <div class="tlrow"><div class="tll"><div class="tldot now">3</div><div class="tlline"></div></div><div class="tlc"><span class="tltag tag-now">In progress</span><h4>Architecture &amp; interactive demo</h4><p>The gateway model, proven end to end — this app.</p></div></div>
-      <div class="tlrow"><div class="tll"><div class="tldot next">4</div><div class="tlline"></div></div><div class="tlc"><span class="tltag tag-nx">Next</span><h4>Activation &amp; deployment</h4><p>Domains deployed, gateways activated, first partnerships.</p></div></div>
-      <div class="tlrow"><div class="tll"><div class="tldot fut">5</div></div><div class="tlc"><span class="tltag tag-fu">Near term</span><h4>Going live</h4><p>First live gateways, onboarding, promotion in parallel.</p></div></div>
-    </div>`);
-
-  const close = infoPost('Explore', `
-    <h3>The organizing layer for the internet</h3>
-    <div class="cta-links">
-      <a class="primary" href="https://www.genexxovision.com/" target="_blank">🌐&nbsp; genexxovision.com</a>
-      <a href="#" onclick="event.preventDefault();$('infoScroll').scrollTo({top:0,behavior:'smooth'})">↻&nbsp; Back to the top</a>
-    </div>
-    <div class="cta-foot">Fully advised &amp; documented · Keystone Law · Acclaim Ltd · Dewhurst Ltd<br>Genexxo Vision Limited · Company No. 022622V · Isle of Man</div>`,
-    {grad:true, sub:'Explore'});
-
-  return `<div class="feedwrap">
-    ${hero}${thesis}${problem}${solution}${opportunity}${six}${ai}${acq}${acquirer}${ip}${roadmap}${close}
-  </div>`;
-}
-
-/* ─── SECTORS (breadth of the case) ─── */
-const INFO_SECTORS = [
-  ['Health','🩺','linear-gradient(135deg,#E84D3A,#C4371F)'],['Finance','💷','linear-gradient(135deg,#15803d,#0f5f2e)'],
-  ['Tech','💻','linear-gradient(135deg,#4A6CF7,#2540c0)'],['Fashion','👗','linear-gradient(135deg,#EC4899,#BE185D)'],
-  ['Travel','✈️','linear-gradient(135deg,#0EA5E9,#0369A1)'],['Law','⚖️','linear-gradient(135deg,#1a1a2e,#3d3d5c)'],
-  ['Food','🍽️','linear-gradient(135deg,#F59E0B,#B45309)'],['Sport','🏅','linear-gradient(135deg,#8B5CF6,#6D28D9)'],
-  ['Beauty','💄','linear-gradient(135deg,#F472B6,#DB2777)'],['Home','🏡','linear-gradient(135deg,#10B981,#047857)'],
-  ['Auto','🚗','linear-gradient(135deg,#334155,#0f172a)'],['Music','🎵','linear-gradient(135deg,#A855F7,#7E22CE)'],
-  ['Property','🏢','linear-gradient(135deg,#0891B2,#155E75)'],['Wellness','🧘','linear-gradient(135deg,#14B8A6,#0F766E)'],
-  ['Career','💼','linear-gradient(135deg,#6366F1,#4338CA)'],['Nature','🌿','linear-gradient(135deg,#22C55E,#15803d)'],
-  ['Science','🔬','linear-gradient(135deg,#3B82F6,#1D4ED8)'],['Gaming','🎮','linear-gradient(135deg,#EF4444,#991B1B)']
+/* ═══════════ THE PRESENTATION — slides as posts (Intro · Model · Platform) ═══════════
+   Each investor slide is rendered as a feed post, scrolled like the rest of the app.
+   Source decks: slides.md · The Model.md · The Platform.md */
+const IF_GRADS = [
+  'linear-gradient(135deg,#E84D3A,#8B1A0A)', 'linear-gradient(135deg,#4A6CF7,#2540c0)',
+  'linear-gradient(135deg,#8B5CF6,#5B21B6)', 'linear-gradient(135deg,#15803d,#0b4a23)',
+  'linear-gradient(135deg,#F59E0B,#B45309)', 'linear-gradient(135deg,#E84D3A,#8B5CF6)',
+  'linear-gradient(135deg,#0EA5E9,#0369A1)', 'linear-gradient(135deg,#14B8A6,#0F766E)',
+  'linear-gradient(135deg,#6366F1,#4338CA)', 'linear-gradient(135deg,#A855F7,#7E22CE)',
+  'linear-gradient(145deg,#E84D3A 0%,#8B5CF6 50%,#4A6CF7 100%)'
 ];
-function infoSectors(){
-  const head = infoPost('The Breadth', `
-    <h3>45 sectors. Every industry on earth.</h3>
-    <p>The Collection isn't a niche play — it spans <strong>every significant sector</strong>, each with a category-defining <b>NameXX</b> flagship and hundreds of sub-category names beneath it. A foundation that cannot be reassembled: the names are already taken.</p>
-    ${infoChips([{t:'45 sectors'},{t:'400+ sub-categories'},{t:'10,000+ names'}])}`);
-  const tiles = INFO_SECTORS.map(([n,ic,g])=>`
-    <div class="sectile">
-      <div class="dot" style="background:${g}">${ic}</div>
-      <div class="sn">${n}<b>XX</b></div>
-      <div class="sc">Flagship + sub-shelf</div>
-    </div>`).join('');
-  return `<div class="feedwrap">
-    ${head}
-    <div class="pcard"><div class="secgrid">${tiles}</div></div>
-    <div class="foot-note">A curated slice — the full Collection maps every clean root to a sector shelf.</div>
+const ifChips   = a => `<div class="schips">${a.map(c=>`<span class="schip">${c}</span>`).join('')}</div>`;
+const ifPillars = a => `<div class="pillgrid">${a.map((p,i)=>`<div class="pill"><span class="pn">0${i+1}</span><span class="pt">${p}</span></div>`).join('')}</div>`;
+const ifStats   = a => `<div class="statrow">${a.map(([n,l])=>`<div class="stat"><div class="sn">${n}</div><div class="sl">${l}</div></div>`).join('')}</div>`;
+const ifSteps   = a => `<div class="steps">${a.map((s,i)=>`${i?'<span class="sarr">→</span>':''}<span class="step">${s}</span>`).join('')}</div>`;
+const ifDuo     = a => `<div class="duo">${a.map(d=>`<div class="duocard">${d}</div>`).join('')}</div>`;
+
+function ifSlide(s, i, total){
+  const isG = s.type==='grad';
+  const body = [
+    s.lead    ? `<div class="slead">${s.lead}</div>` : '',
+    s.body    ? `<p class="sbody">${s.body}</p>` : '',
+    s.bullets ? ifChips(s.bullets) : '',
+    s.pillars ? ifPillars(s.pillars) : '',
+    s.stats   ? ifStats(s.stats) : '',
+    s.steps   ? ifSteps(s.steps) : '',
+    s.duo     ? ifDuo(s.duo) : '',
+    s.note    ? `<div class="snote">${s.note}</div>` : '',
+  ].join('');
+  return `<div class="scard${isG?' grad':''}"${isG?` style="background:${s.grad}"`:''}>
+    ${isG?'':`<div class="bar" style="background:${s.grad}"></div>`}
+    <div class="in">
+      <div class="prow">
+        <div class="pav"${isG?'':` style="background:${s.grad}"`}>GX</div>
+        <div class="pmeta">
+          <div class="pname">GENEXXO <span class="v" title="Verified">✔</span></div>
+          <div class="psub">${s.sub} · genexxovision.com</div>
+        </div>
+        <div class="pnum">${String(i+1).padStart(2,'0')} / ${total}</div>
+      </div>
+      <h3 class="stitle">${s.title}</h3>
+      ${body}
+    </div>
   </div>`;
+}
+function ifDeck(deck){
+  return `<div class="feedwrap">${deck.map((s,i)=>ifSlide(s,i,deck.length)).join('')}</div>`;
 }
 
-/* ─── GATEWAYS (the model, made concrete) ─── */
-const INFO_GWS = [
-  {name:'Health',grad:'linear-gradient(135deg,#E84D3A,#8B1A0A)',desc:'A living category home — the whole of health, organized.',
-   rows:[['🏷️','Brands','Every major & emerging health brand','1,240+'],['👥','Communities','Conditions, goals, support groups','380+'],['🩺','Professionals','Verified clinicians & specialists','Verified'],['🏭','B2B','Suppliers, devices, distributors','—'],['📱','Apps','Vertical tools inside the gateway','—'],['👁️','Audience','Intent-rich, aggregated','—']]},
-  {name:'Finance',grad:'linear-gradient(135deg,#15803d,#0b4a23)',desc:'Money, markets and advice — in one organized layer.',
-   rows:[['🏷️','Brands','Banks, fintech, insurers','980+'],['👥','Communities','Investing, saving, FIRE','260+'],['💼','Professionals','Advisers & accountants','Verified'],['🏭','B2B','Infrastructure & data','—'],['📱','Apps','Calculators, trackers','—'],['👁️','Audience','High-value intent','—']]}
+/* ─── DECK 1 · INTRO (slides.md) ─── */
+const IF_INTRO = [
+  { type:'grad', grad:IF_GRADS[10], sub:'The Vision', title:'The GENEXXO Vision',
+    lead:'The Organizing Layer for the Internet', note:'Where everything finds its natural home.' },
+  { type:'white', grad:IF_GRADS[0], sub:'The Problem', title:'The Internet is Broken',
+    body:'Too much content. Too many agents. Too much chaos.', note:'Platforms can’t organize what’s coming.' },
+  { type:'grad', grad:IF_GRADS[1], sub:'The Solution', title:'The Solution',
+    lead:'The GENEXXO Supernova Application',
+    body:'Thousands of linguistic gravitational gateways deployed across the digital universe — reaching every category and every niche.' },
+  { type:'white', grad:IF_GRADS[3], sub:'The Model', title:'Each Domain Becomes',
+    body:'A natural home for:', bullets:['Brands','Apps','Pros','Communities','Business'], note:'One unified ecosystem.' },
+  { type:'white', grad:IF_GRADS[6], sub:'The Foundation', title:'The Foundation',
+    body:'10,000+ premium single-word .com domains — all ending in XX.',
+    stats:[['45','Categories'],['400+','Sub-categories'],['14 yrs','Assembled']], note:'Now complete and locked.' },
+  { type:'grad', grad:IF_GRADS[2], sub:'The Advantage', title:'The XX Advantage',
+    lead:'The most powerful unifier on the internet.',
+    body:'Instant recognition, connection and branding across thousands of domains.', note:'A linguistic moat that cannot be copied.' },
+  { type:'white', grad:IF_GRADS[8], sub:'The Network', title:'The Network',
+    lead:'Horizontal reach. Vertical depth.',
+    body:'Every gateway interconnected — all roads lead to the GENEXXO Hub.', note:'A true multi-dimensional constellation.' },
+  { type:'white', grad:IF_GRADS[7], sub:'The Engine', title:'Powered by Four Pillars',
+    pillars:['Content','Community','Commerce','AI'], note:'Woven into every gateway from day one.' },
+  { type:'white', grad:IF_GRADS[9], sub:'The Model', title:'The Facilitator Model',
+    lead:'We provide the infrastructure.',
+    body:'Brands, Pros, Communities and Businesses thrive inside their natural homes.', note:'Zero inventory. Zero logistics. Pure facilitation.' },
+  { type:'white', grad:IF_GRADS[4], sub:'The Opportunity', title:'The Opportunity',
+    lead:'The ecosystem comes to life sector by sector.',
+    steps:['One domain','Then 2','Then 10','Then hundreds','Then thousands'], note:'A living, expanding constellation.' },
+  { type:'grad', grad:IF_GRADS[5], sub:'The Moment', title:'The Time is Now',
+    body:'Two unstoppable forces have converged:',
+    duo:['The GENEXXO Collection — the asset that makes it all possible','The explosive power of AI'], note:'The possibilities are now unlimited.' },
 ];
-function infoGateways(){
-  const head = infoPost('The Mechanism', `
-    <h3>From a name to a living gateway</h3>
-    <p>Each sector flagship becomes a <strong>gateway</strong> — a category home where the six participants meet on one canvas. This is what "live" looks like. Here are two, illustrated.</p>`);
-  const cards = INFO_GWS.map(g=>`
-    <div class="gwcard">
-      <div class="gwtop" style="background:${g.grad}">
-        <div class="gname">${g.name}<b>XX</b></div>
-        <div class="gdesc">${g.desc}</div>
-      </div>
-      <div class="gwbody">
-        ${g.rows.map(([i,t,d,c])=>`<div class="gwrow"><div class="gi">${i}</div><div class="gt"><b>${t}</b> · <span>${d}</span></div><div class="gcount">${c}</div></div>`).join('')}
-      </div>
-    </div>`).join('');
-  return `<div class="feedwrap">
-    ${head}
-    ${cards}
-    <div class="foot-note">Multiply this across 45 sectors and 400+ sub-shelves — that's the organizing layer.</div>
-  </div>`;
-}
+
+/* ─── DECK 2 · MODEL (The Model.md) ─── */
+const IF_MODEL = [
+  { type:'grad', grad:IF_GRADS[8], sub:'The Model', title:'The GENEXXO Model',
+    lead:'How the ecosystem comes to life.' },
+  { type:'white', grad:IF_GRADS[9], sub:'The Model', title:'A Blank Canvas',
+    body:'It starts domain by domain. Then sector by sector.', note:'Slowly coming to life.' },
+  { type:'white', grad:IF_GRADS[0], sub:'The Rollout', title:'Phased Rollout',
+    body:'One sector awakens first — the Adventure Sector.',
+    steps:['ClimbXX','CycleXX','SurfXX','SailXX','SkiXX'], note:'A reusable template, deployed again and again.' },
+  { type:'white', grad:IF_GRADS[3], sub:'The Gateway', title:'Each Domain',
+    body:'A natural gravitational gateway and dedicated home for:',
+    bullets:['Brands','Apps','Pros','Communities','Business'], note:'Deep, specialized, passion-first.' },
+  { type:'white', grad:IF_GRADS[6], sub:'The Journey', title:'User Journey',
+    lead:'Users arrive naturally — a link or an ad. No pressure to sign in.',
+    body:'They explore specialized feeds, return for value, and drift across related domains and sector feeds.' },
+  { type:'white', grad:IF_GRADS[1], sub:'The Occupants', title:'Brands & Professionals',
+    body:'Brands control their own zones — payments, logistics and customer care all run on them. An extension of their D2C model.', note:'Real pros get a true dedicated home.' },
+  { type:'white', grad:IF_GRADS[7], sub:'The Apps', title:'PWA App Ecosystem',
+    lead:'Apps develop inside the gateways.',
+    body:'No app-store commissions. Fast, easy access — exactly when you need them.' },
+  { type:'grad', grad:IF_GRADS[2], sub:'The AI', title:'AI Supernova Host',
+    lead:'An intelligent guide that learns with you.',
+    body:'Eventually helping you navigate the entire ecosystem with ease.' },
+  { type:'white', grad:IF_GRADS[4], sub:'The Growth', title:'Organic Growth',
+    body:'As one sector fills with life, the next sector activates.', note:'Depth and breadth grow together.' },
+  { type:'grad', grad:IF_GRADS[10], sub:'The Whole', title:'The Living Ecosystem',
+    body:'Users can enter the GENEXXO ecosystem in multiple ways:',
+    bullets:['GENEXXO.com','The Supernova Application','Any gateway, directly'], note:'One passionate starting point can lead to the entire constellation.' },
+];
+
+/* ─── DECK 3 · PLATFORM (The Platform.md) ─── */
+const IF_PLATFORM = [
+  { type:'grad', grad:IF_GRADS[1], sub:'The Platform', title:'The GENEXXO Platform',
+    lead:'Where everything connects.' },
+  { type:'white', grad:IF_GRADS[7], sub:'The Entry', title:'Your Passion Is the Entry',
+    lead:'Users gravitate through their dedicated passions.',
+    body:'Every niche has its own domain anchor — a true node in the multi-dimensional ecosystem.' },
+  { type:'white', grad:IF_GRADS[3], sub:'The Flow', title:'Content Flow',
+    body:'Post in your gateway. The best content rises:',
+    steps:['Gateway Feed','Sector Feed','Network Feed'], note:'The very best rises to the top.' },
+  { type:'white', grad:IF_GRADS[9], sub:'The Feed', title:'Personalized Experience',
+    lead:'Your gateway and sector activity shapes your feeds.',
+    body:'Save favourites for fast access. The platform learns what you love and surfaces more of it.' },
+  { type:'white', grad:IF_GRADS[4], sub:'Commerce', title:'Shopping & Apps',
+    body:'Shop your favourite brands directly — fast and contextual. Specialized apps open instantly when needed.', note:'No downloads. No app-store commissions.' },
+  { type:'grad', grad:IF_GRADS[2], sub:'The AI', title:'AI Guidance',
+    lead:'Supernova Host — your intelligent guide across the entire ecosystem.',
+    body:'Specialized AI in every gateway understands pros, brands, businesses and communities.' },
+  { type:'white', grad:IF_GRADS[6], sub:'For Business', title:'For Business',
+    lead:'A social + business-friendly environment.',
+    body:'Direct communication with the full value chain. Fast connections and collaboration tools.' },
+  { type:'white', grad:IF_GRADS[8], sub:'Community', title:'Communities',
+    body:'Find and join communities with one GENEXXO login. Mature, focused, and easy to return to.', note:'True belonging in your niche.' },
+  { type:'white', grad:IF_GRADS[0], sub:'The Model', title:'The Facilitator',
+    lead:'GENEXXO does not own or control — it facilitates.', note:'Everyone thrives in their natural home.' },
+  { type:'grad', grad:IF_GRADS[10], sub:'The Vision', title:'The Vision',
+    body:'Continued expansion across the digital universe. Every category of human activity will eventually have its place.', note:'Where everything finds its natural home.' },
+];
+
+const IF_DECKS = { intro:IF_INTRO, model:IF_MODEL, platform:IF_PLATFORM };
 
 /* ★ Brand favourites — the zone-level twin of gateway favourites (2026-07-23). The star on
    a brand's feed header pins the brand; the star on the zone top bar opens this panel to
