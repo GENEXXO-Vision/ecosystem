@@ -52,6 +52,7 @@
   .top{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:10px;padding:14px 16px 12px;background:rgba(247,247,248,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);transition:transform .28s cubic-bezier(.4,0,.2,1);will-change:transform}
   .gx-mark{display:flex;align-items:center;gap:8px;cursor:pointer;flex-shrink:0}
   .gx-dot{width:26px;height:26px;border-radius:8px;background:#111116;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;letter-spacing:-.5px}
+  .gx-mono{width:18px;height:18px;background-color:currentColor;-webkit-mask:url(mark-mask.png) center/contain no-repeat;mask:url(mark-mask.png) center/contain no-repeat}
   .gx-word{font-weight:800;font-size:14px;letter-spacing:.22em}
   .domain-pill{margin-left:auto;font-size:10.5px;font-weight:600;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:4px 10px;background:#fff;white-space:nowrap}
   .top.gw{border-bottom:none}
@@ -1296,7 +1297,7 @@ function infoPanelHtml(){
     <div class="if-top">
       <div class="if-toprow">
         <div class="gx-mark" onclick="toggleInfo()" title="Back to the GENEXXO hub">
-          <div class="gx-dot">G</div>
+          <div class="gx-dot"><span class="gx-mono"></span></div>
           <div class="gx-word">GENEXXO</div>
         </div>
         <span class="if-tag">${curLabel}</span>
@@ -1624,7 +1625,7 @@ function topBar(gw){
   const dotFg = inGw ? (gw.theme.dark?'#111116':'#fff') : '#fff';
   return `<div class="top ${inGw?'gw':''}" style="${style}">
     <div class="gx-mark" onclick="goHub()" title="Back to the GENEXXO hub">
-      <div class="gx-dot" style="background:${dotBg};color:${dotFg}">G</div>
+      <div class="gx-dot" style="background:${dotBg};color:${dotFg}"><span class="gx-mono"></span></div>
       ${inGw?'':'<div class="gx-word">GENEXXO</div>'}
     </div>
     ${inGw?`
@@ -3953,7 +3954,7 @@ function renderZonePage(){
   // (the gateway) lives on the shared bottom bar; brand-switching lives in the Brands sub-tab.
   // (2026-07-27 s3: AI & Profile are ecosystem-level now — no in-zone peek borrows this bar.)
   const head = `<div class="top gw" style="background:${z.gradient};color:#fff">
-    <div class="gx-mark" onclick="goHub()" title="GENEXXO hub"><div class="gx-dot" style="background:#fff;color:${z.color}">G</div></div>
+    <div class="gx-mark" onclick="goHub()" title="GENEXXO hub"><div class="gx-dot" style="background:#fff;color:${z.color}"><span class="gx-mono"></span></div></div>
     <div onclick="zoneToFeed()" title="${esc(z.name)} feed" style="font-family:var(--cond);font-weight:700;font-size:16px;letter-spacing:.01em;margin-left:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer">${z.name}</div>
     <div onclick="event.stopPropagation();toggleFavPanel()" title="Favourites"
       style="margin-left:auto;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;font-size:19px;line-height:1;color:#fff;opacity:${state.showFavs?'1':'.72'};${state.showFavs?'background:rgba(255,255,255,.18)':''}">${state.showFavs?'★':'☆'}</div>
