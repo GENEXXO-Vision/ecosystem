@@ -318,6 +318,9 @@
   #infoFeed .if-stab{ flex:1; text-align:center; padding:10px 0 11px; font-size:13px; font-weight:700; color:var(--faint); cursor:pointer; position:relative; transition:color .18s; }
   #infoFeed .if-stab.on{ color:var(--ink); }
   #infoFeed .if-stab.on::after{ content:""; position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:34px; height:2.5px; border-radius:3px; background:var(--ink); }
+  /* First-open nudge: each sub-tab breathes until tapped once, then gone for good (localStorage 'if_<tab>') */
+  @keyframes ifTabNudge{0%,100%{transform:scale(1)}50%{color:var(--ink);text-shadow:0 0 10px rgba(17,17,22,.28);transform:scale(1.11)}}
+  #infoFeed .if-stab.if-nudge{ animation:ifTabNudge 1.35s ease-in-out infinite; }
   #infoFeed .if-scroll{ flex:1; min-height:0; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:12px 13px calc(28px + var(--safe-b)); }
   #infoFeed .feedwrap{ animation:ifFade .32s ease; }
   @keyframes ifFade{ from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
@@ -1291,7 +1294,7 @@ function infoPanelHtml(){
   const tabs = [['intro','Intro'],['model','Model'],['platform','Platform']];
   const deck = IF_DECKS[state.infoTab] || IF_INTRO;
   const curLabel = (tabs.find(t=>t[0]===state.infoTab)||tabs[0])[1];
-  const subbar = tabs.map(([k,label])=>`<div class="if-stab ${state.infoTab===k?'on':''}" onclick="setInfoTab('${k}')">${label}</div>`).join('');
+  const subbar = tabs.map(([k,label])=>`<div class="if-stab ${state.infoTab===k?'on':''} ${nudgeDone('if_'+k)?'':'if-nudge'}" onclick="setInfoTab('${k}')">${label}</div>`).join('');
   return `
   <div id="infoFeed">
     <div class="if-top">
@@ -1308,7 +1311,13 @@ function infoPanelHtml(){
     <div class="if-scroll" id="infoScroll">${ifDeck(deck)}</div>
   </div>`;
 }
-function setInfoTab(t){ if(state.infoTab===t) return; state.infoTab=t; render(); const s=$('infoScroll'); if(s) s.scrollTo(0,0); }
+function setInfoTab(t){
+  const changed = state.infoTab!==t;
+  const wasNudging = !nudgeDone('if_'+t);
+  if(wasNudging) clearNudge('if_'+t);            // tapped once → pulse gone for good
+  if(changed) state.infoTab=t;
+  if(changed || wasNudging){ render(); if(changed){ const s=$('infoScroll'); if(s) s.scrollTo(0,0); } }
+}
 
 /* ═══════════ THE PRESENTATION — slides as posts (Intro · Model · Platform) ═══════════
    Each investor slide is rendered as a feed post, scrolled like the rest of the app.
@@ -1488,7 +1497,7 @@ function clearNudge(k){
   if(k==='barMore') document.querySelectorAll('.arrow-nudge').forEach(el=>el.classList.remove('arrow-nudge'));
 }
 if (new URLSearchParams(location.search).get('nudges')==='reset'){
-  ['edgeL','edgeR','star','barNet','barGws','barMore'].forEach(k=>{ try{ localStorage.removeItem('gx_nudge_'+k); }catch(e){} });
+  ['edgeL','edgeR','star','barNet','barGws','barMore','if_intro','if_model','if_platform'].forEach(k=>{ try{ localStorage.removeItem('gx_nudge_'+k); }catch(e){} });
 }
 /* Tap a bar tab: Feed drops to the gateway feed; any commercial tab opens it, or tap the
    active one again to toggle back to the feed. */
