@@ -1554,7 +1554,7 @@ function buildDrawer(){
     const cols = s.g.match(/#[0-9a-fA-F]{6}/g) || ['#888888'];
     const accent = cols[0];
     const wash = cols.length>1 ? `linear-gradient(135deg,${cols[0]}1f,${cols[1]}1f)` : `${cols[0]}1f`;
-    return `<div class="drow" style="${on?`background:${wash};box-shadow:inset 3px 0 0 ${accent};`:''}" onclick="pickSector('${s.key}')">
+    return `<div class="drow"${on?' id="drawerActiveRow"':''} style="${on?`background:${wash};box-shadow:inset 3px 0 0 ${accent};`:''}" onclick="pickSector('${s.key}')">
       <div class="dic" style="background:${s.g}">${s.icon}</div>
       <div style="flex:1"><div class="dnm" style="${on?`color:${accent};`:''}">${s.name}</div><div class="dct">${(SECTOR_GATEWAYS[s.key]||[]).length} gateways${sectorIsLive(s.key)?' · LIVE':''}</div></div>
       ${sectorIsLive(s.key)?LIVE_DOT:''}
@@ -1569,7 +1569,13 @@ function openDrawer(){
   const off = drawerFlushTop();
   $('drawer').style.top = off+'px'; $('scrim').style.top = off+'px';
   buildDrawer();                                 // reflect the sector you're currently inside
-  $('drawerList').scrollTop = 0;                 // always reopen at the top of the sector list
+  const dl=$('drawerList'), act=$('drawerActiveRow');
+  if(act){                                       // inside a sector → bring that sector's row into view (it may be lower down)
+    const dr=dl.getBoundingClientRect(), ar=act.getBoundingClientRect();
+    dl.scrollTop += (ar.top - dr.top) - (dl.clientHeight - ar.height)/2;
+  } else {                                        // opened from the Network home → show the top of the list
+    dl.scrollTop = 0;
+  }
   state.drawerOpen=true; frame.classList.add('drawer-open');
   clearNudge('edgeL');
 }
