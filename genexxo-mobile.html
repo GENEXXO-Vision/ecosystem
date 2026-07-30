@@ -1541,6 +1541,22 @@ function activeSectorKey(){
   }
   return null;
 }
+/* which gateway are we inside? (a gateway page, or a brand zone within one, or —
+   inside a utility tab — the gateway we came from) — used to light its row in the drawer */
+function activeGatewayName(){
+  if((state.screen==='gateway' || state.screen==='zone') && state._gwObj) return state._gwObj.name;
+  const b = state._before;
+  if(b && b.screen==='gateway' && b._gwObj) return b._gwObj.name;
+  return null;
+}
+/* a lighter wash of a header gradient + its lead colour — the shared recipe both drawers
+   use to tint the row for the sector/gateway you're currently inside */
+function washFor(grad){
+  const cols = (grad && grad.match(/#[0-9a-fA-F]{6}/g)) || ['#888888'];
+  const accent = cols[0];
+  const wash = cols.length>1 ? `linear-gradient(135deg,${cols[0]}1f,${cols[1]}1f)` : `${cols[0]}1f`;
+  return {accent, wash};
+}
 
 /* Left drawer — every sector, live ones first. The sector you're currently inside is
    washed with a lighter version of its own header gradient, plus a colored name and a
@@ -1551,9 +1567,7 @@ function buildDrawer(){
   const active = activeSectorKey();
   $('drawerList').innerHTML = [...SECTORS].sort((a,b)=>(sectorIsLive(b.key)?1:0)-(sectorIsLive(a.key)?1:0)).map(s=>{
     const on = s.key===active;
-    const cols = s.g.match(/#[0-9a-fA-F]{6}/g) || ['#888888'];
-    const accent = cols[0];
-    const wash = cols.length>1 ? `linear-gradient(135deg,${cols[0]}1f,${cols[1]}1f)` : `${cols[0]}1f`;
+    const {accent, wash} = washFor(s.g);
     return `<div class="drow"${on?' id="drawerActiveRow"':''} style="${on?`background:${wash};box-shadow:inset 3px 0 0 ${accent};`:''}" onclick="pickSector('${s.key}')">
       <div class="dic" style="background:${s.g}">${s.icon}</div>
       <div style="flex:1"><div class="dnm" style="${on?`color:${accent};`:''}">${s.name}</div><div class="dct">${(SECTOR_GATEWAYS[s.key]||[]).length} gateways${sectorIsLive(s.key)?' · LIVE':''}</div></div>
@@ -1594,6 +1608,13 @@ function openDrawerR(){
   buildDrawerR();
   const off = drawerFlushTop();
   $('drawerR').style.top = off+'px'; $('scrimR').style.top = off+'px';
+  const dlr=$('drawerRList'), actR=$('drawerRActiveRow');
+  if(actR){                                        // inside a gateway → bring its row into view
+    const dr=dlr.getBoundingClientRect(), ar=actR.getBoundingClientRect();
+    dlr.scrollTop += (ar.top - dr.top) - (dlr.clientHeight - ar.height)/2;
+  } else {
+    dlr.scrollTop = 0;
+  }
   frame.classList.add('drawer-open-r');
   clearNudge('edgeR');
 }
@@ -1617,14 +1638,17 @@ function buildDrawerR(){
     style="margin-left:auto;cursor:pointer;font-size:17px;line-height:1;padding:2px 2px 2px 10px;color:${state.drawerRFavs?'#F5B800':'rgba(17,17,22,.35)'}">${state.drawerRFavs?'★':'☆'}</div>`;
   const rowStar = k => `<div onclick="event.stopPropagation();toggleFavQuiet('${k}')"
     style="font-size:15px;line-height:1;padding:6px 2px 6px 8px;cursor:pointer;color:${state.favs.includes(k)?'#F5B800':'rgba(17,17,22,.22)'}">${state.favs.includes(k)?'★':'☆'}</div>`;
+  const actGw = activeGatewayName();               // light the gateway you're currently inside, in its own colour
+  const actKey = actGw ? gwKeyFromName(actGw) : null;
 
   if(state.drawerRFavs){
     $('drawerRHead').innerHTML = `<span class="dic-sm" style="background:linear-gradient(135deg,#111116,#3a3a44)">★</span>Favourites · all sectors ${headStar}`;
     $('drawerRList').innerHTML = state.favs.length ? state.favs.map(k=>{
       const g=gwMetaFromKey(k); if(!g) return ''; const s=sectorOf(g.sector);
-      return `<div class="drow" onclick="pickGateway('${g.name}','${g.sector}')">
+      const on = actKey && k===actKey; const {accent, wash} = washFor(g.gradient);
+      return `<div class="drow"${on?' id="drawerRActiveRow"':''} style="${on?`background:${wash};box-shadow:inset 3px 0 0 ${accent};`:''}" onclick="pickGateway('${g.name}','${g.sector}')">
         <div class="dic" style="background:${g.gradient}">${g.emoji}</div>
-        <div style="flex:1"><div class="dnm">${g.name}</div><div class="dct">${s.icon} ${s.name} · ${g.domain}${g.live?' · LIVE':''}</div></div>
+        <div style="flex:1"><div class="dnm" style="${on?`color:${accent};`:''}">${g.name}</div><div class="dct">${s.icon} ${s.name} · ${g.domain}${g.live?' · LIVE':''}</div></div>
         <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${g.live?LIVE_DOT:''}${rowStar(k)}</div>
       </div>`;}).join('')
       : `<div class="empty">No favourites yet —<br>tap ☆ on any gateway to pin it here.</div>`;
@@ -1638,9 +1662,10 @@ function buildDrawerR(){
     const ordered=[...names].sort((a,b)=>rank(a)-rank(b));
     $('drawerRList').innerHTML = ordered.map(name=>{
       const key=gwKeyFromName(name); const real=GATEWAYS[key];
-      return `<div class="drow" onclick="pickGateway('${name}','${sk}')">
+      const on = actKey && key===actKey; const {accent, wash} = washFor(real?real.gradient:s.g);
+      return `<div class="drow"${on?' id="drawerRActiveRow"':''} style="${on?`background:${wash};box-shadow:inset 3px 0 0 ${accent};`:''}" onclick="pickGateway('${name}','${sk}')">
         <div class="dic" style="background:${real?real.gradient:s.g}">${real?real.emoji:s.icon}</div>
-        <div style="flex:1"><div class="dnm">${name}</div><div class="dct">${domainOf(name)}${real?' · LIVE':''}</div></div>
+        <div style="flex:1"><div class="dnm" style="${on?`color:${accent};`:''}">${name}</div><div class="dct">${domainOf(name)}${real?' · LIVE':''}</div></div>
         <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${real?LIVE_DOT:''}${rowStar(key)}</div>
       </div>`;}).join('');
   }
