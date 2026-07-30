@@ -1542,6 +1542,25 @@ function activeSectorKey(){
   return null;
 }
 
+/* Left drawer — every sector, live ones first. The sector you're currently inside is
+   washed with a lighter version of its own header gradient, plus a colored name and a
+   left edge-bar in the sector's accent — echoing the sector header so the list feels
+   "lit" by where you are (mirrors the desktop deck). Rebuilt on each open so the
+   highlight always tracks the active sector. */
+function buildDrawer(){
+  const active = activeSectorKey();
+  $('drawerList').innerHTML = [...SECTORS].sort((a,b)=>(sectorIsLive(b.key)?1:0)-(sectorIsLive(a.key)?1:0)).map(s=>{
+    const on = s.key===active;
+    const cols = s.g.match(/#[0-9a-fA-F]{6}/g) || ['#888888'];
+    const accent = cols[0];
+    const wash = cols.length>1 ? `linear-gradient(135deg,${cols[0]}1f,${cols[1]}1f)` : `${cols[0]}1f`;
+    return `<div class="drow" style="${on?`background:${wash};box-shadow:inset 3px 0 0 ${accent};`:''}" onclick="pickSector('${s.key}')">
+      <div class="dic" style="background:${s.g}">${s.icon}</div>
+      <div style="flex:1"><div class="dnm" style="${on?`color:${accent};`:''}">${s.name}</div><div class="dct">${(SECTOR_GATEWAYS[s.key]||[]).length} gateways${sectorIsLive(s.key)?' · LIVE':''}</div></div>
+      ${sectorIsLive(s.key)?LIVE_DOT:''}
+    </div>`;
+  }).join('');
+}
 function openDrawer(){
   const frame=$('frame');
   if(!frame.classList.contains('drawer-avail')) return;
@@ -1549,6 +1568,8 @@ function openDrawer(){
   if(window.__resetChrome) window.__resetChrome();
   const off = drawerFlushTop();
   $('drawer').style.top = off+'px'; $('scrim').style.top = off+'px';
+  buildDrawer();                                 // reflect the sector you're currently inside
+  $('drawerList').scrollTop = 0;                 // always reopen at the top of the sector list
   state.drawerOpen=true; frame.classList.add('drawer-open');
   clearNudge('edgeL');
 }
@@ -4637,12 +4658,7 @@ function render(){
 
 /* ═════════ LEFT SECTOR DRAWER — content + edge-swipe gestures ═════════ */
 // Built-out sectors (those with live gateways) rise to the top and carry a green light.
-$('drawerList').innerHTML = [...SECTORS].sort((a,b)=>(sectorIsLive(b.key)?1:0)-(sectorIsLive(a.key)?1:0)).map(s=>`
-  <div class="drow" onclick="pickSector('${s.key}')">
-    <div class="dic" style="background:${s.g}">${s.icon}</div>
-    <div style="flex:1"><div class="dnm">${s.name}</div><div class="dct">${(SECTOR_GATEWAYS[s.key]||[]).length} gateways${sectorIsLive(s.key)?' · LIVE':''}</div></div>
-    ${sectorIsLive(s.key)?LIVE_DOT:''}
-  </div>`).join('');
+buildDrawer();
 
 (function initDrawerSwipe(){
   const frame=$('frame'); let sx=0, sy=0, fromL=false, fromR=false;
