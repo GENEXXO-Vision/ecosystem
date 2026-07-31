@@ -1089,6 +1089,48 @@ const GATEWAY_EXPLAINER = {
 /* Splice the explainer in as the 3rd card (index 2); if the feed is shorter, append. */
 function withExplainer(cards, card){ cards.splice(Math.min(2, cards.length), 0, card); return cards; }
 
+/* Zone CTA card (2026-07-31) — a self-contained gold "stake your claim" card appended
+   BELOW the cards in each gateway zone layer (Brands · Apps · Pro's · Community ·
+   Business). Same visual family as explainerCard (opaque dark bg + own light text so it
+   reads on any gateway theme): gold label + title, explainer text ABOVE a video, then a
+   dormant "Apply now" button (ctaApply → toast only; no real apply flow yet). Config in
+   ZONE_CTA, keyed by gwZoneTab. Videos live in genexxo-videos/ (brands.mp4 etc.) — a
+   missing clip renders black until uploaded, a one-line swap. */
+function ctaApply(){ toast('Applications open at launch — stay tuned.'); }
+function zoneCtaCard(o){
+  if(!o) return '';
+  return `<div class="nfcard" style="border:1px solid rgba(245,184,0,.30);background:linear-gradient(180deg,rgba(245,184,0,.10),rgba(17,17,23,.96));color:#F5F5F7;margin-top:12px">
+    <div class="bar" style="background:linear-gradient(135deg,#F5B800,#FFD34D)"></div>
+    <div class="in">
+      <div style="font-size:9px;font-weight:800;letter-spacing:.11em;color:#F5B800;margin-bottom:7px">${o.label}</div>
+      <div style="font-size:16px;font-weight:800;line-height:1.3;margin-bottom:7px;color:#FFFFFF">${o.title}</div>
+      <div style="font-size:12.5px;line-height:1.6;color:rgba(245,245,247,.78)">${o.text}</div>
+      ${mediaBlock({video:o.video}, 'linear-gradient(135deg,#33333a,#44444d)', 160)}
+      <button onclick="event.stopPropagation();ctaApply()" style="margin-top:12px;width:100%;padding:12px;border:none;border-radius:12px;background:linear-gradient(135deg,#F5B800,#FFD34D);color:#111116;font-size:13px;font-weight:800;letter-spacing:.02em;cursor:pointer">${o.cta||'Apply now →'}</button>
+    </div>
+  </div>`;
+}
+/* One CTA per zone layer. BRANDS copy is final (Sean, 2026-07-31); the other four are
+   DRAFT placeholders in the same voice + their expected video names — swap when Sean
+   sends final copy/clips per area. */
+const ZONE_CTA = {
+  brands: { label:'BRANDS', video:'genexxo-videos/brands.mp4', cta:'Apply now →',
+    title:'Stake your claim now',
+    text:"Your own Brand zone — an extension of your D2C model. Mingle inside a specialised gateway, with users who already love what you do. What are you waiting for?" },
+  apps: { label:'APPS', video:'genexxo-videos/apps.mp4', cta:'Apply now →',
+    title:'Build on the gateway',
+    text:"Ship your app where its users already gather. Plug into a specialised gateway, reach an audience that lives your category, and grow inside the ecosystem." },
+  pros: { label:'PRO ZONES', video:'genexxo-videos/pro.mp4', cta:'Apply now →',
+    title:'Go pro. Get discovered.',
+    text:"Coaches, guides, specialists — open your own Pro Zone. Share your expertise, build a following, and turn it into a business inside the gateway." },
+  communities: { label:'COMMUNITY', video:'genexxo-videos/community.mp4', cta:'Apply now →',
+    title:'Bring your community',
+    text:"Clubs, chapters, forums — give your community a home inside the gateway, right next to the people and brands they already follow." },
+  business: { label:'BUSINESS', video:'genexxo-videos/business.mp4', cta:'Apply now →',
+    title:'The B2B side of the gateway',
+    text:"Manufacturers, wholesale, services — connect with the brands and pros building in this space. List your business where the deals happen." },
+};
+
 /* ═════════ STATE ═════════ */
 const params = new URLSearchParams(location.search);
 const ENTRY = params.get('entry');
@@ -1135,7 +1177,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.07.31-5';   // explainer cards: opaque dark bg + own light text (fix dark-theme contrast)
+const BUILD = '2026.07.31-7';   // zone CTA videos live; fix pros clip name (pro.mp4)
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2040,6 +2082,8 @@ function renderGateway(){
       body = gw.brandZones.length ? gw.brandZones.map(zoneCard).join('')
         : `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.55">Brand Zones open here when ${gw.name} goes live.</div>`;
     }
+    // "Stake your claim" CTA below the cards in every zone layer (Brands · Apps · Pro's · Community · Business)
+    body += zoneCtaCard(ZONE_CTA[z]);
   } else {
     // Feed (default) — no tab lit; the gateway's own feed sits under the Brands·Apps·Pro's bar.
     const card = f => `
