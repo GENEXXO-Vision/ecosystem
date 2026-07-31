@@ -1095,6 +1095,10 @@ function gwKeyFromName(name){ return name.replace(/XX$/,'').toLowerCase(); }
 function gwIsLive(name){ return !!GATEWAYS[gwKeyFromName(name)]; }
 function sectorIsLive(sk){ for(const k in GATEWAYS){ if(GATEWAYS[k].sector===sk) return true; } return false; }
 const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;border-radius:50%;background:#22C55E;box-shadow:0 0 6px rgba(34,197,94,.9);flex-shrink:0"></span>';
+/* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
+   glanced at to confirm which build it's running (kills the "did my push land?" guesswork
+   when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
+const BUILD = '2026.07.31-1';   // favourites panel → full-screen 2-tab (Favourites · Recent activity)
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -1793,8 +1797,8 @@ function topBar(gw){
       <div onclick="event.stopPropagation();toggleApply()" title="Apply to join"
         style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;color:#111116;opacity:${state.showApply?'1':'.5'};${state.showApply?'background:rgba(17,17,22,.06)':''}">
         <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></div>` : ''}
-      <div id="gwStar" onclick="event.stopPropagation();toggleFavPanel()" title="Favourite gateways"
-        style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;font-size:19px;line-height:1;color:${state.showFavs?'#F5B800':'#111116'};opacity:${state.showFavs?'1':'.5'};${state.showFavs?'background:rgba(245,184,0,.14)':''}">${state.showFavs?'★':'☆'}</div>
+      ${state.tab==='home' ? `<div id="gwStar" onclick="event.stopPropagation();toggleFavPanel()" title="Favourite gateways"
+        style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;font-size:19px;line-height:1;color:${state.showFavs?'#F5B800':'#111116'};opacity:${state.showFavs?'1':'.5'};${state.showFavs?'background:rgba(245,184,0,.14)':''}">${state.showFavs?'★':'☆'}</div>` : ''}
     </div>`}
   </div>`;
 }
@@ -4704,6 +4708,7 @@ function profileBody(){
     <div class="sect"><div class="sect-h"><div class="t">Prototype: simulate entry domain</div></div></div>
     <div style="padding:0 16px;font-size:11.5px;color:var(--muted);font-weight:600;line-height:1.5;margin-bottom:10px">Same shell, different front door. Installing from climbxx.com boots this app inside ClimbXX — the whole ecosystem still ships.</div>
     <div class="chips" style="padding-top:0;flex-wrap:wrap">${sim}</div>
+    <div style="text-align:center;padding:22px 16px 4px;font-size:10.5px;letter-spacing:.06em;color:var(--muted);opacity:.7;font-weight:700">GENEXXO · build ${BUILD}</div>
     <div style="height:16px"></div>`;
 }
 function renderProfile(){
@@ -4858,6 +4863,39 @@ render();
   setTimeout(()=>{ el.classList.add('out'); }, 4100);
   setTimeout(()=>{ el.remove(); }, 4480);
 })();
+
+/* ═════════ UPDATE CHECK — Tier A (2026-07-31) — no service worker ═════════
+   The app polls a tiny version.json; if the DEPLOYED build differs from this file's embedded
+   BUILD, a tappable "Update" banner appears and reloads cache-busted. Runs on load and every
+   time the app regains focus (the exact moment an installed PWA is reopened) — so users get
+   new gateways/builds without uninstalling or clearing cache. On EVERY deploy, bump BOTH the
+   `BUILD` constant above AND version.json to the same new value, or the banner won't fire. */
+let _updDismissed = null;
+function reloadForUpdate(build){
+  try{ const u=new URL(location.href); u.searchParams.set('v', build||String(Date.now())); location.replace(u.toString()); }
+  catch(e){ location.reload(); }
+}
+function dismissUpdate(){ const b=$('updateBar'); if(b){ _updDismissed=b.dataset.build||null; b.remove(); } }
+function showUpdateBanner(build){
+  if($('updateBar')) return;
+  const bar=document.createElement('div');
+  bar.id='updateBar'; bar.dataset.build=build;
+  bar.innerHTML=`<div style="flex:1;min-width:0"><div style="font-weight:800;font-size:12.5px">New version available</div><div style="font-size:10.5px;opacity:.7;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Tap update for the latest gateways &amp; features</div></div>
+    <button onclick="reloadForUpdate('${build}')" style="border:0;background:#F5B800;color:#141414;font-weight:800;font-size:12px;padding:8px 15px;border-radius:99px;cursor:pointer;flex-shrink:0">Update</button>
+    <div onclick="dismissUpdate()" title="Dismiss" style="width:26px;height:26px;border-radius:99px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,.6);font-size:14px;flex-shrink:0">✕</div>`;
+  bar.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--bar-h) + var(--safe-b) + 14px);z-index:70;width:calc(100% - 24px);max-width:406px;display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(20,20,26,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.14);border-radius:14px;box-shadow:0 12px 34px rgba(0,0,0,.42);color:#fff';
+  ($('frame')||document.body).appendChild(bar);
+}
+async function checkForUpdate(){
+  try{
+    const r=await fetch('version.json?_='+Date.now(), {cache:'no-store'});
+    if(!r.ok) return;
+    const j=await r.json();
+    if(j && j.build && j.build!==BUILD && j.build!==_updDismissed) showUpdateBanner(j.build);
+  }catch(e){}
+}
+checkForUpdate();
+document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible') checkForUpdate(); });
 </script>
 </body>
 </html>
