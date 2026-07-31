@@ -4524,11 +4524,26 @@ function renderAI(){
       'Find me a climbing partner near Chamonix',
       'Compare the top 3 ski jackets my gateways rate',
     ];
-    const agents = YOUR_GATEWAYS.map(k=>{const g=GATEWAYS[k]; if(!g) return ''; return `
+    // Gateway agents rail — ordered by where you ARE and where you've BEEN: the gateway you
+    // opened AI from leads (highlighted "here now"), then most-recently-visited (reusing
+    // state.recent), then your core gateways. So SpaXX's agent sits first the moment you open
+    // AI inside SpaXX, and earlier agents drift right as you move around the ecosystem.
+    const ctxObj = ((state.screen==='gateway'||state.screen==='zone') && state._gwObj) ? state._gwObj
+                 : (state._before && state._before._gwObj) ? state._before._gwObj : null;
+    const ctxKey = ctxObj ? gwKeyFromName(ctxObj.name) : null;
+    const order = [];
+    if(ctxKey && GATEWAYS[ctxKey]) order.push(ctxKey);
+    state.recent.filter(r=>r.t==='gateway').forEach(r=>{ if(GATEWAYS[r.k] && !order.includes(r.k)) order.push(r.k); });
+    YOUR_GATEWAYS.forEach(k=>{ if(GATEWAYS[k] && !order.includes(k)) order.push(k); });
+    const ctxG = ctxKey ? GATEWAYS[ctxKey] : null;
+    const agents = order.slice(0,14).map(k=>{const g=GATEWAYS[k]; const here=k===ctxKey; return `
       <div class="gwv" onclick="aiAgentChat('${k}')">
-        <div class="ring" style="background:${g.gradient}"><div class="face">${g.emoji}</div></div>
-        <div class="nm">${g.name}</div>
+        <div class="ring" style="background:${g.gradient};position:relative;${here?`box-shadow:0 0 0 3px var(--bg,#fff),0 0 0 5px ${g.theme.accent}`:''}"><div class="face">${g.emoji}</div>${here?`<span title="You're here" style="position:absolute;bottom:0;right:0;width:14px;height:14px;border-radius:50%;background:${g.theme.accent};border:2.5px solid var(--bg,#fff)"></span>`:''}</div>
+        <div class="nm"${here?` style="font-weight:800;color:${g.theme.accent}"`:''}>${g.name}</div>
       </div>`;}).join('');
+    const agentNote = ctxG
+      ? `You're in <b>${ctxG.name}</b> — its agent leads below, ready to join this chat. Tap any to bring in a specialist.`
+      : `Each gateway has its own expert agent — tap one and it joins this chat.`;
     return `${topBar()}
     <div class="push">
       <div class="sect" style="display:flex;align-items:center;gap:12px;padding-top:20px">
@@ -4540,7 +4555,7 @@ function renderAI(){
       <div class="prompts">${prompts.map(p=>`<div class="prompt" style="background:#fff;border-color:var(--line)" onclick="sendAI(this.textContent)">${p}</div>`).join('')}</div>
       ${inputRow}
       <div class="sect"><div class="sect-h"><div class="t">Gateway agents</div><div class="a">specialists</div></div></div>
-      <div style="padding:0 16px 4px;font-size:11.5px;color:var(--muted);font-weight:600;line-height:1.5">Each gateway has its own expert agent — tap one and it joins this chat.</div>
+      <div style="padding:0 16px 4px;font-size:11.5px;color:var(--muted);font-weight:600;line-height:1.5">${agentNote}</div>
       <div class="rail" style="padding-top:10px">${agents}</div>
       <div style="height:16px"></div>
     </div>`;
