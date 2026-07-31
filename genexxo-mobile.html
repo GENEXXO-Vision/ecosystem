@@ -1058,15 +1058,15 @@ function feedCard(gwKey, post, showSector){
    accent) so it never reads as someone's post. Text sits ABOVE the video. One clip each:
    sector.mp4 · network.mp4 · gateway.mp4 (all in genexxo-videos/). */
 function explainerCard(o){
-  return `<div class="nfcard" style="border:1px solid rgba(245,184,0,.28);background:linear-gradient(180deg,rgba(245,184,0,.06),rgba(20,20,28,.35))">
+  return `<div class="nfcard" style="border:1px solid rgba(245,184,0,.30);background:linear-gradient(180deg,rgba(245,184,0,.10),rgba(17,17,23,.96));color:#F5F5F7">
     <div class="bar" style="background:linear-gradient(135deg,#F5B800,#FFD34D)"></div>
     <div class="in">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
-        <div style="width:26px;height:26px;border-radius:50%;background:rgba(245,184,0,.14);display:flex;align-items:center;justify-content:center;font-size:14px;color:#F5B800">ⓘ</div>
+        <div style="width:26px;height:26px;border-radius:50%;background:rgba(245,184,0,.16);display:flex;align-items:center;justify-content:center;font-size:14px;color:#F5B800">ⓘ</div>
         <div style="font-size:9px;font-weight:800;letter-spacing:.09em;color:#F5B800">${o.label}</div>
       </div>
-      <div style="font-size:15px;font-weight:800;line-height:1.35;margin-bottom:6px">${o.title}</div>
-      <div style="font-size:12.5px;line-height:1.55;color:var(--muted)">${o.text}</div>
+      <div style="font-size:15px;font-weight:800;line-height:1.35;margin-bottom:6px;color:#FFFFFF">${o.title}</div>
+      <div style="font-size:12.5px;line-height:1.55;color:rgba(245,245,247,.74)">${o.text}</div>
       ${mediaBlock({video:o.video}, 'linear-gradient(135deg,#33333a,#44444d)', 160)}
     </div>
   </div>`;
@@ -1135,7 +1135,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.07.31-4';   // feed explainer cards — added Gateway card (gateway.mp4)
+const BUILD = '2026.07.31-5';   // explainer cards: opaque dark bg + own light text (fix dark-theme contrast)
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
