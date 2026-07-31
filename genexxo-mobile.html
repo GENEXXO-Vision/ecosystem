@@ -900,16 +900,31 @@ function loadFavs(){
   try{
     if(new URLSearchParams(location.search).get('favs')==='reset'){
       localStorage.removeItem('gx_favs'); localStorage.removeItem('gx_brandFavs');
+      localStorage.removeItem('gx_sectorFavs'); localStorage.removeItem('gx_recent');
     }
     const g=localStorage.getItem('gx_favs'), b=localStorage.getItem('gx_brandFavs');
-    return { favs: g?JSON.parse(g):[...YOUR_GATEWAYS], brandFavs: b?JSON.parse(b):[] };
-  }catch(e){ return { favs:[...YOUR_GATEWAYS], brandFavs:[] }; }
+    const sc=localStorage.getItem('gx_sectorFavs'), rc=localStorage.getItem('gx_recent');
+    return { favs: g?JSON.parse(g):[...YOUR_GATEWAYS], brandFavs: b?JSON.parse(b):[],
+             sectorFavs: sc?JSON.parse(sc):[], recent: rc?JSON.parse(rc):[] };
+  }catch(e){ return { favs:[...YOUR_GATEWAYS], brandFavs:[], sectorFavs:[], recent:[] }; }
 }
 function saveFavs(){
   try{
     localStorage.setItem('gx_favs', JSON.stringify(state.favs));
     localStorage.setItem('gx_brandFavs', JSON.stringify(state.brandFavs));
+    localStorage.setItem('gx_sectorFavs', JSON.stringify(state.sectorFavs));
+    localStorage.setItem('gx_recent', JSON.stringify(state.recent));
   }catch(e){}
+}
+/* Recent activity (2026-07-31): every committed navigation to a real place — a sector,
+   a gateway, a brand zone — is logged most-recent-first, deduped, capped. Feeds the
+   ★ panel's "Recent activity" tab. Pro Zones/apps join once they become destinations. */
+function logVisit(t, k){
+  if(!t || !k || !state.recent) return;
+  state.recent = state.recent.filter(r=>!(r.t===t && r.k===k));
+  state.recent.unshift({t, k});
+  if(state.recent.length>50) state.recent.length=50;
+  saveFavs();
 }
 const FAVS_INIT = loadFavs();
 
@@ -1059,9 +1074,11 @@ const state = {
   orderSeq: PURCHASES_INIT.seq,              // running counter behind each brand's order ref
   wallet:[{name:'Route Logger',color:'#4ADE80',gw:'ClimbXX'}],
   favs:[...FAVS_INIT.favs],        // seeded from YOUR_GATEWAYS on first run, else restored from localStorage
-  showFavs:false,
+  showFavs:false, favTab:'favs',   // ★ panel open? + which tab: 'favs' | 'recent'
   showApply:false, showInfo:false, infoTab:'intro',   // home top-bar overlays: person→Apply, ⓘ→Info feed (2026-07-29)
   brandFavs:[...FAVS_INIT.brandFavs],   // favourite BRANDS (zone keys) — persisted alongside gateway favs
+  sectorFavs:[...FAVS_INIT.sectorFavs], // favourite SECTORS (sector keys) — pinned via ★ on sector rows
+  recent:[...FAVS_INIT.recent],         // recent activity: [{t:'sector'|'gateway'|'brand', k}], most-recent-first
   returnGw:null,   // set when popping out of a gateway for a glimpse of its sector
   entryDomain: (ENTRY && GATEWAYS[ENTRY]) ? GATEWAYS[ENTRY].domain : 'genexxo.com',
 };
@@ -1116,6 +1133,7 @@ function openGateway(name, sectorKey){
   state.gwZones = false; state.gwZoneTab = 'brands'; state.gwBarPage = 'commerce';
   state.zone = null; state.zoneProduct = null; state._zoneIn = false;
   state._before = null; state.tab = 'home';   // committed to a real place — tab toggle memory resets
+  logVisit('gateway', key);
   render(); $('screen').scrollTo(0,0);
 }
 function openSector(key){
@@ -1125,6 +1143,7 @@ function openSector(key){
     : null;
   state.sector = key; state.screen='sector'; state.showFavs=false;
   state._before = null; state.tab = 'home';   // committed to a real place — tab toggle memory resets
+  logVisit('sector', key);
   render(); $('screen').scrollTo(0,0);
 }
 function goHub(){ state._before=null; state.screen='root'; state.gateway=null; state._gwObj=null; state.showFavs=false; state.returnGw=null; state.zone=null; state.zoneProduct=null; state._zoneIn=false; state.tab='home'; render(); }
@@ -1207,7 +1226,20 @@ function gwHome(){
    flipping into Brands · Apps · Pro's, now lives in the always-on gateway sub-bar. */
 function toggleFavPanel(){
   clearNudge('star');
-  const on=!state.showFavs; state.showApply=false; state.showInfo=false; state.showFavs=on; render();
+  const on=!state.showFavs; state.showApply=false; state.showInfo=false; state.showFavs=on;
+  if(on) state.favTab='favs';   // always land on Favourites
+  render();
+}
+function setFavTab(t){ if(state.favTab===t) return; state.favTab=t; render(); }
+function toggleSectorFav(k){
+  const i=state.sectorFavs.indexOf(k);
+  if(i>=0) state.sectorFavs.splice(i,1); else state.sectorFavs.push(k);
+  saveFavs(); render();
+}
+function toggleSectorFavQuiet(k){   // toggle from the left drawer without a full render
+  const i=state.sectorFavs.indexOf(k);
+  if(i>=0) state.sectorFavs.splice(i,1); else state.sectorFavs.push(k);
+  saveFavs(); buildDrawer();
 }
 /* Home top-bar overlays (2026-07-29) — person opens Apply, ⓘ opens Info. Each is
    mutually exclusive with the favourites panel and with each other; tap the icon
@@ -1218,37 +1250,87 @@ function toggleInfo(){ const on=!state.showInfo; state.showFavs=false; state.sho
    on every screen (Network · Sector · Gateway · Zone). Dark frosted glass, theme-independent.
    Rows are kept tight: a gold ★ (tap to unpin) + the name, no avatars. The "add this…" row
    adapts to where you are — the current gateway on a gateway screen, the current brand in a zone. */
+/* The favourites panel — reworked 2026-07-31 into a FULL-SCREEN sheet dropping from the
+   top, two tabs: Favourites (pinned) · Recent activity (where you've been). Each tab
+   carries the same four sections — Sectors · Gateways (top tier), Brands · Other (below).
+   Favourites reads the sectorFavs/favs/brandFavs stores; Recent reads state.recent,
+   filtered per type, most-recent-first. "Other" (Pro Zones, apps, communities…) is a
+   labelled placeholder until those become real destinations. Dark frosted so it reads on
+   any screen behind it; shared by the ★ on every top bar (home/sector/gateway/zone). */
 function favPanelHtml(){
   if(!state.showFavs) return '';
-  const curGw = state.screen==='gateway' ? state._gwObj : null;
-  const curZone = ZONES[state.zone];
-  const canAddGw = curGw && state.gateway && !state.favs.includes(state.gateway);
-  const canAddBrand = curZone && !state.brandFavs.includes(state.zone);
-  const label = t => `<div style="font-size:9px;font-weight:800;letter-spacing:.08em;opacity:.55;padding:7px 8px 3px">${t}</div>`;
-  const gwRows = state.favs.map(k=>{const g=gwMetaFromKey(k); if(!g) return ''; const cur=k===state.gateway; return `
-    <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:10px;cursor:pointer;${cur?'background:rgba(255,255,255,.12)':''}" onclick="state.showFavs=false;openGateway('${g.name}','${g.sector}')">
-      <div onclick="event.stopPropagation();toggleFav('${k}')" title="Remove from favourites" style="font-size:15px;color:#F5B800;cursor:pointer;width:16px;text-align:center;flex-shrink:0">★</div>
-      <div style="flex:1;font-weight:700;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${g.name}<span style="opacity:.5;font-weight:600">.com</span></div>
-    </div>`;}).join('');
-  const brandRows = state.brandFavs.map(k=>{const zz=ZONES[k]; if(!zz) return ''; const cur=k===state.zone; return `
-    <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:10px;cursor:pointer;${cur?'background:rgba(255,255,255,.12)':''}" onclick="openZoneFav('${k}')">
-      <div onclick="event.stopPropagation();toggleBrandFav('${k}')" title="Remove from favourites" style="font-size:15px;color:#F5B800;cursor:pointer;width:16px;text-align:center;flex-shrink:0">★</div>
-      <div style="flex:1;font-weight:700;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${zz.name}</div>
-    </div>`;}).join('');
-  const addRow = (name, fn, key) => `
-    <div style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:10px;cursor:pointer;border-top:1px solid rgba(255,255,255,.12);margin-top:4px" onclick="${fn}('${key}')">
-      <div style="font-size:15px;opacity:.7;width:16px;text-align:center;flex-shrink:0">☆</div>
-      <div style="font-size:12px;font-weight:700">Add ${name} to favourites</div>
+  const tab = state.favTab||'favs';
+  const active = activeSectorKey();
+
+  // ── shared row atoms ──
+  const starFor = (on, fn, k) => `<div onclick="event.stopPropagation();${fn}('${k}')" title="${on?'Remove from favourites':'Add to favourites'}"
+    style="font-size:16px;line-height:1;width:22px;text-align:center;flex-shrink:0;cursor:pointer;color:${on?'#F5B800':'rgba(255,255,255,.3)'}">${on?'★':'☆'}</div>`;
+  const tile = (grad, glyph, fs) => `<div style="width:32px;height:32px;border-radius:9px;background:${grad};display:flex;align-items:center;justify-content:center;font-size:${fs||15}px;font-weight:800;color:#fff;flex-shrink:0">${glyph}</div>`;
+  const shell = (inner, click, cur) => `<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:13px;cursor:pointer;${cur?'background:rgba(255,255,255,.13)':''}" onclick="${click}">${inner}</div>`;
+  const nm  = (main, sub) => `<div style="flex:1;min-width:0"><div style="font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${main}</div>${sub?`<div style="font-size:10.5px;opacity:.5;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${sub}</div>`:''}</div>`;
+
+  const secRow = k => { const s=sectorOf(k); if(!s) return ''; const live=sectorIsLive(k);
+    return shell(`${starFor(state.sectorFavs.includes(k),'toggleSectorFav',k)}${tile(s.g,s.icon)}
+      ${nm(s.name, (SECTOR_GATEWAYS[k]||[]).length+' gateways'+(live?' · live':''))}${live?LIVE_DOT:''}`,
+      `state.showFavs=false;openSector('${k}')`, k===active); };
+  const gwRow = k => { const g=gwMetaFromKey(k); if(!g) return ''; const s=sectorOf(g.sector);
+    return shell(`${starFor(state.favs.includes(k),'toggleFav',k)}${tile(g.gradient,g.emoji)}
+      ${nm(g.name+'<span style="opacity:.5;font-weight:600">.com</span>', (s?s.name:'')+(g.live?' · live':''))}${g.live?LIVE_DOT:''}`,
+      `state.showFavs=false;openGateway('${g.name}','${g.sector}')`, k===state.gateway); };
+  const brRow = k => { const z=ZONES[k]; if(!z) return ''; const gm=gwMetaFromKey(z.gw);
+    const mono=z.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    return shell(`${starFor(state.brandFavs.includes(k),'toggleBrandFav',k)}${tile(z.gradient||z.color||'#333',mono,11)}
+      ${nm(z.name, (gm?gm.name:'')+(z.tier?' · '+z.tier:''))}`,
+      `openZoneFav('${k}')`, k===state.zone); };
+
+  const section = (title, rows, note) => {
+    const body = rows.filter(Boolean).join('');
+    return `<div style="margin:14px 2px 0">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.1em;opacity:.5;padding:0 8px 5px">${title}</div>
+      ${body || `<div style="padding:4px 10px 6px;font-size:11.5px;opacity:.4;font-weight:600;line-height:1.5">${note}</div>`}
     </div>`;
-  const empty = !state.favs.length && !state.brandFavs.length;
+  };
+  const addRow = (label, fn, key) => `<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:13px;cursor:pointer;opacity:.8" onclick="${fn}('${key}')">
+    <div style="font-size:16px;width:22px;text-align:center;flex-shrink:0;color:rgba(255,255,255,.5)">☆</div>
+    <div style="font-size:12px;font-weight:700">Add ${label} to favourites</div></div>`;
+
+  let bodyHtml;
+  if(tab==='favs'){
+    const curSec = active && !state.sectorFavs.includes(active) ? sectorOf(active) : null;
+    const curGw  = state.gateway && !state.favs.includes(state.gateway) ? gwMetaFromKey(state.gateway) : null;
+    const curBr  = state.zone && ZONES[state.zone] && !state.brandFavs.includes(state.zone) ? ZONES[state.zone] : null;
+    bodyHtml =
+      section('SECTORS', [...state.sectorFavs.map(secRow), curSec?addRow(curSec.name,'toggleSectorFav',active):''],
+        'No sectors pinned yet — tap ☆ on any sector to keep it here.') +
+      section('GATEWAYS', [...state.favs.map(gwRow), curGw?addRow(curGw.name,'toggleFav',state.gateway):''],
+        'No gateways pinned yet — tap ☆ on any gateway.') +
+      section('BRANDS', [...state.brandFavs.map(brRow), curBr?addRow(curBr.name,'toggleBrandFav',state.zone):''],
+        'No brands pinned yet — tap ☆ on any brand zone.') +
+      section('OTHER', [], 'Pro Zones, apps and communities you pin will collect here as the ecosystem opens up.');
+  } else {
+    const of = t => state.recent.filter(r=>r.t===t).map(r=>r.k);
+    bodyHtml =
+      section('SECTORS', of('sector').map(secRow), 'Sectors you open will appear here.') +
+      section('GATEWAYS', of('gateway').map(gwRow), 'Gateways you visit will appear here.') +
+      section('BRANDS', of('brand').map(brRow), 'Brand zones you open will appear here.') +
+      section('OTHER', [], 'Pro Zones, apps and communities will appear here as you explore them.');
+  }
+
+  const tabBtn = (k, label) => `<div onclick="setFavTab('${k}')" style="flex:1;text-align:center;padding:9px 6px;border-radius:11px;font-weight:800;font-size:12.5px;cursor:pointer;transition:background .18s;${tab===k?'background:#F5B800;color:#141414':'background:rgba(255,255,255,.08);color:rgba(255,255,255,.7)'}">${label}</div>`;
+
   return `
-    <div style="position:fixed;inset:0;z-index:59" onclick="state.showFavs=false;render()"></div>
-    <div style="position:fixed;top:56px;right:max(12px,calc(50% - 203px));z-index:60;width:232px;background:rgba(18,18,24,.72);backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%);border:1px solid rgba(255,255,255,.14);border-radius:16px;box-shadow:0 16px 44px rgba(0,0,0,.5);padding:8px;color:#fff">
-      ${state.favs.length ? label('GATEWAYS')+gwRows : ''}
-      ${state.brandFavs.length ? label('BRANDS')+brandRows : ''}
-      ${empty ? `<div style="padding:8px;font-size:12px;opacity:.55">No favourites yet — tap ☆ on a gateway or brand to pin it here.</div>` : ''}
-      ${canAddGw ? addRow(curGw.name,'toggleFav',state.gateway) : ''}
-      ${canAddBrand ? addRow(curZone.name,'toggleBrandFav',state.zone) : ''}
+    <div style="position:fixed;left:50%;transform:translateX(-50%);top:0;bottom:0;width:100%;max-width:430px;z-index:60;display:flex;flex-direction:column;background:rgba(14,14,20,.9);backdrop-filter:blur(24px) saturate(140%);-webkit-backdrop-filter:blur(24px) saturate(140%);color:#fff">
+      <div style="flex-shrink:0;padding:calc(12px + env(safe-area-inset-top,0px)) 15px 8px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="flex:1;font-family:var(--cond);font-weight:800;font-size:21px;letter-spacing:.01em">Your GENEXXO</div>
+          <div onclick="toggleFavPanel()" title="Close" style="width:32px;height:32px;border-radius:99px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></div>
+        </div>
+        <div style="display:flex;gap:7px;margin-top:12px">${tabBtn('favs','Favourites')}${tabBtn('recent','Recent activity')}</div>
+      </div>
+      <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 13px calc(22px + var(--safe-b))">
+        ${bodyHtml}
+      </div>
     </div>`;
 }
 
@@ -1568,10 +1650,13 @@ function buildDrawer(){
   $('drawerList').innerHTML = [...SECTORS].sort((a,b)=>(sectorIsLive(b.key)?1:0)-(sectorIsLive(a.key)?1:0)).map(s=>{
     const on = s.key===active;
     const {accent, wash} = washFor(s.g);
+    const fav = state.sectorFavs.includes(s.key);
+    const rowStar = `<div onclick="event.stopPropagation();toggleSectorFavQuiet('${s.key}')" title="${fav?'Unpin sector':'Pin sector'}"
+      style="font-size:15px;line-height:1;padding:6px 2px 6px 8px;cursor:pointer;color:${fav?'#F5B800':'rgba(17,17,22,.22)'}">${fav?'★':'☆'}</div>`;
     return `<div class="drow"${on?' id="drawerActiveRow"':''} style="${on?`background:${wash};box-shadow:inset 3px 0 0 ${accent};`:''}" onclick="pickSector('${s.key}')">
       <div class="dic" style="background:${s.g}">${s.icon}</div>
       <div style="flex:1"><div class="dnm" style="${on?`color:${accent};`:''}">${s.name}</div><div class="dct">${(SECTOR_GATEWAYS[s.key]||[]).length} gateways${sectorIsLive(s.key)?' · LIVE':''}</div></div>
-      ${sectorIsLive(s.key)?LIVE_DOT:''}
+      <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${sectorIsLive(s.key)?LIVE_DOT:''}${rowStar}</div>
     </div>`;
   }).join('');
 }
@@ -3655,6 +3740,7 @@ function openZone(k, tab){
   state.zoneBarPage = (landTab==='events'||landTab==='about'||landTab==='media') ? 'more' : 'main';
   state.screen='zone'; state._before=null; state.showFavs=false;
   state.tab='home';   // committing to a real place — clear any open util tab (mirrors openGateway)
+  logVisit('brand', k);
   render(); $('screen').scrollTo(0,0); if(window.__resetChrome) window.__resetChrome();
 }
 function zoneToGateway(){   // escape up one rung — land on the ★ layer where you entered
