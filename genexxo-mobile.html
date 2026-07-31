@@ -1053,10 +1053,10 @@ function feedCard(gwKey, post, showSector){
 }
 
 /* Feed explainer card (2026-07-31) — a SYSTEM/info card, not a user post. Teaches
-   how an aggregated feed works and is injected as the 3rd card of the Network and
-   Sector feeds. Deliberately distinct from feedCard (gold ⓘ badge, no author row,
-   no gateway accent) so it never reads as someone's post. Text sits ABOVE the video.
-   Sector card = genexxo-videos/sector.mp4, Network card = genexxo-videos/network.mp4. */
+   how a feed works and is injected as the 3rd card of the Network, Sector and Gateway
+   feeds. Deliberately distinct from feedCard (gold ⓘ badge, no author row, no gateway
+   accent) so it never reads as someone's post. Text sits ABOVE the video. One clip each:
+   sector.mp4 · network.mp4 · gateway.mp4 (all in genexxo-videos/). */
 function explainerCard(o){
   return `<div class="nfcard" style="border:1px solid rgba(245,184,0,.28);background:linear-gradient(180deg,rgba(245,184,0,.06),rgba(20,20,28,.35))">
     <div class="bar" style="background:linear-gradient(135deg,#F5B800,#FFD34D)"></div>
@@ -1080,6 +1080,11 @@ const NETWORK_EXPLAINER = {
   label:'NETWORK FEED', video:'genexxo-videos/network.mp4',
   title:"You're now in the Network feed",
   text:"Where all the best content and posts from around the ecosystem rise up from every sector feed — the best of the best. You can't post directly here: register as a verified user, then post into your favourite domain gateways and your strongest work finds its own way to the top."
+};
+const GATEWAY_EXPLAINER = {
+  label:'GATEWAY FEED', video:'genexxo-videos/gateway.mp4',
+  title:"You're now in a Gateway feed",
+  text:"This is where you post. Register as a verified user and start sharing — the best of the best in the gateway feeds rise up through the sector and network feeds for the whole ecosystem to see."
 };
 /* Splice the explainer in as the 3rd card (index 2); if the feed is shorter, append. */
 function withExplainer(cards, card){ cards.splice(Math.min(2, cards.length), 0, card); return cards; }
@@ -1130,7 +1135,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.07.31-3';   // feed explainer cards — Network card now uses network.mp4
+const BUILD = '2026.07.31-4';   // feed explainer cards — added Gateway card (gateway.mp4)
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2049,7 +2054,7 @@ function renderGateway(){
       </div>`;
 
     const feed = gw.feed || [];
-    body = feed.length ? feed.map(card).join('')
+    body = feed.length ? withExplainer(feed.map(card), explainerCard(GATEWAY_EXPLAINER)).join('')
       : `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.55">Structural gateway — same shell, ${gw.name} skin.<br>Content lands when this gateway goes live.</div>`;
   }
 
