@@ -1052,6 +1052,38 @@ function feedCard(gwKey, post, showSector){
   </div>`;
 }
 
+/* Feed explainer card (2026-07-31) — a SYSTEM/info card, not a user post. Teaches
+   how an aggregated feed works and is injected as the 3rd card of the Network and
+   Sector feeds. Deliberately distinct from feedCard (gold ⓘ badge, no author row,
+   no gateway accent) so it never reads as someone's post. Text sits ABOVE the video.
+   Sector card = genexxo-videos/sector.mp4, Network card = genexxo-videos/network.mp4. */
+function explainerCard(o){
+  return `<div class="nfcard" style="border:1px solid rgba(245,184,0,.28);background:linear-gradient(180deg,rgba(245,184,0,.06),rgba(20,20,28,.35))">
+    <div class="bar" style="background:linear-gradient(135deg,#F5B800,#FFD34D)"></div>
+    <div class="in">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+        <div style="width:26px;height:26px;border-radius:50%;background:rgba(245,184,0,.14);display:flex;align-items:center;justify-content:center;font-size:14px;color:#F5B800">ⓘ</div>
+        <div style="font-size:9px;font-weight:800;letter-spacing:.09em;color:#F5B800">${o.label}</div>
+      </div>
+      <div style="font-size:15px;font-weight:800;line-height:1.35;margin-bottom:6px">${o.title}</div>
+      <div style="font-size:12.5px;line-height:1.55;color:var(--muted)">${o.text}</div>
+      ${mediaBlock({video:o.video}, 'linear-gradient(135deg,#33333a,#44444d)', 160)}
+    </div>
+  </div>`;
+}
+const SECTOR_EXPLAINER = {
+  label:'SECTOR FEED', video:'genexxo-videos/sector.mp4',
+  title:"You're now in a Sector feed",
+  text:"All the best content and posts from every relevant gateway in this sector work their way into this one feed. Note: you can't post directly into a sector feed — register as a verified user, then post into your favourite domain gateways and your best work rises here on its own."
+};
+const NETWORK_EXPLAINER = {
+  label:'NETWORK FEED', video:'genexxo-videos/network.mp4',
+  title:"You're now in the Network feed",
+  text:"Where all the best content and posts from around the ecosystem rise up from every sector feed — the best of the best. You can't post directly here: register as a verified user, then post into your favourite domain gateways and your strongest work finds its own way to the top."
+};
+/* Splice the explainer in as the 3rd card (index 2); if the feed is shorter, append. */
+function withExplainer(cards, card){ cards.splice(Math.min(2, cards.length), 0, card); return cards; }
+
 /* ═════════ STATE ═════════ */
 const params = new URLSearchParams(location.search);
 const ENTRY = params.get('entry');
@@ -1098,7 +1130,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.07.31-1';   // favourites panel → full-screen 2-tab (Favourites · Recent activity)
+const BUILD = '2026.07.31-3';   // feed explainer cards — Network card now uses network.mp4
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -1886,7 +1918,8 @@ function toast(msg){
   clearTimeout(el._t); el._t=setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateX(-50%) translateY(8px)'; }, 2100);
 }
 function renderHome(){
-  const body = `<div style="height:10px"></div>${NETWORK_FEED.map(i=>feedCard(i.gw,i,true)).join('')}`;
+  const cards = withExplainer(NETWORK_FEED.map(i=>feedCard(i.gw,i,true)), explainerCard(NETWORK_EXPLAINER));
+  const body = `<div style="height:10px"></div>${cards.join('')}`;
   return `${topBar()}
   ${favPanelHtml()}
   ${applyPanelHtml()}
@@ -1905,7 +1938,7 @@ function renderSector(){
   const bar = navSubBar();
 
   const body = feedItems.length
-    ? feedItems.map(x=>feedCard(x.gw,x.post,false)).join('')
+    ? withExplainer(feedItems.map(x=>feedCard(x.gw,x.post,false)), explainerCard(SECTOR_EXPLAINER)).join('')
     : `<div class="empty">The ${s.name} feed lights up when its gateways go live —<br>the best of each gateway feed rises here.</div>`;
   return `${topBar()}
   ${favPanelHtml()}
