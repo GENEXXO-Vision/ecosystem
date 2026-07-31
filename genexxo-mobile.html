@@ -989,13 +989,17 @@ function sectorFeedItems(sk){
   return items;
 }
 
-/* ═════════ MEDIA PIPELINE (2026-07-25) ═════════
-   Feed video lives in the genexxo-videos/ folder of the media GitHub repo, served
-   through the jsDelivr CDN (fast, cached, CORS-clean, works in the hosted PWA).
-   ▸ TO GO LIVE: set USER/REPO@branch below to the real repo — that one line is the
-     only thing between the placeholder and playing video.
+/* ═════════ MEDIA PIPELINE (2026-07-25, origin switched 2026-07-31) ═════════
+   Feed video lives in the genexxo-videos/ folder of the repo, served from the SAME
+   GitHub Pages origin that hosts this app (genexxo-vision.github.io/ecosystem/).
+   ▸ WHY NOT jsDelivr: jsDelivr caches a @branch file for 7 days AND the branch→commit
+     pointer for ~12h, so OVERWRITING a clip at the same path (e.g. re-uploading
+     sector.mp4) keeps serving the old one — purging the file edge doesn't refresh the
+     pointer. GitHub Pages serves the repo directly with max-age=600 (~10 min) and is
+     same-origin (no CORS), so swapped media shows up promptly with no purge/uninstall.
+     To revert to the CDN, set this back to 'https://cdn.jsdelivr.net/gh/GENEXXO-Vision/ecosystem@main/'.
    Full URLs (Unsplash stills etc.) pass straight through untouched. */
-const MEDIA_BASE = 'https://cdn.jsdelivr.net/gh/GENEXXO-Vision/ecosystem@main/';   // media repo (github.com/GENEXXO-Vision/ecosystem)
+const MEDIA_BASE = 'https://genexxo-vision.github.io/ecosystem/';   // same-origin as the hosted app (github.com/GENEXXO-Vision/ecosystem, Pages)
 const mediaUrl = p => (!p || /^https?:/.test(p)) ? p : MEDIA_BASE + p;
 
 /* One media block for any feed card. A post carries ONE of:
@@ -1177,7 +1181,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.07.31-7';   // zone CTA videos live; fix pros clip name (pro.mp4)
+const BUILD = '2026.07.31-8';   // media origin → GitHub Pages (fixes jsDelivr stale-cache on re-uploaded clips)
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
