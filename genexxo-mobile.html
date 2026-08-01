@@ -1120,14 +1120,20 @@ function withExplainer(cards, card){ cards.splice(Math.min(2, cards.length), 0, 
 function ctaApply(){ toast('Applications open at launch — stay tuned.'); }
 function zoneCtaCard(o){
   if(!o) return '';
-  return `<div class="nfcard" style="border:1px solid rgba(245,184,0,.30);background:linear-gradient(180deg,rgba(245,184,0,.10),rgba(17,17,23,.96));color:#F5F5F7;margin-top:12px">
-    <div class="bar" style="background:linear-gradient(135deg,#F5B800,#FFD34D)"></div>
-    <div class="in">
-      <div style="font-size:9px;font-weight:800;letter-spacing:.11em;color:#F5B800;margin-bottom:7px">${o.label}</div>
-      <div style="font-size:16px;font-weight:800;line-height:1.3;margin-bottom:7px;color:#FFFFFF">${o.title}</div>
-      <div style="font-size:12.5px;line-height:1.6;color:rgba(245,245,247,.78)">${o.text}</div>
-      ${mediaBlock({video:o.video}, 'linear-gradient(135deg,#33333a,#44444d)', 160)}
-      <button onclick="event.stopPropagation();ctaApply()" style="margin-top:12px;width:100%;padding:12px;border:none;border-radius:12px;background:linear-gradient(135deg,#F5B800,#FFD34D);color:#111116;font-size:13px;font-weight:800;letter-spacing:.02em;cursor:pointer">${o.cta||'Apply now →'}</button>
+  // Deliberately NOT a feed .nfcard — a "billboard" so a commercial claim reads as an
+  // opportunity slot, not user content: full-bleed hero video + scrim + floating category
+  // chip on top, then a dark promo panel with an oversized headline and a glowing Apply CTA.
+  // Video is inlined (not mediaBlock) so it's edge-to-edge; still carries data-vsrc for lazyMedia.
+  return `<div style="margin:16px 1px 6px;border-radius:20px;overflow:hidden;background:radial-gradient(130% 90% at 50% 0%,#211d0e 0%,#0d0d13 62%);border:1px solid rgba(245,184,0,.42);box-shadow:0 12px 36px rgba(0,0,0,.42),inset 0 0 0 1px rgba(245,184,0,.05)">
+    <div style="position:relative;background:#000">
+      <video autoplay loop muted playsinline preload="none" data-vsrc="${mediaUrl(o.video)}" style="width:100%;height:200px;object-fit:cover;display:block"></video>
+      <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.20) 0%,rgba(0,0,0,0) 38%,rgba(13,13,19,.9) 100%)"></div>
+      <div style="position:absolute;top:12px;left:12px;display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;background:rgba(245,184,0,.94);color:#141410;font-size:9px;font-weight:900;letter-spacing:.13em">◆ ${o.label}</div>
+    </div>
+    <div style="padding:16px 18px 19px">
+      <div style="font-size:20px;font-weight:900;line-height:1.2;letter-spacing:-.01em;color:#FFFFFF;margin-bottom:9px">${o.title}</div>
+      <div style="font-size:12.5px;line-height:1.62;color:rgba(245,245,247,.72);margin-bottom:16px">${o.text}</div>
+      <button onclick="event.stopPropagation();ctaApply()" style="width:100%;padding:14px;border:none;border-radius:13px;background:linear-gradient(135deg,#F5B800,#FFD34D);color:#111116;font-size:13.5px;font-weight:900;letter-spacing:.03em;cursor:pointer;box-shadow:0 5px 18px rgba(245,184,0,.30)">${o.cta||'Apply now →'}</button>
     </div>
   </div>`;
 }
@@ -1198,7 +1204,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.01-4';   // Tier B: network-first service worker (sw.js) — reliable updates + offline open
+const BUILD = '2026.08.01-5';   // 'Pros' bar label + billboard-style zone CTA cards; sw.js v2 (no-cache network-first)
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2053,7 +2059,7 @@ function renderGateway(){
   // page 1 = Feed · Brands · Apps, page 2 = Pro's · Communities · Business. (Apply moved off —
   // it's finding a new home.)
   const GW_PAGE1 = [['feed','Feed'],['brands','Brands'],['apps','Apps']];
-  const GW_PAGE2 = [['pros','Pro’s'],['communities','Communities'],['business','Business']];
+  const GW_PAGE2 = [['pros','Pros'],['communities','Communities'],['business','Business']];
   const onMore = state.gwBarPage==='more';
   const zTabs = onMore ? GW_PAGE2 : GW_PAGE1;
   const barArrow = onMore ? '‹' : '›';
@@ -2066,7 +2072,7 @@ function renderGateway(){
   const gwTabOn = k => k==='feed' ? !state.gwZones : (state.gwZones && state.gwZoneTab===k);
   bar = `<div class="substick netbar" style="background:${barBg}">
     ${zTabs.map(([k,lb])=>`<div class="ntab ${gwTabOn(k)?'on':''}" onclick="tapGwZone('${k}')">${lb}</div>`).join('')}
-    <div class="ntab${arrowNudge}" style="flex:0 0 30px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px" onclick="tapGwBarPage()" title="${onMore?'Back to Feed · Brands · Apps':'More — Pro’s · Communities · Business'}">${barArrow}</div>
+    <div class="ntab${arrowNudge}" style="flex:0 0 30px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px" onclick="tapGwBarPage()" title="${onMore?'Back to Feed · Brands · Apps':'More — Pros · Communities · Business'}">${barArrow}</div>
   </div>`;
 
   if (state.gwZones){
