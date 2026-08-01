@@ -1198,7 +1198,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.01-3';   // update banner: persist per-build dismissal (stops re-nag loop on installed PWAs)
+const BUILD = '2026.08.01-4';   // Tier B: network-first service worker (sw.js) — reliable updates + offline open
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -5024,6 +5024,16 @@ async function checkForUpdate(){
 }
 checkForUpdate();
 document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible') checkForUpdate(); });
+
+/* Service worker (Tier B, 2026-08-01) — registers sw.js, a NETWORK-FIRST app-shell worker.
+   This is what makes updates actually "take": on every online reopen the SW fetches the
+   freshest genexxo-mobile.html from the network (cached copy only as an offline fallback),
+   so an installed PWA no longer reopens stuck on an old cached build. Registered after load
+   so it never blocks first paint; fails silently off-https (e.g. file://). Pairs with the
+   version.json banner above (in-session signal) — the SW makes that banner's reload real. */
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
+}
 </script>
 </body>
 </html>
