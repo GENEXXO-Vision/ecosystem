@@ -1017,17 +1017,28 @@ function mediaBlock(f, bg, h){
 /* Lazy-load feed video — <video data-vsrc> gets its real src only when it scrolls
    within 400px of the viewport, then autoplays muted. Critical on mobile: never
    pull 50 clips over cellular at once. Ported from the desktop deck. Re-run after
-   every render() so freshly-drawn cards get observed. */
+   every render() so freshly-drawn cards get observed.
+   Priority load (2026-08-01): the first EAGER_VIDEOS clips in DOM order (= top of
+   whatever feed just rendered — the Network feed on load, a gateway's top clips the
+   moment you tap in, sector feeds too, all via this one path) get their src set
+   IMMEDIATELY instead of waiting for the observer, so above-the-fold video buffers on
+   render. The rest stay lazy so we still never hammer cellular. Tune EAGER_VIDEOS. */
 let _vidObserver = null;
+const EAGER_VIDEOS = 2;
+function _loadVid(v){ if(v.dataset.vsrc){ v.src=v.dataset.vsrc; v.removeAttribute('data-vsrc'); v.play().catch(()=>{}); } }
 function lazyMedia(){
   const vids = document.querySelectorAll('video[data-vsrc]');
   if(!vids.length) return;
-  if(!('IntersectionObserver' in window)){ vids.forEach(v=>{ v.src=v.dataset.vsrc; v.removeAttribute('data-vsrc'); }); return; }
+  // Eager-load the top-of-feed clips right now.
+  for(let i=0; i<Math.min(EAGER_VIDEOS, vids.length); i++) _loadVid(vids[i]);
+  const rest = Array.prototype.slice.call(vids, EAGER_VIDEOS);
+  if(!rest.length) return;
+  if(!('IntersectionObserver' in window)){ rest.forEach(_loadVid); return; }
   if(_vidObserver) _vidObserver.disconnect();
   _vidObserver = new IntersectionObserver((entries)=>{
-    entries.forEach(en=>{ if(en.isIntersecting){ const v=en.target; if(v.dataset.vsrc){ v.src=v.dataset.vsrc; v.removeAttribute('data-vsrc'); v.play().catch(()=>{}); } _vidObserver.unobserve(v); } });
+    entries.forEach(en=>{ if(en.isIntersecting){ _loadVid(en.target); _vidObserver.unobserve(en.target); } });
   }, { rootMargin:'400px 0px' });
-  vids.forEach(v=>_vidObserver.observe(v));
+  rest.forEach(v=>_vidObserver.observe(v));
 }
 
 /* Shared card for the ecosystem + sector feeds — provenance badge shows where the card rose from */
@@ -1181,7 +1192,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.07.31-8';   // media origin → GitHub Pages (fixes jsDelivr stale-cache on re-uploaded clips)
+const BUILD = '2026.08.01-1';   // priority-load top-of-feed videos (EAGER_VIDEOS) so above-the-fold clips buffer on render
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
