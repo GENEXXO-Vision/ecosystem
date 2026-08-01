@@ -5,8 +5,15 @@
    ▸ version.json and media (*.mp4 …) are deliberately NOT cached here — version.json must
      always hit the network (it's the freshness probe the in-app update banner reads), and
      the browser HTTP cache handles big media. Cross-origin requests pass straight through.
-   Only the mobile shell (genexxo-mobile.html) is cached, purely so the app opens offline. */
-const CACHE = 'genexxo-shell-v1';
+   Only the mobile shell (genexxo-mobile.html) is cached, purely so the app opens offline.
+   ▸ v2 FIX (2026-08-01): plain fetch(req) in a "network-first" SW STILL reads the browser
+     HTTP cache (max-age=600) — so for up to 10 min it re-served a STALE pre-build HTML while
+     version.json (fresh) reported the new build → the in-app update banner kept re-appearing
+     on random reopens. The document fetch now uses {cache:'no-cache'} so it ALWAYS revalidates
+     with the origin (304 = cheap when unchanged, full fetch when changed) → the running shell
+     is always the true latest, and the banner can no longer fire spuriously. CACHE bumped to
+     v2 so any poisoned v1 shell (cached from a briefly-inconsistent edge at install) is dropped. */
+const CACHE = 'genexxo-shell-v2';
 const SHELL = 'genexxo-mobile.html';
 
 self.addEventListener('install', (e) => {
@@ -37,7 +44,8 @@ self.addEventListener('fetch', (e) => {
   const isShell = url.pathname.endsWith('/genexxo-mobile.html');
   e.respondWith((async () => {
     try {
-      const net = await fetch(req);                             // NETWORK FIRST
+      // {cache:'no-cache'} = ALWAYS revalidate with origin, never trust the stale HTTP cache.
+      const net = await fetch(req.url, { cache: 'no-cache' });   // NETWORK FIRST (truly fresh)
       if (isShell && net && net.ok) { (await caches.open(CACHE)).put(SHELL, net.clone()); }
       return net;
     } catch (_) {
