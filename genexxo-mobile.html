@@ -1025,7 +1025,13 @@ function mediaBlock(f, bg, h){
    render. The rest stay lazy so we still never hammer cellular. Tune EAGER_VIDEOS. */
 let _vidObserver = null;
 const EAGER_VIDEOS = 2;
-function _loadVid(v){ if(v.dataset.vsrc){ v.src=v.dataset.vsrc; v.removeAttribute('data-vsrc'); v.play().catch(()=>{}); } }
+function _loadVid(v){
+  if(!v.dataset.vsrc) return;
+  v.src = v.dataset.vsrc; v.removeAttribute('data-vsrc');
+  const go = ()=>v.play().catch(()=>{});
+  go();                                       // try now (may reject — nothing buffered yet)
+  v.addEventListener('canplay', go, {once:true});   // …then again the moment it's ready (fixes eager top-of-feed clips, esp. big gateway videos)
+}
 function lazyMedia(){
   const vids = document.querySelectorAll('video[data-vsrc]');
   if(!vids.length) return;
@@ -1192,7 +1198,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.01-1';   // priority-load top-of-feed videos (EAGER_VIDEOS) so above-the-fold clips buffer on render
+const BUILD = '2026.08.01-3';   // update banner: persist per-build dismissal (stops re-nag loop on installed PWAs)
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -4982,12 +4988,22 @@ render();
    time the app regains focus (the exact moment an installed PWA is reopened) — so users get
    new gateways/builds without uninstalling or clearing cache. On EVERY deploy, bump BOTH the
    `BUILD` constant above AND version.json to the same new value, or the banner won't fire. */
+/* Dismissal is PERSISTED per-build (2026-08-01): without a service worker an installed
+   PWA reopens at its cached start page, so if that page is an OLD build it will keep
+   detecting the newer version.json and re-nag on every open — an endless loop. We record
+   the acknowledged build in localStorage (`gx_updDismissed`) the moment the user taps
+   Update OR dismisses, so a given build prompts at most once; a genuinely NEW deploy
+   (different build string) still prompts afresh. Tier B (network-first SW, [[genexxo-mobile-update-strategy]])
+   is the durable fix that also makes the reload actually replace the cached page. */
 let _updDismissed = null;
+try{ _updDismissed = localStorage.getItem('gx_updDismissed') || null; }catch(e){}
+function _setUpdDismissed(build){ _updDismissed = build||null; try{ if(build) localStorage.setItem('gx_updDismissed', build); }catch(e){} }
 function reloadForUpdate(build){
+  _setUpdDismissed(build);   // acknowledge so we don't loop if the reload can't replace the cached start page
   try{ const u=new URL(location.href); u.searchParams.set('v', build||String(Date.now())); location.replace(u.toString()); }
   catch(e){ location.reload(); }
 }
-function dismissUpdate(){ const b=$('updateBar'); if(b){ _updDismissed=b.dataset.build||null; b.remove(); } }
+function dismissUpdate(){ const b=$('updateBar'); if(b){ _setUpdDismissed(b.dataset.build||null); b.remove(); } }
 function showUpdateBanner(build){
   if($('updateBar')) return;
   const bar=document.createElement('div');
