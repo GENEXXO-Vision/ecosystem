@@ -1032,16 +1032,31 @@ let _vidObserver = null;
 const EAGER_VIDEOS = 2;
 function _loadVid(v){
   if(!v.dataset.vsrc) return;
+  v.preload = 'auto';                         // commit to buffering — the tag ships as preload="none"
   v.src = v.dataset.vsrc; v.removeAttribute('data-vsrc');
   const go = ()=>v.play().catch(()=>{});
   go();                                       // try now (may reject — nothing buffered yet)
   v.addEventListener('canplay', go, {once:true});   // …then again the moment it's ready (fixes eager top-of-feed clips, esp. big gateway videos)
 }
+/* Eager-load the top-of-feed clips SEQUENTIALLY, not all at once. Loading them together
+   made them split the (cellular) pipe with each other AND with the render-time image burst,
+   so the top 1–2 cards crawled while a clip scrolled to later loaded fast on an idle pipe.
+   Chaining gives the very top clip the whole pipe first; the next starts once this one has
+   data (loadeddata) or after a short fallback so a stalled clip can't block the chain. */
+function _loadEager(vids, i){
+  if(i >= Math.min(EAGER_VIDEOS, vids.length)) return;
+  const v = vids[i];
+  let advanced = false;
+  const next = ()=>{ if(advanced) return; advanced = true; _loadEager(vids, i+1); };
+  _loadVid(v);
+  v.addEventListener('loadeddata', next, {once:true});
+  setTimeout(next, 1200);                     // don't let a stalled top clip block the next
+}
 function lazyMedia(){
   const vids = document.querySelectorAll('video[data-vsrc]');
   if(!vids.length) return;
-  // Eager-load the top-of-feed clips right now.
-  for(let i=0; i<Math.min(EAGER_VIDEOS, vids.length); i++) _loadVid(vids[i]);
+  // Eager-load the top-of-feed clips right now — sequentially (see _loadEager).
+  _loadEager(vids, 0);
   const rest = Array.prototype.slice.call(vids, EAGER_VIDEOS);
   if(!rest.length) return;
   if(!('IntersectionObserver' in window)){ rest.forEach(_loadVid); return; }
