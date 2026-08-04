@@ -1027,7 +1027,11 @@ function mediaBlock(f, bg, h){
    whatever feed just rendered — the Network feed on load, a gateway's top clips the
    moment you tap in, sector feeds too, all via this one path) get their src set
    IMMEDIATELY instead of waiting for the observer, so above-the-fold video buffers on
-   render. The rest stay lazy so we still never hammer cellular. Tune EAGER_VIDEOS. */
+   render. The rest stay lazy so we still never hammer cellular. Tune EAGER_VIDEOS.
+   Kick-start pass (2026-08-04): sw.js v3 now caches clips (cache-first + background
+   revalidate), _prefetchVids warms the next PREFETCH_VIDEOS clips after the eager ones,
+   and the observer margin is 900px — together: repeat views play instantly from cache,
+   and first views start downloading well before the card is on screen. */
 let _vidObserver = null;
 const EAGER_VIDEOS = 2;
 function _loadVid(v){
@@ -1052,18 +1056,42 @@ function _loadEager(vids, i){
   v.addEventListener('loadeddata', next, {once:true});
   setTimeout(next, 1200);                     // don't let a stalled top clip block the next
 }
+/* Warm-the-pipe prefetch (2026-08-04): once the eager top clips have had the pipe to
+   themselves, quietly fetch() the NEXT few clips in feed order so their bytes are already
+   in the service worker's media cache (or the plain HTTP cache) BEFORE the user scrolls
+   to them — the observer then flips src on a fully-local file and it plays instantly
+   instead of stalling mid-scroll. Sequential (one clip owns the pipe at a time), skips
+   clips the observer already claimed, cancelled by the next render() via the token so an
+   old feed's prefetch never fights a fresh feed's own clips. Respects Data Saver. */
+const PREFETCH_VIDEOS = 4;
+let _prefetchToken = 0;
+function _prefetchVids(vids){
+  const token = ++_prefetchToken;
+  if(navigator.connection && navigator.connection.saveData) return;
+  const urls = Array.prototype.slice.call(vids, EAGER_VIDEOS, EAGER_VIDEOS + PREFETCH_VIDEOS)
+                 .map(v => v.dataset.vsrc).filter(Boolean);
+  let i = 0;
+  const next = ()=>{
+    if(token !== _prefetchToken || i >= urls.length) return;
+    const u = urls[i++];
+    if(!document.querySelector(`video[data-vsrc="${u}"]`)){ next(); return; }   // observer got there first
+    fetch(u).then(r => r.ok ? r.blob() : null).catch(()=>{}).then(next, next);  // .blob() = pull the full body into cache
+  };
+  setTimeout(next, 3000);                     // eager clips own the pipe first
+}
 function lazyMedia(){
   const vids = document.querySelectorAll('video[data-vsrc]');
   if(!vids.length) return;
   // Eager-load the top-of-feed clips right now — sequentially (see _loadEager).
   _loadEager(vids, 0);
+  _prefetchVids(vids);
   const rest = Array.prototype.slice.call(vids, EAGER_VIDEOS);
   if(!rest.length) return;
   if(!('IntersectionObserver' in window)){ rest.forEach(_loadVid); return; }
   if(_vidObserver) _vidObserver.disconnect();
   _vidObserver = new IntersectionObserver((entries)=>{
     entries.forEach(en=>{ if(en.isIntersecting){ _loadVid(en.target); _vidObserver.unobserve(en.target); } });
-  }, { rootMargin:'400px 0px' });
+  }, { rootMargin:'900px 0px' });             // ~1.5 screens ahead — start the download well before the card is looked at
   rest.forEach(v=>_vidObserver.observe(v));
 }
 
@@ -1224,7 +1252,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.01-6';   // 'Pros' label + billboard CTA cards + xx video spotlight cards (handbag/diet/sleep/mortgage/pension); sw.js v2
+const BUILD = '2026.08.04-7';   // video kick-start: sw.js v3 media cache (206/Range) + next-clip prefetch + 900px observer margin
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
