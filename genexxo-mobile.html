@@ -1061,14 +1061,18 @@ function vlog(msg){
   }
   el.textContent = _vlogLines.join('\n');
 }
+// First HUD line each session: which build is running and whether the SW controls the
+// page — a "NOT CONTROLLING" here means every clip is going straight to the network
+// (no cache), which explains any across-the-board slowness in the log that follows.
+window.addEventListener('load', ()=>{ if(_vdebug) setTimeout(()=>vlog(`BUILD ${BUILD} · SW ${(navigator.serviceWorker&&navigator.serviceWorker.controller)?'controlling':'NOT CONTROLLING'}`), 800); });
 
 let _vidObserver = null;
 let _playObserver = null;   // pauses clips that scroll away / resumes on return — see lazyMedia
 const EAGER_VIDEOS = 2;
 function _loadVid(v){
   if(!v.isConnected || !v.dataset.vsrc) return;   // detached = a card from a page we already left — never start its download
+  const name = v.dataset.vsrc.split('/').pop(), t0 = performance.now();
   if(_vdebug){
-    const name = (v.dataset.vsrc||'').split('/').pop(), t0 = performance.now();
     vlog(`▶ ${name}`);
     v.addEventListener('canplay', ()=>vlog(`✓ ${name} ${Math.round(performance.now()-t0)}ms`), {once:true});
     v.addEventListener('error',   ()=>vlog(`✗ ${name} ERROR code=${v.error&&v.error.code}`), {once:true});
@@ -1080,6 +1084,20 @@ function _loadVid(v){
   go();                                       // try now (may reject — nothing buffered yet)
   v.addEventListener('canplay', go, {once:true});   // …then again the moment it's ready (fixes eager top-of-feed clips, esp. big gateway videos)
   if(_playObserver) _playObserver.observe(v); // hand playback control to the on/off-screen observer
+  // Stall watchdog (2026-08-04, from HUD field data): on a weak-signal moment a clip's
+  // stream can sit at ready=0 for 10-30s while the SW's background cache-fill of the SAME
+  // clip quietly completes on its own connection. If the element still has NO data after
+  // 10s, re-kick it (load() re-requests the src) — by then the fill has usually landed,
+  // so the retry answers instantly from the cache. Repeats every 12s until data arrives;
+  // never touches a clip that has started (readyState>=2).
+  const kick = ()=>{
+    if(!v.isConnected || v.readyState >= 2) return;
+    vlog(`↻ ${name} re-kick @${Math.round((performance.now()-t0)/1000)}s`);
+    v.load(); v.play().catch(()=>{});
+    v.addEventListener('canplay', go, {once:true});
+    setTimeout(kick, 12000);
+  };
+  setTimeout(kick, 10000);
 }
 /* Eager-load the top-of-feed clips SEQUENTIALLY, not all at once. Loading them together
    made them split the (cellular) pipe with each other AND with the render-time image burst,
@@ -1146,9 +1164,19 @@ function _prefetchVids(vids){
     if(f){ const u = mediaUrl(f.video); if(!seen.has(u)){ seen.add(u); heroes.push(u); } }
   });
   const list = feedUrls.map(u => ({u, feed:true})).concat(heroes.map(u => ({u})));
+  // Politeness gate (2026-08-04): never warm while an ON-SCREEN clip is still fighting
+  // for its first frame — on a weak signal the warm-up otherwise competes with the very
+  // video the user is looking at. "Fighting" = playing (autoplay committed) but below
+  // HAVE_FUTURE_DATA; clips paused offscreen by _playObserver don't count.
+  const busy = ()=>{
+    const vs = document.querySelectorAll('video[src]');
+    for(const v of vs){ if(v.isConnected && !v.paused && v.readyState < 3) return true; }
+    return false;
+  };
   let i = 0;
   const next = ()=>{
     if(token !== _prefetchToken || i >= list.length) return;
+    if(busy()){ setTimeout(next, 800); return; }   // stand aside, re-check shortly
     const it = list[i++];
     if(it.feed && !document.querySelector(`video[data-vsrc="${it.u}"]`)){ next(); return; }   // observer got there first
     fetch(it.u).then(r => r.ok ? r.blob() : null).catch(()=>{}).then(next, next);  // .blob() = pull the full body into cache
@@ -1344,7 +1372,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.04-11';  // sw.js v5: cold plays pass through untouched (native 206) + deduped bg cache fill — no more hand-built streams; video debug HUD (5 taps on this footer)
+const BUILD = '2026.08.04-12';  // slow-signal guards: 10s stall watchdog re-kicks a no-data clip (retry hits the by-then-filled cache) + warm-up yields while an on-screen clip loads; HUD logs SW state at boot
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
