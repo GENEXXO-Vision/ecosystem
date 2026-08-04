@@ -1382,7 +1382,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.04-13';  // dead-socket fix: 25s version.json keepalive stops the idle connection dying (cold-clip 10-30s zero-byte hangs) + warm-up chain retries its failures once
+const BUILD = '2026.08.04-14';  // sw.js v6: cold-play cache fill delayed 15s so the player's stream gets the whole pipe (cold clips downloaded twice in parallel = the residual 7-8s starts)
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view

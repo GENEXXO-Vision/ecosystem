@@ -83,14 +83,25 @@ function slice206(buf, range, type) {
 }
 
 /* One deduped background download to fill the cache — several near-simultaneous requests
-   for the same cold clip (probe + play + prefetch) must not each pull the full file. */
+   for the same cold clip (probe + play + prefetch) must not each pull the full file.
+   ▸ v6 (2026-08-04): the fill now WAITS 15s before fetching. It used to start immediately,
+     so a cold PLAYED clip downloaded twice IN PARALLEL — the fill halved the player's
+     bandwidth exactly while the user stared at a frozen first frame (HUD: cold clips
+     ~7-8s even on a live socket, completing in sync with their neighbours = pure pipe
+     contention). Now the player's own stream gets the whole pipe; by the time the fill
+     fires the play is done (or nearly), and it skips itself if the app's warm-up chain
+     cached the clip in the meantime. */
 const _filling = new Set();
 function fillMedia(url) {
   if (_filling.has(url)) return Promise.resolve();
   _filling.add(url);
-  return fetch(url).then(async (net) => {
-    if (net && net.ok && net.status === 200) await (await caches.open(MEDIA)).put(url, net);
-  }).catch(() => {}).finally(() => _filling.delete(url));
+  return (async () => {
+    await new Promise(r => setTimeout(r, 15000));
+    const cache = await caches.open(MEDIA);
+    if (await cache.match(url)) return;                          // warm-up beat us to it
+    const net = await fetch(url);
+    if (net && net.ok && net.status === 200) await cache.put(url, net);
+  })().catch(() => {}).finally(() => _filling.delete(url));
 }
 
 /* v5 SIMPLIFICATION (2026-08-04): the SW no longer hand-streams COLD clips. v4 built 206
