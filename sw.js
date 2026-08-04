@@ -63,23 +63,8 @@ function revalidateMedia(url, cachedRes) {
   })().catch(() => {});
 }
 
-async function serveMedia(e) {
-  const req = e.request;
-  const cache = await caches.open(MEDIA);
-  let res = await cache.match(req.url);
-  if (res) {
-    e.waitUntil(revalidateMedia(req.url, res));                  // instant play now, fresh next view (headers-only size check)
-  } else {
-    let net;
-    try { net = await fetch(req.url); } catch (_) { return Response.error(); }   // fetch WITHOUT the Range header → full 200 we can cache
-    if (!(net && net.ok && net.status === 200)) return net;      // odd response → pass straight through
-    await cache.put(req.url, net.clone());
-    res = net;
-  }
-  const range = req.headers.get('range');
-  if (!range) return res;
-  // Slice the cached full body into a real 206 — required for iOS Safari playback.
-  const buf = await res.arrayBuffer();
+/* Build a real 206 from an in-memory buffer — required for iOS Safari playback. */
+function slice206(buf, range, type) {
   const m = /bytes=(\d+)-(\d*)/.exec(range);
   const start = m ? +m[1] : 0;
   const end = (m && m[2]) ? Math.min(+m[2], buf.byteLength - 1) : buf.byteLength - 1;
@@ -89,12 +74,66 @@ async function serveMedia(e) {
   return new Response(buf.slice(start, end + 1), {
     status: 206, statusText: 'Partial Content',
     headers: {
-      'Content-Type': res.headers.get('Content-Type') || 'video/mp4',
+      'Content-Type': type || 'video/mp4',
       'Content-Range': `bytes ${start}-${end}/${buf.byteLength}`,
       'Content-Length': String(end - start + 1),
       'Accept-Ranges': 'bytes',
     }
   });
+}
+
+async function serveMedia(e) {
+  const req = e.request;
+  const range = req.headers.get('range');
+  const cache = await caches.open(MEDIA);
+  const cached = await cache.match(req.url);
+  if (cached) {
+    e.waitUntil(revalidateMedia(req.url, cached));               // instant play now, fresh next view (headers-only size check)
+    if (!range) return cached;
+    return slice206(await cached.arrayBuffer(), range, cached.headers.get('Content-Type'));
+  }
+  /* MISS — v4 STREAMING FIX (2026-08-04): the old path did `await cache.put(...)` before
+     responding, which blocks until the ENTIRE clip has downloaded — the player got its
+     FIRST byte only after the LAST byte arrived. That was the remaining 10-15s "frozen
+     start" on every first visit to a gateway (pre-SW, video streamed progressively and
+     started after ~100KB). Now: ONE download, cloned — the clone fills the cache as it
+     arrives (background), the original streams to the player immediately. */
+  let net;
+  try { net = await fetch(req.url); } catch (_) { return Response.error(); }   // fetch WITHOUT the Range header → full 200 we can cache
+  if (!(net && net.ok && net.status === 200)) return net;        // odd response → pass straight through
+  e.waitUntil(cache.put(req.url, net.clone()).catch(() => {}));  // fills as the download progresses
+  if (!net.body) return net;                                     // exotic engine without streams → plain pass-through
+  const total = +net.headers.get('content-length') || 0;
+  const type = net.headers.get('content-type') || 'video/mp4';
+  const m = range && /bytes=(\d+)-(\d*)/.exec(range);
+  if (!m) return net;                                            // no Range → stream straight through
+  const start = +m[1], boundedEnd = m[2] ? +m[2] : null;
+  if (start === 0 && boundedEnd === null && total) {
+    // bytes=0- (the normal first request): the whole file as a 206, streamed as it arrives
+    return new Response(net.body, { status: 206, statusText: 'Partial Content',
+      headers: { 'Content-Type': type, 'Content-Range': `bytes 0-${total - 1}/${total}`,
+                 'Content-Length': String(total), 'Accept-Ranges': 'bytes' } });
+  }
+  if (!total) return net;                                        // can't build a valid 206 without the size
+  // Bounded / offset range on a COLD clip (e.g. Safari's 2-byte bytes=0-1 probe): read
+  // only what's needed from the live stream, answer, and stop reading this branch — the
+  // cache clone keeps downloading to completion regardless.
+  const end = Math.min(boundedEnd === null ? total - 1 : boundedEnd, total - 1);
+  const reader = net.body.getReader();
+  const chunks = []; let got = 0;
+  while (got <= end) {
+    const r = await reader.read();
+    if (r.done) break;
+    chunks.push(r.value); got += r.value.byteLength;
+  }
+  reader.cancel().catch(() => {});
+  if (start >= got) return new Response(null, { status: 416, headers: { 'Content-Range': `bytes */${total}` } });
+  const all = new Uint8Array(got);
+  let off = 0; for (const c of chunks) { all.set(c, off); off += c.byteLength; }
+  const endGot = Math.min(end, got - 1);
+  return new Response(all.buffer.slice(start, endGot + 1), { status: 206, statusText: 'Partial Content',
+    headers: { 'Content-Type': type, 'Content-Range': `bytes ${start}-${endGot}/${total}`,
+               'Content-Length': String(endGot - start + 1), 'Accept-Ranges': 'bytes' } });
 }
 
 self.addEventListener('fetch', (e) => {

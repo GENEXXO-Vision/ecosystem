@@ -1094,9 +1094,21 @@ function _prefetchVids(vids){
   const feedUrls = Array.prototype.slice.call(vids, EAGER_VIDEOS, EAGER_VIDEOS + PREFETCH_VIDEOS)
                      .map(v => v.dataset.vsrc).filter(Boolean);
   const seen = new Set(feedUrls);
-  // …then the sector's sibling-gateway hero clips (the user may hop to them).
-  const list = feedUrls.map(u => ({u, feed:true}))
-    .concat(_sectorHeroUrls().filter(u => !seen.has(u)).map(u => ({u})));
+  // …then the sector's sibling-gateway hero clips (the user may hop to them)…
+  const heroes = _sectorHeroUrls().filter(u => !seen.has(u));
+  heroes.forEach(u => seen.add(u));
+  // …then EVERY other built gateway's hero (2026-08-04): over a session the whole app
+  // warms — each clip is pulled once EVER (SW media cache), an already-cached one costs
+  // a headers-only revalidate — so "first visit to a new gateway" stops being a cold
+  // start. Sequential + token-cancelled, so it only ever uses idle pipe. ~20 clips ×
+  // ~0.4MB one-time on a fresh device; set WARM_ALL_HEROES=false to keep it sector-only.
+  const WARM_ALL_HEROES = true;
+  if(WARM_ALL_HEROES) Object.keys(GATEWAYS).forEach(k=>{
+    const g = GATEWAYS[k];
+    const f = g && g.feed && g.feed.find(x=>x.video);
+    if(f){ const u = mediaUrl(f.video); if(!seen.has(u)){ seen.add(u); heroes.push(u); } }
+  });
+  const list = feedUrls.map(u => ({u, feed:true})).concat(heroes.map(u => ({u})));
   let i = 0;
   const next = ()=>{
     if(token !== _prefetchToken || i >= list.length) return;
@@ -1295,7 +1307,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.04-9';   // random-stall fix: sw.js v4 HEAD-based revalidate (Pages resets ETags per deploy → v3 re-downloaded every cached clip) + pause offscreen clips (decoder cap relief)
+const BUILD = '2026.08.04-10';  // cold-start fix: sw.js streams first-visit clips to the player WHILE caching (was: full download before first byte) + all-gateway hero warm-up
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
