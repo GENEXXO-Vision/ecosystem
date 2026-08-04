@@ -1188,8 +1188,16 @@ function _prefetchVids(vids){
     if(busy()){ setTimeout(next, 800); return; }   // stand aside, re-check shortly
     const it = list[i++];
     if(it.feed && !document.querySelector(`video[data-vsrc="${it.u}"]`)){ next(); return; }   // observer got there first
-    fetch(it.u).then(r => { if(!r.ok) throw 0; return r.blob(); })   // .blob() = pull the full body into cache
-      .catch(()=>{ failed.push(it); }).then(next, next);
+    // 20s abort-timeout (2026-08-04): a warm fetch that starts just as the link drops out
+    // used to hang for a minute-plus, WEDGING the whole sequential chain — HUD showed
+    // gateway heroes still cold after 3+ min in-app. Now a hung fetch fails fast into the
+    // retry pile and the chain moves on.
+    const ctrl = ('AbortController' in window) ? new AbortController() : null;
+    const tid = setTimeout(()=>{ if(ctrl) ctrl.abort(); }, 20000);
+    const done = ()=>{ clearTimeout(tid); next(); };
+    fetch(it.u, ctrl ? {signal: ctrl.signal} : {})
+      .then(r => { if(!r.ok) throw 0; return r.blob(); })   // .blob() = pull the full body into cache
+      .catch(()=>{ failed.push(it); }).then(done, done);
   };
   setTimeout(next, 3000);                     // eager clips own the pipe first
 }
@@ -1382,7 +1390,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.04-14';  // sw.js v6: cold-play cache fill delayed 15s so the player's stream gets the whole pipe (cold clips downloaded twice in parallel = the residual 7-8s starts)
+const BUILD = '2026.08.04-15';  // outage handling: warm-up fetches get a 20s abort (a hung fetch wedged the whole chain) + keepalive ping logs '⚠ net ping failed' to the HUD = hard evidence of link dropouts
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -5237,7 +5245,17 @@ if('serviceWorker' in navigator){
    the SW and is no-store, so this is a pure network touch (~1KB/min); it pauses whenever
    the app is backgrounded. */
 setInterval(()=>{
-  if(document.visibilityState==='visible') fetch('version.json?ka=1', {cache:'no-store'}).catch(()=>{});
+  if(document.visibilityState!=='visible') return;
+  // 5s timeout + HUD line on failure (2026-08-04): -14 logs still showed 20-30s zero-byte
+  // stalls with SYNCHRONISED recovery across unrelated clips — the signature of the LINK
+  // dropping out entirely, which no keepalive can prevent. The ping now doubles as a
+  // network monitor: when it can't complete in 5s the HUD logs it, so a stuck clip can be
+  // read against hard evidence of whether the connection was down in that window.
+  const ctrl = ('AbortController' in window) ? new AbortController() : null;
+  const tid = setTimeout(()=>{ if(ctrl) ctrl.abort(); }, 5000);
+  fetch('version.json?ka=1', Object.assign({cache:'no-store'}, ctrl ? {signal: ctrl.signal} : {}))
+    .then(()=>clearTimeout(tid))
+    .catch(()=>{ clearTimeout(tid); if(_vdebug) vlog('⚠ net ping failed'); });
 }, 25000);
 </script>
 </body>
