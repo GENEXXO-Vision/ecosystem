@@ -1163,7 +1163,7 @@ function _prefetchVids(vids){
     const f = g && g.feed && g.feed.find(x=>x.video);
     if(f){ const u = mediaUrl(f.video); if(!seen.has(u)){ seen.add(u); heroes.push(u); } }
   });
-  const list = feedUrls.map(u => ({u, feed:true})).concat(heroes.map(u => ({u})));
+  let list = feedUrls.map(u => ({u, feed:true})).concat(heroes.map(u => ({u})));
   // Politeness gate (2026-08-04): never warm while an ON-SCREEN clip is still fighting
   // for its first frame — on a weak signal the warm-up otherwise competes with the very
   // video the user is looking at. "Fighting" = playing (autoplay committed) but below
@@ -1174,12 +1174,22 @@ function _prefetchVids(vids){
     return false;
   };
   let i = 0;
+  const failed = []; let retried = false;
   const next = ()=>{
-    if(token !== _prefetchToken || i >= list.length) return;
+    if(token !== _prefetchToken) return;
+    if(i >= list.length){
+      // Retry pass (2026-08-04): a warm fetch that dies (dead-socket window, signal dip)
+      // used to be skipped for the whole session — leaving random cold holes in the cache
+      // that bite exactly when a gateway is opened later. Re-queue the failures ONCE after
+      // the chain finishes; a clip that fails twice waits for the next session.
+      if(failed.length && !retried){ retried = true; list = failed.slice(); failed.length = 0; i = 0; setTimeout(next, 5000); }
+      return;
+    }
     if(busy()){ setTimeout(next, 800); return; }   // stand aside, re-check shortly
     const it = list[i++];
     if(it.feed && !document.querySelector(`video[data-vsrc="${it.u}"]`)){ next(); return; }   // observer got there first
-    fetch(it.u).then(r => r.ok ? r.blob() : null).catch(()=>{}).then(next, next);  // .blob() = pull the full body into cache
+    fetch(it.u).then(r => { if(!r.ok) throw 0; return r.blob(); })   // .blob() = pull the full body into cache
+      .catch(()=>{ failed.push(it); }).then(next, next);
   };
   setTimeout(next, 3000);                     // eager clips own the pipe first
 }
@@ -1372,7 +1382,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.04-12';  // slow-signal guards: 10s stall watchdog re-kicks a no-data clip (retry hits the by-then-filled cache) + warm-up yields while an on-screen clip loads; HUD logs SW state at boot
+const BUILD = '2026.08.04-13';  // dead-socket fix: 25s version.json keepalive stops the idle connection dying (cold-clip 10-30s zero-byte hangs) + warm-up chain retries its failures once
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -5216,6 +5226,19 @@ document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState=
 if('serviceWorker' in navigator){
   window.addEventListener('load', ()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
 }
+
+/* Connection keepalive (2026-08-04): HUD field logs showed cold clips stuck at ready=0 —
+   ZERO bytes received — for 10-30s, with UNRELATED clips stalling and then recovering at
+   the SAME instant. Files don't fail in synchronised groups; connections do. Mobile radios
+   and NATs silently kill the idle connection to GitHub Pages, and the next clip request
+   then hangs on the dead socket until the browser gives up and reconnects. Re-fetching the
+   ~300-byte version.json every 25s while the app is visible keeps the connection (and the
+   radio) alive, so a cold clip's first request rides a live pipe. version.json bypasses
+   the SW and is no-store, so this is a pure network touch (~1KB/min); it pauses whenever
+   the app is backgrounded. */
+setInterval(()=>{
+  if(document.visibilityState==='visible') fetch('version.json?ka=1', {cache:'no-store'}).catch(()=>{});
+}, 25000);
 </script>
 </body>
 </html>
