@@ -1035,7 +1035,7 @@ function mediaBlock(f, bg, h){
 let _vidObserver = null;
 const EAGER_VIDEOS = 2;
 function _loadVid(v){
-  if(!v.dataset.vsrc) return;
+  if(!v.isConnected || !v.dataset.vsrc) return;   // detached = a card from a page we already left — never start its download
   v.preload = 'auto';                         // commit to buffering — the tag ships as preload="none"
   v.src = v.dataset.vsrc; v.removeAttribute('data-vsrc');
   const go = ()=>v.play().catch(()=>{});
@@ -1065,17 +1065,42 @@ function _loadEager(vids, i){
    old feed's prefetch never fights a fresh feed's own clips. Respects Data Saver. */
 const PREFETCH_VIDEOS = 4;
 let _prefetchToken = 0;
+/* Sibling-gateway hero warm-up (2026-08-04): the clip a gateway opens on is the FIRST
+   video in its feed — so while sitting anywhere in a sector context (sector page or a
+   gateway in it), quietly pull the hero clip of every OTHER built gateway in that sector
+   into the cache. This is the "kick-start trigger" for rapid gateway-hopping: by the
+   time a sibling gateway is tapped, its opening clip is already local. ~4 clips ×
+   ~0.4MB once per sector; the SW media cache makes every later pass a cheap 304. */
+function _sectorHeroUrls(){
+  const sk = activeSectorKey();
+  if(!sk || !SECTOR_GATEWAYS[sk]) return [];
+  const cur = (state.screen==='gateway' && state._gwObj) ? gwKeyFromName(state._gwObj.name) : null;
+  const urls = [];
+  SECTOR_GATEWAYS[sk].forEach(n=>{
+    const k = gwKeyFromName(n);
+    if(k === cur) return;                     // the one we're in is already playing
+    const g = GATEWAYS[k];
+    const f = g && g.feed && g.feed.find(x=>x.video);
+    if(f) urls.push(mediaUrl(f.video));
+  });
+  return urls;
+}
 function _prefetchVids(vids){
   const token = ++_prefetchToken;
   if(navigator.connection && navigator.connection.saveData) return;
-  const urls = Array.prototype.slice.call(vids, EAGER_VIDEOS, EAGER_VIDEOS + PREFETCH_VIDEOS)
-                 .map(v => v.dataset.vsrc).filter(Boolean);
+  // This feed's next clips first (the user is about to scroll to them)…
+  const feedUrls = Array.prototype.slice.call(vids, EAGER_VIDEOS, EAGER_VIDEOS + PREFETCH_VIDEOS)
+                     .map(v => v.dataset.vsrc).filter(Boolean);
+  const seen = new Set(feedUrls);
+  // …then the sector's sibling-gateway hero clips (the user may hop to them).
+  const list = feedUrls.map(u => ({u, feed:true}))
+    .concat(_sectorHeroUrls().filter(u => !seen.has(u)).map(u => ({u})));
   let i = 0;
   const next = ()=>{
-    if(token !== _prefetchToken || i >= urls.length) return;
-    const u = urls[i++];
-    if(!document.querySelector(`video[data-vsrc="${u}"]`)){ next(); return; }   // observer got there first
-    fetch(u).then(r => r.ok ? r.blob() : null).catch(()=>{}).then(next, next);  // .blob() = pull the full body into cache
+    if(token !== _prefetchToken || i >= list.length) return;
+    const it = list[i++];
+    if(it.feed && !document.querySelector(`video[data-vsrc="${it.u}"]`)){ next(); return; }   // observer got there first
+    fetch(it.u).then(r => r.ok ? r.blob() : null).catch(()=>{}).then(next, next);  // .blob() = pull the full body into cache
   };
   setTimeout(next, 3000);                     // eager clips own the pipe first
 }
@@ -1252,7 +1277,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.04-7';   // video kick-start: sw.js v3 media cache (206/Range) + next-clip prefetch + 900px observer margin
+const BUILD = '2026.08.04-8';   // gateway-hop fix: abort outgoing page's video downloads on render + sibling-gateway hero warm-up (was -7: sw.js v3 media cache + prefetch)
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -4899,6 +4924,14 @@ function render(){
     document.title = 'GENEXXO'; $('metaTheme').content = '#ffffff';
     html = {home:renderHome, discover:renderDiscover, ai:renderAI, events:renderEvents, profile:renderProfile}[state.tab]();
   }
+  // Kill the OUTGOING page's in-flight video downloads BEFORE replacing it (2026-08-04).
+  // Rapid gateway-hopping otherwise leaves each abandoned page's half-loaded clips
+  // silently downloading in the background — detached from the DOM but still on the
+  // pipe — so the new page's top clip queues behind them: the "frozen start" on quick
+  // clicks. pause + drop src + load() is the standard abort — the element stops issuing
+  // requests; a small clip the SW already started fetching typically completes into the
+  // media cache anyway (fine: the abandoned page comes back pre-warmed).
+  $('screen').querySelectorAll('video[src]').forEach(v=>{ try{ v.pause(); v.removeAttribute('src'); v.load(); }catch(_){} });
   $('screen').innerHTML = html;
   // Pin the sticky sub-bar (Network·Sectors·Gateways / gateway tabs) flush under the top
   // bar on EVERY device: drive its sticky offset from the top bar's real rendered height
