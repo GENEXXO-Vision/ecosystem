@@ -1,4 +1,4 @@
 {
-  "build": "2026.08.04-8",
+  "build": "2026.08.04-9",
   "note": "Bump this to match the BUILD constant in genexxo-mobile.html on every deploy — the app compares the two to offer an in-app update."
 }

@@ -1033,6 +1033,7 @@ function mediaBlock(f, bg, h){
    and the observer margin is 900px — together: repeat views play instantly from cache,
    and first views start downloading well before the card is on screen. */
 let _vidObserver = null;
+let _playObserver = null;   // pauses clips that scroll away / resumes on return — see lazyMedia
 const EAGER_VIDEOS = 2;
 function _loadVid(v){
   if(!v.isConnected || !v.dataset.vsrc) return;   // detached = a card from a page we already left — never start its download
@@ -1041,6 +1042,7 @@ function _loadVid(v){
   const go = ()=>v.play().catch(()=>{});
   go();                                       // try now (may reject — nothing buffered yet)
   v.addEventListener('canplay', go, {once:true});   // …then again the moment it's ready (fixes eager top-of-feed clips, esp. big gateway videos)
+  if(_playObserver) _playObserver.observe(v); // hand playback control to the on/off-screen observer
 }
 /* Eager-load the top-of-feed clips SEQUENTIALLY, not all at once. Loading them together
    made them split the (cellular) pipe with each other AND with the render-time image burst,
@@ -1107,6 +1109,22 @@ function _prefetchVids(vids){
 function lazyMedia(){
   const vids = document.querySelectorAll('video[data-vsrc]');
   if(!vids.length) return;
+  // Decoder relief (2026-08-04): every loaded clip used to autoplay-loop FOREVER, so a
+  // long scroll left 15+ videos playing at once — phones have a hard cap on concurrent
+  // video decoders, and once it's hit, newly-started clips stall at random waiting for
+  // a slot (part of the "sticky with no pattern" report). This observer pauses any clip
+  // that scrolls out of view (+150px grace) and resumes it on return — only the clips
+  // actually on screen ever hold a decoder. Buffered data is kept, so resume is instant.
+  if(_playObserver) _playObserver.disconnect();
+  if('IntersectionObserver' in window){
+    _playObserver = new IntersectionObserver((entries)=>{
+      entries.forEach(en=>{
+        const v = en.target;
+        if(en.isIntersecting){ if(v.paused) v.play().catch(()=>{}); }
+        else if(!v.paused) v.pause();
+      });
+    }, { rootMargin:'150px 0px' });
+  }
   // Eager-load the top-of-feed clips right now — sequentially (see _loadEager).
   _loadEager(vids, 0);
   _prefetchVids(vids);
@@ -1277,7 +1295,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.04-8';   // gateway-hop fix: abort outgoing page's video downloads on render + sibling-gateway hero warm-up (was -7: sw.js v3 media cache + prefetch)
+const BUILD = '2026.08.04-9';   // random-stall fix: sw.js v4 HEAD-based revalidate (Pages resets ETags per deploy → v3 re-downloaded every cached clip) + pause offscreen clips (decoder cap relief)
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view

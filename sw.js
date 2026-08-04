@@ -17,8 +17,8 @@
      the "top videos take 15s to start" stall. Clips are now cached here CACHE-FIRST with
      proper 206/Range slicing (iOS Safari refuses video from a SW unless Range requests get
      real 206 responses). Freshness is preserved the GENEXXO way — a cached clip is served
-     instantly, then silently REVALIDATED in the background (ETag → 304 = a few bytes, changed
-     file = re-download), so a re-uploaded clip at the same path shows up on the NEXT view.
+     instantly, then silently REVALIDATED in the background (v4: HEAD + size compare — see
+     revalidateMedia), so a re-uploaded clip at the same path shows up on the NEXT view.
      This is deliberately not the jsDelivr trap: nothing is pinned for days. */
 const CACHE = 'genexxo-shell-v2';
 const MEDIA = 'genexxo-media-v1';
@@ -39,17 +39,28 @@ self.addEventListener('activate', (e) => {
 
 /* One background revalidation per clip per SW lifetime (the SW restarts often on mobile, so
    in practice ≈ per session) — Safari fires SEVERAL Range requests per play and each one
-   must NOT trigger its own conditional fetch. */
+   must NOT trigger its own fetch.
+   ▸ v4 FIX (2026-08-04): the check is a HEAD + Content-Length compare, deliberately NOT a
+     conditional GET. GitHub Pages resets last-modified/ETag for EVERY file on EVERY site
+     deploy (etag = deploy-time + size), so If-None-Match came back 200 after each deploy and
+     every cached clip silently RE-DOWNLOADED IN FULL in the background — with several
+     deploys a day the pipe filled with hidden re-pulls of unchanged clips, and whatever the
+     user tapped next queued behind them (the "random stickiness"). A HEAD is a few hundred
+     bytes; the full re-GET now fires only when the clip really changed (a swapped video
+     essentially always changes size). */
 const _revalidated = new Set();
-function revalidateMedia(url) {
+function revalidateMedia(url, cachedRes) {
   if (_revalidated.has(url)) return Promise.resolve();
   _revalidated.add(url);
-  return fetch(url, { cache: 'no-cache' })                       // If-None-Match → 304 when unchanged
-    .then(async (net) => {
-      if (net && net.ok && net.status === 200) {                 // 200 = the clip really changed
-        (await caches.open(MEDIA)).put(url, net);
-      }
-    }).catch(() => {});
+  return (async () => {
+    const oldLen = cachedRes && cachedRes.headers.get('content-length');
+    if (oldLen) {
+      const head = await fetch(url, { method: 'HEAD', cache: 'no-cache' });
+      if (head && head.ok && head.headers.get('content-length') === oldLen) return;   // same size = same clip, keep the cache
+    }
+    const net = await fetch(url, { cache: 'no-cache' });
+    if (net && net.ok && net.status === 200) (await caches.open(MEDIA)).put(url, net);
+  })().catch(() => {});
 }
 
 async function serveMedia(e) {
@@ -57,7 +68,7 @@ async function serveMedia(e) {
   const cache = await caches.open(MEDIA);
   let res = await cache.match(req.url);
   if (res) {
-    e.waitUntil(revalidateMedia(req.url));                       // instant play now, fresh next view
+    e.waitUntil(revalidateMedia(req.url, res));                  // instant play now, fresh next view (headers-only size check)
   } else {
     let net;
     try { net = await fetch(req.url); } catch (_) { return Response.error(); }   // fetch WITHOUT the Range header → full 200 we can cache
