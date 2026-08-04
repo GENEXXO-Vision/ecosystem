@@ -1032,11 +1032,48 @@ function mediaBlock(f, bg, h){
    revalidate), _prefetchVids warms the next PREFETCH_VIDEOS clips after the eager ones,
    and the observer margin is 900px — together: repeat views play instantly from cache,
    and first views start downloading well before the card is on screen. */
+/* ── Video debug HUD (2026-08-04) ─────────────────────────────────────────────
+   Tap the "GENEXXO · build …" footer on the Profile tab FIVE times to toggle.
+   Overlays a live log: per-clip time-to-playable, load errors, whether the service
+   worker controls the page — turns "the videos feel random" into numbers readable
+   straight off the phone. Persists across reopens via localStorage (gx_vdebug). */
+let _vdebug = false; try{ _vdebug = localStorage.gx_vdebug==='1'; }catch(_){}
+let _vdbgTaps = [];
+function vdbgTap(){
+  const now = Date.now();
+  _vdbgTaps = _vdbgTaps.filter(t=>now-t<2500); _vdbgTaps.push(now);
+  if(_vdbgTaps.length < 5) return;
+  _vdbgTaps = []; _vdebug = !_vdebug;
+  try{ localStorage.gx_vdebug = _vdebug?'1':'0'; }catch(_){}
+  if(_vdebug){ vlog('debug ON · SW '+(navigator.serviceWorker&&navigator.serviceWorker.controller?'controlling':'NOT controlling')); }
+  else { const el=document.getElementById('vdbg'); if(el) el.remove(); }
+}
+const _vlogLines = [];
+function vlog(msg){
+  if(!_vdebug) return;
+  _vlogLines.push(`${(performance.now()/1000).toFixed(1)}s ${msg}`);
+  while(_vlogLines.length>14) _vlogLines.shift();
+  let el = document.getElementById('vdbg');
+  if(!el){
+    el = document.createElement('div'); el.id='vdbg';
+    el.style.cssText='position:fixed;left:6px;right:6px;bottom:64px;z-index:99999;background:rgba(0,0,0,.82);color:#7CFC9A;font:9px/1.5 monospace;padding:6px 8px;border-radius:8px;pointer-events:none;white-space:pre-wrap;word-break:break-all';
+    document.body.appendChild(el);
+  }
+  el.textContent = _vlogLines.join('\n');
+}
+
 let _vidObserver = null;
 let _playObserver = null;   // pauses clips that scroll away / resumes on return — see lazyMedia
 const EAGER_VIDEOS = 2;
 function _loadVid(v){
   if(!v.isConnected || !v.dataset.vsrc) return;   // detached = a card from a page we already left — never start its download
+  if(_vdebug){
+    const name = (v.dataset.vsrc||'').split('/').pop(), t0 = performance.now();
+    vlog(`▶ ${name}`);
+    v.addEventListener('canplay', ()=>vlog(`✓ ${name} ${Math.round(performance.now()-t0)}ms`), {once:true});
+    v.addEventListener('error',   ()=>vlog(`✗ ${name} ERROR code=${v.error&&v.error.code}`), {once:true});
+    setTimeout(()=>{ if(v.isConnected && v.readyState<3) vlog(`… ${name} STUCK @8s ready=${v.readyState} net=${v.networkState}`); }, 8000);
+  }
   v.preload = 'auto';                         // commit to buffering — the tag ships as preload="none"
   v.src = v.dataset.vsrc; v.removeAttribute('data-vsrc');
   const go = ()=>v.play().catch(()=>{});
@@ -1307,7 +1344,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.04-10';  // cold-start fix: sw.js streams first-visit clips to the player WHILE caching (was: full download before first byte) + all-gateway hero warm-up
+const BUILD = '2026.08.04-11';  // sw.js v5: cold plays pass through untouched (native 206) + deduped bg cache fill — no more hand-built streams; video debug HUD (5 taps on this footer)
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -4935,7 +4972,7 @@ function profileBody(){
     <div class="sect"><div class="sect-h"><div class="t">Prototype: simulate entry domain</div></div></div>
     <div style="padding:0 16px;font-size:11.5px;color:var(--muted);font-weight:600;line-height:1.5;margin-bottom:10px">Same shell, different front door. Installing from climbxx.com boots this app inside ClimbXX — the whole ecosystem still ships.</div>
     <div class="chips" style="padding-top:0;flex-wrap:wrap">${sim}</div>
-    <div style="text-align:center;padding:22px 16px 4px;font-size:10.5px;letter-spacing:.06em;color:var(--muted);opacity:.7;font-weight:700">GENEXXO · build ${BUILD}</div>
+    <div onclick="vdbgTap()" style="text-align:center;padding:22px 16px 4px;font-size:10.5px;letter-spacing:.06em;color:var(--muted);opacity:.7;font-weight:700">GENEXXO · build ${BUILD}</div>
     <div style="height:16px"></div>`;
 }
 function renderProfile(){

@@ -82,6 +82,30 @@ function slice206(buf, range, type) {
   });
 }
 
+/* One deduped background download to fill the cache — several near-simultaneous requests
+   for the same cold clip (probe + play + prefetch) must not each pull the full file. */
+const _filling = new Set();
+function fillMedia(url) {
+  if (_filling.has(url)) return Promise.resolve();
+  _filling.add(url);
+  return fetch(url).then(async (net) => {
+    if (net && net.ok && net.status === 200) await (await caches.open(MEDIA)).put(url, net);
+  }).catch(() => {}).finally(() => _filling.delete(url));
+}
+
+/* v5 SIMPLIFICATION (2026-08-04): the SW no longer hand-streams COLD clips. v4 built 206
+   responses off the live network stream; it passed every bench test but met real-browser
+   range behaviour the tests can't cover (mid-play continuation requests on a half-cold
+   clip, probe/continuation races) → clips randomly failing to start (GothXX report).
+   New rule — the SW only ever ANSWERS with bytes it fully holds:
+     · cached clip → instant, slice206 for ranges (the proven warm path)
+     · cold clip + Range (a player) → PASS THROUGH UNTOUCHED — native progressive 206
+       from the origin, byte-identical to the pre-SW behaviour that always worked —
+       while ONE deduped background fetch fills the cache for next time
+     · cold clip, no Range (the app's prefetcher) → stream it back and cache the clone;
+       no range maths involved
+   Cost: a cold PLAYED clip is downloaded ~twice (~0.4MB); the shell's warm-up makes
+   cold plays rare. Robustness beats cleverness here. */
 async function serveMedia(e) {
   const req = e.request;
   const range = req.headers.get('range');
@@ -92,48 +116,16 @@ async function serveMedia(e) {
     if (!range) return cached;
     return slice206(await cached.arrayBuffer(), range, cached.headers.get('Content-Type'));
   }
-  /* MISS — v4 STREAMING FIX (2026-08-04): the old path did `await cache.put(...)` before
-     responding, which blocks until the ENTIRE clip has downloaded — the player got its
-     FIRST byte only after the LAST byte arrived. That was the remaining 10-15s "frozen
-     start" on every first visit to a gateway (pre-SW, video streamed progressively and
-     started after ~100KB). Now: ONE download, cloned — the clone fills the cache as it
-     arrives (background), the original streams to the player immediately. */
-  let net;
-  try { net = await fetch(req.url); } catch (_) { return Response.error(); }   // fetch WITHOUT the Range header → full 200 we can cache
-  if (!(net && net.ok && net.status === 200)) return net;        // odd response → pass straight through
-  e.waitUntil(cache.put(req.url, net.clone()).catch(() => {}));  // fills as the download progresses
-  if (!net.body) return net;                                     // exotic engine without streams → plain pass-through
-  const total = +net.headers.get('content-length') || 0;
-  const type = net.headers.get('content-type') || 'video/mp4';
-  const m = range && /bytes=(\d+)-(\d*)/.exec(range);
-  if (!m) return net;                                            // no Range → stream straight through
-  const start = +m[1], boundedEnd = m[2] ? +m[2] : null;
-  if (start === 0 && boundedEnd === null && total) {
-    // bytes=0- (the normal first request): the whole file as a 206, streamed as it arrives
-    return new Response(net.body, { status: 206, statusText: 'Partial Content',
-      headers: { 'Content-Type': type, 'Content-Range': `bytes 0-${total - 1}/${total}`,
-                 'Content-Length': String(total), 'Accept-Ranges': 'bytes' } });
+  if (!range) {
+    // the prefetcher / warm-up: one download streams back AND fills the cache
+    let net;
+    try { net = await fetch(req.url); } catch (_) { return Response.error(); }
+    if (net && net.ok && net.status === 200) e.waitUntil(cache.put(req.url, net.clone()).catch(() => {}));
+    return net;
   }
-  if (!total) return net;                                        // can't build a valid 206 without the size
-  // Bounded / offset range on a COLD clip (e.g. Safari's 2-byte bytes=0-1 probe): read
-  // only what's needed from the live stream, answer, and stop reading this branch — the
-  // cache clone keeps downloading to completion regardless.
-  const end = Math.min(boundedEnd === null ? total - 1 : boundedEnd, total - 1);
-  const reader = net.body.getReader();
-  const chunks = []; let got = 0;
-  while (got <= end) {
-    const r = await reader.read();
-    if (r.done) break;
-    chunks.push(r.value); got += r.value.byteLength;
-  }
-  reader.cancel().catch(() => {});
-  if (start >= got) return new Response(null, { status: 416, headers: { 'Content-Range': `bytes */${total}` } });
-  const all = new Uint8Array(got);
-  let off = 0; for (const c of chunks) { all.set(c, off); off += c.byteLength; }
-  const endGot = Math.min(end, got - 1);
-  return new Response(all.buffer.slice(start, endGot + 1), { status: 206, statusText: 'Partial Content',
-    headers: { 'Content-Type': type, 'Content-Range': `bytes ${start}-${endGot}/${total}`,
-               'Content-Length': String(endGot - start + 1), 'Accept-Ranges': 'bytes' } });
+  // COLD PLAY: hands off — native streaming from the origin, cache filled on the side
+  e.waitUntil(fillMedia(req.url));
+  return fetch(req);
 }
 
 self.addEventListener('fetch', (e) => {
