@@ -913,6 +913,9 @@ const NETWORK_TEXT_SAMPLES = [
 ];
 /* Slot the text posts into the media stream at readable intervals so the feed alternates. */
 [[2,0],[5,1],[9,2]].forEach(([pos,si]) => { if(pos<=NETWORK_FEED.length) NETWORK_FEED.splice(pos, 0, { ...NETWORK_TEXT_SAMPLES[si] }); });
+/* A video-only post that rises to the Network level (2026-08-06) — a brand clip whose text is baked
+   in, so it shows as just the video (no text panel). Reuses the live SurfXX film. */
+NETWORK_FEED.splice(4, 0, { gw:'surf', videoOnly:true, video:'genexxo-videos/surfxx.mp4' });
 
 /* Your gateways (from desktop profile data) */
 const YOUR_GATEWAYS = ['climb','ski','surf','cycle','sail'];
@@ -995,6 +998,11 @@ if (SECTOR_FEED.adventure) SECTOR_FEED.adventure.splice(2, 0, {
   avatar:{ bg:'linear-gradient(135deg,#E8623A,#F59E6B)', text:'BB' },
   badge:{ text:'COMMUNITY', bg:'rgba(232,98,58,.15)', color:'#E8623A' }
 });
+/* Pull a gateway clip UP into the sector as a video-only post (2026-08-06) — the ClimbXX brand film,
+   text baked in, so it shows as just the video. Slotted into Adventure at the top. */
+if (SECTOR_FEED.adventure) SECTOR_FEED.adventure.splice(1, 0, {
+  gateway:'climb', videoOnly:true, videoSrc:'genexxo-videos/climbxx.mp4', gwName:'ClimbXX', gwAccent:'#E8623A'
+});
 function initialsFromAuthor(a){
   const parts=(a||'').replace(/^@/,'').replace(/[^A-Za-z0-9_ ]/g,'').split(/[_\s]+/).filter(Boolean);
   return ((parts[0]?parts[0][0]:'')+(parts[1]?parts[1][0]:((parts[0]||'')[1]||''))).toUpperCase()||'GX';
@@ -1006,6 +1014,7 @@ function sectorPost(d, sk){
   if(d.videoSrc) p.video=d.videoSrc;
   else if(d.img){ p.img=d.img.url; p.mediaBg=d.img.bg; }
   else if(d.videoUrl) p.img=d.videoUrl;
+  if(d.videoOnly) p.videoOnly=true;                 // baked-in-text clip → routes to the video-only card
   // gateway not built in this prototype → render a non-clickable preview card from the deck item's own identity
   if(!GATEWAYS[d.gateway]){
     const grad=(d.avatar&&d.avatar.bg)||`linear-gradient(135deg,${d.gwAccent||'#888'},${d.gwAccent||'#888'})`;
@@ -1385,6 +1394,33 @@ function convoCard(gwKey, post, showSector){
         <div style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;color:${acc}">
           <span style="width:20px;height:20px;border-radius:6px;background:${g.gradient};display:flex;align-items:center;justify-content:center;font-size:11px">${g.emoji||''}</span>${g.name}</div>
       </div>
+    </div>
+  </div>`;
+}
+
+/* Video-only card (2026-08-06) — for clips that already carry their OWN text (baked-in captions).
+   The card IS the video at its native frame: no author row, no text panel, no engagement strip — so
+   nothing repeats the words already in the clip or steals height. Only two whisper-light tags float
+   over the TOP (sector chip left, gateway badge right) — placed at the top on purpose, so they never
+   collide with baked-in text, which lives at the bottom of a clip. Full frame, `object-fit:contain`,
+   NO crop (cover would slice the caption off). The 736/400 aspect box reserves space up front so the
+   lazy clip can't shove the feed on load. Routed to FIRST, for posts flagged `videoOnly`. Tap opens
+   the source gateway. */
+function videoCard(gwKey, post, showSector){
+  const built = !!GATEWAYS[gwKey];
+  const g = GATEWAYS[gwKey] || (post&&post._stubGw) || {name:gwKey,sector:(post&&post._sk),gradient:'linear-gradient(135deg,#33333a,#44444d)',emoji:'',theme:{accent:'#888'}};
+  const acc = (g.theme&&g.theme.accent)||'#888';
+  const secNm = g.sector ? ((sectorOf(g.sector)||{}).name || g.sector) : '';
+  const media = post.video
+    ? `<video autoplay loop muted playsinline preload="none" data-vsrc="${mediaUrl(post.video)}" style="width:100%;height:100%;object-fit:contain;display:block"></video>`
+    : (post.img ? `<img src="${mediaUrl(post.img)}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block">` : '');
+  return `<div class="herocard"${built?` onclick="state._gwFrom='root';openGateway('${g.name}','${g.sector}')"`:''}
+    style="margin:14px 1px;border-radius:20px;overflow:hidden;background:#000;border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.10);cursor:pointer">
+    <div style="position:relative;aspect-ratio:736/400;background:#000">
+      ${media}
+      ${(showSector&&secNm)?`<div style="position:absolute;top:12px;left:12px;display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;background:rgba(0,0,0,.42);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em"><span style="width:7px;height:7px;border-radius:50%;background:${acc}"></span>${secNm}</div>`:''}
+      <div style="position:absolute;top:12px;right:12px;display:inline-flex;align-items:center;gap:6px;padding:5px 11px 5px 6px;border-radius:99px;background:rgba(0,0,0,.42);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;font-size:11px;font-weight:800">
+        <span style="width:20px;height:20px;border-radius:6px;background:${g.gradient};display:flex;align-items:center;justify-content:center;font-size:11px">${g.emoji||''}</span>${g.name}</div>
     </div>
   </div>`;
 }
@@ -2329,7 +2365,9 @@ function renderHome(){
   // Network = hero style for media posts (the highlight-reel layer); a strong text-only post that
   // rises here renders as a text card (sized to its words, Show-more on long bodies).
   const mapped = NETWORK_FEED.map(i =>
-    (i.video || i.img || i.media) ? heroFeedCard(i.gw,i,true) : convoCard(i.gw,i,true));
+    i.videoOnly ? videoCard(i.gw,i,true)
+    : (i.video || i.img || i.media) ? heroFeedCard(i.gw,i,true)
+    : convoCard(i.gw,i,true));
   const cards = withExplainer(mapped, explainerCard(NETWORK_EXPLAINER));
   const body = `<div style="height:10px"></div>${cards.join('')}`;
   return `${topBar()}
@@ -2350,7 +2388,7 @@ function renderSector(){
   const bar = navSubBar();
 
   const body = feedItems.length
-    ? withExplainer(feedItems.map(x=>(x.post.video||x.post.img||x.post.media)?heroFeedCard(x.gw,x.post,false):convoCard(x.gw,x.post,false)), explainerCard(SECTOR_EXPLAINER)).join('')   // Sector = hero for media, text card for text-only (same rule as Network)
+    ? withExplainer(feedItems.map(x=>x.post.videoOnly?videoCard(x.gw,x.post,false):(x.post.video||x.post.img||x.post.media)?heroFeedCard(x.gw,x.post,false):convoCard(x.gw,x.post,false)), explainerCard(SECTOR_EXPLAINER)).join('')   // Sector = video-only card, else hero for media, text card for text-only
     : `<div class="empty">The ${s.name} feed lights up when its gateways go live —<br>the best of each gateway feed rises here.</div>`;
   return `${topBar()}
   ${favPanelHtml()}
