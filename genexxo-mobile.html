@@ -895,6 +895,25 @@ const NETWORK_FEED = NETWORK_PICKS
   .map(([gw,i]) => { const f = (GATEWAYS[gw] && GATEWAYS[gw].feed || [])[i]; return f ? {gw, ...f} : null; })
   .filter(Boolean);
 
+/* Text-only posts that "make it" to the Network level (2026-08-06). Not every good post has good
+   media — a sharp take can rise on words alone. These render as text cards (convoCard, no media)
+   inside the otherwise hero-style feed, and carry the Show-more so a long body isn't cut off. Two
+   long examples demo the expand; one short shows fully. gw keys reuse live gateways so the
+   gradient / name / accent resolve. */
+const NETWORK_TEXT_SAMPLES = [
+  { gw:'therapy', author:'Dr. Naomi Alvez', sub:'Clinical psychologist · TherapyXX', av:'NA', avBg:'#6d5ae6', badge:'INSIGHT',
+    text:'Something I tell every client in week one: progress isn’t linear. You will have a brilliant fortnight and then a day that feels like square one — and that day is not a relapse, it’s data. The nervous system learns in loops, not straight lines. What looks like going backwards is usually your body stress-testing a new pattern before it trusts it. Keep the appointment anyway. Show up on the flat days especially — that’s where the real rewiring happens, quietly, when it feels like nothing is.',
+    eng:'2.1k appreciations · 340 saved' },
+  { gw:'crypto', author:'@onchain_ollie', sub:'Markets desk · CryptoXX', av:'OL', avBg:'#f0a500', badge:'BRIEFING',
+    text:'Quiet week on-chain but the plumbing tells a story: stablecoin supply up 3.4%, exchange balances at a 6-year low, and long-dormant wallets moving for the first time since 2021. None of this is a price call — it’s just what the ledger says while everyone argues on the timeline. The chain doesn’t lie. It just doesn’t hurry. Watching the flows, not the noise.',
+    eng:'884 reposts · 1.2k likes' },
+  { gw:'cycle', author:'@sunday_spokes', sub:'CycleXX community', av:'SS', avBg:'#2fbf71', badge:'',
+    text:'Cold, clear, and completely empty roads at 6am. Best hour of the whole week and nobody believes me.',
+    eng:'512 likes · 47 comments' },
+];
+/* Slot the text posts into the media stream at readable intervals so the feed alternates. */
+[[2,0],[5,1],[9,2]].forEach(([pos,si]) => { if(pos<=NETWORK_FEED.length) NETWORK_FEED.splice(pos, 0, { ...NETWORK_TEXT_SAMPLES[si] }); });
+
 /* Your gateways (from desktop profile data) */
 const YOUR_GATEWAYS = ['climb','ski','surf','cycle','sail'];
 
@@ -966,6 +985,16 @@ const SECTOR_FEED = {"adventure":[{"gateway":"cycle","author":"@sunday_spokes","
 /* deck feed item → mobile post. avatar text falls back to author initials; the deck's
    videoSrc (real mp4) → video, its img{url,bg} / videoUrl (Unsplash still) → img;
    engagement pipes become the mobile "·" separator. */
+/* Seed a text-only post into a sector's curated feed (2026-08-06) so text cards show up at the
+   sector level too — same data shape as the rest of SECTOR_FEED, just no videoSrc/img so it routes
+   to a text card. Long body → the Show-more expand. Slotted into Adventure at position 2. */
+if (SECTOR_FEED.adventure) SECTOR_FEED.adventure.splice(2, 0, {
+  gateway:'climb', author:'@beta_breaker', authorSub:'ClimbXX community · 3h ago',
+  text:'Sent my first V10 today after eight months on the same problem. What nobody tells you about a long project: the send is almost an anticlimax. The real work happened weeks ago — the day I stopped forcing the crux and started listening to where my body wanted to go. Learned to trust a heel I didn’t believe in, to breathe on a hold I used to rush. The grade is just the receipt. The climbing changed months before the tick did. Onto the next one.',
+  engagement:'♡ 6.8K|💬 940|↗ 610', gwName:'ClimbXX', gwAccent:'#E8623A',
+  avatar:{ bg:'linear-gradient(135deg,#E8623A,#F59E6B)', text:'BB' },
+  badge:{ text:'COMMUNITY', bg:'rgba(232,98,58,.15)', color:'#E8623A' }
+});
 function initialsFromAuthor(a){
   const parts=(a||'').replace(/^@/,'').replace(/[^A-Za-z0-9_ ]/g,'').split(/[_\s]+/).filter(Boolean);
   return ((parts[0]?parts[0][0]:'')+(parts[1]?parts[1][0]:((parts[0]||'')[1]||''))).toUpperCase()||'GX';
@@ -1254,6 +1283,107 @@ function feedCard(gwKey, post, showSector){
       <div style="margin-top:9px;display:flex;align-items:center;gap:8px">
         <div style="font-size:11px;font-weight:700;color:var(--muted)">${post.eng}</div>
         <div style="margin-left:auto;font-size:11.5px;font-weight:800;color:${g.theme.accent}">${g.name}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* Post body with an X-style "Show more" (2026-08-06). Short posts render whole; long ones
+   truncate at a word boundary and reveal the rest in place — a local DOM toggle, so the feed
+   never re-renders or jumps scroll. `state`-free on purpose: expansion is throwaway view state. */
+function heroTextBlock(text, style){
+  const LIMIT = 220;
+  const base = `font-size:13.5px;line-height:1.5;color:var(--ink);${style||''}`;
+  if(!text) return '';
+  if(text.length <= LIMIT) return `<div style="${base}">${text}</div>`;
+  const cut = text.slice(0, LIMIT).replace(/\s+\S*$/,'');
+  return `<div class="htext" style="${base}">`
+    + `<span class="short">${cut}… <span onclick="event.stopPropagation();heroMore(this)" style="color:var(--muted);font-weight:800;cursor:pointer">Show more</span></span>`
+    + `<span class="full" style="display:none">${text}</span>`
+    + `</div>`;
+}
+function heroMore(link){
+  const box = link.closest('.htext'); if(!box) return;
+  const s = box.querySelector('.short'), f = box.querySelector('.full');
+  if(s) s.style.display='none'; if(f) f.style.display='';
+}
+/* ═════════ HERO FEED CARD (2026-08-06) ═════════
+   The Network + Sector feeds — the curated discovery layers — render as full-bleed "hero" cards:
+   media fills the top of the card (~2/3), a clean text panel flows below with the shared Show-more,
+   a floating sector chip sits over the media, and the gateway badge anchors the footer. Gateway
+   feeds keep the compact feedCard (the conversational room). Text length is orthogonal — heroes
+   expand too, so a good long caption is never clamped. */
+function heroFeedCard(gwKey, post, showSector){
+  const built = !!GATEWAYS[gwKey];
+  const g = GATEWAYS[gwKey] || (post&&post._stubGw) || {name:gwKey,sector:(post&&post._sk),gradient:'linear-gradient(135deg,#33333a,#44444d)',emoji:'',theme:{accent:'#888'}};
+  const acc = (g.theme&&g.theme.accent)||'#888';
+  const secNm = g.sector ? ((sectorOf(g.sector)||{}).name || g.sector) : '';
+  const MH = 244;   // media height (~2/3 of the card); text panel flows below
+  let media;
+  if(post.video) media = `<video autoplay loop muted playsinline preload="none" data-vsrc="${mediaUrl(post.video)}" style="width:100%;height:${MH}px;object-fit:cover;display:block"></video>`;
+  else if(post.img) media = `<img src="${mediaUrl(post.img)}" loading="lazy" decoding="async" style="width:100%;height:${MH}px;object-fit:cover;display:block">`;
+  else media = `<div style="width:100%;height:${MH}px;background:${post.mediaBg||g.gradient};display:flex;align-items:center;justify-content:center;font-size:66px">${post.media||g.emoji||''}</div>`;
+  const author = post.author ? `
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+      <div style="width:30px;height:30px;border-radius:50%;background:${post.avBg};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff">${post.av}</div>
+      <div><div style="font-size:12px;font-weight:800;color:var(--ink)">${post.author}</div><div style="font-size:9.5px;color:var(--muted);font-weight:600">${post.sub}</div></div>
+      ${post.badge?`<div style="margin-left:auto;font-size:8.5px;font-weight:800;letter-spacing:.07em;padding:3px 8px;border-radius:99px;background:${acc}1a;color:${acc}">${post.badge}</div>`:''}
+    </div>` : '';
+  // Split hero: full-bleed media up top (with the sector chip floating over it), a clean text
+  // panel below — legible on any clip, text never clamped.
+  return `<div class="herocard"${built?` onclick="state._gwFrom='root';openGateway('${g.name}','${g.sector}')"`:''}
+    style="margin:14px 1px;border-radius:20px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.10);cursor:pointer">
+    <div style="position:relative;background:#000">
+      ${media}
+      ${(showSector&&secNm)?`<div style="position:absolute;top:12px;left:12px;display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;background:rgba(0,0,0,.42);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em"><span style="width:7px;height:7px;border-radius:50%;background:${acc}"></span>${secNm}</div>`:''}
+    </div>
+    <div style="padding:14px 15px 15px">
+      ${author}
+      ${heroTextBlock(post.text)}
+      <div style="margin-top:11px;display:flex;align-items:center;gap:8px">
+        <div style="font-size:11px;font-weight:700;color:var(--muted)">${post.eng}</div>
+        <div style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;color:${acc}">
+          <span style="width:20px;height:20px;border-radius:6px;background:${g.gradient};display:flex;align-items:center;justify-content:center;font-size:11px">${g.emoji||''}</span>${g.name}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* Conversational card (2026-08-06) — for a strong TEXT-only post that rises to the Network/Sector
+   level. Same card DNA as the hero (white, rounded, sector chip + author + gateway badge) but text-
+   led and sized to its words, with the shared Show-more. Media is OPTIONAL and COMPACT (contained
+   below the text, never full-bleed) so it can't be mistaken for a hero. Routed to only when a post
+   has no hero media. */
+function convoCard(gwKey, post, showSector){
+  const built = !!GATEWAYS[gwKey];
+  const g = GATEWAYS[gwKey] || (post&&post._stubGw) || {name:gwKey,sector:(post&&post._sk),gradient:'linear-gradient(135deg,#33333a,#44444d)',emoji:'',theme:{accent:'#888'}};
+  const acc = (g.theme&&g.theme.accent)||'#888';
+  const secNm = g.sector ? ((sectorOf(g.sector)||{}).name || g.sector) : '';
+  const author = post.author ? `
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+      <div style="width:30px;height:30px;border-radius:50%;background:${post.avBg};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff">${post.av}</div>
+      <div><div style="font-size:12px;font-weight:800;color:var(--ink)">${post.author}</div><div style="font-size:9.5px;color:var(--muted);font-weight:600">${post.sub}</div></div>
+      ${post.badge?`<div style="margin-left:auto;font-size:8.5px;font-weight:800;letter-spacing:.07em;padding:3px 8px;border-radius:99px;background:${acc}1a;color:${acc}">${post.badge}</div>`:''}
+    </div>` : '';
+  // Compact, contained media (only if the post has any) — the deliberate contrast with the hero:
+  // modest height, rounded + inset, secondary to the words.
+  const CH = 190;
+  let media = '';
+  if(post.video) media = `<video autoplay loop muted playsinline preload="none" data-vsrc="${mediaUrl(post.video)}" style="width:100%;height:${CH}px;object-fit:cover;display:block;background:#000"></video>`;
+  else if(post.img) media = `<img src="${mediaUrl(post.img)}" loading="lazy" decoding="async" style="width:100%;height:${CH}px;object-fit:cover;display:block;background:#000">`;
+  else if(post.media) media = `<div style="width:100%;height:${CH}px;background:${post.mediaBg||g.gradient};display:flex;align-items:center;justify-content:center;font-size:52px">${post.media}</div>`;
+  const mediaBox = media ? `<div style="margin-top:11px;border-radius:14px;overflow:hidden;border:1px solid var(--line)">${media}</div>` : '';
+  return `<div class="herocard"${built?` onclick="state._gwFrom='root';openGateway('${g.name}','${g.sector}')"`:''}
+    style="margin:14px 1px;border-radius:20px;background:#fff;border:1px solid var(--line);box-shadow:0 6px 20px rgba(0,0,0,.07);cursor:pointer">
+    <div style="padding:15px 16px 15px">
+      ${(showSector&&secNm)?`<div style="display:inline-flex;align-items:center;gap:6px;margin-bottom:11px;padding:5px 11px;border-radius:99px;background:${acc}14;color:${acc};font-size:10px;font-weight:800;letter-spacing:.04em"><span style="width:6px;height:6px;border-radius:50%;background:${acc}"></span>${secNm}</div>`:''}
+      ${author}
+      ${heroTextBlock(post.text, 'font-size:14.5px')}
+      ${mediaBox}
+      <div style="margin-top:12px;display:flex;align-items:center;gap:8px">
+        <div style="font-size:11px;font-weight:700;color:var(--muted)">${post.eng}</div>
+        <div style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;color:${acc}">
+          <span style="width:20px;height:20px;border-radius:6px;background:${g.gradient};display:flex;align-items:center;justify-content:center;font-size:11px">${g.emoji||''}</span>${g.name}</div>
       </div>
     </div>
   </div>`;
@@ -1973,8 +2103,9 @@ function openDrawer(){
   }
   state.drawerOpen=true; frame.classList.add('drawer-open');
   clearNudge('edgeL');
+  syncNetbar();                                  // light the Sectors slot while the drawer is open
 }
-function closeDrawer(){ state.drawerOpen=false; $('frame').classList.remove('drawer-open'); }
+function closeDrawer(){ state.drawerOpen=false; $('frame').classList.remove('drawer-open'); syncNetbar(); }
 function pickSector(key){ closeDrawer(); openSector(key); }
 
 /* Right drawer — the sector's gateways (favourites risen to the top), rebuilt on open.
@@ -1998,6 +2129,7 @@ function openDrawerR(){
   }
   frame.classList.add('drawer-open-r');
   clearNudge('edgeR');
+  syncNetbar();                                  // light the Gateways slot while the drawer is open
 }
 /* resolve any fav key to display data — live gateways from GATEWAYS, structural
    ones synthesized from their sector (so every gateway can be favourited) */
@@ -2056,7 +2188,7 @@ function toggleFavQuiet(k){    // toggle without a full render — the drawer st
   if(i>=0) state.favs.splice(i,1); else state.favs.push(k);
   saveFavs(); buildDrawerR();
 }
-function closeDrawerR(){ $('frame').classList.remove('drawer-open-r'); }
+function closeDrawerR(){ $('frame').classList.remove('drawer-open-r'); syncNetbar(); }
 function pickGateway(name, sk){ closeDrawerR(); state._gwFrom='sector'; openGateway(name, sk); }
 
 /* ═════════ CHROME ═════════ */
@@ -2159,6 +2291,22 @@ function navSubBar(){
     ${item(gwLabel, gwNudge?"clearNudge('barGws');gatewaysTap()":'gatewaysTap()', gwOn, gw?`${gw.name} — switch gateway`:'Gateways', gwNudge)}
   </div>`;
 }
+/* Keep the Network·Sectors·Gateways sub-bar highlight in sync with an OPEN drawer (2026-08-06).
+   Opening a drawer lights its slot as "tapped" even before a sector/gateway is chosen; closing
+   without a selection reverts to the slot the current screen implies (Network at home). Toggles the
+   `.ntab.on` class directly (no full re-render → the feed keeps its scroll). Early-returns on the
+   gateway/zone screens, whose Feed·Brands·Apps bar reuses `.netbar` — so a drawer there never lights
+   the wrong slot. */
+function syncNetbar(){
+  if (state.screen==='gateway' || state.screen==='zone') return;
+  const scr=$('screen'); if(!scr) return;
+  const bar=scr.querySelector('.netbar'); if(!bar) return;
+  const tabs=bar.querySelectorAll('.ntab'); if(tabs.length<3) return;
+  let idx = state.screen==='gateway' ? 2 : state.screen==='sector' ? 1 : 0;   // screen default
+  if(state.drawerOpen) idx=1;                                                  // sector drawer open
+  else if($('frame').classList.contains('drawer-open-r')) idx=2;               // gateway drawer open
+  tabs.forEach((t,i)=>t.classList.toggle('on', i===idx));
+}
 /* Gateways only makes sense once you're in a sector. Tap it too early → a friendly
    nudge, and the sectors drawer opens so the fix is right there. */
 function gatewaysTap(){
@@ -2178,7 +2326,11 @@ function toast(msg){
   clearTimeout(el._t); el._t=setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateX(-50%) translateY(8px)'; }, 2100);
 }
 function renderHome(){
-  const cards = withExplainer(NETWORK_FEED.map(i=>feedCard(i.gw,i,true)), explainerCard(NETWORK_EXPLAINER));
+  // Network = hero style for media posts (the highlight-reel layer); a strong text-only post that
+  // rises here renders as a text card (sized to its words, Show-more on long bodies).
+  const mapped = NETWORK_FEED.map(i =>
+    (i.video || i.img || i.media) ? heroFeedCard(i.gw,i,true) : convoCard(i.gw,i,true));
+  const cards = withExplainer(mapped, explainerCard(NETWORK_EXPLAINER));
   const body = `<div style="height:10px"></div>${cards.join('')}`;
   return `${topBar()}
   ${favPanelHtml()}
@@ -2198,7 +2350,7 @@ function renderSector(){
   const bar = navSubBar();
 
   const body = feedItems.length
-    ? withExplainer(feedItems.map(x=>feedCard(x.gw,x.post,false)), explainerCard(SECTOR_EXPLAINER)).join('')
+    ? withExplainer(feedItems.map(x=>(x.post.video||x.post.img||x.post.media)?heroFeedCard(x.gw,x.post,false):convoCard(x.gw,x.post,false)), explainerCard(SECTOR_EXPLAINER)).join('')   // Sector = hero for media, text card for text-only (same rule as Network)
     : `<div class="empty">The ${s.name} feed lights up when its gateways go live —<br>the best of each gateway feed rises here.</div>`;
   return `${topBar()}
   ${favPanelHtml()}
