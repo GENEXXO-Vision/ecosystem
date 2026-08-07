@@ -928,6 +928,16 @@ NETWORK_FEED.splice(14, 0, { videoOnly:true, video:'genexxo-videos/super.mp4', _
 /* The Supernova Application film, video-only, pinned to the VERY BOTTOM of the Network feed
    (2026-08-07) — the closing note. GENEXXO mark, not a tap-through. */
 NETWORK_FEED.push({ videoOnly:true, video:'genexxo-videos/supernova-app.mp4', _stubGw:{ name:'GENEXXO', gradient:'linear-gradient(135deg,#F5B800,#FFD34D)', emoji:'⬡', theme:{accent:'#F5B800'} } });
+/* Relocate the SurfXX video-only clip further down so it sits just ABOVE the wellness SpaXX video
+   (2026-08-07). Done as a final move (not by changing the earlier splice index) so the Bullheart,
+   super.mp4 and supernova-app placements above stay exactly where they are. */
+(() => {
+  const from = NETWORK_FEED.findIndex(x => x.videoOnly && x.gw==='surf');
+  if(from < 0) return;
+  const [clip] = NETWORK_FEED.splice(from, 1);
+  const spa = NETWORK_FEED.findIndex(x => x.gw==='spa');
+  NETWORK_FEED.splice(spa < 0 ? NETWORK_FEED.length : spa, 0, clip);
+})();
 
 /* Your gateways (from desktop profile data) */
 const YOUR_GATEWAYS = ['climb','ski','surf','cycle','sail'];
@@ -1574,7 +1584,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.07-7';  // + Supernova Application film also pinned as a video-only card at the VERY BOTTOM of the Network feed. (still needs super.mp4, dressxx3.mp4, supernova-app.mp4 + /bullheart/ folder uploaded to the repo)
+const BUILD = '2026.08.07-8';  // Network feed: moved the SurfXX video-only clip down to sit just above the wellness SpaXX video.
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
