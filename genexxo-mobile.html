@@ -925,6 +925,9 @@ NETWORK_FEED.splice(7, 0, { gw:'climb', av:'BH', avBg:'linear-gradient(135deg,#2
 /* A GENEXXO platform showcase clip, video-only, dropped lower down the Network feed (2026-08-07).
    No gw → not a tap-through; _stubGw paints the gold GENEXXO mark + name in the corner. */
 NETWORK_FEED.splice(14, 0, { videoOnly:true, video:'genexxo-videos/super.mp4', _stubGw:{ name:'GENEXXO', gradient:'linear-gradient(135deg,#F5B800,#FFD34D)', emoji:'⬡', theme:{accent:'#F5B800'} } });
+/* The Supernova Application film, video-only, pinned to the VERY BOTTOM of the Network feed
+   (2026-08-07) — the closing note. GENEXXO mark, not a tap-through. */
+NETWORK_FEED.push({ videoOnly:true, video:'genexxo-videos/supernova-app.mp4', _stubGw:{ name:'GENEXXO', gradient:'linear-gradient(135deg,#F5B800,#FFD34D)', emoji:'⬡', theme:{accent:'#F5B800'} } });
 
 /* Your gateways (from desktop profile data) */
 const YOUR_GATEWAYS = ['climb','ski','surf','cycle','sail'];
@@ -1571,7 +1574,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.07-6';  // + Supernova Application video slide (genexxo-videos/supernova-app.mp4) as the 4th card in the ⓘ Intro deck; ifSlide now supports a video. (still needs super.mp4, dressxx3.mp4, supernova-app.mp4 + /bullheart/ folder uploaded to the repo)
+const BUILD = '2026.08.07-7';  // + Supernova Application film also pinned as a video-only card at the VERY BOTTOM of the Network feed. (still needs super.mp4, dressxx3.mp4, supernova-app.mp4 + /bullheart/ folder uploaded to the repo)
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
