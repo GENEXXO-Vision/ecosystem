@@ -1538,6 +1538,7 @@ const state = {
   sectorFavs:[...FAVS_INIT.sectorFavs], // favourite SECTORS (sector keys) — pinned via ★ on sector rows
   recent:[...FAVS_INIT.recent],         // recent activity: [{t:'sector'|'gateway'|'brand', k}], most-recent-first
   returnGw:null,   // set when popping out of a gateway for a glimpse of its sector
+  _hist:[],        // link-follow history: snapshots of the exact place (screen+scroll) you left, most-recent last — Back restores them
   entryDomain: (ENTRY && GATEWAYS[ENTRY]) ? GATEWAYS[ENTRY].domain : 'genexxo.com',
 };
 
@@ -1556,7 +1557,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.04-15';  // outage handling: warm-up fetches get a 20s abort (a hung fetch wedged the whole chain) + keepalive ping logs '⚠ net ping failed' to the HUD = hard evidence of link dropouts
+const BUILD = '2026.08.07-2';  // Back = link-follow history (returns to exact feed + scroll); bottom-bar tabs are toggle overlays, never recorded as a Back destination — following a link out of a tab records the feed beneath it, so Back skips the tab
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -1587,7 +1588,46 @@ function getGateway(name, sectorKey){
 // fix domain for synthetic keys
 function domainOf(name){ return gwKeyFromName(name)+'xx.com'; }
 
+/* ── Link-follow history ────────────────────────────────────────────────
+   Every time you tap a link that carries you to another page in the ecosystem
+   (a gateway from a feed card, a brand zone, a sector, an event → its gateway…)
+   we stash a snapshot of exactly where you were — the screen AND its scroll
+   position. Back (goBack) then rewinds those, one by one, dropping you straight
+   back into the feed you came from, right where you left off. Kept separate from
+   the utility-tab toggle memory (_before) and the altitude fallback below. */
+let _navSilent = false;   // set while goBack does its own altitude descent, so those hops don't re-record
+function navSnapshot(){
+  // A bottom-bar utility tab (Discover/AI/Events/Profile) is a toggleable overlay you
+  // open/close by tapping it — never a real destination, so Back must not land you back
+  // inside one. When a tab is open, the place worth remembering is the content BENEATH it
+  // (state._before, captured with its own scroll when the tab was opened). Following a link
+  // out of a tab therefore records the feed you came from, not the tab.
+  if (UTIL_TABS.includes(state.tab)) return state._before ? {...state._before} : null;
+  return {
+    tab:state.tab, screen:state.screen, sector:state.sector, gateway:state.gateway,
+    _gwObj:state._gwObj, gwTab:state.gwTab, space:state.space, returnGw:state.returnGw,
+    gwZones:state.gwZones, gwZoneTab:state.gwZoneTab, gwBarPage:state.gwBarPage,
+    zone:state.zone, zoneTab:state.zoneTab, zoneBarPage:state.zoneBarPage,
+    scroll:$('screen').scrollTop,
+  };
+}
+function pushHist(){
+  if(_navSilent) return;
+  const snap = navSnapshot();
+  if(!snap) return;   // nothing real beneath (e.g. a tab opened straight from a cold start) → don't record
+  (state._hist || (state._hist=[])).push(snap);
+}
+function navRestore(b){
+  state.tab=b.tab; state.screen=b.screen; state.sector=b.sector; state.gateway=b.gateway;
+  state._gwObj=b._gwObj; state.gwTab=b.gwTab; state.space=b.space; state.returnGw=b.returnGw;
+  state.gwZones=b.gwZones; state.gwZoneTab=b.gwZoneTab; state.gwBarPage=b.gwBarPage||'commerce';
+  state.zone=b.zone||null; state.zoneTab=b.zoneTab||'feed'; state.zoneBarPage=b.zoneBarPage||'main';
+  state.zoneProduct=null; state._zoneIn=!!b.zone; state.showFavs=false; state._before=null;
+  render(); $('screen').scrollTo(0, b.scroll||0);
+  if (window.__syncChrome) window.__syncChrome();   // bars stay visible until you scroll again
+}
 function openGateway(name, sectorKey){
+  pushHist();
   const key = gwKeyFromName(name);
   state.gateway = GATEWAYS[key] ? key : null;
   state._gwObj = getGateway(name, sectorKey || (GATEWAYS[key]&&GATEWAYS[key].sector));
@@ -1599,6 +1639,7 @@ function openGateway(name, sectorKey){
   render(); $('screen').scrollTo(0,0);
 }
 function openSector(key){
+  pushHist();
   // leaving a gateway for its own sector = a glimpse; remember the way back
   state.returnGw = (state.screen==='gateway' && state._gwObj && state._gwObj.sector===key)
     ? {name:state._gwObj.name, sector:key, emoji:state._gwObj.emoji, gradient:state._gwObj.gradient}
@@ -1608,7 +1649,7 @@ function openSector(key){
   logVisit('sector', key);
   render(); $('screen').scrollTo(0,0);
 }
-function goHub(){ state._before=null; state.screen='root'; state.gateway=null; state._gwObj=null; state.showFavs=false; state.returnGw=null; state.zone=null; state.zoneProduct=null; state._zoneIn=false; state.tab='home'; render(); }
+function goHub(){ state._before=null; state._hist=[]; state.screen='root'; state.gateway=null; state._gwObj=null; state.showFavs=false; state.returnGw=null; state.zone=null; state.zoneProduct=null; state._zoneIn=false; state.tab='home'; render(); }
 
 /* Home always takes you home. The other four are toggles: first tap opens the tab
    (remembering where you were), a second tap closes it and puts you straight back —
@@ -1662,18 +1703,27 @@ function backTarget(){
   return null;   // already at the Network hub with nothing stacked
 }
 function goBack(){
+  // 1) an open utility tab (Discover/AI/Events/Profile) → toggle it shut, restoring _before
+  if (UTIL_TABS.includes(state.tab)){ setTab(state.tab); return; }
+  // 2) a product sheet is open in a zone → just close the sheet
+  if (state.zoneProduct!=null){ closeProduct(); return; }
+  // 3) a commercial layer (Brands/Apps/Pro's) is open on a gateway → collapse to its feed first
+  if (state.screen==='gateway' && state.gwZones){ gwHome(); return; }
+  // 4) followed a link to get here → step straight back to the exact feed + scroll you came from
+  if (state._hist && state._hist.length){ navRestore(state._hist.pop()); return; }
+  // 5) fallback — nothing recorded (e.g. a deep-link entry): descend by altitude
+  _navSilent = true;
   switch(backTarget()){
-    case 'restore': setTab(state.tab); break;             // toggle the open tab shut → restores _before
     case 'zone':    zoneToGateway(); break;               // zone → its gateway (the ★ layer)
     case 'gateway':{
-      if (state.gwZones){ gwHome(); break; }              // a commercial layer (Brands/Apps/Pro's) is open → collapse to the gateway's own feed first
-      const gw = state._gwObj;                            // already on the gateway feed → up to its sector
+      const gw = state._gwObj;                            // gateway feed → up to its sector
       if (gw && gw.sector) openSector(gw.sector); else goHub();
       break;
     }
     case 'sector':  goHub(); break;                       // sector → the Network hub
     // default: already home, nowhere to go — the button renders muted
   }
+  _navSilent = false;
 }
 
 /* the gateway domain in the top bar is a live link — from anywhere deep in the
@@ -2020,9 +2070,10 @@ function toggleBrandFav(k){
 }
 function openZoneFav(k, tab){   // jump into a pinned brand from anywhere — wire up its gateway first
   const z=ZONES[k]; if(!z) return;
+  pushHist();               // record the true origin BEFORE we rewire the gateway underneath
   state.showFavs=false;
   if(GATEWAYS[z.gw]){ state.gateway=z.gw; state._gwObj=GATEWAYS[z.gw]; state.sector=GATEWAYS[z.gw].sector; }
-  openZone(k, tab);
+  _navSilent=true; openZone(k, tab); _navSilent=false;   // openZone would re-record the already-rewired state
 }
 
 /* ═════════ FIRST-RUN NUDGES ═════════
@@ -2285,7 +2336,7 @@ function tabBar(){
   tb.style.background = gw ? `${t.bg}f2` : '';
   tb.style.borderTopColor = gw ? t.cardBorder : '';
   const tabs = [['back','Back'],['discover','Discover'],['ai','AI'],['events','Events'],['profile','Profile']];
-  const canBack = !!backTarget();
+  const canBack = !!backTarget() || !!(state._hist && state._hist.length) || (state.screen==='gateway' && state.gwZones) || state.zoneProduct!=null;
   const dead = gw ? `${t.text}24` : 'rgba(17,17,22,.16)';   // Back with nowhere to go
   tb.innerHTML = tabs.map(([k,lb]) => {
     if (k==='back'){
@@ -4219,6 +4270,7 @@ const zoneInitials = n => n.split(/[\s·]+/).map(w=>w[0]).join('').slice(0,2).to
 
 function openZone(k, tab){
   if(!ZONES[k]) return;
+  pushHist();
   // Full-page: the zone is the next rung on the shell ladder, not an overlay sheet.
   // The parent gateway stays in state (_gwObj/gateway) so the breadcrumb + drawers work.
   // Optional `tab` deep-links a sub-view (e.g. 'events' from the network calendar); the sub-bar
