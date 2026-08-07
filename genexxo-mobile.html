@@ -641,6 +641,7 @@ const GATEWAYS = {
     apps:[{name:'Occasion Finder',color:'#C4384F',desc:'The right dress for the event'},{name:'Size & Fit',color:'#E85D74',desc:'Sizing across every label'}],
     feed:[
       {av:'DX',avBg:'linear-gradient(135deg,#9B2335,#C4384F)',author:'DressXX Editorial',sub:'Featured · Just now',badge:'★ FEATURED',text:'From the wedding-guest edit to couture-week front rows — occasion dressing for every body, every budget and every moment that matters. Style, fit and the designers who make you feel unstoppable.',video:'genexxo-videos/dress1.mp4',eng:'♡ 15.2K · 💬 1.9K · ↗ 1.1K'},
+      {videoOnly:true,video:'genexxo-videos/dressxx3.mp4'},
       {av:'SP',avBg:'linear-gradient(135deg,#2C1810,#D4A574)',author:'Silvere Paris',sub:'Live now · Couture SS27 · Avenue Montaigne',badge:'BRAND ZONE',text:'Silvere Live · Couture SS27 — the architectural-lace collection, walked live from Avenue Montaigne. Front row, look 14 on the runway, finale next. Watch live and shop the collection.',img:'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=800&h=440&fit=crop&q=80',eng:'🔴 8,907 watching · 💬 live · ↗ Share'},
       {av:'As',avBg:'linear-gradient(135deg,#1A0812,#2D0F1E)',author:'Aspire',sub:'Founding Partner · Brand Zone',badge:'BRAND ZONE',text:'New season occasion edit just dropped — 340 new dresses from mini to maxi, across every budget, sizes 4 to 26 on every single style. Free next-day delivery for Premier members. Fashion for all means all.',img:'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&h=440&fit=crop&q=80',eng:'♡ 8.4K · 💬 1.1K · ↗ 567'},
       {av:'OO',avBg:'linear-gradient(135deg,#EC4899,#BE185D)',author:'@occasion_obsessed',sub:'Community · 4h ago',badge:'COMMUNITY',text:'Wore the Silvere Flower Lace Midi to my best friend’s wedding — three people asked if it was couture. The structure holds all night, no sagging even after 5 hours of dancing. At £380 the best occasion dress I’ve ever owned.',img:'https://images.unsplash.com/photo-1566479179817-c0b5c4b5a98e?w=800&h=440&fit=crop&q=80',eng:'♡ 6.2K · 💬 534 · ↗ 245'},
@@ -921,6 +922,9 @@ NETWORK_FEED.splice(4, 0, { gw:'surf', videoOnly:true, video:'genexxo-videos/sur
 /* A Bullheart brand clip risen to the Network level (2026-08-07) — demonstrates a ClimbXX brand
    promoting all the way up the ladder. gw:'climb' resolves the ClimbXX gradient/name/accent. */
 NETWORK_FEED.splice(7, 0, { gw:'climb', av:'BH', avBg:'linear-gradient(135deg,#2B2B33,#0C0C10)', author:'Bullheart', sub:'Brand Zone · ClimbXX', badge:'BRAND ZONE', text:'Project day, tracked start to finish on Bullheart One — the climbing wearable that reads your session, not your steps. Meet the brand on ClimbXX.', video:'bullheart/bh-climb3.mp4', eng:'♡ 7.4K · 💬 610 · ↗ 452' });
+/* A GENEXXO platform showcase clip, video-only, dropped lower down the Network feed (2026-08-07).
+   No gw → not a tap-through; _stubGw paints the gold GENEXXO mark + name in the corner. */
+NETWORK_FEED.splice(14, 0, { videoOnly:true, video:'genexxo-videos/super.mp4', _stubGw:{ name:'GENEXXO', gradient:'linear-gradient(135deg,#F5B800,#FFD34D)', emoji:'⬡', theme:{accent:'#F5B800'} } });
 
 /* Your gateways (from desktop profile data) */
 const YOUR_GATEWAYS = ['climb','ski','surf','cycle','sail'];
@@ -1007,6 +1011,11 @@ if (SECTOR_FEED.adventure) SECTOR_FEED.adventure.splice(2, 0, {
    text baked in, so it shows as just the video. Slotted into Adventure at the top. */
 if (SECTOR_FEED.adventure) SECTOR_FEED.adventure.splice(1, 0, {
   gateway:'climb', videoOnly:true, videoSrc:'genexxo-videos/climbxx.mp4', gwName:'ClimbXX', gwAccent:'#E8623A'
+});
+/* DressXX brand film — elegant lady displaying the DressXX brand — pulled UP into the Fashion sector
+   as a video-only post (2026-08-07). dress is a built gateway so the card taps through to DressXX. */
+if (SECTOR_FEED.fashion) SECTOR_FEED.fashion.splice(1, 0, {
+  gateway:'dress', videoOnly:true, videoSrc:'genexxo-videos/dressxx3.mp4', gwName:'DressXX', gwAccent:'#C4384F'
 });
 function initialsFromAuthor(a){
   const parts=(a||'').replace(/^@/,'').replace(/[^A-Za-z0-9_ ]/g,'').split(/[_\s]+/).filter(Boolean);
@@ -1562,7 +1571,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.07-3';  // NEW BRAND: Bullheart (climbing wearable + performance wear) in the ClimbXX gateway — full brand zone w/ shop, logo tiles (brandAvatar), and video posts seeded across zone feed + gateway + Adventure sector + Network levels (needs /bullheart/ folder uploaded to the repo root)
+const BUILD = '2026.08.07-6';  // + Supernova Application video slide (genexxo-videos/supernova-app.mp4) as the 4th card in the ⓘ Intro deck; ifSlide now supports a video. (still needs super.mp4, dressxx3.mp4, supernova-app.mp4 + /bullheart/ folder uploaded to the repo)
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -1945,6 +1954,7 @@ function ifSlide(s, i, total){
     s.stats   ? ifStats(s.stats) : '',
     s.steps   ? ifSteps(s.steps) : '',
     s.duo     ? ifDuo(s.duo) : '',
+    s.video   ? mediaBlock({video:s.video}, s.grad||'#1a1a22', 190) : '',
     s.note    ? `<div class="snote">${s.note}</div>` : '',
   ].join('');
   return `<div class="scard${isG?' grad':''}"${isG?` style="background:${s.grad}"`:''}>
@@ -1977,6 +1987,9 @@ const IF_INTRO = [
   { type:'grad', grad:IF_GRADS[1], sub:'The Solution', title:'The Solution',
     lead:'The GENEXXO Supernova Application',
     body:'Thousands of linguistic gravitational gateways deployed across the digital universe — reaching every category and every niche.' },
+  { type:'grad', grad:IF_GRADS[10], sub:'The Application', title:'The Supernova Application',
+    lead:'One application. Every gateway.', video:'genexxo-videos/supernova-app.mp4',
+    note:'The consumer surface where the whole ecosystem comes alive.' },
   { type:'white', grad:IF_GRADS[3], sub:'The Model', title:'Each Domain Becomes',
     body:'A natural home for:', bullets:['Brands','Apps','Pros','Communities','Business'], note:'One unified ecosystem.' },
   { type:'white', grad:IF_GRADS[6], sub:'The Foundation', title:'The Foundation',
@@ -2545,7 +2558,7 @@ function renderGateway(){
     body += zoneCtaCard(ZONE_CTA[z]);
   } else {
     // Feed (default) — no tab lit; the gateway's own feed sits under the Brands·Apps·Pro's bar.
-    const card = f => `
+    const card = f => f.videoOnly ? videoCard(state.gateway, f, false) : `
       <div class="gcard" style="background:${t.cardBg};border-color:${t.cardBorder};color:${t.text}">
         <div class="hd"><div class="av" style="background:${f.avBg}">${f.av}</div>
           <div><div class="an">${f.author}</div><div class="as">${f.sub}</div></div>
