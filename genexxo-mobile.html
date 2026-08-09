@@ -178,6 +178,20 @@
   @keyframes slidein{from{transform:translateX(26px);opacity:0}to{transform:none;opacity:1}}
   .backrow{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;cursor:pointer;padding:12px 16px 0;color:inherit;opacity:.7}
 
+  /* ── domain assembly (arriving at a gateway) ──────────────────────────────
+     The subject comes in from the left, the XX network mark comes to meet it from
+     the right, and .com settles a beat later. Short travel (28px) — a long slide in
+     a 53px bar reads as jitter. Classes are only emitted on arrival (see topBar). */
+  .dmn-l{display:inline-block;animation:dmnL .42s cubic-bezier(.22,1.1,.36,1) both}
+  .dmn-r{display:inline-block;animation:dmnR .42s cubic-bezier(.22,1.1,.36,1) both}
+  .dmn-c{display:inline-block;animation:dmnC .3s ease .3s both}
+  @keyframes dmnL{from{transform:translateX(-28px);opacity:0}to{transform:none;opacity:1}}
+  @keyframes dmnR{from{transform:translateX(28px);opacity:0}to{transform:none;opacity:1}}
+  @keyframes dmnC{from{opacity:0}to{opacity:.5}}   /* .com rests at the same .5 as the static bar */
+  @media (prefers-reduced-motion:reduce){
+    .dmn-l,.dmn-r,.dmn-c{animation:none}
+  }
+
   /* sector screen */
   .sec-hero{margin:12px 16px 0;border-radius:20px;padding:22px 18px;color:#fff}
   .sec-hero .ic{font-size:26px}
@@ -1663,6 +1677,7 @@ function openGateway(name, sectorKey){
   state.zone = null; state.zoneProduct = null; state._zoneIn = false;
   state._before = null; state.tab = 'home';   // committed to a real place — tab toggle memory resets
   logVisit('gateway', key);
+  state._domainIn = true;    // arrival → let the domain assemble itself once (see domainMark)
   render(); $('screen').scrollTo(0,0);
 }
 function openSector(key){
@@ -2310,6 +2325,23 @@ function closeDrawerR(){ $('frame').classList.remove('drawer-open-r'); syncNetba
 function pickGateway(name, sk){ closeDrawerR(); state._gwFrom='sector'; openGateway(name, sk); }
 
 /* ═════════ CHROME ═════════ */
+/* ═════════ DOMAIN ASSEMBLY ON ARRIVAL (2026-08-09) ═════════
+   Arriving at a gateway, the domain builds itself in the top bar rather than just being
+   there: the SUBJECT slides in from the left, the XX network mark comes to meet it from
+   the right, and `.com` settles a beat later — the domain visibly joining the network.
+   Fires on arrival ONLY. render() rewrites #screen wholesale on every in-gateway
+   interaction (tab switch, favourite, drawer), so the animation classes are gated behind
+   state._domainIn, set in openGateway() and cleared by render() the moment it's drawn.
+   Flip DOMAIN_ASSEMBLE to false for the plain static domain. */
+const DOMAIN_ASSEMBLE = true;
+function domainMark(name){
+  const m = /^(.*?)(XX)$/.exec(name);                 // BoxingXX → 'Boxing' + 'XX'
+  const stem = m ? m[1] : name, xx = m ? m[2] : '';
+  const anim = DOMAIN_ASSEMBLE && state._domainIn;
+  const L = anim ? ' class="dmn-l"' : '', R = anim ? ' class="dmn-r"' : '', C = anim ? ' dmn-c' : '';
+  return `<span${L}>${stem}</span><span${R}>${xx}</span>`
+       + `<span class="${C.trim()}" style="opacity:.5">.com</span>`;
+}
 function topBar(gw){
   const inGw = !!gw;
   const style = inGw ? `background:${gw.theme.headerBg};color:${gw.theme.text};` : '';
@@ -2322,7 +2354,7 @@ function topBar(gw){
     </div>
     ${inGw?`
     <div onclick="event.stopPropagation();gwHome()" title="${gw.name}.com home"
-      style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--cond);font-weight:700;font-size:16px;letter-spacing:.02em;cursor:pointer;padding:6px 10px;margin:-6px -10px">${gw.name}<span style="opacity:.5">.com</span></div>
+      style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--cond);font-weight:700;font-size:19px;letter-spacing:.02em;cursor:pointer;padding:6px 10px;margin:-6px -10px">${domainMark(gw.name)}</div>
     <div id="gwStar" onclick="event.stopPropagation();toggleFavPanel()" title="Favourite gateways"
       style="margin-left:auto;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;font-size:19px;line-height:1;color:${state.showFavs?gw.theme.accent:gw.theme.text};opacity:${state.showFavs?'1':'.55'};${state.showFavs?`background:${gw.theme.accent}22`:''}">${state.showFavs?'★':'☆'}</div>`
     :`<div style="margin-left:auto;display:flex;align-items:center;gap:6px">
@@ -5415,6 +5447,7 @@ function render(){
   // media cache anyway (fine: the abandoned page comes back pre-warmed).
   $('screen').querySelectorAll('video[src]').forEach(v=>{ try{ v.pause(); v.removeAttribute('src'); v.load(); }catch(_){} });
   $('screen').innerHTML = html;
+  state._domainIn = false;   // one-shot: it's drawn, so no re-render inside the gateway replays it
   // Pin the sticky sub-bar (Network·Sectors·Gateways / gateway tabs) flush under the top
   // bar on EVERY device: drive its sticky offset from the top bar's real rendered height
   // instead of a hard-coded 53px, so sub-pixel/DPR rounding can't leave it ~10% tucked under.
