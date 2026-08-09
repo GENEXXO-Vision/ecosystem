@@ -85,6 +85,14 @@
   .netbar{position:sticky;top:var(--top-h,53px);z-index:30;display:flex;gap:6px;padding:7px 14px}
   .ntab{flex:1;text-align:center;font-size:12.5px;font-weight:700;color:rgba(255,255,255,.5);padding:7px 0;border-radius:99px;cursor:pointer;transition:color .15s,background .15s}
   .ntab.on{color:#fff;background:rgba(255,255,255,.15)}
+  /* ── gateway sub-bar as a 2-page carousel (swipe) ──────────────────────────
+     Both heading pages ride one track inside a clipped viewport, so the bar can be
+     dragged with the thumb (Feed·Brands·Apps ⇄ Pros·Communities·Business) instead of
+     only tapping the › arrow. touch-action:pan-y lets vertical scrolling through. */
+  .gwbar-vp{flex:1;overflow:hidden;touch-action:pan-y}
+  .gwbar-track{display:flex;width:200%}
+  .gwbar-track.snap{transition:transform .24s cubic-bezier(.4,0,.2,1)}
+  .gwbar-pg{width:50%;display:flex;gap:6px}
   .ntab.idt{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
   /* ── Left sector drawer (X-style edge swipe) ── */
@@ -1598,7 +1606,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.07-8';  // Network feed: moved the SurfXX video-only clip down to sit just above the wellness SpaXX video.
+const BUILD = '2026.08.09-1';  // Gateway top bar: domain assembles on arrival. Sub-bar: swipeable 2-page carousel + in-place repaint (no more full-screen flicker).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2143,19 +2151,26 @@ if (new URLSearchParams(location.search).get('nudges')==='reset'){
 /* Tap a bar tab: Feed drops to the gateway feed; any commercial tab opens it, or tap the
    active one again to toggle back to the feed. */
 function tapGwZone(k){
+  if (Date.now() - _gwBarSwipeAt < 400) return;                   // just dragged the bar → not a tap
   if (k==='feed') state.gwZones=false;                            // explicit Feed tab → the feed
   else if (state.gwZones && state.gwZoneTab===k) state.gwZones=false;   // active tab tapped → feed
   else { state.gwZones=true; state.gwZoneTab=k; }
-  render(); $('screen').scrollTo(0,0);
+  repaintGateway({body:true});     // body genuinely changes; bar + top bar stay put
 }
 /* The › / ‹ arrow on the gateway sub-bar flips between the two heading pages —
    'commerce' (Feed · Brands · Apps) and 'more' (Pro's · Communities · Business).
    Flipping drops back to the feed so the new set reads unlit; tap one to open. */
+/* Set when a bar SWIPE just ended — swallows the click the browser fires on whichever
+   tab happened to be under the thumb, so dragging never opens a zone by accident. */
+let _gwBarSwipeAt = 0;
 function tapGwBarPage(){
   clearNudge('barMore');   // the pulse has done its job — retire it forever
+  // Flipping only drops you back to the feed if you were IN a zone. If you're already on
+  // the feed, nothing below the bar changes — so don't touch it, and don't steal your place.
+  const leavingZone = state.gwZones;
   state.gwBarPage = state.gwBarPage==='more' ? 'commerce' : 'more';
   state.gwZones=false;
-  render(); $('screen').scrollTo(0,0);
+  repaintGateway({animateBar:true, body:leavingZone});
 }
 /* Apply track button — used by the Profile "Apply to join" section (interim home for Apply,
    moved off the gateway bar 2026-07-27). Placeholder until the real application flow exists. */
@@ -2551,7 +2566,6 @@ function renderGateway(){
   const GW_PAGE1 = [['feed','Feed'],['brands','Brands'],['apps','Apps']];
   const GW_PAGE2 = [['pros','Pros'],['communities','Communities'],['business','Business']];
   const onMore = state.gwBarPage==='more';
-  const zTabs = onMore ? GW_PAGE2 : GW_PAGE1;
   const barArrow = onMore ? '‹' : '›';
   // On the 'more' page the gradient mirrors horizontally (135deg → 225deg) so the shading
   // reads right-to-left — a subtle cue that you've flipped pages.
@@ -2560,8 +2574,15 @@ function renderGateway(){
   const arrowNudge = (!onMore && !nudgeDone('barMore')) ? ' arrow-nudge' : '';
   // Feed lights when you're NOT in a commercial layer (!gwZones); every other tab lights on match.
   const gwTabOn = k => k==='feed' ? !state.gwZones : (state.gwZones && state.gwZoneTab===k);
+  // Both pages are drawn on one track so the bar can be SWIPED between them (see
+  // initGwBarSwipe); the off-screen page is clipped by .gwbar-vp. The arrow sits outside
+  // the track — it's chrome for the carousel, not part of it.
+  const pgTabs = list => list.map(([k,lb])=>`<div class="ntab ${gwTabOn(k)?'on':''}" onclick="tapGwZone('${k}')">${lb}</div>`).join('');
   bar = `<div class="substick netbar" style="background:${barBg}">
-    ${zTabs.map(([k,lb])=>`<div class="ntab ${gwTabOn(k)?'on':''}" onclick="tapGwZone('${k}')">${lb}</div>`).join('')}
+    <div class="gwbar-vp"><div class="gwbar-track" style="transform:translateX(${onMore?'-50%':'0%'})">
+      <div class="gwbar-pg">${pgTabs(GW_PAGE1)}</div>
+      <div class="gwbar-pg">${pgTabs(GW_PAGE2)}</div>
+    </div></div>
     <div class="ntab${arrowNudge}" style="flex:0 0 30px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px" onclick="tapGwBarPage()" title="${onMore?'Back to Feed · Brands · Apps':'More — Pros · Communities · Business'}">${barArrow}</div>
   </div>`;
 
@@ -2627,9 +2648,52 @@ function renderGateway(){
   <div class="push" style="background:${t.bg};color:${t.text};min-height:calc(100dvh - 53px);margin-top:-1px">
     ${bar}
     <div style="height:8px"></div>
-    ${body}
+    <div id="gwBody">${body}</div>
     <div style="height:20px"></div>
   </div>`;
+}
+
+/* ═════════ IN-PLACE GATEWAY REPAINT (2026-08-09) ═════════
+   render() replaces #screen wholesale — top bar, sub-bar, feed, everything. Inside a
+   gateway that's overkill: flipping the bar's page or opening a zone would rebuild the
+   whole screen, tearing down every <video> and resetting scroll. That's the flicker.
+   repaintGateway() re-runs renderGateway() but grafts across ONLY what changed:
+     • the sub-bar (gradient, lit tabs, arrow) — keeping the element so the track can animate
+     • #gwBody, and only when the body actually differs
+   The top bar, favourites panel and scroll position are left completely alone. */
+function repaintGateway(opt){
+  opt = opt || {};
+  const scr = $('screen');
+  const curBar = scr.querySelector('.substick.netbar'), curBody = scr.querySelector('#gwBody');
+  if (state.screen!=='gateway' || !curBar || !curBody){ render(); $('screen').scrollTo(0,0); return; }
+  const tmp = document.createElement('div');
+  tmp.innerHTML = renderGateway();
+  const newBar = tmp.querySelector('.substick.netbar'), newBody = tmp.querySelector('#gwBody');
+  if (!newBar || !newBody){ render(); $('screen').scrollTo(0,0); return; }
+
+  // ── the bar. Swap its contents, then (if asked) run the track from where it actually is
+  //    to where it should be — so tapping the › arrow now slides exactly like a swipe does.
+  const oldTrack = curBar.querySelector('.gwbar-track');
+  const from = oldTrack ? oldTrack.style.transform : '';
+  curBar.style.background = newBar.style.background;
+  curBar.innerHTML = newBar.innerHTML;
+  const track = curBar.querySelector('.gwbar-track');
+  if (track && opt.animateBar && from){
+    track.classList.remove('snap');
+    track.style.transform = from;
+    void track.offsetWidth;                    // force a reflow so the start position takes
+    track.classList.add('snap');
+    track.style.transform = state.gwBarPage==='more' ? 'translateX(-50%)' : 'translateX(0%)';
+  }
+
+  // ── the body, only when it's genuinely different content
+  if (opt.body){
+    curBody.querySelectorAll('video[src]').forEach(v=>{ try{ v.pause(); v.removeAttribute('src'); v.load(); }catch(_){} });
+    curBody.innerHTML = newBody.innerHTML;
+    lazyMedia();
+    scr.scrollTo(0,0);
+    if (window.__syncChrome) window.__syncChrome();
+  }
 }
 
 function toggleApp(name,color,gwName){
@@ -5506,6 +5570,9 @@ buildDrawer();
   const frame=$('frame'); let sx=0, sy=0, fromL=false, fromR=false;
   frame.addEventListener('touchstart', e=>{
     if (state.showInfo){ fromL=fromR=false; return; }   // deck open → its own swipe owns horizontal gestures
+    // The gateway sub-bar owns its own horizontal drag (page carousel). Without this, a swipe
+    // starting in the bar's outer 30px would open a drawer instead of flipping the page.
+    if (e.target.closest && e.target.closest('.gwbar-vp')){ fromL=fromR=false; return; }
     const t=e.changedTouches[0], r=frame.getBoundingClientRect(); sx=t.clientX; sy=t.clientY;
     fromL = (sx - r.left) < 30;
     fromR = (r.right - sx) < 30;
@@ -5521,6 +5588,60 @@ buildDrawer();
   }, {passive:true});
 })();
 
+/* ═════════ GATEWAY SUB-BAR SWIPE (2026-08-09) ═════════
+   The Feed·Brands·Apps bar is a two-page carousel — drag it and the headings follow the
+   thumb, releasing past a quarter of the width snaps to the other page (Pros·Communities·
+   Business). The › arrow still does the same job for anyone who doesn't try the gesture.
+   Delegated on #screen because render() rebuilds the bar constantly — binding to the
+   element itself would go stale on every re-render. */
+(function initGwBarSwipe(){
+  const screen=$('screen');
+  let track=null, sx=0, sy=0, w=0, base=0, drag=false, decided=false, moved=false;
+  screen.addEventListener('touchstart', e=>{
+    drag=false;
+    const vp = e.target.closest && e.target.closest('.gwbar-vp');
+    if (!vp) return;
+    track = vp.querySelector('.gwbar-track'); if(!track) return;
+    w = vp.getBoundingClientRect().width;
+    base = state.gwBarPage==='more' ? -w : 0;      // px, so the drag maths stays in one unit
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+    drag=true; decided=false; moved=false;
+    track.classList.remove('snap');
+    track.style.transform = `translateX(${base}px)`;
+  }, {passive:true});
+  screen.addEventListener('touchmove', e=>{
+    if(!drag) return;
+    const dx = e.touches[0].clientX - sx, dy = e.touches[0].clientY - sy;
+    if(!decided){
+      if (Math.abs(dx)<6 && Math.abs(dy)<6) return;               // too small to call yet
+      decided = true;
+      if (Math.abs(dy) > Math.abs(dx)){ drag=false; return; }     // vertical intent → let the feed scroll
+    }
+    e.preventDefault();                                           // it's ours now
+    moved = true;
+    let x = base + dx;
+    if (x > 0)  x = x*.3;                                         // rubber-band past the first page
+    if (x < -w) x = -w + (x+w)*.3;                                // …and past the last
+    track.style.transform = `translateX(${x}px)`;
+  }, {passive:false});
+  screen.addEventListener('touchend', e=>{
+    if(!drag) return; drag=false;
+    if(!moved) return;                                            // a tap, not a drag — leave it to onclick
+    _gwBarSwipeAt = Date.now();                                   // swallow the click this release fires
+    const dx = e.changedTouches[0].clientX - sx;
+    const onMore = state.gwBarPage==='more';
+    const flip = Math.abs(dx) > w*.22 && (onMore ? dx>0 : dx<0);  // far enough, and in a valid direction
+    if (flip){
+      // Commit straight away — repaintGateway picks the track up from wherever the finger
+      // left it and runs it home, so there's no wait and no double movement.
+      tapGwBarPage();
+    } else {
+      track.classList.add('snap');                                // didn't make it — spring back
+      track.style.transform = `translateX(${base}px)`;
+    }
+  }, {passive:true});
+})();
+
 /* ═════════ PULL-TO-REFRESH ═════════
    Pull down past the top of any feed → spinner → re-render the current screen.
    Static data for now (the motion is real; wire to live data later). */
@@ -5531,6 +5652,7 @@ buildDrawer();
   const reset=()=>{ ptr.style.transition=''; ptr.style.transform=''; ptr.style.opacity=0; ptr.classList.remove('ready'); };
   screen.addEventListener('touchstart', e=>{
     pulling = screen.scrollTop<=0 && !busy
+      && !(e.target.closest && e.target.closest('.gwbar-vp'))   // dragging the sub-bar ≠ pulling the feed
       && state.screen!=='zone'   // brand zones opt out — the gesture got in the way of the Shop/grid
       && !state.showInfo         // the ⓘ vision deck is a self-contained overlay — no pull-to-refresh
       && !frame.classList.contains('drawer-open') && !frame.classList.contains('drawer-open-r');
