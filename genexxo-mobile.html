@@ -1764,7 +1764,12 @@ function gwGroupDivider(text, ctx){   // sub-group label between gateways (drawe
   const pad = ctx==='discover' ? 'padding:16px 20px 6px;margin-top:2px' : 'padding:13px 18px 5px';
   return `<div style="${pad};font-size:9.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">${text}</div>`;
 }
-function onGwSearch(v){ state.gwQuery=v; buildDrawerR(); }   // input is static DOM → focus is retained
+/* Input is static DOM → focus is retained. The list must also be scrolled back to the top:
+   the results replace a list you may have scrolled a long way down (Health is 466 rows), and
+   without this the top hit renders above the viewport and looks like "no result".
+   Safe to scroll here — initAutoHideChrome() early-returns while a drawer is open, so this
+   never toggles the chrome and never blurs the input on Android (see onDiscoverSearch). */
+function onGwSearch(v){ state.gwQuery=v; buildDrawerR(); const l=$('drawerRList'); if(l) l.scrollTop=0; }
 /* Network-wide search is STRICTER than in-sector search (2026-08-16).
    In a sector you're scanning a small, known list, so a loose substring match is helpful.
    Across all 6,700+ gateways it is not: searching "rose" in Home otherwise drags in
@@ -1804,7 +1809,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.17-8';  // Brand zones, deep-link boot, feed/hero cards and sectorIsLive all resolve the gateway's current tile (Marbury → Accessories, not Fashion).
+const BUILD = '2026.08.17-9';  // Drawer searches (and the ★ favourites toggle) scroll their list back to the top, so the best match is visible instead of above the viewport.
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2452,7 +2457,9 @@ function washFor(grad){
    left edge-bar in the sector's accent — echoing the sector header so the list feels
    "lit" by where you are (mirrors the desktop deck). Rebuilt on each open so the
    highlight always tracks the active sector. */
-function onSecSearch(v){ state.secQuery=v; buildDrawer(); }   // input is static DOM → focus is retained
+// Same as onGwSearch: static input keeps focus, and the list returns to the top so the best
+// match is visible rather than scrolled off above.
+function onSecSearch(v){ state.secQuery=v; buildDrawer(); const l=$('drawerList'); if(l) l.scrollTop=0; }
 function drawerSecRow(s, active){                 // one sector row in the left drawer
   const on = s.key===active;
   const {accent, wash} = washFor(s.g);
@@ -2613,7 +2620,9 @@ function buildDrawerR(){
   // The right drawer is ALWAYS the sector's gateways (the "family" list) — same on home,
   // sector and inside a brand zone. At zone level activeSectorKey() resolves to the parent
   // gateway's sector, so the family below renders without a zone-specific branch.
-  const headStar =`<div onclick="state.drawerRFavs=!state.drawerRFavs;buildDrawerR()" title="Favourites — all sectors"
+  // Switching between the family list and favourites swaps the whole list, so return to the top —
+  // otherwise a deep scroll position carries over onto a much shorter list and shows blank space.
+  const headStar =`<div onclick="state.drawerRFavs=!state.drawerRFavs;buildDrawerR();var l=document.getElementById('drawerRList');if(l)l.scrollTop=0" title="Favourites — all sectors"
     style="margin-left:auto;cursor:pointer;font-size:17px;line-height:1;padding:2px 2px 2px 10px;color:${state.drawerRFavs?'#F5B800':'rgba(17,17,22,.35)'}">${state.drawerRFavs?'★':'☆'}</div>`;
   const rowStar = k => `<div onclick="event.stopPropagation();toggleFavQuiet('${k}')"
     style="font-size:15px;line-height:1;padding:6px 2px 6px 8px;cursor:pointer;color:${state.favs.includes(k)?'#F5B800':'rgba(17,17,22,.22)'}">${state.favs.includes(k)?'★':'☆'}</div>`;
