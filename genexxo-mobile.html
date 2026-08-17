@@ -1476,7 +1476,7 @@ function feedCard(gwKey, post, showSector){
       </div>` : '';
   // Top provenance row dropped (2026-07-27) — the gateway name now sits at the bottom-right,
   // under the media, as a quiet source tag (no icon).
-  return `<div class="nfcard"${built?` onclick="state._gwFrom='root';openGateway('${g.name}','${g.sector}')"`:''}>
+  return `<div class="nfcard"${built?` onclick="state._gwFrom='root';openGateway('${g.name}','${gwSecOf(g)}')"`:''}>
     <div class="bar" style="background:${g.gradient}"></div>
     <div class="in">
       ${authorRow}
@@ -1519,7 +1519,8 @@ function heroFeedCard(gwKey, post, showSector){
   const built = !!GATEWAYS[gwKey];
   const g = GATEWAYS[gwKey] || (post&&post._stubGw) || {name:gwKey,sector:(post&&post._sk),gradient:'linear-gradient(135deg,#33333a,#44444d)',emoji:'',theme:{accent:'#888'}};
   const acc = (g.theme&&g.theme.accent)||'#888';
-  const secNm = g.sector ? ((sectorOf(g.sector)||{}).name || g.sector) : '';
+  const gSec = gwSecOf(g);
+  const secNm = gSec ? ((sectorOf(gSec)||{}).name || gSec) : '';
   const MH = 244;   // media height (~2/3 of the card); text panel flows below
   let media;
   if(post.video) media = `<video autoplay loop muted playsinline preload="none" data-vsrc="${mediaUrl(post.video)}" style="width:100%;height:${MH}px;object-fit:cover;display:block"></video>`;
@@ -1533,7 +1534,7 @@ function heroFeedCard(gwKey, post, showSector){
     </div>` : '';
   // Split hero: full-bleed media up top (with the sector chip floating over it), a clean text
   // panel below — legible on any clip, text never clamped.
-  return `<div class="herocard"${built?` onclick="state._gwFrom='root';openGateway('${g.name}','${g.sector}')"`:''}
+  return `<div class="herocard"${built?` onclick="state._gwFrom='root';openGateway('${g.name}','${gwSecOf(g)}')"`:''}
     style="margin:14px 1px;border-radius:20px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.10);cursor:pointer">
     <div style="position:relative;background:#000">
       ${media}
@@ -1560,7 +1561,8 @@ function convoCard(gwKey, post, showSector){
   const built = !!GATEWAYS[gwKey];
   const g = GATEWAYS[gwKey] || (post&&post._stubGw) || {name:gwKey,sector:(post&&post._sk),gradient:'linear-gradient(135deg,#33333a,#44444d)',emoji:'',theme:{accent:'#888'}};
   const acc = (g.theme&&g.theme.accent)||'#888';
-  const secNm = g.sector ? ((sectorOf(g.sector)||{}).name || g.sector) : '';
+  const gSec = gwSecOf(g);
+  const secNm = gSec ? ((sectorOf(gSec)||{}).name || gSec) : '';
   const author = post.author ? `
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
       <div style="width:30px;height:30px;border-radius:50%;background:${post.avBg};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff">${post.av}</div>
@@ -1575,7 +1577,7 @@ function convoCard(gwKey, post, showSector){
   else if(post.img) media = `<img src="${mediaUrl(post.img)}" loading="lazy" decoding="async" style="width:100%;height:${CH}px;object-fit:cover;display:block;background:#000">`;
   else if(post.media) media = `<div style="width:100%;height:${CH}px;background:${post.mediaBg||g.gradient};display:flex;align-items:center;justify-content:center;font-size:52px">${post.media}</div>`;
   const mediaBox = media ? `<div style="margin-top:11px;border-radius:14px;overflow:hidden;border:1px solid var(--line)">${media}</div>` : '';
-  return `<div class="herocard"${built?` onclick="state._gwFrom='root';openGateway('${g.name}','${g.sector}')"`:''}
+  return `<div class="herocard"${built?` onclick="state._gwFrom='root';openGateway('${g.name}','${gwSecOf(g)}')"`:''}
     style="margin:14px 1px;border-radius:20px;background:#fff;border:1px solid var(--line);box-shadow:0 6px 20px rgba(0,0,0,.07);cursor:pointer">
     <div style="padding:15px 16px 15px">
       ${(showSector&&secNm)?`<div style="display:inline-flex;align-items:center;gap:6px;margin-bottom:11px;padding:5px 11px;border-radius:99px;background:${acc}14;color:${acc};font-size:10px;font-weight:800;letter-spacing:.04em"><span style="width:6px;height:6px;border-radius:50%;background:${acc}"></span>${secNm}</div>`:''}
@@ -1603,11 +1605,12 @@ function videoCard(gwKey, post, showSector){
   const built = !!GATEWAYS[gwKey];
   const g = GATEWAYS[gwKey] || (post&&post._stubGw) || {name:gwKey,sector:(post&&post._sk),gradient:'linear-gradient(135deg,#33333a,#44444d)',emoji:'',theme:{accent:'#888'}};
   const acc = (g.theme&&g.theme.accent)||'#888';
-  const secNm = g.sector ? ((sectorOf(g.sector)||{}).name || g.sector) : '';
+  const gSec = gwSecOf(g);
+  const secNm = gSec ? ((sectorOf(gSec)||{}).name || gSec) : '';
   const media = post.video
     ? `<video autoplay loop muted playsinline preload="none" data-vsrc="${mediaUrl(post.video)}" style="width:100%;height:100%;object-fit:contain;display:block"></video>`
     : (post.img ? `<img src="${mediaUrl(post.img)}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block">` : '');
-  return `<div class="herocard"${built?` onclick="state._gwFrom='root';openGateway('${g.name}','${g.sector}')"`:''}
+  return `<div class="herocard"${built?` onclick="state._gwFrom='root';openGateway('${g.name}','${gwSecOf(g)}')"`:''}
     style="margin:14px 1px;border-radius:20px;overflow:hidden;background:#000;border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.10);cursor:pointer">
     <div style="position:relative;aspect-ratio:736/400;background:#000">
       ${media}
@@ -1796,12 +1799,12 @@ function gwFindElsewhere(q, sk, exclude){
 /* "Built out & live" signals (2026-07-27): a gateway is live if it has a real GATEWAYS
    def; a sector is live if any of its gateways are. Drives the green light + list order. */
 function gwIsLive(name){ return !!GATEWAYS[gwKeyFromName(name)]; }
-function sectorIsLive(sk){ for(const k in GATEWAYS){ if(GATEWAYS[k].sector===sk) return true; } return false; }
+function sectorIsLive(sk){ for(const k in GATEWAYS){ if(gwSecOf(GATEWAYS[k])===sk) return true; } return false; }
 const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;border-radius:50%;background:#22C55E;box-shadow:0 0 6px rgba(34,197,94,.9);flex-shrink:0"></span>';
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.17-7';  // Discover drill-down now matches the drawers: sticky sector bar, sticky category dividers and a Jump ▾ control.
+const BUILD = '2026.08.17-8';  // Brand zones, deep-link boot, feed/hero cards and sectorIsLive all resolve the gateway's current tile (Marbury → Accessories, not Fashion).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -1821,7 +1824,17 @@ function chromeBar(o){
    Trusting the stale field made the drawer open the old sector with nothing highlighted.
    The taxonomy is the source of truth; `prefer` keeps you in the tile you actually arrived from
    when a gateway legitimately lives in more than one (DietXX is in both health and nutrition). */
+const _homeSecCache = new Map();   // taxonomy is static after load; this is called per rendered row
 function gwHomeSector(name, prefer){
+  const cacheKey = name+'|'+(prefer||'');
+  if(_homeSecCache.has(cacheKey)) return _homeSecCache.get(cacheKey);
+  const out = _gwHomeSector(name, prefer);
+  _homeSecCache.set(cacheKey, out);
+  return out;
+}
+// Resolve a gateway def's CURRENT sector — use this anywhere a def's `sector:` field was read.
+function gwSecOf(g){ return (g && g.name) ? (gwHomeSector(g.name, g.sector) || g.sector) : (g && g.sector); }
+function _gwHomeSector(name, prefer){
   const k = gwKeyFromName(name);
   const inSector = sk => (SECTOR_GATEWAYS[sk]||[]).some(n=>!isGwHeader(n)&&gwKeyFromName(n)===k);
   if(prefer && inSector(prefer)) return prefer;
@@ -2055,7 +2068,7 @@ function favPanelHtml(){
   const gwRow = k => { const g=gwMetaFromKey(k); if(!g) return ''; const s=sectorOf(g.sector);
     return shell(`${starFor(state.favs.includes(k),'toggleFav',k)}${tile(g.gradient,g.emoji)}
       ${nm(g.name+'<span style="opacity:.5;font-weight:600">.com</span>', (s?s.name:'')+(g.live?' · live':''))}${g.live?LIVE_DOT:''}`,
-      `state.showFavs=false;openGateway('${g.name}','${g.sector}')`, k===state.gateway); };
+      `state.showFavs=false;openGateway('${g.name}','${gwSecOf(g)}')`, k===state.gateway); };
   const brRow = k => { const z=ZONES[k]; if(!z) return ''; const gm=gwMetaFromKey(z.gw);
     const mono=z.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
     return shell(`${starFor(state.brandFavs.includes(k),'toggleBrandFav',k)}${tile(z.gradient||z.color||'#333',mono,11)}
@@ -2343,7 +2356,10 @@ function openZoneFav(k, tab){   // jump into a pinned brand from anywhere — wi
   const z=ZONES[k]; if(!z) return;
   pushHist();               // record the true origin BEFORE we rewire the gateway underneath
   state.showFavs=false;
-  if(GATEWAYS[z.gw]){ state.gateway=z.gw; state._gwObj=GATEWAYS[z.gw]; state.sector=GATEWAYS[z.gw].sector; }
+  // getGateway(), not the raw def — it carries the taxonomy-resolved sector, so a brand zone
+  // opened directly lands in its gateway's CURRENT tile (Marbury → HandbagXX → Accessories,
+  // not the stale Fashion the desktop-V1 def still names). See gwHomeSector.
+  if(GATEWAYS[z.gw]){ const g=getGateway(GATEWAYS[z.gw].name); state.gateway=z.gw; state._gwObj=g; state.sector=g.sector; }
   _navSilent=true; openZone(k, tab); _navSilent=false;   // openZone would re-record the already-rewired state
 }
 
@@ -5783,7 +5799,7 @@ function renderAI(){
   const agentStrip = ag ? `<div style="display:flex;align-items:center;gap:8px;margin:0 16px 12px;padding:8px 12px;border-radius:12px;background:${ag.theme.accent}12;border:1px solid ${ag.theme.accent}30">
       <span style="width:22px;height:22px;border-radius:7px;background:${ag.gradient};display:flex;align-items:center;justify-content:center;font-size:11px">${ag.emoji}</span>
       <span style="font-size:11.5px;font-weight:800">${ag.name} Agent</span>
-      <span onclick="state._gwFrom='root';openGateway('${ag.name}','${ag.sector}')" style="margin-left:auto;font-size:10.5px;font-weight:700;color:var(--muted);cursor:pointer;white-space:nowrap">Open ${ag.domain} ›</span>
+      <span onclick="state._gwFrom='root';openGateway('${ag.name}','${gwSecOf(ag)}')" style="margin-left:auto;font-size:10.5px;font-weight:700;color:var(--muted);cursor:pointer;white-space:nowrap">Open ${ag.domain} ›</span>
       <span onclick="aiBackToHost()" title="Back to the Host" style="font-size:13px;color:var(--muted);cursor:pointer;padding:0 2px">✕</span>
     </div>` : '';
   const msgs = aiMsgsHtml();
@@ -5859,7 +5875,7 @@ const EVENTS_FEED = [
 ];
 /* resolve an event's gateway label / accent / tap-target — live or structural */
 function evMeta(e){
-  if(e.gw && GATEWAYS[e.gw]){ const g=GATEWAYS[e.gw]; return {label:g.name, accent:g.theme.accent, name:g.name, sector:g.sector}; }
+  if(e.gw && GATEWAYS[e.gw]){ const g=GATEWAYS[e.gw]; return {label:g.name, accent:g.theme.accent, name:g.name, sector:gwSecOf(g)}; }
   const s = sectorOf(e.sector)||SECTORS[0];
   return {label:e.label, accent:e.accentC||accentOf(s), name:e.label, sector:e.sector};
 }
@@ -5911,7 +5927,7 @@ function renderEvents(){
 function profileBody(){
   // same circular ring avatars as the AI tab's agents rail — one visual language for "your gateways"
   const gws = YOUR_GATEWAYS.map(k=>{const g=GATEWAYS[k]; if(!g) return ''; return `
-    <div class="gwv" onclick="state._gwFrom='root';openGateway('${g.name}','${g.sector}')">
+    <div class="gwv" onclick="state._gwFrom='root';openGateway('${g.name}','${gwSecOf(g)}')">
       <div class="ring" style="background:${g.gradient}"><div class="face">${g.emoji}</div></div>
       <div class="nm">${g.name}</div>
     </div>`;}).join('');
@@ -6139,7 +6155,7 @@ buildDrawer();
 /* ═════════ BOOT — the entry domain decides the front door ═════════ */
 if (ENTRY && GATEWAYS[ENTRY]) {
   state._gwFrom = 'root';
-  state._gwObj = GATEWAYS[ENTRY];
+  state._gwObj = getGateway(GATEWAYS[ENTRY].name);   // resolved sector, not the stale def field
   state.gateway = ENTRY;
   state.screen = 'gateway';
 }
