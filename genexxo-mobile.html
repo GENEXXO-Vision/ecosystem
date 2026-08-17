@@ -271,6 +271,15 @@
   .seccard .nm{font-size:12px;font-weight:800;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .seccard .mt{font-size:9px;font-weight:700;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .seccard.live .mt{color:#16A34A}
+  /* Drill-down: sticky sector bar + sticky category dividers, mirroring the drawers.
+     Both use the app's established sticky-below-the-top-bar offset (--top-h). */
+  .discbar{position:sticky;top:var(--top-h,53px);z-index:30;display:flex;align-items:center;gap:9px;padding:8px 16px;background:rgba(247,247,248,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .discbar .ic{width:26px;height:26px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;flex-shrink:0}
+  .discbar .nm{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .discbar .ct{font-size:10px;font-weight:700;color:var(--muted);flex-shrink:0}
+  #discJumpBtn{margin-left:auto;flex-shrink:0;border:none;background:transparent;font-family:var(--font);font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);cursor:pointer;padding:4px 0 4px 8px}
+  .dsec{position:sticky;top:calc(var(--top-h,53px) + 43px);z-index:20;background:var(--bg,#F7F7F8);padding:10px 20px 6px;font-size:9.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+  .discjump{top:104px}
   .discback{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:var(--muted);margin:8px 16px 0;padding:5px 0;cursor:pointer}
   .dischead{display:flex;align-items:center;gap:11px;padding:6px 16px 8px}
   .dischead .ic{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;flex-shrink:0}
@@ -1792,7 +1801,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.17-6';  // CryptoXX retired (Crypto is a sector now) — its feed, brand zones and events handed to BitcoinXX in the crypto tile. Sector feeds resolve through the taxonomy too.
+const BUILD = '2026.08.17-7';  // Discover drill-down now matches the drawers: sticky sector bar, sticky category dividers and a Jump ▾ control.
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -5494,17 +5503,25 @@ function renderDiscover(bodyOnly){
     const sk=state.discoverSector, s=sectorOf(sk);
     if(!s){ state.discoverSector=null; return renderDiscover(bodyOnly); }
     let rows=''; const raw=SECTOR_GATEWAYS[sk]||[];
-    if(hasGwGroups(sk)){
-      raw.forEach(n=> rows += isGwHeader(n) ? gwGroupDivider(n.slice(1),'discover') : gwrow(n,sk));
+    const grouped = hasGwGroups(sk);
+    if(grouped){
+      // Sticky category dividers doubling as jump anchors — same contract as the drawers,
+      // where the anchor index is the Nth header in file order (see gwGroupsOf).
+      let gi=-1;
+      raw.forEach(n=> rows += isGwHeader(n)
+        ? `<div class="gwanchor" id="dsec-${++gi}"></div><div class="dsec">${n.slice(1)}</div>`
+        : gwrow(n,sk));
     } else {
       [...raw].filter(n=>!isGwHeader(n))
         .sort((a,b)=>(gwIsLive(b)?1:0)-(gwIsLive(a)?1:0)).forEach(n=> rows += gwrow(n,sk));
     }
     if(!rows) rows=`<div class="empty">${s.name} has no gateways yet.</div>`;
+    const jumpBtn = grouped ? `<button id="discJumpBtn" onclick="toggleDiscJump(event)" aria-label="Jump to section">Jump ▾</button>` : '';
     const head = `<div class="discback" onclick="state.discoverSector=null;render();$('screen').scrollTo(0,0)">‹ All sectors</div>
-      <div class="dischead"><div class="ic" style="background:${s.g}">${s.icon}</div>
-        <div><div class="nm" style="font-size:15px;font-weight:800">${s.name}</div>
-          <div class="dm">${gwCount(sk)} gateways${sectorIsLive(sk)?' · LIVE':''}</div></div></div>`;
+      <div class="discbar" id="discBar"><div class="ic" style="background:${s.g}">${s.icon}</div>
+        <div class="nm">${s.name}</div>
+        <div class="ct">${gwCount(sk)} gateways${sectorIsLive(sk)?' · LIVE':''}</div>${jumpBtn}</div>
+      <div id="discJump" class="gwjump discjump" hidden></div>`;
     inner = head + rows;
   } else {
     // ── STATE 3: REST — sector cards grouped by neighbourhood ──
@@ -5539,11 +5556,33 @@ function renderDiscover(bodyOnly){
              autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
              oninput="onDiscoverSearch(this.value)">
     </div>
-    <div id="discoverBody">${inner}</div>
+    <div id="discoverBody" onclick="var p=document.getElementById('discJump');if(p&&!p.hidden)p.hidden=true">${inner}</div>
     <div style="height:14px"></div>
   </div>`;
 }
 
+/* Discover drill-down "Jump ▾" — same contract as the drawer jumps, but the scroller is the
+   page (#screen) rather than a drawer list, so the target must clear the sticky top bar and
+   the sticky sector bar. Reuses gwGroupsOf() so the popover indices and the dsec-N anchors
+   can never drift apart. */
+function toggleDiscJump(e){
+  if(e) e.stopPropagation();
+  const p=$('discJump'); if(!p) return;
+  if(!p.hidden){ p.hidden=true; return; }
+  p.innerHTML = `<div class="gwjump-h">Jump to section</div>`+gwGroupsOf(state.discoverSector).map(g=>
+    `<div class="gwjump-item" onclick="discJumpTo(${g.index})">${g.name}<span>${g.count}</span></div>`).join('');
+  p.hidden=false;
+}
+function discJumpTo(i){
+  const p=$('discJump'); if(p) p.hidden=true;
+  const sc=$('screen'), el=$('dsec-'+i); if(!sc||!el) return;
+  const top=document.querySelector('#screen .top'), bar=$('discBar');
+  const offset=(top?top.getBoundingClientRect().height:0)+(bar?bar.getBoundingClientRect().height:0);
+  const y = sc.scrollTop + el.getBoundingClientRect().top - sc.getBoundingClientRect().top - offset;
+  sc.scrollTo({top:Math.max(0,y), behavior:'smooth'});
+  // Adopt the new position without the auto-hide-chrome listener treating it as a user scroll.
+  if(window.__syncChrome) window.__syncChrome();
+}
 /* Discover search — mirrors onGwSearch: state + a targeted redraw, never a full render().
    The input is outside #discoverBody, so it is never replaced and focus is retained. */
 function onDiscoverSearch(v){
