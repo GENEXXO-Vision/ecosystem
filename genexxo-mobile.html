@@ -113,6 +113,7 @@
   .drow:active,.drow:hover{background:var(--bg)}
   .drow .dic{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;color:#fff;flex-shrink:0}
   .drow .dnm{font-size:13.5px;font-weight:700;line-height:1.15}
+  .tld{opacity:.45;font-weight:600}
   .drow .dct{font-size:10.5px;color:var(--muted);font-weight:600;margin-top:1px}
   .drawer-search{display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid var(--line)}
   .drawer-search svg{flex-shrink:0}
@@ -1899,6 +1900,11 @@ function getGateway(name, sectorKey){
 }
 // fix domain for synthetic keys
 function domainOf(name){ return gwKeyFromName(name)+'xx.com'; }
+/* Gateway row label: one line, "DietXX.com", with the TLD a shade lighter (2026-08-25).
+   Rows used to stack the name over its full domain, which repeated the name back at you
+   and cost a line in every list. Inherits colour and fades via opacity, so it still reads
+   correctly on the accent-coloured active row. */
+function gwLabel(name){ return `${name}<span class="tld">.com</span>`; }
 
 /* ── Link-follow history ────────────────────────────────────────────────
    Every time you tap a link that carries you to another page in the ecosystem
@@ -2681,7 +2687,7 @@ function buildDrawerR(){
       const on = actKey && k===actKey; const {accent, wash} = washFor(g.gradient);
       return `<div class="drow"${on?' id="drawerRActiveRow"':''} style="${on?`background:${wash};box-shadow:inset 3px 0 0 ${accent};`:''}" onclick="pickGateway('${g.name}','${g.sector}')">
         <div class="dic" style="background:${g.gradient}">${g.emoji}</div>
-        <div style="flex:1"><div class="dnm" style="${on?`color:${accent};`:''}">${g.name}</div><div class="dct">${s.icon} ${s.name} · ${g.domain}${g.live?' · LIVE':''}</div></div>
+        <div style="flex:1"><div class="dnm" style="${on?`color:${accent};`:''}">${gwLabel(g.name)}</div><div class="dct">${s.icon} ${s.name}${g.live?' · LIVE':''}</div></div>
         <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${g.live?LIVE_DOT:''}${rowStar(k)}</div>
       </div>`;}).join('')
       : `<div class="empty">No favourites yet —<br>tap ☆ on any gateway to pin it here.</div>`;
@@ -2697,7 +2703,7 @@ function buildDrawerR(){
       const on = actKey && key===actKey; const {accent, wash} = washFor(real?real.gradient:s.g);
       return `<div class="drow"${on?' id="drawerRActiveRow"':''} style="${on?`background:${wash};box-shadow:inset 3px 0 0 ${accent};`:''}" onclick="pickGateway('${name}','${sk}')">
         <div class="dic" style="background:${real?real.gradient:s.g}">${real?real.emoji:s.icon}</div>
-        <div style="flex:1"><div class="dnm" style="${on?`color:${accent};`:''}">${name}</div><div class="dct">${domainOf(name)}${real?' · LIVE':''}</div></div>
+        <div style="flex:1"><div class="dnm" style="${on?`color:${accent};`:''}">${gwLabel(name)}</div></div>
         <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${real?LIVE_DOT:''}${rowStar(key)}</div>
       </div>`;
     };
@@ -2709,7 +2715,7 @@ function buildDrawerR(){
       const label=sks.map(k=>sectorOf(k).name).join(' · ');
       return `<div class="drow drow-wide" onclick="pickGateway('${name}','${sks[0]}')">
         <div class="dic" style="background:${real?real.gradient:home.g}">${real?real.emoji:home.icon}</div>
-        <div style="flex:1;min-width:0"><div class="dnm">${name}</div><div class="dwhere">${label}</div></div>
+        <div style="flex:1;min-width:0"><div class="dnm">${gwLabel(name)}</div><div class="dwhere">${label}</div></div>
         <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${real?LIVE_DOT:''}${rowStar(key)}</div>
       </div>`;
     };
@@ -5566,7 +5572,7 @@ function renderDiscover(bodyOnly){
     const s = sectorOf(sk); if(!s) return '';
     return `<div class="gwrow" onclick="state._gwFrom='root';openGateway('${name}','${sk}')">
       <div class="em" style="background:${real?real.gradient:s.g}">${real?real.emoji:s.icon}</div>
-      <div><div class="nm">${name}</div><div class="dm">${domainOf(name)} · ${s.name}</div></div>
+      <div><div class="nm">${gwLabel(name)}</div><div class="dm">${s.name}</div></div>
       <div class="badge ${real?'live':'soon'}">${real?'LIVE':'STRUCTURAL'}</div>
     </div>`;
   };
