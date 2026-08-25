@@ -1907,8 +1907,13 @@ function domainOf(name){ return gwKeyFromName(name)+'xx.com'; }
 /* Gateway row label: one line, "DietXX.com", with the TLD a shade lighter (2026-08-25).
    Rows used to stack the name over its full domain, which repeated the name back at you
    and cost a line in every list. Inherits colour and fades via opacity, so it still reads
-   correctly on the accent-coloured active row. */
-function gwLabel(name){ return `${name}<span class="tld">.com</span>`; }
+   correctly on the accent-coloured active row.
+   The <wbr> is the only break opportunity in the label, so a long one (Environmental-
+   scienceXX.com) drops just the .com to a second line instead of overflowing the row and
+   shoving the favourite star off the edge. Short labels are unaffected — <wbr> only breaks
+   when the line actually needs it. Rows carrying this must set min-width:0 on the flex
+   text wrapper, or the unbreakable name still refuses to shrink. */
+function gwLabel(name){ return `${name}<wbr><span class="tld">.com</span>`; }
 
 /* ── Link-follow history ────────────────────────────────────────────────
    Every time you tap a link that carries you to another page in the ecosystem
@@ -2691,7 +2696,7 @@ function buildDrawerR(){
       const on = actKey && k===actKey; const {accent, wash} = washFor(g.gradient);
       return `<div class="drow"${on?' id="drawerRActiveRow"':''} style="${on?`background:${wash};box-shadow:inset 3px 0 0 ${accent};`:''}" onclick="pickGateway('${g.name}','${g.sector}')">
         <div class="dic" style="background:${g.gradient}">${g.emoji}</div>
-        <div style="flex:1"><div class="dnm" style="${on?`color:${accent};`:''}">${gwLabel(g.name)}</div><div class="dct">${s.icon} ${s.name}</div></div>
+        <div style="flex:1;min-width:0"><div class="dnm" style="${on?`color:${accent};`:''}">${gwLabel(g.name)}</div><div class="dct">${s.icon} ${s.name}</div></div>
         <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${g.live?LIVE_DOT:''}${rowStar(k)}</div>
       </div>`;}).join('')
       : `<div class="empty">No favourites yet —<br>tap ☆ on any gateway to pin it here.</div>`;
@@ -2707,7 +2712,7 @@ function buildDrawerR(){
       const on = actKey && key===actKey; const {accent, wash} = washFor(real?real.gradient:s.g);
       return `<div class="drow"${on?' id="drawerRActiveRow"':''} style="${on?`background:${wash};box-shadow:inset 3px 0 0 ${accent};`:''}" onclick="pickGateway('${name}','${sk}')">
         <div class="dic" style="background:${real?real.gradient:s.g}">${real?real.emoji:s.icon}</div>
-        <div style="flex:1"><div class="dnm" style="${on?`color:${accent};`:''}">${gwLabel(name)}</div></div>
+        <div style="flex:1;min-width:0"><div class="dnm" style="${on?`color:${accent};`:''}">${gwLabel(name)}</div></div>
         <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${real?LIVE_DOT:''}${rowStar(key)}</div>
       </div>`;
     };
@@ -5576,7 +5581,7 @@ function renderDiscover(bodyOnly){
     const s = sectorOf(sk); if(!s) return '';
     return `<div class="gwrow" onclick="state._gwFrom='root';openGateway('${name}','${sk}')">
       <div class="em" style="background:${real?real.gradient:s.g}">${real?real.emoji:s.icon}</div>
-      <div><div class="nm">${gwLabel(name)}</div><div class="dm">${s.name}</div></div>
+      <div style="flex:1;min-width:0"><div class="nm">${gwLabel(name)}</div><div class="dm">${s.name}</div></div>
       <div class="badge ${real?'live':'soon'}">${real?'LIVE':'STRUCTURAL'}</div>
     </div>`;
   };
