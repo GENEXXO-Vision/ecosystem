@@ -275,15 +275,19 @@
   .secgrouphd{font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);padding:15px 18px 5px}
   .seccards{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;padding:2px 16px 4px}
   .seccard{background:#fff;border:1px solid var(--line);border-radius:15px;padding:12px 9px 11px;text-align:center;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}
+  .seccard.live{border-color:rgba(34,197,94,.35)}
   .seccard:active{transform:scale(.97)}
   .seccard .ic{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto 8px;color:#fff}
   .seccard .nm{font-size:12px;font-weight:800;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .seccard .mt{font-size:9px;font-weight:700;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .seccard.live .mt{color:#16A34A}
+  /* Liveness is the green dot beside the tile name, never the gateway count — a green
+     "48 gateways" read as "48 live gateways", which is what we were trying to stop saying. */
+  .livedot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#22C55E;box-shadow:0 0 5px rgba(34,197,94,.9);margin-left:5px;vertical-align:middle}
   /* Drill-down: sticky sector bar + sticky category dividers, mirroring the drawers.
      Both use the app's established sticky-below-the-top-bar offset (--top-h). */
   .discbar{position:sticky;top:var(--top-h,53px);z-index:30;display:flex;align-items:center;gap:9px;padding:8px 16px;background:rgba(247,247,248,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
   .discbar .ic{width:26px;height:26px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;flex-shrink:0}
+  .discbar .nmwrap{display:flex;align-items:center;gap:6px;min-width:0}
   .discbar .nm{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .discbar .ct{font-size:10px;font-weight:700;color:var(--muted);flex-shrink:0}
   #discJumpBtn{margin-left:auto;flex-shrink:0;border:none;background:transparent;font-family:var(--font);font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);cursor:pointer;padding:4px 0 4px 8px}
@@ -2103,11 +2107,11 @@ function favPanelHtml(){
 
   const secRow = k => { const s=sectorOf(k); if(!s) return ''; const live=sectorIsLive(k);
     return shell(`${starFor(state.sectorFavs.includes(k),'toggleSectorFav',k)}${tile(s.g,s.icon)}
-      ${nm(s.name, gwCount(k)+' gateways'+(live?' · live':''))}${live?LIVE_DOT:''}`,
+      ${nm(s.name, gwCount(k)+' gateways')}${live?LIVE_DOT:''}`,
       `state.showFavs=false;openSector('${k}')`, k===active); };
   const gwRow = k => { const g=gwMetaFromKey(k); if(!g) return ''; const s=sectorOf(g.sector);
     return shell(`${starFor(state.favs.includes(k),'toggleFav',k)}${tile(g.gradient,g.emoji)}
-      ${nm(g.name+'<span style="opacity:.5;font-weight:600">.com</span>', (s?s.name:'')+(g.live?' · live':''))}${g.live?LIVE_DOT:''}`,
+      ${nm(gwLabel(g.name), s?s.name:'')}${g.live?LIVE_DOT:''}`,
       `state.showFavs=false;openGateway('${g.name}','${gwSecOf(g)}')`, k===state.gateway); };
   const brRow = k => { const z=ZONES[k]; if(!z) return ''; const gm=gwMetaFromKey(z.gw);
     const mono=z.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
@@ -2513,7 +2517,7 @@ function drawerSecRow(s, active){                 // one sector row in the left 
     style="font-size:15px;line-height:1;padding:6px 2px 6px 8px;cursor:pointer;color:${fav?'#F5B800':'rgba(17,17,22,.22)'}">${fav?'★':'☆'}</div>`;
   return `<div class="drow"${on?' id="drawerActiveRow"':''} style="${on?`background:${wash};box-shadow:inset 3px 0 0 ${accent};`:''}" onclick="pickSector('${s.key}')">
     <div class="dic" style="background:${s.g}">${s.icon}</div>
-    <div style="flex:1"><div class="dnm" style="${on?`color:${accent};`:''}">${s.name}</div><div class="dct">${gwCount(s.key)} gateways${sectorIsLive(s.key)?' · LIVE':''}</div></div>
+    <div style="flex:1"><div class="dnm" style="${on?`color:${accent};`:''}">${s.name}</div><div class="dct">${gwCount(s.key)} gateways</div></div>
     <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${sectorIsLive(s.key)?LIVE_DOT:''}${rowStar}</div>
   </div>`;
 }
@@ -2687,7 +2691,7 @@ function buildDrawerR(){
       const on = actKey && k===actKey; const {accent, wash} = washFor(g.gradient);
       return `<div class="drow"${on?' id="drawerRActiveRow"':''} style="${on?`background:${wash};box-shadow:inset 3px 0 0 ${accent};`:''}" onclick="pickGateway('${g.name}','${g.sector}')">
         <div class="dic" style="background:${g.gradient}">${g.emoji}</div>
-        <div style="flex:1"><div class="dnm" style="${on?`color:${accent};`:''}">${gwLabel(g.name)}</div><div class="dct">${s.icon} ${s.name}${g.live?' · LIVE':''}</div></div>
+        <div style="flex:1"><div class="dnm" style="${on?`color:${accent};`:''}">${gwLabel(g.name)}</div><div class="dct">${s.icon} ${s.name}</div></div>
         <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${g.live?LIVE_DOT:''}${rowStar(k)}</div>
       </div>`;}).join('')
       : `<div class="empty">No favourites yet —<br>tap ☆ on any gateway to pin it here.</div>`;
@@ -5617,8 +5621,8 @@ function renderDiscover(bodyOnly){
     const jumpBtn = grouped ? `<button id="discJumpBtn" onclick="toggleDiscJump(event)" aria-label="Jump to section">Jump ▾</button>` : '';
     const head = `<div class="discback" onclick="state.discoverSector=null;render();$('screen').scrollTo(0,0)">‹ All sectors</div>
       <div class="discbar" id="discBar"><div class="ic" style="background:${s.g}">${s.icon}</div>
-        <div class="nm">${s.name}</div>
-        <div class="ct">${gwCount(sk)} gateways${sectorIsLive(sk)?' · LIVE':''}</div>${jumpBtn}</div>
+        <div class="nmwrap"><div class="nm">${s.name}</div>${sectorIsLive(sk)?LIVE_DOT:''}</div>
+        <div class="ct">${gwCount(sk)} gateways</div>${jumpBtn}</div>
       <div id="discJump" class="gwjump discjump" hidden></div>`;
     inner = head + rows;
   } else {
@@ -5635,8 +5639,8 @@ function renderDiscover(bodyOnly){
             const live=sectorIsLive(s.key), c=gwCount(s.key);
             return `<div class="seccard${live?' live':''}" onclick="state.discoverSector='${s.key}';render();$('screen').scrollTo(0,0)">
               <div class="ic" style="background:${s.g}">${s.icon}</div>
-              <div class="nm">${s.name}</div>
-              <div class="mt">${c} ${c===1?'gateway':'gateways'}${live?' · LIVE':''}</div>
+              <div class="nm">${s.name}${live?'<i class="livedot"></i>':''}</div>
+              <div class="mt">${c} ${c===1?'gateway':'gateways'}</div>
             </div>`;
           }).join('')
         + `</div>`;
