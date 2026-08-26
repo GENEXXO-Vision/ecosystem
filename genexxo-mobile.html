@@ -65,6 +65,11 @@
         up snaps them back; sticky sub-tabs ride up to pin at the top edge ── */
   .gw-tabs,.substick{transition:transform .28s cubic-bezier(.4,0,.2,1);will-change:transform}
   #frame.chrome-hidden .top{transform:translateY(-112%)}
+  /* Sticky offset for everything that stays put while the GENEXXO bar leaves (2026-08-26).
+     It collapses to 0 as the bar slides up, so the search bar rises into the space it
+     vacates instead of stranding a 53px gap of content scrolling past underneath. */
+  #frame{--stick-top:var(--top-h,53px)}
+  #frame.chrome-hidden{--stick-top:0px}
   #frame.chrome-hidden #tabbar{transform:translateX(-50%) translateY(130%)}
   /* ── WELCOME SPLASH — a quick GENEXXO flash on boot, then it clears to reveal the control ── */
   #splash{position:absolute;inset:0;z-index:120;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:radial-gradient(120% 90% at 50% 38%,#191922 0%,#0b0b0f 70%);color:#fff;animation:splashIn .55s cubic-bezier(.2,.75,.2,1);transition:opacity .32s ease,transform .32s ease}
@@ -266,7 +271,8 @@
   .trend .t{font-size:11px;font-weight:700;padding:5px 11px;border-radius:99px}
 
   /* discover */
-  .searchbox{margin:14px 16px 4px;display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 13px}
+  .searchstick{position:sticky;top:var(--stick-top,53px);z-index:31;padding:14px 16px 8px;background:rgba(247,247,248,.94);backdrop-filter:blur(14px);transition:top .28s cubic-bezier(.4,0,.2,1)}
+  .searchbox{margin:0;display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 13px}
   .searchbox input{border:none;outline:none;flex:1;font-family:var(--font);font-size:13.5px;background:transparent;color:var(--ink)}
   .chips{display:flex;gap:7px;overflow-x:auto;padding:10px 16px 4px}
   .chip{font-size:11.5px;font-weight:700;padding:7px 13px;border-radius:99px;background:#fff;border:1px solid var(--line);white-space:nowrap;cursor:pointer;color:var(--muted)}
@@ -287,15 +293,30 @@
   .seclivedot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#22C55E;box-shadow:0 0 5px rgba(34,197,94,.9);margin-left:5px;vertical-align:middle}
   /* Drill-down: sticky sector bar + sticky category dividers, mirroring the drawers.
      Both use the app's established sticky-below-the-top-bar offset (--top-h). */
-  .discbar{position:sticky;top:var(--top-h,53px);z-index:30;display:flex;align-items:center;gap:9px;padding:8px 16px;background:rgba(247,247,248,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .discbar{position:sticky;top:calc(var(--stick-top,53px) + var(--search-h,63px));z-index:30;transition:top .28s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;gap:9px;padding:8px 16px;background:rgba(247,247,248,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
   .discbar .ic{width:26px;height:26px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;flex-shrink:0}
   .discbar .nmwrap{display:flex;align-items:center;gap:6px;min-width:0}
   .discbar .nm{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .discbar .ct{font-size:10px;font-weight:700;color:var(--muted);flex-shrink:0}
-  #discJumpBtn{margin-left:auto;flex-shrink:0;border:none;background:transparent;font-family:var(--font);font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);cursor:pointer;padding:4px 0 4px 8px}
-  .dsec{position:sticky;top:calc(var(--top-h,53px) + 43px);z-index:20;background:var(--bg,#F7F7F8);padding:10px 20px 6px;font-size:9.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
-  .discjump{top:104px}
-  .discback{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:var(--muted);margin:8px 16px 0;padding:5px 0;cursor:pointer}
+  #discJumpBtn{flex-shrink:0;border:none;background:transparent;font-family:var(--font);font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);cursor:pointer;padding:4px 0 4px 8px}
+  .dsec{position:sticky;top:calc(var(--stick-top,53px) + var(--search-h,63px) + 43px);z-index:20;background:var(--bg,#F7F7F8);padding:10px 20px 6px;font-size:9.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+  .discjump{top:calc(var(--stick-top,53px) + var(--search-h,63px) + 51px)}
+  /* Back sits IN the sector bar as a green tile the same size as the sector icon,
+     replacing the "< All sectors" text line above it (2026-08-26). One less row of
+     chrome, and a tap target that reads as a control rather than a caption. */
+  .discback{width:26px;height:26px;border-radius:9px;flex-shrink:0;border:none;padding:0;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,#15803D,#22C55E);box-shadow:0 1px 4px rgba(34,197,94,.4);
+    transition:transform .12s ease}
+  .discback:active{transform:scale(.9)}
+  /* Icon + name ride the middle, between the back button and Jump. No gateway count
+     here: the sector cards on the Discover home already carry it, and a long name like
+     "Family & Relationships" pushed it off the edge. */
+  .discmid{flex:1;min-width:0;display:flex;align-items:center;gap:9px;justify-content:center;
+    cursor:pointer;border-radius:10px;padding:3px 8px;margin:-3px 0;transition:background .12s ease}
+  .discmid:active{background:rgba(17,17,22,.06)}
+  /* Chevron marks the title as a way IN to the sector feed, distinct from the green
+     back tile pointing out. Muted so it hints rather than competes. */
+  .discgo{color:var(--muted);opacity:.75;flex-shrink:0}
   .dischead{display:flex;align-items:center;gap:11px;padding:6px 16px 8px}
   .dischead .ic{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;flex-shrink:0}
   .dischead .dm{font-size:11px;color:var(--muted);font-weight:600;margin-top:1px}
@@ -327,6 +348,9 @@
   /* events feed — card anatomy replicated from the desktop Events overlay */
   .evcard{background:#fff;border:1px solid var(--line);border-radius:14px;margin:0 16px 10px;padding:13px 14px;cursor:pointer}
   .evcard.live{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.02)}
+  /* The one you just looked at — same inset-bar language the drawers use for "you are here". */
+  .evcard.seen{box-shadow:inset 3px 0 0 var(--ink);background:rgba(17,17,22,.035)}
+  .evcard.seen .evtitle{opacity:.72}
   .evtop{display:flex;align-items:center;gap:6px;margin-bottom:7px}
   .evtop .evgw{font-size:10px;font-weight:800;letter-spacing:.05em}
   .evtype{font-size:8.5px;padding:2px 7px;border-radius:8px;font-weight:800;letter-spacing:.03em;white-space:nowrap}
@@ -1756,6 +1780,7 @@ const state = {
   secQuery:'',           // left-drawer sector search
   aiThread:[], aiAgent:null, aiTyping:false, aiPendingQ:'',   // AI tab conversation (survives the tab toggle)
   eventsFilter:'all',    // Events tab filter: all | live | drops | alerts | bookmarks
+  eventsMemo:null,       // {i, scroll} — a glimpse at one event, so coming straight back lands in place
   zone:null, zoneTab:'feed', _zoneIn:false,   // zone canvas: open zone key + its tab (feed | products | about)
   zoneProduct:null, zoneSize:null, bag:[], zoneFollow:{},   // product sheet + session bag/follows
   shopMenu:false, shopCat:null,   // Shop category overlay (open?) + the active category filter (null = show all)
@@ -1843,7 +1868,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-1';  // Shelf order curated across all 68 tiles; final punch-list applied (26 rows — Places/Cultures/Agriculture reshaped, 4 gateways retired, diary + almaty added). Gateway rows now read "DietXX.com" on one line; tile liveness is a green dot, never wording next to a count.
+const BUILD = '2026.08.26-2';  // Navigation: Discover search bar stays put while the GENEXXO bar leaves; sector bar gains a green back tile and opens its feed on tap; Events remembers your place on a there-and-back glimpse.
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -1980,7 +2005,7 @@ function openSector(key){
   logVisit('sector', key);
   render(); $('screen').scrollTo(0,0);
 }
-function goHub(){ state._before=null; state._hist=[]; state.screen='root'; state.gateway=null; state._gwObj=null; state.showFavs=false; state.returnGw=null; state.zone=null; state.zoneProduct=null; state._zoneIn=false; state.tab='home'; render(); }
+function goHub(){ state._before=null; state._hist=[]; state.eventsMemo=null; state.screen='root'; state.gateway=null; state._gwObj=null; state.showFavs=false; state.returnGw=null; state.zone=null; state.zoneProduct=null; state._zoneIn=false; state.tab='home'; render(); }
 
 /* Home always takes you home. The other four are toggles: first tap opens the tab
    (remembering where you were), a second tap closes it and puts you straight back —
@@ -2014,7 +2039,11 @@ function setTab(t){
   };
   state.tab=t; state.screen='root'; state.gateway=null; state._gwObj=null; state.showFavs=false; state.returnGw=null;
   if(t==='discover'){ state.discoverSector=null; state.discoverGroup=null; state.discoverQ=''; }   // fresh cards view each open
-  render(); $('screen').scrollTo(0,0);
+  if(t!=='events') state.eventsMemo=null;          // opening any other tab ends the glimpse
+  render();
+  const memo = t==='events' ? state.eventsMemo : null;
+  $('screen').scrollTo(0, memo ? memo.scroll||0 : 0);
+  if(memo && window.__syncChrome) window.__syncChrome();   // restored, not scrolled — bars stay put
 }
 function toggleFav(key){
   const i = state.favs.indexOf(key);
@@ -5627,10 +5656,17 @@ function renderDiscover(bodyOnly){
     }
     if(!rows) rows=`<div class="empty">${s.name} has no gateways yet.</div>`;
     const jumpBtn = grouped ? `<button id="discJumpBtn" onclick="toggleDiscJump(event)" aria-label="Jump to section">Jump ▾</button>` : '';
-    const head = `<div class="discback" onclick="state.discoverSector=null;render();$('screen').scrollTo(0,0)">‹ All sectors</div>
-      <div class="discbar" id="discBar"><div class="ic" style="background:${s.g}">${s.icon}</div>
-        <div class="nmwrap"><div class="nm">${s.name}</div>${sectorIsLive(sk)?LIVE_DOT:''}</div>
-        <div class="ct">${gwCount(sk)} gateways</div>${jumpBtn}</div>
+    const head = `<div class="discbar" id="discBar">
+        <button class="discback" aria-label="Back to all sectors"
+                onclick="state.discoverSector=null;render();$('screen').scrollTo(0,0)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <div class="discmid" role="button" tabindex="0" title="Open the ${s.name} feed"
+             onclick="openSector('${sk}')">
+          <div class="ic" style="background:${s.g}">${s.icon}</div>
+          <div class="nmwrap"><div class="nm">${s.name}</div>${sectorIsLive(sk)?LIVE_DOT:''}</div>
+          <svg class="discgo" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+        </div>${jumpBtn}</div>
       <div id="discJump" class="gwjump discjump" hidden></div>`;
     inner = head + rows;
   } else {
@@ -5660,11 +5696,13 @@ function renderDiscover(bodyOnly){
   // field keeps focus and the caret.
   return `${topBar()}
   <div class="push">
-    <div class="searchbox">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(17,17,22,.4)" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="discoverSearch" placeholder="Search gateways, brands, anything…" value="${esc(state.discoverQ)}"
-             autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
-             oninput="onDiscoverSearch(this.value)">
+    <div class="searchstick">
+      <div class="searchbox">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(17,17,22,.4)" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="discoverSearch" placeholder="Search gateways, brands, anything…" value="${esc(state.discoverQ)}"
+               autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
+               oninput="onDiscoverSearch(this.value)">
+      </div>
     </div>
     <div id="discoverBody" onclick="var p=document.getElementById('discJump');if(p&&!p.hidden)p.hidden=true">${inner}</div>
     <div style="height:14px"></div>
@@ -5687,7 +5725,9 @@ function discJumpTo(i){
   const p=$('discJump'); if(p) p.hidden=true;
   const sc=$('screen'), el=$('dsec-'+i); if(!sc||!el) return;
   const top=document.querySelector('#screen .top'), bar=$('discBar');
-  const offset=(top?top.getBoundingClientRect().height:0)+(bar?bar.getBoundingClientRect().height:0);
+  const sea=document.querySelector('#screen .searchstick');
+  const offset=(top?top.getBoundingClientRect().height:0)+(sea?sea.getBoundingClientRect().height:0)
+              +(bar?bar.getBoundingClientRect().height:0);
   const y = sc.scrollTop + el.getBoundingClientRect().top - sc.getBoundingClientRect().top - offset;
   sc.scrollTo({top:Math.max(0,y), behavior:'smooth'});
   // Adopt the new position without the auto-hide-chrome listener treating it as a user scroll.
@@ -5976,6 +6016,12 @@ function evMeta(e){
 const EV_TYPE_BG = {Live:'rgba(239,68,68,.1)',Breaking:'rgba(239,68,68,.1)',Drop:'rgba(249,115,22,.1)',Bookmark:'rgba(245,158,11,.1)',Deal:'rgba(232,77,58,.1)',Alert:'rgba(59,130,246,.1)'};
 const EV_TYPE_C  = {Live:'#EF4444',Breaking:'#EF4444',Drop:'#F97316',Bookmark:'#F59E0B',Deal:'#E84D3A',Alert:'#3B82F6'};
 
+/* A glimpse at one event should be a there-and-back, not a trip that costs you your place
+   in a long feed. Tapping a card records where you were; coming back to the tab restores
+   that scroll and marks the card you opened. Arriving any other way — Home, another
+   utility tab, a filter change — is a fresh journey and clears it. */
+function evRemember(i){ state.eventsMemo = {i, scroll: $('screen').scrollTop}; }
+
 function renderEvents(){
   const F = state.eventsFilter||'all';
   const match = e =>
@@ -5989,7 +6035,11 @@ function renderEvents(){
     const m = evMeta(e);
     // Tap → straight to the brand's own Events tab (zone deep-link); gateway-only events open the gateway.
     const go = e.zone ? `openZoneFav('${e.zone}','events')` : `state._gwFrom='root';openGateway('${esc(m.name)}','${m.sector}')`;
-    return `<div class="evcard${e.live?' live':''}" onclick="${go}">
+    // Index into EVENTS_FEED, not into the filtered list — the filter and the live-first
+    // sort both reshuffle `items`, so a positional key there would mark the wrong card.
+    const i = EVENTS_FEED.indexOf(e);
+    const seen = state.eventsMemo && state.eventsMemo.i===i;
+    return `<div class="evcard${e.live?' live':''}${seen?' seen':''}" onclick="evRemember(${i});${go}">
       <div class="evtop">
         <span class="evgw" style="color:${m.accent}">${m.label.toUpperCase()}</span>
         <span class="evtype" style="background:${EV_TYPE_BG[e.type]||'rgba(0,0,0,.05)'};color:${EV_TYPE_C[e.type]||'#666'}">${e.icon} ${e.type.toUpperCase()}</span>
@@ -6009,7 +6059,7 @@ function renderEvents(){
       <div style="font-size:11px;color:var(--muted);font-weight:600">Live, upcoming & breaking across the network</div></div>
       <div style="margin-left:auto;display:flex;align-items:center;gap:5px;font-size:10.5px;color:#EF4444;font-weight:700;white-space:nowrap"><span class="livedot"></span>${liveCount} Live</div>
     </div>
-    <div class="chips">${filts.map(([k,lb])=>`<div class="chip ${F===k?'on':''}" onclick="state.eventsFilter='${k}';render();$('screen').scrollTo(0,0)">${lb}</div>`).join('')}</div>
+    <div class="chips">${filts.map(([k,lb])=>`<div class="chip ${F===k?'on':''}" onclick="state.eventsFilter='${k}';state.eventsMemo=null;render();$('screen').scrollTo(0,0)">${lb}</div>`).join('')}</div>
     <div style="height:8px"></div>
     ${cards || `<div class="empty">Nothing under this filter right now —<br>the network never sleeps for long.</div>`}
     <div style="padding:10px 16px 14px;text-align:center;font-size:10.5px;color:var(--muted);font-weight:600">Events from 45+ gateways across the GENEXXO network</div>
@@ -6084,6 +6134,9 @@ function render(){
   // instead of a hard-coded 53px, so sub-pixel/DPR rounding can't leave it ~10% tucked under.
   const topEl = $('screen').querySelector('.top');
   if (topEl) $('frame').style.setProperty('--top-h', topEl.getBoundingClientRect().height + 'px');
+  // Same for the Discover search bar, which the sector bar and its dividers stack beneath.
+  const seaEl = $('screen').querySelector('.searchstick');
+  $('frame').style.setProperty('--search-h', seaEl ? seaEl.getBoundingClientRect().height + 'px' : '0px');
   lazyMedia();   // observe any <video data-vsrc> the fresh render just drew
   tabBar();
   // Sectors drawer: every page. Gateways drawer: any sector context — a sector page OR a
