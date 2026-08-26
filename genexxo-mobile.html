@@ -239,6 +239,8 @@
   .sec-hero .tg{font-size:12px;opacity:.8;font-weight:600;margin-top:2px}
   .gwrow{display:flex;align-items:center;gap:12px;padding:13px 14px;background:#fff;border:1px solid var(--line);border-radius:16px;margin:0 16px 8px;cursor:pointer}
   .gwrow .em{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;flex-shrink:0}
+  .gwrow.seen{box-shadow:inset 3px 0 0 var(--ink);background:rgba(17,17,22,.035)}
+  .gwrow.seen .nm{opacity:.72}
   .gwrow .nm{font-size:14px;font-weight:800}
   .gwrow .dm{font-size:11px;color:var(--muted);font-weight:600;margin-top:1px}
   .gwrow .badge{margin-left:auto;font-size:9px;font-weight:800;letter-spacing:.08em;padding:4px 8px;border-radius:99px;flex-shrink:0}
@@ -1781,6 +1783,8 @@ const state = {
   aiThread:[], aiAgent:null, aiTyping:false, aiPendingQ:'',   // AI tab conversation (survives the tab toggle)
   eventsFilter:'all',    // Events tab filter: all | live | drops | alerts | bookmarks
   eventsMemo:null,       // {i, scroll} — a glimpse at one event, so coming straight back lands in place
+  discoverMemo:null,     // {sector, group, q, gw, scroll} — same idea for Discover: a look at one
+                         // gateway and back should return you to the tile you were browsing
   zone:null, zoneTab:'feed', _zoneIn:false,   // zone canvas: open zone key + its tab (feed | products | about)
   zoneProduct:null, zoneSize:null, bag:[], zoneFollow:{},   // product sheet + session bag/follows
   shopMenu:false, shopCat:null,   // Shop category overlay (open?) + the active category filter (null = show all)
@@ -1789,7 +1793,7 @@ const state = {
   orderSeq: PURCHASES_INIT.seq,              // running counter behind each brand's order ref
   wallet:[{name:'Route Logger',color:'#4ADE80',gw:'ClimbXX'}],
   favs:[...FAVS_INIT.favs],        // seeded from YOUR_GATEWAYS on first run, else restored from localStorage
-  showFavs:false, favTab:'favs',   // ★ panel open? + which tab: 'favs' | 'recent'
+  showFavs:false, favTab:'favs',   // ★ panel open? + which tab: 'favs' | 'recent' | 'live'
   showApply:false, showInfo:false, infoTab:'intro',   // home top-bar overlays: person→Apply, ⓘ→Info feed (2026-07-29)
   brandFavs:[...FAVS_INIT.brandFavs],   // favourite BRANDS (zone keys) — persisted alongside gateway favs
   sectorFavs:[...FAVS_INIT.sectorFavs], // favourite SECTORS (sector keys) — pinned via ★ on sector rows
@@ -1836,12 +1840,34 @@ function onGwSearch(v){ state.gwQuery=v; buildDrawerR(); const l=$('drawerRList'
    start the gateway name or start a whole comma-separated tag term — "rose" matches RoseXX
    and the tag "rose gold", but not "prosecco".
    ⚠️ TWO MATCHERS ON PURPOSE — do not unify them with the loose gwSearchText() above. */
-function gwRank(name, q){
+/* The XX suffix and the .com ARE the identity — people type "plantxx" and "plantxx.com" as
+   readily as "plant", and used to get nothing: gwRank strips XX off the gateway NAME
+   (PlantXX → plant) but nothing stripped it off the QUERY, so every test failed on the exact
+   name of the thing being searched for. Every form of the query is tried and the best rank
+   wins, so adding the suffix can only ever help — it can never remove a result you'd have had.
+   The trailing-xx strip needs >1 character left over, or a bare "xx" would match everything. */
+function gwQueryForms(q){
+  const out=[q];
+  const bare=q.replace(/\.com$/,'');
+  if(bare!==q && bare) out.push(bare);
+  const noxx=bare.replace(/xx$/,'');
+  if(noxx!==bare && noxx.length>1) out.push(noxx);
+  return out;
+}
+function gwRank1(name, q){
   const key=gwKeyFromName(name);
   if(key===q) return 0;
   if(key.startsWith(q)) return 1;
   const tags=(typeof GW_TAGS!=='undefined' && GW_TAGS[key]) ? GW_TAGS[key].toLowerCase() : '';
   return tags.split(',').some(t=>t.trim().startsWith(q)) ? 2 : -1;
+}
+function gwRank(name, q){
+  let best=-1;
+  for(const f of gwQueryForms(q)){
+    const r=gwRank1(name,f);
+    if(r>=0 && (best<0 || r<best)) best=r;
+  }
+  return best;
 }
 function gwMatchesWide(name, q){ return gwRank(name,q) >= 0; }
 /* Every OTHER sector a query hits → [{name, sectors:[key,…]}], nearest-first by tile order.
@@ -1868,7 +1894,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-2';  // Navigation: Discover search bar stays put while the GENEXXO bar leaves; sector bar gains a green back tile and opens its feed on tap; Events remembers your place on a there-and-back glimpse.
+const BUILD = '2026.08.26-3';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel.
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2005,7 +2031,7 @@ function openSector(key){
   logVisit('sector', key);
   render(); $('screen').scrollTo(0,0);
 }
-function goHub(){ state._before=null; state._hist=[]; state.eventsMemo=null; state.screen='root'; state.gateway=null; state._gwObj=null; state.showFavs=false; state.returnGw=null; state.zone=null; state.zoneProduct=null; state._zoneIn=false; state.tab='home'; render(); }
+function goHub(){ state._before=null; state._hist=[]; state.eventsMemo=null; state.discoverMemo=null; state.screen='root'; state.gateway=null; state._gwObj=null; state.showFavs=false; state.returnGw=null; state.zone=null; state.zoneProduct=null; state._zoneIn=false; state.tab='home'; render(); }
 
 /* Home always takes you home. The other four are toggles: first tap opens the tab
    (remembering where you were), a second tap closes it and puts you straight back —
@@ -2038,10 +2064,16 @@ function setTab(t){
     scroll:$('screen').scrollTop,
   };
   state.tab=t; state.screen='root'; state.gateway=null; state._gwObj=null; state.showFavs=false; state.returnGw=null;
-  if(t==='discover'){ state.discoverSector=null; state.discoverGroup=null; state.discoverQ=''; }   // fresh cards view each open
-  if(t!=='events') state.eventsMemo=null;          // opening any other tab ends the glimpse
+  if(t==='discover'){                              // fresh cards view each open — unless you are
+    const m = state.discoverMemo;                  // coming straight back from a gateway
+    state.discoverSector = m ? m.sector : null;
+    state.discoverGroup  = m ? m.group  : null;
+    state.discoverQ      = m ? m.q      : '';
+  }
+  if(t!=='events')   state.eventsMemo=null;        // opening any other tab ends the glimpse
+  if(t!=='discover') state.discoverMemo=null;
   render();
-  const memo = t==='events' ? state.eventsMemo : null;
+  const memo = t==='events' ? state.eventsMemo : t==='discover' ? state.discoverMemo : null;
   $('screen').scrollTo(0, memo ? memo.scroll||0 : 0);
   if(memo && window.__syncChrome) window.__syncChrome();   // restored, not scrolled — bars stay put
 }
@@ -2052,10 +2084,22 @@ function toggleFav(key){
 }
 
 /* The intelligent Back (replaces the old bottom-left Home, 2026-07-23) — one thoughtless
-   step toward the Network hub, honouring the most recent jump. An open utility tab pops
-   back to wherever it was launched from first; otherwise altitude descends
-   zone → gateway → sector → Network. The GENEXXO ‘G’ mark in the top bar is still the
-   one-tap route all the way home, so Home in the bar was redundant and Back earns its slot. */
+   step toward the Network hub. An open utility tab pops shut first; otherwise Back descends
+   the ladder, one rung per tap:
+
+       brand zone → its Brands layer → the gateway feed → the sector feed → the Network hub
+
+   ✏️ 2026-08-26 — ALTITUDE NOW OUTRANKS HISTORY. It used to pop `_hist` first, so a jump
+   made from a favourite or a feed card returned to that feed in a single tap and skipped
+   every rung between. That made Back's depth unpredictable — sometimes one tap home, some-
+   times four — and meant arriving at Bullheart from the ★ panel never showed you the gateway
+   or sector it belongs to. The network HAS altitude; Back's job is to climb it, and the
+   climb is what teaches the structure. History is still honoured, but only once there is no
+   altitude left to descend.
+
+   The two controls are now complementary rather than overlapping: the GENEXXO ‘G’ mark is
+   the one-tap teleport all the way home, Back is the one-rung climb. If you want out fast,
+   the G is right there. */
 function backTarget(){
   if (UTIL_TABS.includes(state.tab)) return 'restore';   // Discover / AI / Events / Profile is open
   if (state.screen==='zone')    return 'zone';
@@ -2070,21 +2114,24 @@ function goBack(){
   if (state.zoneProduct!=null){ closeProduct(); return; }
   // 3) a commercial layer (Brands/Apps/Pro's) is open on a gateway → collapse to its feed first
   if (state.screen==='gateway' && state.gwZones){ gwHome(); return; }
-  // 4) followed a link to get here → step straight back to the exact feed + scroll you came from
-  if (state._hist && state._hist.length){ navRestore(state._hist.pop()); return; }
-  // 5) fallback — nothing recorded (e.g. a deep-link entry): descend by altitude
-  _navSilent = true;
-  switch(backTarget()){
-    case 'zone':    zoneToGateway(); break;               // zone → its gateway (the ★ layer)
+  // 4) descend one rung of altitude. This runs BEFORE history on purpose — see above.
+  _navSilent = true;                                      // these moves are a climb, not a new jump
+  const rung = backTarget();
+  switch(rung){
+    case 'zone':    zoneToGateway(); break;               // zone → its Brands layer
     case 'gateway':{
       const gw = state._gwObj;                            // gateway feed → up to its sector
-      if (gw && gw.sector) openSector(gw.sector); else goHub();
+      const sec = gw && (gwSecOf(gw) || gw.sector);
+      if (sec) openSector(sec); else goHub();
       break;
     }
     case 'sector':  goHub(); break;                       // sector → the Network hub
-    // default: already home, nowhere to go — the button renders muted
   }
   _navSilent = false;
+  if (rung) return;
+  // 5) no altitude left — you are at the hub. Honour a recorded jump if there is one, so a
+  //    deep-link entry still has somewhere to go rather than dead-ending.
+  if (state._hist && state._hist.length){ navRestore(state._hist.pop()); return; }
 }
 
 /* the gateway domain in the top bar is a live link — from anywhere deep in the
@@ -2180,6 +2227,28 @@ function favPanelHtml(){
       section('BRANDS', [...state.brandFavs.map(brRow), curBr?addRow(curBr.name,'toggleBrandFav',state.zone):''],
         'No brands pinned yet — tap ☆ on any brand zone.') +
       section('OTHER', [], 'Pro Zones, apps and communities you pin will collect here as the ecosystem opens up.');
+  } else if(tab==='live'){
+    // Every gateway that is actually built out, network-wide — the "what can I see working
+    // right now?" list. Derived from GATEWAYS itself, so it can never fall out of step with
+    // the green dots: a gateway is live iff it has a real def. Grouped by tile so the answer
+    // to "how far along is this?" reads by sector rather than as one flat run of names.
+    const bySector = {};
+    Object.keys(GATEWAYS).forEach(k=>{
+      const g=gwMetaFromKey(k); if(!g) return;
+      (bySector[g.sector] || (bySector[g.sector]=[])).push(k);
+    });
+    const order = SECTORS.map(x=>x.key).filter(k=>bySector[k]);
+    const total = Object.keys(GATEWAYS).length;
+    bodyHtml =
+      `<div style="margin:14px 2px 4px;padding:10px 12px;border-radius:13px;background:rgba(34,197,94,.12);
+        display:flex;align-items:center;gap:9px">${LIVE_DOT}
+        <div style="font-size:12px;font-weight:700;line-height:1.35">${total} gateways are built and live
+          <div style="opacity:.55;font-weight:600;font-size:11px">across ${order.length} tiles · everything else is structural for now</div>
+        </div></div>` +
+      order.map(k=>section(
+        sectorOf(k).name.toUpperCase(),
+        bySector[k].sort((a,b)=>a.localeCompare(b)).map(gwRow),
+        '')).join('');
   } else {
     const of = t => state.recent.filter(r=>r.t===t).map(r=>r.k);
     bodyHtml =
@@ -2199,7 +2268,7 @@ function favPanelHtml(){
           <div onclick="toggleFavPanel()" title="Close" style="width:32px;height:32px;border-radius:99px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff">
             <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></div>
         </div>
-        <div style="display:flex;gap:7px;margin-top:12px">${tabBtn('favs','Favourites')}${tabBtn('recent','Recent activity')}</div>
+        <div style="display:flex;gap:7px;margin-top:12px">${tabBtn('favs','Favourites')}${tabBtn('recent','Recent')}${tabBtn('live','Live')}</div>
       </div>
       <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 13px calc(22px + var(--safe-b))">
         ${bodyHtml}
@@ -2785,7 +2854,8 @@ function buildDrawerR(){
     let out;
     if(q){
       // Searching → flatten across sub-groups, drop dividers, live first. Matches name + tags.
-      const local = names.filter(n=>!isGwHeader(n)).filter(n=>gwSearchText(n).includes(q))
+      const local = names.filter(n=>!isGwHeader(n))
+        .filter(n=>{ const hay=gwSearchText(n); return gwQueryForms(q).some(f=>hay.includes(f)); })
         .sort((a,b)=>(gwIsLive(b)?1:0)-(gwIsLive(a)?1:0));
       out = local.map(gwRow).join('');
       // Second tier: the same query across every other sector. A gateway can legitimately live
@@ -5611,7 +5681,8 @@ function renderDiscover(bodyOnly){
   const gwrow = (name, sk) => {
     const real = GATEWAYS[gwKeyFromName(name)];
     const s = sectorOf(sk); if(!s) return '';
-    return `<div class="gwrow" onclick="state._gwFrom='root';openGateway('${name}','${sk}')">
+    const seen = state.discoverMemo && state.discoverMemo.gw===name;
+    return `<div class="gwrow${seen?' seen':''}" onclick="discRemember('${name}');state._gwFrom='root';openGateway('${name}','${sk}')">
       <div class="em" style="background:${real?real.gradient:s.g}">${real?real.emoji:s.icon}</div>
       <div style="flex:1;min-width:0"><div class="nm">${gwLabel(name)}</div><div class="dm">${s.name}</div></div>
       <div class="badge ${real?'live':'soon'}">${real?'LIVE':'STRUCTURAL'}</div>
@@ -5662,7 +5733,7 @@ function renderDiscover(bodyOnly){
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
         </button>
         <div class="discmid" role="button" tabindex="0" title="Open the ${s.name} feed"
-             onclick="openSector('${sk}')">
+             onclick="discRemember(null);openSector('${sk}')">
           <div class="ic" style="background:${s.g}">${s.icon}</div>
           <div class="nmwrap"><div class="nm">${s.name}</div>${sectorIsLive(sk)?LIVE_DOT:''}</div>
           <svg class="discgo" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
@@ -6021,6 +6092,17 @@ const EV_TYPE_C  = {Live:'#EF4444',Breaking:'#EF4444',Drop:'#F97316',Bookmark:'#
    that scroll and marks the card you opened. Arriving any other way — Home, another
    utility tab, a filter change — is a fresh journey and clears it. */
 function evRemember(i){ state.eventsMemo = {i, scroll: $('screen').scrollTop}; }
+
+/* Discover's version of the same idea: browsing to Garden and looking at PlantXX should not
+   cost you Garden. Records the drill-down you were in — tile, neighbourhood chip, search text
+   and scroll — so reopening the tab returns you there with that gateway marked. `gw` is null
+   when you left via the sector title rather than a row: there is no row to mark. */
+function discRemember(gw){
+  state.discoverMemo = {
+    sector: state.discoverSector, group: state.discoverGroup,
+    q: state.discoverQ, gw, scroll: $('screen').scrollTop
+  };
+}
 
 function renderEvents(){
   const F = state.eventsFilter||'all';
