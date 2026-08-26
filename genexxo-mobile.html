@@ -1894,7 +1894,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-3';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel.
+const BUILD = '2026.08.26-3';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen.
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2917,6 +2917,10 @@ function topBar(gw){
   const style = inGw ? `background:${gw.theme.headerBg};color:${gw.theme.text};` : '';
   const dotBg = inGw ? (gw.theme.dark?'#fff':'#111116') : '#111116';
   const dotFg = inGw ? (gw.theme.dark?'#111116':'#fff') : '#fff';
+  // ★, ⓘ and Apply ride the top bar on EVERY root-level screen — the hub and all four utility
+  // tabs (2026-08-26). They were gated to tab==='home' with nothing gained by it: Discover, AI,
+  // Events and Profile simply lost their favourites star for no reason. Sector screens still
+  // withhold ⓘ/Apply because that slot carries the "back to <gateway>" pill.
   return `<div class="top ${inGw?'gw':''}" style="${style}">
     <div class="gx-mark" onclick="goHub()" title="Back to the GENEXXO hub">
       <div class="gx-dot" style="background:${dotBg};color:${dotFg}"><span class="gx-mono"></span></div>
@@ -2934,15 +2938,15 @@ function topBar(gw){
           <span style="opacity:.45;font-size:14px;line-height:1">‹</span>
           <span style="width:18px;height:18px;border-radius:6px;background:${state.returnGw.gradient};display:flex;align-items:center;justify-content:center;font-size:10px">${state.returnGw.emoji}</span>
           ${state.returnGw.name}</div>` : ''}
-      ${(state.screen!=='sector' && state.tab==='home') ? `
+      ${state.screen!=='sector' ? `
       <div onclick="event.stopPropagation();toggleInfo()" title="About GENEXXO"
         style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;color:#111116;opacity:${state.showInfo?'1':'.5'};${state.showInfo?'background:rgba(17,17,22,.06)':''}">
         <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 7.4h.01"/></svg></div>
       <div onclick="event.stopPropagation();toggleApply()" title="Apply to join"
         style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;color:#111116;opacity:${state.showApply?'1':'.5'};${state.showApply?'background:rgba(17,17,22,.06)':''}">
         <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></div>` : ''}
-      ${state.tab==='home' ? `<div id="gwStar" onclick="event.stopPropagation();toggleFavPanel()" title="Favourite gateways"
-        style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;font-size:19px;line-height:1;color:${state.showFavs?'#F5B800':'#111116'};opacity:${state.showFavs?'1':'.5'};${state.showFavs?'background:rgba(245,184,0,.14)':''}">${state.showFavs?'★':'☆'}</div>` : ''}
+      ${`<div id="gwStar" onclick="event.stopPropagation();toggleFavPanel()" title="Favourite gateways"
+        style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;font-size:19px;line-height:1;color:${state.showFavs?'#F5B800':'#111116'};opacity:${state.showFavs?'1':'.5'};${state.showFavs?'background:rgba(245,184,0,.14)':''}">${state.showFavs?'★':'☆'}</div>`}
     </div>`}
   </div>`;
 }
@@ -5766,6 +5770,9 @@ function renderDiscover(bodyOnly){
   // The search input is STATIC DOM — only #discoverBody is rewritten while typing, so the
   // field keeps focus and the caret.
   return `${topBar()}
+  ${favPanelHtml()}
+  ${applyPanelHtml()}
+  ${infoPanelHtml()}
   <div class="push">
     <div class="searchstick">
       <div class="searchbox">
@@ -5983,6 +5990,9 @@ function renderAI(){
       ? `You're in <b>${ctxG.name}</b> — its agent leads below, ready to join this chat. Tap any to bring in a specialist.`
       : `Each gateway has its own expert agent — tap one and it joins this chat.`;
     return `${topBar()}
+  ${favPanelHtml()}
+  ${applyPanelHtml()}
+  ${infoPanelHtml()}
     <div class="push">
       <div class="sect" style="display:flex;align-items:center;gap:12px;padding-top:20px">
         <div style="width:46px;height:46px;border-radius:16px;background:linear-gradient(135deg,#111116,#3a3a44);display:flex;align-items:center;justify-content:center;color:#fff;font-size:21px">✦</div>
@@ -6132,6 +6142,9 @@ function renderEvents(){
     </div>`;}).join('');
   const filts = [['all','All'],['live','Live'],['drops','Drops'],['alerts','Alerts'],['bookmarks','Bookmarks']];
   return `${topBar()}
+  ${favPanelHtml()}
+  ${applyPanelHtml()}
+  ${infoPanelHtml()}
   <div class="push">
     <div class="sect" style="display:flex;align-items:center;gap:12px;padding-top:20px">
       <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#EF4444,#F97316,#F59E0B);display:flex;align-items:center;justify-content:center;flex-shrink:0">
@@ -6187,6 +6200,9 @@ function profileBody(){
 }
 function renderProfile(){
   return `${topBar()}
+  ${favPanelHtml()}
+  ${applyPanelHtml()}
+  ${infoPanelHtml()}
   <div class="push">${profileBody()}</div>
   ${receiptSheetHtml()}`;
 }
