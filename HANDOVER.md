@@ -14,8 +14,8 @@ Last rewritten: **2026-08-26** · build **`2026.08.26-2`**
 Global `state`, `render()` dispatching on `state.screen`, template-literal HTML, inline `onclick`s.
 Served from GitHub Pages, installable, in real hands. It is **the** product surface.
 
-**Taxonomy in this build:** 68 tiles · 12 neighbourhoods · 466 shelves · 6,770 gateway
-placements (6,184 unique) · 541 declared dual-use homes · 6,239 search-tag entries.
+**Taxonomy in this build:** 68 tiles · 12 neighbourhoods · 467 shelves · 6,754 gateway
+placements (6,184 unique) · 531 declared dual-use homes · 6,239 search-tag entries.
 
 ## The one file you edit
 
@@ -33,16 +33,24 @@ Editing `SECTOR_GATEWAYS`, `GW_TAGS` or `GW_HOME` by hand means the next regener
 
 ```bash
 cd ~/Desktop/ecosystem
-python3 Archive/sectors-lists/apply-handoff.py                              # 1st — ALWAYS
-python3 Archive/GENEXXO-Final-Changes-Update/apply-final-changes.py         # 2nd — ALWAYS
+python3 Archive/sectors-lists/apply-handoff.py   # 1st — SECTOR_GROUPS + SECTORS
+python3 Archive/apply-tiles.py                   # 2nd — gateways, tags, dual-use homes
 ```
 
 Both are idempotent. Run them **in that order, both, every time**.
 
+**There are two scripts and there will only ever be two.** Sam's deliveries arrive as complete
+71-tile reissues, so each supersedes the last outright. When a new bundle lands: drop it in
+`Archive/`, point the `TILES` line in `apply-tiles.py` at it, run both scripts. **Do not add a
+third script per delivery** — that was heading for a chain of "run all of them in this exact
+order or the data silently reverts". Superseded bundles stay in `Archive/` for provenance;
+they are history, not steps.
+
 ## Dangerous things
 
-- **Never run `apply-handoff.py` alone.** It predates the 26-row punch-list and silently reverts all
-  26 changes. It survives only because it still owns `SECTOR_GROUPS` and `SECTORS`.
+- **Never run `apply-handoff.py` alone.** It carries the original 2026-08-25 taxonomy, so on its own
+  it reverts every change since. It survives only because it still owns `SECTOR_GROUPS` and
+  `SECTORS`, which no reissue carries. Always follow it with `apply-tiles.py`.
 - **Never force-push `github-live`.** The GitHub repo has an **unrelated history** (231 web-upload
   commits, no common ancestor with this repo). A normal push is rejected; a forced one destroys the
   live site. The remote is deliberately *not* named `origin`.
