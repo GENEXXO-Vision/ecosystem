@@ -129,6 +129,43 @@
   .drawer-search svg{flex-shrink:0}
   .drawer-search input{flex:1;min-width:0;border:none;outline:none;background:transparent;font-family:var(--font);font-size:13.5px;font-weight:600;color:var(--ink)}
   .drawer-search input::placeholder{color:rgba(17,17,22,.4);font-weight:600}
+  /* ── The drawer in a gateway's commercial layers (Brands · Apps · Pros · Communities ·
+     Business, and inside a brand zone). A different register from the Sectors drawer, because
+     it answers a different question: that one is wayfinding and belongs to the shell, this one
+     is inventory. Not a new invention — it reuses the ★ favourites panel's dark surface, which
+     is already the app's treatment for "your stuff" panels.
+     White cards are functional as well as premium: brand marks are drawn for light grounds
+     (Bullheart's logo already needs a white tile), so on a dark drawer the CARD is the logo's
+     natural surface and the tile stops being a special case.
+     Neutral near-black, deliberately NOT the gateway theme — the commercial layer should look
+     the same in every gateway and read as GENEXXO's, not ClimbXX's. The gateway's accent shows
+     only on the row you are standing in. */
+  #drawer.zone-mode{background:rgba(14,14,20,.94);backdrop-filter:blur(24px) saturate(140%);
+    -webkit-backdrop-filter:blur(24px) saturate(140%);color:#fff}
+  #drawer.zone-mode #drawerHead{color:rgba(255,255,255,.5);border-bottom-color:rgba(255,255,255,.10)}
+  #drawer.zone-mode .drawer-search{border-bottom-color:rgba(255,255,255,.10)}
+  #drawer.zone-mode .drawer-search input{color:#fff}
+  #drawer.zone-mode .drawer-search input::placeholder{color:rgba(255,255,255,.38)}
+  #drawer.zone-mode .drawer-search svg{stroke:rgba(255,255,255,.45)}
+  #drawer.zone-mode #drawerList{padding:10px}
+  #drawer.zone-mode .empty{color:rgba(255,255,255,.55);border-color:rgba(255,255,255,.16);margin:8px 2px}
+  /* The card. Air around it rather than flush rows — that gap is most of the premium read. */
+  .zrow{display:flex;align-items:center;gap:11px;padding:11px 12px;margin-bottom:8px;
+    background:#fff;color:var(--ink);border-radius:14px;cursor:pointer;
+    box-shadow:0 1px 2px rgba(0,0,0,.18);transition:transform .16s ease,box-shadow .16s ease}
+  .zrow:last-child{margin-bottom:2px}
+  .zrow.flat{cursor:default}
+  .zrow:not(.flat):hover,.zrow:not(.flat):active{transform:translateY(-1px);box-shadow:0 6px 18px rgba(0,0,0,.28)}
+  .zrow .zic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;
+    justify-content:center;font-size:12.5px;font-weight:800;color:#fff;flex-shrink:0;overflow:hidden}
+  .zrow .zic img{width:100%;height:100%;object-fit:contain}
+  .zrow .znm{font-size:13.5px;font-weight:700;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .zrow .zsb{font-size:10.5px;color:var(--muted);font-weight:600;margin-top:2px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* Standing inside this one: lift it and edge it in the gateway's accent. */
+  .zrow.on{box-shadow:0 8px 22px rgba(0,0,0,.34)}
+  .zrow.on .zbar{position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:14px 0 0 14px}
+  .zrow.on{position:relative;overflow:hidden}
   .gwanchor{height:0;overflow:hidden}
   #gwJumpBtn,#secJumpBtn{display:none;align-items:center;gap:4px;flex-shrink:0;border:none;background:transparent;font-family:var(--font);font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);cursor:pointer;padding:4px 0 4px 8px}
   /* Sits below the head (~38px) + the search row (~37px); both asides are position:absolute,
@@ -705,7 +742,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-5"></script>
+<script src="genexxo-data.js?v=2026.08.26-6"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1442,7 +1479,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-5';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-6';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2116,7 +2153,94 @@ function drawerSecRow(s, active){                 // one sector row in the left 
     <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${sectorIsLive(s.key)?LIVE_DOT:''}${rowStar}</div>
   </div>`;
 }
+/* ═════════ The left drawer inside a gateway's commercial layers ═════════
+   On a gateway feed the drawer is the Sectors list, because "which sector am I in" is still
+   a live question. Once you tap into Brands · Apps · Pros · Communities · Business it isn't:
+   you are inside a gateway looking at its inventory, and the sectors list is orientation you
+   already finished with. So the drawer becomes the list for the layer you are in — the same
+   pull-out, searchable, on both layouts.
+   The RIGHT drawer (sibling gateways) is suppressed in these layers for the same reason: it
+   answers a question you are no longer asking. See the gw-avail toggle in syncGwChrome(). */
+const ZONE_LAYERS = {
+  brands:     {label:'Brands',      ph:'Search brands…'},
+  apps:       {label:'Apps',        ph:'Search apps…'},
+  pros:       {label:'Pro Zones',   ph:'Search pros…'},
+  communities:{label:'Communities', ph:'Search communities…'},
+  business:   {label:'Business',    ph:'Search business…'},
+};
+/* Which layer list the drawer should show, or null for the ordinary Sectors list.
+   A brand zone counts as the Brands layer: you got there THROUGH that list, and its siblings
+   are what you want next — dropping back to Sectors one rung deeper is backwards. */
+function zoneLayer(){
+  if(state.screen==='zone' && state.zone) return 'brands';
+  return (state.screen==='gateway' && state.gwZones && state._gwObj
+       && ZONE_LAYERS[state.gwZoneTab]) ? state.gwZoneTab : null;
+}
+// The gateway whose lists we are showing — a brand zone borrows its parent's.
+function zoneLayerGw(){
+  const z = (state.screen==='zone') ? ZONES[state.zone] : null;
+  return state._gwObj || (z && GATEWAYS[z.gw]) || null;
+}
+/* One layer's items, normalised to {name, sub, color, gradient, logo, click}. Reads the same
+   gw.* the centre column reads, so the drawer cannot list something the layer does not show. */
+function zoneLayerItems(gw, layer){
+  if(layer==='brands') return (gw.brandZones||[]).map(b=>({
+    key:b.key, name:b.name, sub:b.tag||b.tier, color:b.color, gradient:b.gradient, logo:b.logo,
+    click:(b.key && ZONES[b.key]) ? `openZone('${b.key}')` : '' }));
+  if(layer==='apps') return (gw.apps||[]).map(a=>({ name:a.name, sub:a.desc, color:a.color }));
+  if(layer==='pros') return (gw.pros||[]).map(p=>({
+    name:p.name, sub:p.tag||p.tier, color:p.color, gradient:p.gradient }));
+  const rows = layer==='communities' ? GW_COMMUNITY_ROWS(gw)
+             : layer==='business'    ? GW_BUSINESS_ROWS(gw) : [];
+  return rows.map(r=>({ name:r[1], sub:r[2], color:(gw.theme&&gw.theme.accent)||'#888' }));
+}
+function zoneLayerRow(o){
+  /* A logo sits on the card itself — white on white — so it needs no tile of its own, only
+     padding. Everything else keeps the gradient/initials tile the rest of the app uses. */
+  const av = o.logo
+    ? `<div class="zic" style="padding:2px"><img src="${mediaUrl(o.logo)}" alt="${esc(o.name)}"></div>`
+    : `<div class="zic" style="background:${o.gradient||o.color||'#33333a'}">${zoneInitials(o.name)}</div>`;
+  // Standing inside a brand, mark its card — same id the sector list uses, so openDrawer()
+  // scrolls it into view without knowing anything about layers.
+  const on = !!(o.key && o.key===state.zone);
+  const accent = o.color || '#33333a';
+  return `<div class="zrow${on?' on':''}${o.click?'':' flat'}"${on?' id="drawerActiveRow"':''}${o.click?` onclick="${o.click}"`:''}>
+    ${on?`<i class="zbar" style="background:${accent}"></i>`:''}
+    ${av}
+    <div style="flex:1;min-width:0">
+      <div class="znm">${o.name}</div>
+      <div class="zsb">${o.sub||''}</div>
+    </div>
+  </div>`;
+}
+function buildZoneDrawer(layer){
+  const gw = zoneLayerGw(); if(!gw) return;
+  const q = (state.secQuery||'').trim().toLowerCase();
+  let items = zoneLayerItems(gw, layer);
+  if(q) items = items.filter(o=>
+    (o.name||'').toLowerCase().includes(q) || (o.sub||'').toLowerCase().includes(q));
+  $('drawerList').innerHTML = items.length
+    ? items.map(zoneLayerRow).join('')
+    : `<div class="empty">${q
+        ? `No ${ZONE_LAYERS[layer].label.toLowerCase()} match “${escHtml(state.secQuery)}”.`
+        : `${ZONE_LAYERS[layer].label} open here when ${escHtml(gw.name)} goes live.`}</div>`;
+  updateSecJump(q);                              // no sub-groups in a layer list → stays hidden
+}
+/* Head label, search placeholder and the right drawer's availability all follow the layer.
+   Called from render() AND repaintGateway(), because tapping a zone tab repaints rather than
+   re-rendering — without the second call the chrome would describe the layer you just left. */
+function syncGwChrome(){
+  const layer = zoneLayer();
+  const head = $('drawerHead'), si = $('secSearch');
+  if(head) head.textContent = layer ? ZONE_LAYERS[layer].label : 'Sectors';
+  if(si)   si.placeholder   = layer ? ZONE_LAYERS[layer].ph    : 'Search sectors…';
+  $('drawer').classList.toggle('zone-mode', !!layer);   // dark surface + white cards
+  // Sibling gateways are redundant inside a commercial layer — drop the handle and the panel.
+  $('frame').classList.toggle('gw-avail', !!activeSectorKey() && !layer);
+}
 function buildDrawer(){
+  const layer = zoneLayer();
+  if(layer) return buildZoneDrawer(layer);
   const active = activeSectorKey();
   const q = (state.secQuery||'').trim().toLowerCase();
   if(q){                                          // search flattens the groups, live-first
@@ -2177,7 +2301,8 @@ function secGroupsOf(){                          // [{label,count,index}] for no
 }
 function updateSecJump(q){
   const btn=$('secJumpBtn'); if(!btn) return;
-  const show = !q && SECTOR_GROUPS.length>0;     // grouped browse view only; search hides it
+  // Grouped browse view only — search hides it, and a zone-layer list has no sub-groups.
+  const show = !q && SECTOR_GROUPS.length>0 && !zoneLayer();
   btn.style.display = show ? 'flex' : 'none';
   if(!show){ const p=$('secJump'); if(p) p.hidden=true; }
 }
@@ -2746,19 +2871,11 @@ function renderGateway(){
         : `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.55">Pro Zones — guides, coaches, specialists —<br>open here when ${gw.name} goes live.</div>`;
     } else if (z==='communities'){
       // Outside groups — clubs, forums, chapters. Placeholder cards for the shell.
-      body = [
-        ['CL',`${gw.name} Collective`,'Community group · 4.2K members','GROUP','View community ›'],
-        ['LC','Local Chapters','Meetups & crews near you','MEETUP','Find a chapter ›'],
-        ['BB','The Beta Board','Forum · gear talk & trip reports','FORUM','Open forum ›'],
-      ].map(a=>infoCard(a[0],a[1],a[2],a[3],a[4])).join('')
+      body = GW_COMMUNITY_ROWS(gw).map(a=>infoCard(a[0],a[1],a[2],a[3],a[4])).join('')
         + `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.5;margin-top:2px">External communities plug in here — placeholder cards for now.</div>`;
     } else if (z==='business'){
       // Corporate / manufacturers / services — the B2B side of the gateway. Placeholder cards.
-      body = [
-        ['MF','Manufacturing Partners','OEM & white-label production','MAKERS','View partners ›'],
-        ['CW','Corporate & Wholesale','Bulk supply & B2B accounts','B2B','Enquire ›'],
-        ['SV','Services Directory','Logistics, fulfilment & retail ops','SERVICES','Browse ›'],
-      ].map(a=>infoCard(a[0],a[1],a[2],a[3],a[4])).join('')
+      body = GW_BUSINESS_ROWS(gw).map(a=>infoCard(a[0],a[1],a[2],a[3],a[4])).join('')
         + `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.5;margin-top:2px">Corporate, manufacturers & services list here — placeholder for now.</div>`;
     } else {
       body = gw.brandZones.length ? gw.brandZones.map(zoneCard).join('')
@@ -2838,6 +2955,9 @@ function repaintGateway(opt){
     scr.scrollTo(0,0);
     if (window.__syncChrome) window.__syncChrome();
   }
+  // Changing layer changes what the drawers are FOR, and a repaint is not a render — so the
+  // drawer chrome has to be re-synced here or it keeps describing the layer you just left.
+  try { syncGwChrome(); } catch(_){}
 }
 
 function toggleApp(name,color,gwName){
@@ -2846,6 +2966,20 @@ function toggleApp(name,color,gwName){
   render();
 }
 
+/* Communities and Business have no directory behind them yet — these placeholder rows are
+   the content. Defined once because TWO surfaces render them now: the gateway's zone layer
+   and the left drawer's list for that layer. Inline in one and copied into the other is how
+   they drift. [initials, title, sub, tag, cta] */
+const GW_COMMUNITY_ROWS = gw => [
+  ['CL',`${gw.name} Collective`,'Community group · 4.2K members','GROUP','View community ›'],
+  ['LC','Local Chapters','Meetups & crews near you','MEETUP','Find a chapter ›'],
+  ['BB','The Beta Board','Forum · gear talk & trip reports','FORUM','Open forum ›'],
+];
+const GW_BUSINESS_ROWS = gw => [
+  ['MF','Manufacturing Partners','OEM & white-label production','MAKERS','View partners ›'],
+  ['CW','Corporate & Wholesale','Bulk supply & B2B accounts','B2B','Enquire ›'],
+  ['SV','Services Directory','Logistics, fulfilment & retail ops','SERVICES','Browse ›'],
+];
 const zoneInitials = n => n.split(/[\s·]+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
 /* Brand avatar tile — a zone/brand with its own `logo` shows the mark on a clean white
    tile (works for a dark-on-white logo like Bullheart's); otherwise falls back to the
@@ -4019,7 +4153,7 @@ function render(){
     try { if (activeSectorKey()) buildDrawerR(); } catch(_){}
   }
   $('frame').classList.add('drawer-avail');
-  $('frame').classList.toggle('gw-avail', !!activeSectorKey());
+  syncGwChrome();                                // drawer head, placeholder + gw-avail
   // dark gateway themes need light-tinted edge handles or they vanish into the background
   $('frame').classList.toggle('on-dark', state.screen==='gateway' && !!(state._gwObj && state._gwObj.theme.dark));
   $('frame').classList.remove('drawer-open','drawer-open-r'); state.drawerOpen=false;

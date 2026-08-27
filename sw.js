@@ -20,13 +20,19 @@
      instantly, then silently REVALIDATED in the background (v4: HEAD + size compare — see
      revalidateMedia), so a re-uploaded clip at the same path shows up on the NEXT view.
      This is deliberately not the jsDelivr trap: nothing is pinned for days. */
-const CACHE = 'genexxo-shell-v2';
+const CACHE = 'genexxo-shell-v3';   // v3: the data payload joined the shell (2026-08-26)
 const MEDIA = 'genexxo-media-v1';
 const SHELL = 'genexxo-mobile.html';
+/* The taxonomy moved out of the shell into its own file so the mobile and desktop clients can
+   share ONE payload. It must be cached exactly like the shell: it is loaded by a <script> tag,
+   so a miss is not a degraded app — it is a blank one. Cached under a bare key with the ?v=
+   cache-buster stripped, so a build bump can never strand an installed app without its data. */
+const DATA = 'genexxo-data.js';
+const isData = (p) => p.endsWith('/' + DATA) || p.endsWith(DATA);
 
 self.addEventListener('install', (e) => {
   self.skipWaiting();                                            // new SW takes over asap
-  e.waitUntil(caches.open(CACHE).then(c => c.add(SHELL)).catch(() => {}));
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll([SHELL, DATA])).catch(() => {}));
 });
 
 self.addEventListener('activate', (e) => {
@@ -147,6 +153,22 @@ self.addEventListener('fetch', (e) => {
   if (url.origin !== self.location.origin) return;              // CDN stills etc. → untouched
   if (url.pathname.endsWith('/version.json')) return;           // freshness probe → always network
   if (/\.(mp4|webm|mov|m4v)$/i.test(url.pathname)) { e.respondWith(serveMedia(e)); return; }   // clips → media cache
+
+  // The data payload: NETWORK FIRST like the shell, but it must also be PUT into the cache —
+  // the generic !isDoc branch below fetches without ever storing, which offline would mean a
+  // blank app rather than a stale one.
+  if (isData(url.pathname)) {
+    e.respondWith((async () => {
+      try {
+        const net = await fetch(req.url, { cache: 'no-cache' });
+        if (net && net.ok) (await caches.open(CACHE)).put(DATA, net.clone());   // bare key, no ?v=
+        return net;
+      } catch (_) {
+        return (await caches.match(DATA)) || Response.error();
+      }
+    })());
+    return;
+  }
 
   const isDoc = req.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname.endsWith('/');
   if (!isDoc) { e.respondWith(fetch(req).catch(() => caches.match(req))); return; }
