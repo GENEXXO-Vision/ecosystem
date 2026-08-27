@@ -112,6 +112,23 @@
   .edge-knob{display:none}
   /* Gateway gutter panels — desktop only, see the 1120px query. */
   .gw-panel{display:none}
+  /* ── Storefront search inside a commercial layer. BOTH layouts, so it lives out here, not in
+     the 1120px query — on the phone this centre column is the whole screen and is exactly where
+     this belongs. (It was briefly inside the media query, which left the phone with an unstyled
+     input and the filters as bare text.) Colours come inline from the gateway theme. ── */
+  .gwsrch{padding:10px 16px 4px}
+  .gwsrch-in{display:flex;align-items:center;gap:9px;padding:10px 13px;border-radius:13px;border:1px solid}
+  .gwsrch-in input{flex:1;min-width:0;border:none;outline:none;background:transparent;
+    font-family:var(--font);font-size:13.5px;font-weight:600;color:inherit;-webkit-appearance:none}
+  .gwsrch-in input::placeholder{color:currentColor;opacity:.42;font-weight:600}
+  .gwsrch-x{opacity:.45;cursor:pointer;font-size:12px;padding:0 2px}
+  .gwsrch-chips{display:flex;gap:7px;margin-top:9px;overflow-x:auto;scrollbar-width:none;
+    -webkit-overflow-scrolling:touch}
+  .gwsrch-chips::-webkit-scrollbar{display:none}
+  .gwchip{flex:0 0 auto;padding:6px 13px;border-radius:99px;border:1px solid;font-size:11.5px;
+    font-weight:700;cursor:pointer;white-space:nowrap;
+    transition:background .15s,color .15s,border-color .15s}
+  .gwchip:not(.on){opacity:.62}
   #frame.drawer-open #edge{opacity:0;pointer-events:none}
   #scrim{position:absolute;left:0;right:0;bottom:0;top:94px;background:rgba(10,10,16,.42);opacity:0;pointer-events:none;transition:opacity .28s;z-index:60}
   #frame.drawer-open #scrim{opacity:1;pointer-events:auto}
@@ -383,18 +400,47 @@
     #frame.panels-float #gwPanelR{ right:32px }
     .gwp-h{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
       padding:0 14px 11px;flex-shrink:0}
-    /* Gateway gutters — directory rows (Brand Zones / Apps & Tools). */
-    .gwp-card{display:flex;align-items:center;gap:9px;margin:0 10px 6px;padding:9px 11px;
-      border-radius:11px;border:1px solid;transition:border-color .16s}
+    /* Gateway gutters — the legacy deck's Brand Zones / Apps & Tools sidebars, rebuilt against
+       the shared data. Search and filter sit in a shell that is built once; only .gwp-list
+       repaints, so typing never destroys the input. */
+    .gwp-h span{font-size:12px;margin-right:6px}
+    .gwp-list{flex:1;min-height:0}
+    /* The slot tag — why this card has the prime spot. */
+    .gwp-slot{font-size:8.5px;font-weight:800;letter-spacing:.14em;margin-bottom:7px}
+    .gwp-slot-open{border-style:dashed}
+    .gwp-av-ghost{background:transparent;border:1px dashed}
+    .gwp-skel{display:block;height:7px;border-radius:4px;background:currentColor;opacity:.12;margin-bottom:5px}
+    .gwp-skel:last-child{margin-bottom:0;opacity:.08}
+    .gwp-card{display:block;margin:0 10px 6px;padding:10px 11px;
+      border-radius:11px;border:1px solid;transition:border-color .16s,box-shadow .16s}
     .gwp-card.tap{cursor:pointer}
-    .gwp-av{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;
-      justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;overflow:hidden}
+    .gwp-top{display:flex;align-items:center;gap:9px}
+    .gwp-av{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;
+      justify-content:center;font-size:10.5px;font-weight:800;color:#fff;flex-shrink:0;overflow:hidden}
     .gwp-av img{width:100%;height:100%;object-fit:contain}
     .gwp-tx{flex:1;min-width:0}
     .gwp-nm{font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .gwp-sb{font-size:10.5px;opacity:.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+    /* The indented block under the tile — the deck's 39px gutter, so the eye reads one column. */
+    .gwp-line{font-size:11px;line-height:1.35;opacity:.55;margin-top:6px;padding-left:39px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .gwp-meta{display:flex;align-items:center;gap:9px;padding-left:39px;margin-top:5px;
+      font-size:10px;opacity:.55}
+    .gwp-meta:empty{display:none}
+    .gwp-chip{font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;opacity:1;
+      white-space:nowrap;cursor:default}
+    .gwp-card .gwp-chip[onclick]{cursor:pointer}
     .gwp-empty{margin:0 10px;padding:16px 12px;border-radius:11px;border:1px dashed;
       font-size:11.5px;line-height:1.5;text-align:center;opacity:.6}
+    /* ⓘ — a dot at the foot until asked, then a panel in place. */
+    .gwp-foot{flex-shrink:0;padding:6px 10px 0}
+    .gwp-info-btn{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;
+      justify-content:center;font-size:12px;opacity:.35;cursor:pointer;transition:opacity .15s}
+    .gwp-info-btn:hover{opacity:.75}
+    .gwp-info{padding:11px 12px;border-radius:11px;border:1px solid}
+    .gwp-info-h{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;margin-bottom:6px}
+    .gwp-info-h span{opacity:.45;cursor:pointer;font-size:11px}
+    .gwp-info-b{font-size:10.5px;line-height:1.6;opacity:.6}
     /* Brand-zone gutters — commerce slots. Three share the column height evenly (flex:1
        rather than a fixed height) so the wall fills a short window and a tall one without
        leaving a stub at the bottom. */
@@ -742,7 +788,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-6"></script>
+<script src="genexxo-data.js?v=2026.08.26-7"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1421,6 +1467,9 @@ const state = {
   screen:'root',         // root | sector | gateway
   sector:null, gateway:null, gwTab:'network', space:'All Feed',
   gwZones:false, gwZoneTab:'brands',   // ★ toggle: feed bar ⇄ Brands · Apps · Pro's
+  // Desktop gateway gutter panels (see buildGwPanels) — search text, tier filter, ⓘ state.
+  gwPanelInfoB:false, gwPanelInfoA:false,
+  gwLayerQ:'', gwLayerFilt:'all',      // storefront search + sort inside a commercial layer
   gwBarPage:'commerce',   // gateway sub-bar page: 'commerce' (Feed·Brands·Apps) ⇄ 'more' (Pro's·Communities·Business)
   zoneBarPage:'main',     // zone sub-bar page: 'main' (Feed·Shop·Bag) ⇄ 'more' (Media·About·Events)
   drawerOpen:false,      // left-edge sector drawer (X-style)
@@ -1479,7 +1528,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-6';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-7';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -1548,7 +1597,7 @@ function openGateway(name, sectorKey){
   state.gateway = GATEWAYS[key] ? key : null;
   state._gwObj = getGateway(name, sectorKey || (GATEWAYS[key]&&GATEWAYS[key].sector));
   state.screen = 'gateway'; state.gwTab = 'network'; state.space = 'All Feed'; state.showFavs = false; state.returnGw = null;
-  state.gwZones = false; state.gwZoneTab = 'brands'; state.gwBarPage = 'commerce';
+  state.gwZones = false; state.gwZoneTab = 'brands'; state.gwBarPage = 'commerce'; state.gwLayerQ=''; state.gwLayerFilt='all';
   state.zone = null; state.zoneProduct = null; state._zoneIn = false;
   state._before = null; state.tab = 'home';   // committed to a real place — tab toggle memory resets
   logVisit('gateway', key);
@@ -1673,7 +1722,7 @@ function goBack(){
    gateway (a brand zone, apps, pro's, a sub-feed) one tap takes you home to its feed */
 function gwHome(){
   if(state.screen!=='gateway') return;
-  state.gwZones=false; state.gwZoneTab='brands'; state.gwBarPage='commerce'; state.gwTab='network'; state.space='All Feed';
+  state.gwZones=false; state.gwZoneTab='brands'; state.gwBarPage='commerce'; state.gwLayerQ=''; state.gwLayerFilt='all'; state.gwTab='network'; state.space='All Feed';
   render(); $('screen').scrollTo(0,0);
 }
 /* ★ on the gateway top bar (2026-07-23): the quick way to your favourite gateways — opens
@@ -2073,6 +2122,9 @@ function tapGwZone(k){
   if (k==='feed') state.gwZones=false;                            // explicit Feed tab → the feed
   else if (state.gwZones && state.gwZoneTab===k) state.gwZones=false;   // active tab tapped → feed
   else { state.gwZones=true; state.gwZoneTab=k; }
+  // Each layer searches its own inventory — carrying a brand query into Apps would land you on
+  // an empty shelf that looks broken. Fresh search per layer, same as the drawers do per open.
+  state.gwLayerQ=''; state.gwLayerFilt='all';
   repaintGateway({body:true});     // body genuinely changes; bar + top bar stay put
 }
 /* The › / ‹ arrow on the gateway sub-bar flips between the two heading pages —
@@ -2169,12 +2221,13 @@ const ZONE_LAYERS = {
   business:   {label:'Business',    ph:'Search business…'},
 };
 /* Which layer list the drawer should show, or null for the ordinary Sectors list.
-   A brand zone counts as the Brands layer: you got there THROUGH that list, and its siblings
-   are what you want next — dropping back to Sectors one rung deeper is backwards. */
+   ONLY inside a brand/app zone. A gateway's Brands layer is a storefront you browse and search
+   in the centre column — the drawers there stay Sectors and Gateways, because at that altitude
+   "where am I in the network" is still the live question. One rung deeper, standing inside a
+   brand, it isn't: you are in a shop, and what you want is the shelf of neighbouring shops.
+   That is what the drawer becomes — the fast switch between brands, glance and move on. */
 function zoneLayer(){
-  if(state.screen==='zone' && state.zone) return 'brands';
-  return (state.screen==='gateway' && state.gwZones && state._gwObj
-       && ZONE_LAYERS[state.gwZoneTab]) ? state.gwZoneTab : null;
+  return (state.screen==='zone' && state.zone) ? 'brands' : null;
 }
 // The gateway whose lists we are showing — a brand zone borrows its parent's.
 function zoneLayerGw(){
@@ -2683,6 +2736,47 @@ function toast(msg){
   requestAnimationFrame(()=>{ el.style.opacity='1'; el.style.transform='translateX(-50%) translateY(0)'; });
   clearTimeout(el._t); el._t=setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateX(-50%) translateY(8px)'; }, 2100);
 }
+/* ═════════ A commercial layer is a storefront — search + sort at the top ═════════
+   Tapping Brands (or Apps, Pros…) is stepping into the gateway's shop, and a shop opens with a
+   way to look for something. On the phone this centre column IS the screen, so this is where a
+   journey starts; on desktop it works alongside the two gutter panels. */
+const GW_LAYER_FILTERS = [['all','All'],['trending','Trending'],['new','New'],['popular','Popular']];
+function gwLayerSearch(gw, t, z){
+  const cur = state.gwLayerFilt||'all';
+  const ph = ZONE_LAYERS[z] ? ZONE_LAYERS[z].ph : 'Search…';
+  return `<div class="gwsrch">
+    <div class="gwsrch-in" style="background:${t.cardBg};border-color:${t.cardBorder};color:${t.text}">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" style="opacity:.45"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="gwLayerQ" placeholder="${ph}" value="${esc(state.gwLayerQ||'')}"
+        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+        oninput="onGwLayerSearch(this.value)">
+      ${state.gwLayerQ?`<span class="gwsrch-x" onclick="clearGwLayerSearch()">✕</span>`:''}
+    </div>
+    <div class="gwsrch-chips">${GW_LAYER_FILTERS.map(([k,lb])=>
+      `<div class="gwchip${cur===k?' on':''}" onclick="setGwLayerFilt('${k}')"
+        style="${cur===k?`background:${t.accent};color:#fff;border-color:${t.accent}`:`border-color:${t.cardBorder};color:${t.text}`}">${lb}</div>`).join('')}</div>
+  </div>`;
+}
+/* Repaint ONLY the results. Renders the gateway into a detached node and lifts #gwLayerList out
+   of it — the same trick repaintGateway() uses — so no card-building logic is duplicated, and
+   the live search input is never touched. */
+function paintGwLayerList(){
+  const cur = document.getElementById('gwLayerList'); if(!cur) return false;
+  const tmp = document.createElement('div');
+  tmp.innerHTML = renderGateway();
+  const nw = tmp.querySelector('#gwLayerList');
+  if(!nw) return false;
+  cur.innerHTML = nw.innerHTML;
+  lazyMedia();
+  return true;
+}
+function onGwLayerSearch(v){ state.gwLayerQ = v; if(!paintGwLayerList()) repaintGateway({body:true}); }
+function clearGwLayerSearch(){
+  state.gwLayerQ = '';
+  const el = $('gwLayerQ'); if(el) el.value = '';
+  repaintGateway({body:true});                   // the ✕ itself has to go, so repaint the row
+}
+function setGwLayerFilt(k){ state.gwLayerFilt = k; repaintGateway({body:true}); }
 /* ═════════ DESKTOP · gateway gutter panels ═════════
    Brand Zones left, Apps & Tools right — the pair the legacy deck carried, rebuilt here
    against the shared data (gw.brandZones / gw.apps) rather than the deck's own
@@ -2696,7 +2790,8 @@ function buildGwPanels(){
   // Same fallback renderZonePage() uses — a zone reached without _gwObj still knows its gateway.
   const _z = (state.screen==='zone') ? ZONES[state.zone] : null;
   const gw = state._gwObj || (_z && GATEWAYS[_z.gw]);
-  if(!gw){ L.innerHTML=''; R.innerHTML=''; $('screen').style.background=''; return; }
+  if(!gw){ L.innerHTML=''; R.innerHTML=''; L.dataset.gw=R.dataset.gw='';
+           $('screen').style.background=''; return; }
   const t = gw.theme || {};
   const ink = t.text || 'var(--ink)';
   [L,R].forEach(p=>{ p.style.background = t.bg || 'var(--bg)'; p.style.color = ink; });
@@ -2733,31 +2828,134 @@ function buildGwPanels(){
     const wall = label => head(label) + frame() + frame() + frame();
     L.innerHTML = wall(z.name);
     R.innerHTML = wall('Featured');
+    L.dataset.gw = R.dataset.gw = '';   // panel HTML replaced — force a shell rebuild on return
     return;
   }
 
-  const initials = n => n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-  const empty = msg =>
-    `<div class="gwp-empty" style="border-color:${t.cardBorder||'var(--line)'}">${msg}</div>`;
-  const card = (o) => `
-    <div class="gwp-card${o.click?' tap':''}" style="background:${t.cardBg||'#fff'};border-color:${t.cardBorder||'var(--line)'}"
-      ${o.click?`onclick="${o.click}"`:''}
-      ${o.click?`onmouseover="this.style.borderColor='${accent}'" onmouseout="this.style.borderColor='${t.cardBorder||'rgba(17,17,22,.08)'}'"`:''}>
+  /* The panels are built as a SHELL (head · search · filter · list · ⓘ) once per gateway, then
+     only the list is repainted on search or filter. Rebuilding the whole panel would destroy the
+     <input> mid-keystroke and take the caret with it — the same reason the drawers keep their
+     search row as a static sibling of their list. */
+  const gwKey = Object.keys(GATEWAYS).find(k=>GATEWAYS[k]===gw) || gw.name;
+  if(L.dataset.gw !== gwKey){
+    L.dataset.gw = R.dataset.gw = gwKey;
+    L.innerHTML = gwPanelShell('b','◆','Brand Zones', accent);
+    R.innerHTML = gwPanelShell('a','⚙','Apps &amp; Tools', accent);
+  }
+  paintGwPanelList('b'); paintGwPanelList('a');
+}
+/* One panel's fixed furniture. No search and no filter tabs, deliberately: the panel is a
+   SHOWCASE — a short, curated set with an editorial reason for each slot — and the drawer is
+   the INDEX, where everything lives and can be searched and switched between. Giving the panel
+   its own search made two half-browse surfaces competing for one job. */
+function gwPanelShell(side, glyph, label, accent){
+  return `<div class="gwp-h" style="color:${accent}"><span>${glyph}</span>${label}</div>
+    <div class="gwp-list" id="gwpList${side}"></div>
+    <div class="gwp-foot" id="gwpFoot${side}"></div>`;
+}
+// Five slots a side. Real listings fill from the top; the rest stand open and say so.
+const GWP_SLOTS = 5;
+function paintGwPanelList(side){
+  const list = $('gwpList'+side), foot = $('gwpFoot'+side); if(!list) return;
+  const gw = state._gwObj; if(!gw) return;
+  const t = gw.theme||{}, bd = t.cardBorder||'var(--line)', cb = t.cardBg||'#fff';
+  const accent = t.accent||'var(--ink)';
+
+  let items;
+  if(side==='b'){
+    items = (gw.brandZones||[]).map(b=>{
+      const z = b.key && ZONES[b.key];                    // the zone carries the real numbers
+      return { key:b.key, name:b.name, color:b.color, logo:b.logo, tier:b.tier||(z&&z.tier),
+        sub:(z&&z.tagline)||b.tag||'',
+        line:(z&&z.feed&&z.feed[0]&&z.feed[0].text)||'',  // most recent post, as the deck showed
+        followers:(z&&z.stats&&z.stats.followers)||'', products:(z&&z.stats&&z.stats.products)||'',
+        click:z?`openZone('${b.key}')`:'' };
+    });
+  } else {
+    items = (gw.apps||[]).map(a=>({ name:a.name, color:a.color, sub:a.desc||'',
+      app:true, added:state.wallet.some(w=>w.name===a.name) }));
+  }
+  /* The slot tag is the point of the panel: it says WHY this one has the prime spot, rather
+     than leaving it to look like an arbitrary top-five. It describes the SLOT, not the record —
+     a curated placement — which is why "New" is honest here even though nothing in the data
+     carries a date. Founding partners take the Featured slots; everything else is New. */
+  items = items.slice(0, GWP_SLOTS).map(o=>({...o,
+    slot: /founding/i.test(o.tier||'') ? 'FEATURED' : 'NEW' }));
+
+  const open = Math.max(0, GWP_SLOTS - items.length);
+  list.innerHTML = items.map(o=>gwPanelCard(o,t,bd,cb,accent)).join('')
+    + Array.from({length:open}, (_,i)=>gwPanelOpenSlot(i, items.length, bd, accent, side)).join('');
+
+  // The ⓘ — collapsed to a dot, expands in place. Same affordance the deck's sidebars carried.
+  const openKey = side==='b' ? 'gwPanelInfoB' : 'gwPanelInfoA';
+  foot.innerHTML = state[openKey]
+    ? `<div class="gwp-info" style="background:${cb};border-color:${bd}">
+         <div class="gwp-info-h"><b>ⓘ ${escHtml(gw.domain||gw.name)}</b>
+           <span onclick="toggleGwPanelInfo('${side}')">✕</span></div>
+         <div class="gwp-info-b">${side==='b'
+           ? 'Brands with a space inside this gateway. Each runs its own zone — feed, shop and community — reachable here or at its own address.'
+           : 'Apps, tools and agents built for this gateway. Add one and it follows you across the network.'}</div>
+       </div>`
+    : `<div class="gwp-info-btn" onclick="toggleGwPanelInfo('${side}')" title="About this panel">ⓘ</div>`;
+}
+function toggleGwPanelInfo(side){
+  const k = side==='b' ? 'gwPanelInfoB' : 'gwPanelInfoA';
+  state[k] = !state[k];
+  paintGwPanelList(side);
+}
+/* The deck's card, rebuilt: tile + name/tagline, then an indented metadata block — the latest
+   post, then the counts with the tier chip pushed right. */
+function gwPanelCard(o, t, bd, cb, accent){
+  const ink = t.text||'var(--ink)';
+  const feat = o.slot==='FEATURED';
+  const action = o.app
+    ? `<span class="gwp-chip" style="background:${o.added?'transparent':accent};color:${o.added?ink:'#fff'};border:1px solid ${o.added?bd:accent}"
+         onclick="event.stopPropagation();toggleAppFromPanel('${esc(o.name)}','${o.color}','${esc(state._gwObj.name)}')">${o.added?'Added ✓':'Add'}</span>`
+    : '';
+  return `<div class="gwp-card${o.click?' tap':''}" style="background:${cb};border-color:${bd}"
+    ${o.click?`onclick="${o.click}"`:''}
+    ${o.click?`onmouseover="this.style.borderColor='${accent}'" onmouseout="this.style.borderColor='${bd}'"`:''}>
+    <div class="gwp-slot" style="color:${feat?accent:'currentColor'};${feat?'':'opacity:.4'}">${o.slot}</div>
+    <div class="gwp-top">
       <div class="gwp-av" style="background:${o.logo?'#fff':o.color}${o.logo?';padding:3px':''}">${
-        o.logo ? `<img src="${mediaUrl(o.logo)}" alt="${esc(o.name)}">` : initials(o.name)}</div>
+        o.logo ? `<img src="${mediaUrl(o.logo)}" alt="${esc(o.name)}">`
+               : o.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()}</div>
       <div class="gwp-tx"><div class="gwp-nm">${o.name}</div><div class="gwp-sb">${o.sub}</div></div>
-    </div>`;
-
-  const zones = gw.brandZones || [];
-  L.innerHTML = head('◆ Brand Zones') + (zones.length
-    ? zones.map(b=>card({ name:b.name, sub:b.tag||b.tier, color:b.color, logo:b.logo,
-        click: (b.key && ZONES[b.key]) ? `openZone('${b.key}')` : '' })).join('')
-    : empty(`Brand Zones open here when ${esc(gw.name)} goes live.`));
-
-  const apps = gw.apps || [];
-  R.innerHTML = head('⚙ Apps &amp; Tools') + (apps.length
-    ? apps.map(a=>card({ name:a.name, sub:a.desc, color:a.color })).join('')
-    : empty(`Gateway apps land here when ${esc(gw.name)} goes live.`));
+    </div>
+    ${o.line?`<div class="gwp-line">${stripTags(o.line)}</div>`:''}
+    <div class="gwp-meta">
+      ${o.followers?`<span>👥 ${o.followers}</span>`:''}
+      ${o.products?`<span>📦 ${o.products}</span>`:''}
+      <span style="flex:1"></span>${action}
+    </div>
+  </div>`;
+}
+/* An unfilled slot. Drawn as a real card in outline rather than hidden, so the panel always
+   reads as five places — the empty ones are inventory, not a rendering failure. */
+function gwPanelOpenSlot(i, filled, bd, accent, side){
+  const label = (filled + i) < 2 ? 'FEATURED' : 'NEW';
+  return `<div class="gwp-card gwp-slot-open" style="border-color:${bd}">
+    <div class="gwp-slot" style="opacity:.32">${label}</div>
+    <div class="gwp-top">
+      <div class="gwp-av gwp-av-ghost" style="border-color:${bd}"></div>
+      <div class="gwp-tx"><span class="gwp-skel" style="width:62%"></span><span class="gwp-skel" style="width:40%"></span></div>
+    </div>
+    <div class="gwp-meta"><span style="flex:1"></span>
+      <span class="gwp-chip" style="border:1px dashed ${bd};color:${accent};background:transparent">Available</span>
+    </div>
+  </div>`;
+}
+const stripTags = s => (s||'').replace(/<[^>]*>/g,'');
+/* Wallet toggle from the panel. toggleApp() calls render(), which inside a gateway tears down
+   every <video> and jumps the feed to the top — the thing the handover says not to do. Repaint
+   the panel and, if the Apps layer is on screen, its body. */
+function toggleAppFromPanel(name,color,gwName){
+  const i = state.wallet.findIndex(w=>w.name===name);
+  if(i>=0) state.wallet.splice(i,1); else state.wallet.push({name,color,gw:gwName});
+  paintGwPanelList('a');
+  if(state.screen==='gateway' && state.gwZones && state.gwZoneTab==='apps'){
+    try{ repaintGateway({body:true}); }catch(_){}
+  }
 }
 function renderHome(){
   // Network = hero style for media posts (the highlight-reel layer); a strong text-only post that
@@ -2857,8 +3055,27 @@ function renderGateway(){
 
   if (state.gwZones){
     const z = state.gwZoneTab;
+    const q = (state.gwLayerQ||'').trim().toLowerCase();
+    const filt = state.gwLayerFilt||'all';
+    /* Search + sort over the layer's own items. A commercial layer IS a storefront, so this is
+       where a journey starts — on the phone especially, where the centre column is the whole
+       screen. Kept over the real fields: `trending` is "has a live zone behind it", `new` is
+       "listed but not built yet", `popular` sorts on the follower counts the zones carry.
+       Layers with no such data (Pros, Communities, Business) show the controls but every filter
+       returns the full set — the shape of the surface without inventing numbers for it. */
+    const hit = o => !q || [o.name,o.tag,o.desc,o.tier].some(v=>(v||'').toLowerCase().includes(q));
+    const zoneOf = o => o.key && ZONES[o.key];
+    const fnum = o => { const s=zoneOf(o); const f=s&&s.stats&&s.stats.followers||'';
+      const n=parseFloat(f)||0; return /K/i.test(f)?n*1000:/M/i.test(f)?n*1e6:n; };
+    const sift = arr => {
+      let out = (arr||[]).filter(hit);
+      if(filt==='trending') out = out.filter(o=>!!zoneOf(o));
+      else if(filt==='new') out = out.filter(o=>!zoneOf(o));
+      else if(filt==='popular') out = [...out].sort((a,b)=>fnum(b)-fnum(a));
+      return out;
+    };
     if (z==='apps'){
-      body = gw.apps.length ? gw.apps.map(a=>{
+      body = gw.apps.length ? sift(gw.apps).map(a=>{
         const inW = state.wallet.some(w=>w.name===a.name);
         return `<div class="gcard" style="background:${t.cardBg};border-color:${t.cardBorder};color:${t.text}">
           <div class="hd" style="margin-bottom:6px"><div class="av" style="background:${a.color};border-radius:11px">${a.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
@@ -2867,7 +3084,7 @@ function renderGateway(){
         </div>`;}).join('')
         : `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.55">Gateway apps land here when ${gw.name} goes live.</div>`;
     } else if (z==='pros'){
-      body = (gw.pros||[]).length ? gw.pros.map(zoneCard).join('')
+      body = (gw.pros||[]).length ? sift(gw.pros).map(zoneCard).join('')
         : `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.55">Pro Zones — guides, coaches, specialists —<br>open here when ${gw.name} goes live.</div>`;
     } else if (z==='communities'){
       // Outside groups — clubs, forums, chapters. Placeholder cards for the shell.
@@ -2878,11 +3095,16 @@ function renderGateway(){
       body = GW_BUSINESS_ROWS(gw).map(a=>infoCard(a[0],a[1],a[2],a[3],a[4])).join('')
         + `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.5;margin-top:2px">Corporate, manufacturers & services list here — placeholder for now.</div>`;
     } else {
-      body = gw.brandZones.length ? gw.brandZones.map(zoneCard).join('')
+      body = gw.brandZones.length ? sift(gw.brandZones).map(zoneCard).join('')
         : `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.55">Brand Zones open here when ${gw.name} goes live.</div>`;
     }
+    if (q && !/class="(gcard|empty)/.test(body))
+      body = `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.55">Nothing in ${ZONE_LAYERS[z]?ZONE_LAYERS[z].label:z} matches “${escHtml(state.gwLayerQ)}”.</div>`;
+    /* The search row sits OUTSIDE #gwLayerList so typing never destroys the input — only the
+       list repaints. Same reason the drawers keep their search row a sibling of their list. */
+    body = gwLayerSearch(gw, t, z) + `<div id="gwLayerList">${body}</div>`
     // "Stake your claim" CTA below the cards in every zone layer (Brands · Apps · Pro's · Community · Business)
-    body += zoneCtaCard(ZONE_CTA[z]);
+         + zoneCtaCard(ZONE_CTA[z]);
   } else {
     // Feed (default) — no tab lit; the gateway's own feed sits under the Brands·Apps·Pro's bar.
     const card = f => f.videoOnly ? videoCard(state.gateway, f, false) : `
@@ -4138,6 +4360,7 @@ function render(){
   if (typeof DESKTOP === 'function' && DESKTOP()){
     try { $('frame').classList.contains('panels-float') ? buildGwPanels()
         : ($('gwPanelL').innerHTML='', $('gwPanelR').innerHTML='',
+           $('gwPanelL').dataset.gw = $('gwPanelR').dataset.gw = '',
            $('screen').style.background=''); } catch(_){}
   }
   if (typeof PANELS_PINNED === 'function' && PANELS_PINNED()){
