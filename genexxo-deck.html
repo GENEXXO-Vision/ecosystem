@@ -8,7 +8,7 @@
 <!-- ══════════════════════════════════════════════════════════════════════════════════════
      PHASE 3 CUTOVER — 2026-08-28
 
-     This file WAS the desktop app. It is now a redirect to genexxo-mobile.html, which
+     This file WAS the desktop app. It is now a redirect to genexxo-app.html, which
      serves phone and desktop from one shell: under 1120px the phone UI, above it a
      three-column layout. The separate desktop build had rotted to 5% of the gateway set
      (40 tiles / 349 gateways against 68 / 6,184) precisely because it was separate.
@@ -22,26 +22,26 @@
      DO NOT paste the shell's contents in here to "remove the hop". That rebuilds the exact
      twin this cutover exists to end: two copies drifting apart, which is how the old
      desktop died. It would also break installed PWAs — the service worker's SHELL constant
-     and every cached entry key off the genexxo-mobile.html path.
+     and every cached entry key off the genexxo-app.html path.
 
      The real deck is kept at Archive/genexxo-deck-legacy.html. It is the only place PROS,
      PRO_TIERS and SIGNUP_TYPES exist — 20 gateways of professionals, 4 tiers, 5 signup
      flows — which are not yet carried across into the shared data. See HANDOVER.md.
      ══════════════════════════════════════════════════════════════════════════════════════ -->
 
-<link rel="canonical" href="genexxo-mobile.html">
+<link rel="canonical" href="genexxo-app.html">
 <meta name="robots" content="noindex,follow">
 <!-- Belt and braces: the meta refresh fires even with JS disabled; the script beats it to
      the punch and, unlike the meta, can carry a hash or query string across. -->
-<meta http-equiv="refresh" content="0; url=genexxo-mobile.html">
+<meta http-equiv="refresh" content="0; url=genexxo-app.html">
 <script>
   (function () {
     try {
       // replace() rather than assign() so Back does not bounce off this page and land here
       // again — the redirect must not become a trap between the site and the app.
-      location.replace('genexxo-mobile.html' + location.search + location.hash);
+      location.replace('genexxo-app.html' + location.search + location.hash);
     } catch (e) {
-      location.href = 'genexxo-mobile.html';
+      location.href = 'genexxo-app.html';
     }
   })();
 </script>
@@ -67,7 +67,7 @@
     <div class="mark">GENEXXO</div>
     <div class="rule"></div>
     <p>The demo now lives in one app that fits both desktop and phone.</p>
-    <a href="genexxo-mobile.html">Open GENEXXO &rsaquo;</a>
+    <a href="genexxo-app.html">Open GENEXXO &rsaquo;</a>
   </div>
 </body>
 </html>

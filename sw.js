@@ -4,7 +4,7 @@
      build always loads; the cached copy is only a FALLBACK for when the device is offline.
    ▸ version.json is deliberately NOT cached here — it must always hit the network (it's the
      freshness probe the in-app update banner reads). Cross-origin requests pass straight through.
-   Only the mobile shell (genexxo-mobile.html) is cached, purely so the app opens offline.
+   Only the shell (genexxo-app.html) and its data payload are cached, so the app opens offline.
    ▸ v2 FIX (2026-08-01): plain fetch(req) in a "network-first" SW STILL reads the browser
      HTTP cache (max-age=600) — so for up to 10 min it re-served a STALE pre-build HTML while
      version.json (fresh) reported the new build → the in-app update banner kept re-appearing
@@ -20,9 +20,12 @@
      instantly, then silently REVALIDATED in the background (v4: HEAD + size compare — see
      revalidateMedia), so a re-uploaded clip at the same path shows up on the NEXT view.
      This is deliberately not the jsDelivr trap: nothing is pinned for days. */
-const CACHE = 'genexxo-shell-v3';   // v3: the data payload joined the shell (2026-08-26)
+const CACHE = 'genexxo-shell-v4';   // v4: the shell became genexxo-app.html (2026-08-28)
 const MEDIA = 'genexxo-media-v1';
-const SHELL = 'genexxo-mobile.html';
+/* The shell was genexxo-mobile.html until 2026-08-28. It serves desktop too, and a link
+   people were asked to open on a laptop should not say 'mobile'. The old path survives as a
+   redirect, so shared links and already-installed apps still land. */
+const SHELL = 'genexxo-app.html';
 /* The taxonomy moved out of the shell into its own file so the mobile and desktop clients can
    share ONE payload. It must be cached exactly like the shell: it is loaded by a <script> tag,
    so a miss is not a degraded app — it is a blank one. Cached under a bare key with the ?v=
@@ -173,7 +176,7 @@ self.addEventListener('fetch', (e) => {
   const isDoc = req.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname.endsWith('/');
   if (!isDoc) { e.respondWith(fetch(req).catch(() => caches.match(req))); return; }
 
-  const isShell = url.pathname.endsWith('/genexxo-mobile.html');
+  const isShell = url.pathname.endsWith('/' + SHELL);
   e.respondWith((async () => {
     try {
       // {cache:'no-cache'} = ALWAYS revalidate with origin, never trust the stale HTTP cache.

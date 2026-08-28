@@ -1,8 +1,8 @@
 {
   "name": "GENEXXO — The Organizing Layer for the Internet",
   "short_name": "GENEXXO",
-  "description": "The GENEXXO mobile experience — sectors, gateways and the case.",
-  "start_url": "genexxo-mobile.html",
+  "description": "The GENEXXO app — sectors, gateways and the case. One app, phone and desktop.",
+  "start_url": "genexxo-app.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
