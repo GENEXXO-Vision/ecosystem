@@ -136,6 +136,10 @@
   #frame.drawer-open #drawer{transform:none}
   #drawerHead,#drawerRHead{display:flex;align-items:center;gap:8px;padding:14px 18px 11px;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line)}
   #drawerList,#drawerRList{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:6px 0}
+  /* "Choose a Sector" — the prompt has to land as a REACTION to the tap, or it reads as a
+     header that was always black and the tap still feels dead. One beat, then it stays put. */
+  #drawerHead.ask{animation:askIn .34s cubic-bezier(.2,.75,.2,1)}
+  @keyframes askIn{from{opacity:.25;letter-spacing:.06em}to{opacity:1;letter-spacing:.14em}}
   .drow{display:flex;align-items:center;gap:12px;padding:11px 18px;cursor:pointer}
   .drow:active,.drow:hover{background:var(--bg)}
   .drow .dic{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;color:#fff;flex-shrink:0}
@@ -470,6 +474,27 @@
     #tabbar{max-width:min(600px, calc(min(1480px, 100vw) - 2 * var(--panel-w)));
       border-radius:0;border-left:1px solid var(--line);
       border-right:1px solid var(--line);box-shadow:0 -6px 30px rgba(17,17,22,.10)}
+    /* ── Overlays: sheets take the centre measure, scrims take the frame ──────────────────
+       Every overlay in the app is pinned to the phone's 430px — the favourites and Apply
+       panels, #infoFeed, the product and shop sheets, .gxsheet, #zoneCanvas. On a 1480px
+       frame that leaves each one floating as a narrow column in the middle of nowhere.
+       The rule that fixes it is the same one the layout already runs on: on a phone an
+       overlay covers the column you are reading, and on desktop that column is the 600px
+       centre measure. Same behaviour, different width — not a desktop-specific design.
+       Widened to the gutter instead (296–368px) they would be NARROWER than on a phone,
+       which is backwards on a big screen.
+       They tuck under the masthead rather than covering it: above 1120px that bar is fixed
+       platform chrome, so the app frame survives and the sheet replaces only the content.
+       The bottom edge still runs to the floor, over the tab bar, exactly as on the phone.
+       !important is unavoidable — the two panels carry their widths as inline styles. */
+    #frame{--sheet-w:min(600px, calc(min(1480px,100vw) - 2 * var(--panel-w)));
+           --frame-w:min(1480px,100vw)}
+    .gx-panel,#infoFeed,#psheet,#shopMenu,.gxsheet,#zoneCanvas{max-width:var(--sheet-w)!important}
+    /* Full height ones start below the bar; the bottom-anchored sheets are unaffected. */
+    #infoFeed,.gx-panel[style*="top:0"]{top:var(--top-h,53px)!important}
+    /* A scrim only as wide as the sheet would leave the gutters bright while the middle
+       dims — it has to dim everything behind, or it does not read as modal. */
+    #psheetScrim,#shopMenuScrim,.gxscrim{max-width:var(--frame-w)!important;top:var(--top-h,53px)!important}
     /* Chrome does not auto-hide on desktop. Hiding the bars on scroll buys back vertical
        space on a phone, where the top bar is a real share of the screen; here it costs the
        one fixed thing on the page and buys ~53px of a 900px window. It also fought the rest
@@ -788,7 +813,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-7"></script>
+<script src="genexxo-data.js?v=2026.08.26-8"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1490,6 +1515,7 @@ const state = {
   wallet:[{name:'Route Logger',color:'#4ADE80',gw:'ClimbXX'}],
   favs:[...FAVS_INIT.favs],        // seeded from YOUR_GATEWAYS on first run, else restored from localStorage
   showFavs:false, favTab:'favs',   // ★ panel open? + which tab: 'favs' | 'recent' | 'live'
+  askSector:false,                 // desktop: Sectors tab tapped with none chosen → prompt header
   showApply:false, showInfo:false, infoTab:'intro',   // home top-bar overlays: person→Apply, ⓘ→Info feed (2026-07-29)
   brandFavs:[...FAVS_INIT.brandFavs],   // favourite BRANDS (zone keys) — persisted alongside gateway favs
   sectorFavs:[...FAVS_INIT.sectorFavs], // favourite SECTORS (sector keys) — pinned via ★ on sector rows
@@ -1515,7 +1541,7 @@ function gwGroupDivider(text, ctx){   // sub-group label between gateways (drawe
    without this the top hit renders above the viewport and looks like "no result".
    Safe to scroll here — initAutoHideChrome() early-returns while a drawer is open, so this
    never toggles the chrome and never blurs the input on Android (see onDiscoverSearch). */
-function onGwSearch(v){ state.gwQuery=v; buildDrawerR(); const l=$('drawerRList'); if(l) l.scrollTop=0; }
+function onGwSearch(v){ state.gwQuery=v; buildRightList(); const l=$('drawerRList'); if(l) l.scrollTop=0; }
 /* Network-wide search is STRICTER than in-sector search (2026-08-16).
    In a sector you're scanning a small, known list, so a loose substring match is helpful.
    Across all 6,700+ gateways it is not: searching "rose" in Home otherwise drags in
@@ -1528,7 +1554,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-7';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-8';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -1845,7 +1871,7 @@ function favPanelHtml(){
   const tabBtn = (k, label) => `<div onclick="setFavTab('${k}')" style="flex:1;text-align:center;padding:9px 6px;border-radius:11px;font-weight:800;font-size:12.5px;cursor:pointer;transition:background .18s;${tab===k?'background:#F5B800;color:#141414':'background:rgba(255,255,255,.08);color:rgba(255,255,255,.7)'}">${label}</div>`;
 
   return `
-    <div style="position:fixed;left:50%;transform:translateX(-50%);top:0;bottom:0;width:100%;max-width:430px;z-index:60;display:flex;flex-direction:column;background:rgba(14,14,20,.9);backdrop-filter:blur(24px) saturate(140%);-webkit-backdrop-filter:blur(24px) saturate(140%);color:#fff">
+    <div class="gx-panel" style="position:fixed;left:50%;transform:translateX(-50%);top:0;bottom:0;width:100%;max-width:430px;z-index:60;display:flex;flex-direction:column;background:rgba(14,14,20,.9);backdrop-filter:blur(24px) saturate(140%);-webkit-backdrop-filter:blur(24px) saturate(140%);color:#fff">
       <div style="flex-shrink:0;padding:calc(12px + env(safe-area-inset-top,0px)) 15px 8px">
         <div style="display:flex;align-items:center;gap:10px">
           <div style="flex:1;font-family:var(--cond);font-weight:800;font-size:21px;letter-spacing:.01em">Your GENEXXO</div>
@@ -1878,7 +1904,7 @@ function applyPanelHtml(){
     </div>`).join('');
   return `
     <div style="position:fixed;inset:0;z-index:59;background:rgba(0,0,0,.45)" onclick="toggleApply()"></div>
-    <div style="position:fixed;left:50%;transform:translateX(-50%);bottom:0;z-index:60;width:100%;max-width:430px;background:var(--bg,#F7F7F8);border-radius:20px 20px 0 0;box-shadow:0 -14px 46px rgba(0,0,0,.3);max-height:84vh;overflow:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(16px + var(--safe-b))">
+    <div class="gx-panel" style="position:fixed;left:50%;transform:translateX(-50%);bottom:0;z-index:60;width:100%;max-width:430px;background:var(--bg,#F7F7F8);border-radius:20px 20px 0 0;box-shadow:0 -14px 46px rgba(0,0,0,.3);max-height:84vh;overflow:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(16px + var(--safe-b))">
       <div style="width:38px;height:4px;border-radius:99px;background:rgba(17,17,22,.14);margin:9px auto 2px"></div>
       <div style="position:sticky;top:0;background:var(--bg,#F7F7F8);display:flex;align-items:center;justify-content:space-between;padding:10px 16px 10px;border-bottom:1px solid var(--line);z-index:1">
         <div style="font-family:var(--cond);font-weight:800;font-size:18px;letter-spacing:.01em">Apply to join</div>
@@ -2285,11 +2311,42 @@ function buildZoneDrawer(layer){
 function syncGwChrome(){
   const layer = zoneLayer();
   const head = $('drawerHead'), si = $('secSearch');
-  if(head) head.textContent = layer ? ZONE_LAYERS[layer].label : 'Sectors';
-  if(si)   si.placeholder   = layer ? ZONE_LAYERS[layer].ph    : 'Search sectors…';
+  if(si) si.placeholder = layer ? ZONE_LAYERS[layer].ph : 'Search sectors…';
+  if(head){
+    /* Three states for this header, in priority order:
+       1. asking  — black, "Choose a Sector". Set by tapping the Sectors tab with none chosen.
+       2. sector  — washed in that sector's colour, matching the gateways header opposite, so
+                    the two columns read as one lit context rather than one tinted and one plain.
+       3. neutral — everything else, including any commercial layer, where the zone-mode
+                    stylesheet owns the colours and an inline tint would fight it. */
+    const sk  = (!layer && activeSectorKey()) ? activeSectorKey() : null;
+    const ask = !layer && !sk && state.askSector;
+    head.textContent = layer ? ZONE_LAYERS[layer].label : (ask ? 'Choose a Sector' : 'Sectors');
+    head.classList.toggle('ask', !!ask);
+    const w = sk ? washFor(sectorOf(sk).g) : null;
+    head.style.background = ask ? '#111116' : (w ? w.wash   : '');
+    head.style.color      = ask ? '#fff'    : (w ? w.accent : '');
+  }
   $('drawer').classList.toggle('zone-mode', !!layer);   // dark surface + white cards
   // Sibling gateways are redundant inside a commercial layer — drop the handle and the panel.
   $('frame').classList.toggle('gw-avail', !!activeSectorKey() && !layer);
+}
+/* Park the sector you are in at the TOP of the list, directly beneath its category divider,
+   rather than centred in the viewport. Two reasons it is the better resting place: the row you
+   care about is where the eye already goes, and because .gwsec dividers are sticky, landing the
+   row just below one leaves its neighbourhood ("Arts & Entertainment") captioned above it — so
+   the list answers "where am I" as well as "what else is here", without a second glance.
+   Called on every build, not just on open, so it survives the round trip out to a gateway and
+   back — on desktop the panel never opens at all, and a pinned list that only positioned itself
+   once would drift out of step with the screen behind it. */
+function revealActiveSector(){
+  const dl=$('drawerList'); if(!dl) return;
+  const act=$('drawerActiveRow');
+  if(!act){ dl.scrollTop=0; return; }              // no sector yet → the top of the list
+  const sec = dl.querySelector('.gwsec');          // any divider: they are all the same height
+  const pad = sec ? sec.getBoundingClientRect().height : 0;
+  const dr=dl.getBoundingClientRect(), ar=act.getBoundingClientRect();
+  dl.scrollTop = Math.max(0, dl.scrollTop + (ar.top - dr.top) - pad);
 }
 function buildDrawer(){
   const layer = zoneLayer();
@@ -2395,7 +2452,7 @@ const PANELS_PINNED = () => DESKTOP() && !PANELS_FLOAT();
   else if(mq.addListener) mq.addListener(onCross);      // older Safari
 })();
 function openDrawer(){
-  if(PANELS_PINNED()) return;                // pinned open — nothing to toggle
+  if(PANELS_PINNED()){ askSectorPrompt(); return; }   // already open — acknowledge, don't toggle
   const frame=$('frame');
   if(!frame.classList.contains('drawer-avail')) return;
   frame.classList.remove('chrome-hidden','drawer-open-r');
@@ -2408,20 +2465,37 @@ function openDrawer(){
   state.secQuery=''; { const si=$('secSearch'); if(si) si.value=''; }   // fresh search each open
   { const p=$('secJump'); if(p) p.hidden=true; }                        // jump popover closed on open
   buildDrawer();                                 // reflect the sector you're currently inside
-  const dl=$('drawerList'), act=$('drawerActiveRow');
-  if(act){                                       // inside a sector → bring that sector's row into view (it may be lower down)
-    const dr=dl.getBoundingClientRect(), ar=act.getBoundingClientRect();
-    dl.scrollTop += (ar.top - dr.top) - (dl.clientHeight - ar.height)/2;
-  } else {                                        // opened from the Network home → show the top of the list
-    dl.scrollTop = 0;
-  }
+  revealActiveSector();
   state.drawerOpen=true; frame.classList.add('drawer-open');
   clearNudge('edgeL');
   syncNetbar();                                  // light the Sectors slot while the drawer is open
 }
 function closeDrawer(){
   if(PANELS_PINNED()) return; state.drawerOpen=false; $('frame').classList.remove('drawer-open'); syncNetbar(); }
-function pickSector(key){ closeDrawer(); openSector(key); }
+/* Tapping Sectors with the panel already pinned open (2026-08-28). On the phone that tab
+   REVEALS the drawer; on desktop the drawer never left, so the tap did nothing at all — not
+   even a highlight, because syncNetbar() sits after openDrawer()'s early return. A control in
+   the primary bar that does literally nothing is worse than no control.
+   Rather than repair the reveal, give the tab the job it can still do: point at the thing you
+   actually have to do next. The tab flashes to acknowledge the tap, and — if no sector is
+   chosen yet — the panel header turns black and says "Choose a Sector". The prompt is not a
+   toast: it stays until you pick one, because it is an instruction, not a notification. */
+function askSectorPrompt(){
+  pulseNetbarTab(1);
+  if(activeSectorKey()) return;              // already chosen — the flash alone is the answer
+  state.askSector = true;
+  syncGwChrome();
+}
+// Light a sub-bar slot, then hand the highlight back to whatever should own it.
+function pulseNetbarTab(i){
+  const scr=$('screen'); if(!scr) return;
+  const bar=scr.querySelector('.netbar'); if(!bar) return;
+  const tabs=bar.querySelectorAll('.ntab'); if(tabs.length<=i) return;
+  tabs.forEach((t,n)=>t.classList.toggle('on', n===i));
+  clearTimeout(pulseNetbarTab._t);
+  pulseNetbarTab._t = setTimeout(syncNetbar, 620);
+}
+function pickSector(key){ state.askSector=false; closeDrawer(); openSector(key); }
 
 /* Right drawer — the sector's gateways (favourites risen to the top), rebuilt on open.
    The ★ in its header flips to your favourite gateways from ALL sectors; row stars
@@ -2451,6 +2525,15 @@ function openDrawerR(){
   syncNetbar();                                  // light the Gateways slot while the drawer is open
 }
 
+/* The right drawer's header, tinted by whatever list is under it. Set in one place so the
+   three lists (a sector's gateways, favourites, live) cannot end up styled differently —
+   and so leaving a sector reliably CLEARS the tint rather than stranding the last one. */
+function setDrawerRHead(html, wash, accent){
+  const h=$('drawerRHead'); if(!h) return;
+  h.innerHTML = html;
+  h.style.background = wash   || '';
+  h.style.color      = accent || '';
+}
 function buildDrawerR(){
   const sk=activeSectorKey();
   // The right drawer is ALWAYS the sector's gateways (the "family" list) — same on home,
@@ -2458,7 +2541,7 @@ function buildDrawerR(){
   // gateway's sector, so the family below renders without a zone-specific branch.
   // Switching between the family list and favourites swaps the whole list, so return to the top —
   // otherwise a deep scroll position carries over onto a much shorter list and shows blank space.
-  const headStar =`<div onclick="state.drawerRFavs=!state.drawerRFavs;buildDrawerR();var l=document.getElementById('drawerRList');if(l)l.scrollTop=0" title="Favourites — all sectors"
+  const headStar =`<div onclick="state.drawerRFavs=!state.drawerRFavs;buildRightList();var l=document.getElementById('drawerRList');if(l)l.scrollTop=0" title="Favourites — all sectors"
     style="margin-left:auto;cursor:pointer;font-size:17px;line-height:1;padding:2px 2px 2px 10px;color:${state.drawerRFavs?'#F5B800':'rgba(17,17,22,.35)'}">${state.drawerRFavs?'★':'☆'}</div>`;
   const rowStar = k => `<div onclick="event.stopPropagation();toggleFavQuiet('${k}')"
     style="font-size:15px;line-height:1;padding:6px 2px 6px 8px;cursor:pointer;color:${state.favs.includes(k)?'#F5B800':'rgba(17,17,22,.22)'}">${state.favs.includes(k)?'★':'☆'}</div>`;
@@ -2469,7 +2552,7 @@ function buildDrawerR(){
   // leave an input that silently does nothing.
   const srow=$('gwSearchRow'); if(srow) srow.style.display = state.drawerRFavs ? 'none' : '';
   if(state.drawerRFavs){
-    $('drawerRHead').innerHTML = `<span class="dic-sm" style="background:linear-gradient(135deg,#111116,#3a3a44)">★</span>Favourites · all sectors ${headStar}`;
+    setDrawerRHead(`<span class="dic-sm" style="background:linear-gradient(135deg,#111116,#3a3a44)">★</span>Favourites · all sectors ${headStar}`);
     $('drawerRList').innerHTML = state.favs.length ? state.favs.map(k=>{
       const g=gwMetaFromKey(k); if(!g) return ''; const s=sectorOf(g.sector);
       const on = actKey && k===actKey; const {accent, wash} = washFor(g.gradient);
@@ -2483,7 +2566,13 @@ function buildDrawerR(){
 
   } else {
     const s=sectorOf(sk);
-    $('drawerRHead').innerHTML = `<span class="dic-sm" style="background:${s.g}">${s.icon}</span>${s.name} · Gateways ${headStar}`;
+    /* Carry the sector's own colour up into this header. The left drawer already washes the
+       sector you are in with a lighter version of its gradient; doing the same here ties the
+       two panels together — you can see at a glance that THIS gateway list belongs to THAT
+       sector, rather than reading the name to find out. Same washFor() as the active row, so
+       the two tints are identical by construction and cannot drift apart. */
+    const {accent:sAcc, wash:sWash} = washFor(s.g);
+    setDrawerRHead(`<span class="dic-sm" style="background:${s.g}">${s.icon}</span>${s.name} · Gateways ${headStar}`, sWash, sAcc);
     const names=(SECTOR_GATEWAYS[sk]||[]);
     const isFav = n => state.favs.includes(gwKeyFromName(n));
     const gwRow = name => {
@@ -2560,10 +2649,62 @@ function buildDrawerR(){
     updateGwJump(sk, q);   // show the "Jump ▾" control only for grouped sectors while browsing
   }
 }
+/* ── The right panel with no sector chosen (desktop pinned only) ──────────────────────────
+   Every built-out gateway, network-wide, with your pinned ones first. Derived from GATEWAYS
+   itself — a gateway is live iff it has a real definition — so it can never fall out of step
+   with the green dots, the same guarantee the ★ panel's Live tab relies on.
+   Row shape is deliberately identical to the sector list's, because it IS the same list one
+   level up: choose a sector and these narrow to that tile. */
+function buildDrawerRLive(){
+  const q = (state.gwQuery||'').trim().toLowerCase();
+  const srow=$('gwSearchRow'); if(srow) srow.style.display = '';   // search drives this list too
+  const actGw = activeGatewayName();
+  const actKey = actGw ? gwKeyFromName(actGw) : null;
+  const headStar = `<div onclick="state.drawerRFavs=true;buildRightList();var l=document.getElementById('drawerRList');if(l)l.scrollTop=0" title="Favourites — all sectors"
+    style="margin-left:auto;cursor:pointer;font-size:17px;line-height:1;padding:2px 2px 2px 10px;color:rgba(17,17,22,.35)">☆</div>`;
+  const rowStar = k => `<div onclick="event.stopPropagation();toggleFavQuiet('${k}')"
+    style="font-size:15px;line-height:1;padding:6px 2px 6px 8px;cursor:pointer;color:${state.favs.includes(k)?'#F5B800':'rgba(17,17,22,.22)'}">${state.favs.includes(k)?'★':'☆'}</div>`;
+
+  const keys = Object.keys(GATEWAYS).filter(k=>{
+    const g = gwMetaFromKey(k); if(!g) return false;
+    if(!q) return true;
+    const s = sectorOf(g.sector);
+    return gwLabel(g.name).toLowerCase().includes(q) || (s && s.name.toLowerCase().includes(q));
+  });
+  const row = k => {
+    const g = gwMetaFromKey(k); if(!g) return '';
+    const s = sectorOf(g.sector); if(!s) return '';
+    const on = actKey && k===actKey; const {accent, wash} = washFor(g.gradient);
+    return `<div class="drow"${on?' id="drawerRActiveRow"':''} style="${on?`background:${wash};box-shadow:inset 3px 0 0 ${accent};`:''}" onclick="pickGateway('${g.name}','${g.sector}')">
+      <div class="dic" style="background:${g.gradient}">${g.emoji}</div>
+      <div style="flex:1;min-width:0"><div class="dnm" style="${on?`color:${accent};`:''}">${gwLabel(g.name)}</div><div class="dct">${s.icon} ${s.name}</div></div>
+      <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${LIVE_DOT}${rowStar(k)}</div>
+    </div>`;
+  };
+  const pinned = keys.filter(k=>state.favs.includes(k));
+  const rest   = keys.filter(k=>!state.favs.includes(k));
+
+  /* Neutral header, deliberately. The tint means "you are in this sector" — with none chosen
+     there is nothing to signal, and colouring it anyway would say the same thing as a real
+     selection. The green stays on the tile and the live dots, where it means "built out". */
+  setDrawerRHead(
+    `<span class="dic-sm" style="background:linear-gradient(135deg,#16A34A,#22C55E)">◉</span>Live Gateways · ${Object.keys(GATEWAYS).length} ${headStar}`);
+  $('drawerRList').innerHTML = keys.length
+    ? (pinned.length ? `<div class="gwsec">PINNED · ${pinned.length}</div>` + pinned.map(row).join('') : '')
+      + `<div class="gwsec">${pinned.length?'EVERYTHING LIVE':'BUILT & LIVE'} · ${rest.length}</div>`
+      + rest.map(row).join('')
+    : `<div class="empty">No live gateways match “${escHtml(state.gwQuery)}”.</div>`;
+  updateGwJump(null, q);                       // ungrouped list → no Jump ▾
+}
+/* Which of the three right-hand lists belongs on screen. Favourites can be shown with or
+   without a sector; the live list only exists when there is no sector to narrow to. */
+function buildRightList(){
+  if(state.drawerRFavs || activeSectorKey()) buildDrawerR(); else buildDrawerRLive();
+}
 function toggleFavQuiet(k){    // toggle without a full render — the drawer stays open
   const i=state.favs.indexOf(k);
   if(i>=0) state.favs.splice(i,1); else state.favs.push(k);
-  saveFavs(); buildDrawerR();
+  saveFavs(); buildRightList();
 }
 function closeDrawerR(){
   if(PANELS_PINNED()) return; $('frame').classList.remove('drawer-open-r'); syncNetbar(); }
@@ -4372,8 +4513,13 @@ function render(){
     ['drawer','scrim','drawerR','scrimR'].forEach(id=>{
       const el=$(id); if(el) el.style.removeProperty('top');
     });
-    try { buildDrawer(); } catch(_){}
-    try { if (activeSectorKey()) buildDrawerR(); } catch(_){}
+    try { buildDrawer(); revealActiveSector(); } catch(_){}
+    /* No sector yet — on the phone the right drawer simply isn't offered (gw-avail is false),
+       but a PINNED panel is on screen regardless, and an empty column reads as broken rather
+       than as "nothing selected". Fill it with the live gateways instead: on a first visit to
+       the desktop home that is a better prompt than a blank column — it answers "what can I
+       actually look at right now?". Desktop-only by construction: this whole branch is. */
+    try { buildRightList(); } catch(_){}
   }
   $('frame').classList.add('drawer-avail');
   syncGwChrome();                                // drawer head, placeholder + gw-avail
