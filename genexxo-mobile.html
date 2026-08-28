@@ -112,6 +112,8 @@
   .edge-knob{display:none}
   /* Gateway gutter panels — desktop only, see the 1120px query. */
   .gw-panel{display:none}
+  /* Utility-tab overlay — desktop only, see the 1120px query. */
+  #utilOver{display:none}
   /* ── Storefront search inside a commercial layer. BOTH layouts, so it lives out here, not in
      the 1120px query — on the phone this centre column is the whole screen and is exactly where
      this belongs. (It was briefly inside the media query, which left the phone with an unstyled
@@ -495,6 +497,28 @@
     /* A scrim only as wide as the sheet would leave the gutters bright while the middle
        dims — it has to dim everything behind, or it does not read as modal. */
     #psheetScrim,#shopMenuScrim,.gxscrim{max-width:var(--frame-w)!important;top:var(--top-h,53px)!important}
+    /* ── A utility tab floating over a gateway ────────────────────────────────────────────
+       navigation-model.md is explicit that Discover · AI · Events · Profile are OVERLAYS, not
+       places: "you tap to open, tap to close, from anywhere". On a phone a full-screen swap
+       satisfies that, because an overlay covering the whole column IS the screen. On desktop
+       it did not: switching screen tore the gateway down, retracted nothing, re-pinned both
+       panels and dropped the gateway's theme — a place change, which is what these are not.
+       So above 1120px the gateway stays rendered and the tab floats over the centre column,
+       exactly like the ★ and ⓘ panels. Closing puts you back with nothing having moved.
+       It sits UNDER the tab bar (z-index 45 vs 50) — unlike ★, which covers it — because the
+       bar is how you close it again. */
+    #frame.util-over #utilOver{
+      display:block;position:fixed;top:var(--top-h,53px);bottom:0;left:50%;
+      transform:translateX(-50%);width:100%;max-width:var(--sheet-w);z-index:45;
+      background:var(--bg);overflow-y:auto;overscroll-behavior:contain;
+      border-left:1px solid var(--line);border-right:1px solid var(--line);
+      padding-bottom:calc(var(--bar-h) + 12px);
+      animation:utilIn .22s cubic-bezier(.2,.75,.2,1);
+      /* The overlay is its own scroll container and its top bar is stripped, so anything
+         sticky inside it pins to ITS top edge, not to where the masthead would be. */
+      --stick-top:0px}
+    @keyframes utilIn{from{opacity:0;transform:translateX(-50%) translateY(6px)}
+                      to{opacity:1;transform:translateX(-50%) translateY(0)}}
     /* Chrome does not auto-hide on desktop. Hiding the bars on scroll buys back vertical
        space on a phone, where the top bar is a real share of the screen; here it costs the
        one fixed thing on the page and buys ~53px of a 900px window. It also fought the rest
@@ -777,6 +801,9 @@
 <body>
 <div id="frame">
   <div id="screen"></div>
+  <!-- Desktop: a utility tab (Discover · AI · Events · Profile) floating over a gateway.
+       Empty and display:none everywhere else — see syncUtilOverlay(). -->
+  <div id="utilOver"></div>
   <div id="ptr"><div class="ptr-spin"></div></div>
   <div id="tabbar"></div>
   <!-- Desktop gateway gutters: Brand Zones left, Apps & Tools right — the two side panels
@@ -813,7 +840,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-8"></script>
+<script src="genexxo-data.js?v=2026.08.26-9"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1516,6 +1543,7 @@ const state = {
   favs:[...FAVS_INIT.favs],        // seeded from YOUR_GATEWAYS on first run, else restored from localStorage
   showFavs:false, favTab:'favs',   // ★ panel open? + which tab: 'favs' | 'recent' | 'live'
   askSector:false,                 // desktop: Sectors tab tapped with none chosen → prompt header
+  utilOver:null,                   // desktop: utility tab floating over a gateway/zone
   showApply:false, showInfo:false, infoTab:'intro',   // home top-bar overlays: person→Apply, ⓘ→Info feed (2026-07-29)
   brandFavs:[...FAVS_INIT.brandFavs],   // favourite BRANDS (zone keys) — persisted alongside gateway favs
   sectorFavs:[...FAVS_INIT.sectorFavs], // favourite SECTORS (sector keys) — pinned via ★ on sector rows
@@ -1554,7 +1582,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-8';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-9';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -1619,6 +1647,9 @@ function navRestore(b){
 }
 function openGateway(name, sectorKey){
   pushHist();
+  // Following a link OUT of a floating utility tab — the screen stays 'gateway', so the
+  // overlay's own safety net cannot see this; close it explicitly or it hides the arrival.
+  state.utilOver = null;
   const key = gwKeyFromName(name);
   state.gateway = GATEWAYS[key] ? key : null;
   state._gwObj = getGateway(name, sectorKey || (GATEWAYS[key]&&GATEWAYS[key].sector));
@@ -1649,6 +1680,21 @@ function goHub(){ state._before=null; state._hist=[]; state.eventsMemo=null; sta
 const UTIL_TABS = ['discover','ai','events','profile'];
 function setTab(t){
   if (t==='home'){ goHub(); $('screen').scrollTo(0,0); return; }
+  /* Desktop, standing in a gateway or zone: open the tab OVER it rather than switching to it.
+     Second tap on the open one closes it — the same open/close grammar as the phone, minus the
+     screen change, because there is no place to save and restore. See syncUtilOverlay(). */
+  if (DESKTOP() && UTIL_TABS.includes(t) && (state.screen==='gateway' || state.screen==='zone')){
+    state.utilOver = (state.utilOver===t) ? null : t;
+    if (state.utilOver==='discover'){          // fresh cards each open, unless a memo says otherwise
+      const m = state.discoverMemo;
+      state.discoverSector = m ? m.sector : null;
+      state.discoverGroup  = m ? m.group  : null;
+      state.discoverQ      = m ? m.q      : '';
+    }
+    render();
+    const ov=$('utilOver'); if(ov) ov.scrollTop=0;
+    return;
+  }
   // second tap on the open tab → close it, restore the saved place
   if (state.tab===t && state.screen==='root'){
     const b = state._before; state._before=null;
@@ -1718,6 +1764,8 @@ function backTarget(){
   return null;   // already at the Network hub with nothing stacked
 }
 function goBack(){
+  // 0) a utility tab floating over a gateway → close it and leave the gateway standing
+  if (state.utilOver){ state.utilOver=null; render(); return; }
   // 1) an open utility tab (Discover/AI/Events/Profile) → toggle it shut, restoring _before
   if (UTIL_TABS.includes(state.tab)){ setTab(state.tab); return; }
   // 2) a product sheet is open in a zone → just close the sheet
@@ -2787,6 +2835,32 @@ const ICONS = {
   events:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>',
   profile:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>',
 };
+/* Whichever element the current utility tab was drawn into — and therefore which one scrolls.
+   #screen normally; #utilOver while it floats over a gateway on desktop. */
+const utilHost = () => (state.utilOver && $('utilOver')) || $('screen');
+/* Draw (or tear down) the floating utility tab. Called from render(), so every interaction
+   inside the overlay — all of which call render() — redraws it in place; that is the same
+   contract the ★ panel runs on, and why it survives a re-render without special handling. */
+function syncUtilOverlay(){
+  const el = $('utilOver'); if(!el) return;
+  // The overlay only means anything over a gateway or zone; anywhere else the tab is the screen.
+  if(state.utilOver && !(DESKTOP() && (state.screen==='gateway' || state.screen==='zone')))
+    state.utilOver = null;
+  const on = !!state.utilOver;
+  $('frame').classList.toggle('util-over', on);
+  if(!on){ el.innerHTML=''; return; }
+  const fn = {discover:renderDiscover, ai:renderAI, events:renderEvents, profile:renderProfile}[state.utilOver];
+  if(!fn){ state.utilOver=null; el.innerHTML=''; $('frame').classList.remove('util-over'); return; }
+  el.innerHTML = fn();
+  // Every utility renderer emits topBar(). The masthead is still on screen above the overlay,
+  // so keeping it would stack a second GENEXXO mark directly under the first.
+  const top = el.querySelector('.top'); if(top) top.remove();
+  // Discover's sub-bars stack beneath its search bar, which now lives in here rather than
+  // in #screen — so measure it here too, or they pin at the wrong offset.
+  const sea = el.querySelector('.searchstick');
+  el.style.setProperty('--search-h', sea ? sea.getBoundingClientRect().height+'px' : '0px');
+  lazyMedia();
+}
 function tabBar(){
   // The main ecosystem bar (Back·Discover·AI·Events·Profile) now continues UNCHANGED into the
   // brand zones — Feed & Shop moved up to the zone top bar. In a zone the bar re-skins to the
@@ -2808,7 +2882,9 @@ function tabBar(){
       const col = canBack ? idle : dead;
       return `<div class="tab" style="color:${col}${canBack?'':';pointer-events:none'}" onclick="goBack()">${ICONS.back}<div class="lb">${lb}</div></div>`;
     }
-    return `<div class="tab ${state.tab===k?'on':''}" style="color:${state.tab===k?active:idle}" onclick="setTab('${k}')">${ICONS[k]}<div class="lb">${lb}</div></div>`;
+    // A floating utility tab lights its own slot — state.tab still names the screen underneath.
+    const lit = (state.utilOver || state.tab) === k;
+    return `<div class="tab ${lit?'on':''}" style="color:${lit?active:idle}" onclick="setTab('${k}')">${ICONS[k]}<div class="lb">${lb}</div></div>`;
   }).join('');
 }
 
@@ -3355,6 +3431,7 @@ function brandAvatar(o, size, radius, fs){
 function openZone(k, tab){
   if(!ZONES[k]) return;
   pushHist();
+  state.utilOver = null;              // arriving somewhere — see openGateway()
   // Full-page: the zone is the next rung on the shell ladder, not an overlay sheet.
   // The parent gateway stays in state (_gwObj/gateway) so the breadcrumb + drawers work.
   // Optional `tab` deep-links a sub-view (e.g. 'events' from the network calendar); the sub-bar
@@ -4103,9 +4180,11 @@ function toggleDiscJump(e){
 }
 function discJumpTo(i){
   const p=$('discJump'); if(p) p.hidden=true;
-  const sc=$('screen'), el=$('dsec-'+i); if(!sc||!el) return;
-  const top=document.querySelector('#screen .top'), bar=$('discBar');
-  const sea=document.querySelector('#screen .searchstick');
+  // Discover is the scroll container it was drawn into — #screen normally, but #utilOver when
+  // it is floating over a gateway on desktop. Scrolling the wrong one moves nothing.
+  const sc=utilHost(), el=$('dsec-'+i); if(!sc||!el) return;
+  const top=sc.querySelector('.top'), bar=$('discBar');
+  const sea=sc.querySelector('.searchstick');
   const offset=(top?top.getBoundingClientRect().height:0)+(sea?sea.getBoundingClientRect().height:0)
               +(bar?bar.getBoundingClientRect().height:0);
   const y = sc.scrollTop + el.getBoundingClientRect().top - sc.getBoundingClientRect().top - offset;
@@ -4485,6 +4564,7 @@ function render(){
   const seaEl = $('screen').querySelector('.searchstick');
   $('frame').style.setProperty('--search-h', seaEl ? seaEl.getBoundingClientRect().height + 'px' : '0px');
   lazyMedia();   // observe any <video data-vsrc> the fresh render just drew
+  syncUtilOverlay();   // before tabBar() — it can clear state.utilOver, which the bar reads
   tabBar();
   // Sectors drawer: every page. Gateways drawer: any sector context — a sector page OR a
   // gateway (shows its sibling gateways). Close both on any navigation.
