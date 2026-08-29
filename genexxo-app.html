@@ -840,7 +840,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-10"></script>
+<script src="genexxo-data.js?v=2026.08.26-11"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1582,7 +1582,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-10';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-11';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2743,6 +2743,25 @@ function buildDrawerRLive(){
       + rest.map(row).join('')
     : `<div class="empty">No live gateways match “${escHtml(state.gwQuery)}”.</div>`;
   updateGwJump(null, q);                       // ungrouped list → no Jump ▾
+}
+/* On the phone the drawers reset themselves when you OPEN them — openDrawer()/openDrawerR()
+   clear the query, blank the input and close the jump popover, so every open starts on the full
+   list. Pinned open on desktop that moment never comes, and the reset went with it: a half-typed
+   search survived every navigation, so picking another sector swapped the header while the list
+   underneath stayed filtered by the previous sector's query. It also defeated revealActiveSector(),
+   which parks the active row under its category divider — a filtered list has no dividers.
+   Reset on what actually changed instead of on an event that no longer happens: the sector the
+   panels are describing. Desktop only — on mobile the open still owns this. */
+let _panelSector;
+function syncPanelSearch(){
+  const sk = activeSectorKey() || null;
+  if(sk === _panelSector) return;
+  _panelSector = sk;
+  state.secQuery=''; state.gwQuery=''; state.drawerRFavs=false;
+  const si=$('secSearch'); if(si) si.value='';
+  const gs=$('gwSearch'); if(gs) gs.value='';
+  const sj=$('secJump');  if(sj) sj.hidden=true;
+  const gj=$('gwJump');   if(gj) gj.hidden=true;
 }
 /* Which of the three right-hand lists belongs on screen. Favourites can be shown with or
    without a sector; the live list only exists when there is no sector to narrow to. */
@@ -4593,6 +4612,7 @@ function render(){
     ['drawer','scrim','drawerR','scrimR'].forEach(id=>{
       const el=$(id); if(el) el.style.removeProperty('top');
     });
+    try { syncPanelSearch(); } catch(_){}   // before either build — it clears what they read
     try { buildDrawer(); revealActiveSector(); } catch(_){}
     /* No sector yet — on the phone the right drawer simply isn't offered (gw-avail is false),
        but a PINNED panel is on screen regardless, and an empty column reads as broken rather
