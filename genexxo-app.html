@@ -840,7 +840,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-11"></script>
+<script src="genexxo-data.js?v=2026.08.26-12"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1582,7 +1582,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-11';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-12';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -1691,8 +1691,22 @@ function setTab(t){
       state.discoverGroup  = m ? m.group  : null;
       state.discoverQ      = m ? m.q      : '';
     }
+    /* Same glimpse rule as the phone path below: opening any OTHER tab ends the glimpse.
+       Without this the overlay would restore a memo left over from an earlier visit. Keyed on
+       `t` (the tab tapped), not state.utilOver, so closing Events keeps its place the way a
+       second tap does on the phone. */
+    if(t!=='events')   state.eventsMemo=null;
+    if(t!=='discover') state.discoverMemo=null;
     render();
-    const ov=$('utilOver'); if(ov) ov.scrollTop=0;
+    /* The overlay is its own scroll container, so the glimpse has to be restored HERE too —
+       the restore below never runs, this branch returns first. That is why coming back to an
+       event landed at the top on desktop while the phone kept your place. */
+    const ov=$('utilOver');
+    if(ov){
+      const memo = state.utilOver==='events'   ? state.eventsMemo
+                 : state.utilOver==='discover' ? state.discoverMemo : null;
+      ov.scrollTo(0, memo ? memo.scroll||0 : 0);
+    }
     return;
   }
   // second tap on the open tab → close it, restore the saved place
@@ -2069,7 +2083,7 @@ const IF_INTRO = [
   { type:'white', grad:IF_GRADS[6], sub:'The Foundation', title:'The Foundation',
     body:'10,000+ premium single-word .com domains — all ending in XX.',
     bullets:['TechXX','BeautyXX','TennisXX','DubaiXX','+ thousands more'],
-    stats:[['45','Categories'],['400+','Sub-categories'],['14 yrs','Assembled']], note:'Now complete and locked.' },
+    stats:[['70','Sectors'],['400+','Sub-Sectors'],['15 yrs','Assembled']], note:'Now complete and locked.' },
   { type:'grad', grad:IF_GRADS[2], sub:'The Advantage', title:'The XX Advantage',
     lead:'The most powerful unifier on the internet.',
     body:'Instant recognition, connection and branding across thousands of domains.', note:'A linguistic moat that cannot be copied.' },
@@ -4131,7 +4145,7 @@ function renderDiscover(bodyOnly){
     const jumpBtn = grouped ? `<button id="discJumpBtn" onclick="toggleDiscJump(event)" aria-label="Jump to section">Jump ▾</button>` : '';
     const head = `<div class="discbar" id="discBar">
         <button class="discback" aria-label="Back to all sectors"
-                onclick="state.discoverSector=null;render();$('screen').scrollTo(0,0)">
+                onclick="state.discoverSector=null;render();utilHost().scrollTo(0,0)">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
         </button>
         <div class="discmid" role="button" tabindex="0" title="Open the ${s.name} feed"
@@ -4154,7 +4168,7 @@ function renderDiscover(bodyOnly){
       body += `<div class="secgrouphd">${grp.label}</div><div class="seccards">`
         + tiles.map(s=>{
             const live=sectorIsLive(s.key), c=gwCount(s.key);
-            return `<div class="seccard${live?' live':''}" onclick="state.discoverSector='${s.key}';render();$('screen').scrollTo(0,0)">
+            return `<div class="seccard${live?' live':''}" onclick="state.discoverSector='${s.key}';render();utilHost().scrollTo(0,0)">
               <div class="ic" style="background:${s.g}">${s.icon}</div>
               <div class="nm">${s.name}${live?'<i class="seclivedot"></i>':''}</div>
               <div class="mt">${c} ${c===1?'gateway':'gateways'}</div>
@@ -4231,7 +4245,7 @@ function onDiscoverSearch(v){
      So: reset the scroll only when ENTERING search (0 → 1 characters), never while refining, and
      use __syncChrome() to adopt the new position without treating the jump as a user scroll. */
   if(wasEmpty && v){
-    const sc = $('screen');
+    const sc = utilHost();   // #screen on the phone, #utilOver while floating — the guard is unchanged
     if(sc){ sc.scrollTop = 0; if(window.__syncChrome) window.__syncChrome(); }
   }
 }
@@ -4448,7 +4462,10 @@ const EV_TYPE_C  = {Live:'#EF4444',Breaking:'#EF4444',Drop:'#F97316',Bookmark:'#
    in a long feed. Tapping a card records where you were; coming back to the tab restores
    that scroll and marks the card you opened. Arriving any other way — Home, another
    utility tab, a filter change — is a fresh journey and clears it. */
-function evRemember(i){ state.eventsMemo = {i, scroll: $('screen').scrollTop}; }
+/* utilHost(), not #screen: on desktop the Events list is drawn into #utilOver while it floats
+   over a gateway, and that is the element that scrolls. Reading #screen there records the
+   gateway's scroll instead of the feed's, so the glimpse comes back to the wrong place. */
+function evRemember(i){ state.eventsMemo = {i, scroll: utilHost().scrollTop}; }
 
 /* Discover's version of the same idea: browsing to Garden and looking at PlantXX should not
    cost you Garden. Records the drill-down you were in — tile, neighbourhood chip, search text
@@ -4457,7 +4474,7 @@ function evRemember(i){ state.eventsMemo = {i, scroll: $('screen').scrollTop}; }
 function discRemember(gw){
   state.discoverMemo = {
     sector: state.discoverSector, group: state.discoverGroup,
-    q: state.discoverQ, gw, scroll: $('screen').scrollTop
+    q: state.discoverQ, gw, scroll: utilHost().scrollTop   // #utilOver when floating — see evRemember()
   };
 }
 
@@ -4501,7 +4518,7 @@ function renderEvents(){
       <div style="font-size:11px;color:var(--muted);font-weight:600">Live, upcoming & breaking across the network</div></div>
       <div style="margin-left:auto;display:flex;align-items:center;gap:5px;font-size:10.5px;color:#EF4444;font-weight:700;white-space:nowrap"><span class="livedot"></span>${liveCount} Live</div>
     </div>
-    <div class="chips">${filts.map(([k,lb])=>`<div class="chip ${F===k?'on':''}" onclick="state.eventsFilter='${k}';state.eventsMemo=null;render();$('screen').scrollTo(0,0)">${lb}</div>`).join('')}</div>
+    <div class="chips">${filts.map(([k,lb])=>`<div class="chip ${F===k?'on':''}" onclick="state.eventsFilter='${k}';state.eventsMemo=null;render();utilHost().scrollTo(0,0)">${lb}</div>`).join('')}</div>
     <div style="height:8px"></div>
     ${cards || `<div class="empty">Nothing under this filter right now —<br>the network never sleeps for long.</div>`}
     <div style="padding:10px 16px 14px;text-align:center;font-size:10.5px;color:var(--muted);font-weight:600">Events from 45+ gateways across the GENEXXO network</div>
