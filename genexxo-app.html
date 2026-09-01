@@ -90,6 +90,12 @@
   .netbar{position:sticky;top:var(--top-h,53px);z-index:30;display:flex;gap:6px;padding:7px 14px}
   .ntab{flex:1;text-align:center;font-size:12.5px;font-weight:700;color:rgba(255,255,255,.5);padding:7px 0;border-radius:99px;cursor:pointer;transition:color .15s,background .15s}
   .ntab.on{color:#fff;background:rgba(255,255,255,.15)}
+  /* The Gateways slot offering a way back to the gateway you just left. Outlined, NOT filled:
+     the fill is `.on` and means "you are here", which on a sector screen belongs to Sectors.
+     An outline says the same slot is live and tappable without lying about where you are.
+     Only ever applied when the panels are pinned — the phone never sees it. */
+  .ntab.recent{color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.38)}
+  .ntab.recent:hover{background:rgba(255,255,255,.10)}
   /* ── gateway sub-bar as a 2-page carousel (swipe) ──────────────────────────
      Both heading pages ride one track inside a clipped viewport, so the bar can be
      dragged with the thumb (Feed·Brands·Apps ⇄ Pros·Communities·Business) instead of
@@ -140,8 +146,19 @@
   #drawerList,#drawerRList{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:6px 0}
   /* "Choose a Sector" — the prompt has to land as a REACTION to the tap, or it reads as a
      header that was always black and the tap still feels dead. One beat, then it stays put. */
-  #drawerHead.ask{animation:askIn .34s cubic-bezier(.2,.75,.2,1)}
+  #drawerHead.ask,#drawerRHead.ask{animation:askIn .34s cubic-bezier(.2,.75,.2,1)}
   @keyframes askIn{from{opacity:.25;letter-spacing:.06em}to{opacity:1;letter-spacing:.14em}}
+  /* "Choose a Gateway" is the same beat, but it EXPIRES — the gateways are already listed
+     under it, so a prompt that stayed would nag about something you have done. It fades out,
+     the real header is rebuilt underneath while invisible, then fades back: a swap you can
+     follow, rather than two hard cuts. `forwards` holds it at 0 so there is no flash of the
+     prompt between the two classes.
+     Both are only ever applied by askGatewayBeat(), which is desktop-pinned-only — the phone
+     never gets these classes, so no transition is added to a header it shares. */
+  #drawerRHead.ask-out {animation:askOut .26s ease forwards}
+  #drawerRHead.ask-back{animation:askBack .30s ease}
+  @keyframes askOut {to{opacity:0}}
+  @keyframes askBack{from{opacity:0}to{opacity:1}}
   .drow{display:flex;align-items:center;gap:12px;padding:11px 18px;cursor:pointer}
   .drow:active,.drow:hover{background:var(--bg)}
   .drow .dic{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;color:#fff;flex-shrink:0}
@@ -2547,6 +2564,50 @@ function askSectorPrompt(){
   if(activeSectorKey()) return;              // already chosen — the flash alone is the answer
   state.askSector = true;
   syncGwChrome();
+  restartAskBeat();                          // every tap gets the beat, not just the first
+}
+/* The prompt has to answer EVERY tap, not only the one that raised it. syncGwChrome() sets
+   `.ask` with classList.toggle, so on the second tap the class is already there, the toggle is
+   a no-op, and CSS will not replay keyframes for a class that never left — the header just sat
+   there while the tab flashed, which reads as the bar half-working. Drop the class, force a
+   reflow to flush the removal, re-add: the standard restart, and it reuses askIn rather than
+   inventing a second animation that would then have to be kept in step with it.
+   Only `.ask` moves — the black is inline style from syncGwChrome() — so nothing flashes
+   unstyled between the two frames. */
+function restartAskBeat(){
+  const head=$('drawerHead');
+  if(!head || !head.classList.contains('ask')) return;
+  head.classList.remove('ask');
+  void head.offsetWidth;                     // reflow — without it the browser coalesces both
+  head.classList.add('ask');                 // class changes and no animation runs at all
+}
+/* Gateways tapped while a sector IS chosen, panel pinned (2026-09-01). openDrawerR() early-returns
+   there — the list is already open and already correct — so the tab did nothing at all. That was
+   the last dead control in this bar; it now gets the same acknowledgement Sectors has.
+   One deliberate difference: this prompt EXPIRES. "Choose a Sector" persists because nothing
+   works until you pick one, so it is an instruction. Here the gateways are listed directly
+   beneath it, so a prompt that stayed would be nagging about something already done. Two seconds
+   is long enough to read and short enough not to become furniture.
+   The header is REBUILT from state rather than remembered — buildRightList(), never
+   buildDrawerR(), which throws on sectorOf(null) when the live list is the one showing. */
+function askGatewayBeat(){
+  const h=$('drawerRHead'); if(!h) return;
+  clearTimeout(askGatewayBeat._hold); clearTimeout(askGatewayBeat._out);
+  h.classList.remove('ask-out','ask-back');
+  h.textContent      = 'Choose a Gateway';
+  h.style.background = '#111116';
+  h.style.color      = '#fff';
+  h.classList.remove('ask'); void h.offsetWidth; h.classList.add('ask');   // restart — see above
+  askGatewayBeat._hold = setTimeout(()=>{
+    h.classList.remove('ask');
+    h.classList.add('ask-out');
+    askGatewayBeat._out = setTimeout(()=>{
+      buildRightList();                      // real header restored while still at opacity 0
+      h.classList.remove('ask-out');
+      h.classList.add('ask-back');
+      setTimeout(()=>h.classList.remove('ask-back'), 320);
+    }, 260);                                 // matches askOut
+  }, 2000);
 }
 // Light a sub-bar slot, then hand the highlight back to whatever should own it.
 function pulseNetbarTab(i){
@@ -2609,6 +2670,15 @@ function buildDrawerR(){
     style="font-size:15px;line-height:1;padding:6px 2px 6px 8px;cursor:pointer;color:${state.favs.includes(k)?'#F5B800':'rgba(17,17,22,.22)'}">${state.favs.includes(k)?'★':'☆'}</div>`;
   const actGw = activeGatewayName();               // light the gateway you're currently inside, in its own colour
   const actKey = actGw ? gwKeyFromName(actGw) : null;
+  /* And, when you are NOT inside one, mark the gateway you just came out of. The top-bar chip
+     already offers the way back, but it is easy to miss if you don't know to look for it —
+     marking the row puts the answer where you are already reading. Deliberately quieter than
+     the active row: a rule down the edge, no wash, no coloured name. "You are here" and "you
+     were just here" must not look alike, or the list stops telling you which is which.
+     Guarded by !actKey so the two states can never both apply to a row. */
+  const retKey = (!actKey && state.screen==='sector'
+                  && state.returnGw && state.returnGw.sector===sk)
+    ? gwKeyFromName(state.returnGw.name) : null;
 
   // The search box only drives the gateway list, so hide it in favourites mode rather than
   // leave an input that silently does nothing.
@@ -2640,9 +2710,15 @@ function buildDrawerR(){
     const gwRow = name => {
       const key=gwKeyFromName(name); const real=GATEWAYS[key];
       const on = actKey && key===actKey; const {accent, wash} = washFor(real?real.gradient:s.g);
-      return `<div class="drow"${on?' id="drawerRActiveRow"':''} style="${on?`background:${wash};box-shadow:inset 3px 0 0 ${accent};`:''}" onclick="pickGateway('${name}','${sk}')">
+      const from = !on && retKey && key===retKey;      // came out of this one — see retKey above
+      // The rule alone, at half strength. Same geometry as the active row so they line up,
+      // different weight so they never read as the same state.
+      const mark = on   ? `background:${wash};box-shadow:inset 3px 0 0 ${accent};`
+                 : from ? `box-shadow:inset 3px 0 0 ${accent}66;`
+                 : '';
+      return `<div class="drow"${on||from?' id="drawerRActiveRow"':''} style="${mark}" onclick="pickGateway('${name}','${sk}')">
         <div class="dic" style="background:${real?real.gradient:s.g}">${real?real.emoji:s.icon}</div>
-        <div style="flex:1;min-width:0"><div class="dnm" style="${on?`color:${accent};`:''}">${gwLabel(name)}</div></div>
+        <div style="flex:1;min-width:0"><div class="dnm" style="${on?`color:${accent};`:''}">${gwLabel(name)}${from?`<span style="opacity:.45;font-weight:600;font-size:10.5px;margin-left:6px">just visited</span>`:''}</div></div>
         <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${real?LIVE_DOT:''}${rowStar(key)}</div>
       </div>`;
     };
@@ -2937,19 +3013,38 @@ function navSubBar(){
   const secOn = state.screen==='sector';
   const gwOn  = state.screen==='gateway';
   const secLabel = s ? s.name : 'Sectors';   // no icon — the name alone carries the slot
-  const gwLabel  = gw ? gw.name : 'Gateways';
+  /* Standing in a sector you just backed out of a gateway into, the Gateways slot names that
+     gateway and goes straight back to it — one tap, no list. state.returnGw already records the
+     way back (openSector sets it); this only surfaces it in the bar, where the eye already is.
+     ⚠️ PINNED ONLY. On the phone this slot's job is to REVEAL the gateways drawer, and there is
+     no other way to open it — repurposing it there would trade a working control for a shortcut.
+     On desktop the list is already on screen in the right panel, so the slot was doing nothing
+     that the panel wasn't already doing better. Same reasoning as askGatewayBeat(). */
+  const retGw = (secOn && PANELS_PINNED() && state.returnGw && state.returnGw.sector===secKey)
+    ? state.returnGw : null;
+  const gwLabel  = gw ? gw.name
+                 : retGw ? `<span style="opacity:.55;font-weight:800">‹</span> ${retGw.name}`
+                 : 'Gateways';
   // teach Gateways the first time you're standing in a sector (same barGws gold pulse)
-  const gwNudge = secOn && !nudgeDone('barGws');
+  // — but not while the slot is offering a way back; that is already the loudest thing in it.
+  const gwNudge = secOn && !retGw && !nudgeDone('barGws');
 
   // The "tablet" is the .ntab.on highlight — it sits on the live tab and eases between
   // tabs via .ntab's existing background transition. Text stays evenly weighted (.idt).
-  const item = (lb, act, on, title, nudge) =>
-    `<div onclick="${act}" title="${title||lb}" class="ntab idt${on?' on':''}${nudge?' bar-nudge':''}">${lb}</div>`;
+  const item = (lb, act, on, title, nudge, cls) =>
+    `<div onclick="${act}" title="${title||lb}" class="ntab idt${on?' on':''}${nudge?' bar-nudge':''}${cls?' '+cls:''}">${lb}</div>`;
+
+  const gwAct = retGw ? `state._gwFrom='sector';openGateway('${retGw.name}','${secKey}')`
+              : gwNudge ? "clearNudge('barGws');gatewaysTap()"
+              : 'gatewaysTap()';
+  const gwTitle = gw ? `${gw.name} — switch gateway`
+                : retGw ? `Back to ${retGw.name}`
+                : 'Gateways';
 
   return `<div class="substick netbar" style="background:${barBg}">
     ${item('Network', 'goHub()', netOn, 'Network feed')}
     ${item(secLabel, 'openDrawer()', secOn, s?'Switch sector':'Choose a sector')}
-    ${item(gwLabel, gwNudge?"clearNudge('barGws');gatewaysTap()":'gatewaysTap()', gwOn, gw?`${gw.name} — switch gateway`:'Gateways', gwNudge)}
+    ${item(gwLabel, gwAct, gwOn, gwTitle, gwNudge, retGw?'recent':'')}
   </div>`;
 }
 /* Keep the Network·Sectors·Gateways sub-bar highlight in sync with an OPEN drawer (2026-08-06).
@@ -2971,7 +3066,11 @@ function syncNetbar(){
 /* Gateways only makes sense once you're in a sector. Tap it too early → a friendly
    nudge, and the sectors drawer opens so the fix is right there. */
 function gatewaysTap(){
-  if(activeSectorKey()){ openDrawerR(); return; }
+  if(activeSectorKey()){
+    // Pinned: the panel cannot be revealed because it never left — acknowledge instead.
+    if(PANELS_PINNED()){ pulseNetbarTab(2); askGatewayBeat(); return; }
+    openDrawerR(); return;
+  }
   toast('👋 Choose a sector first — its gateways open here');
   openDrawer();
 }
