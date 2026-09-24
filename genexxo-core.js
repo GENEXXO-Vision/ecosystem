@@ -50,6 +50,20 @@ function gwRank(name, q){
   return best;
 }
 function gwMatchesWide(name, q){ return gwRank(name,q) >= 0; }
+/* Brand zones in search (2026-09-24). Same shape as gwRank — lower is better, -1 is no match —
+   and just as strict: whole-name, then name-prefix, then the start of any word in the name
+   ("peaks" finds Mapped Peaks). The tagline only counts from three letters and only at a word
+   start, so "climbing" finds Lithos Sport but "in" does not drag in every brand with "in" in
+   its strapline. Punctuation is ignored so "silvere" and "Silvère"-style spellings still meet. */
+function brandRank(z, q){
+  const norm = s => (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]+/g,' ');
+  const n = norm(z.name).trim(), qq = norm(q).trim(); if(!qq) return -1;
+  if(n===qq || n.replace(/ /g,'')===qq.replace(/ /g,'')) return 0;
+  if(n.startsWith(qq)) return 1;
+  if(n.split(' ').some(w=>w.startsWith(qq))) return 2;
+  if(qq.length>=3 && norm(z.tagline).split(' ').some(w=>w.startsWith(qq))) return 3;
+  return -1;
+}
 /* Every OTHER sector a query hits → [{name, sectors:[key,…]}], nearest-first by tile order.
    Deliberately excludes anything already shown in the active sector's own results, so the
    local list is never diluted — this is a second tier, not a merged one. */

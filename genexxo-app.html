@@ -90,6 +90,20 @@
   .netbar{position:sticky;top:var(--top-h,53px);z-index:30;display:flex;gap:6px;padding:7px 14px}
   .ntab{flex:1;text-align:center;font-size:12.5px;font-weight:700;color:rgba(255,255,255,.5);padding:7px 0;border-radius:99px;cursor:pointer;transition:color .15s,background .15s}
   .ntab.on{color:#fff;background:rgba(255,255,255,.15)}
+  /* Events scope — Network · Sector · Gateway. A segmented control, not more chips: it changes
+     WHICH calendar you are reading, the chips beneath filter within it. Both layouts. */
+  .evscope{display:flex;gap:4px;margin:2px 16px 4px;padding:4px;border-radius:14px;background:rgba(17,17,22,.05)}
+  .evsc{flex:1 1 auto;min-width:0;display:flex;align-items:center;justify-content:center;gap:5px;padding:8px 6px;border-radius:10px;cursor:pointer;font-size:12px;font-weight:700;color:var(--muted);transition:background .15s,color .15s}
+  .evsc .lb{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .evsc .ic{font-size:13px;line-height:1;flex-shrink:0}
+  .evsc .n{font-size:10px;font-weight:800;opacity:.6;flex-shrink:0}
+  .evsc.on{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(17,17,22,.1)}
+  /* Hover says "this is live" before you click (2026-09-24): full-white text and a lighter wash
+     than .on, so hovered never reads as selected. Mouse only: on touch, :hover sticks to whatever
+     was last tapped, which would leave a second tab looking half-selected. */
+  @media (hover:hover) and (pointer:fine){
+    .ntab:not(.on):hover{color:#fff;background:rgba(255,255,255,.09)}
+  }
   /* The Gateways slot offering a way back to the gateway you just left. Outlined, NOT filled:
      the fill is `.on` and means "you are here", which on a sector screen belongs to Sectors.
      An outline says the same slot is live and tappable without lying about where you are.
@@ -262,6 +276,7 @@
   #ptr.ready .ptr-spin{transform:rotate(180deg)}
   #ptr.spin .ptr-spin{animation:ptrspin .6s linear infinite}
   @keyframes ptrspin{to{transform:rotate(360deg)}}
+  #topBack{display:none}   /* desktop only — see the 1120px query */
   .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;cursor:pointer;color:rgba(17,17,22,.38);transition:color .15s}
   .tab svg{width:22px;height:22px}
   .tab .lb{font-size:9.5px;font-weight:700;letter-spacing:.02em}
@@ -376,6 +391,10 @@
     #frame.panels-float #edge { border-right:1px solid var(--line);align-items:flex-end }
     #frame.panels-float #edgeR{ border-left:1px solid var(--line);align-items:flex-start }
     #frame.panels-float #edge:hover,#frame.panels-float #edgeR:hover{background:rgba(17,17,22,.05)}
+    /* The phone's half-moon draws its chevron as ::before. Here the rail carries a separate knob
+       with its own chevron, and the rail is a flex column, so the phone glyph stacked just above
+       the knob as a stray second arrow (removed 2026-09-24). The knob is the only arrow. */
+    #frame.panels-float #edge::before,#frame.panels-float #edgeR::before{content:none}
     /* The knob — a real element rather than a ::before, so it is inspectable and cannot be
        silently suppressed. Its fill is stronger than the phone's 12%: there the half-moon
        sits on the white feed, here it sits on the rail, which is var(--bg) — near enough
@@ -503,6 +522,26 @@
        set to 600px, because below ~1220px the gutters leave less than 600px and the centre
        narrows; the same min() keeps the bar locked to it. #tabbar is a child of #frame, so
        --panel-w inherits. */
+    /* Back, repeated in the masthead (2026-09-24). On a desktop the eye looks for Back at the
+       top, not in a bottom bar. It sits directly above the bottom bar's Back: the tab bar is
+       centred in the viewport and --tb-w wide (the same min() as below), padded 4px, with five
+       equal tabs, so Back's centre is 4px + one tenth of the inner width in from its left edge.
+       It is fixed rather than living in the .top markup because there are two top bars
+       (topBar() and the zone head) and it has to line up over both. */
+    #frame{--tb-w:min(600px, calc(min(1480px, 100vw) - 2 * var(--panel-w)))}
+    /* Discover's Jump panel is .gwjump — absolute, 12px in from its positioned ancestor. On the
+       phone that is #frame, which is the screen. Here #frame spans all three columns, so the
+       panel opened the full width of the window (2026-09-24). Pin it to the centre measure
+       instead; #frame is centred, so is the column, and --tb-w is the column's width. Scoped to
+       #screen: floating over a gateway it lives in #utilOver, which is already the column. */
+    #screen .discjump{left:calc(50% - var(--tb-w) / 2 + 12px);right:auto;width:calc(var(--tb-w) - 24px)}
+    #topBack{position:fixed;top:0;height:var(--top-h,53px);z-index:46;
+      left:calc(50% - var(--tb-w) / 2 + 4px + (var(--tb-w) - 8px) / 10);transform:translateX(-50%);
+      display:flex;align-items:center;gap:6px;cursor:pointer;
+      font-size:12.5px;font-weight:700;opacity:.62;transition:opacity .15s}
+    #topBack:hover{opacity:1}
+    #topBack svg{width:19px;height:19px}
+    #topBack.off{display:none}
     #tabbar{max-width:min(600px, calc(min(1480px, 100vw) - 2 * var(--panel-w)));
       border-radius:0;border-left:1px solid var(--line);
       border-right:1px solid var(--line);box-shadow:0 -6px 30px rgba(17,17,22,.10)}
@@ -695,6 +734,79 @@
   .tdots i{width:6px;height:6px;border-radius:50%;background:rgba(17,17,22,.35);animation:tblink 1.2s infinite}
   .tdots i:nth-child(2){animation-delay:.2s}
   .tdots i:nth-child(3){animation-delay:.4s}
+  /* ── AI: Your week · Do it for me · agent updates · task cards (2026-09-24). Both layouts. ── */
+  .aiweek{display:flex;gap:8px;overflow-x:auto;padding:0 16px 6px}
+  .aiwk{flex:0 0 152px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 11px}
+  .aiwk.fresh{border-color:#111116;box-shadow:0 0 0 1px #111116}
+  .aiwk .d{font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .aiwk .t{display:flex;gap:6px;font-size:12px;font-weight:800;line-height:1.3;margin-top:5px}
+  .aiwk .s{font-size:10px;font-weight:700;color:var(--muted);margin-top:4px}
+  .aiwk.fresh .s{color:#16A34A}
+  .aitasks{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px 4px}
+  .aitask{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px;cursor:pointer;transition:border-color .15s,transform .15s}
+  .aitask:hover{border-color:#111116}
+  .aitask:active{transform:scale(.98)}
+  .aitask .ic,.aiupd .ic,.aiteam .ic,.aiconf .pl .ic{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+  .aitask .nm{font-size:12.5px;font-weight:800}
+  .aitask .sb{font-size:10px;font-weight:700;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .aiupd{display:flex;gap:11px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin:0 16px 8px;cursor:pointer}
+  .aiupd .h{display:flex;justify-content:space-between;font-size:12px}
+  .aiupd .h span{font-size:10.5px;color:var(--muted);font-weight:700}
+  .aiupd .x{font-size:12px;line-height:1.45;color:rgba(17,17,22,.72);margin-top:2px}
+  .aiteam{display:flex;flex-direction:column;gap:6px;margin:0 16px 10px;padding:10px;border-radius:14px;background:#fff;border:1px solid var(--line)}
+  .aiteam .mem{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:800;opacity:.45;transition:opacity .25s}
+  .aiteam .mem.ok{opacity:1}
+  .aiteam .ic{width:26px;height:26px;border-radius:8px;font-size:13px}
+  .aiteam .st{margin-left:auto;font-size:10.5px;font-weight:700;color:var(--muted)}
+  .aiteam .mem.ok .st{color:#16A34A}
+  .aiopts{display:flex;flex-direction:column;gap:7px;margin:0 16px 10px}
+  .aiopt{display:flex;gap:11px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 12px;cursor:pointer;transition:border-color .15s}
+  .aiopt:hover,.aiopt.on{border-color:#111116}
+  .aiopts.locked .aiopt{pointer-events:none}
+  .aiopts.locked .aiopt:not(.on){opacity:.4}
+  .aiopt .em{width:38px;height:38px;border-radius:11px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+  .aiopt .tx{flex:1;min-width:0}
+  .aiopt .t{font-size:13px;font-weight:800;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .aiopt .tag{font-size:8.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:99px;background:rgba(22,163,74,.12);color:#16A34A}
+  .aiopt .s{font-size:11px;color:var(--muted);font-weight:600;margin-top:2px}
+  .aiopt .m{font-size:13px;font-weight:800;white-space:nowrap}
+  .aiopt .slots{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+  .aislot{font-size:11.5px;font-weight:800;padding:5px 11px;border-radius:99px;border:1px solid var(--line);cursor:pointer}
+  .aislot:hover{border-color:#111116}
+  .aislot.on{background:#111116;color:#fff;border-color:#111116}
+  .aiconf{margin:0 16px 10px;padding:13px 14px;border-radius:16px;background:#fff;border:1.5px solid #111116}
+  .aiconf .h{font-size:13.5px;font-weight:800;margin-bottom:8px}
+  .aiconf .r{display:flex;justify-content:space-between;gap:12px;font-size:12px;padding:5px 0;border-top:1px solid var(--line)}
+  .aiconf .r span{color:var(--muted);font-weight:600}
+  .aiconf .r b{text-align:right}
+  .aiconf .pl{display:flex;gap:10px;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-size:12px}
+  .aiconf .pl .ic{width:30px;height:30px;font-size:15px}
+  .aiconf .pl .t{font-weight:800}
+  .aiconf .pl .s{font-size:10.5px;color:var(--muted);font-weight:600;margin-top:1px}
+  .aiconf .n{font-size:10.5px;color:var(--muted);font-weight:600;line-height:1.45;margin:9px 0 10px}
+  .aiconf .btn2{text-align:center;padding:11px;border-radius:12px;background:#111116;color:#fff;font-size:12.5px;font-weight:800;cursor:pointer}
+  .aiconf .btn2.done{background:rgba(22,163,74,.12);color:#16A34A;cursor:default}
+  .bkrow{display:flex;gap:11px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin:0 16px 8px}
+  .bkrow.off{opacity:.55}
+  .bkrow .ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+  .bkrow .h{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px}
+  .bkrow .h b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bkrow .s{font-size:10.5px;color:var(--muted);font-weight:600;margin-top:2px}
+  .bkst{flex-shrink:0;font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:99px;background:rgba(22,163,74,.12);color:#16A34A}
+  .bkst.off{background:rgba(17,17,22,.06);color:var(--muted)}
+  .bkacts{display:flex;align-items:center;gap:6px;margin-top:9px;flex-wrap:wrap}
+  .bkacts .q{font-size:11px;font-weight:700;margin-right:2px}
+  .bkbtn{display:inline-block;font-size:11px;font-weight:800;padding:5px 12px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+  .bkbtn:hover{border-color:#111116}
+  .bkbtn.red{background:#DC2626;border-color:#DC2626;color:#fff}
+  .bknote{font-size:10.5px;color:var(--muted);font-weight:600;margin-top:6px}
+  .aihome{display:flex;align-items:center;gap:8px;cursor:pointer;padding:3px 10px 3px 4px;margin-left:-6px;border-radius:14px;transition:background .15s}
+  .aihome:hover{background:rgba(17,17,22,.05)}
+  .aihome:active{background:rgba(17,17,22,.08)}
+  .aihome .chev{font-size:24px;font-weight:700;line-height:1;color:var(--ink);opacity:.55;margin-top:-2px}
+  .bub.aidone{background:#fff;border:1px solid rgba(22,163,74,.35);max-width:88%}
+  .bub.aidone .acts{display:flex;gap:8px;margin-top:10px}
+  .bub.aidone .acts span{font-size:11.5px;font-weight:800;padding:6px 12px;border-radius:99px;border:1px solid var(--line);cursor:pointer}
   @keyframes tblink{0%,60%,100%{opacity:.25}30%{opacity:1}}
 
   /* events feed — card anatomy replicated from the desktop Events overlay */
@@ -836,6 +948,7 @@
   <div id="utilOver"></div>
   <div id="ptr"><div class="ptr-spin"></div></div>
   <div id="tabbar"></div>
+  <div id="topBack" onclick="goBack()" title="Back"></div>
   <!-- Desktop gateway gutters: Brand Zones left, Apps & Tools right — the two side panels
        from the legacy deck, themed off the gateway. Empty and display:none on the phone. -->
   <aside id="gwPanelL" class="gw-panel"></aside>
@@ -870,7 +983,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-14"></script>
+<script src="genexxo-data.js?v=2026.08.26-15"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1560,6 +1673,7 @@ const state = {
   secQuery:'',           // left-drawer sector search
   aiThread:[], aiAgent:null, aiTyping:false, aiPendingQ:'',   // AI tab conversation (survives the tab toggle)
   eventsFilter:'all',    // Events tab filter: all | live | drops | alerts | bookmarks
+  eventsScope:'network', // Events calendar: network | sector | gateway — see evContext()
   eventsMemo:null,       // {i, scroll} — a glimpse at one event, so coming straight back lands in place
   discoverMemo:null,     // {sector, group, q, gw, scroll} — same idea for Discover: a look at one
                          // gateway and back should return you to the tile you were browsing
@@ -1612,7 +1726,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-14';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-15';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -1727,6 +1841,7 @@ function setTab(t){
        second tap does on the phone. */
     if(t!=='events')   state.eventsMemo=null;
     if(t!=='discover') state.discoverMemo=null;
+    if(t==='events' && !state.eventsMemo) state.eventsScope='network';   // fresh open → the Network calendar
     render();
     /* The overlay is its own scroll container, so the glimpse has to be restored HERE too —
        the restore below never runs, this branch returns first. That is why coming back to an
@@ -1772,6 +1887,7 @@ function setTab(t){
   }
   if(t!=='events')   state.eventsMemo=null;        // opening any other tab ends the glimpse
   if(t!=='discover') state.discoverMemo=null;
+  if(t==='events' && !state.eventsMemo) state.eventsScope='network';   // fresh open → the Network calendar
   render();
   const memo = t==='events' ? state.eventsMemo : t==='discover' ? state.discoverMemo : null;
   $('screen').scrollTo(0, memo ? memo.scroll||0 : 0);
@@ -2999,6 +3115,17 @@ function tabBar(){
   const tabs = [['back','Back'],['discover','Discover'],['ai','AI'],['events','Events'],['profile','Profile']];
   const canBack = !!backTarget() || !!(state._hist && state._hist.length) || (state.screen==='gateway' && state.gwZones) || state.zoneProduct!=null;
   const dead = gw ? `${t.text}24` : 'rgba(17,17,22,.16)';   // Back with nowhere to go
+  /* Desktop's masthead Back mirrors this one: same goBack(), same canBack. Where the bottom Back
+     greys out, this one leaves — a dimmed control in the top bar is clutter, not information.
+     Its colour is read off whichever top bar is showing, so it matches the neutral bar, every
+     gateway theme and the zone heads without knowing about any of them. */
+  const tbk = $('topBack');
+  if (tbk){
+    tbk.classList.toggle('off', !canBack);
+    if (!tbk.firstChild) tbk.innerHTML = `${ICONS.back}<span>Back</span>`;
+    const topEl = $('screen').querySelector('.top');
+    tbk.style.color = topEl ? getComputedStyle(topEl).color : '';
+  }
   tb.innerHTML = tabs.map(([k,lb]) => {
     if (k==='back'){
       const col = canBack ? idle : dead;
@@ -4216,6 +4343,22 @@ function renderDiscover(bodyOnly){
       <div class="badge ${real?'live':'soon'}">${real?'LIVE':'STRUCTURAL'}</div>
     </div>`;
   };
+  // A brand zone row — same card as a gateway row, so the two lists read as one set of results.
+  // It opens through openZoneFav(), which wires up the brand's gateway first, exactly as the
+  // favourites panel does: a zone reached from anywhere still has its gateway underneath it.
+  const brandrow = (k, z) => {
+    const g = GATEWAYS[z.gw];
+    const bz = g && (g.brandZones||[]).find(b=>b.key===k);
+    const logo = bz && bz.logo;
+    const ini = z.name.split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const seen = state.discoverMemo && state.discoverMemo.gw==='zone:'+k;
+    return `<div class="gwrow${seen?' seen':''}" onclick="discRemember('zone:${k}');openZoneFav('${k}')">
+      <div class="em" style="background:${logo?'#fff':(z.gradient||z.color)};${logo?'padding:6px;border:1px solid var(--line)':'font-size:14px;font-weight:800'}">${
+        logo?`<img src="${mediaUrl(logo)}" alt="" style="width:100%;height:100%;object-fit:contain">`:ini}</div>
+      <div style="flex:1;min-width:0"><div class="nm">${escHtml(z.name)}</div><div class="dm" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${g?g.name+' · ':''}${escHtml(z.tagline||'')}</div></div>
+      <div class="badge" style="background:${z.color}1f;color:${z.color}">BRAND</div>
+    </div>`;
+  };
   let inner;
   if(q){
     // Ranked search — relevance first (exact → name-prefix → tag-prefix), then live, then A–Z.
@@ -4232,10 +4375,17 @@ function renderDiscover(bodyOnly){
       });
     });
     hits.sort((a,b)=> a.r-b.r || (gwIsLive(b.n)?1:0)-(gwIsLive(a.n)?1:0) || a.n.localeCompare(b.n));
-    const count = hits.length ? `<div class="gwsec gwsec-wide">${hits.length} ${hits.length===1?'result':'results'}</div>` : '';
-    const rows = hits.map(h=>gwrow(h.n,h.sk)).join('')
-      || `<div class="empty">No gateways match “${escHtml(state.discoverQ)}”</div>`;
-    inner = `${count}${rows}`;
+    /* Brand zones first (2026-09-24): the placeholder has always promised "gateways, brands,
+       anything", but only gateways were searched. A brand is the more specific answer — someone
+       who types "lithos" wants Lithos Sport, not ClimbXX — so they lead, under their own head. */
+    const brands = Object.keys(ZONES).map(k=>({k, z:ZONES[k], r:brandRank(ZONES[k], q)}))
+      .filter(b=>b.r>=0).sort((a,b)=> a.r-b.r || a.z.name.localeCompare(b.z.name));
+    const head = (label, n) => `<div class="gwsec gwsec-wide">${label} · ${n}</div>`;
+    const bRows = brands.map(({k,z})=>brandrow(k,z)).join('');
+    const gRows = hits.map(h=>gwrow(h.n,h.sk)).join('');
+    inner = (brands.length ? head('Brand Zones', brands.length) + bRows : '')
+          + (hits.length   ? head('Gateways', hits.length) + gRows : '')
+          || `<div class="empty">Nothing matches “${escHtml(state.discoverQ)}”</div>`;
   } else if(state.discoverSector){
     // ── STATE 2: DRILL-DOWN — one sector's gateways, with its sub-group dividers ──
     const sk=state.discoverSector, s=sectorOf(sk);
@@ -4429,7 +4579,7 @@ function aiBackToHost(){
   state.aiThread.push({who:'host', html:'Back with you across the whole network — where next?'});
   render(); aiScrollEnd();
 }
-function aiReset(){ state.aiThread=[]; state.aiAgent=null; state.aiTyping=false; state.aiPendingQ=''; render(); utilHost().scrollTo(0,0); }
+function aiReset(){ _aiTaskTimers.forEach(clearTimeout); _aiTaskTimers=[]; state.aiThread=[]; state.aiAgent=null; state.aiTyping=false; state.aiPendingQ=''; render(); utilHost().scrollTo(0,0); }
 
 function hostAnswer(q){
   if(/plan|week|schedule|diary/i.test(q)){
@@ -4458,6 +4608,249 @@ function agentAnswer(k,q,joining){
   return hello+`Ask me anything inside ${g.name} — community beta, gear, conditions, events.${app?` A good place to start is <b>${app.name}</b>: ${app.desc.toLowerCase()}.`:''}`;
 }
 
+/* ═════════ AI "DO IT FOR ME" (2026-09-24) ═════════
+   The Host stops only talking and starts doing: Book a table · Find a flight · Plan my trip ·
+   Get a ride. Each one is handed to the specialist agent of a gateway that already exists in the
+   taxonomy — RestaurantXX, FlightXX, HolidayXX, HotelXX, TaxiXX — which is the whole pitch in
+   one gesture: one assistant, a specialist in every gateway. Options come back as cards; a
+   Confirm step books DIRECT with the provider (GENEXXO never handles payment — same rule as the
+   brand checkout), and the booking lands in "Your week" and in Events › Bookmarks.
+   A DEMO FLOW: every provider is fictional and nothing is booked. Dates are computed from today,
+   so the demo cannot go stale the way hard-coded event dates did. */
+const TASK_AGENTS = {
+  restaurant:{name:'RestaurantXX', emoji:'🍽️', grad:'linear-gradient(135deg,#FB923C,#DC2626)', accent:'#DC4A26'},
+  flight:    {name:'FlightXX',     emoji:'✈️', grad:'linear-gradient(135deg,#38BDF8,#2563EB)', accent:'#2563EB'},
+  holiday:   {name:'HolidayXX',    emoji:'🧳', grad:'linear-gradient(135deg,#2DD4BF,#0F766E)', accent:'#0F8C7F'},
+  hotel:     {name:'HotelXX',      emoji:'🏨', grad:'linear-gradient(135deg,#A78BFA,#6D28D9)', accent:'#7C3AED'},
+  taxi:      {name:'TaxiXX',       emoji:'🚕', grad:'linear-gradient(135deg,#FDE047,#CA8A04)', accent:'#A16207'},
+};
+// A task agent, or a live gateway's (e.g. ClimbXX joining a trip plan) in the same shape.
+function taskAgent(k){
+  if (TASK_AGENTS[k]) return TASK_AGENTS[k];
+  const g = GATEWAYS[k]; return g ? {name:g.name, emoji:g.emoji, grad:g.gradient, accent:g.theme.accent} : TASK_AGENTS.holiday;
+}
+/* Dates, always relative to today. nextDow(5) = the coming Friday (a week out if today is one). */
+function nextDow(dow){ const d=new Date(); d.setHours(12,0,0,0); d.setDate(d.getDate()+(((dow-d.getDay())+7)%7||7)); return d; }
+function plusDays(d,n){ const x=new Date(d); x.setDate(x.getDate()+n); return x; }
+function dayLabel(d){ return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}); }
+const _FRI = () => nextDow(5), _SAT = () => nextDow(6);
+
+const AI_TASKS = {
+  table:{ agent:'restaurant', icon:'🍽️', label:'Book a table', sub:'RestaurantXX agent',
+    ask:()=>`Book me a table for two on Saturday evening`,
+    intro:()=>`Three places with tables for two on <b>${dayLabel(_SAT())}</b>, matched to what you’ve saved and rated. Pick a time — it books straight into the restaurant’s own system.`,
+    opts:[
+      {t:'Maison Aube', s:'Modern French · Marylebone', m:'★ 4.8 · ££££', em:'🥂', slots:['19:30','20:00','20:45']},
+      {t:'Kiln & Salt',  s:'Wood-fire British · Shoreditch', m:'★ 4.7 · £££', em:'🔥', slots:['19:00','20:15','21:00']},
+      {t:'Osteria Lume', s:'Northern Italian · Soho', m:'★ 4.6 · £££', em:'🍝', slots:['18:45','20:30']},
+    ],
+    summary:(o,slot)=>[['Where',o.t+' · '+o.s.split(' · ')[1]],['When',dayLabel(_SAT())+' · '+slot],['Party','2 guests'],['Deposit','None — pay at the table']],
+    booked:(o,slot)=>[{d:_SAT(), time:slot, icon:'🍽️', title:o.t+' · table for 2', src:'RestaurantXX', prov:o.t}],
+  },
+  flight:{ agent:'flight', icon:'✈️', label:'Find a flight', sub:'FlightXX agent',
+    ask:()=>`Find me a flight to Geneva on Friday`,
+    intro:()=>`London → Geneva, <b>${dayLabel(_FRI())}</b>. Best three on price, time and your usual cabin — fares are live from each airline, not a reseller.`,
+    opts:[
+      {t:'Northjet', s:'LHR 11:30 → GVA 14:05 · Direct', m:'£96', em:'🛫', tag:'Best value'},
+      {t:'Alpina Air', s:'LCY 07:10 → GVA 09:45 · Direct', m:'£118', em:'🛩️', tag:'Earliest'},
+      {t:'Brightways', s:'LGW 06:05 → GVA 10:40 · 1 stop', m:'£74', em:'✈️', tag:'Cheapest'},
+    ],
+    summary:o=>[['Flight',o.t+' · '+o.s.split(' · ')[0]],['Date',dayLabel(_FRI())],['Fare',o.m+' · 1 adult · cabin bag'],['Seat','Window, as usual']],
+    booked:o=>[{d:_FRI(), time:o.s.split(' ')[1], icon:'✈️', title:o.t+' → Geneva', src:'FlightXX', prov:o.t}],
+  },
+  ride:{ agent:'taxi', icon:'🚕', label:'Get a ride', sub:'TaxiXX agent',
+    ask:()=>`Get me a car to Heathrow for my Friday flight`,
+    intro:()=>`Timed for your flight on <b>${dayLabel(_FRI())}</b> — pickup at 08:40 leaves a comfortable 2 hours at the airport.`,
+    opts:[
+      {t:'Standard', s:'Pickup 08:40 · 4 seats', m:'£38', em:'🚗'},
+      {t:'Electric', s:'Pickup 08:40 · zero emission', m:'£41', em:'⚡', tag:'Greener'},
+      {t:'Executive', s:'Pickup 08:40 · Mercedes E-Class', m:'£62', em:'🖤'},
+    ],
+    summary:o=>[['Ride',o.t+' · to Heathrow T2'],['Pickup',dayLabel(_FRI())+' · 08:40'],['Fare',o.m+' · fixed'],['Driver','Assigned the night before']],
+    booked:o=>[{d:_FRI(), time:'08:40', icon:'🚕', title:o.t+' ride → LHR', src:'TaxiXX', prov:'Your driver'}],
+  },
+  trip:{ agent:'holiday', icon:'🧳', label:'Plan my trip', sub:'HolidayXX + 4 agents',
+    ask:()=>`Plan me three nights in Chamonix — flights, hotel, some climbing and a good dinner`,
+    team:['flight','hotel','climb','restaurant','taxi'],
+    intro:()=>`Here’s the whole trip, <b>${dayLabel(_FRI())} → ${dayLabel(plusDays(_FRI(),3))}</b>. Five specialists worked on it; every line books direct with its own provider.`,
+    plan:()=>[
+      {a:'flight',     em:'✈️', t:'Northjet LHR → GVA', s:dayLabel(_FRI())+' · 11:30 · direct', m:'£96'},
+      {a:'taxi',       em:'🚐', t:'Transfer Geneva → Chamonix', s:dayLabel(_FRI())+' · 14:30 · shared', m:'£34'},
+      {a:'hotel',      em:'🏨', t:'Hôtel Mont Clair', s:'3 nights · balcony, Aiguille du Midi view', m:'£540'},
+      {a:'climb',      em:'🧗', t:'Chamonix Bloc Session', s:dayLabel(_FRI())+' · 18:00 · 40+ going', m:'Free'},
+      {a:'restaurant', em:'🍽️', t:'La Table du Glacier · for 2', s:dayLabel(_SAT())+' · 20:00', m:'Pay there'},
+    ],
+    booked:()=>[
+      {d:_FRI(), time:'11:30', icon:'✈️', title:'Northjet → Geneva', src:'FlightXX', prov:'Northjet'},
+      {d:_FRI(), time:'18:00', icon:'🧗', title:'Chamonix Bloc Session', src:'ClimbXX', prov:'The organisers'},
+      {d:_FRI(), time:'15:00', icon:'🏨', title:'Hôtel Mont Clair · check-in', src:'HotelXX', prov:'Hôtel Mont Clair'},
+      {d:_SAT(), time:'20:00', icon:'🍽️', title:'La Table du Glacier', src:'RestaurantXX', prov:'La Table du Glacier'},
+    ],
+  },
+};
+const AI_TASK_ORDER = ['table','flight','trip','ride'];
+
+/* "Your week" — two things already on it (so it never opens empty), plus whatever the AI books.
+   Session-only, like the bag: a demo that remembered yesterday's bookings would need un-booking. */
+function aiWeekSeed(){ return [
+  {d:nextDow(2), time:'07:00', icon:'🚴', title:'Whirl group ride', src:'CycleXX'},
+  {d:nextDow(0), time:'09:00', icon:'🌊', title:'Reef Cleanup paddle-out', src:'SurfXX'},
+];}
+function aiWeek(){ return state.aiWeek || (state.aiWeek = aiWeekSeed()); }
+/* Which flow can CHANGE a booking, by the agent that made it. Hotel and ClimbXX lines from a trip
+   have no flow of their own, so they can be cancelled but not changed. */
+const AI_CHANGE_FLOW = {RestaurantXX:'table', FlightXX:'flight', TaxiXX:'ride'};
+let _aiBookSeq = 0;
+function aiAddToWeek(items){
+  aiWeek().forEach(w=>w.fresh=false);
+  items.forEach(it=>{
+    if (aiWeek().some(w=>w.title===it.title && +w.d===+it.d && !w.status)) return;   // booking twice is one plan
+    aiWeek().push({...it, id:'bk'+(++_aiBookSeq), fresh:true, booked:true, status:null});
+  });
+}
+const aiLive = () => aiWeek().filter(w=>!w.status);   // what is actually still on — status: 'cancelled' | 'changed'
+/* ── Managing bookings from Profile (2026-09-24) ──
+   Cancel asks once, inline, then the booking leaves Your week and Events but stays in the list
+   as "Cancelled · <provider> notified" — history, not a hole. Change re-runs that agent's flow;
+   the old booking holds until the new one is confirmed, then reads "Changed". */
+function aiAskCancel(id){ state.bookingAsk = state.bookingAsk===id ? null : id; render(); }
+function aiCancelBooking(id){
+  const w = aiWeek().find(x=>x.id===id); if(!w) return;
+  w.status='cancelled'; w.fresh=false; w._ev=null; state.bookingAsk=null; render();
+}
+function aiChangeBooking(id){
+  const w = aiWeek().find(x=>x.id===id), k = w && AI_CHANGE_FLOW[w.src]; if(!k) return;
+  state.aiReplacing = id;
+  aiStartTask(k, w);
+}
+function aiBookingsHtml(){
+  const list = aiWeek().filter(w=>w.booked).sort((a,b)=>(a.status?1:0)-(b.status?1:0) || a.d-b.d);
+  const head = `<div class="sect"><div class="sect-h"><div class="t">My bookings</div><div class="a">${list.filter(w=>!w.status).length}</div></div></div>`;
+  if(!list.length) return head + `<div class="empty">Tables, flights, rides and trips your AI agents book —<br>every one lands here to change or cancel.
+      <div style="margin-top:10px"><span class="bkbtn" onclick="setTab('ai')">Ask your AI to book something ›</span></div></div>`;
+  return head + list.map(w=>{
+    const when = dayLabel(w.d)+(w.time&&w.time!=='—'?' · '+w.time:'');
+    const provider = w.prov || w.src;
+    const asking = state.bookingAsk===w.id;
+    const status = w.status==='cancelled' ? `<span class="bkst off">Cancelled</span>`
+                 : w.status==='changed'   ? `<span class="bkst off">Changed</span>`
+                 : `<span class="bkst">Confirmed</span>`;
+    const acts = w.status ? `<div class="bknote">${w.status==='cancelled'?`${escHtml(provider)} notified · no charge`:'Replaced by your new booking'}</div>`
+      : asking ? `<div class="bkacts"><span class="q">Cancel this booking?</span><span class="bkbtn" onclick="aiAskCancel('${w.id}')">Keep it</span><span class="bkbtn red" onclick="aiCancelBooking('${w.id}')">Yes, cancel</span></div>`
+      : `<div class="bkacts">${AI_CHANGE_FLOW[w.src]?`<span class="bkbtn" onclick="aiChangeBooking('${w.id}')">Change</span>`:''}<span class="bkbtn" onclick="aiAskCancel('${w.id}')">Cancel</span></div>`;
+    const a = taskAgent(Object.keys(TASK_AGENTS).find(k=>TASK_AGENTS[k].name===w.src) || (w.src==='ClimbXX'?'climb':'holiday'));
+    return `<div class="bkrow${w.status?' off':''}">
+      <div class="ic" style="background:${a.grad}">${w.icon}</div>
+      <div style="flex:1;min-width:0">
+        <div class="h"><b>${escHtml(w.title)}</b>${status}</div>
+        <div class="s">${when} · via ${w.src}</div>
+        ${acts}
+      </div></div>`;
+  }).join('');
+}
+/* Booked plans also show in Events (Network › Bookmarks) — one calendar, wherever you look. */
+function aiBookedEvents(){
+  return aiLive().filter(w=>w.booked).map(w=> w._ev || (w._ev = {
+    type:'Bookmark', icon:w.icon, time:dayLabel(w.d)+(w.time&&w.time!=='—'?' '+w.time:''), title:w.title,
+    desc:`Booked by your GENEXXO AI through the ${w.src} agent — direct with the provider.`,
+    label:'Your plans', accentC:'#111116', go:`setTab('ai')`,
+  }));
+}
+function aiWeekHtml(){
+  const items = [...aiLive()].sort((a,b)=>a.d-b.d || String(a.time).localeCompare(String(b.time)));
+  return `<div class="sect"><div class="sect-h"><div class="t">Your week</div><div class="a">${items.length} plans</div></div></div>
+    <div class="aiweek">${items.map(w=>`
+      <div class="aiwk${w.fresh?' fresh':''}">
+        <div class="d">${dayLabel(w.d)}${w.time&&w.time!=='—'?' · '+w.time:''}</div>
+        <div class="t"><span>${w.icon}</span>${escHtml(w.title)}</div>
+        <div class="s">${w.fresh?'Just booked · ':''}${w.src}</div>
+      </div>`).join('')}</div>`;
+}
+function aiTasksHtml(){
+  return `<div class="sect"><div class="sect-h"><div class="t">Do it for me</div><div class="a">agents act for you</div></div></div>
+    <div class="aitasks">${AI_TASK_ORDER.map(k=>{ const t=AI_TASKS[k], a=taskAgent(t.agent); return `
+      <div class="aitask" onclick="aiStartTask('${k}')">
+        <div class="ic" style="background:${a.grad}">${t.icon}</div>
+        <div style="min-width:0"><div class="nm">${t.label}</div><div class="sb">${t.sub}</div></div>
+      </div>`;}).join('')}</div>`;
+}
+/* Updates from your agents — the AI working while you are not looking. Each opens its thread. */
+const AI_UPDATES = [
+  {a:'flight', who:'FlightXX', ago:'12m', txt:'Your London → Geneva fare dropped £22 — Northjet Friday 11:30 is now £96.', go:`aiStartTask('flight')`},
+  {z:'lithos-sport', who:'Lithos Sport', ago:'1h', txt:'Your resole slot is confirmed — drop the pair at the Arco bench by Thursday.', go:`openZoneFav('lithos-sport')`},
+  {g:'ski', who:'SkiXX', ago:'3h', txt:'40cm fresh at Verbier overnight, and Sabran’s demo days just opened for booking.', go:`aiAgentChat('ski')`},
+];
+function aiUpdatesHtml(){
+  return `<div class="sect"><div class="sect-h"><div class="t">Updates from your agents</div><div class="a">${AI_UPDATES.length} new</div></div></div>
+    ${AI_UPDATES.map(u=>{
+      const z = u.z && ZONES[u.z], a = u.a ? taskAgent(u.a) : u.g ? taskAgent(u.g) : null;
+      const ic = z ? `<div class="ic" style="background:${z.gradient||z.color};font-size:11px;font-weight:800;color:#fff">${z.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>`
+                   : `<div class="ic" style="background:${a.grad}">${a.emoji}</div>`;
+      return `<div class="aiupd" onclick="${u.go}">${ic}
+        <div style="flex:1;min-width:0"><div class="h"><b>${u.who}</b><span>${u.ago}</span></div><div class="x">${u.txt}</div></div></div>`;
+    }).join('')}`;
+}
+
+/* ── The flow ── */
+let _aiTaskTimers = [];
+function aiLater(ms, fn){ _aiTaskTimers.push(setTimeout(fn, ms)); }
+function aiStartTask(k, changing){
+  const T = AI_TASKS[k]; if(!T) return;
+  if (!changing) state.aiReplacing = null;
+  if (state.tab!=='ai' && state.utilOver!=='ai') setTab('ai');   // an update row can start a task from anywhere
+  _aiTaskTimers.forEach(clearTimeout); _aiTaskTimers = [];
+  state.aiThread = [{who:'user', html:escHtml(changing ? `Change my booking — ${changing.title}` : T.ask())}]; state.aiAgent = null; state.aiPendingQ = '';
+  state.aiTyping = true; render(); aiScrollEnd();
+  const a = taskAgent(T.agent);
+  aiLater(650, ()=>{
+    state.aiThread.push({who:'host', html: k==='trip'
+      ? `That needs a few specialists at once — I’ll coordinate them and bring you one plan.`
+      : changing
+      ? `On it — the <b>${a.name}</b> agent will find alternatives. Your current booking stays in place until you confirm a new one.`
+      : `Handing this to the <b>${a.name}</b> agent — it works directly with ${k==='table'?'restaurants':k==='flight'?'airlines':'drivers'} across ${a.name.toLowerCase()}.com.`});
+    if (k==='trip'){
+      const m = {who:'team', team:T.team, done:0}; state.aiThread.push(m);
+      state.aiTyping = false; render(); aiScrollEnd();
+      T.team.forEach((_,i)=>aiLater(420*(i+1), ()=>{ m.done=i+1; render(); aiScrollEnd(); }));
+      aiLater(420*T.team.length+500, ()=>{
+        state.aiThread.push({who:'task', a:T.agent, html:T.intro()});
+        state.aiThread.push({who:'plan', k});
+        render(); aiScrollEnd();
+      });
+      return;
+    }
+    render(); aiScrollEnd();
+    aiLater(850, ()=>{
+      state.aiTyping = false;
+      state.aiThread.push({who:'task', a:T.agent, html:T.intro()});
+      state.aiThread.push({who:'opts', k, pick:null});
+      render(); aiScrollEnd();
+    });
+  });
+}
+function aiPick(k, i, slot){
+  const opts = state.aiThread.find(m=>m.who==='opts' && m.k===k); if(!opts || opts.locked) return;
+  opts.pick = {i, slot};
+  state.aiThread = state.aiThread.filter(m=>m.who!=='confirm');
+  state.aiThread.push({who:'confirm', k, i, slot});
+  render(); aiScrollEnd();
+}
+function aiConfirm(){
+  const c = [...state.aiThread].reverse().find(m=>(m.who==='confirm'||m.who==='plan') && !m.done); if(!c) return;
+  c.done = true;
+  const T = AI_TASKS[c.k]; const opts = state.aiThread.find(m=>m.who==='opts'); if(opts) opts.locked = true;
+  const o = T.opts ? T.opts[c.i] : null;
+  const items = T.booked(o, c.slot);
+  state.aiTyping = true; render(); aiScrollEnd();
+  aiLater(900, ()=>{
+    state.aiTyping = false;
+    if (state.aiReplacing){ const old = aiWeek().find(w=>w.id===state.aiReplacing); if(old){ old.status='changed'; old._ev=null; } state.aiReplacing=null; }
+    aiAddToWeek(items);
+    state.aiThread.push({who:'done', k:c.k, items});
+    render(); aiScrollEnd();
+  });
+}
+
 /* Reusable AI conversation pieces for the GENEXXO Host tab (renderAI). (2026-07-23;
    the in-zone AI surface was retired 2026-07-27 s3 — AI is ecosystem-level everywhere now.) */
 function aiInputRow(){
@@ -4479,6 +4872,33 @@ function aiMsgsHtml(){
         <div style="flex:1"><div class="nm">Continue with the ${g.name} Agent</div><div class="dm">The gateway’s specialist joins this thread — live data from ${g.domain}</div></div>
         <div style="font-size:17px;color:var(--muted)">›</div>
       </div>`; }
+    if(m.who==='task'){ const a=taskAgent(m.a); return `
+      <div class="agent-tag" style="color:${a.accent}"><span style="font-size:12px">${a.emoji}</span>${a.name} Agent</div>
+      <div class="bub" style="background:#fff;border:1px solid var(--line);border-left:3px solid ${a.accent}">${m.html}</div>`; }
+    if(m.who==='team') return `<div class="aiteam">${m.team.map((k,i)=>{ const a=taskAgent(k), ok=i<m.done; return `
+      <div class="mem${ok?' ok':''}"><span class="ic" style="background:${a.grad}">${a.emoji}</span>${a.name}<span class="st">${ok?'✓ ready':'working…'}</span></div>`;}).join('')}</div>`;
+    if(m.who==='opts'){ const T=AI_TASKS[m.k]; return `<div class="aiopts${m.locked?' locked':''}">${T.opts.map((o,i)=>{
+        const on = m.pick && m.pick.i===i;
+        const slots = o.slots ? `<div class="slots">${o.slots.map(sl=>`<span class="aislot${on&&m.pick.slot===sl?' on':''}" onclick="event.stopPropagation();aiPick('${m.k}',${i},'${sl}')">${sl}</span>`).join('')}</div>` : '';
+        return `<div class="aiopt${on?' on':''}"${o.slots?'':` onclick="aiPick('${m.k}',${i})"`}>
+          <div class="em">${o.em}</div>
+          <div class="tx"><div class="t">${o.t}${o.tag?`<span class="tag">${o.tag}</span>`:''}</div><div class="s">${o.s}</div>${slots}</div>
+          <div class="m">${o.m}</div></div>`;}).join('')}</div>`; }
+    if(m.who==='confirm'){ const T=AI_TASKS[m.k], o=T.opts[m.i], a=taskAgent(T.agent); return `
+      <div class="aiconf"><div class="h">Confirm with ${o.t}</div>
+        ${T.summary(o,m.slot).map(([k,v])=>`<div class="r"><span>${k}</span><b>${v}</b></div>`).join('')}
+        <div class="n">Books direct with ${o.t} via the ${a.name} agent — GENEXXO never handles your payment.</div>
+        ${m.done?`<div class="btn2 done">✓ Confirmed</div>`:`<div class="btn2" onclick="aiConfirm()">Confirm booking</div>`}
+      </div>`; }
+    if(m.who==='plan'){ const T=AI_TASKS[m.k]; return `
+      <div class="aiconf"><div class="h">Chamonix · 3 nights</div>
+        ${T.plan().map(p=>{ const a=taskAgent(p.a); return `<div class="pl"><span class="ic" style="background:${a.grad}">${p.em}</span>
+          <div style="flex:1;min-width:0"><div class="t">${p.t}</div><div class="s">${p.s} · <span style="color:${a.accent};font-weight:700">${a.name}</span></div></div><b>${p.m}</b></div>`;}).join('')}
+        <div class="n">Five providers, one tap — each books direct, each sends its own confirmation.</div>
+        ${m.done?`<div class="btn2 done">✓ Trip booked</div>`:`<div class="btn2" onclick="aiConfirm()">Book the whole trip</div>`}
+      </div>`; }
+    if(m.who==='done') return `<div class="bub aidone">✓ <b>Booked.</b> ${m.items.length>1?m.items.length+' plans are':'It’s'} in your week${m.items.length>1?'':` — <b>${escHtml(m.items[0].title)}</b>, ${dayLabel(m.items[0].d)}`}, and ${m.items.length>1?'each provider is sending its own confirmation':'the confirmation is on its way from the provider'}.
+      <div class="acts"><span onclick="aiReset()">See your week</span><span onclick="setTab('profile')">Manage in Profile</span></div></div>`;
     return '';
   }).join('');
   const typing = state.aiTyping ? `<div class="bub" style="background:#fff;border:1px solid var(--line);width:58px"><div class="tdots"><i></i><i></i><i></i></div></div>` : '';
@@ -4526,8 +4946,11 @@ function renderAI(){
         <div style="font-size:11px;color:var(--muted);font-weight:600">One AI across every gateway you belong to</div></div>
       </div>
       <div class="bub" style="background:#fff;border:1px solid var(--line)">Hi there — I can work across your whole network: your gateways, their brands, agents and communities. Where do we start?</div>
-      <div class="prompts">${prompts.map(p=>`<div class="prompt" style="background:#fff;border-color:var(--line)" onclick="sendAI(this.textContent)">${p}</div>`).join('')}</div>
+      ${aiWeekHtml()}
+      ${aiTasksHtml()}
       ${inputRow}
+      <div class="prompts">${prompts.map(p=>`<div class="prompt" style="background:#fff;border-color:var(--line)" onclick="sendAI(this.textContent)">${p}</div>`).join('')}</div>
+      ${aiUpdatesHtml()}
       <div class="sect"><div class="sect-h"><div class="t">Gateway agents</div><div class="a">specialists</div></div></div>
       <div style="padding:0 16px 4px;font-size:11.5px;color:var(--muted);font-weight:600;line-height:1.5">${agentNote}</div>
       <div class="rail" style="padding-top:10px">${agents}</div>
@@ -4549,8 +4972,13 @@ function renderAI(){
   return `${topBar()}
   <div class="push">
     <div class="sect" style="display:flex;align-items:center;gap:10px;padding-top:16px;padding-bottom:12px">
-      <div style="width:32px;height:32px;border-radius:11px;background:linear-gradient(135deg,#111116,#3a3a44);display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px">✦</div>
-      <div style="font-size:14px;font-weight:800">GENEXXO Host</div>
+      <!-- The Host mark is the way home (2026-09-24): out of a booking or any thread, back to the AI
+           tab's front page — Your week, Do it for me, updates. A chevron says it is a control. -->
+      <div class="aihome" onclick="aiReset()" title="Back to GENEXXO Host">
+        <span class="chev">‹</span>
+        <div style="width:32px;height:32px;border-radius:11px;background:linear-gradient(135deg,#111116,#3a3a44);display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px">✦</div>
+        <div style="font-size:14px;font-weight:800">GENEXXO Host</div>
+      </div>
       <div onclick="aiReset()" style="margin-left:auto;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;border:1px solid var(--line);border-radius:99px;padding:5px 11px;background:#fff">New chat</div>
     </div>
     ${agentStrip}
@@ -4590,22 +5018,68 @@ function discRemember(gw){
   };
 }
 
+/* ═════════ EVENTS — three altitudes (2026-09-24) ═════════
+   The Network calendar is always there; standing in a sector or gateway adds a tab for it, so
+   Events reads Network · Adventure · ClimbXX depending on where you are — the same ladder as the
+   sub-bar. Network is selected on every fresh open (it is the calendar; the others are the local
+   views), and a glimpse at an event and back keeps whichever scope you were on.
+
+   The calendar is EVENTS_FEED plus every brand zone's own events, which until now only showed
+   inside the zone. A zone event already carried in the feed (same title) is listed once. */
+function evAll(){
+  if (evAll._c) return evAll._c;   // static data: build once
+  const out = [...EVENTS_FEED], seen = new Set(EVENTS_FEED.map(e=>e.title));
+  Object.keys(ZONES).forEach(k=>{
+    const z = ZONES[k];
+    (z.events||[]).forEach(ev=>{
+      if (!ev || seen.has(ev.title)) return;
+      seen.add(ev.title);
+      out.push({gw:z.gw, zone:k, type:'Event', icon:'📅', time:(ev.when||'').split(' · ')[0].replace(/,\s*\d{4}$/,''), title:ev.title, desc:ev.desc||''});   // year dropped: the feed's own dates are yearless
+    });
+  });
+  return (evAll._c = out);
+}
+/* Where Events was opened from. Floating over a gateway (desktop) the place is still on screen,
+   so it is `state` itself; as a tab it is the place saved when the tab opened (state._before). */
+function evContext(){
+  const c = state.utilOver ? state : state._before;
+  if (!c) return {};
+  const inGw = c.screen==='gateway' || c.screen==='zone';
+  const g = inGw ? (c._gwObj || (c.gateway && GATEWAYS[c.gateway])) : null;
+  const gwKey = g ? gwKeyFromName(g.name) : null;
+  const sk = g ? gwSecOf(g) : (c.screen==='sector' ? c.sector : null);
+  const s = sk ? sectorOf(sk) : null;
+  return { gwKey, gwName: g && g.name, gwEmoji: g && g.emoji, sk: s && sk, sName: s && s.name, sIcon: s && s.icon };
+}
+function evInScope(e, scope, ctx){
+  if (scope==='gateway') return !!ctx.gwKey && e.gw===ctx.gwKey;
+  if (scope==='sector')  return !!ctx.sk && evMeta(e).sector===ctx.sk;
+  return true;
+}
+function setEventsScope(k){ state.eventsScope=k; state.eventsMemo=null; render(); utilHost().scrollTo(0,0); }
 function renderEvents(){
   const F = state.eventsFilter||'all';
+  const ALL = evAll().concat(aiBookedEvents()), ctx = evContext();
+  const scopes = [['network','🌐','Network']];
+  if (ctx.sk)    scopes.push(['sector', ctx.sIcon||'', ctx.sName]);
+  if (ctx.gwKey) scopes.push(['gateway', ctx.gwEmoji||'', ctx.gwName]);
+  let scope = state.eventsScope||'network';
+  if (!scopes.some(([k])=>k===scope)) scope = 'network';   // that level is not where you are now
+  const inScope = ALL.filter(e=>evInScope(e, scope, ctx));
   const match = e =>
     F==='live'      ? e.type==='Live' :
     F==='drops'     ? e.type==='Drop' :
     F==='alerts'    ? (e.type==='Alert'||e.type==='Breaking') :
     F==='bookmarks' ? e.type==='Bookmark' : true;
-  const items = [...EVENTS_FEED].sort((a,b)=>(b.live?1:0)-(a.live?1:0)).filter(match);  // live floats up (stable)
-  const liveCount = EVENTS_FEED.filter(e=>e.live).length;
+  const items = [...inScope].sort((a,b)=>(b.live?1:0)-(a.live?1:0)).filter(match);  // live floats up (stable)
+  const liveCount = inScope.filter(e=>e.live).length;
   const cards = items.map(e=>{
     const m = evMeta(e);
     // Tap → straight to the brand's own Events tab (zone deep-link); gateway-only events open the gateway.
-    const go = e.zone ? `openZoneFav('${e.zone}','events')` : `state._gwFrom='root';openGateway('${esc(m.name)}','${m.sector}')`;
-    // Index into EVENTS_FEED, not into the filtered list — the filter and the live-first
-    // sort both reshuffle `items`, so a positional key there would mark the wrong card.
-    const i = EVENTS_FEED.indexOf(e);
+    const go = e.go ? e.go : e.zone ? `openZoneFav('${e.zone}','events')` : `state._gwFrom='root';openGateway('${esc(m.name)}','${m.sector}')`;
+    // Index into the full calendar, not into the filtered list — scope, filter and the live-first
+    // sort all reshuffle `items`, so a positional key there would mark the wrong card.
+    const i = ALL.indexOf(e);
     const seen = state.eventsMemo && state.eventsMemo.i===i;
     return `<div class="evcard${e.live?' live':''}${seen?' seen':''}" onclick="evRemember(${i});${go}">
       <div class="evtop">
@@ -4627,13 +5101,20 @@ function renderEvents(){
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="12" cy="16" r="2"/></svg>
       </div>
       <div><div style="font-size:16.5px;font-weight:800">Events</div>
-      <div style="font-size:11px;color:var(--muted);font-weight:600">Live, upcoming & breaking across the network</div></div>
-      <div style="margin-left:auto;display:flex;align-items:center;gap:5px;font-size:10.5px;color:#EF4444;font-weight:700;white-space:nowrap"><span class="livedot"></span>${liveCount} Live</div>
+      <div style="font-size:11px;color:var(--muted);font-weight:600">Live, upcoming & breaking ${
+        scope==='gateway' ? 'inside '+escHtml(ctx.gwName) : scope==='sector' ? 'across '+escHtml(ctx.sName) : 'across the network'}</div></div>
+      ${liveCount ? `<div style="margin-left:auto;display:flex;align-items:center;gap:5px;font-size:10.5px;color:#EF4444;font-weight:700;white-space:nowrap"><span class="livedot"></span>${liveCount} Live</div>` : ''}
     </div>
+    ${scopes.length>1 ? `<div class="evscope">${scopes.map(([k,ic,lb])=>{
+        const n = ALL.filter(e=>evInScope(e,k,ctx)).length;
+        return `<div class="evsc${scope===k?' on':''}" onclick="setEventsScope('${k}')">${ic?`<span class="ic">${ic}</span>`:''}<span class="lb">${escHtml(lb)}</span><span class="n">${n}</span></div>`;
+      }).join('')}</div>` : ''}
     <div class="chips">${filts.map(([k,lb])=>`<div class="chip ${F===k?'on':''}" onclick="state.eventsFilter='${k}';state.eventsMemo=null;render();utilHost().scrollTo(0,0)">${lb}</div>`).join('')}</div>
     <div style="height:8px"></div>
-    ${cards || `<div class="empty">Nothing under this filter right now —<br>the network never sleeps for long.</div>`}
-    <div style="padding:10px 16px 14px;text-align:center;font-size:10.5px;color:var(--muted);font-weight:600">Events from 45+ gateways across the GENEXXO network</div>
+    ${cards || (scope!=='network' && !inScope.length
+      ? `<div class="empty">No events ${scope==='gateway'?'inside '+escHtml(ctx.gwName):'across '+escHtml(ctx.sName)} yet —<br>the Network calendar has everything else.</div>`
+      : `<div class="empty">Nothing under this filter right now —<br>the network never sleeps for long.</div>`)}
+    ${scope==='network' ? `<div style="padding:10px 16px 14px;text-align:center;font-size:10.5px;color:var(--muted);font-weight:600">Events from 45+ gateways across the GENEXXO network</div>` : ''}
   </div>`;
 }
 /* ═════════ PROFILE ═════════ */
@@ -4663,6 +5144,7 @@ function profileBody(){
       <div style="flex:1"><div style="font-size:13px;font-weight:800">${w.name}</div><div style="font-size:10.5px;color:var(--muted);font-weight:600">${w.gw}</div></div>
       <button class="btn" style="background:rgba(17,17,22,.05);color:var(--muted)" onclick="toggleApp('${esc(w.name)}')">Remove</button>
     </div>`).join('') : `<div class="empty">Apps you add from any gateway live here —<br>your wallet travels the whole ecosystem.</div>`}
+    ${aiBookingsHtml()}
     <div class="sect"><div class="sect-h"><div class="t">My Purchases</div><div class="a">${state.purchases.length}</div></div></div>
     ${state.purchases.length
       ? state.purchases.map(o=>purchaseCard(o)).join('')
