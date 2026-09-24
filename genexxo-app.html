@@ -170,6 +170,11 @@
      tapping outside it. A static sibling of the head, because the head is rewritten by innerHTML
      for every list (sectors, gateways, brands, apps…), so the ✕ can never be dropped by a rebuild.
      Hidden where the panels are pinned open on desktop — there is nothing to close. */
+  /* The ★ owns its corner of the top bar (2026-09-25): an invisible hit area runs from the bar's top
+     edge to its bottom and out to the screen edge, so a near-miss opens favourites instead of landing
+     on whatever sits beside it. Only 3px to the left — the root bar's Apply icon is 6px away. */
+  .favhit{position:relative}
+  .favhit::after{content:'';position:absolute;top:-14px;bottom:-12px;right:-16px;left:-3px}
   .drawer-x{position:absolute;top:8px;right:10px;z-index:3;width:30px;height:30px;border:0;border-radius:99px;background:rgba(17,17,22,.06);color:rgba(17,17,22,.6);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s,color .15s}
   .drawer-x:hover{background:rgba(17,17,22,.12);color:#111116}
   .drawer-x:active{background:rgba(17,17,22,.18)}
@@ -412,6 +417,10 @@
       transition:background .16s ease}
     /* Knob sits against the rail's INNER line — the edge facing the feed — not the window
        edge. That is the side you are looking at, and the side the panel comes out of. */
+    /* The phone half-moon's ::after hit zone reaches 26px above and below the handle. On a full-height
+       rail that pushed 26px UP into the top bar, over the ★ and the logo, so a tap on the star's lower
+       edge opened the gateways drawer (2026-09-25). The rail is already full height; keep it inside. */
+    #frame.panels-float #edge::after,#frame.panels-float #edgeR::after{top:0;bottom:0}
     #frame.panels-float #edge { border-right:1px solid var(--line);align-items:flex-end }
     #frame.panels-float #edgeR{ border-left:1px solid var(--line);align-items:flex-start }
     #frame.panels-float #edge:hover,#frame.panels-float #edgeR:hover{background:rgba(17,17,22,.05)}
@@ -682,6 +691,8 @@
   .spaces{display:flex;gap:7px;overflow-x:auto;padding:0 16px 12px}
   .space{font-size:11px;font-weight:700;padding:6px 12px;border-radius:99px;white-space:nowrap;cursor:pointer;border:1px solid}
   .gcard{border-radius:16px;margin:0 16px 10px;padding:14px;border:1px solid}
+  /* Gateway hero card: its Show-more link inherits the theme ink (var(--muted) is dark ink). */
+  .gwhc .htext .short > span{color:inherit!important;opacity:.6}
   .gcard .hd{display:flex;align-items:center;gap:9px;margin-bottom:9px}
   .gcard .av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
   .gcard .an{font-size:12.5px;font-weight:800}
@@ -1032,7 +1043,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-17"></script>
+<script src="genexxo-data.js?v=2026.08.26-18"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1549,6 +1560,39 @@ function heroFeedCard(gwKey, post, showSector){
   </div>`;
 }
 
+/* ═════════ GATEWAY FEED — hero style, gateway skin (2026-09-25) ═════════
+   The gateway feed used the compact card (text first, a 170px inset image, 16px side margins), so
+   stepping from a sector into a gateway changed the whole rhythm of the feed. Now it shares the
+   Network/Sector geometry exactly — full-bleed 244px media across the top, a text panel below with
+   the shared Show-more, same radius, shadow and 1px side margin — while keeping the gateway's OWN
+   colours ("same shell, ClimbXX skin"). Same routing as the sector feed: video-only clips keep the
+   video card, posts with media get the hero, text-only posts the text-led card.
+   Dropped vs the network hero, on purpose: the gateway badge in the footer and the tap-to-open —
+   you are already standing in the gateway. Muted text is the theme's ink at reduced opacity, never
+   var(--muted), which is dark ink and vanishes on a dark theme. */
+function gwFeedCard(f, gw){
+  if (f.videoOnly) return videoCard(state.gateway, f, false);
+  const t = gw.theme || {}, acc = t.accent || '#888', ink = t.text || 'var(--ink)';
+  const author = f.author ? `
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+      <div style="width:30px;height:30px;border-radius:50%;background:${f.avBg};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">${f.av}</div>
+      <div style="min-width:0"><div style="font-size:12px;font-weight:800">${f.author}</div><div style="font-size:9.5px;opacity:.55;font-weight:600">${f.sub}</div></div>
+      ${f.badge?`<div style="margin-left:auto;font-size:8.5px;font-weight:800;letter-spacing:.07em;padding:3px 8px;border-radius:99px;background:${acc}26;color:${acc}">${f.badge}</div>`:''}
+    </div>` : '';
+  const eng = `<div style="margin-top:11px;font-size:11px;font-weight:700;opacity:.55">${f.eng}</div>`;
+  const shell = `margin:14px 1px;border-radius:20px;overflow:hidden;background:${t.cardBg||'#fff'};border:1px solid ${t.cardBorder||'var(--line)'};color:${ink};box-shadow:${t.dark?'0 10px 30px rgba(0,0,0,.28)':'0 10px 30px rgba(0,0,0,.10)'}`;
+  if (!(f.video || f.img || f.media))                       // text-only → the text-led card
+    return `<div class="gwhc" style="${shell}"><div style="padding:15px 16px 15px">${author}${heroTextBlock(f.text, `font-size:14.5px;color:${ink}`)}${eng}</div></div>`;
+  const MH = 244;                                           // = heroFeedCard
+  const media = f.video ? `<video autoplay loop muted playsinline preload="none" data-vsrc="${mediaUrl(f.video)}" style="width:100%;height:${MH}px;object-fit:cover;display:block"></video>`
+    : f.img ? `<img src="${mediaUrl(f.img)}" loading="lazy" decoding="async" style="width:100%;height:${MH}px;object-fit:cover;display:block">`
+    : `<div style="width:100%;height:${MH}px;background:${f.mediaBg||gw.gradient};display:flex;align-items:center;justify-content:center;font-size:66px">${f.media}</div>`;
+  return `<div class="gwhc" style="${shell}">
+    <div style="position:relative;background:#000">${media}</div>
+    <div style="padding:14px 15px 15px">${author}${heroTextBlock(f.text, `color:${ink}`)}${eng}</div>
+  </div>`;
+}
+
 /* Conversational card (2026-08-06) — for a strong TEXT-only post that rises to the Network/Sector
    level. Same card DNA as the hero (white, rounded, sector chip + author + gateway badge) but text-
    led and sized to its words, with the shared Show-more. Media is OPTIONAL and COMPACT (contained
@@ -1775,7 +1819,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-17';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-18';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -3073,7 +3117,7 @@ function topBar(gw){
     ${inGw?`
     <div onclick="event.stopPropagation();gwHome()" title="${gw.name}.com home"
       style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--cond);font-weight:700;font-size:19px;letter-spacing:.02em;cursor:pointer;padding:6px 10px;margin:-6px -10px">${domainMark(gw.name)}</div>
-    <div id="gwStar" onclick="event.stopPropagation();toggleFavPanel()" title="Favourite gateways"
+    <div id="gwStar" class="favhit" onclick="event.stopPropagation();toggleFavPanel()" title="Favourite gateways"
       style="margin-left:auto;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;font-size:19px;line-height:1;color:${state.showFavs?gw.theme.accent:gw.theme.text};opacity:${state.showFavs?'1':'.55'};${state.showFavs?`background:${gw.theme.accent}22`:''}">${state.showFavs?'★':'☆'}</div>`
     :`<div style="margin-left:auto;display:flex;align-items:center;gap:6px">
       ${(state.screen==='sector' && state.returnGw && state.returnGw.sector===state.sector) ? `
@@ -3089,7 +3133,7 @@ function topBar(gw){
       <div onclick="event.stopPropagation();toggleApply()" title="Apply to join"
         style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;color:#111116;opacity:${state.showApply?'1':'.5'};${state.showApply?'background:rgba(17,17,22,.06)':''}">
         <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></div>` : ''}
-      ${`<div id="gwStar" onclick="event.stopPropagation();toggleFavPanel()" title="Favourite gateways"
+      ${`<div id="gwStar" class="favhit" onclick="event.stopPropagation();toggleFavPanel()" title="Favourite gateways"
         style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;font-size:19px;line-height:1;color:${state.showFavs?'#F5B800':'#111116'};opacity:${state.showFavs?'1':'.5'};${state.showFavs?'background:rgba(245,184,0,.14)':''}">${state.showFavs?'★':'☆'}</div>`}
     </div>`}
   </div>`;
@@ -3626,16 +3670,8 @@ function renderGateway(){
          + zoneCtaCard(ZONE_CTA[z]);
   } else {
     // Feed (default) — no tab lit; the gateway's own feed sits under the Brands·Apps·Pro's bar.
-    const card = f => f.videoOnly ? videoCard(state.gateway, f, false) : `
-      <div class="gcard" style="background:${t.cardBg};border-color:${t.cardBorder};color:${t.text}">
-        <div class="hd"><div class="av" style="background:${f.avBg}">${f.av}</div>
-          <div><div class="an">${f.author}</div><div class="as">${f.sub}</div></div>
-          ${f.badge?`<div class="bdg" style="background:${t.accent}26;color:${t.accent}">${f.badge}</div>`:''}
-        </div>
-        <div class="tx">${f.text}</div>
-        ${(f.video||f.img)?mediaBlock(f,t.accent,170):(f.media?`<div class="media" style="background:${f.mediaBg}">${f.media}</div>`:'')}
-        <div class="eng">${f.eng}</div>
-      </div>`;
+    // Hero style in the gateway's skin, matching the Network and Sector feeds — see gwFeedCard().
+    const card = f => gwFeedCard(f, gw);
 
     const feed = gw.feed || [];
     body = feed.length ? withExplainer(feed.map(card), explainerCard(GATEWAY_EXPLAINER)).join('')
@@ -3841,6 +3877,13 @@ function zoneFeed(z){
       <button class="btn" style="flex:1;padding:10px 0;background:#fff;color:var(--ink);border:1.5px solid var(--line)" onclick="zoneAsk('${z.key}')">💬 Ask ${z.name.split(' ')[0]}</button>
     </div>
   </div>`;
+  /* Zone posts in the hero style (2026-09-25) — every feed in the app now shares one card: full-bleed
+     244px media across the top and a text panel below with the shared Show-more (heroFeedCard's
+     geometry), or the text-led card when a post has no media. Brand zones are light, so this is the
+     network card's own palette; the brand's colour carries the badges, the reply rule and VIEW ›.
+     Zone extras live in the text panel: the product row under a post, the brand's reply under a
+     community post. The brand header and featured-event cards above are not posts and keep their
+     own shape, as the explainer does in the other feeds. */
   const cards = z.feed.map(f=>{
     const prodRow = (f.product!=null) ? (p=>`
       <div onclick="openProduct(${f.product})" style="display:flex;align-items:center;gap:10px;margin-top:10px;padding:9px 11px;border:1px solid var(--line);border-radius:13px;cursor:pointer;background:#FAFAFB">
@@ -3848,29 +3891,33 @@ function zoneFeed(z){
         <div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.name}</div><div style="font-size:10.5px;color:var(--muted);font-weight:700">${p.price} · ★ ${p.rating} (${p.reviews})</div></div>
         <div style="font-size:10px;font-weight:800;color:${z.color};white-space:nowrap">VIEW ›</div>
       </div>`)(z.products[f.product]) : '';
-    if(f.type==='community') return `
-      <div class="zcard">
-        <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">
-          <div style="width:32px;height:32px;border-radius:50%;background:${f.whoBg};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff">${f.who.split(' ').map(w=>w[0]).join('')}</div>
-          <div><div style="font-size:12.5px;font-weight:800">${f.who}</div><div style="font-size:10px;color:var(--muted);font-weight:600">${f.sub}</div></div>
-        </div>
-        <div style="font-size:13px;line-height:1.5">${f.text}</div>
-        ${f.reply?`<div style="margin-top:10px;padding:10px 12px;border-left:3px solid ${z.color};background:${z.color}0d;border-radius:0 12px 12px 0">
-          <div style="font-size:10px;font-weight:800;color:${z.color};margin-bottom:4px">↳ ${z.name} replied</div>
-          <div style="font-size:12.5px;line-height:1.5">${f.reply}</div></div>`:''}
-        <div style="margin-top:9px;font-size:11px;font-weight:700;color:var(--muted)">${f.eng}</div>
+    const hasMedia = !!(f.video || f.img || f.media);
+    const author = f.type==='community' ? `
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+        <div style="width:30px;height:30px;border-radius:50%;background:${f.whoBg};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">${f.who.split(' ').map(w=>w[0]).join('')}</div>
+        <div style="min-width:0"><div style="font-size:12px;font-weight:800">${f.who}</div><div style="font-size:9.5px;color:var(--muted);font-weight:600">${f.sub}</div></div>
+      </div>` : `
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+        ${brandAvatar(z, 30, 9, 10)}
+        <div style="min-width:0"><div style="font-size:12px;font-weight:800">${z.name}</div><div style="font-size:9.5px;color:var(--muted);font-weight:600">${f.sub}</div></div>
+        ${f.type==='media'?`<div style="margin-left:auto;font-size:8.5px;font-weight:800;letter-spacing:.07em;padding:3px 8px;border-radius:99px;background:${z.color}14;color:${z.color}">MEDIA</div>`:''}
       </div>`;
+    const reply = f.reply ? `<div style="margin-top:11px;padding:10px 12px;border-left:3px solid ${z.color};background:${z.color}0d;border-radius:0 12px 12px 0">
+        <div style="font-size:10px;font-weight:800;color:${z.color};margin-bottom:4px">↳ ${z.name} replied</div>
+        <div style="font-size:12.5px;line-height:1.5">${f.reply}</div></div>` : '';
+    const eng = `<div style="margin-top:11px;font-size:11px;font-weight:700;color:var(--muted)">${f.eng}</div>`;
+    if (!hasMedia) return `
+      <div class="herocard" style="margin:14px 1px;border-radius:20px;background:#fff;border:1px solid var(--line);box-shadow:0 6px 20px rgba(0,0,0,.07)">
+        <div style="padding:15px 16px 15px">${author}${heroTextBlock(f.text, 'font-size:14.5px')}${reply}${prodRow}${eng}</div>
+      </div>`;
+    const MH = 244;                                         // = heroFeedCard
+    const media = f.video ? `<video autoplay loop muted playsinline preload="none" data-vsrc="${mediaUrl(f.video)}" style="width:100%;height:${MH}px;object-fit:cover;display:block"></video>`
+      : f.img ? `<img src="${mediaUrl(f.img)}" loading="lazy" decoding="async" style="width:100%;height:${MH}px;object-fit:cover;display:block">`
+      : `<div style="width:100%;height:${MH}px;background:${f.mediaBg||z.gradient};display:flex;align-items:center;justify-content:center;font-size:66px;color:#fff">${f.media}</div>`;
     return `
-      <div class="zcard">
-        <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">
-          ${brandAvatar(z, 32, 10, 10)}
-          <div><div style="font-size:12.5px;font-weight:800">${z.name}</div><div style="font-size:10px;color:var(--muted);font-weight:600">${f.sub}</div></div>
-          ${f.type==='media'?`<div style="margin-left:auto;font-size:8.5px;font-weight:800;letter-spacing:.07em;padding:3px 8px;border-radius:99px;background:${z.color}14;color:${z.color}">MEDIA</div>`:''}
-        </div>
-        <div style="font-size:13px;line-height:1.5">${f.text}</div>
-        ${(f.video||f.img)?mediaBlock(f,z.gradient,f.type==='media'?200:180):(f.media?`<div style="border-radius:12px;height:150px;margin-top:10px;background:${f.mediaBg||z.gradient};display:flex;align-items:center;justify-content:center;font-size:${f.type==='media'?'26':'36'}px;color:#fff">${f.media}</div>`:'')}
-        ${prodRow}
-        <div style="margin-top:9px;font-size:11px;font-weight:700;color:var(--muted)">${f.eng}</div>
+      <div class="herocard" style="margin:14px 1px;border-radius:20px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.10)">
+        <div style="position:relative;background:#000">${media}</div>
+        <div style="padding:14px 15px 15px">${author}${heroTextBlock(f.text)}${reply}${prodRow}${eng}</div>
       </div>`;
   }).join('');
   // Event ↔ zone Events tab: the feed surfaces the zone's FEATURED event as a card that taps
@@ -4130,7 +4177,7 @@ function renderZonePage(){
   const head = `<div class="top gw" style="background:${z.gradient};color:#fff">
     <div class="gx-mark" onclick="goHub()" title="GENEXXO hub"><div class="gx-dot" style="background:#fff;color:${z.color}"><span class="gx-mono"></span></div></div>
     <div onclick="zoneToFeed()" title="${esc(z.name)} feed" style="font-family:var(--cond);font-weight:700;font-size:16px;letter-spacing:.01em;margin-left:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer">${z.name}</div>
-    <div onclick="event.stopPropagation();toggleFavPanel()" title="Favourites"
+    <div class="favhit" onclick="event.stopPropagation();toggleFavPanel()" title="Favourites"
       style="margin-left:auto;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;font-size:19px;line-height:1;color:#fff;opacity:${state.showFavs?'1':'.72'};${state.showFavs?'background:rgba(255,255,255,.18)':''}">${state.showFavs?'★':'☆'}</div>
   </div>`;
 
@@ -5553,6 +5600,8 @@ buildDrawer();
     // The gateway sub-bar owns its own horizontal drag (page carousel). Without this, a swipe
     // starting in the bar's outer 30px would open a drawer instead of flipping the page.
     if (e.target.closest && e.target.closest('.gwbar-vp')){ fromL=fromR=false; return; }
+    // Nor does the top bar — its corners hold the logo and the ★, which must answer as taps.
+    if (e.target.closest && e.target.closest('.top')){ fromL=fromR=false; return; }
     const t=e.changedTouches[0], r=frame.getBoundingClientRect(); sx=t.clientX; sy=t.clientY;
     fromL = (sx - r.left) < 30;
     fromR = (r.right - sx) < 30;
