@@ -421,6 +421,15 @@
       padding:14px 0 22px}
     #frame.panels-float #gwPanelL{ left:32px }
     #frame.panels-float #gwPanelR{ right:32px }
+    /* Run each panel right up to the centre measure (2026-09-24). At --panel-w they stopped
+       ~90px short of the 600px column at 1440px, and on a dark theme that strip read as an
+       empty band between two unrelated surfaces — while the cards beside it truncated their
+       text for want of width. The gutter is (frame - 600) / 2; max() keeps --panel-w as the
+       floor, which is what applies below ~1220px where the centre itself has already narrowed
+       and there is no strip to fill. Floating screens only: the pinned panels are the drawers,
+       which have their own width and search rows, and are left alone. */
+    #frame.panels-float .gw-panel{
+      width:calc(max(var(--panel-w), (min(1480px, 100vw) - 600px) / 2) - 32px)}
     .gwp-h{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
       padding:0 14px 11px;flex-shrink:0}
     /* Gateway gutters — the legacy deck's Brand Zones / Apps & Tools sidebars, rebuilt against
@@ -470,7 +479,11 @@
     .gwp-frame{flex:1;min-height:140px;display:flex;flex-direction:column;gap:9px;
       margin:0 10px 10px;padding:10px;border-radius:12px;border:1px solid}
     .gwp-img{flex:1;min-height:0;border:1px dashed;border-radius:9px;display:flex;
+      flex-direction:column;gap:7px;
       align-items:center;justify-content:center;font-size:20px;opacity:.35}
+    /* Names the slot, so an empty frame reads as a place waiting for a product rather than
+       one that failed to load. The frame stays empty — see buildGwPanels(). */
+    .gwp-img-lb{font-size:9px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
     .gwp-cap{display:flex;flex-direction:column;gap:5px;flex-shrink:0;padding:0 2px 2px}
     .gwp-cap span{height:6px;border-radius:3px;opacity:.16}
     /* Inverted on a dark gateway: solid white knob, dark chevron. Same contrast, opposite
@@ -857,7 +870,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-13"></script>
+<script src="genexxo-data.js?v=2026.08.26-14"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1599,7 +1612,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-13';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-14';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -3168,7 +3181,7 @@ function buildGwPanels(){
        that fills it is still being decided. */
     const frame = () => `
       <div class="gwp-frame" style="border-color:${t.cardBorder||'var(--line)'};background:${t.cardBg||'#fff'}">
-        <div class="gwp-img" style="border-color:${t.cardBorder||'var(--line)'};color:${accent}">▣</div>
+        <div class="gwp-img" style="border-color:${t.cardBorder||'var(--line)'};color:${accent}">▣<span class="gwp-img-lb">Product showcase</span></div>
         <div class="gwp-cap">
           <span style="background:${t.text||'var(--ink)'};width:64%"></span>
           <span style="background:${t.text||'var(--ink)'};width:38%"></span>
@@ -4369,7 +4382,7 @@ const AI_ROUTES = [
   {re:/sail|boat|yacht|crossing|passage/i, gw:'sail'},
 ];
 const escHtml = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-function aiScrollEnd(){ const s=$('screen'); requestAnimationFrame(()=>s.scrollTo({top:s.scrollHeight,behavior:'smooth'})); }
+function aiScrollEnd(){ const s=utilHost(); requestAnimationFrame(()=>s.scrollTo({top:s.scrollHeight,behavior:'smooth'})); }
 
 function sendAIFromInput(){ const el=$('aiInput'); if(!el||!el.value.trim()) return; const v=el.value; el.value=''; sendAI(v); }
 function sendAI(text){
@@ -4416,7 +4429,7 @@ function aiBackToHost(){
   state.aiThread.push({who:'host', html:'Back with you across the whole network — where next?'});
   render(); aiScrollEnd();
 }
-function aiReset(){ state.aiThread=[]; state.aiAgent=null; state.aiTyping=false; state.aiPendingQ=''; render(); $('screen').scrollTo(0,0); }
+function aiReset(){ state.aiThread=[]; state.aiAgent=null; state.aiTyping=false; state.aiPendingQ=''; render(); utilHost().scrollTo(0,0); }
 
 function hostAnswer(q){
   if(/plan|week|schedule|diary/i.test(q)){
@@ -4512,7 +4525,7 @@ function renderAI(){
         <div><div style="font-size:16.5px;font-weight:800">GENEXXO Host</div>
         <div style="font-size:11px;color:var(--muted);font-weight:600">One AI across every gateway you belong to</div></div>
       </div>
-      <div class="bub" style="background:#fff;border:1px solid var(--line)">Hi Sean — I can work across your whole network: your gateways, their brands, agents and communities. Where do we start?</div>
+      <div class="bub" style="background:#fff;border:1px solid var(--line)">Hi there — I can work across your whole network: your gateways, their brands, agents and communities. Where do we start?</div>
       <div class="prompts">${prompts.map(p=>`<div class="prompt" style="background:#fff;border-color:var(--line)" onclick="sendAI(this.textContent)">${p}</div>`).join('')}</div>
       ${inputRow}
       <div class="sect"><div class="sect-h"><div class="t">Gateway agents</div><div class="a">specialists</div></div></div>
@@ -4634,11 +4647,12 @@ function profileBody(){
       <div class="nm">${g.name}</div>
     </div>`;}).join('');
   const entries = [['genexxo.com',''],['climbxx.com','climb'],['skixx.com','ski'],['surfxx.com','surf'],['cyclexx.com','cycle']];
-  const sim = entries.map(([d,e])=>`<div class="chip ${state.entryDomain===d?'on':''}" onclick="location.search='${e?('?entry='+e):''}'">${d}</div>`).join('');
+  const sim = entries.map(([d,e])=>`<div class="chip ${state.entryDomain===d?'on':''}" onclick="location.search='?dev${e?('&entry='+e):''}'">${d}</div>`).join('');
+  const dev = /[?&]dev\b/.test(location.search);   // prototype tools stay out of real users' way
   return `
     <div class="sect" style="display:flex;align-items:center;gap:14px;padding-top:22px">
-      <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#111116,#3a3a44);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:22px">S</div>
-      <div><div style="font-size:18px;font-weight:800">Sean</div>
+      <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#111116,#3a3a44);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:17px">You</div>
+      <div><div style="font-size:18px;font-weight:800">Your profile</div>
       <div style="font-size:11.5px;color:var(--muted);font-weight:600">One identity · every gateway · 14.2K followers</div></div>
     </div>
     <div class="sect"><div class="sect-h"><div class="t">Your gateways</div><div class="a">${YOUR_GATEWAYS.length} active</div></div></div>
@@ -4655,9 +4669,9 @@ function profileBody(){
       : `<div class="empty">Orders you place with brands across GENEXXO —<br>bought direct, receipts filed here.</div>`}
     <div class="sect"><div class="sect-h"><div class="t">Saved</div></div></div>
     <div class="empty">Bookmark anything across GENEXXO —<br>posts, products, brands — it collects here.</div>
-    <div class="sect"><div class="sect-h"><div class="t">Prototype: simulate entry domain</div></div></div>
+    ${dev?`<div class="sect"><div class="sect-h"><div class="t">Prototype: simulate entry domain</div></div></div>
     <div style="padding:0 16px;font-size:11.5px;color:var(--muted);font-weight:600;line-height:1.5;margin-bottom:10px">Same shell, different front door. Installing from climbxx.com boots this app inside ClimbXX — the whole ecosystem still ships.</div>
-    <div class="chips" style="padding-top:0;flex-wrap:wrap">${sim}</div>
+    <div class="chips" style="padding-top:0;flex-wrap:wrap">${sim}</div>`:''}
     <div onclick="vdbgTap()" style="text-align:center;padding:22px 16px 4px;font-size:10.5px;letter-spacing:.06em;color:var(--muted);opacity:.7;font-weight:700">GENEXXO · build ${BUILD}</div>
     <div style="height:16px"></div>`;
 }

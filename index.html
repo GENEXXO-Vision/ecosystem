@@ -261,17 +261,6 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
 .site-footer{padding:40px 20px;text-align:center;border-top:1px solid rgba(255,255,255,.04)}
 .site-footer p{font-size:.65rem;color:rgba(255,255,255,.2);letter-spacing:.1em;text-transform:uppercase}
 
-/* ── Mobile Notice Modal ── */
-.mobile-notice-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:24px}
-.mobile-notice-overlay.show{opacity:1;pointer-events:all}
-.mobile-notice{background:#16161e;border:1px solid rgba(139,92,246,.2);border-radius:16px;padding:36px 28px;text-align:center;max-width:340px;width:100%;position:relative;transform:scale(.95);transition:transform .3s}
-.mobile-notice-overlay.show .mobile-notice{transform:scale(1)}
-.mobile-notice-icon{font-size:2rem;margin-bottom:14px;display:block}
-.mobile-notice-title{font-size:1rem;font-weight:700;color:rgba(255,255,255,.9);margin-bottom:8px}
-.mobile-notice-desc{font-size:.82rem;color:rgba(255,255,255,.45);line-height:1.6;margin-bottom:20px}
-.mobile-notice-btn{display:inline-block;padding:10px 28px;border-radius:8px;border:1px solid rgba(139,92,246,.3);background:rgba(139,92,246,.1);color:#8B5CF6;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s}
-.mobile-notice-btn:hover{background:rgba(139,92,246,.2);border-color:rgba(139,92,246,.5)}
-
 /* ── Cookie Consent Banner ── */
 .cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:9998;background:#111118;border-top:1px solid rgba(139,92,246,.15);padding:20px 24px;transform:translateY(100%);transition:transform .4s ease;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
 .cookie-banner.show{transform:translateY(0)}
@@ -317,7 +306,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
     <a href="domain-gallery.html" class="nav-item">Domain Gallery</a>
     <a href="ultimate-asset.html" class="nav-item">One Organizing Layer</a>
     <a href="the-edge.html" class="nav-item">The Winning Edge</a>
-    <a href="genexxo-deck.html" target="_blank" class="nav-item" onclick="return checkDesktop(event)">GENEXXO DEMO</a>
+    <a href="genexxo-app.html" target="_blank" class="nav-item">GENEXXO DEMO</a>
     <div class="nav-group-label" onclick="toggleSeriesNav()">Vision Series <span class="nav-group-chevron">&#9654;</span></div>
     <a href="genexxo-vision-series.html" class="nav-item nav-sub">Series Overview</a>
     <div class="nav-group-items" id="seriesItems">
@@ -624,12 +613,12 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
 
 <!-- ── LIVE DEMO CARD ── -->
 <div class="demo-card-wrap reveal" style="padding-bottom:60px">
-  <a class="demo-card" href="genexxo-deck.html" target="_blank" onclick="return checkDesktop(event)">
+  <a class="demo-card" href="genexxo-app.html" target="_blank">
     <div class="demo-card-inner">
       <div class="demo-card-badge" style="font-size:.75rem;padding:7px 18px;margin-bottom:16px">Live Demo</div>
       <div class="demo-card-title">The Supernova Application</div>
       <div class="demo-card-desc">Interactive demo &mdash; explore the hub and gateway ecosystem architecture in action</div>
-      <div class="demo-card-note" id="demoCardNote">Desktop Prototype Only</div>
+      <div class="demo-card-note">Mobile &amp; Desktop</div>
       <div class="demo-card-arrow">LAUNCH DEMO &rarr;</div>
     </div>
   </a>
@@ -698,16 +687,6 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f
   </div>
 </div>
 
-<!-- ── Mobile Notice Modal ── -->
-<div class="mobile-notice-overlay" id="mobileNotice" onclick="closeMobileNotice(event)">
-  <div class="mobile-notice">
-    <span class="mobile-notice-icon">&#9889;</span>
-    <div class="mobile-notice-title">Desktop Prototype Only</div>
-    <div class="mobile-notice-desc">The Supernova Application demo is built for desktop browsers. Please visit on a laptop or desktop for the full experience.</div>
-    <button class="mobile-notice-btn" onclick="closeMobileNotice(event)">Got It</button>
-  </div>
-</div>
-
 <footer class="site-footer">
   <p>GENEXXO &mdash; The Organizing Layer for the Internet</p>
 </footer>
@@ -744,36 +723,6 @@ function toggleSeriesNav(){
   }else{
     el.style.maxHeight=el.scrollHeight+'px';label.classList.add('expanded');
   }
-}
-
-/* ══════════════════════════════════════════════
-   MOBILE CHECK FOR SUPERNOVA DEMO
-   ══════════════════════════════════════════════ */
-function isMobileVisitor() {
-  // Phones (iOS/Android/etc.) get the dedicated mobile app; width < 768 is a fallback
-  // for odd user-agents and narrow windows. Tablets/desktop keep the full deck.
-  var ua = navigator.userAgent || '';
-  var phone = /iPhone|iPod|Android.*Mobile|Windows Phone|BlackBerry|IEMobile|Opera Mini/i.test(ua);
-  return phone || window.innerWidth < 768;
-}
-function checkDesktop(e) {
-  if (isMobileVisitor()) {
-    // Mobile visitors get the dedicated mobile app instead of the desktop deck.
-    e.preventDefault();
-    window.location.href = 'genexxo-app.html';
-    return false;
-  }
-  return true;
-}
-// On phones, the demo is fully supported — reflect that on the demo card.
-document.addEventListener('DOMContentLoaded', function () {
-  if (!isMobileVisitor()) return;
-  var note = document.getElementById('demoCardNote');
-  if (note) { note.textContent = 'Optimised for Mobile'; }
-});
-function closeMobileNotice(e) {
-  if (e.target.closest('.mobile-notice') && !e.target.closest('.mobile-notice-btn')) return;
-  document.getElementById('mobileNotice').classList.remove('show');
 }
 
 /* ══════════════════════════════════════════════
