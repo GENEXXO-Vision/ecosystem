@@ -152,10 +152,28 @@
     transition:background .15s,color .15s,border-color .15s}
   .gwchip:not(.on){opacity:.62}
   #frame.drawer-open #edge{opacity:0;pointer-events:none}
+  /* Brand-zone stepper: two small tabs either side of the half-moon, same material. The column is
+     centred on the frame exactly as #edge is (top:50%), so the pull-out sits in the gap between. */
+  #zstep{display:none;position:absolute;left:0;top:50%;transform:translateY(-50%);height:130px;width:24px;z-index:44;pointer-events:none;flex-direction:column;justify-content:space-between;align-items:flex-start;transition:opacity .16s}
+  #frame.zstep-on #zstep{display:flex}
+  #frame.drawer-open #zstep{opacity:0}
+  #frame.drawer-open #zstep .zstep-b{pointer-events:none}
+  .zstep-b{pointer-events:auto;position:relative;width:16px;height:30px;border-radius:0 12px 12px 0;background:rgba(17,17,22,.12);color:rgba(17,17,22,.6);display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);box-shadow:1px 0 6px rgba(0,0,0,.08);transition:width .16s ease,background .16s}
+  .zstep-b::after{content:'';position:absolute;left:0;top:-6px;bottom:-6px;width:34px}   /* thumb-sized hit area */
+  .zstep-b:hover{width:20px;background:rgba(17,17,22,.2)}
+  .zstep-b:active{background:rgba(17,17,22,.28)}
   #scrim{position:absolute;left:0;right:0;bottom:0;top:94px;background:rgba(10,10,16,.42);opacity:0;pointer-events:none;transition:opacity .28s;z-index:60}
   #frame.drawer-open #scrim{opacity:1;pointer-events:auto}
   #drawer{position:absolute;left:0;bottom:0;top:94px;width:76%;max-width:322px;background:#fff;transform:translateX(-102%);transition:transform .3s cubic-bezier(.4,0,.2,1);z-index:61;box-shadow:10px 0 44px rgba(0,0,0,.22);display:flex;flex-direction:column;overflow:hidden}
   #frame.drawer-open #drawer{transform:none}
+  /* Close ✕ (2026-09-24): wherever a drawer can close, it says so in its own corner — not only by
+     tapping outside it. A static sibling of the head, because the head is rewritten by innerHTML
+     for every list (sectors, gateways, brands, apps…), so the ✕ can never be dropped by a rebuild.
+     Hidden where the panels are pinned open on desktop — there is nothing to close. */
+  .drawer-x{position:absolute;top:8px;right:10px;z-index:3;width:30px;height:30px;border:0;border-radius:99px;background:rgba(17,17,22,.06);color:rgba(17,17,22,.6);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s,color .15s}
+  .drawer-x:hover{background:rgba(17,17,22,.12);color:#111116}
+  .drawer-x:active{background:rgba(17,17,22,.18)}
+  #drawerHead,#drawerRHead{padding-right:48px!important}
   #drawerHead,#drawerRHead{display:flex;align-items:center;gap:8px;padding:14px 18px 11px;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line)}
   #drawerList,#drawerRList{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:6px 0}
   /* "Choose a Sector" — the prompt has to land as a REACTION to the tap, or it reads as a
@@ -197,6 +215,10 @@
   #drawer.zone-mode{background:rgba(14,14,20,.94);backdrop-filter:blur(24px) saturate(140%);
     -webkit-backdrop-filter:blur(24px) saturate(140%);color:#fff}
   #drawer.zone-mode #drawerHead{color:rgba(255,255,255,.5);border-bottom-color:rgba(255,255,255,.10)}
+  /* The ✕ inverts with the surface — its default ink wash disappears on this near-black. */
+  #drawer.zone-mode .drawer-x{background:rgba(255,255,255,.12);color:rgba(255,255,255,.78)}
+  #drawer.zone-mode .drawer-x:hover{background:rgba(255,255,255,.2);color:#fff}
+  #drawer.zone-mode .drawer-x:active{background:rgba(255,255,255,.28)}
   #drawer.zone-mode .drawer-search{border-bottom-color:rgba(255,255,255,.10)}
   #drawer.zone-mode .drawer-search input{color:#fff}
   #drawer.zone-mode .drawer-search input::placeholder{color:rgba(255,255,255,.38)}
@@ -356,6 +378,8 @@
       position:absolute;top:var(--top-h,53px);bottom:0;height:auto;
       width:var(--panel-w);max-width:none;transform:none!important;
       z-index:41;box-shadow:none;display:flex;flex-direction:column;transition:none}
+    #frame:not(.panels-float) .drawer-x{display:none}
+    #frame:not(.panels-float) #drawerHead,#frame:not(.panels-float) #drawerRHead{padding-right:18px!important}
     #frame:not(.panels-float) #drawer { left:0;right:auto;border-right:1px solid var(--line) }
     #frame:not(.panels-float) #drawerR{ right:0;left:auto;border-left:1px solid var(--line) }
     /* Pinned: the affordances for a gesture that no longer exists. Floating (inside a
@@ -416,6 +440,14 @@
       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m15 18-6-6 6-6'/%3E%3C/svg%3E")}
     #frame.panels-float #edge:hover .edge-knob,#frame.panels-float #edgeR:hover .edge-knob{
       background-color:#111116}
+    /* Stepper on the rail: centred on the knob (the rail runs from --top-h to the bottom), hugging
+       the rail's inner line like the knob, in the knob's solid ink. */
+    #frame.panels-float #zstep{top:calc(var(--top-h,53px) + (100% - var(--top-h,53px)) / 2);
+      width:32px;height:134px;align-items:flex-end;z-index:46}
+    #frame.panels-float .zstep-b{width:19px;height:32px;border-radius:12px 0 0 12px;
+      background:rgba(17,17,22,.88);color:#fff;box-shadow:0 1px 8px rgba(0,0,0,.22);backdrop-filter:none;-webkit-backdrop-filter:none}
+    #frame.panels-float .zstep-b:hover{width:19px;background:#111116}
+    #frame.panels-float .zstep-b::after{left:auto;right:0}
     /* The phone's nudge animates the element's own background — on a full-height rail that is
        a strobing slab rather than a pulsing handle. Move it onto the knob. */
     #frame.panels-float #edge.nudge,#frame.panels-float #edgeR.nudge{animation:none}
@@ -786,6 +818,12 @@
   .aiconf .n{font-size:10.5px;color:var(--muted);font-weight:600;line-height:1.45;margin:9px 0 10px}
   .aiconf .btn2{text-align:center;padding:11px;border-radius:12px;background:#111116;color:#fff;font-size:12.5px;font-weight:800;cursor:pointer}
   .aiconf .btn2.done{background:rgba(22,163,74,.12);color:#16A34A;cursor:default}
+  .aiscope{margin-top:14px}
+  .gwhero{display:flex;gap:13px;align-items:flex-start;margin:10px 16px 4px;padding:16px;border-radius:18px;color:#fff;box-shadow:0 8px 24px rgba(17,17,22,.12)}
+  .gwhero .em{width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0}
+  .gwhero .t{font-size:17px;font-weight:800;letter-spacing:-.01em}
+  .gwhero .s{font-size:12px;line-height:1.45;opacity:.92;margin-top:3px}
+  .gwhero .m{font-size:10.5px;font-weight:800;letter-spacing:.04em;opacity:.8;margin-top:8px}
   @keyframes aiIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
   @keyframes aiFade{from{opacity:0}to{opacity:1}}
   @keyframes aiPop{0%{transform:scale(.85);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:none}}
@@ -961,8 +999,11 @@
   <aside id="gwPanelL" class="gw-panel"></aside>
   <aside id="gwPanelR" class="gw-panel"></aside>
   <div id="edge" onclick="openDrawer()" aria-label="Open sectors"><i class="edge-knob"></i></div>
+  <!-- Brand-zone stepper (2026-09-24): ▲ previous / ▼ next brand, either side of the pull-out. -->
+  <div id="zstep"><div class="zstep-b" id="zPrev" onclick="zoneStep(-1)" aria-label="Previous brand"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg></div><div class="zstep-b" id="zNext" onclick="zoneStep(1)" aria-label="Next brand"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div></div>
   <div id="scrim" onclick="closeDrawer()"></div>
   <aside id="drawer">
+    <button class="drawer-x" onclick="closeDrawer()" aria-label="Close" title="Close"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
     <div id="drawerHead">Sectors</div>
     <!-- Static DOM sibling of the list — see the note on #gwSearchRow below. -->
     <div id="secSearchRow" class="drawer-search">
@@ -976,6 +1017,7 @@
   <div id="edgeR" onclick="openDrawerR()" aria-label="Open gateways"><i class="edge-knob"></i></div>
   <div id="scrimR" onclick="closeDrawerR()"></div>
   <aside id="drawerR">
+    <button class="drawer-x" onclick="closeDrawerR()" aria-label="Close" title="Close"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
     <div id="drawerRHead"></div>
     <!-- Static DOM, deliberately a SIBLING of the head and list: buildDrawerR() rewrites
          those two by innerHTML, and an input nested inside either would be destroyed on
@@ -990,7 +1032,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-16"></script>
+<script src="genexxo-data.js?v=2026.08.26-17"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1733,7 +1775,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-16';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-17';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -1848,7 +1890,9 @@ function setTab(t){
        second tap does on the phone. */
     if(t!=='events')   state.eventsMemo=null;
     if(t!=='discover') state.discoverMemo=null;
-    if(t==='events' && !state.eventsMemo) state.eventsScope='network';   // fresh open → the Network calendar
+    if(t==='events' && !state.eventsMemo) state.eventsScope = state._evScopeNext || 'network';   // fresh open → the Network calendar (unless asked)
+    state._evScopeNext = null;
+    if(t==='ai') state.aiScope = null;                                   // fresh open → the gateway's agent if you're in one
     render();
     /* The overlay is its own scroll container, so the glimpse has to be restored HERE too —
        the restore below never runs, this branch returns first. That is why coming back to an
@@ -1894,7 +1938,9 @@ function setTab(t){
   }
   if(t!=='events')   state.eventsMemo=null;        // opening any other tab ends the glimpse
   if(t!=='discover') state.discoverMemo=null;
-  if(t==='events' && !state.eventsMemo) state.eventsScope='network';   // fresh open → the Network calendar
+  if(t==='events' && !state.eventsMemo) state.eventsScope = state._evScopeNext || 'network';   // fresh open → the Network calendar (unless asked)
+  state._evScopeNext = null;
+  if(t==='ai') state.aiScope = null;                                   // fresh open → the gateway's agent if you're in one
   render();
   const memo = t==='events' ? state.eventsMemo : t==='discover' ? state.discoverMemo : null;
   $('screen').scrollTo(0, memo ? memo.scroll||0 : 0);
@@ -2594,7 +2640,7 @@ function buildDrawer(){
 
 function updateGwJump(sk, q){
   const btn=$('gwJumpBtn'); if(!btn) return;
-  const show = hasGwGroups(sk) && !q && !state.drawerRFavs;
+  const show = hasGwGroups(sk) && !q;
   btn.style.display = show ? 'flex' : 'none';
   if(!show){ const p=$('gwJump'); if(p) p.hidden=true; }
 }
@@ -2765,7 +2811,6 @@ function openDrawerR(){
   const sk=activeSectorKey(); if(!sk) return;
   frame.classList.remove('chrome-hidden','drawer-open');
   if(window.__resetChrome) window.__resetChrome();
-  state.drawerRFavs = false;                      // always open on the sector view
   state.gwQuery = '';                             // and on the full list, not a stale search
   { const gs=$('gwSearch'); if(gs) gs.value=''; }
   { const p=$('gwJump'); if(p) p.hidden=true; }    // jump popover closed on open
@@ -2798,10 +2843,6 @@ function buildDrawerR(){
   // The right drawer is ALWAYS the sector's gateways (the "family" list) — same on home,
   // sector and inside a brand zone. At zone level activeSectorKey() resolves to the parent
   // gateway's sector, so the family below renders without a zone-specific branch.
-  // Switching between the family list and favourites swaps the whole list, so return to the top —
-  // otherwise a deep scroll position carries over onto a much shorter list and shows blank space.
-  const headStar =`<div onclick="state.drawerRFavs=!state.drawerRFavs;buildRightList();var l=document.getElementById('drawerRList');if(l)l.scrollTop=0" title="Favourites — all sectors"
-    style="margin-left:auto;cursor:pointer;font-size:17px;line-height:1;padding:2px 2px 2px 10px;color:${state.drawerRFavs?'#F5B800':'rgba(17,17,22,.35)'}">${state.drawerRFavs?'★':'☆'}</div>`;
   const rowStar = k => `<div onclick="event.stopPropagation();toggleFavQuiet('${k}')"
     style="font-size:15px;line-height:1;padding:6px 2px 6px 8px;cursor:pointer;color:${state.favs.includes(k)?'#F5B800':'rgba(17,17,22,.22)'}">${state.favs.includes(k)?'★':'☆'}</div>`;
   const actGw = activeGatewayName();               // light the gateway you're currently inside, in its own colour
@@ -2816,112 +2857,95 @@ function buildDrawerR(){
                   && state.returnGw && state.returnGw.sector===sk)
     ? gwKeyFromName(state.returnGw.name) : null;
 
-  // The search box only drives the gateway list, so hide it in favourites mode rather than
-  // leave an input that silently does nothing.
-  const srow=$('gwSearchRow'); if(srow) srow.style.display = state.drawerRFavs ? 'none' : '';
-  if(state.drawerRFavs){
-    setDrawerRHead(`<span class="dic-sm" style="background:linear-gradient(135deg,#111116,#3a3a44)">★</span>Favourites · all sectors ${headStar}`);
-    $('drawerRList').innerHTML = state.favs.length ? state.favs.map(k=>{
-      const g=gwMetaFromKey(k); if(!g) return ''; const s=sectorOf(g.sector);
-      const on = actKey && k===actKey; const {accent, wash} = washFor(g.gradient);
-      return `<div class="drow"${on?' id="drawerRActiveRow"':''} style="${on?`background:${wash};box-shadow:inset 3px 0 0 ${accent};`:''}" onclick="pickGateway('${g.name}','${g.sector}')">
-        <div class="dic" style="background:${g.gradient}">${g.emoji}</div>
-        <div style="flex:1;min-width:0"><div class="dnm" style="${on?`color:${accent};`:''}">${gwLabel(g.name)}</div><div class="dct">${s.icon} ${s.name}</div></div>
-        <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${g.live?LIVE_DOT:''}${rowStar(k)}</div>
-      </div>`;}).join('')
-      : `<div class="empty">No favourites yet —<br>tap ☆ on any gateway to pin it here.</div>`;
-    updateGwJump(sk, '');            // favourites are ungrouped → hide Jump ▾
-
-  } else {
-    const s=sectorOf(sk);
-    /* Carry the sector's own colour up into this header. The left drawer already washes the
-       sector you are in with a lighter version of its gradient; doing the same here ties the
-       two panels together — you can see at a glance that THIS gateway list belongs to THAT
-       sector, rather than reading the name to find out. Same washFor() as the active row, so
-       the two tints are identical by construction and cannot drift apart. */
-    const {accent:sAcc, wash:sWash} = washFor(s.g);
-    setDrawerRHead(`<span class="dic-sm" style="background:${s.g}">${s.icon}</span>${s.name} · Gateways ${headStar}`, sWash, sAcc);
-    const names=(SECTOR_GATEWAYS[sk]||[]);
-    const isFav = n => state.favs.includes(gwKeyFromName(n));
-    const gwRow = name => {
-      const key=gwKeyFromName(name); const real=GATEWAYS[key];
-      const on = actKey && key===actKey; const {accent, wash} = washFor(real?real.gradient:s.g);
-      const from = !on && retKey && key===retKey;      // came out of this one — see retKey above
-      // The rule alone, at half strength. Same geometry as the active row so they line up,
-      // different weight so they never read as the same state.
-      const mark = on   ? `background:${wash};box-shadow:inset 3px 0 0 ${accent};`
-                 : from ? `box-shadow:inset 3px 0 0 ${accent}66;`
-                 : '';
-      return `<div class="drow"${on||from?' id="drawerRActiveRow"':''} style="${mark}" onclick="pickGateway('${name}','${sk}')">
-        <div class="dic" style="background:${real?real.gradient:s.g}">${real?real.emoji:s.icon}</div>
-        <div style="flex:1;min-width:0"><div class="dnm" style="${on?`color:${accent};`:''}">${gwLabel(name)}${from?`<span style="opacity:.45;font-weight:600;font-size:10.5px;margin-left:6px">just visited</span>`:''}</div></div>
-        <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${real?LIVE_DOT:''}${rowStar(key)}</div>
-      </div>`;
-    };
-    // A hit from another sector: same shape as a normal row, but wearing THAT sector's colour
-    // and captioned with the tile(s) it lives in, so it's obvious why it surfaced.
-    const gwWideRow = (name, sks) => {
-      const key=gwKeyFromName(name); const real=GATEWAYS[key];
-      const home=sectorOf(sks[0]);
-      const label=sks.map(k=>sectorOf(k).name).join(' · ');
-      return `<div class="drow drow-wide" onclick="pickGateway('${name}','${sks[0]}')">
-        <div class="dic" style="background:${real?real.gradient:home.g}">${real?real.emoji:home.icon}</div>
-        <div style="flex:1;min-width:0"><div class="dnm">${gwLabel(name)}</div><div class="dwhere">${label}</div></div>
-        <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${real?LIVE_DOT:''}${rowStar(key)}</div>
-      </div>`;
-    };
-    /* ── "Built & live" shortcut (2026-08-19) ────────────────────────────────
-       A shortcut band at the top of the gateway drawer so someone seeing the demo
-       for the first time can reach a built-out gateway immediately instead of
-       scrolling a 400-row structural list looking for a green dot.
-       Only 12 of 69 sectors contain a live gateway, so where the sector has none
-       it falls back to the network's live builds, reusing the same "elsewhere"
-       row treatment as search. Purely additive — the full list still renders
-       below, unchanged, and the shortcut is suppressed while searching.
-       Set LIVE_FIRST = false to remove it entirely. */
-    const liveBand = () => {
-      if(!LIVE_FIRST) return '';
-      const localLive = names.filter(n=>!isGwHeader(n) && gwIsLive(n));
-      if(localLive.length){
-        // white dot, not LIVE_DOT — the standard green dot is invisible on a green pill
-        return `<div class="gwsec gwsec-live"><span class="livepill"><i class="livedot"></i>Live Demo Gateways</span><span class="livect">${localLive.length}</span></div>`
-             + localLive.map(gwRow).join('');
-      }
-      // None built out in this sector yet — say so plainly rather than filling the space with
-      // other sectors' gateways, which read as a distraction from the list you actually opened.
-      return `<div class="gwsec gwsec-soon">Live Demo Gateways · coming soon</div>`;
-    };
-    const q=(state.gwQuery||'').trim().toLowerCase();
-    let out;
-    if(q){
-      // Searching → flatten across sub-groups, drop dividers, live first. Matches name + tags.
-      const local = names.filter(n=>!isGwHeader(n))
-        .filter(n=>{ const hay=gwSearchText(n); return gwQueryForms(q).some(f=>hay.includes(f)); })
-        .sort((a,b)=>(gwIsLive(b)?1:0)-(gwIsLive(a)?1:0));
-      out = local.map(gwRow).join('');
-      // Second tier: the same query across every other sector. A gateway can legitimately live
-      // in several tiles (CardiologyXX is in Health AND Education), and a related one often sits
-      // in a neighbouring tile entirely — without this, searching "cardiology" from Sports finds
-      // nothing at all. Kept visually separate and clearly attributed.
-      const elsewhere = gwFindElsewhere(q, sk, new Set(local.map(n=>n.toLowerCase())));
-      if(elsewhere.length){
-        out += `<div class="gwsec gwsec-wide">Elsewhere in the network · ${elsewhere.length}</div>`
-             + elsewhere.map(h=>gwWideRow(h.name,h.sectors)).join('');
-      }
-    } else if(hasGwGroups(sk)){
-      // Grouped sector — file order; sticky sub-group dividers double as jump anchors (id=gwsec-N).
-      let gi=-1;
-      out = liveBand() + names.map(n => isGwHeader(n)
-        ? `<div class="gwanchor" id="gwsec-${++gi}"></div><div class="gwsec">${n.slice(1)}</div>`
-        : gwRow(n)).join('');
-    } else {
-      // Built-out (live) gateways rise to the top; favourites rise first within each tier.
-      const rank = n => (gwIsLive(n)?0:2) + (isFav(n)?0:1);
-      out = liveBand() + [...names].sort((a,b)=>rank(a)-rank(b)).map(gwRow).join('');
+  const srow=$('gwSearchRow'); if(srow) srow.style.display = '';
+  const s=sectorOf(sk);
+  /* Carry the sector's own colour up into this header. The left drawer already washes the
+     sector you are in with a lighter version of its gradient; doing the same here ties the
+     two panels together — you can see at a glance that THIS gateway list belongs to THAT
+     sector, rather than reading the name to find out. Same washFor() as the active row, so
+     the two tints are identical by construction and cannot drift apart. */
+  const {accent:sAcc, wash:sWash} = washFor(s.g);
+  setDrawerRHead(`<span class="dic-sm" style="background:${s.g}">${s.icon}</span>${s.name} · Gateways`, sWash, sAcc);
+  const names=(SECTOR_GATEWAYS[sk]||[]);
+  const isFav = n => state.favs.includes(gwKeyFromName(n));
+  const gwRow = name => {
+    const key=gwKeyFromName(name); const real=GATEWAYS[key];
+    const on = actKey && key===actKey; const {accent, wash} = washFor(real?real.gradient:s.g);
+    const from = !on && retKey && key===retKey;      // came out of this one — see retKey above
+    // The rule alone, at half strength. Same geometry as the active row so they line up,
+    // different weight so they never read as the same state.
+    const mark = on   ? `background:${wash};box-shadow:inset 3px 0 0 ${accent};`
+               : from ? `box-shadow:inset 3px 0 0 ${accent}66;`
+               : '';
+    return `<div class="drow"${on||from?' id="drawerRActiveRow"':''} style="${mark}" onclick="pickGateway('${name}','${sk}')">
+      <div class="dic" style="background:${real?real.gradient:s.g}">${real?real.emoji:s.icon}</div>
+      <div style="flex:1;min-width:0"><div class="dnm" style="${on?`color:${accent};`:''}">${gwLabel(name)}${from?`<span style="opacity:.45;font-weight:600;font-size:10.5px;margin-left:6px">just visited</span>`:''}</div></div>
+      <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${real?LIVE_DOT:''}${rowStar(key)}</div>
+    </div>`;
+  };
+  // A hit from another sector: same shape as a normal row, but wearing THAT sector's colour
+  // and captioned with the tile(s) it lives in, so it's obvious why it surfaced.
+  const gwWideRow = (name, sks) => {
+    const key=gwKeyFromName(name); const real=GATEWAYS[key];
+    const home=sectorOf(sks[0]);
+    const label=sks.map(k=>sectorOf(k).name).join(' · ');
+    return `<div class="drow drow-wide" onclick="pickGateway('${name}','${sks[0]}')">
+      <div class="dic" style="background:${real?real.gradient:home.g}">${real?real.emoji:home.icon}</div>
+      <div style="flex:1;min-width:0"><div class="dnm">${gwLabel(name)}</div><div class="dwhere">${label}</div></div>
+      <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${real?LIVE_DOT:''}${rowStar(key)}</div>
+    </div>`;
+  };
+  /* ── "Built & live" shortcut (2026-08-19) ────────────────────────────────
+     A shortcut band at the top of the gateway drawer so someone seeing the demo
+     for the first time can reach a built-out gateway immediately instead of
+     scrolling a 400-row structural list looking for a green dot.
+     Only 12 of 69 sectors contain a live gateway, so where the sector has none
+     it falls back to the network's live builds, reusing the same "elsewhere"
+     row treatment as search. Purely additive — the full list still renders
+     below, unchanged, and the shortcut is suppressed while searching.
+     Set LIVE_FIRST = false to remove it entirely. */
+  const liveBand = () => {
+    if(!LIVE_FIRST) return '';
+    const localLive = names.filter(n=>!isGwHeader(n) && gwIsLive(n));
+    if(localLive.length){
+      // white dot, not LIVE_DOT — the standard green dot is invisible on a green pill
+      return `<div class="gwsec gwsec-live"><span class="livepill"><i class="livedot"></i>Live Demo Gateways</span><span class="livect">${localLive.length}</span></div>`
+           + localLive.map(gwRow).join('');
     }
-    $('drawerRList').innerHTML = out || `<div class="empty">No gateways match “${escHtml(state.gwQuery)}”.</div>`;
-    updateGwJump(sk, q);   // show the "Jump ▾" control only for grouped sectors while browsing
+    // None built out in this sector yet — say so plainly rather than filling the space with
+    // other sectors' gateways, which read as a distraction from the list you actually opened.
+    return `<div class="gwsec gwsec-soon">Live Demo Gateways · coming soon</div>`;
+  };
+  const q=(state.gwQuery||'').trim().toLowerCase();
+  let out;
+  if(q){
+    // Searching → flatten across sub-groups, drop dividers, live first. Matches name + tags.
+    const local = names.filter(n=>!isGwHeader(n))
+      .filter(n=>{ const hay=gwSearchText(n); return gwQueryForms(q).some(f=>hay.includes(f)); })
+      .sort((a,b)=>(gwIsLive(b)?1:0)-(gwIsLive(a)?1:0));
+    out = local.map(gwRow).join('');
+    // Second tier: the same query across every other sector. A gateway can legitimately live
+    // in several tiles (CardiologyXX is in Health AND Education), and a related one often sits
+    // in a neighbouring tile entirely — without this, searching "cardiology" from Sports finds
+    // nothing at all. Kept visually separate and clearly attributed.
+    const elsewhere = gwFindElsewhere(q, sk, new Set(local.map(n=>n.toLowerCase())));
+    if(elsewhere.length){
+      out += `<div class="gwsec gwsec-wide">Elsewhere in the network · ${elsewhere.length}</div>`
+           + elsewhere.map(h=>gwWideRow(h.name,h.sectors)).join('');
+    }
+  } else if(hasGwGroups(sk)){
+    // Grouped sector — file order; sticky sub-group dividers double as jump anchors (id=gwsec-N).
+    let gi=-1;
+    out = liveBand() + names.map(n => isGwHeader(n)
+      ? `<div class="gwanchor" id="gwsec-${++gi}"></div><div class="gwsec">${n.slice(1)}</div>`
+      : gwRow(n)).join('');
+  } else {
+    // Built-out (live) gateways rise to the top; favourites rise first within each tier.
+    const rank = n => (gwIsLive(n)?0:2) + (isFav(n)?0:1);
+    out = liveBand() + [...names].sort((a,b)=>rank(a)-rank(b)).map(gwRow).join('');
   }
+  $('drawerRList').innerHTML = out || `<div class="empty">No gateways match “${escHtml(state.gwQuery)}”.</div>`;
+  updateGwJump(sk, q);   // show the "Jump ▾" control only for grouped sectors while browsing
 }
 /* ── The right panel with no sector chosen (desktop pinned only) ──────────────────────────
    Every built-out gateway, network-wide, with your pinned ones first. Derived from GATEWAYS
@@ -2934,8 +2958,6 @@ function buildDrawerRLive(){
   const srow=$('gwSearchRow'); if(srow) srow.style.display = '';   // search drives this list too
   const actGw = activeGatewayName();
   const actKey = actGw ? gwKeyFromName(actGw) : null;
-  const headStar = `<div onclick="state.drawerRFavs=true;buildRightList();var l=document.getElementById('drawerRList');if(l)l.scrollTop=0" title="Favourites — all sectors"
-    style="margin-left:auto;cursor:pointer;font-size:17px;line-height:1;padding:2px 2px 2px 10px;color:rgba(17,17,22,.35)">☆</div>`;
   const rowStar = k => `<div onclick="event.stopPropagation();toggleFavQuiet('${k}')"
     style="font-size:15px;line-height:1;padding:6px 2px 6px 8px;cursor:pointer;color:${state.favs.includes(k)?'#F5B800':'rgba(17,17,22,.22)'}">${state.favs.includes(k)?'★':'☆'}</div>`;
 
@@ -2962,7 +2984,7 @@ function buildDrawerRLive(){
      there is nothing to signal, and colouring it anyway would say the same thing as a real
      selection. The green stays on the tile and the live dots, where it means "built out". */
   setDrawerRHead(
-    `<span class="dic-sm" style="background:linear-gradient(135deg,#16A34A,#22C55E)">◉</span>Live Gateways · ${Object.keys(GATEWAYS).length} ${headStar}`);
+    `<span class="dic-sm" style="background:linear-gradient(135deg,#16A34A,#22C55E)">◉</span>Live Gateways · ${Object.keys(GATEWAYS).length}`);
   $('drawerRList').innerHTML = keys.length
     ? (pinned.length ? `<div class="gwsec">PINNED · ${pinned.length}</div>` + pinned.map(row).join('') : '')
       + `<div class="gwsec">${pinned.length?'EVERYTHING LIVE':'BUILT & LIVE'} · ${rest.length}</div>`
@@ -2983,16 +3005,17 @@ function syncPanelSearch(){
   const sk = activeSectorKey() || null;
   if(sk === _panelSector) return;
   _panelSector = sk;
-  state.secQuery=''; state.gwQuery=''; state.drawerRFavs=false;
+  state.secQuery=''; state.gwQuery='';
   const si=$('secSearch'); if(si) si.value='';
   const gs=$('gwSearch'); if(gs) gs.value='';
   const sj=$('secJump');  if(sj) sj.hidden=true;
   const gj=$('gwJump');   if(gj) gj.hidden=true;
 }
-/* Which of the three right-hand lists belongs on screen. Favourites can be shown with or
-   without a sector; the live list only exists when there is no sector to narrow to. */
+/* Which right-hand list belongs on screen: a sector's gateways, or — with no sector to narrow
+   to — every live gateway. (A third, "Favourites · all sectors" behind a ☆ in this header, was
+   removed 2026-09-24: the ★ panel in the top bar already does that job.) */
 function buildRightList(){
-  if(state.drawerRFavs || activeSectorKey()) buildDrawerR(); else buildDrawerRLive();
+  if(activeSectorKey()) buildDrawerR(); else buildDrawerRLive();
 }
 function toggleFavQuiet(k){    // toggle without a full render — the drawer stays open
   const i=state.favs.indexOf(k);
@@ -3735,6 +3758,29 @@ function zoneSwitch(k){   // deck swatch / drawer: switch brand in place, KEEPIN
   $('screen').scrollTo(0,0);
 }
 function pickZone(k){ closeDrawerR(); zoneSwitch(k); }
+/* Flick through a gateway's brand zones without opening the list (2026-09-24). Same order as the
+   drawer (gw.brandZones that have a zone), wrapping at the ends. zoneSwitch() keeps the tab you
+   are on — Shop to Shop compares brands — and adds no history, so Back still leaves for the
+   gateway instead of rewinding every brand you flicked past. */
+function zoneStepList(){
+  if (state.screen!=='zone' || !state.zone) return null;
+  const gw = zoneLayerGw(); if(!gw) return null;
+  const list = (gw.brandZones||[]).filter(b=>b.key && ZONES[b.key]), n = list.length;
+  if (n < 2) return null;
+  const i = Math.max(0, list.findIndex(b=>b.key===state.zone));
+  return { list, i, prev:list[(i-1+n)%n], next:list[(i+1)%n] };
+}
+function zoneStep(d){
+  const zl = zoneStepList(); if(!zl) return;
+  const k = (d<0 ? zl.prev : zl.next).key;
+  logVisit('brand', k);
+  zoneSwitch(k);
+}
+function syncZoneStep(){
+  const zl = zoneStepList();
+  $('frame').classList.toggle('zstep-on', !!zl);
+  if (zl){ $('zPrev').title = 'Previous brand · '+zl.prev.name; $('zNext').title = 'Next brand · '+zl.next.name; }
+}
 function setZoneTab(t){ state.zoneTab=t; state.zoneProduct=null; state.shopMenu=false; if(t!=='shop') state.shopCat=null; render(); $('screen').scrollTo(0,0); }
 /* Tapping the brand name on the zone top bar returns to the brand feed (Feed · Shop · Bag page). */
 function zoneToFeed(){ state.zoneTab='feed'; state.zoneBarPage='main'; state.zoneProduct=null; state.shopMenu=false; state.shopCat=null; render(); $('screen').scrollTo(0,0); }
@@ -4549,10 +4595,10 @@ const escHtml = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(
    already on screen never re-animates, because each message remembers it has been shown. */
 function aiPaint(){
   const el = $('aiConvo');
-  if (!el || !state.aiThread.length){ render(); return; }   // the layout itself changes → full draw
+  if (!el || !aiCurThread().length){ render(); return; }   // the layout itself changes → full draw
   el.innerHTML = aiConvoHtml();
   const inp = $('aiInput');                                  // lives outside the body: keep its prompt current
-  if (inp) inp.placeholder = state.aiAgent ? 'Ask the '+GATEWAYS[state.aiAgent].name+' Agent…' : 'Ask anything across GENEXXO…';
+  if (inp) inp.placeholder = aiPlaceholder();
 }
 /* The AI's own scrolling is not the user scrolling: hold the auto-hide chrome while it runs,
    so the bars do not slide away every time a reply arrives. */
@@ -4563,7 +4609,8 @@ function aiScrollEnd(){
 }
 
 function sendAIFromInput(){
-  const el=$('aiInput'); if(!el||!el.value.trim()) return; const v=el.value; el.value=''; sendAI(v);
+  const el=$('aiInput'); if(!el||!el.value.trim()) return; const v=el.value; el.value='';
+  if (aiScope()==='gw') sendGwAgent(v); else sendAI(v);
   // The first message swaps the front page for the conversation, which redraws the input — give
   // the caret back, as any chat does. preventScroll: the thread's own scroll decides the position.
   const f=$('aiInput'); if(f && document.activeElement!==f) f.focus({preventScroll:true});
@@ -4831,6 +4878,7 @@ function aiStartTask(k, changing){
   const T = AI_TASKS[k]; if(!T) return;
   if (!changing) state.aiReplacing = null;
   if (state.tab!=='ai' && state.utilOver!=='ai') setTab('ai');   // an update row can start a task from anywhere
+  state.aiScope = 'host';                                        // bookings are the Host's job
   _aiTaskTimers.forEach(clearTimeout); _aiTaskTimers = [];
   const fromFront = !$('aiConvo');
   state.aiThread = [{who:'user', html:escHtml(changing ? `Change my booking — ${changing.title}` : T.ask())}]; state.aiAgent = null; state.aiPendingQ = '';
@@ -4889,18 +4937,23 @@ function aiConfirm(){
 
 /* Reusable AI conversation pieces for the GENEXXO Host tab (renderAI). (2026-07-23;
    the in-zone AI surface was retired 2026-07-27 s3 — AI is ecosystem-level everywhere now.) */
+function aiPlaceholder(){
+  if (aiScope()==='gw') return 'Ask the '+aiGwCtx().g.name+' Agent…';
+  return state.aiAgent ? 'Ask the '+GATEWAYS[state.aiAgent].name+' Agent…' : 'Ask anything across GENEXXO…';
+}
 function aiInputRow(){
   return `<div style="display:flex;gap:8px;margin:14px 16px 6px">
-      <input id="aiInput" placeholder="${state.aiAgent?'Ask the '+GATEWAYS[state.aiAgent].name+' Agent…':'Ask anything across GENEXXO…'}" onkeydown="if(event.key==='Enter')sendAIFromInput()" style="flex:1;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:#fff;color:var(--ink);font-family:var(--font);font-size:13px;outline:none">
+      <input id="aiInput" placeholder="${aiPlaceholder()}" onkeydown="if(event.key==='Enter')sendAIFromInput()" style="flex:1;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:#fff;color:var(--ink);font-family:var(--font);font-size:13px;outline:none">
       <button class="btn" style="background:#111116;color:#fff;border-radius:14px" onclick="sendAIFromInput()">→</button>
     </div>`;
 }
-function aiMsgsHtml(){
-  const msgs = state.aiThread.map(m=>{ const h = aiMsgHtml(m); if(!h) return '';
+function aiMsgsHtml(thread, typingOn){
+  thread = thread || state.aiThread; typingOn = (typingOn===undefined) ? state.aiTyping : typingOn;
+  const msgs = thread.map(m=>{ const h = aiMsgHtml(m); if(!h) return '';
     const cls = m._shown ? 'aimsg' : 'aimsg ai-in'; m._shown = true;
     return `<div class="${cls}">${h}</div>`; }).join('');
-  state.aiThread.forEach(m=>{ if(m.who==='team') m.tick=0; });   // the "just ready" pop plays once
-  const typing = state.aiTyping ? `<div class="aimsg ai-in"><div class="bub" style="background:#fff;border:1px solid var(--line);width:58px"><div class="tdots"><i></i><i></i><i></i></div></div></div>` : '';
+  thread.forEach(m=>{ if(m.who==='team') m.tick=0; });   // the "just ready" pop plays once
+  const typing = typingOn ? `<div class="aimsg ai-in"><div class="bub" style="background:#fff;border:1px solid var(--line);width:58px"><div class="tdots"><i></i><i></i><i></i></div></div></div>` : '';
   return msgs + typing;
 }
 function aiMsgHtml(m){ {
@@ -4915,6 +4968,9 @@ function aiMsgHtml(m){ {
         <div style="flex:1"><div class="nm">Continue with the ${g.name} Agent</div><div class="dm">The gateway’s specialist joins this thread — live data from ${g.domain}</div></div>
         <div style="font-size:17px;color:var(--muted)">›</div>
       </div>`; }
+    if(m.who==='gwa') return `
+      <div class="agent-tag" style="color:${m.accent}"><span style="font-size:12px">${m.emoji}</span>${m.name} Agent</div>
+      <div class="bub" style="background:#fff;border:1px solid var(--line);border-left:3px solid ${m.accent}">${m.html}</div>`;
     if(m.who==='task'){ const a=taskAgent(m.a); return `
       <div class="agent-tag" style="color:${a.accent}"><span style="font-size:12px">${a.emoji}</span>${a.name} Agent</div>
       <div class="bub" style="background:#fff;border:1px solid var(--line);border-left:3px solid ${a.accent}">${m.html}</div>`; }
@@ -4946,7 +5002,197 @@ function aiMsgHtml(m){ {
   }
 }
 
+/* ═════════ GATEWAY AGENT TAB (2026-09-24) ═════════
+   The GENEXXO Host is the network's personal assistant; every gateway also has its own specialist.
+   Open AI from inside a gateway (or one of its brand zones) and the tab row reads
+   ✦ GENEXXO Host · 🧗 ClimbXX Agent — the same layering the Events scopes show — with the gateway
+   agent selected, because standing in ClimbXX and asking for help almost always means climbing.
+   From anywhere else there is only the Host, as before.
+   Works for ALL gateways, not just the 20 built out: a structural one (BodyboardXX) gets an agent
+   whose front page is drawn from its name and tagline — every gateway, at any scale, has an expert.
+   Each agent keeps its own thread (state.gwThreads[key]), so switching tabs loses nothing.
+   A DEMO: answers are composed from the gateway's own data (trending, brands, events, apps, pros)
+   and plausible fictional detail; nothing is looked up live. */
+function aiGwCtx(){
+  const c = state.utilOver ? state : state._before; if(!c) return null;
+  if (!(c.screen==='gateway' || c.screen==='zone')) return null;
+  const g = c._gwObj || (c.gateway && GATEWAYS[c.gateway] && getGateway(GATEWAYS[c.gateway].name)); if(!g) return null;
+  const key = gwKeyFromName(g.name);
+  const subject = (g.tagline||'').replace(/^The /,'').replace(/ Universe$/,'') || g.name.replace(/XX$/,'');
+  return { g, key, live: !!GATEWAYS[key], subject, subj: subject.toLowerCase(),
+           accent: (g.theme && g.theme.accent) || accentOf(sectorOf(g.sector)||SECTORS[0]) };
+}
+function aiScope(){ return aiGwCtx() ? (state.aiScope || 'gw') : 'host'; }
+function setAiScope(k){ state.aiScope = k; render(); const sc=utilHost(); if(sc){ sc.scrollTop=0; if(window.__syncChrome) window.__syncChrome(); } }
+function aiGwThread(key){ const t = state.gwThreads || (state.gwThreads = {}); return t[key] || (t[key] = []); }
+function aiCurThread(){ const c = aiGwCtx(); return aiScope()==='gw' ? aiGwThread(c.key) : state.aiThread; }
+function aiScopeTabs(ctx, scope){
+  return `<div class="evscope aiscope">
+    <div class="evsc${scope==='host'?' on':''}" onclick="setAiScope('host')"><span class="ic">✦</span><span class="lb">GENEXXO Host</span></div>
+    <div class="evsc${scope==='gw'?' on':''}" onclick="setAiScope('gw')"><span class="ic">${ctx.g.emoji}</span><span class="lb">${escHtml(ctx.g.name)} Agent</span></div>
+  </div>`;
+}
+function gwAgentReset(){ const c=aiGwCtx(); if(!c) return; _aiTaskTimers.forEach(clearTimeout); _aiTaskTimers=[];
+  state.gwThreads[c.key] = []; state.gwTyping = false; state._aiFade = true; render(); utilHost().scrollTo(0,0); }
+function aiGwEvents(){ state._evScopeNext = 'gateway'; setTab('events'); }
+
+function sendGwAgent(text){
+  const ctx = aiGwCtx(); if(!ctx || !(text||'').trim()) return;
+  state.aiScope = 'gw';
+  const th = aiGwThread(ctx.key), fromFront = !th.length;
+  th.push({who:'user', html:escHtml(text)});
+  state.gwTyping = true;
+  if (fromFront){ state._aiFade = true; render(); const sc=utilHost(); if(sc){ sc.scrollTop=0; if(window.__syncChrome) window.__syncChrome(); } }
+  else { aiPaint(); aiScrollEnd(); }
+  aiLater(850, ()=>{
+    state.gwTyping = false;
+    th.push({who:'gwa', name:ctx.g.name, emoji:ctx.g.emoji, grad:ctx.g.gradient, accent:ctx.accent, html:gwAgentAnswer(ctx, text)});
+    aiPaint(); aiScrollEnd();
+  });
+}
+/* Curated answers for every gateway's own suggested questions — the ones a viewer actually taps.
+   Keyed by the exact prompt text in GATEWAYS[k].prompts. Real places and facts are real; every
+   brand is one of the app's fictional zones; finance and health answers explain, never advise,
+   and invent no live market data. Free-typed questions fall through to gwAgentAnswer's matching. */
+const GW_PROMPT_ANSWERS = {
+  'Best crags for a beginner within 2h of London?': `Southern Sandstone, about an hour out: <b>Harrison’s Rocks</b> and <b>Bowles Rocks</b> near Tunbridge Wells are the classic first crags — short walls, top-rope only. The rock is soft, so the local ethic is ropes over the edge and never climbing it wet. Bowles runs taster sessions; the ClimbXX community meets there most Sundays.`,
+  'When is the next conditions window at Malham?': `Malham Cove seeps for days after rain. The ClimbXX conditions model has the next dry window <b>Thursday to Saturday</b>: two dry days first, light westerly, 9–13°C. The Catwalk will be the first line to dry. Add <b>Conditions</b> from the ★ layer and you’ll get a ping when it’s go.`,
+  'Where is the best snow in the Alps this week?': `<b>Verbier</b> took 40cm overnight, the deepest in the Alps this week, with <b>Val d’Isère–Tignes</b> close behind at 25cm. North-facing slopes above 2,000m are holding the best of it. The SkiXX community is calling Wednesday the bluebird day.`,
+  'Check avalanche risk for Méribel backcountry': `The regional bulletin has <b>level 3 (considerable)</b> above 2,200m on north-to-east aspects, where fresh snow was wind-loaded. Below that it’s level 2. That’s a day for low-angle terrain and a guide. Read the full Météo-France bulletin before you go: I summarise it, I don’t replace it.`,
+  'Where should I surf this weekend on the south coast?': `<b>Saturday dawn at Boscombe</b>: 3ft of mid-period swell with a light north-easterly offshore until about 10am. By Sunday it drops to 1–2ft and <b>Kimmeridge</b> is the pick on the low tide. The SurfXX crew is paddling out at Boscombe at 7.`,
+  '7-day swell outlook for Hossegor': `A new <b>WNW groundswell</b> builds from Tuesday and peaks Thursday at 6–8ft, 14-second period, the best of the week at La Gravière. Wind turns onshore Friday afternoon. <b>Wednesday and Thursday mornings</b> are the window.`,
+  'Build me a 100km route with under 800m of climbing': `Drafted: a <b>102km loop, 760m of climbing</b>, out through the flat lanes of the Weald and back on a gentle valley road, with the one real climb at 40km, while your legs are fresh. It has two café stops the CycleXX community rates. Want it sent to your Whirl computer?`,
+  'What is a good FTP for my age group?': `Compare in <b>watts per kilo</b>, not raw watts. As a rough guide for an adult amateur: about <b>2.0 W/kg</b> untrained, <b>3.0</b> fit and riding regularly, <b>4.0</b> strong club racer, and 5.0+ elite. Age takes off roughly 0.5–1% a year after 35, less if you keep the intensity in.`,
+  'Plan a weather window for a Channel crossing': `Look for <b>24–36 hours of Force 3–5 from the west or south-west</b>, and time your passage to avoid wind against tide at the headlands and the Alderney Race. The SailXX model shows one opening <b>Friday 06:00 to Saturday 18:00</b>. Leave on the first of the ebb for a fair tide mid-Channel.`,
+  'Best first cruising yacht under £60k?': `The SailXX community’s three picks: a <b>Bavaria 34</b>, the most boat for the money; a <b>Jeanneau Sun Odyssey 32</b>, which sails best; and a <b>Beneteau Oceanis 331</b>, easy for a couple to handle. Budget 10% on top for the survey and the first year’s kit. Gimbal Marine’s zone has the electronics packages to match.`,
+  'Style a full goth look under £200': `Here’s the look, all from <b>Kohlstar</b>: velvet midi dress £65, lace-up platform boots £85, a silver ring stack £22 and a mesh-sleeve jacket £24 over it. That’s <b>£196</b>. Swap the jacket for a vintage frock coat from the GothXX marketplace if you’d like it darker.`,
+  'Which platform boots last the longest?': `Longevity comes down to the <b>sole construction</b>. Goodyear-welted or stitched platforms can be resoled; glued ones can’t. Full-grain leather beats synthetic by years. The GothXX community’s longest-lasting pick is Kohlstar’s welted leather platform, with owners reporting 6+ years.`,
+  'Find me a wedding-guest dress under £150': `Three from <b>Aspire</b>, all in sizes 4–26: a sage satin slip dress at £89, a floral chiffon midi at £110 and a pleated cobalt maxi at £135. They’re guest-safe colours, and none of them is white, ivory or bridal-adjacent. Each has community photos from real weddings.`,
+  'What should I wear to a black-tie gala?': `Black tie means <b>floor-length</b>, or an elevated cocktail dress at the most modern events. Choose one rich fabric, such as satin, velvet or structured lace, and let it lead. <b>Silvere Paris</b>’s architectural lace gowns are the DressXX community’s gala favourite this season.`,
+  'Is a Chastel Classic Flap a good investment?': `Historically it has held its value better than most bags. Resale for the medium in black caviar leather has tracked above retail on <b>Rebloom</b>. But it’s a luxury purchase first: returns depend on condition, receipts and the colour you choose. Treat any gain as a bonus, not a plan.`,
+  'How do I authenticate a pre-loved bag?': `Check five things: even, angled <b>stitching</b>; a crisp <b>heat stamp</b>; heavy, engraved <b>hardware</b>; a <b>serial number or microchip</b> that matches the era; and correct <b>lining and interior tags</b>. Then have it verified. Rebloom authenticates every bag it lists, and HandbagXX pros offer independent checks.`,
+  'Explain sanforized vs unsanforized denim': `<b>Sanforized</b> denim is pre-shrunk at the mill, so it shrinks only 1–3% and fits as bought. <b>Unsanforized</b>, or loomstate, isn’t: it can shrink 7–10% on its first soak and twists slightly. Buy it a size up, soak it before you wear it, and let it mould to you.`,
+  'How do I get the best fades from raw denim?': `Wear them hard and wash them late, ideally <b>6+ months before the first soak</b>. Wear creates the honeycombs behind the knee and the whiskers at the hip, so a consistent fit and daily wear matter more than anything else. Soak them cold and inside out, and air-dry. <b>Iron Hall</b>’s 21oz selvedge gives the highest-contrast fades in the DenimXX gallery.`,
+  'Build me a high-protein day under 2,000 kcal': `A day at about <b>1,900 kcal and 150g protein</b>:<div style="margin-top:6px">Breakfast: 250g Greek yoghurt with berries (25g)</div><div>Lunch: 150g chicken with a quinoa and veg salad (50g)</div><div>Snack: a protein shake (30g)</div><div>Dinner: 150g salmon with greens and new potatoes (40g)</div><div style="margin-top:6px;opacity:.7;font-size:12px">MyFlexPlate can log it for you in one tap.</div>`,
+  'Explain why my blood sugar spikes on white rice': `White rice is fast-digesting starch with most of its fibre removed, so it turns to glucose quickly. To soften the spike: eat your <b>vegetables and protein first</b>, pair the rice with fat or fibre, try it <b>cooked, cooled and reheated</b> (that forms resistant starch), and take a 10-minute walk afterwards. If your readings worry you, talk to your GP.`,
+  'Why does alcohol wreck my REM sleep?': `Alcohol sedates you, which isn’t the same as sleep. It <b>suppresses REM in the first half of the night</b>, then wears off, and you get fragmented, lighter sleep and early waking. Stopping <b>3–4 hours before bed</b> recovers most of it. Whim users see the difference in their recovery score the next morning.`,
+  'Build me a wind-down routine for a 10pm bedtime': `<b>9:00</b> screens down, lights low and warm.<br><b>9:15</b> a warm shower (the drop in body temperature afterwards cues sleep).<br><b>9:30</b> paper book, or a Calma sleep story.<br><b>9:50</b> four rounds of 4-7-8 breathing.<br><b>10:00</b> lights out, in a cool, dark room.<br>Keep it the same every night: consistency is what makes it work.`,
+  'Teach me a 12-minute morning sun salutation': `<b>2 min</b> — standing breath, arms rising on the inhale.<br><b>6 min</b> — 4 rounds of Surya Namaskar A: forward fold, half lift, plank, chaturanga, upward dog, downward dog for 5 breaths, step forward and rise.<br><b>3 min</b> — 2 slower rounds, holding each pose for 3 breaths.<br><b>1 min</b> — stillness. Lumenara has it as a guided video.`,
+  'Which breathwork helps most with anxiety?': `The best-supported technique is the simplest: <b>slow breathing with a longer exhale</b>. In for 4, out for 6, for five minutes. For a quick reset, the <b>physiological sigh</b> (two short inhales through the nose, one long exhale) works within a few breaths. <b>Box breathing</b> (4-4-4-4) is the steadier option before a stressful moment.`,
+  'Build me a sauna and cold-plunge contrast protocol': `<b>Three rounds:</b> 12–15 minutes of sauna at 80–90°C, then 1–3 minutes of cold at 10–15°C, then 5 minutes of rest. Finish on cold if you want alertness, on warmth if you want sleep. Build up the cold time gradually. If you have a heart condition or high blood pressure, check with your doctor first.`,
+  'Where are the best onsen in Japan?': `The SpaXX community’s five: <b>Kusatsu</b> (strong, famous waters), <b>Beppu</b> (the most varied, with its “hells”), <b>Hakone</b> (the easiest from Tokyo), <b>Kinosaki</b> (walk between seven public baths in a yukata) and <b>Noboribetsu</b> (Hokkaido, with nine types of water).`,
+  'Which therapy modality fits anxiety best?': `<b>CBT</b> has the strongest evidence for most anxiety. For phobias and OCD, <b>exposure-based therapy</b> is the gold standard. <b>ACT</b> suits people who want to live alongside anxious thoughts rather than argue with them. BalanceHelp matches you with a therapist by modality, and your GP can refer you too.`,
+  'Walk me through a CBT thought record': `Take one moment that upset you, then work through seven steps. <b>1 · Situation</b>: what happened. <b>2 · Feeling</b>: name it and rate it 0–100. <b>3 · Automatic thought</b>: what went through your mind. <b>4 · Evidence for it.</b> <b>5 · Evidence against it.</b> <b>6 · A balanced thought.</b> <b>7 · Re-rate the feeling.</b> The drop in that rating is the point. Headcalm has a template.`,
+  'Explain the Fed decision in plain English': `The Fed sets the cost of borrowing. <b>Holding</b> rates says inflation isn’t low enough to cut yet. <b>Cutting</b> says it’s worried about growth. <b>Hiking</b> says prices are running hot. Markets care less about the decision itself than about the <b>outlook</b>: the “dot plot” and the tone of the press conference.`,
+  'What moved the GMI 500 today?': `The GMI 500 closed <b>up 0.8%</b>. <b>Chipmakers</b> led after a strong earnings beat, and banks followed on steeper yields. Utilities and consumer staples lagged as money rotated toward growth. Charterly has the full sector heatmap.`,
+  'Why is the yen strengthening?': `The yen usually strengthens for three reasons. The <b>Bank of Japan tightens</b>, which narrows the rate gap with the US. <b>Risk-off moves</b> send money to safe havens. And <b>carry trades unwind</b>, so investors buy back the yen they had borrowed. The CurrencyXX desk tracks which of the three is doing the work.`,
+  'Explain the carry trade in one paragraph': `You borrow in a currency with <b>low interest rates</b>, historically the yen, and invest in one with <b>high rates</b>, pocketing the difference. It pays steadily while exchange rates are calm. But if the funding currency jumps, everyone rushes to repay at once, and a slow, steady gain can reverse in days.`,
+  'What are the on-chain signals saying?': `The four signals the BitcoinXX community reads first: <b>exchange netflows</b> (coins leaving exchanges usually means holding), <b>long-term holder supply</b>, <b>MVRV</b> (how far the price sits above the average cost basis) and <b>hash rate</b> (miner confidence). No single one calls the market, so watch them together.`,
+  'Explain Bitcoin ETF flows simply': `A spot Bitcoin ETF holds real bitcoin. When investors buy shares, the fund has to <b>buy bitcoin</b> (an inflow); when they sell, it sells (an outflow). Daily flows show how much traditional money is moving in or out, which is why the community tracks them so closely.`,
+  'Should I lock my remortgage rate now?': `In the UK you can usually <b>secure a rate up to six months before</b> your current deal ends, and many lenders will let you switch if rates fall before completion. So locking early often has little downside. The real choice is <b>fixed</b> (certainty) versus <b>tracker</b> (flexibility). A broker like Habitnow can check your options. This is information, not advice.`,
+  'How much deposit do I actually need?': `In the UK the minimum is usually <b>5%</b> (a 95% mortgage). Rates improve at each step: 10%, 15%, 25% and 40% deposit. Budget separately for <b>stamp duty</b>, legal fees and a survey. First-time buyers get stamp duty relief up to a threshold.`,
+  'How much should I be saving for retirement?': `A common rule of thumb: take <b>half your age when you start</b> as a percentage of salary, including your employer’s contribution (start at 30, save about 15%). For a target, the UK Retirement Living Standards put a single person at roughly <b>£14k (minimum), £31k (moderate) or £43k (comfortable)</b> a year. This is information, not advice.`,
+  'Explain the higher-rate pension tax relief': `Pension contributions get tax relief at your marginal rate. With a relief-at-source pension, <b>20% is added automatically</b>; as a higher-rate taxpayer you claim <b>another 20%</b> through your self-assessment return, and many people forget to. With <b>salary sacrifice</b>, you get full relief automatically, plus a National Insurance saving.`,
+};
+function gwAgentAnswer(ctx, q){
+  const {g, key, live, subj} = ctx; q = q||'';
+  if (GW_PROMPT_ANSWERS[q.trim()]) return GW_PROMPT_ANSWERS[q.trim()];
+  if (live){                                   // the hand-written answers (Chamonix partners, ski shells…) win
+    const a = agentAnswer(key, q, false);
+    if (!/^Ask me anything inside/.test(a.replace(/<[^>]+>/g,''))) return a;
+  }
+  const brands = g.brandZones||[], apps = g.apps||[], pros = g.pros||[], tags = g.trending||[];
+  const members = g.stats && g.stats.members && g.stats.members!=='—' ? g.stats.members : null;
+  if (/trend|behind|happening|new in|this week|right now/i.test(q))
+    return tags.length
+      ? `Right now in ${g.name}: ${tags.map(t=>`<b>${t}</b>`).join(' · ')}. The sharpest spike is <b>${tags[0]}</b> — it has tripled in the last 48 hours, led by the ${subj} community’s most-followed members. Want a digest of the best posts?`
+      : `${g.name} is just opening, so the feed is quiet for now. I’m watching for the first ${subj} conversations and will surface the good ones here the moment they land.`;
+  if (/\b(where|spots?|places?|crags?|breaks?|trails?|resorts?|destinations?)\b/i.test(q))
+    return `The ${g.name} community has mapped this. The three most-recommended ${subj} spots for what you’re after all have fresh reports from this week, and I can put them on a map with travel times and conditions.`;
+  if (/gear|compare|buy|kit|top-rated|shoes?|jackets?|\bboards?\b|brands?/i.test(q))
+    return brands.length
+      ? `Top-rated across ${g.name}’s brand zones:<div style="margin-top:6px">${brands.slice(0,3).map((b,i)=>`<div style="margin-top:4px">${i+1}. <b>${escHtml(b.name)}</b> — ${escHtml(b.tag||'')}</div>`).join('')}</div><div style="margin-top:8px;opacity:.7;font-size:12px">Each zone carries full community reviews and sizing. Tell me your budget and I’ll shortlist.</div>`
+      : `No brands have opened a zone in ${g.name} yet. When they do, their ${subj} kit, reviews and live drops land here, and I’ll compare them for you side by side.`;
+  if (/plan|train|learn|start|beginner|first month|weeks/i.test(q))
+    return `Here’s a ${subj} plan built from what the ${g.name} community rates:
+      <div style="margin-top:6px"><b>Weeks 1–2 · Foundations</b> — short, frequent sessions; technique over intensity.</div>
+      <div style="margin-top:4px"><b>Weeks 3–4 · Build</b> — add volume, one harder session a week, log everything.</div>
+      <div style="margin-top:4px"><b>Weeks 5–6 · Test yourself</b> — a benchmark session or your first ${g.name} event.</div>
+      ${apps.length?`<div style="margin-top:8px;opacity:.75;font-size:12px">Add <b>${escHtml(apps[0].name)}</b> from the ★ layer and it tracks the plan for you.</div>`:''}`;
+  if (/event|coming up|meet-?up|calendar/i.test(q)){
+    const evs = evAll().filter(e=>e.gw===key).slice(0,3);
+    return evs.length
+      ? `Coming up in ${g.name}:${evs.map(e=>`<div style="margin-top:6px">${e.icon} <b>${e.time}</b> · ${e.title}</div>`).join('')}<div style="margin-top:8px;opacity:.7;font-size:12px">The full calendar is under <b>Events in ${g.name}</b> on my front page.</div>`
+      : `Nothing dated in ${g.name} yet. The Network calendar in Events has everything else, and I’ll tell you the moment something ${subj} is announced.`;
+  }
+  if (/people|partner|friends|community|near me|buddy/i.test(q))
+    return `${members?`${members} members are active in ${g.name}. `:''}Three near you are looking for ${subj} partners this week — I can introduce you in the community space.${pros.length?` <b>${escHtml(pros[0].name)}</b> also runs sessions for newcomers.`:''}`;
+  if (/\b(pros?|coach(es)?|guides?|instructors?|experts?)\b/i.test(q))
+    return pros.length
+      ? `Verified pros in ${g.name}:${pros.map(p=>`<div style="margin-top:5px"><b>${escHtml(p.name)}</b> — ${escHtml(p.tag||p.tier||'')}</div>`).join('')}`
+      : `Pro Zones in ${g.name} open as coaches and specialists join. Want me to alert you when the first ${subj} pros arrive?`;
+  return `Good question for ${g.name}. I draw on the whole gateway — the ${subj} community, every brand zone, the events calendar and what’s live right now — so I can go deep, compare options or act for you. Try me on gear, a plan, events or what’s trending.`;
+}
+
+function renderGwAgent(ctx, tabs, inputRow){
+  const {g, key, live, subj} = ctx, th = aiGwThread(key);
+  const fade = state._aiFade ? ' ai-fade' : ''; state._aiFade = false;
+  if (th.length) return `${topBar()}
+  <div class="push${fade}">
+    ${tabs}
+    <div class="sect" style="display:flex;align-items:center;gap:10px;padding-top:10px;padding-bottom:12px">
+      <div class="aihome" onclick="gwAgentReset()" title="Back to the ${escHtml(g.name)} Agent">
+        <span class="chev">‹</span>
+        <div style="width:32px;height:32px;border-radius:11px;background:${g.gradient};display:flex;align-items:center;justify-content:center;font-size:16px">${g.emoji}</div>
+        <div style="font-size:14px;font-weight:800">${escHtml(g.name)} Agent</div>
+      </div>
+      <div onclick="gwAgentReset()" style="margin-left:auto;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;border:1px solid var(--line);border-radius:99px;padding:5px 11px;background:#fff">New chat</div>
+    </div>
+    <div id="aiConvo">${aiConvoHtml()}</div>
+    ${inputRow}
+    <div style="height:16px"></div>
+  </div>`;
+  // Front page — the "this space is everything about the gateway" section, given the whole screen.
+  const gen = [`What’s new in ${subj} this week?`, `Best ${subj} gear for a beginner?`, `Plan my first month of ${subj}`, `Any ${subj} events coming up?`];
+  const prompts = [...(g.prompts||[]), ...gen].filter((p,i,a)=>a.indexOf(p)===i).slice(0,4);
+  const tasks = [
+    ['📅', `Events in ${g.name}`, 'Its own calendar', `aiGwEvents()`],
+    ['🗺️', 'Build me a plan', '6 weeks, your level', `sendGwAgent('Build me a ${subj.replace(/'/g,'')} plan for the next 6 weeks')`],
+    ['⚖️', 'Compare top gear', 'From its brand zones', `sendGwAgent('Compare the top-rated ${subj.replace(/'/g,'')} gear')`],
+    ['🤝', 'Find my people', 'Partners & pros near you', `sendGwAgent('Find people into ${subj.replace(/'/g,'')} near me')`],
+  ];
+  const brands = (g.brandZones||[]).filter(b=>b.key && ZONES[b.key]);
+  const st = g.stats||{};
+  return `${topBar()}
+  <div class="push${fade}">
+    ${tabs}
+    <div class="gwhero" style="background:${g.gradient}">
+      <div class="em">${g.emoji}</div>
+      <div style="min-width:0">
+        <div class="t">${escHtml(g.name)} Agent</div>
+        <div class="s">Everything ${escHtml(subj)} — ask me anything. I know ${escHtml(g.domain||g.name)} inside out: its community, brands, events and what’s happening right now.</div>
+        <div class="m">${live ? `${st.members||'—'} members · ${st.brands||'—'} brands · ${st.agents||'—'} agents` : `New gateway · its agent is ready from day one`}</div>
+      </div>
+    </div>
+    ${(g.trending||[]).length ? `<div class="sect"><div class="sect-h"><div class="t">Live in ${escHtml(g.name)}</div><div class="a">trending</div></div></div>
+      <div class="chips" style="padding-top:0">${g.trending.map(t=>`<div class="chip" onclick="sendGwAgent('What’s behind ${t.replace(/'/g,'')} right now?')">${t}</div>`).join('')}</div>` : ''}
+    <div class="sect"><div class="sect-h"><div class="t">Ask me</div><div class="a">${escHtml(g.name)} specialist</div></div></div>
+    <div class="prompts">${prompts.map(p=>`<div class="prompt" style="background:#fff;border-color:var(--line)" onclick="sendGwAgent(this.textContent)">${p}</div>`).join('')}</div>
+    ${inputRow}
+    <div class="sect"><div class="sect-h"><div class="t">Do it for me</div><div class="a">inside ${escHtml(g.name)}</div></div></div>
+    <div class="aitasks">${tasks.map(([ic,t,sb,go])=>`<div class="aitask" onclick="${go}">
+        <div class="ic" style="background:${g.gradient}">${ic}</div>
+        <div style="min-width:0"><div class="nm">${escHtml(t)}</div><div class="sb">${sb}</div></div></div>`).join('')}</div>
+    ${brands.length ? `<div class="sect"><div class="sect-h"><div class="t">Brands in ${escHtml(g.name)}</div><div class="a">${brands.length}</div></div></div>
+      ${brands.map(b=>{ const z=ZONES[b.key]; return `<div class="aiupd" onclick="openZoneFav('${b.key}')">
+        <div class="ic" style="background:${b.logo?'#fff;border:1px solid var(--line)':(z.gradient||z.color)};font-size:11px;font-weight:800;color:#fff">${b.logo?`<img src="${mediaUrl(b.logo)}" alt="" style="width:80%;height:80%;object-fit:contain">`:z.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+        <div style="flex:1;min-width:0"><div class="h"><b>${escHtml(z.name)}</b><span>Visit ›</span></div><div class="x">${escHtml(z.tagline||b.tag||'')}</div></div></div>`;}).join('')}` : ''}
+    <div style="height:16px"></div>
+  </div>`;
+}
+
 function aiConvoHtml(){
+  if (aiScope()==='gw') return aiMsgsHtml(aiGwThread(aiGwCtx().key), state.gwTyping);
   const ag = state.aiAgent ? GATEWAYS[state.aiAgent] : null;
   const agentStrip = ag ? `<div style="display:flex;align-items:center;gap:8px;margin:0 16px 12px;padding:8px 12px;border-radius:12px;background:${ag.theme.accent}12;border:1px solid ${ag.theme.accent}30">
       <span style="width:22px;height:22px;border-radius:7px;background:${ag.gradient};display:flex;align-items:center;justify-content:center;font-size:11px">${ag.emoji}</span>
@@ -4961,6 +5207,9 @@ function aiConvoHtml(){
 }
 function renderAI(){
   const inputRow=aiInputRow();
+  const gwCtx = aiGwCtx(), scope = aiScope();
+  const scopeTabs = gwCtx ? aiScopeTabs(gwCtx, scope) : '';
+  if (scope==='gw') return renderGwAgent(gwCtx, scopeTabs, inputRow);
 
   if(!state.aiThread.length){
     const prompts = [
@@ -4969,33 +5218,14 @@ function renderAI(){
       'Find me a climbing partner near Chamonix',
       'Compare the top 3 ski jackets my gateways rate',
     ];
-    // Gateway agents rail — ordered by where you ARE and where you've BEEN: the gateway you
-    // opened AI from leads (highlighted "here now"), then most-recently-visited (reusing
-    // state.recent), then your core gateways. So SpaXX's agent sits first the moment you open
-    // AI inside SpaXX, and earlier agents drift right as you move around the ecosystem.
-    const ctxObj = ((state.screen==='gateway'||state.screen==='zone') && state._gwObj) ? state._gwObj
-                 : (state._before && state._before._gwObj) ? state._before._gwObj : null;
-    const ctxKey = ctxObj ? gwKeyFromName(ctxObj.name) : null;
-    const order = [];
-    if(ctxKey && GATEWAYS[ctxKey]) order.push(ctxKey);
-    state.recent.filter(r=>r.t==='gateway').forEach(r=>{ if(GATEWAYS[r.k] && !order.includes(r.k)) order.push(r.k); });
-    YOUR_GATEWAYS.forEach(k=>{ if(GATEWAYS[k] && !order.includes(k)) order.push(k); });
-    const ctxG = ctxKey ? GATEWAYS[ctxKey] : null;
-    const agents = order.slice(0,14).map(k=>{const g=GATEWAYS[k]; const here=k===ctxKey; return `
-      <div class="gwv" onclick="aiAgentChat('${k}')">
-        <div class="ring" style="background:${g.gradient};position:relative;${here?`box-shadow:0 0 0 3px var(--bg,#fff),0 0 0 5px ${g.theme.accent}`:''}"><div class="face">${g.emoji}</div>${here?`<span title="You're here" style="position:absolute;bottom:0;right:0;width:14px;height:14px;border-radius:50%;background:${g.theme.accent};border:2.5px solid var(--bg,#fff)"></span>`:''}</div>
-        <div class="nm"${here?` style="font-weight:800;color:${g.theme.accent}"`:''}>${g.name}</div>
-      </div>`;}).join('');
-    const agentNote = ctxG
-      ? `You're in <b>${ctxG.name}</b> — its agent leads below, ready to join this chat. Tap any to bring in a specialist.`
-      : `Each gateway has its own expert agent — tap one and it joins this chat.`;
     const fade = state._aiFade ? ' ai-fade' : ''; state._aiFade = false;
     return `${topBar()}
   ${favPanelHtml()}
   ${applyPanelHtml()}
   ${infoPanelHtml()}
     <div class="push${fade}">
-      <div class="sect" style="display:flex;align-items:center;gap:12px;padding-top:20px">
+      ${scopeTabs}
+      <div class="sect" style="display:flex;align-items:center;gap:12px;padding-top:${scopeTabs?'12':'20'}px">
         <div style="width:46px;height:46px;border-radius:16px;background:linear-gradient(135deg,#111116,#3a3a44);display:flex;align-items:center;justify-content:center;color:#fff;font-size:21px">✦</div>
         <div><div style="font-size:16.5px;font-weight:800">GENEXXO Host</div>
         <div style="font-size:11px;color:var(--muted);font-weight:600">One AI across every gateway you belong to</div></div>
@@ -5006,9 +5236,6 @@ function renderAI(){
       ${inputRow}
       <div class="prompts">${prompts.map(p=>`<div class="prompt" style="background:#fff;border-color:var(--line)" onclick="sendAI(this.textContent)">${p}</div>`).join('')}</div>
       ${aiUpdatesHtml()}
-      <div class="sect"><div class="sect-h"><div class="t">Gateway agents</div><div class="a">specialists</div></div></div>
-      <div style="padding:0 16px 4px;font-size:11.5px;color:var(--muted);font-weight:600;line-height:1.5">${agentNote}</div>
-      <div class="rail" style="padding-top:10px">${agents}</div>
       <div style="height:16px"></div>
     </div>`;
   }
@@ -5018,7 +5245,8 @@ function renderAI(){
   const fade = state._aiFade ? ' ai-fade' : ''; state._aiFade = false;
   return `${topBar()}
   <div class="push${fade}">
-    <div class="sect" style="display:flex;align-items:center;gap:10px;padding-top:16px;padding-bottom:12px">
+    ${scopeTabs}
+    <div class="sect" style="display:flex;align-items:center;gap:10px;padding-top:${scopeTabs?'10':'16'}px;padding-bottom:12px">
       <!-- The Host mark is the way home (2026-09-24): out of a booking or any thread, back to the AI
            tab's front page — Your week, Do it for me, updates. A chevron says it is a control. -->
       <div class="aihome" onclick="aiReset()" title="Back to GENEXXO Host">
@@ -5166,12 +5394,6 @@ function renderEvents(){
 // Profile body, shared by the root Profile tab and the in-zone Profile peek (so tapping
 // Profile inside a brand zone shows the SAME identity without swapping the bottom bar).
 function profileBody(){
-  // same circular ring avatars as the AI tab's agents rail — one visual language for "your gateways"
-  const gws = YOUR_GATEWAYS.map(k=>{const g=GATEWAYS[k]; if(!g) return ''; return `
-    <div class="gwv" onclick="state._gwFrom='root';openGateway('${g.name}','${gwSecOf(g)}')">
-      <div class="ring" style="background:${g.gradient}"><div class="face">${g.emoji}</div></div>
-      <div class="nm">${g.name}</div>
-    </div>`;}).join('');
   const entries = [['genexxo.com',''],['climbxx.com','climb'],['skixx.com','ski'],['surfxx.com','surf'],['cyclexx.com','cycle']];
   const sim = entries.map(([d,e])=>`<div class="chip ${state.entryDomain===d?'on':''}" onclick="location.search='?dev${e?('&entry='+e):''}'">${d}</div>`).join('');
   const dev = /[?&]dev\b/.test(location.search);   // prototype tools stay out of real users' way
@@ -5181,8 +5403,6 @@ function profileBody(){
       <div><div style="font-size:18px;font-weight:800">Your profile</div>
       <div style="font-size:11.5px;color:var(--muted);font-weight:600">One identity · every gateway · 14.2K followers</div></div>
     </div>
-    <div class="sect"><div class="sect-h"><div class="t">Your gateways</div><div class="a">${YOUR_GATEWAYS.length} active</div></div></div>
-    <div class="rail" style="padding-top:2px">${gws}</div>
     <div class="sect"><div class="sect-h"><div class="t">Your apps</div><div class="a">${state.wallet.length}</div></div></div>
     ${state.wallet.length ? state.wallet.map(w=>`
     <div class="wapp"><div class="lg" style="background:${w.color}">${w.name.split(' ').map(x=>x[0]).join('').slice(0,2)}</div>
@@ -5282,6 +5502,7 @@ function render(){
   syncGwChrome();                                // drawer head, placeholder + gw-avail
   // dark gateway themes need light-tinted edge handles or they vanish into the background
   $('frame').classList.toggle('on-dark', state.screen==='gateway' && !!(state._gwObj && state._gwObj.theme.dark));
+  syncZoneStep();                                // ▲▼ beside the pull-out, brand zones only
   $('frame').classList.remove('drawer-open','drawer-open-r'); state.drawerOpen=false;
   // first-run nudges: left half-moon pulses on the home feed, right one on a first sector visit
   $('edge').classList.toggle('nudge', !nudgeDone('edgeL') && state.screen==='root' && state.tab==='home');
