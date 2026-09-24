@@ -786,6 +786,13 @@
   .aiconf .n{font-size:10.5px;color:var(--muted);font-weight:600;line-height:1.45;margin:9px 0 10px}
   .aiconf .btn2{text-align:center;padding:11px;border-radius:12px;background:#111116;color:#fff;font-size:12.5px;font-weight:800;cursor:pointer}
   .aiconf .btn2.done{background:rgba(22,163,74,.12);color:#16A34A;cursor:default}
+  @keyframes aiIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @keyframes aiFade{from{opacity:0}to{opacity:1}}
+  @keyframes aiPop{0%{transform:scale(.85);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:none}}
+  .ai-in{animation:aiIn .34s cubic-bezier(.2,.75,.2,1) both}
+  .ai-fade{animation:aiFade .22s ease both}
+  .aiteam .mem.just .st{animation:aiPop .3s ease both}
+  @media (prefers-reduced-motion:reduce){ .ai-in,.ai-fade,.aiteam .mem.just .st{animation:none} }
   .bkrow{display:flex;gap:11px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin:0 16px 8px}
   .bkrow.off{opacity:.55}
   .bkrow .ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
@@ -983,7 +990,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-15"></script>
+<script src="genexxo-data.js?v=2026.08.26-16"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1726,7 +1733,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-15';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-16';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -4532,13 +4539,39 @@ const AI_ROUTES = [
   {re:/sail|boat|yacht|crossing|passage/i, gw:'sail'},
 ];
 const escHtml = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-function aiScrollEnd(){ const s=utilHost(); requestAnimationFrame(()=>s.scrollTo({top:s.scrollHeight,behavior:'smooth'})); }
+/* ── Smooth AI (2026-09-24) ──
+   Every AI step used to call render(): the whole screen rebuilt (six times for one table booking),
+   and each rebuild reset the phone's auto-hiding bars, which the auto-scroll straight after hid
+   again — so the top and bottom bars slid out and back on every message. That was the jump.
+   Now: once a conversation is on screen, only its body (#aiConvo) is repainted — header, bars and
+   input stay put, the way repaintGateway() keeps a gateway still. render() is used only where the
+   layout itself changes (front page ⇄ conversation). New messages ease in once (.ai-in); anything
+   already on screen never re-animates, because each message remembers it has been shown. */
+function aiPaint(){
+  const el = $('aiConvo');
+  if (!el || !state.aiThread.length){ render(); return; }   // the layout itself changes → full draw
+  el.innerHTML = aiConvoHtml();
+  const inp = $('aiInput');                                  // lives outside the body: keep its prompt current
+  if (inp) inp.placeholder = state.aiAgent ? 'Ask the '+GATEWAYS[state.aiAgent].name+' Agent…' : 'Ask anything across GENEXXO…';
+}
+/* The AI's own scrolling is not the user scrolling: hold the auto-hide chrome while it runs,
+   so the bars do not slide away every time a reply arrives. */
+function aiScrollEnd(){
+  const s=utilHost(); if(!s) return;
+  window.__chromeHold = performance.now() + 900;
+  requestAnimationFrame(()=>s.scrollTo({top:s.scrollHeight,behavior:'smooth'}));
+}
 
-function sendAIFromInput(){ const el=$('aiInput'); if(!el||!el.value.trim()) return; const v=el.value; el.value=''; sendAI(v); }
+function sendAIFromInput(){
+  const el=$('aiInput'); if(!el||!el.value.trim()) return; const v=el.value; el.value=''; sendAI(v);
+  // The first message swaps the front page for the conversation, which redraws the input — give
+  // the caret back, as any chat does. preventScroll: the thread's own scroll decides the position.
+  const f=$('aiInput'); if(f && document.activeElement!==f) f.focus({preventScroll:true});
+}
 function sendAI(text){
   const q=(text||'').trim(); if(!q||state.aiTyping) return;
   state.aiThread.push({who:'user', html:escHtml(q)});
-  state.aiTyping=true; render(); aiScrollEnd();
+  state.aiTyping=true; aiPaint(); aiScrollEnd();
   setTimeout(()=>{
     state.aiTyping=false;
     if(state.aiAgent){
@@ -4553,33 +4586,33 @@ function sendAI(text){
         state.aiThread.push({who:'host', html:hostAnswer(q)});
       }
     }
-    render(); aiScrollEnd();
+    aiPaint(); aiScrollEnd();
   }, 850);
 }
 /* accepting the hand-off card: the specialist joins the SAME thread */
 function aiHandoff(gw){
   state.aiThread=state.aiThread.filter(m=>m.who!=='handoff');
   state.aiAgent=gw;
-  state.aiTyping=true; render(); aiScrollEnd();
+  state.aiTyping=true; aiPaint(); aiScrollEnd();
   setTimeout(()=>{
     state.aiTyping=false;
     state.aiThread.push({who:'agent', gw, html:agentAnswer(gw, state.aiPendingQ, true)});
     state.aiPendingQ='';
-    render(); aiScrollEnd();
+    aiPaint(); aiScrollEnd();
   }, 800);
 }
 function aiAgentChat(k){
   const g=GATEWAYS[k]; if(!g) return;
   state.aiAgent=k;
   state.aiThread.push({who:'agent', gw:k, html:`I’m the ${g.name} specialist — everything inside ${g.domain}: the feed, the brands, the community, live conditions. What do you need?`});
-  render(); aiScrollEnd();
+  aiPaint(); aiScrollEnd();
 }
 function aiBackToHost(){
   state.aiAgent=null;
   state.aiThread.push({who:'host', html:'Back with you across the whole network — where next?'});
-  render(); aiScrollEnd();
+  aiPaint(); aiScrollEnd();
 }
-function aiReset(){ _aiTaskTimers.forEach(clearTimeout); _aiTaskTimers=[]; state.aiThread=[]; state.aiAgent=null; state.aiTyping=false; state.aiPendingQ=''; render(); utilHost().scrollTo(0,0); }
+function aiReset(){ _aiTaskTimers.forEach(clearTimeout); _aiTaskTimers=[]; state._aiFade=true; state.aiThread=[]; state.aiAgent=null; state.aiTyping=false; state.aiPendingQ=''; render(); utilHost().scrollTo(0,0); }
 
 function hostAnswer(q){
   if(/plan|week|schedule|diary/i.test(q)){
@@ -4799,8 +4832,11 @@ function aiStartTask(k, changing){
   if (!changing) state.aiReplacing = null;
   if (state.tab!=='ai' && state.utilOver!=='ai') setTab('ai');   // an update row can start a task from anywhere
   _aiTaskTimers.forEach(clearTimeout); _aiTaskTimers = [];
+  const fromFront = !$('aiConvo');
   state.aiThread = [{who:'user', html:escHtml(changing ? `Change my booking — ${changing.title}` : T.ask())}]; state.aiAgent = null; state.aiPendingQ = '';
-  state.aiTyping = true; render(); aiScrollEnd();
+  state.aiTyping = true;
+  if (fromFront){ state._aiFade = true; render(); const sc=utilHost(); if(sc){ sc.scrollTop=0; if(window.__syncChrome) window.__syncChrome(); } }
+  else { aiPaint(); aiScrollEnd(); }
   const a = taskAgent(T.agent);
   aiLater(650, ()=>{
     state.aiThread.push({who:'host', html: k==='trip'
@@ -4810,21 +4846,21 @@ function aiStartTask(k, changing){
       : `Handing this to the <b>${a.name}</b> agent — it works directly with ${k==='table'?'restaurants':k==='flight'?'airlines':'drivers'} across ${a.name.toLowerCase()}.com.`});
     if (k==='trip'){
       const m = {who:'team', team:T.team, done:0}; state.aiThread.push(m);
-      state.aiTyping = false; render(); aiScrollEnd();
-      T.team.forEach((_,i)=>aiLater(420*(i+1), ()=>{ m.done=i+1; render(); aiScrollEnd(); }));
+      state.aiTyping = false; aiPaint(); aiScrollEnd();
+      T.team.forEach((_,i)=>aiLater(420*(i+1), ()=>{ m.done=i+1; m.tick=i+1; aiPaint(); aiScrollEnd(); }));
       aiLater(420*T.team.length+500, ()=>{
         state.aiThread.push({who:'task', a:T.agent, html:T.intro()});
         state.aiThread.push({who:'plan', k});
-        render(); aiScrollEnd();
+        aiPaint(); aiScrollEnd();
       });
       return;
     }
-    render(); aiScrollEnd();
+    aiPaint(); aiScrollEnd();
     aiLater(850, ()=>{
       state.aiTyping = false;
       state.aiThread.push({who:'task', a:T.agent, html:T.intro()});
       state.aiThread.push({who:'opts', k, pick:null});
-      render(); aiScrollEnd();
+      aiPaint(); aiScrollEnd();
     });
   });
 }
@@ -4833,7 +4869,7 @@ function aiPick(k, i, slot){
   opts.pick = {i, slot};
   state.aiThread = state.aiThread.filter(m=>m.who!=='confirm');
   state.aiThread.push({who:'confirm', k, i, slot});
-  render(); aiScrollEnd();
+  aiPaint(); aiScrollEnd();
 }
 function aiConfirm(){
   const c = [...state.aiThread].reverse().find(m=>(m.who==='confirm'||m.who==='plan') && !m.done); if(!c) return;
@@ -4841,13 +4877,13 @@ function aiConfirm(){
   const T = AI_TASKS[c.k]; const opts = state.aiThread.find(m=>m.who==='opts'); if(opts) opts.locked = true;
   const o = T.opts ? T.opts[c.i] : null;
   const items = T.booked(o, c.slot);
-  state.aiTyping = true; render(); aiScrollEnd();
+  state.aiTyping = true; aiPaint(); aiScrollEnd();
   aiLater(900, ()=>{
     state.aiTyping = false;
     if (state.aiReplacing){ const old = aiWeek().find(w=>w.id===state.aiReplacing); if(old){ old.status='changed'; old._ev=null; } state.aiReplacing=null; }
     aiAddToWeek(items);
     state.aiThread.push({who:'done', k:c.k, items});
-    render(); aiScrollEnd();
+    aiPaint(); aiScrollEnd();
   });
 }
 
@@ -4860,7 +4896,14 @@ function aiInputRow(){
     </div>`;
 }
 function aiMsgsHtml(){
-  const msgs = state.aiThread.map(m=>{
+  const msgs = state.aiThread.map(m=>{ const h = aiMsgHtml(m); if(!h) return '';
+    const cls = m._shown ? 'aimsg' : 'aimsg ai-in'; m._shown = true;
+    return `<div class="${cls}">${h}</div>`; }).join('');
+  state.aiThread.forEach(m=>{ if(m.who==='team') m.tick=0; });   // the "just ready" pop plays once
+  const typing = state.aiTyping ? `<div class="aimsg ai-in"><div class="bub" style="background:#fff;border:1px solid var(--line);width:58px"><div class="tdots"><i></i><i></i><i></i></div></div></div>` : '';
+  return msgs + typing;
+}
+function aiMsgHtml(m){ {
     if(m.who==='user') return `<div class="bub user">${m.html}</div>`;
     if(m.who==='host') return `<div class="bub" style="background:#fff;border:1px solid var(--line)">${m.html}</div>`;
     if(m.who==='agent'){ const g=GATEWAYS[m.gw]; return `
@@ -4876,7 +4919,7 @@ function aiMsgsHtml(){
       <div class="agent-tag" style="color:${a.accent}"><span style="font-size:12px">${a.emoji}</span>${a.name} Agent</div>
       <div class="bub" style="background:#fff;border:1px solid var(--line);border-left:3px solid ${a.accent}">${m.html}</div>`; }
     if(m.who==='team') return `<div class="aiteam">${m.team.map((k,i)=>{ const a=taskAgent(k), ok=i<m.done; return `
-      <div class="mem${ok?' ok':''}"><span class="ic" style="background:${a.grad}">${a.emoji}</span>${a.name}<span class="st">${ok?'✓ ready':'working…'}</span></div>`;}).join('')}</div>`;
+      <div class="mem${ok?' ok':''}${m.tick===i+1?' just':''}"><span class="ic" style="background:${a.grad}">${a.emoji}</span>${a.name}<span class="st">${ok?'✓ ready':'working…'}</span></div>`;}).join('')}</div>`;
     if(m.who==='opts'){ const T=AI_TASKS[m.k]; return `<div class="aiopts${m.locked?' locked':''}">${T.opts.map((o,i)=>{
         const on = m.pick && m.pick.i===i;
         const slots = o.slots ? `<div class="slots">${o.slots.map(sl=>`<span class="aislot${on&&m.pick.slot===sl?' on':''}" onclick="event.stopPropagation();aiPick('${m.k}',${i},'${sl}')">${sl}</span>`).join('')}</div>` : '';
@@ -4900,11 +4943,22 @@ function aiMsgsHtml(){
     if(m.who==='done') return `<div class="bub aidone">✓ <b>Booked.</b> ${m.items.length>1?m.items.length+' plans are':'It’s'} in your week${m.items.length>1?'':` — <b>${escHtml(m.items[0].title)}</b>, ${dayLabel(m.items[0].d)}`}, and ${m.items.length>1?'each provider is sending its own confirmation':'the confirmation is on its way from the provider'}.
       <div class="acts"><span onclick="aiReset()">See your week</span><span onclick="setTab('profile')">Manage in Profile</span></div></div>`;
     return '';
-  }).join('');
-  const typing = state.aiTyping ? `<div class="bub" style="background:#fff;border:1px solid var(--line);width:58px"><div class="tdots"><i></i><i></i><i></i></div></div>` : '';
-  return msgs + typing;
+  }
 }
 
+function aiConvoHtml(){
+  const ag = state.aiAgent ? GATEWAYS[state.aiAgent] : null;
+  const agentStrip = ag ? `<div style="display:flex;align-items:center;gap:8px;margin:0 16px 12px;padding:8px 12px;border-radius:12px;background:${ag.theme.accent}12;border:1px solid ${ag.theme.accent}30">
+      <span style="width:22px;height:22px;border-radius:7px;background:${ag.gradient};display:flex;align-items:center;justify-content:center;font-size:11px">${ag.emoji}</span>
+      <span style="font-size:11.5px;font-weight:800">${ag.name} Agent</span>
+      <span onclick="state._gwFrom='root';openGateway('${ag.name}','${gwSecOf(ag)}')" style="margin-left:auto;font-size:10.5px;font-weight:700;color:var(--muted);cursor:pointer;white-space:nowrap">Open ${ag.domain} ›</span>
+      <span onclick="aiBackToHost()" title="Back to the Host" style="font-size:13px;color:var(--muted);cursor:pointer;padding:0 2px">✕</span>
+    </div>` : '';
+  const msgs = aiMsgsHtml();
+  const agentPrompts = (ag && state.aiThread.length===1 && state.aiThread[0].who==='agent')
+    ? `<div class="prompts">${(ag.prompts||[]).map(p=>`<div class="prompt" style="background:#fff;border-color:var(--line)" onclick="sendAI(this.textContent)">${p}</div>`).join('')}</div>` : '';
+  return agentStrip + msgs + agentPrompts;
+}
 function renderAI(){
   const inputRow=aiInputRow();
 
@@ -4935,11 +4989,12 @@ function renderAI(){
     const agentNote = ctxG
       ? `You're in <b>${ctxG.name}</b> — its agent leads below, ready to join this chat. Tap any to bring in a specialist.`
       : `Each gateway has its own expert agent — tap one and it joins this chat.`;
+    const fade = state._aiFade ? ' ai-fade' : ''; state._aiFade = false;
     return `${topBar()}
   ${favPanelHtml()}
   ${applyPanelHtml()}
   ${infoPanelHtml()}
-    <div class="push">
+    <div class="push${fade}">
       <div class="sect" style="display:flex;align-items:center;gap:12px;padding-top:20px">
         <div style="width:46px;height:46px;border-radius:16px;background:linear-gradient(135deg,#111116,#3a3a44);display:flex;align-items:center;justify-content:center;color:#fff;font-size:21px">✦</div>
         <div><div style="font-size:16.5px;font-weight:800">GENEXXO Host</div>
@@ -4958,19 +5013,11 @@ function renderAI(){
     </div>`;
   }
 
-  // conversation view — same surface, the thread takes over
-  const ag = state.aiAgent ? GATEWAYS[state.aiAgent] : null;
-  const agentStrip = ag ? `<div style="display:flex;align-items:center;gap:8px;margin:0 16px 12px;padding:8px 12px;border-radius:12px;background:${ag.theme.accent}12;border:1px solid ${ag.theme.accent}30">
-      <span style="width:22px;height:22px;border-radius:7px;background:${ag.gradient};display:flex;align-items:center;justify-content:center;font-size:11px">${ag.emoji}</span>
-      <span style="font-size:11.5px;font-weight:800">${ag.name} Agent</span>
-      <span onclick="state._gwFrom='root';openGateway('${ag.name}','${gwSecOf(ag)}')" style="margin-left:auto;font-size:10.5px;font-weight:700;color:var(--muted);cursor:pointer;white-space:nowrap">Open ${ag.domain} ›</span>
-      <span onclick="aiBackToHost()" title="Back to the Host" style="font-size:13px;color:var(--muted);cursor:pointer;padding:0 2px">✕</span>
-    </div>` : '';
-  const msgs = aiMsgsHtml();
-  const agentPrompts = (ag && state.aiThread.length===1 && state.aiThread[0].who==='agent')
-    ? `<div class="prompts">${(ag.prompts||[]).map(p=>`<div class="prompt" style="background:#fff;border-color:var(--line)" onclick="sendAI(this.textContent)">${p}</div>`).join('')}</div>` : '';
+  // conversation view — same surface, the thread takes over. Its body is aiConvoHtml(), so a
+  // step inside the conversation repaints just that (aiPaint) instead of the whole screen.
+  const fade = state._aiFade ? ' ai-fade' : ''; state._aiFade = false;
   return `${topBar()}
-  <div class="push">
+  <div class="push${fade}">
     <div class="sect" style="display:flex;align-items:center;gap:10px;padding-top:16px;padding-bottom:12px">
       <!-- The Host mark is the way home (2026-09-24): out of a booking or any thread, back to the AI
            tab's front page — Your week, Do it for me, updates. A chevron says it is a control. -->
@@ -4981,9 +5028,7 @@ function renderAI(){
       </div>
       <div onclick="aiReset()" style="margin-left:auto;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;border:1px solid var(--line);border-radius:99px;padding:5px 11px;background:#fff">New chat</div>
     </div>
-    ${agentStrip}
-    ${msgs}
-    ${agentPrompts}
+    <div id="aiConvo">${aiConvoHtml()}</div>
     ${inputRow}
     <div style="height:16px"></div>
   </div>`;
@@ -5254,6 +5299,8 @@ function render(){
   function update(){
     if (frame.classList.contains('drawer-open') || frame.classList.contains('drawer-open-r')){ ticking=false; return; }  // hold chrome while a drawer is open
     const y = screen.scrollTop;
+    // A programmatic scroll (the AI following its own replies) holds the chrome where it is.
+    if (window.__chromeHold && performance.now() < window.__chromeHold){ lastY = y; ticking = false; return; }
     if (y <= 6) frame.classList.remove('chrome-hidden');          // at the top → always show
     else if (y > lastY + 4) frame.classList.add('chrome-hidden');  // scrolling down → hide
     else if (y < lastY - 4) frame.classList.remove('chrome-hidden');// scrolling up → reveal
