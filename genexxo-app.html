@@ -76,6 +76,9 @@
   #frame{--stick-top:var(--top-h,53px)}
   #frame.chrome-hidden{--stick-top:0px}
   #frame.chrome-hidden #tabbar{transform:translateX(-50%) translateY(130%)}
+  /* ★ panel: the row a "You're in…" card just added glows once, so the eye follows it down */
+  .fav-new{animation:favNew 1.6s ease-out}
+  @keyframes favNew{0%{background:rgba(245,184,0,.38);box-shadow:0 0 0 1px rgba(245,184,0,.7)}100%{background:transparent;box-shadow:0 0 0 1px rgba(245,184,0,0)}}
   /* ── WELCOME INTRO, "Lights up + hand-off" (2026-10-08, sample F in branding/intro-samples.html) ──
      The XX from cyclexx.mp4 (black, gold edge, silver sweep) settles into the real GENEXXO wordmark.
      The stage brightens to --bg, then the XX flies into the top bar's .gx-dot and the app is underneath.
@@ -1148,7 +1151,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-21"></script>
+<script src="genexxo-data.js?v=2026.08.26-22"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1924,7 +1927,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-21';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-22';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2167,10 +2170,47 @@ function gwHome(){
 function toggleFavPanel(){
   clearNudge('star');
   const on=!state.showFavs; state.showApply=false; state.showInfo=false; state.showFavs=on;
-  if(on) state.favTab='favs';   // always land on Favourites
+  if(on){ state.favTab='favs'; state.favPending={}; }   // always land on Favourites, nothing marked
+  else commitFavPending();                               // closing applies what was marked
   render();
 }
 function setFavTab(t){ if(state.favTab===t) return; state.favTab=t; render(); }
+/* Marking and committing (2026-10-08, Sean). A ★ tap only records intent; the change is applied
+   when the panel closes, or just before a row is opened, and a toast says what happened. Toggling
+   the same ★ twice cancels out, so a mis-tap never needs undoing. */
+function favMark(tag){
+  state.favPending = state.favPending || {};
+  if(state.favPending[tag]) delete state.favPending[tag]; else state.favPending[tag] = true;
+  render();
+}
+function commitFavPending(){
+  const tags = Object.keys(state.favPending||{}); state.favPending = {};
+  if(!tags.length) return;
+  const removed = [], added = [];
+  tags.forEach(tag=>{
+    const i = tag.indexOf(':'), t = tag.slice(0,i), k = tag.slice(i+1);
+    const list = t==='gw' ? state.favs : t==='brand' ? state.brandFavs : state.sectorFavs;
+    const name = t==='gw' ? ((gwMetaFromKey(k)||{}).name||k) : t==='brand' ? ((ZONES[k]||{}).name||k) : ((sectorOf(k)||{}).name||k);
+    const j = list.indexOf(k);
+    if(j>=0){ list.splice(j,1); removed.push(name); } else { list.push(k); added.push(name); }
+  });
+  saveFavs();
+  const one = (arr, verb, prep) => arr.length===1 ? `${verb} ${arr[0]} ${prep} favourites` : `${verb} ${arr.length} favourites`;
+  const msg = removed.length && added.length ? `★ Favourites updated · ${added.length} added, ${removed.length} removed`
+            : removed.length ? one(removed,'Removed','from') : '★ '+one(added,'Added','to');
+  setTimeout(()=>toast(msg), 60);   // after the close has painted
+}
+/* Add from a "You're in…" card: save it, land on the Favourites tab, and mark the new row so it
+   glows once where it now lives. The mark is cleared straight after the paint, so no later render
+   replays the glow. */
+function favAddFromCard(fn, key){
+  const tag = {toggleFav:'gw:', toggleBrandFav:'brand:', toggleSectorFav:'sector:'}[fn] + key;
+  state._favJustAdded = tag; state.favTab = 'favs';
+  ({toggleFav, toggleBrandFav, toggleSectorFav})[fn](key);        // each saves and renders
+  state._favJustAdded = null;
+  const row = document.querySelector('.gx-panel .fav-new');
+  if(row) row.scrollIntoView({block:'nearest', behavior:'smooth'});
+}
 function toggleSectorFav(k){
   const i=state.sectorFavs.indexOf(k);
   if(i>=0) state.sectorFavs.splice(i,1); else state.sectorFavs.push(k);
@@ -2184,8 +2224,8 @@ function toggleSectorFavQuiet(k){   // toggle from the left drawer without a ful
 /* Home top-bar overlays (2026-07-29) — person opens Apply, ⓘ opens Info. Each is
    mutually exclusive with the favourites panel and with each other; tap the icon
    again (or the backdrop / ×) to close. */
-function toggleApply(){ const on=!state.showApply; state.showFavs=false; state.showInfo=false; state.showApply=on; render(); }
-function toggleInfo(){ const on=!state.showInfo; state.showFavs=false; state.showApply=false; state.showInfo=on; if(on) state.infoTab='intro'; render(); }
+function toggleApply(){ const on=!state.showApply; if(state.showFavs) commitFavPending(); state.showFavs=false; state.showInfo=false; state.showApply=on; render(); }
+function toggleInfo(){ const on=!state.showInfo; if(state.showFavs) commitFavPending(); state.showFavs=false; state.showApply=false; state.showInfo=on; if(on) state.infoTab='intro'; render(); }
 /* The favourites drop-panel — one unified display for gateways AND brands, shared by the star
    on every screen (Network · Sector · Gateway · Zone). Dark frosted glass, theme-independent.
    Rows are kept tight: a gold ★ (tap to unpin) + the name, no avatars. The "add this…" row
@@ -2203,25 +2243,31 @@ function favPanelHtml(){
   const active = activeSectorKey();
 
   // ── shared row atoms ──
-  const starFor = (on, fn, k) => `<div onclick="event.stopPropagation();${fn}('${k}')" title="${on?'Remove from favourites':'Add to favourites'}"
-    style="font-size:16px;line-height:1;width:22px;text-align:center;flex-shrink:0;cursor:pointer;color:${on?'#F5B800':'rgba(255,255,255,.3)'}">${on?'★':'☆'}</div>`;
+  /* ★ sits at the RIGHT of every row and only MARKS a change (Sean, 2026-10-08): gold = a favourite,
+     black = not. Taps toggle state.favPending; nothing is saved until the panel closes (or a row is
+     opened), when commitFavPending() applies the lot and says what changed. Tap on, tap off — the
+     ★ is its own undo, so the panel needs no Edit mode and no Undo bar. */
+  const pend = state.favPending || {};
+  const starFor = (saved, tag) => { const on = saved !== !!pend[tag];
+    return `<div onclick="event.stopPropagation();favMark('${tag}')" title="${on?'Tap to remove from favourites':'Tap to add to favourites'}"
+      style="font-size:21px;line-height:1;width:32px;height:32px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;
+      color:${on?'#F5B800':'#0b0b0f'};${on?'':'-webkit-text-stroke:1px rgba(255,255,255,.5);'}">★</div>`; };
   const tile = (grad, glyph, fs) => `<div style="width:32px;height:32px;border-radius:9px;background:${grad};display:flex;align-items:center;justify-content:center;font-size:${fs||15}px;font-weight:800;color:#fff;flex-shrink:0">${glyph}</div>`;
-  const shell = (inner, click, cur) => `<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:13px;cursor:pointer;${cur?'background:rgba(255,255,255,.13)':''}" onclick="${click}">${inner}</div>`;
-  const nm  = (main, sub) => `<div style="flex:1;min-width:0"><div style="font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${main}</div>${sub?`<div style="font-size:10.5px;opacity:.5;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${sub}</div>`:''}</div>`;
+  // A row marked to leave dims, so the list reads as "these are going" before anything is saved.
+  const shell = (inner, click, cur, key, saved) => { const leaving = saved && pend[key];
+    return `<div ${key&&state._favJustAdded===key?'class="fav-new" ':''}style="display:flex;align-items:center;gap:10px;padding:6px 6px 6px 10px;border-radius:13px;cursor:pointer;transition:opacity .15s;${leaving?'opacity:.42;':''}${cur?'background:rgba(255,255,255,.13)':''}" onclick="commitFavPending();${click}">${inner}</div>`; };
+  const nm  = (main, sub, live) => `<div style="flex:1;min-width:0"><div style="display:flex;align-items:center;gap:7px;min-width:0"><div style="font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${main}</div>${live?LIVE_DOT:''}</div>${sub?`<div style="font-size:10.5px;opacity:.5;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${sub}</div>`:''}</div>`;
 
-  const secRow = k => { const s=sectorOf(k); if(!s) return ''; const live=sectorIsLive(k);
-    return shell(`${starFor(state.sectorFavs.includes(k),'toggleSectorFav',k)}${tile(s.g,s.icon)}
-      ${nm(s.name, gwCount(k)+' gateways')}${live?LIVE_DOT:''}`,
-      `state.showFavs=false;openSector('${k}')`, k===active); };
-  const gwRow = k => { const g=gwMetaFromKey(k); if(!g) return ''; const s=sectorOf(g.sector);
-    return shell(`${starFor(state.favs.includes(k),'toggleFav',k)}${tile(g.gradient,g.emoji)}
-      ${nm(gwLabel(g.name), s?s.name:'')}${g.live?LIVE_DOT:''}`,
-      `state.showFavs=false;openGateway('${g.name}','${gwSecOf(g)}')`, k===state.gateway); };
-  const brRow = k => { const z=ZONES[k]; if(!z) return ''; const gm=gwMetaFromKey(z.gw);
+  const secRow = k => { const s=sectorOf(k); if(!s) return ''; const saved=state.sectorFavs.includes(k);
+    return shell(`${tile(s.g,s.icon)}${nm(s.name, gwCount(k)+' gateways', sectorIsLive(k))}${starFor(saved,'sector:'+k)}`,
+      `state.showFavs=false;openSector('${k}')`, k===active, 'sector:'+k, saved); };
+  const gwRow = k => { const g=gwMetaFromKey(k); if(!g) return ''; const s=sectorOf(g.sector); const saved=state.favs.includes(k);
+    return shell(`${tile(g.gradient,g.emoji)}${nm(gwLabel(g.name), s?s.name:'', g.live)}${starFor(saved,'gw:'+k)}`,
+      `state.showFavs=false;openGateway('${g.name}','${gwSecOf(g)}')`, k===state.gateway, 'gw:'+k, saved); };
+  const brRow = k => { const z=ZONES[k]; if(!z) return ''; const gm=gwMetaFromKey(z.gw); const saved=state.brandFavs.includes(k);
     const mono=z.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    return shell(`${starFor(state.brandFavs.includes(k),'toggleBrandFav',k)}${tile(z.gradient||z.color||'#333',mono,11)}
-      ${nm(z.name, (gm?gm.name:'')+(z.tier?' · '+z.tier:''))}`,
-      `openZoneFav('${k}')`, k===state.zone); };
+    return shell(`${tile(z.gradient||z.color||'#333',mono,11)}${nm(z.name, (gm?gm.name:'')+(z.tier?' · '+z.tier:''))}${starFor(saved,'brand:'+k)}`,
+      `openZoneFav('${k}')`, k===state.zone, 'brand:'+k, saved); };
 
   const section = (title, rows, note) => {
     const body = rows.filter(Boolean).join('');
@@ -2230,21 +2276,53 @@ function favPanelHtml(){
       ${body || `<div style="padding:4px 10px 6px;font-size:11.5px;opacity:.4;font-weight:600;line-height:1.5">${note}</div>`}
     </div>`;
   };
-  const addRow = (label, fn, key) => `<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:13px;cursor:pointer;opacity:.8" onclick="${fn}('${key}')">
-    <div style="font-size:16px;width:22px;text-align:center;flex-shrink:0;color:rgba(255,255,255,.5)">☆</div>
-    <div style="font-size:12px;font-weight:700">Add ${label} to favourites</div></div>`;
+  /* "You're in…" cards (2026-10-08, Sean): open the ★ from inside a place and the first thing you see
+     is that place with one gold Add button — not an "Add…" row at the foot of a list. Above the tabs,
+     so it is there whichever tab you land on. Inside a zone: the brand, then (smaller) its gateway.
+     A card is only an offer: once the place is a favourite it leaves the top and lives in its section
+     (the new row glows once — favAddFromCard), so nothing is shown twice. */
+  const here = (kind, name, sub, tileHtml, on, fn, key, small) => on ? '' : `
+    <div style="display:flex;align-items:center;gap:11px;padding:${small?'9px 11px':'12px 12px'};margin-top:${small?'7px':'12px'};border-radius:15px;
+      background:${on?'rgba(255,255,255,.06)':'rgba(245,184,0,.1)'};border:1px solid ${on?'rgba(255,255,255,.1)':'rgba(245,184,0,.35)'}">
+      ${tileHtml}
+      <div style="flex:1;min-width:0">
+        <div style="font-size:9.5px;font-weight:800;letter-spacing:.12em;opacity:.55;text-transform:uppercase">${small?kind:"You're in · "+kind}</div>
+        <div style="font-weight:800;font-size:${small?13:15}px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name}</div>
+        ${sub&&!small?`<div style="font-size:10.5px;opacity:.5;font-weight:600">${sub}</div>`:''}
+      </div>
+      <div onclick="event.stopPropagation();favAddFromCard('${fn}','${key}')" title="${on?'Remove from favourites':'Add to favourites'}"
+        style="flex-shrink:0;cursor:pointer;white-space:nowrap;font-weight:800;font-size:${small?11.5:12.5}px;padding:${small?'7px 12px':'9px 15px'};border-radius:99px;
+        ${on?'background:transparent;color:#F5B800;border:1px solid rgba(245,184,0,.55)':'background:#F5B800;color:#141414;border:1px solid #F5B800'}">${on?'★ In favourites':'☆ Add to favourites'}</div>
+    </div>`;
+  const hereCards = (()=>{
+    const gwCard = (k, small) => { const g=gwMetaFromKey(k); if(!g) return ''; const sc=sectorOf(g.sector);
+      return here('Gateway', gwLabel(g.name), sc?sc.name+' sector':'', tile(g.gradient,g.emoji), state.favs.includes(k), 'toggleFav', k, small); };
+    if(state.screen==='zone' && ZONES[state.zone]){
+      const z=ZONES[state.zone], mono=z.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+      return here('Brand', z.name, z.tier||'', tile(z.gradient||z.color||'#333',mono,11), state.brandFavs.includes(z.key), 'toggleBrandFav', z.key)
+           + gwCard(z.gw, true);
+    }
+    // state.gateway is only set for the built gateways; a structural one (FittechXX…) is known only
+    // by the gateway object on screen, so derive its key from the name — as the drawer rows do.
+    const gwKey = state.gateway || (state._gwObj && state._gwObj.name && gwKeyFromName(state._gwObj.name));
+    if(state.screen==='gateway' && gwKey) return gwCard(gwKey);
+    if(state.screen==='sector' && state.sector){ const sc=sectorOf(state.sector); if(!sc) return '';
+      return here('Sector', sc.name, gwCount(state.sector)+' gateways', tile(sc.g,sc.icon), state.sectorFavs.includes(state.sector), 'toggleSectorFav', state.sector); }
+    return '';
+  })();
 
   let bodyHtml;
   if(tab==='favs'){
-    const curSec = active && !state.sectorFavs.includes(active) ? sectorOf(active) : null;
-    const curGw  = state.gateway && !state.favs.includes(state.gateway) ? gwMetaFromKey(state.gateway) : null;
-    const curBr  = state.zone && ZONES[state.zone] && !state.brandFavs.includes(state.zone) ? ZONES[state.zone] : null;
-    bodyHtml =
-      section('SECTORS', [...state.sectorFavs.map(secRow), curSec?addRow(curSec.name,'toggleSectorFav',active):''],
+    const nPend = Object.keys(pend).length;
+    const hint = `<div style="margin:12px 8px -4px;font-size:11px;font-weight:600;opacity:${nPend?'.85':'.45'};${nPend?'color:#F5B800':''}">${nPend
+      ? `${nPend} change${nPend>1?'s':''} · saved when you close`
+      : 'Tap ★ to remove a favourite · changes save when you close'}</div>`;
+    bodyHtml = (state.favs.length||state.brandFavs.length||state.sectorFavs.length ? hint : '') +
+      section('SECTORS', state.sectorFavs.map(secRow),
         'No sectors pinned yet — tap ☆ on any sector to keep it here.') +
-      section('GATEWAYS', [...state.favs.map(gwRow), curGw?addRow(curGw.name,'toggleFav',state.gateway):''],
+      section('GATEWAYS', state.favs.map(gwRow),
         'No gateways pinned yet — tap ☆ on any gateway.') +
-      section('BRANDS', [...state.brandFavs.map(brRow), curBr?addRow(curBr.name,'toggleBrandFav',state.zone):''],
+      section('BRANDS', state.brandFavs.map(brRow),
         'No brands pinned yet — tap ☆ on any brand zone.') +
       section('OTHER', [], 'Pro Zones, apps and communities you pin will collect here as the ecosystem opens up.');
   } else if(tab==='live'){
@@ -2288,11 +2366,13 @@ function favPanelHtml(){
           <div onclick="toggleFavPanel()" title="Close" style="width:32px;height:32px;border-radius:99px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff">
             <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></div>
         </div>
+        ${hereCards}
         <div style="display:flex;gap:7px;margin-top:12px">${tabBtn('favs','Favourites')}${tabBtn('recent','Recent')}${tabBtn('live','Live')}</div>
       </div>
       <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 13px calc(22px + var(--safe-b))">
         ${bodyHtml}
       </div>
+
     </div>`;
 }
 
