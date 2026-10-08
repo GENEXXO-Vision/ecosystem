@@ -318,7 +318,7 @@ const GATEWAYS = {
       {av:'GX',avBg:'linear-gradient(135deg,#9333EA,#C084FC)',author:'GothXX Editorial',sub:'Featured · Just now',badge:'★ FEATURED',text:'Darkness is a state of mind. Alternative fashion, subculture and the community that lives after midnight — from goth to punk to avant-garde. Your gateway to the dark side.',video:'genexxo-videos/gothxx.mp4',eng:'♡ 12.4K · 💬 1.6K · ↗ 890'},
       {av:'MM',avBg:'linear-gradient(135deg,#6B21A8,#9333EA)',author:'@midnight_moth',sub:'Alt Fashion · Just now',badge:'COMMUNITY',text:'Full look for tonight — Hex Mesh maxi, 14-eye platforms, silver rings stacked to the knuckle. Three years of building this wardrobe piece by piece. The high street never had us, so we built it ourselves.',video:'genexxo-videos/goth1.mp4',eng:'♡ 8.9K · 💬 1.2K · ↗ 645'},
       {av:'KS',avBg:'linear-gradient(135deg,#9333EA,#6B21A8)',author:'Kohlstar',sub:'Founding Partner · Brand Zone',badge:'BRAND ZONE',text:'The Hex Collection just dropped. Mesh, moon phases and midnight rituals — floor-length dresses that move like shadows, platforms built for dancing until 4am. Every piece vegan and ethically made. Darkness doesn’t require cruelty.',img:'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&h=440&fit=crop&q=80',eng:'♡ 7.8K · 💬 890 · ↗ 445'},
-      {av:'RO',avBg:'linear-gradient(135deg,#666666,#333333)',author:'Roman Onyx',sub:'Brand Zone · 12h ago',badge:'BRAND ZONE',text:'AW27: PORTVM. Brutal silhouettes, raw leather cut against the grain, models walking a concrete labyrinth in darkness. Fashion as architecture. Clothing as armour. Thirty years of unwavering vision — shown in full inside the zone.',img:'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&h=440&fit=crop&q=80',eng:'♡ 18.4K · 💬 2.4K · ↗ 1.2K'},
+      {av:'RO',avBg:'linear-gradient(135deg,#666666,#333333)',author:'Roman Onyx',sub:'Brand Zone · 12h ago',badge:'BRAND ZONE',text:'AW27: PORTVM. Brutal silhouettes, raw leather cut against the grain, models walking a concrete labyrinth in darkness. Fashion as architecture. Clothing as armour. Thirty years of unwavering vision — shown in full inside the zone.',img:'https://images.unsplash.com/photo-1520975954732-35dd22299614?w=800&h=440&fit=crop&q=80',eng:'♡ 18.4K · 💬 2.4K · ↗ 1.2K'},
     ],
     prompts:['Style a full goth look under £200','Which platform boots last the longest?'],
   },
@@ -611,6 +611,9 @@ const ZONES = {
     tier:'Founding Partner', verified:true,
     tagline:'Climbing footwear since 1928',
     stats:{followers:'12.4K', content:'342', products:'89'},
+    // Gateway Brands-tab ad (desktop side panels, 2026-10-08). Optional; without it the panel
+    // builds one from the latest post and the brand colour.
+    ad:{badge:'Featured', img:'https://images.unsplash.com/photo-1573789023421-c8c3bef34190?w=760&h=760&fit=crop&q=75', hl:'Vertex Comp. Our most advanced competition shoe.', sub:'Developed with the ClimbXX community over 14 months, tested by 40 athletes across 6 comps.', meta:'From £165'},
     // Each product carries a `cat` (its shop collection) + optional `special` (surfaces in Brand Specials).
     // The Shop overlay's tiles are driven by `shopCats` below — a brand shows exactly as many tiles as it stocks.
     products:[
@@ -742,6 +745,7 @@ const ZONES = {
     logo:'bullheart/bh-logo.jpg',
     tagline:'Climb with heart',
     stats:{followers:'9.2K', content:'128', products:'12'},
+    ad:{badge:'New', video:'bullheart/bh-climb.mp4', hl:'Bullheart One. It reads your session, not just your steps.', sub:'Route timer, hang analytics and real heart-rate at the crux.', meta:'£249'},
     products:[
       {name:'Bullheart One', price:'£249', tag:'FLAGSHIP', emoji:'⌚', rating:4.8, reviews:412, cat:'wearable', special:true,
        desc:'The climbing wearable that reads your session, not your step count — route timer, hang-board analytics, and true heart-rate under load, built for the wall.',
@@ -830,6 +834,7 @@ const ZONES = {
     tier:'Brand Zone', verified:true,
     tagline:'Ropes, protection & hardware',
     stats:{followers:'8.1K', content:'186', products:'64'},
+    ad:{badge:'New drop', img:'https://images.unsplash.com/photo-1516592673884-4a382d1124c2?w=760&h=760&fit=crop&q=75', hl:'Every Halcyon rope now keeps a life-log.', sub:'Falls, washes and metres, logged straight into your ClimbXX wallet.', meta:'Halcyon 9.4 Dry · £189'},
     // Products tagged by `cat` (their hardware collection) + optional `special` for Brand Specials.
     products:[
       {name:'Halcyon 9.4 Dry', price:'£189', tag:'BESTSELLER', emoji:'🪢', rating:4.8, reviews:602, cat:'ropes', special:true,
@@ -918,6 +923,7 @@ const ZONES = {
     tier:'Brand Zone', verified:false,
     tagline:'Guidebooks & route intelligence',
     stats:{followers:'5.6K', content:'128', products:'23'},
+    ad:{badge:'New topo', img:'https://images.unsplash.com/photo-1601224748193-d24f166b5c77?w=760&h=760&fit=crop&q=75', hl:'340 routes across the Verdon Gorge.', sub:'Community-verified beta on every pitch. 214 ClimbXX members contributed.', meta:'Verdon Gorge Topo · £34'},
     // A route-intelligence brand, not a gear brand — so a leaner, honest set of 3 collections.
     products:[
       {name:'Verdon Gorge Topo 2026', price:'£34', tag:'NEW', emoji:'🗺️', rating:4.9, reviews:167, cat:'books', special:true,
@@ -1062,7 +1068,7 @@ const ZONES = {
       {type:'post', sub:'Innovation · 3h ago', text:'The <b>Shift binding</b> redesign for 2027: the alpine/touring mode switch is 40% faster, with release safety re-engineered alongside 200 professional guides. The safest Shift we’ve ever built.', eng:'♡ 7.2K · 💬 934 · ↗ 445'},
       {type:'community', who:'verbier_vince', whoBg:'linear-gradient(135deg,#60A5FA,#3B82F6)', sub:'Community · 5h ago', text:'AM 106 for my third Verbier season — first lifts to last run, every snow type. If I could take one ski, it’s this one.', eng:'♡ 1.9K · 💬 128',
        reply:'Verbier’s variable snow tests every part of an all-mountain ski — three seasons is a serious endorsement. Thank you for the trust, Vince. ⛷️'},
-      {type:'post', sub:'Pro feedback · 1d ago', text:'Six Chamonix ski patrollers on the <b>AM 106</b> for a full season: 847 patrol days, zero equipment incidents. Reliability data from professional users is the most honest feedback we get.', img:'https://images.unsplash.com/photo-1519592022154-ba4af44dd799?w=800&h=440&fit=crop&q=80', eng:'♡ 5.6K · 💬 678 · ↗ 289', product:0},
+      {type:'post', sub:'Pro feedback · 1d ago', text:'Six Chamonix ski patrollers on the <b>AM 106</b> for a full season: 847 patrol days, zero equipment incidents. Reliability data from professional users is the most honest feedback we get.', img:'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=800&h=440&fit=crop&q=80', eng:'♡ 5.6K · 💬 678 · ↗ 289', product:0},
     ],
     event:{ zoneEvent:true, tag:'EVENT', title:'Sabran All-Mountain Demo — Verbier', when:'Feb 5–7, 2027 · 4 Vallées', desc:'Demo the full AM and Stance range across every snow type Verbier can throw at it, plus Shift binding clinics with the Sabran guide team.', registered:980, capacity:1400 },
     about:{
@@ -1708,7 +1714,7 @@ const ZONES = {
       {key:'rtw',label:'Ready-to-Wear',icon:'🖤'},
     ],
     feed:[
-      {type:'post', sub:'AW27 · Just now', text:'<b>AW27: PORTVM.</b> Brutal silhouettes. Raw leather cut against the grain. Throbbing Vein on the soundtrack. Models walked a concrete labyrinth in darkness. Fashion as architecture. Clothing as armour.', img:'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&h=440&fit=crop&q=80', eng:'♡ 18.4K · 💬 2.4K · ↗ 1.2K'},
+      {type:'post', sub:'AW27 · Just now', text:'<b>AW27: PORTVM.</b> Brutal silhouettes. Raw leather cut against the grain. Throbbing Vein on the soundtrack. Models walked a concrete labyrinth in darkness. Fashion as architecture. Clothing as armour.', img:'https://images.unsplash.com/photo-1520975954732-35dd22299614?w=800&h=440&fit=crop&q=80', eng:'♡ 18.4K · 💬 2.4K · ↗ 1.2K'},
       {type:'post', sub:'Craft · 12h ago', text:'Every <b>Geobasket</b> is made in a family-owned factory in Tuscany. Full-grain leather. Shark-tooth sole vulcanised by hand. 23 separate construction stages. The same factory for 22 years. This is what loyalty to craft looks like.', img:'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&h=440&fit=crop&q=80', eng:'♡ 12.8K · 💬 1.6K · ↗ 734', product:0},
       {type:'community', who:'concrete_cathedral', whoBg:'linear-gradient(135deg,#666666,#333333)', sub:'Community · 2h ago', text:'Finally got Geobaskets after 3 years of wanting them. The leather quality is on another level — you can feel the Italian craftsmanship. They make everything else in my wardrobe look cheap.', eng:'♡ 2.4K · 💬 178',
        reply:'The leather will soften and mould to your foot over the first 50 wears — they become uniquely yours. Let them age. That’s the point. 🖤'},
