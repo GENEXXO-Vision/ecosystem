@@ -465,7 +465,7 @@ const GATEWAYS = {
     feed:[
       {av:'SX',avBg:'linear-gradient(135deg,#9B72B0,#7B5291)',author:'SpaXX Editorial',sub:'Featured · Just now',badge:'★ FEATURED',text:'The home of rest and recovery. From Nordic saunas to Japanese onsen, cold-plunge science to luxury spa culture — thermal traditions, modern wellness and the art of taking care of yourself.',video:'genexxo-videos/spaxx.mp4',eng:'♡ 12.8K · 💬 1.4K · ↗ 860'},
       {av:'SX',avBg:'linear-gradient(135deg,#6B4984,#9B72B0)',author:'SpaXX Editorial',sub:'Recovery Science · Just now',badge:'EDITORIAL',text:'Found this hidden hot spring two hours off the main road in Iceland. No signs, no fences — just a steaming pool carved into black volcanic rock, mountains on every side, 39°C. We had the whole place to ourselves for three hours, steam rising into freezing air. No spa on earth comes close.',video:'genexxo-videos/spa1.mp4',eng:'♡ 34.1K · 💬 4.6K · ↗ 3.2K'},
-      {av:'TG',avBg:'linear-gradient(135deg,#1A0E1F,#2A1A38)',author:'Thermarum Group',sub:'Founding Partner · Brand Zone',badge:'BRAND ZONE',text:'Thermarum Manchester opens Q3 2026 — 28 pools, 35 saunas and steam rooms, 30,000 sqm of thermal wellness. Founding memberships open now inside the zone.',img:'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=800&h=440&fit=crop&q=80',eng:'♡ 18.4K · 💬 2.4K · ↗ 1.2K'},
+      {av:'TG',avBg:'linear-gradient(135deg,#1A0E1F,#2A1A38)',author:'Thermarum Group',sub:'Founding Partner · Brand Zone',badge:'BRAND ZONE',text:'Thermarum Manchester opens Q1 2027 — 28 pools, 35 saunas and steam rooms, 30,000 sqm of thermal wellness. Founding memberships open now inside the zone.',img:'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=800&h=440&fit=crop&q=80',eng:'♡ 18.4K · 💬 2.4K · ↗ 1.2K'},
       {av:'CP',avBg:'linear-gradient(135deg,#1E3A5F,#2563EB)',author:'Cryo Plunge',sub:'Brand Zone · 2h ago',badge:'BRAND ZONE',text:'The Cold Plunge Pro: chills to 2°C in four hours, self-cleaning, whisper-quiet, Wi-Fi control. Day 180 of daily 2°C plunges and the discipline transfer is the real benefit — when you can step into freezing water, everything else feels manageable.',img:'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&h=440&fit=crop&q=80',eng:'♡ 8.4K · 💬 1.1K · ↗ 567'},
     ],
     prompts:['Build me a sauna and cold-plunge contrast protocol','Where are the best onsen in Japan?'],
@@ -1470,7 +1470,7 @@ const ZONES = {
     tier:'Founding Partner', verified:true,
     tagline:'Made in USA & UK since 1906',
     stats:{followers:'41.2K', content:'1,800', products:'234'},
-    event:{ zoneEvent:true, tag:'FACTORY DAYS', title:'Northbound Made-in-USA Factory Days', when:'Aug 22–24 · Lawrence, MA', desc:'Three days inside the Lawrence, Massachusetts factory — watch the 990 built by hand, meet the craftspeople, and get a first fitting of the 770v6 with the Northbound team.', registered:640, capacity:900 },
+    event:{ zoneEvent:true, tag:'FACTORY DAYS', title:'Northbound Made-in-USA Factory Days', when:'Nov 20–22 · Lawrence, MA', desc:'Three days inside the Lawrence, Massachusetts factory — watch the 990 built by hand, meet the craftspeople, and get a first fitting of the 770v6 with the Northbound team.', registered:640, capacity:900 },
     products:[
       {name:'770v6 Made in USA', price:'£249', tag:'FLAGSHIP', emoji:'👟', rating:4.8, reviews:612, cat:'usa', special:true,
        desc:'Premium USA construction, ENCAP midsole, pigskin suede — six months of wear testing in New England, every panel refined.',
@@ -1684,7 +1684,7 @@ const ZONES = {
     tier:'Claimed & Verified', verified:true,
     tagline:'Dark luxury — brutalist avant-garde since 1994',
     stats:{followers:'28.9K', content:'440', products:'87'},
-    event:{ zoneEvent:true, tag:'RUNWAY', title:'Roman Onyx AW27 · PORTVM Runway', when:'Oct 2 · Concrete labyrinth, Paris', desc:'The AW27 PORTVM show, streamed from a concrete labyrinth in darkness — brutal silhouettes, raw leather cut against the grain, Throbbing Vein on the soundtrack. RSVP for the digital front row.', registered:1800, capacity:3000 },
+    event:{ zoneEvent:true, tag:'RUNWAY', title:'Roman Onyx AW27 · PORTVM Runway', when:'Feb 26 · Concrete labyrinth, Paris', desc:'The AW27 PORTVM show, streamed from a concrete labyrinth in darkness — brutal silhouettes, raw leather cut against the grain, Throbbing Vein on the soundtrack. RSVP for the digital front row.', registered:1800, capacity:3000 },
     products:[
       {name:'Geobasket High-Top', price:'£980', tag:'ICON', emoji:'🥾', rating:4.9, reviews:341, cat:'footwear', special:true,
        desc:'Full-grain leather high-top on a hand-vulcanised shark sole — 23 construction stages, made in Tuscany, Milk/Black.',
@@ -2027,7 +2027,7 @@ const ZONES = {
     tier:'Founding Partner', verified:true,
     tagline:'Urban thermal wellbeing resorts',
     stats:{followers:'67.2K', content:'890', products:'3'},
-    event:{ zoneEvent:true, tag:'PREVIEW', title:'Thermarum Manchester — Founder Preview', when:'Q3 2026 · Manchester', desc:'A first-look preview evening for founding members — 28 pools, 35 saunas, 30,000 sqm of thermal wellness before public opening, with the Thermarum design team walking the galaxy of zones. RSVP inside the zone.', registered:2600, capacity:4000 },
+    event:{ zoneEvent:true, tag:'PREVIEW', title:'Thermarum Manchester — Founder Preview', when:'Q1 2027 · Manchester', desc:'A first-look preview evening for founding members — 28 pools, 35 saunas, 30,000 sqm of thermal wellness before public opening, with the Thermarum design team walking the galaxy of zones. RSVP inside the zone.', registered:2600, capacity:4000 },
     products:[
       {name:'Founding Membership', price:'£149/mo', tag:'FLAGSHIP', emoji:'🛁', rating:4.9, reviews:1240,
        desc:'Unlimited access to every thermal zone with priority booking — the full Thermarum experience, all year.',
@@ -2043,7 +2043,7 @@ const ZONES = {
        review:{who:'ops_olivia', text:'Booked a private zone for our team offsite. People still talk about it months later.'}},
     ],
     feed:[
-      {type:'post', sub:'Official · Just now', text:'<b>Thermarum Manchester</b>: 28 pools, 35 saunas and steam rooms, 30,000 sqm of thermal wellness. Opening Q3 2026. Founding memberships open now.', img:'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=800&h=440&fit=crop&q=80', eng:'♡ 18.4K · 💬 2.4K · ↗ 1.2K', product:0},
+      {type:'post', sub:'Official · Just now', text:'<b>Thermarum Manchester</b>: 28 pools, 35 saunas and steam rooms, 30,000 sqm of thermal wellness. Opening Q1 2027. Founding memberships open now.', img:'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=800&h=440&fit=crop&q=80', eng:'♡ 18.4K · 💬 2.4K · ↗ 1.2K', product:0},
       {type:'post', sub:'Recovery Science · 5h ago', text:'The Finnish evidence, in one line: sauna use <b>4–7 times a week</b> is associated with a 40% lower risk of all-cause mortality versus once weekly. 80–100°C. 15–20 minutes. Thermal wellness is no longer preliminary.', img:'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&h=440&fit=crop&q=80', eng:'♡ 24.8K · 💬 3.6K · ↗ 2.1K'},
       {type:'community', who:'sauna_scientist_sven', whoBg:'linear-gradient(135deg,#9B72B0,#6B4984)', sub:'Community · 5h ago', text:'Visited Thermarum Bucharest. The Galaxy thermal area is genuinely otherworldly. If Manchester is anything like this, it will be the best thing to happen to UK wellness in a decade.', eng:'♡ 1.6K · 💬 118',
        reply:'Galaxy is our most ambitious zone — wait until you see Manchester. Same philosophy, twice the scale. 🛁'},
@@ -2398,7 +2398,7 @@ const EVENTS_FEED = [
   {gw:'diet', zone:'zoia', type:'Event', icon:'📅', time:'Thu 17:00 GMT', title:'Zoia INSIGHT 3 — Results Livestream', desc:'A live walkthrough of the INSIGHT 3 cohort findings — how microbiome diversity predicts mood and why the glycaemic index fails. RSVP inside the Zoia zone.'},
   {gw:'sleep', zone:'whim', type:'Event', icon:'📅', time:'Tue 19:00 BST', title:'Whim — Recovery Data Clinic', desc:'A live read-your-data session — what your recovery score really means and why consistency beats duration. Bring your Whim metrics. RSVP inside the Whim zone.'},
   {gw:'yoga', zone:'lumenara', type:'Drop', icon:'🔥', time:'Fri 10:00 BST', title:'Lumenara Align — 14-Colourway Launch', desc:'First access to the new Align collection in 14 Numara colourways — live fit guidance and early stock for the community. RSVP inside the Lumenara zone.'},
-  {gw:'spa', zone:'therme', type:'Event', icon:'📅', time:'Q3 2026', title:'Thermarum Manchester — Founder Preview', desc:'A first-look preview evening for founding members — 28 pools, 35 saunas, 30,000 sqm before public opening. RSVP inside the Thermarum zone.'},
+  {gw:'spa', zone:'therme', type:'Event', icon:'📅', time:'Q1 2027', title:'Thermarum Manchester — Founder Preview', desc:'A first-look preview evening for founding members — 28 pools, 35 saunas, 30,000 sqm before public opening. RSVP inside the Thermarum zone.'},
   {gw:'therapy', zone:'balancehelp', type:'Event', icon:'📅', time:'Wed 18:30 GMT', title:'BalanceHelp — Finding the Right Therapist', desc:'A live guide to modality matching — CBT, DBT, EMDR, psychodynamic and IFS — with the BalanceHelp clinical team. RSVP inside the BalanceHelp zone.'},
   {gw:'therapy', zone:'headcalm', type:'Event', icon:'📅', time:'Starts Mon 08:00', title:'Headcalm — 10-Day Anxiety Course, Live Cohort', desc:'A guided live cohort through the evidence-based 10-day anxiety course — 5-minute daily sessions and a morning coach Q&A. RSVP inside the Headcalm zone.'},
   {gw:'cycle', type:'Event', icon:'📅', time:'Sun 25 Jul', title:'Gran Fondo Ventoux', desc:'The Provence classic — 130km, 1,900m of climbing. CycleXX ride-tracking and live leaderboards.'},
@@ -2410,7 +2410,7 @@ const EVENTS_FEED = [
   {label:'SportsXX', sector:'sports', accentC:'#F59E0B', type:'Bookmark', icon:'🔖', time:'Saturday 10pm', title:'UFC 312 — Main Card', desc:'Your bookmarked reminder: Pereira vs Adesanya III. SportsXX coverage starts at 10pm.'},
   {gw:'denim', zone:'loomweave', type:'Event', icon:'📅', time:'Tomorrow 8am', title:'Loomweave Archive Masterclass — 1947 447XX', desc:'A live deep-dive into the archive behind the 1947 447XX — deconstructing an original pair, the Granite Mills selvedge and the arc stitch. RSVP inside the Loomweave Vintage zone.'},
   {gw:'handbag', zone:'rebloom', type:'Event', icon:'📅', time:'Wed 18:00', title:'Rebloom Authentication Masterclass', desc:'A live 100-point walkthrough of how luxury handbags are authenticated — hardware, stitching, date codes, leather grain — plus valuations Q&A. RSVP inside the Rebloom zone.'},
-  {gw:'goth', zone:'roman-onyx', type:'Event', icon:'📅', time:'Oct 2', title:'Roman Onyx AW27 · PORTVM Runway', desc:'The AW27 PORTVM show, streamed from a concrete labyrinth in darkness — brutal silhouettes and raw leather. RSVP for the digital front row inside the Roman Onyx zone.'},
+  {gw:'goth', zone:'roman-onyx', type:'Event', icon:'📅', time:'Feb 26', title:'Roman Onyx AW27 · PORTVM Runway', desc:'The AW27 PORTVM show, streamed from a concrete labyrinth in darkness — brutal silhouettes and raw leather. RSVP for the digital front row inside the Roman Onyx zone.'},
   {gw:'denim', zone:'iron-hall', type:'Event', icon:'📅', time:'Nov 1', title:'Iron Hall Fade Gallery — Raw Denim Clinic', desc:'A live raw-denim clinic from the Yokohama workshop — first-soak timing, fade care and a gallery of 534S submissions. RSVP inside the Iron Hall zone.'},
   {gw:'handbag', zone:'marbury', type:'Event', icon:'📅', time:'Nov 16', title:'Marbury Atelier Day — Somerset', desc:'A day inside the Somerset workshop — watch the Belgravia handcrafted through 78 steps and bring any Marbury bag to the Lifetime Service Centre. RSVP inside the Marbury zone.'},
   {gw:'ski', type:'Bookmark', icon:'🔖', time:'30 Nov', title:'Ski Season Opener — Val d’Isère', desc:'Your bookmarked reminder: first lifts of the season. SkiXX live coverage and snow reports.'},

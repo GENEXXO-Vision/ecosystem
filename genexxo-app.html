@@ -32,7 +32,7 @@
   ideally in device emulation / a phone.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#111116; --muted:rgba(17,17,22,.45); --line:rgba(17,17,22,.08);
@@ -53,7 +53,7 @@
   .gx-mark{display:flex;align-items:center;gap:8px;cursor:pointer;flex-shrink:0}
   .gx-dot{width:26px;height:26px;border-radius:8px;background:#111116;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;letter-spacing:-.5px}
   /* The XX monogram as a vector mask (2026-09-27), taken from the brand's own logo file
-     (Genexxo Logo Simple Main.svg, the XX paths only). It replaces mark-mask.png, a 1080px PNG drawn in
+     (branding/Genexxo Logo Simple Main.svg, the XX paths only). It replaces mark-mask.png, a 1080px PNG drawn in
      semi-transparent grey and small within its canvas: at 18px on a 1× desktop screen its strokes fell
      under a pixel and the white XX all but vanished, while a 2× phone still showed it. A vector renders
      crisp and solid at any density, and needs no extra request. */
@@ -76,19 +76,60 @@
   #frame{--stick-top:var(--top-h,53px)}
   #frame.chrome-hidden{--stick-top:0px}
   #frame.chrome-hidden #tabbar{transform:translateX(-50%) translateY(130%)}
-  /* ── WELCOME SPLASH — a quick GENEXXO flash on boot, then it clears to reveal the control ── */
-  #splash{position:absolute;inset:0;z-index:120;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:radial-gradient(120% 90% at 50% 38%,#191922 0%,#0b0b0f 70%);color:#fff;animation:splashIn .55s cubic-bezier(.2,.75,.2,1);transition:opacity .32s ease,transform .32s ease}
-  #splash.out{opacity:0;transform:scale(1.04)}
-  #splash .splash-word{font-family:var(--cond);font-weight:800;font-size:48px;letter-spacing:.05em;line-height:1}
-  #splash .splash-word b{color:#F5B800;font-weight:800}
-  #splash .splash-rule{width:0;height:2px;border-radius:2px;background:#F5B800;box-shadow:0 0 14px rgba(245,184,0,.6);animation:splashRule .6s .25s cubic-bezier(.2,.75,.2,1) forwards}
-  #splash .splash-sub{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.5)}
-  /* staggered tagline lines — each fades up one at a time after the wordmark + rule */
-  #splash .splash-sup{font-size:11px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.52);opacity:0;animation:splashLine .6s .95s cubic-bezier(.2,.75,.2,1) forwards}
-  #splash .splash-tag{font-family:var(--cond);font-weight:600;font-size:18px;letter-spacing:.015em;color:rgba(255,255,255,.9);opacity:0;animation:splashLine .6s 1.55s cubic-bezier(.2,.75,.2,1) forwards}
-  @keyframes splashIn{0%{opacity:0;transform:scale(.93)}100%{opacity:1;transform:scale(1)}}
-  @keyframes splashRule{to{width:132px}}
-  @keyframes splashLine{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+  /* ── WELCOME INTRO, "Lights up + hand-off" (2026-10-08, sample F in branding/intro-samples.html) ──
+     The XX from cyclexx.mp4 (black, gold edge, silver sweep) settles into the real GENEXXO wordmark.
+     The stage brightens to --bg, then the XX flies into the top bar's .gx-dot and the app is underneath.
+     The gold is the moment of arrival and drains away: GENEXXO stays monochrome because the colour
+     lives in the pages. Paths come from branding/Genexxo Logo Simple Main.svg; the timeline is in welcomeSplash(). */
+  #splash{position:absolute;inset:0;z-index:120;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#070708;transition:opacity .3s ease}
+  #splash.out{opacity:0}
+  #splash.reveal{background:transparent;pointer-events:none}
+  #splash .sp-light{position:absolute;inset:0;background:var(--bg);opacity:0}
+  #splash .sp-mark{position:relative;width:min(78%,400px);height:auto;overflow:visible;transform-origin:71.9% 50%}
+  #splash.fly .sp-mark{transition:transform .75s cubic-bezier(.65,0,.25,1);transform:translate(var(--fx),var(--fy)) scale(var(--fs))}
+  #splash .sp-rule{position:relative;width:0;height:2px;border-radius:2px;background:#231F20;margin-top:22px}
+  #splash .sp-tags{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:22px;text-align:center;padding:0 24px;font-family:Poppins,var(--font)}
+  #splash .sp-t1{font-size:11px;font-weight:500;letter-spacing:.32em;text-transform:uppercase;color:#6b6b72;opacity:0}
+  #splash .sp-t2{font-size:18px;font-weight:300;color:#231F20;opacity:0}
+  #splash .sp-in{opacity:0}
+  #splash .sp-move{transform-box:view-box;transform-origin:230px 28.5px;transform:translate(-70px,0) scale(3.4)}
+  #splash .sp-edge{stroke-dasharray:1;stroke-dashoffset:1}
+  #splash .sp-sweep{transform:translateX(-40px)}
+  #splash .sp-mini,#splash .sp-fill2,#splash .sp-gene,#splash .sp-oh{opacity:0}
+  #splash .sp-light{animation:spIn .8s 1.4s ease forwards}
+  #splash .sp-in{animation:spIn .45s ease-out forwards}
+  #splash .sp-move{animation:spSettle 2s cubic-bezier(.65,0,.25,1) forwards}
+  #splash .sp-edge{animation:spDraw 1s .2s cubic-bezier(.45,0,.2,1) forwards}
+  #splash .sp-glow{animation:spDraw 1s .2s cubic-bezier(.45,0,.2,1) forwards,spGlow 1.4s .2s ease-in-out forwards}
+  #splash .sp-sweep{animation:spSweep .8s .85s cubic-bezier(.4,0,.2,1) forwards}
+  #splash .sp-mini{animation:spMini 1.5s .45s ease forwards}
+  #splash .sp-fill2{animation:spIn .6s 1.5s ease forwards}
+  #splash .sp-fill1,#splash .sp-goldedge{animation:spOut .6s 1.55s ease forwards}
+  #splash .sp-gene{animation:spFromR .55s 1.95s cubic-bezier(.2,.75,.2,1) forwards}
+  #splash .sp-oh{animation:spFromL .55s 1.95s cubic-bezier(.2,.75,.2,1) forwards}
+  #splash .sp-rule{animation:spRule .6s 2.2s cubic-bezier(.2,.75,.2,1) forwards}
+  #splash .sp-t1{animation:spLine .55s 2.3s cubic-bezier(.2,.75,.2,1) forwards}
+  #splash .sp-t2{animation:spLine .55s 2.55s cubic-bezier(.2,.75,.2,1) forwards}
+  /* hand-off: everything but the XX steps back, and the stage clears to show the app. These are
+     animations with an explicit FROM, not transitions: a transition cannot start from a value an
+     animation is holding, so it would snap. */
+  #splash.fly .sp-gene,#splash.fly .sp-oh,#splash.fly .sp-tags{animation:spFade .3s ease forwards}
+  #splash.fly .sp-rule{animation:spRule 1ms forwards,spFade .3s ease forwards}
+  #splash.reveal .sp-light{animation:spFade .5s ease forwards}
+  #splash .sp-fill2{transition:fill .35s ease}
+  @keyframes spIn{to{opacity:1}}
+  @keyframes spOut{to{opacity:0}}
+  @keyframes spFade{from{opacity:1}to{opacity:0}}
+  @keyframes spSettle{0%,62.5%{transform:translate(-70px,0) scale(3.4)}100%{transform:none}}
+  @keyframes spDraw{to{stroke-dashoffset:0}}
+  @keyframes spGlow{0%{opacity:0}35%{opacity:1}100%{opacity:.35}}
+  @keyframes spSweep{to{transform:translateX(120px)}}
+  @keyframes spMini{0%{opacity:0}30%,55%{opacity:1}75%,100%{opacity:0}}
+  @keyframes spFromR{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
+  @keyframes spFromL{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+  @keyframes spRule{to{width:132px}}
+  @keyframes spLine{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){ #splash *{animation-duration:1ms!important;animation-delay:0s!important} }
   #frame.chrome-hidden .gw-tabs,#frame.chrome-hidden .substick{transform:translateY(calc(-100% - 56px))}
 
   /* ── Network feed tabs (replaces the Sectors|Feed switcher) ── */
@@ -1062,7 +1103,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-19"></script>
+<script src="genexxo-data.js?v=2026.08.26-20"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1838,7 +1879,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-19';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-20';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -5743,22 +5784,62 @@ if (ENTRY && GATEWAYS[ENTRY]) {
 }
 render();
 
-/* ═════════ WELCOME SPLASH — big, quick, gone. Frees the top bar to be the control. ═════════
-   Shows every load (it's the front door of the demo). A GENEXXO flash with a gold underline
-   that draws in, holds a beat, then fades fast to reveal the ecosystem control up top. */
+/* ═════════ WELCOME INTRO — "Lights up + hand-off" (2026-10-08) ═════════
+   Shows every load (it's the front door of the demo); a tap skips it. The XX lights up (black, gold
+   edge, silver sweep), shrinks into the wordmark as the stage brightens to --bg, then flies into the
+   top bar's .gx-dot. The stage goes transparent as it flies, so the app is already there when it lands.
+   The landing spot is MEASURED at fly time, not assumed: phone, desktop and themed gateway bars all
+   put the dot somewhere else, and its colour flips on dark themes. No visible dot → just fade out. */
 (function welcomeSplash(){
   const f = $('frame');
+  const XX = 'M203.7,1.8h-8.9l15.3,23.1,4.6-6.5-11-16.6Z M245.5,38.8l10.9,16.5h8.9l-15.3-23.1-4.5,6.7Z M247.6,28.5l-4.5,6.7h0l-8.7,13.2-4.4,6.7-4.4-6.7-8.7-13.2-13.2,20h-8.9l16.7-25.3h0s.9-1.4.9-1.4h0l4.4-6.7,8.7-13.2,4.4-6.7,4.4,6.7,8.7,13.2,13.2-20h8.9l-17.6,26.7Z M238.7,28.5l-8.7-13.2-8.7,13.2,8.7,13.2,8.7-13.2Z';
+  const GENE = 'M52.2,17.2c-2-5.1-5.2-9.1-9.7-11.9-4.4-2.8-9.5-4.2-15.2-4.2s-9.6,1.2-13.8,3.5c-4.2,2.3-7.5,5.6-9.9,9.7C1.2,18.5,0,23.2,0,28.4s1.2,9.9,3.7,14.1c2.4,4.2,5.7,7.4,9.9,9.7,4.2,2.3,8.8,3.5,13.8,3.5s8.9-1,12.8-3.1c3.8-2.1,6.9-4.9,9.3-8.4,2.4-3.5,3.9-7.3,4.4-11.5v-6.9h-29.5v7h20.1c-.7,4.6-2.5,8.2-5.5,10.9-3,2.7-6.9,4-11.6,4s-6.7-.8-9.5-2.4c-2.8-1.6-4.9-3.9-6.5-6.8-1.6-3-2.4-6.4-2.4-10.2s.8-7.2,2.4-10.2c1.6-2.9,3.7-5.2,6.5-6.8,2.8-1.6,5.9-2.4,9.5-2.4s6.1.7,8.6,2c2.5,1.4,4.4,3.4,5.8,6h10.6Z M92.1,8.8V1.7h-29.6v53.6h29.6v-7.2h-20.8v-16.4h18.5v-7.2h-18.5v-15.7h20.8Z M146.9,1.7h-8.8v39.9L111.7,1.7h-8.8v53.6h8.8V15.3l26.4,40h8.8V1.7Z M188,8.8V1.7h-29.6v53.6h29.6v-7.2h-20.8v-16.4h18.5v-7.2h-18.5v-15.7h20.8Z';
+  const OH = 'M292.5,55.8c5,0,9.6-1.2,13.8-3.5,4.2-2.3,7.5-5.6,9.9-9.8,2.4-4.2,3.6-8.9,3.6-14.1s-1.2-9.9-3.6-14.1c-2.4-4.2-5.7-7.4-9.9-9.7-4.2-2.3-8.8-3.5-13.8-3.5s-9.6,1.2-13.8,3.5c-4.2,2.3-7.5,5.6-9.9,9.7-2.4,4.2-3.7,8.9-3.7,14.1s1.2,10,3.7,14.1c2.4,4.2,5.8,7.5,9.9,9.8,4.2,2.3,8.8,3.5,13.8,3.5Z M292.5,48.2c-3.5,0-6.7-.8-9.5-2.4-2.8-1.6-4.9-3.9-6.5-6.9-1.6-3-2.4-6.5-2.4-10.4s.8-7.4,2.4-10.4c1.6-3,3.7-5.3,6.5-6.9,2.8-1.6,5.9-2.4,9.5-2.4s6.7.8,9.5,2.4c2.8,1.6,4.9,3.9,6.5,6.9,1.6,3,2.4,6.4,2.4,10.4s-.8,7.4-2.4,10.4c-1.6,3-3.7,5.3-6.5,6.9-2.8,1.6-5.9,2.4-9.5,2.4Z';
   const el = document.createElement('div');
   el.id = 'splash';
-  el.innerHTML = `<div class="splash-word">GENE<b>XX</b>O</div>
-    <div class="splash-rule"></div>
-    <div class="splash-sup">A Supernova Application</div>
-    <div class="splash-tag">The Organizing Layer for the Internet</div>`;
+  el.innerHTML = `<div class="sp-light"></div>
+    <svg class="sp-mark" viewBox="0 0 320 57.2" role="img" aria-label="GENEXXO"><defs>
+      <clipPath id="spClip"><path d="${XX}"/></clipPath>
+      <linearGradient id="spBlack" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2b2a30"/><stop offset=".55" stop-color="#121115"/><stop offset="1" stop-color="#201e24"/></linearGradient>
+      <linearGradient id="spGold" gradientUnits="userSpaceOnUse" x1="195" y1="0" x2="265" y2="57"><stop offset="0" stop-color="#8a5a12"/><stop offset=".35" stop-color="#f7c95a"/><stop offset=".55" stop-color="#fff1c4"/><stop offset=".8" stop-color="#e0a53a"/><stop offset="1" stop-color="#9c6a1a"/></linearGradient>
+      <linearGradient id="spSilver" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#dfe3ec" stop-opacity="0"/><stop offset=".5" stop-color="#eef1f7" stop-opacity=".85"/><stop offset="1" stop-color="#dfe3ec" stop-opacity="0"/></linearGradient>
+      <filter id="spGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="3.2" numOctaves="1" seed="7" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  .28 0 0 0 -.1" result="na"/><feComposite in="na" in2="SourceGraphic" operator="in" result="g"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="g"/></feMerge></filter>
+      <filter id="spBlur" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation=".9"/></filter>
+    </defs>
+    <path class="sp-gene" d="${GENE}" fill="#231F20"/>
+    <path class="sp-oh" d="${OH}" fill="#231F20"/>
+    <g class="sp-in"><g class="sp-move">
+      <g class="sp-fill1"><path d="${XX}" fill="url(#spBlack)" filter="url(#spGrain)"/></g>
+      <g clip-path="url(#spClip)"><g transform="skewX(-22)"><rect class="sp-sweep" x="200" y="-10" width="16" height="80" fill="url(#spSilver)"/></g></g>
+      <path class="sp-fill2" d="${XX}" fill="#231F20"/>
+      <g class="sp-goldedge">
+        <path class="sp-glow" d="${XX}" pathLength="1" fill="none" stroke="#f5b800" stroke-width="1.1" stroke-linejoin="round" filter="url(#spBlur)" opacity="0"/>
+        <path class="sp-edge" d="${XX}" pathLength="1" fill="none" stroke="url(#spGold)" stroke-width=".42" stroke-linejoin="round"/></g>
+      <g class="sp-mini" fill="#fff" transform="translate(254.6 11.2) rotate(-56.6) scale(.052) translate(-160 -28.6)"><path d="${GENE}"/><path d="${XX}"/><path d="${OH}"/></g>
+    </g></g></svg>
+    <div class="sp-rule"></div>
+    <div class="sp-tags"><div class="sp-t1">A Supernova Application</div><div class="sp-t2">The Organizing Layer for the Internet</div></div>`;
   f.appendChild(el);
-  // let all three lines land (wordmark → rule → Supernova → Organizing Layer), hold a beat,
-  // then fade fast to reveal the ecosystem. Last line finishes fading in by ~2.15s.
-  setTimeout(()=>{ el.classList.add('out'); }, 4100);
-  setTimeout(()=>{ el.remove(); }, 4480);
+
+  const timers = [];
+  const done = () => { timers.forEach(clearTimeout); el.classList.add('out'); setTimeout(()=>el.remove(), 320); };
+  el.onclick = done;   // tap to skip
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){ timers.push(setTimeout(done, 1600)); return; }
+
+  timers.push(setTimeout(()=>{
+    const dot = [...f.querySelectorAll('.top .gx-dot')].find(d=>{ const r=d.getBoundingClientRect(); return r.width && r.bottom>0; });
+    if(!dot){ done(); return; }
+    const mark = el.querySelector('.sp-mark'), r = mark.getBoundingClientRect();
+    const mono = dot.querySelector('.gx-mono') || dot, t = mono.getBoundingClientRect();
+    const cx = r.left + r.width*230/320, cy = r.top + r.height/2;     // the XX's centre inside the wordmark
+    const xxW = r.width*70.5/320, landW = t.width*70.5/74;             // .gx-mono's mask viewBox is 74 wide
+    el.style.setProperty('--fx', (t.left + t.width/2 - cx) + 'px');
+    el.style.setProperty('--fy', (t.top + t.height/2 - cy) + 'px');
+    el.style.setProperty('--fs', landW/xxW);
+    el.classList.add('fly', 'reveal');
+    timers.push(setTimeout(()=>{ el.querySelector('.sp-fill2').style.fill = getComputedStyle(dot).color; }, 380));
+    timers.push(setTimeout(()=>el.remove(), 800));
+  }, 3500));
 })();
 
 /* ═════════ UPDATE CHECK — Tier A (2026-07-31) — no service worker ═════════
