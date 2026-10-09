@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Wave Tracker</title>
+<style>
+/* Wave Tracker, by "Groundswell" (fictional), 2026-10-09. A GENEXXO app. Surf forecasts seeded by break + date. */
+:root{--bg:#04121F;--card:#082036;--line:rgba(255,255,255,.08);--ink:#E6F6FF;--mut:rgba(230,246,255,.55);--acc:#22D3EE;--flat:#64748B;--poor:#38BDF8;--fair:#22C55E;--good:#FACC15;--epic:#F97316}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(160deg,#22D3EE,#0066CC);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px}
+.tabs button{flex:1;font:inherit;font-weight:800;font-size:13px;color:var(--mut);background:none;border:0;border-radius:9px;padding:8px 0;cursor:pointer}
+.tabs button.on{background:var(--acc);color:#032031}
+.brk{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px;cursor:pointer}
+.brk b{display:block;font-size:14.5px}.brk span{font-size:11.5px;color:var(--mut);font-weight:600}
+.ht{margin-left:auto;text-align:right}.ht b{font-size:20px;white-space:nowrap}.ht small{display:block;font-size:10px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+.rate{width:6px;align-self:stretch;border-radius:4px;flex-shrink:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}
+.hours{display:flex;align-items:flex-end;gap:4px;height:120px;margin-top:8px}.hours div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.hours i{display:block;width:100%;border-radius:5px 5px 2px 2px}.hours small{font-size:9.5px;color:var(--mut);font-weight:800;margin-top:4px}
+.days{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.days div{text-align:center;border:1px solid var(--line);border-radius:12px;padding:9px 2px}
+.days small{display:block;font-size:10px;color:var(--mut);font-weight:800}.days b{display:block;font-size:15px;margin:3px 0}.days em{font-style:normal;font-size:10px;font-weight:900}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.kv div{border:1px solid var(--line);border-radius:12px;padding:9px}.kv b{display:block;font-size:16px}.kv span{font-size:10px;color:var(--mut);font-weight:800;text-transform:uppercase}
+.tg{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.tg:last-child{border:0}
+.sw{margin-left:auto;width:44px;height:26px;border-radius:99px;background:#1E3A52;position:relative;cursor:pointer;flex-shrink:0}.sw::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .15s}
+.sw.on{background:var(--acc)}.sw.on::after{left:21px}
+.go{width:100%;font:inherit;font-weight:900;font-size:14px;padding:12px;border:1px solid var(--acc);border-radius:12px;background:transparent;color:var(--acc);cursor:pointer;margin-top:4px}
+.note{font-size:11.5px;color:var(--mut);text-align:center;margin-top:8px}
+</style></head><body>
+<div class="hd"><div class="logo">🌊</div><div><h1>Wave Tracker</h1><p>by Groundswell · 2,400 breaks</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="breaks" class="on">Breaks</button><button data-tab="forecast">Forecast</button><button data-tab="alerts">Alerts</button></div>
+<main id="v"></main>
+<script src="gx-sdk.js"></script>
+<script>
+const BREAKS = [
+  {k:'fistral', n:'Fistral North', r:'Newquay · beach break', size:1.1},
+  {k:'thurso', n:'Thurso East', r:'Scotland · reef', size:1.4},
+  {k:'hossegor', n:'La Gravière', r:'Hossegor · beach', size:1.5},
+  {k:'ericeira', n:'Ribeira d’Ilhas', r:'Ericeira · reef', size:1.3},
+  {k:'mundaka', n:'Mundaka', r:'Basque Country · river mouth', size:1.2},
+];
+const RATE = [['FLAT','var(--flat)'],['POOR','var(--poor)'],['FAIR','var(--fair)'],['GOOD','var(--good)'],['EPIC','var(--epic)']];
+let C, S = { tab:'breaks', brk:'fistral', shared:false };
+function at(b, off, hour){ const r=GX.rng(b.k+GX.iso(off)); const base=(.6+r()*2.4)*b.size, swing=Math.sin((hour-6)/3)*.25, ht=Math.max(.2,base+swing);
+  const per=Math.round(8+r()*8), wind=Math.round(4+r()*24), off_=r()>.45, score=Math.max(0,Math.min(4,Math.round(ht*.9+(per-9)/3+(off_?1:-1)-(wind>18?1:0))));
+  return {ht, per, wind, offshore:off_, score, dir:['W','WNW','NW','SW'][Math.floor(r()*4)]}; }
+const ft = m => { const f=m*3.28; return `${Math.max(1,Math.floor(f))}–${Math.max(2,Math.ceil(f+1))}ft`; };
+GX.init({gateway:'SurfXX', seed:()=>({alerts:{fistral:true, hossegor:true}})}).then(c=>{ C=c; paint(); });
+
+function vBreaks(){ const h=Math.min(18,Math.max(6,new Date().getHours())); return BREAKS.map(b=>{ const x=at(b,0,h), [lab,col]=RATE[x.score];
+  return `<div class="brk" data-b="${b.k}"><div class="rate" style="background:${col}"></div><div><b>${b.n}</b><span>${b.r} · ${x.per}s ${x.dir} · ${x.offshore?'offshore':'onshore'} ${x.wind} km/h</span></div>
+  <div class="ht"><b>${ft(x.ht)}</b><small style="color:${col}">${lab}</small></div></div>`; }).join('') + `<div class="note">Now · tap a break for its hourly forecast</div>`; }
+function vForecast(){ const b=BREAKS.find(x=>x.k===S.brk), hrs=[6,8,10,12,14,16,18,20].map(h=>({h,...at(b,0,h)})), mx=Math.max(...hrs.map(x=>x.ht)), best=hrs.slice().sort((a,c)=>c.score-a.score||c.ht-a.ht)[0];
+  const now=at(b,0,12);
+  return `<div class="card"><b style="font-size:15px">${b.n}</b><div style="font-size:12px;color:var(--mut);font-weight:600">${b.r} · best around ${best.h}:00</div>
+    <div class="hours">${hrs.map(x=>`<div><i style="height:${Math.max(8,x.ht/mx*96)}px;background:${RATE[x.score][1]}"></i><small>${x.h}</small></div>`).join('')}</div>
+    <div class="kv"><div><b>${now.per}s</b><span>Period</span></div><div><b>${now.dir}</b><span>Swell</span></div><div><b>${now.wind} km/h</b><span>${now.offshore?'Offshore':'Onshore'}</span></div></div></div>
+    <div class="days">${[0,1,2,3,4].map(o=>{ const x=at(b,o,12), [lab,col]=RATE[x.score]; return `<div><small>${o===0?'Today':GX.day(GX.today(o),{weekday:'short'})}</small><b>${ft(x.ht)}</b><em style="color:${col}">${lab}</em></div>`; }).join('')}</div>
+    ${GX.can('feed')?`<button class="go" id="share" style="margin-top:12px" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share this forecast to ${C.gateway}`}</button>`:''}`; }
+function vAlerts(){ return `<div class="card">${BREAKS.map(b=>{ const on=!!C.data.alerts[b.k]; return `<div class="tg"><div><b style="font-size:14px">${b.n}</b><div style="font-size:11.5px;color:var(--mut)">Tell me when it’s GOOD or better</div></div><div class="sw ${on?'on':''}" data-a="${b.k}"></div></div>`; }).join('')}</div>
+    <div class="note">Alerts arrive as GENEXXO notifications in ${C.gateway}.</div>`; }
+function paint(){ document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'); v.innerHTML=S.tab==='breaks'?vBreaks():S.tab==='forecast'?vForecast():vAlerts();
+  v.querySelectorAll('[data-b]').forEach(e=>e.onclick=()=>{S.brk=e.dataset.b;S.tab='forecast';S.shared=false;paint();});
+  v.querySelectorAll('[data-a]').forEach(e=>e.onclick=()=>{ const k=e.dataset.a; C.data.alerts[k]=!C.data.alerts[k]; GX.save(C.data); paint(); });
+  const sh=document.getElementById('share'); if(sh) sh.onclick=()=>{ const b=BREAKS.find(x=>x.k===S.brk), x=at(b,0,12);
+    GX.post(`<b>${b.n}</b> today: ${ft(x.ht)} at ${x.per}s, ${x.offshore?'offshore':'onshore'} wind. Rated ${RATE[x.score][0].toLowerCase()}.`, 'SURF').then(ok=>{ if(ok){S.shared=true;paint();} }); }; }
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button'); if(!b) return; S.tab=b.dataset.tab; paint();};
+</script></body></html>

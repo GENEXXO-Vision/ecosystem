@@ -1225,7 +1225,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-24"></script>
+<script src="genexxo-data.js?v=2026.08.26-25"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -2002,7 +2002,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-24';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-25';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -3677,6 +3677,12 @@ function buildGwPanels(){
      holding empty showcase slots (2026-10-08). Same reason as Brands — the centre column already
      lists that layer — and the same idea as the zones' empty "Product showcase" frames: a clear
      template, deliberately empty, that says every layer of every gateway is space to fill. */
+  // Apps tab with openable apps: app ads, each with the app's real screenshot (2026-10-09).
+  if(state.screen==='gateway' && state.gwZones && state.gwZoneTab==='apps' && (gw.apps||[]).some(a=>a.url&&(a.shots||[]).length)){
+    paintGwAppAds(gw, L, R);
+    L.dataset.gw = R.dataset.gw = '';
+    return;
+  }
   if(state.screen==='gateway' && state.gwZones && GW_HOLDERS[state.gwZoneTab]){
     paintGwHolders(gw, L, R, GW_HOLDERS[state.gwZoneTab]);
     L.dataset.gw = R.dataset.gw = '';
@@ -3727,6 +3733,29 @@ function paintGwHolders(gw, L, R, h){
     <div class="gwa-foot"><span>Showcase slots</span><b style="color:${acc}">Advertise on ${esc(gw.name)} ›</b></div>`;
   L.innerHTML = side('◆ Featured', h.slot);
   R.innerHTML = side('✦ New', 'Coming soon');
+}
+/* App ads: the brand-ad card, with the app's own screenshot as the picture (anchored to the top, where
+   an app's header and first screen live). Instant apps first; each card opens the app's page. */
+function paintGwAppAds(gw, L, R){
+  liftGwPanels(gw, L, R);
+  const acc = (gw.theme||{}).accent || '#111116';
+  const apps = (gw.apps||[]).slice().sort((a,b)=>(!!b.url)-(!!a.url));
+  const ini = n => n.split(' ').map(w=>w[0]).join('').slice(0,2);
+  const card = (a, i) => `<div class="gwa" onclick="openApp('${esc(a.key||a.name)}')">
+      <div class="gwa-media" style="background:${a.shots&&a.shots[i%a.shots.length]?`url('${a.shots[i%a.shots.length]}') center top/cover, `:''}${a.color}">${a.shots&&a.shots.length?'':`<div class="gwa-mono">${ini(a.name)}</div>`}
+        <span class="gwa-badge" style="left:auto;right:12px">${a.url?'⚡ Instant':'Coming soon'}</span></div>
+      <div class="gwa-body">
+        <div class="gwa-who"><div class="gwa-chip" style="background:${a.color};color:#111">${ini(a.name)}</div>
+          <div><div class="gwa-n">${esc(a.name)}</div><div class="gwa-t">${esc(a.dev||gw.name+' app')}</div></div></div>
+        <div class="gwa-hl">${esc(a.tagline||a.desc)}</div>
+        <div class="gwa-row"><span class="gwa-meta">${a.rating?`★ ${a.rating} · ${a.users} users`:'In development'}</span><span class="gwa-cta" style="background:${acc}">${a.url?'Open ›':'View ›'}</span></div>
+      </div></div>`;
+  const side = (items, head, note, foot) => `<div class="gwa-h"><b style="color:${acc}">${head}</b><span>${note}</span></div>
+    <div class="gwa-list">${items.map(card).join('')}</div>
+    <div class="gwa-foot"><span>Apps run instantly · no install</span><b style="color:${acc}">${foot}</b></div>`;
+  const nL = Math.min(2, Math.ceil(apps.length/2));
+  L.innerHTML = side(apps.slice(0,nL), '⚡ Featured apps', gw.name, 'All apps ›');
+  R.innerHTML = side(apps.slice(nL,nL+2), '✦ Also in '+esc(gw.name), apps.length+' apps', `Build on ${esc(gw.name)} ›`);
 }
 function paintGwAds(gw, L, R){
   const t = gw.theme||{}, acc = t.accent||'#111116';

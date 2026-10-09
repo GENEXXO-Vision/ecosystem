@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Route Builder</title>
+<style>
+/* Route Builder, by "Lanes" (fictional), 2026-10-09. A GENEXXO app. Generates a loop from a start, distance and
+   surface: a seeded shape on a stylised map, an elevation profile, and distance/climbing/time. */
+:root{--bg:#120D06;--card:#1C150B;--line:rgba(255,255,255,.08);--ink:#FFF6E8;--mut:rgba(255,246,232,.55);--acc:#F59E0B;--map:#1F2A1F}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:#D97706;display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}
+label{display:block;font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.07em;margin:10px 0 6px}label:first-child{margin-top:0}
+select{width:100%;font:inherit;font-size:15px;color:var(--ink);background:#0E0A04;border:1px solid var(--line);border-radius:11px;padding:10px 12px;-webkit-appearance:none;appearance:none}
+input[type=range]{width:100%;accent-color:var(--acc)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font-size:12.5px;font-weight:800;padding:7px 12px;border-radius:99px;border:1px solid var(--line);color:var(--mut);cursor:pointer}
+.chip.on{border-color:var(--acc);color:var(--acc);background:rgba(245,158,11,.1)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.stats div{background:#0E0A04;border:1px solid var(--line);border-radius:12px;padding:9px;text-align:center}
+.stats b{display:block;font-size:18px}.stats span{font-size:10px;color:var(--mut);font-weight:800;text-transform:uppercase}
+.go{width:100%;font:inherit;font-weight:900;font-size:14px;padding:12px;border:0;border-radius:12px;background:var(--acc);color:#1A1000;cursor:pointer;margin-top:8px}
+.ghost{background:transparent;border:1px solid var(--acc);color:var(--acc)}
+.li{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--line)}.li:last-child{border:0}
+.li .ic{width:38px;height:38px;border-radius:10px;background:var(--map);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.li b{display:block;font-size:14px}.li span{font-size:11.5px;color:var(--mut);font-weight:600}.li em{margin-left:auto;font-style:normal;font-size:12px;font-weight:800;color:var(--acc);white-space:nowrap}
+</style></head><body>
+<div class="hd"><div class="logo">🗺️</div><div><h1>Route Builder</h1><p>by Lanes · 2.4M routes indexed</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="build" class="on">Build</button><button data-tab="saved">Saved</button><button data-tab="explore">Explore</button></div>
+<main id="v"></main>
+<script src="gx-sdk.js"></script>
+<script>
+const STARTS = {'Box Hill, Surrey':{hill:1.1}, 'Girona old town':{hill:1.4}, 'Peak District · Hathersage':{hill:1.6}, 'Mallorca · Pollença':{hill:1.8}, 'Richmond Park':{hill:.4}};
+const SURF = {Road:{sp:28,ic:'🚴'}, Gravel:{sp:21,ic:'🚵'}, Mixed:{sp:24,ic:'🛤️'}};
+const EXPLORE = [['Sa Calobra out and back','Mallorca · 54 km · 1,480 m','🏔️'],['Zig Zag Road loops','Surrey · 38 km · 610 m','🔁'],['Els Àngels sunrise','Girona · 62 km · 890 m','🌅'],['Snake Pass classic','Peak District · 71 km · 1,320 m','🐍']];
+let C, S = { tab:'build', start:'Box Hill, Surrey', km:60, surf:'Road', shared:false, saved:false };
+function build(){ const r=GX.rng(S.start+S.km+S.surf), h=STARTS[S.start].hill, N=60, pts=[], ele=[];
+  const lobes=2+Math.floor(r()*3), ph=r()*6;
+  for(let i=0;i<=N;i++){ const t=i/N*2*Math.PI, rad=55+18*Math.sin(lobes*t+ph)+10*Math.sin(5*t+ph*2); pts.push([160+rad*Math.cos(t)*1.35, 105+rad*Math.sin(t)]); }
+  let e=80+r()*60, climb=0; for(let i=0;i<=N;i++){ const d=(Math.sin(i/N*Math.PI*lobes*1.5+ph)*14+(r()-.5)*10)*h; climb+=Math.max(0,d); e=Math.max(10,e+d); ele.push(e); }
+  climb=Math.round(climb*S.km/40); const hrs=S.km/SURF[S.surf].sp*(1+climb/S.km/40); return {pts, ele, climb, hrs}; }
+GX.init({gateway:'CycleXX', seed:()=>({saved:[{start:'Girona old town',km:80,surf:'Road',climb:1210,d:GX.iso(-6)},{start:'Richmond Park',km:30,surf:'Road',climb:180,d:GX.iso(-15)}]})}).then(c=>{ C=c; paint(); });
+function vBuild(){ const R=build(), mx=Math.max(...R.ele), mn=Math.min(...R.ele);
+  const prof=R.ele.map((e,i)=>`${(i/(R.ele.length-1)*320).toFixed(1)},${(64-(e-mn)/(mx-mn||1)*54).toFixed(1)}`).join(' ');
+  return `<div class="card"><label>Start</label><select id="start">${Object.keys(STARTS).map(s=>`<option ${s===S.start?'selected':''}>${s}</option>`).join('')}</select>
+    <label>Distance · ${S.km} km</label><input type="range" id="km" min="20" max="160" step="5" value="${S.km}">
+    <label>Surface</label><div class="chips">${Object.keys(SURF).map(k=>`<div class="chip ${k===S.surf?'on':''}" data-s="${k}">${SURF[k].ic} ${k}</div>`).join('')}</div></div>
+    <div class="card" style="padding:8px"><svg viewBox="0 0 320 210" style="width:100%;background:var(--map);border-radius:10px">
+      ${[40,80,120,160].map(y=>`<path d="M0 ${y} Q 160 ${y+(y%80?18:-18)} 320 ${y}" stroke="rgba(255,255,255,.05)" fill="none" stroke-width="6"/>`).join('')}
+      <polyline points="${R.pts.map(p=>p.map(v=>v.toFixed(1)).join(',')).join(' ')}" fill="none" stroke="#F59E0B" stroke-width="3.5" stroke-linejoin="round"/>
+      <circle cx="${R.pts[0][0]}" cy="${R.pts[0][1]}" r="6" fill="#4ADE80" stroke="#fff" stroke-width="2"/></svg>
+    <svg viewBox="0 0 320 68" style="width:100%;margin-top:6px"><polygon points="0,68 ${prof} 320,68" fill="rgba(245,158,11,.25)"/><polyline points="${prof}" fill="none" stroke="#F59E0B" stroke-width="2"/></svg></div>
+    <div class="stats"><div><b>${S.km} km</b><span>Loop</span></div><div><b>${R.climb.toLocaleString()} m</b><span>Climbing</span></div><div><b>${Math.floor(R.hrs)}h ${Math.round(R.hrs%1*60)}m</b><span>Ride time</span></div></div>
+    <button class="go" id="save" ${S.saved?'disabled':''}>${S.saved?'✓ Saved':'Save route'}</button>
+    ${GX.can('feed')?`<button class="go ghost" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share route to ${C.gateway}`}</button>`:''}`; }
+function vSaved(){ return `<div class="card">${C.data.saved.map(x=>`<div class="li"><div class="ic">${SURF[x.surf].ic}</div><div><b>${x.start} loop</b><span>${x.surf} · ${x.climb.toLocaleString()} m · saved ${GX.day(x.d,{day:'numeric',month:'short'})}</span></div><em>${x.km} km</em></div>`).join('')}</div>`; }
+function vExplore(){ return `<div class="card">${EXPLORE.map(x=>`<div class="li"><div class="ic">${x[2]}</div><div><b>${x[0]}</b><span>${x[1]}</span></div><em>Ride ›</em></div>`).join('')}</div>`; }
+function paint(){ document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'); v.innerHTML=S.tab==='build'?vBuild():S.tab==='saved'?vSaved():vExplore();
+  const reset=()=>{S.saved=false;S.shared=false;};
+  const st=document.getElementById('start'); if(st) st.onchange=()=>{S.start=st.value;reset();paint();};
+  const km=document.getElementById('km'); if(km) km.oninput=()=>{S.km=+km.value;reset();paint();};
+  v.querySelectorAll('[data-s]').forEach(e=>e.onclick=()=>{S.surf=e.dataset.s;reset();paint();});
+  const sv=document.getElementById('save'); if(sv) sv.onclick=()=>{ C.data.saved.unshift({start:S.start,km:S.km,surf:S.surf,climb:build().climb,d:GX.iso(0)}); GX.save(C.data); S.saved=true; paint(); };
+  const sh=document.getElementById('share'); if(sh) sh.onclick=()=>{ const R=build();
+    GX.post(`New loop from <b>${S.start}</b>: ${S.km} km ${S.surf.toLowerCase()}, ${R.climb.toLocaleString()} m of climbing. Who's in?`, 'ROUTE').then(ok=>{ if(ok){S.shared=true;paint();} }); }; }
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button'); if(!b) return; S.tab=b.dataset.tab; paint();};
+</script></body></html>

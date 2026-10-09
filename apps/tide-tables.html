@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tide Tables</title>
+<style>
+/* Tide Tables, by "Lunar Tide Co." (fictional), 2026-10-09. A GENEXXO app. A semidiurnal model: two highs a
+   day, 12h25m apart, range swelling and shrinking with the moon. Plausible, not for navigation. */
+:root{--bg:#F2F8FF;--card:#FFFFFF;--line:rgba(10,40,80,.1);--ink:#0B2545;--mut:rgba(11,37,69,.55);--acc:#0088FF}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-size:20px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;background:#E3EEFB;border-radius:12px;padding:4px}
+.tabs button{flex:1;font:inherit;font-weight:800;font-size:13px;color:var(--mut);background:none;border:0;border-radius:9px;padding:8px 0;cursor:pointer}
+.tabs button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+select{width:100%;font:inherit;font-size:15px;font-weight:700;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px 12px;margin-bottom:10px;-webkit-appearance:none;appearance:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:0 2px 10px rgba(11,37,69,.04)}
+.now{display:flex;justify-content:space-between;align-items:flex-end}.now b{font-size:30px;font-weight:900}.now span{font-size:12px;color:var(--mut);font-weight:700}
+.ev{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}.ev div{border:1px solid var(--line);border-radius:12px;padding:8px;text-align:center}
+.ev small{display:block;font-size:10px;font-weight:900;letter-spacing:.06em}.ev b{display:block;font-size:15px}.ev span{font-size:11px;color:var(--mut);font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:12.5px}th{font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em;text-align:left;padding:6px 4px}
+td{padding:9px 4px;border-top:1px solid var(--line);font-weight:600}td b{font-weight:800}
+.moon{font-size:64px;text-align:center;line-height:1}.ph{text-align:center;font-size:17px;font-weight:800;margin-top:6px}.ph+p{text-align:center;color:var(--mut);font-size:12.5px;margin-top:2px}
+.note{font-size:11.5px;color:var(--mut);text-align:center;margin-top:8px}
+</style></head><body>
+<div class="hd"><div class="logo">🌙</div><div><h1>Tide Tables</h1><p>by Lunar Tide Co. · every coast</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="today" class="on">Today</button><button data-tab="week">Week</button><button data-tab="moon">Moon</button></div>
+<main id="v"></main>
+<script src="gx-sdk.js"></script>
+<script>
+const PLACES = {Newquay:{off:5.2,mean:3.8,amp:2.6}, Hossegor:{off:3.1,mean:2.3,amp:1.6}, Ericeira:{off:2.6,mean:2.0,amp:1.5}, Thurso:{off:9.8,mean:2.9,amp:1.9}, Biarritz:{off:3.0,mean:2.4,amp:1.7}, 'Saint-Malo':{off:6.3,mean:6.8,amp:5.4}};
+const LUNAR = 29.53, T = 12.4206;    // days per lunation, hours per tide cycle
+let C, S = { tab:'today' };
+const EPOCH = Date.UTC(2000,0,6,18,14)/36e5;   // a known new moon, in hours
+const moonAge = h => (((h-EPOCH)/24)%LUNAR+LUNAR)%LUNAR;
+function level(p, h){ const age=moonAge(h), spring=.72+.28*Math.cos(2*Math.PI*age/(LUNAR/2)); return p.mean + p.amp*spring*Math.cos(2*Math.PI*(h-p.off)/T); }
+function events(p, startH, hours){ const out=[]; let prev=level(p,startH-.1), cur=level(p,startH);
+  for(let h=startH; h<startH+hours; h+=.1){ const nxt=level(p,h+.1); if(cur>prev&&cur>=nxt) out.push({t:h,type:'HIGH',lv:cur}); if(cur<prev&&cur<=nxt) out.push({t:h,type:'LOW',lv:cur}); prev=cur; cur=nxt; } return out; }
+const hnow = () => Date.now()/36e5, midnight = off => { const d=GX.today(off); d.setHours(0,0,0,0); return d.getTime()/36e5; };
+const clock = h => new Date(h*36e5).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+GX.init({gateway:'SurfXX', seed:()=>({place:'Newquay'})}).then(c=>{ C=c; paint(); });
+const place = () => PLACES[C.data.place]||PLACES.Newquay;
+
+function vToday(){ const p=place(), m0=midnight(0), n=hnow(), W=320, H=150;
+  const pts=[]; for(let i=0;i<=96;i++){ const h=m0+i/4, y=H-12-(level(p,h)-(p.mean-p.amp))/(2*p.amp)*(H-28); pts.push(`${(i/96*W).toFixed(1)},${y.toFixed(1)}`); }
+  const nx=(n-m0)/24*W, ny=H-12-(level(p,n)-(p.mean-p.amp))/(2*p.amp)*(H-28), rising=level(p,n+.1)>level(p,n), ev=events(p,m0,24);
+  return `<select id="place">${Object.keys(PLACES).map(k=>`<option ${k===C.data.place?'selected':''}>${k}</option>`).join('')}</select>
+    <div class="card"><div class="now"><div><span>Now</span><br><b>${level(p,n).toFixed(1)} m</b></div><span>${rising?'▲ Rising':'▼ Falling'} · ${clock(n)}</span></div>
+    <svg viewBox="0 0 ${W} ${H}" style="width:100%;margin-top:8px"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0088FF" stop-opacity=".35"/><stop offset="1" stop-color="#0088FF" stop-opacity="0"/></linearGradient></defs>
+      <polygon points="0,${H} ${pts.join(' ')} ${W},${H}" fill="url(#g)"/><polyline points="${pts.join(' ')}" fill="none" stroke="#0088FF" stroke-width="2.5"/>
+      ${[6,12,18].map(h=>`<line x1="${h/24*W}" y1="0" x2="${h/24*W}" y2="${H}" stroke="rgba(11,37,69,.08)"/><text x="${h/24*W+3}" y="${H-2}" font-size="9" fill="rgba(11,37,69,.45)">${h}:00</text>`).join('')}
+      <line x1="${nx}" y1="0" x2="${nx}" y2="${H}" stroke="#F97316" stroke-width="1.5" stroke-dasharray="3 3"/><circle cx="${nx}" cy="${ny}" r="5" fill="#F97316" stroke="#fff" stroke-width="2"/></svg>
+    <div class="ev">${ev.slice(0,4).map(e=>`<div><small style="color:${e.type==='HIGH'?'var(--acc)':'#64748B'}">${e.type}</small><b>${clock(e.t)}</b><span>${e.lv.toFixed(1)} m</span></div>`).join('')}</div></div>
+    <div class="note">Model tides for planning a session · not for navigation</div>`; }
+function vWeek(){ const p=place(); return `<div class="card"><table><tr><th>Day</th><th>High</th><th>Low</th><th>Range</th></tr>${[0,1,2,3,4,5,6].map(o=>{ const ev=events(p,midnight(o),24), hi=ev.filter(e=>e.type==='HIGH'), lo=ev.filter(e=>e.type==='LOW');
+    const rng=hi.length&&lo.length?(Math.max(...hi.map(e=>e.lv))-Math.min(...lo.map(e=>e.lv))).toFixed(1):'–';
+    return `<tr><td><b>${o===0?'Today':GX.day(GX.today(o),{weekday:'short',day:'numeric'})}</b></td><td>${hi.map(e=>clock(e.t)).join('<br>')}</td><td>${lo.map(e=>clock(e.t)).join('<br>')}</td><td>${rng} m</td></tr>`; }).join('')}</table></div>
+    <div class="note">${C.data.place}</div>`; }
+function vMoon(){ const a=moonAge(hnow()), i=Math.round(a/LUNAR*8)%8, icons=['🌑','🌒','🌓','🌔','🌕','🌖','🌗','🌘'], names=['New moon','Waxing crescent','First quarter','Waxing gibbous','Full moon','Waning gibbous','Last quarter','Waning crescent'];
+  const toSpring=((LUNAR/2)-(a%(LUNAR/2)))%(LUNAR/2), spring=a%(LUNAR/2)<2||a%(LUNAR/2)>LUNAR/2-2;
+  return `<div class="card"><div class="moon">${icons[i]}</div><div class="ph">${names[i]}</div><p>${Math.round(a)} days into the cycle</p></div>
+    <div class="card"><b>${spring?'Spring tides now':'Neap tides'}</b><div style="font-size:12.5px;color:var(--mut);margin-top:2px">${spring?'Biggest range of the fortnight: big highs, very low lows. Reefs uncover at low.':`Next spring tides in about ${Math.round(toSpring)} days.`}</div></div>`; }
+function paint(){ document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'); v.innerHTML=S.tab==='today'?vToday():S.tab==='week'?vWeek():vMoon();
+  const pl=document.getElementById('place'); if(pl) pl.onchange=()=>{ C.data.place=pl.value; GX.save(C.data); paint(); }; }
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button'); if(!b) return; S.tab=b.dataset.tab; paint();};
+</script></body></html>

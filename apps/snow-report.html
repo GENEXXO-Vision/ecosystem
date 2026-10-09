@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Snow Report</title>
+<style>
+/* Snow Report, by "Powderline" (fictional), 2026-10-09. A GENEXXO app. Resort conditions seeded by resort + date. */
+:root{--bg:#0A0F1E;--card:#121A30;--line:rgba(255,255,255,.08);--ink:#EAF2FF;--mut:rgba(234,242,255,.55);--acc:#60A5FA;--snow:#E0F2FE}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#BFDBFE,#3B82F6);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.rs{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px}
+.rs .top{display:flex;align-items:center;gap:10px}.rs b{display:block;font-size:14.5px}.rs span{font-size:11.5px;color:var(--mut);font-weight:600}
+.fresh{margin-left:auto;text-align:right}.fresh b{font-size:21px;color:var(--snow)}.fresh small{display:block;font-size:10px;font-weight:800;color:var(--mut);text-transform:uppercase}
+.fav{font-size:20px;cursor:pointer;padding:0 2px;color:rgba(255,255,255,.25)}.fav.on{color:#FACC15}
+.meta{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}.meta div{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;padding:7px 8px}
+.meta b{font-size:13.5px}.meta span{display:block;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.lifts{height:5px;border-radius:99px;background:rgba(255,255,255,.08);margin-top:4px;overflow:hidden}.lifts i{display:block;height:100%;background:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}
+.fc{display:flex;align-items:flex-end;gap:8px;height:130px}.fc div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.fc i{display:block;width:100%;border-radius:6px;background:linear-gradient(#E0F2FE,#60A5FA)}.fc b{font-size:12px;margin-bottom:3px}.fc small{font-size:10px;color:var(--mut);font-weight:800;margin-top:4px}
+.go{width:100%;font:inherit;font-weight:900;font-size:14px;padding:12px;border:1px solid var(--acc);border-radius:12px;background:transparent;color:var(--acc);cursor:pointer}
+.note{font-size:11.5px;color:var(--mut);text-align:center;margin-top:8px}
+</style></head><body>
+<div class="hd"><div class="logo">❄️</div><div><h1>Snow Report</h1><p>by Powderline · 400+ resorts</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="resorts" class="on">Resorts</button><button data-tab="favs">My resorts</button><button data-tab="forecast">Snowfall</button></div>
+<main id="v"></main>
+<script src="gx-sdk.js"></script>
+<script>
+const RESORTS = [
+  {k:'cham', n:'Chamonix', r:'France · 1,035–3,842 m', lifts:49, snow:1.2},
+  {k:'verb', n:'Verbier', r:'Switzerland · 1,500–3,330 m', lifts:67, snow:1.1},
+  {k:'zerm', n:'Zermatt', r:'Switzerland · 1,620–3,883 m', lifts:52, snow:1.0},
+  {k:'stan', n:'St Anton', r:'Austria · 1,304–2,811 m', lifts:88, snow:1.3},
+  {k:'vald', n:'Val d’Isère', r:'France · 1,850–3,456 m', lifts:78, snow:1.15},
+  {k:'nis', n:'Niseko', r:'Japan · 260–1,308 m', lifts:38, snow:1.8},
+];
+let C, S = { tab:'resorts', shared:false };
+function cond(r, off){ const g=GX.rng(r.k+GX.iso(off)); const fresh=Math.max(0,Math.round((g()*30-8)*r.snow)), base=Math.round(60+g()*150*r.snow), open=Math.round(r.lifts*(.55+g()*.45)), temp=Math.round(-14+g()*12);
+  return {fresh, base, open, temp, sky:fresh>10?'🌨️':g()>.5?'☀️':'⛅'}; }
+GX.init({gateway:'SkiXX', seed:()=>({favs:['verb','stan']})}).then(c=>{ C=c; paint(); });
+const isFav = k => C.data.favs.includes(k);
+function card(r){ const c=cond(r,0); return `<div class="rs"><div class="top"><span class="fav ${isFav(r.k)?'on':''}" data-f="${r.k}">★</span><div><b>${c.sky} ${r.n}</b><span>${r.r}</span></div>
+  <div class="fresh"><b>${c.fresh} cm</b><small>last 24h</small></div></div>
+  <div class="meta"><div><b>${c.base} cm</b><span style="color:var(--mut)">Base</span></div><div><b>${c.temp}°C</b><span style="color:var(--mut)">Summit</span></div>
+  <div><b>${c.open}/${r.lifts}</b><span style="color:var(--mut)">Lifts open</span><div class="lifts"><i style="width:${c.open/r.lifts*100}%"></i></div></div></div></div>`; }
+function vResorts(){ return RESORTS.slice().sort((a,b)=>cond(b,0).fresh-cond(a,0).fresh).map(card).join('') + `<div class="note">Sorted by fresh snow · tap ★ to follow a resort</div>`; }
+function vFavs(){ const f=RESORTS.filter(r=>isFav(r.k)); if(!f.length) return `<div class="card" style="text-align:center;color:var(--mut)">Tap ★ on a resort to follow it here.</div>`;
+  const best=f.slice().sort((a,b)=>cond(b,0).fresh-cond(a,0).fresh)[0];
+  return f.map(card).join('') + (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share today’s best: ${best.n}`}</button>`:''); }
+function vForecast(){ const f=RESORTS.filter(r=>isFav(r.k)); const list=f.length?f:RESORTS.slice(0,2);
+  return list.map(r=>{ const d=[1,2,3,4,5].map(o=>({o,...cond(r,o)})), mx=Math.max(10,...d.map(x=>x.fresh)), tot=d.reduce((a,x)=>a+x.fresh,0);
+    return `<div class="card"><b style="font-size:14.5px">${r.n}</b> <span style="font-size:12px;color:var(--mut);font-weight:700">· ${tot} cm in 5 days</span>
+      <div class="fc">${d.map(x=>`<div><b>${x.fresh}</b><i style="height:${Math.max(4,x.fresh/mx*90)}px"></i><small>${GX.day(GX.today(x.o),{weekday:'short'})}</small></div>`).join('')}</div></div>`; }).join(''); }
+function paint(){ document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'); v.innerHTML=S.tab==='resorts'?vResorts():S.tab==='favs'?vFavs():vForecast();
+  v.querySelectorAll('[data-f]').forEach(e=>e.onclick=()=>{ const k=e.dataset.f, a=C.data.favs; const i=a.indexOf(k); if(i>=0) a.splice(i,1); else a.push(k); GX.save(C.data); paint(); });
+  const sh=document.getElementById('share'); if(sh) sh.onclick=()=>{ const f=RESORTS.filter(r=>isFav(r.k)).sort((a,b)=>cond(b,0).fresh-cond(a,0).fresh)[0], c=cond(f,0);
+    GX.post(`<b>${c.fresh} cm</b> of fresh snow at <b>${f.n}</b> in the last 24 hours. ${c.open} of ${f.lifts} lifts open, ${c.base} cm base.`, 'SNOW').then(ok=>{ if(ok){S.shared=true;paint();} }); }; }
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button'); if(!b) return; S.tab=b.dataset.tab; paint();};
+</script></body></html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Power Analyser</title>
+<style>
+/* Power Analyser, by "Wattage Labs" (fictional), 2026-10-09. A GENEXXO app. Real training-load maths:
+   IF = NP/FTP, TSS = hours × IF² × 100, fitness (CTL) and fatigue (ATL) as 42- and 7-day exponential averages. */
+:root{--bg:#0B0B0B;--card:#161616;--line:rgba(255,255,255,.08);--ink:#F5F5F5;--mut:rgba(245,245,245,.55);--acc:#F5C400}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px}
+.tabs button{flex:1;font:inherit;font-weight:800;font-size:13px;color:var(--mut);background:none;border:0;border-radius:9px;padding:8px 0;cursor:pointer}
+.tabs button.on{background:var(--acc);color:#111}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}
+label{display:block;font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.07em;margin:10px 0 6px}label:first-child{margin-top:0}
+input{width:100%;font:inherit;font-size:16px;color:var(--ink);background:#0B0B0B;border:1px solid var(--line);border-radius:11px;padding:10px 12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.res{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.res div{background:#0B0B0B;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+.res b{display:block;font-size:22px;color:var(--acc)}.res span{font-size:10px;color:var(--mut);font-weight:800;text-transform:uppercase}
+.go{width:100%;font:inherit;font-weight:900;font-size:15px;padding:12px;border:0;border-radius:12px;background:var(--acc);color:#111;cursor:pointer;margin-top:12px}
+.ghost{background:transparent;border:1px solid var(--acc);color:var(--acc)}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}.trio div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px}
+.trio b{display:block;font-size:22px}.trio span{font-size:10px;color:var(--mut);font-weight:800;text-transform:uppercase}.trio em{display:block;font-style:normal;font-size:11px;color:var(--mut);margin-top:2px}
+.wk{display:flex;align-items:flex-end;gap:6px;height:120px}.wk div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.wk i{display:block;width:100%;border-radius:6px 6px 2px 2px;background:var(--acc)}.wk small{font-size:9.5px;color:var(--mut);font-weight:800;margin-top:4px}.wk b{font-size:10.5px;margin-bottom:3px}
+.z{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}.z:last-child{border:0}.z i{width:10px;height:28px;border-radius:4px;flex-shrink:0}
+.z b{font-size:13.5px}.z span{margin-left:auto;font-weight:800;font-size:13px}
+.note{font-size:11.5px;color:var(--mut);text-align:center;margin-top:8px}
+</style></head><body>
+<div class="hd"><div class="logo">⚡</div><div><h1>Power Analyser</h1><p>by Wattage Labs · training load</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="ride" class="on">Ride</button><button data-tab="load">Load</button><button data-tab="zones">Zones</button></div>
+<main id="v"></main>
+<script src="gx-sdk.js"></script>
+<script>
+const ZONES = [['Active recovery',0,.55,'#64748B'],['Endurance',.56,.75,'#38BDF8'],['Tempo',.76,.9,'#22C55E'],['Threshold',.91,1.05,'#FACC15'],['VO2 max',1.06,1.2,'#F97316'],['Anaerobic',1.21,1.5,'#EF4444']];
+let C, S = { tab:'ride', d:{mins:90, np:215}, last:null, shared:false };
+GX.init({gateway:'CycleXX', seed:()=>{ const r=GX.rng('wattage-seed'), rides=[]; for(let i=1;i<=56;i++){ if(r()>.45){ const mins=45+Math.round(r()*150), np=170+Math.round(r()*80); rides.push({d:GX.iso(-i), mins, np}); } } return {ftp:260, rides}; } })
+  .then(c=>{ C=c; paint(); });
+const calc = (mins, np) => { const IF=np/C.data.ftp, tss=Math.round(mins/60*IF*IF*100); return {IF, tss}; };
+function load(){ let ctl=0, atl=0; const byDay={}; C.data.rides.forEach(x=>{ byDay[x.d]=(byDay[x.d]||0)+calc(x.mins,x.np).tss; });
+  for(let i=-60;i<=0;i++){ const t=byDay[GX.iso(i)]||0; ctl+= (t-ctl)/42; atl+=(t-atl)/7; } return {ctl:Math.round(ctl), atl:Math.round(atl), tsb:Math.round(ctl-atl), byDay}; }
+function vRide(){ const d=S.d, k=calc(+d.mins||0, +d.np||0);
+  const done = S.last ? `<div class="card" style="border-color:rgba(245,196,0,.4)"><b style="font-size:15px">✓ Ride saved · ${S.last.tss} TSS</b>
+     <div style="font-size:12px;color:var(--mut)">${S.last.mins} min at ${S.last.np} W normalised</div>
+     ${GX.can('feed')?`<button class="go ghost" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share to ${C.gateway} feed`}</button>`:''}</div>` : '';
+  return done + `<div class="card"><div class="row3"><div><label>Minutes</label><input id="mins" type="number" inputmode="numeric" value="${d.mins}"></div><div><label>NP watts</label><input id="np" type="number" inputmode="numeric" value="${d.np}"></div><div><label>FTP</label><input id="ftp" type="number" inputmode="numeric" value="${C.data.ftp}"></div></div>
+    <div class="res"><div><b>${k.IF.toFixed(2)}</b><span>Intensity</span></div><div><b>${k.tss}</b><span>TSS</span></div><div><b>${Math.round(+d.np*(+d.mins)*60/1000)}</b><span>kJ</span></div></div>
+    <button class="go" id="save">Save ride</button></div><div class="note">Numbers update as you type.</div>`; }
+function vLoad(){ const L=load(); const weeks=[7,6,5,4,3,2,1,0].map(w=>{ let t=0; for(let i=0;i<7;i++) t+=L.byDay[GX.iso(-(w*7+i))]||0; return {w,t}; }), mx=Math.max(...weeks.map(x=>x.t),1);
+  const form = L.tsb>5?'Fresh':L.tsb>-10?'Neutral':L.tsb>-30?'Productive':'Overreaching';
+  return `<div class="trio"><div><b>${L.ctl}</b><span>Fitness</span><em>42-day load</em></div><div><b>${L.atl}</b><span>Fatigue</span><em>7-day load</em></div><div><b style="color:${L.tsb>=0?'#4ADE80':'#FB923C'}">${L.tsb>0?'+':''}${L.tsb}</b><span>Form</span><em>${form}</em></div></div>
+    <div class="card"><b style="font-size:13.5px">Weekly TSS</b><div class="wk">${weeks.map(x=>`<div><b>${x.t}</b><i style="height:${Math.max(3,x.t/mx*88)}px;opacity:${x.w===0?1:.55}"></i><small>${x.w===0?'Now':`-${x.w}w`}</small></div>`).join('')}</div></div>`; }
+function vZones(){ const f=C.data.ftp; return `<div class="card"><div style="font-size:12.5px;color:var(--mut);font-weight:700;margin-bottom:4px">FTP ${f} W · ${(f/72).toFixed(1)} W/kg at 72 kg</div>
+  ${ZONES.map((z,i)=>`<div class="z"><i style="background:${z[3]}"></i><div><b>Z${i+1} · ${z[0]}</b></div><span>${Math.round(z[1]*f)}–${i===5?'max':Math.round(z[2]*f)} W</span></div>`).join('')}</div>`; }
+function paint(){ document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'); v.innerHTML=S.tab==='ride'?vRide():S.tab==='load'?vLoad():vZones();
+  ['mins','np'].forEach(k=>{ const e=document.getElementById(k); if(e) e.oninput=()=>{ S.d[k]=e.value; const pos=e.selectionStart; paint(); const n=document.getElementById(k); n.focus(); try{n.setSelectionRange(pos,pos);}catch(_){} }; });
+  const fe=document.getElementById('ftp'); if(fe) fe.onchange=()=>{ C.data.ftp=Math.max(100,+fe.value||260); GX.save(C.data); paint(); };
+  const sv=document.getElementById('save'); if(sv) sv.onclick=()=>{ const r={d:GX.iso(0), mins:+S.d.mins||0, np:+S.d.np||0}; C.data.rides.unshift(r); GX.save(C.data); S.last={...r, tss:calc(r.mins,r.np).tss}; S.shared=false; paint(); };
+  const sh=document.getElementById('share'); if(sh) sh.onclick=()=>{ const l=S.last;
+    GX.post(`Today’s ride: <b>${l.mins} min at ${l.np} W</b> normalised, ${l.tss} TSS. Building towards the next block.`, 'RIDE').then(ok=>{ if(ok){S.shared=true;paint();} }); }; }
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button'); if(!b) return; S.tab=b.dataset.tab; paint();};
+</script></body></html>

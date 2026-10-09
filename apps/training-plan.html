@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Training Plan</title>
+<style>
+/* Training Plan, by "Fingerboard Co." (fictional), 2026-10-09. A GENEXXO app: runs sandboxed, talks via gx-sdk.js. */
+:root{--bg:#14110B;--card:#1E1A12;--line:rgba(255,255,255,.08);--ink:#F6EFE0;--mut:rgba(246,239,224,.55);--acc:#F59E0B;--hang:#F59E0B;--rest:#38BDF8}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-weight:900;color:#2A1A00}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px}
+.tabs button{flex:1;font:inherit;font-weight:800;font-size:13px;color:var(--mut);background:none;border:0;border-radius:9px;padding:8px 0;cursor:pointer}
+.tabs button.on{background:var(--acc);color:#2A1A00}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}
+.proto{display:flex;align-items:center;gap:12px;cursor:pointer}.proto.on{border-color:var(--acc);background:rgba(245,158,11,.08)}
+.proto b{display:block;font-size:15px}.proto span{font-size:12px;color:var(--mut);font-weight:600}
+.badge{margin-left:auto;font-size:10px;font-weight:800;padding:4px 8px;border-radius:99px;background:rgba(245,158,11,.15);color:var(--acc);white-space:nowrap}
+.go{width:100%;font:inherit;font-weight:900;font-size:15px;padding:13px;border:0;border-radius:12px;background:var(--acc);color:#2A1A00;cursor:pointer;margin-top:4px}
+.ghost{background:transparent;border:1px solid var(--acc);color:var(--acc)}
+.ring{width:220px;height:220px;margin:6px auto 4px;position:relative}.ring svg{transform:rotate(-90deg)}
+.ring .c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .ph{font-size:13px;font-weight:900;letter-spacing:.2em}.ring .t{font-size:58px;font-weight:900;line-height:1}
+.sub{text-align:center;color:var(--mut);font-weight:700;font-size:12.5px}
+.row{display:flex;gap:8px}.row button{flex:1}
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.dy{border:1px solid var(--line);border-radius:12px;padding:8px 4px;text-align:center;cursor:pointer}
+.dy small{display:block;font-size:10px;color:var(--mut);font-weight:800}.dy b{display:block;font-size:15px;margin:2px 0}
+.dy i{font-style:normal;font-size:16px}.dy.today{border-color:var(--acc)}.dy.done{background:rgba(245,158,11,.14)}
+.li{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}.li:last-child{border:0}
+.li span{color:var(--mut);font-weight:600}
+.big{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}.big div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.big b{display:block;font-size:22px}.big span{font-size:10.5px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.note{font-size:11.5px;color:var(--mut);text-align:center;margin-top:8px}
+</style></head><body>
+<div class="hd"><div class="logo">TP</div><div><h1>Training Plan</h1><p>by Fingerboard Co. · v3.1</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="session" class="on">Session</button><button data-tab="plan">Plan</button><button data-tab="history">History</button></div>
+<main id="v"></main>
+<script src="gx-sdk.js"></script>
+<script>
+const PROTOS = [
+  {k:'rep', name:'Repeaters 7/3', desc:'7s hang, 3s rest · 6 reps × 3 sets', hang:7, rest:3, reps:6, sets:3, setRest:60, lvl:'Endurance'},
+  {k:'max', name:'Max hangs', desc:'10s hang, 2 min rest · 5 reps', hang:10, rest:120, reps:5, sets:1, setRest:0, lvl:'Strength'},
+  {k:'den', name:'Density hangs', desc:'20s hang, 10s rest · 4 reps × 2 sets', hang:20, rest:10, reps:4, sets:2, setRest:90, lvl:'Capacity'},
+];
+const PLAN = ['rep',null,'max',null,'den','rep',null];   // Mon..Sun
+let C, S = { tab:'session', proto:'rep', run:null, last:null, shared:false };
+const fmt = s => s>=60 ? `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}` : String(s);
+GX.init({ gateway:'ClimbXX', seed:()=>({ hist:[
+  {d:GX.iso(-2),k:'max',secs:50},{d:GX.iso(-4),k:'rep',secs:126},{d:GX.iso(-7),k:'den',secs:160},{d:GX.iso(-9),k:'rep',secs:126},{d:GX.iso(-11),k:'max',secs:50}] }) })
+  .then(c => { C = c; paint(); });
+
+function steps(p){ const out=[]; for(let s=0;s<p.sets;s++){ for(let r=0;r<p.reps;r++){ out.push({ph:'HANG',t:p.hang,set:s+1,rep:r+1});
+  if(r<p.reps-1) out.push({ph:'REST',t:p.rest,set:s+1,rep:r+1}); } if(s<p.sets-1) out.push({ph:'SET REST',t:p.setRest,set:s+1}); } return out; }
+function start(){ const p=PROTOS.find(x=>x.k===S.proto); S.run={p, steps:steps(p), i:0, left:steps(p)[0].t, paused:false}; S.last=null; tick(); }
+let timer=null;
+function tick(){ clearInterval(timer); timer=setInterval(()=>{ const r=S.run; if(!r||r.paused) return; r.left--;
+  if(r.left<=0){ r.i++; if(r.i>=r.steps.length){ finish(); return; } r.left=r.steps[r.i].t; } paint(); },1000); paint(); }
+function finish(){ clearInterval(timer); const p=S.run.p; const secs=p.hang*p.reps*p.sets;
+  C.data.hist.unshift({d:GX.iso(0),k:p.k,secs}); GX.save(C.data); S.last={p,secs}; S.run=null; S.shared=false; paint(); }
+
+function vSession(){
+  if(S.run){ const r=S.run, st=r.steps[r.i], frac=r.left/st.t, col=st.ph==='HANG'?'var(--hang)':'var(--rest)';
+    return `<div class="card"><div class="ring"><svg width="220" height="220"><circle cx="110" cy="110" r="96" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="14"/>
+      <circle cx="110" cy="110" r="96" fill="none" stroke="${col}" stroke-width="14" stroke-linecap="round" stroke-dasharray="${2*Math.PI*96}" stroke-dashoffset="${2*Math.PI*96*(1-frac)}"/></svg>
+      <div class="c"><div class="ph" style="color:${col}">${st.ph}</div><div class="t">${fmt(r.left)}</div></div></div>
+      <div class="sub">${r.p.name} · set ${st.set}/${r.p.sets}${st.rep?` · rep ${st.rep}/${r.p.reps}`:''}</div>
+      <div class="row" style="margin-top:14px"><button class="go ghost" id="pause">${r.paused?'Resume':'Pause'}</button><button class="go ghost" id="skip">Skip</button><button class="go" id="stop">Finish</button></div></div>`; }
+  const done = S.last ? `<div class="card" style="border-color:rgba(245,158,11,.4)"><b style="font-size:15px">✓ ${S.last.p.name} done</b>
+      <div class="sub" style="text-align:left;margin-top:2px">${S.last.secs}s of hang time logged</div>
+      ${GX.can('feed')?`<button class="go ghost" id="share" style="margin-top:10px" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share to ${C.gateway} feed`}</button>`:''}</div>` : '';
+  return done + PROTOS.map(p=>`<div class="card proto ${p.k===S.proto?'on':''}" data-p="${p.k}"><div><b>${p.name}</b><span>${p.desc}</span></div><div class="badge">${p.lvl}</div></div>`).join('')
+    + `<button class="go" id="start">Start session</button><div class="note">Warm up first: 10 minutes of easy climbing.</div>`;
+}
+function vPlan(){
+  const mon = GX.today(-((GX.today().getDay()+6)%7));
+  const days = PLAN.map((k,i)=>{ const d=new Date(mon); d.setDate(mon.getDate()+i); const iso=d.toISOString().slice(0,10);
+    const done=C.data.hist.some(h=>h.d===iso); return {k,d,iso,done,today:iso===GX.iso(0)}; });
+  return `<div class="card"><div class="wk">${days.map(x=>`<div class="dy ${x.today?'today':''} ${x.done?'done':''}"><small>${GX.day(x.d,{weekday:'short'})}</small><b>${x.d.getDate()}</b><i>${x.done?'✓':x.k?'🧗':'·'}</i></div>`).join('')}</div></div>`
+    + days.filter(x=>x.k).map(x=>{ const p=PROTOS.find(q=>q.k===x.k); return `<div class="li"><b>${GX.day(x.d)}</b><span>${p.name}${x.done?' · done':''}</span></div>`; }).join('')
+    + `<div class="note">Week 3 of 6 · strength phase. Rest days matter as much as hang days.</div>`;
+}
+function vHistory(){
+  const h=C.data.hist, tot=h.reduce((a,x)=>a+x.secs,0), wk=h.filter(x=>x.d>=GX.iso(-6)).length;
+  return `<div class="big"><div><b>${Math.round(tot/60)} min</b><span>Hang time</span></div><div><b>${wk}</b><span>Sessions this week</span></div></div>
+    <div class="card">${h.map(x=>`<div class="li"><b>${PROTOS.find(p=>p.k===x.k).name}</b><span>${GX.day(x.d)} · ${x.secs}s</span></div>`).join('')}</div>`;
+}
+function paint(){
+  if(!C) return;
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'); v.innerHTML = S.tab==='session'?vSession():S.tab==='plan'?vPlan():vHistory();
+  v.querySelectorAll('[data-p]').forEach(e=>e.onclick=()=>{S.proto=e.dataset.p;paint();});
+  const on=(id,f)=>{const e=document.getElementById(id); if(e) e.onclick=f;};
+  on('start',start); on('pause',()=>{S.run.paused=!S.run.paused;paint();});
+  on('skip',()=>{S.run.left=1;}); on('stop',finish);
+  on('share',()=>{ const l=S.last; GX.post(`Finished <b>${l.p.name}</b> on the hangboard: ${l.secs}s of hang time.`, 'TRAINING').then(ok=>{ if(ok){S.shared=true;paint();} }); });
+}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button'); if(!b) return; S.tab=b.dataset.tab; paint();};
+</script></body></html>

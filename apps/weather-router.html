@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Weather Router</title>
+<style>
+/* Weather Router, by "Isobar Labs" (fictional), 2026-10-09. A GENEXXO app. Passage planning on a seeded
+   wind field: legs, true wind angle, sail plan and ETA, recomputed for the departure you choose. */
+:root{--bg:#06162B;--card:#0B2140;--line:rgba(255,255,255,.09);--ink:#E8F1FF;--mut:rgba(232,241,255,.55);--acc:#38BDF8;--sea:#0B2A4F}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#0066CC,#38BDF8);display:flex;align-items:center;justify-content:center;font-size:20px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px}
+.tabs button{flex:1;font:inherit;font-weight:800;font-size:13px;color:var(--mut);background:none;border:0;border-radius:9px;padding:8px 0;cursor:pointer}
+.tabs button.on{background:var(--acc);color:#04203A}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}
+label{display:block;font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.07em;margin:10px 0 6px}label:first-child{margin-top:0}
+select{width:100%;font:inherit;font-size:15px;color:var(--ink);background:#061A33;border:1px solid var(--line);border-radius:11px;padding:10px 12px;-webkit-appearance:none;appearance:none}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font-size:12.5px;font-weight:800;padding:7px 12px;border-radius:99px;border:1px solid var(--line);color:var(--mut);cursor:pointer}
+.chip.on{border-color:var(--acc);color:var(--acc);background:rgba(56,189,248,.1)}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}.sum div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px}
+.sum b{display:block;font-size:19px}.sum span{font-size:10px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.leg{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid var(--line)}.leg:last-child{border:0}
+.arrow{width:34px;height:34px;border-radius:50%;background:#061A33;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--acc);flex-shrink:0}
+.leg b{display:block;font-size:13.5px}.leg span{font-size:11.5px;color:var(--mut);font-weight:600}.leg em{margin-left:auto;font-style:normal;font-size:11px;font-weight:800;padding:4px 8px;border-radius:99px;white-space:nowrap}
+.go{width:100%;font:inherit;font-weight:900;font-size:14px;padding:12px;border:1px solid var(--acc);border-radius:12px;background:transparent;color:var(--acc);cursor:pointer}
+.alert{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}.alert:last-child{border:0}.alert b{display:block;font-size:13.5px}.alert span{font-size:12px;color:var(--mut)}
+.note{font-size:11.5px;color:var(--mut);text-align:center;margin-top:8px}
+</style></head><body>
+<div class="hd"><div class="logo">🧭</div><div><h1>Weather Router</h1><p>by Isobar Labs · GRIB 6-hourly</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="plan" class="on">Plan</button><button data-tab="chart">Chart</button><button data-tab="alerts">Alerts</button></div>
+<main id="v"></main>
+<script src="gx-sdk.js"></script>
+<script>
+const PORTS = {Cowes:[50.76,-1.30], Cherbourg:[49.65,-1.62], Poole:[50.71,-1.98], 'St Peter Port':[49.46,-2.53], Brighton:[50.82,-0.10], Dartmouth:[50.35,-3.58], Weymouth:[50.61,-2.45]};
+const P = Object.keys(PORTS);
+let C, S = { tab:'plan', from:'Cowes', to:'Cherbourg', dep:1, speed:'Cruising', shared:false };
+const SPEEDS = {Relaxed:5.5, Cruising:6.5, Racing:8};
+const toRad=d=>d*Math.PI/180, toDeg=r=>r*180/Math.PI;
+function nm(a,b){ const [la1,lo1]=PORTS[a],[la2,lo2]=PORTS[b]; const x=toRad(lo2-lo1)*Math.cos(toRad((la1+la2)/2)), y=toRad(la2-la1); return Math.sqrt(x*x+y*y)*3440; }
+function brg(a,b){ const [la1,lo1]=PORTS[a],[la2,lo2]=PORTS[b]; const x=toRad(lo2-lo1)*Math.cos(toRad((la1+la2)/2)), y=toRad(la2-la1); return (toDeg(Math.atan2(x,y))+360)%360; }
+function route(){
+  const d=nm(S.from,S.to), b=brg(S.from,S.to), r=GX.rng(S.from+S.to+GX.iso(S.dep)), base=(200+r()*80)%360, n=Math.max(3,Math.round(d/18));
+  const legs=[]; let t=0;
+  for(let i=0;i<n;i++){ const tws=Math.round(9+r()*14), twd=(base+i*(r()*14-4)+360)%360; let twa=Math.abs(((twd-b+540)%360)-180);
+    const sail = twa<40?'Beat (tacking)':twa<70?'Close reach':twa<110?'Beam reach':twa<150?'Broad reach':'Run';
+    const k = twa<40?.62:twa<70?.92:twa<110?1:twa<150?.95:.8; const sp=SPEEDS[S.speed]*k*(tws<10?.85:1); const len=d/n, hrs=len/sp; t+=hrs;
+    legs.push({i, len, tws, twd, twa:Math.round(twa), sail, sp, hrs, eta:t}); }
+  return {d, b, legs, hrs:t};
+}
+const card = deg => ['N','NE','E','SE','S','SW','W','NW'][Math.round(deg/45)%8];
+const hhmm = h => { const d=GX.today(S.dep); d.setHours(7,0,0,0); d.setMinutes(d.getMinutes()+Math.round(h*60)); return d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+(d.getDate()!==GX.today(S.dep).getDate()?' +1':''); };
+GX.init({gateway:'SailXX', seed:()=>({from:'Cowes',to:'Cherbourg'})}).then(c=>{ C=c; S.from=c.data.from; S.to=c.data.to; paint(); });
+
+function vPlan(){ const R=route(); const maxTws=Math.max(...R.legs.map(l=>l.tws));
+  return `<div class="card"><div class="row2"><div><label>From</label><select id="from">${P.map(p=>`<option ${p===S.from?'selected':''}>${p}</option>`).join('')}</select></div>
+    <div><label>To</label><select id="to">${P.filter(p=>p!==S.from).map(p=>`<option ${p===S.to?'selected':''}>${p}</option>`).join('')}</select></div></div>
+    <label>Depart 07:00</label><div class="chips">${[0,1,2,3].map(o=>`<div class="chip ${o===S.dep?'on':''}" data-dep="${o}">${o===0?'Today':GX.day(GX.today(o),{weekday:'short',day:'numeric'})}</div>`).join('')}</div>
+    <label>Boat</label><div class="chips">${Object.keys(SPEEDS).map(k=>`<div class="chip ${k===S.speed?'on':''}" data-sp="${k}">${k} · ${SPEEDS[k]} kn</div>`).join('')}</div></div>
+    <div class="sum"><div><b>${Math.round(R.d)} nm</b><span>Distance</span></div><div><b>${Math.floor(R.hrs)}h ${Math.round(R.hrs%1*60)}m</b><span>Passage</span></div><div><b>${hhmm(R.hrs)}</b><span>ETA</span></div></div>
+    <div class="card">${R.legs.map(l=>`<div class="leg"><div class="arrow" style="transform:rotate(${l.twd+180}deg)">↑</div>
+      <div><b>Leg ${l.i+1} · ${l.len.toFixed(1)} nm</b><span>${l.tws} kn from ${card(l.twd)} · TWA ${l.twa}° · ${l.sp.toFixed(1)} kn</span></div>
+      <em style="background:${l.twa<40?'rgba(248,113,113,.15)':'rgba(56,189,248,.12)'};color:${l.twa<40?'#FCA5A5':'var(--acc)'}">${l.sail}</em></div>`).join('')}</div>
+    ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share passage plan to ${C.gateway}`}</button>`:''}
+    <div class="note">Max wind on route ${maxTws} kn. Arrows show where the wind blows to.</div>`; }
+function vChart(){ const R=route(); const pts=[S.from,S.to].map(p=>PORTS[p]); const all=Object.values(PORTS);
+  const la=all.map(p=>p[0]), lo=all.map(p=>p[1]), x=v=>(v-Math.min(...lo)+.3)/(Math.max(...lo)-Math.min(...lo)+.6)*320, y=v=>(Math.max(...la)+.2-v)/(Math.max(...la)-Math.min(...la)+.4)*230;
+  const r=GX.rng('grid'+GX.iso(S.dep)); let barbs=''; for(let i=0;i<7;i++) for(let j=0;j<5;j++){ const d=(210+r()*60), s=10+r()*14; barbs+=`<text x="${20+i*46}" y="${30+j*46}" font-size="${10+s/2}" fill="rgba(56,189,248,.35)" text-anchor="middle" transform="rotate(${d+180} ${20+i*46} ${26+j*46})">↑</text>`; }
+  return `<div class="card" style="padding:8px"><svg viewBox="0 0 320 230" style="width:100%;background:var(--sea);border-radius:10px">${barbs}
+    ${Object.entries(PORTS).map(([n,p])=>`<circle cx="${x(p[1])}" cy="${y(p[0])}" r="3" fill="#E8F1FF" opacity=".6"/><text x="${x(p[1])+5}" y="${y(p[0])-4}" font-size="8" fill="#E8F1FF" opacity=".7">${n}</text>`).join('')}
+    <line x1="${x(pts[0][1])}" y1="${y(pts[0][0])}" x2="${x(pts[1][1])}" y2="${y(pts[1][0])}" stroke="#FACC15" stroke-width="2.5" stroke-dasharray="6 4"/>
+    <circle cx="${x(pts[0][1])}" cy="${y(pts[0][0])}" r="5" fill="#4ADE80"/><circle cx="${x(pts[1][1])}" cy="${y(pts[1][0])}" r="5" fill="#F87171"/></svg></div>
+    <div class="note">${S.from} → ${S.to} · ${Math.round(R.d)} nm on ${Math.round(R.b)}° · wind field for ${S.dep===0?'today':GX.day(GX.today(S.dep),{weekday:'long'})}</div>`; }
+function vAlerts(){ const R=route(), r=GX.rng('al'+GX.iso(0)); const gust=Math.round(Math.max(...R.legs.map(l=>l.tws))*1.35);
+  return `<div class="card">
+    <div class="alert"><div>🌬️</div><div><b>Gusts to ${gust} kn mid-Channel</b><span>Reef early if leaving after 10:00 ${GX.day(GX.today(S.dep),{weekday:'long'})}.</span></div></div>
+    <div class="alert"><div>🌊</div><div><b>Wind against tide at the Needles</b><span>Short, steep seas ${hhmm(1)}–${hhmm(2.5)}. Go through at slack.</span></div></div>
+    <div class="alert"><div>🌫️</div><div><b>Visibility ${r()>.5?'moderate':'good'}</b><span>Patchy fog possible near the French coast overnight.</span></div></div>
+    <div class="alert"><div>📡</div><div><b>Next GRIB update ${String((Math.floor(new Date().getHours()/6)+1)*6%24).padStart(2,'0')}:00</b><span>Your plan refreshes automatically.</span></div></div></div>`; }
+function paint(){ document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'); v.innerHTML=S.tab==='plan'?vPlan():S.tab==='chart'?vChart():vAlerts();
+  const f=document.getElementById('from'), t=document.getElementById('to');
+  if(f) f.onchange=()=>{ S.from=f.value; if(S.to===S.from) S.to=P.find(p=>p!==S.from); C.data={from:S.from,to:S.to}; GX.save(C.data); S.shared=false; paint(); };
+  if(t) t.onchange=()=>{ S.to=t.value; C.data={from:S.from,to:S.to}; GX.save(C.data); S.shared=false; paint(); };
+  v.querySelectorAll('[data-dep]').forEach(e=>e.onclick=()=>{S.dep=+e.dataset.dep;S.shared=false;paint();});
+  v.querySelectorAll('[data-sp]').forEach(e=>e.onclick=()=>{S.speed=e.dataset.sp;S.shared=false;paint();});
+  const sh=document.getElementById('share'); if(sh) sh.onclick=()=>{ const R=route();
+    GX.post(`Passage plan: <b>${S.from} → ${S.to}</b>, ${Math.round(R.d)} nm, leaving ${S.dep===0?'today':GX.day(GX.today(S.dep),{weekday:'long'})} 07:00, ETA ${hhmm(R.hrs)}.`, 'PASSAGE').then(ok=>{ if(ok){S.shared=true;paint();} }); }; }
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button'); if(!b) return; S.tab=b.dataset.tab; paint();};
+</script></body></html>
