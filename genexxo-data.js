@@ -211,7 +211,25 @@ const GATEWAYS = {
       {key:'mapped-peaks',name:'Mapped Peaks',color:'#16A34A',tag:'Guidebooks & route intelligence',tier:'Brand Zone'},
     ],
     apps:[
-      {name:'Route Logger',color:'#4ADE80',desc:'Log sends, project routes, track grades'},
+      // key + url make an app OPENABLE in the app canvas (2026-10-08): a sandboxed third-party page that
+      // talks to GENEXXO only through the bridge, and only with the perms granted on first open.
+      {name:'Route Logger',color:'#4ADE80',desc:'Log sends, project routes, track grades',
+       key:'route-logger', url:'apps/route-logger.html', dev:'Crux Labs', rating:'4.8', users:'21.4K',
+       perms:['profile','feed'],
+       // App page (2026-10-09). `ago` is days before today, so the page never goes stale.
+       tagline:'Your climbing logbook. Every send, every grade.',
+       about:'Route Logger is the logbook climbers actually keep. Log a send in seconds: the route, the crag, the grade, how you did it, and how many goes it took. Your grade pyramid builds itself. Projects wait in the list until they go. Share a send to the ClimbXX feed in one tap, and it lands alongside the community, tagged with the app.',
+       features:['Log a send in under ten seconds','Grade pyramid that builds itself','Projects tracked until they go','One-tap share to the ClimbXX feed'],
+       shots:['apps/route-logger/shot-1.jpg','apps/route-logger/shot-2.jpg','apps/route-logger/shot-3.jpg'],
+       version:'2.4', size:'38 KB',
+       updates:[
+         {v:'2.4', ago:3,  notes:'Share a send straight to the ClimbXX feed. Projects now show your attempt count.'},
+         {v:'2.3', ago:19, notes:'Grade pyramid redesigned. Font grades for bouldering are coming next.'},
+         {v:'2.2', ago:47, notes:'Signed in with GENEXXO: one identity, no separate account.'}],
+       reviews:[
+         {who:'@beta_breaker', stars:5, ago:2,  text:'Finally a logbook I actually keep. Logging from the crag takes seconds and the pyramid is a great kick to try harder grades.'},
+         {who:'@crimp_queen',  stars:5, ago:6,  text:'Opened it straight from ClimbXX, no download, and it already knew who I was. That is how apps should work.'},
+         {who:'@slab_daddy',   stars:4, ago:11, text:'Love it. Font grades for bouldering please and it is perfect.'}]},
       {name:'Training Plan',color:'#F59E0B',desc:'Hangboard & strength cycles, personalised'},
       {name:'Conditions',color:'#0EA5E9',desc:'Crag weather, seepage & season windows'},
     ],
