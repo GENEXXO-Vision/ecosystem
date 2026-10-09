@@ -680,7 +680,7 @@
     .gwa-h b{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
     .gwa-h span,.gwa-foot span{font-size:10.5px;font-weight:600;opacity:.5}
     .gwa-list{flex:1;display:flex;flex-direction:column;gap:12px;padding:0 10px;min-height:0}
-    .gwa{position:relative;flex:1 1 0;min-height:300px;display:flex;flex-direction:column;border-radius:16px;overflow:hidden;cursor:pointer;
+    .gwa{position:relative;flex:1 1 0;min-height:170px;max-height:min(390px, 42vh);display:flex;flex-direction:column;border-radius:16px;overflow:hidden;cursor:pointer;
       border:1px solid rgba(255,255,255,.07);box-shadow:0 10px 30px rgba(0,0,0,.35);transition:transform .25s ease,box-shadow .25s ease}
     .gwa:hover{transform:translateY(-2px);box-shadow:0 16px 38px rgba(0,0,0,.45)}
     .gwa-media{position:absolute;inset:0;background:#222 center/cover;overflow:hidden}
@@ -696,7 +696,19 @@
     .gwa-chip img{width:100%;height:100%;object-fit:cover}
     .gwa-n{font-size:13.5px;font-weight:800;line-height:1.15}
     .gwa-t{font-size:10.5px;font-weight:600;opacity:.6}
-    .gwa-hl{font-size:17px;font-weight:800;line-height:1.22;letter-spacing:-.01em}
+    .gwa-hl{font-size:17px;font-weight:800;line-height:1.22;letter-spacing:-.01em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    /* Ads scale with the window (2026-10-09, Sean): cards share the panel's height between a 170px floor
+       and a ceiling of 390px / 42vh, so they never run off a short window or balloon on a tall one. On a
+       short window the copy steps down: the sub-line goes, the type tightens. */
+    /* An app screenshot is busy UI, not a photo: fade it out earlier and harder so the ad copy reads. */
+    .gwa-app .gwa-media::after{background:linear-gradient(180deg,rgba(0,0,0,0) 12%,rgba(8,8,10,.82) 42%,rgba(8,8,10,.97) 62%)}
+    @media (max-height:820px){
+      .gwa-sub{display:none}
+      .gwa-hl{font-size:15px}
+      .gwa-body{padding:12px 13px;gap:6px}
+      .gwa-list{gap:10px}
+    }
+    @media (max-height:680px){ .gwa-t,.gwa-meta{display:none} .gwa-hl{font-size:14px} }
     .gwa-sub{font-size:12px;line-height:1.4;opacity:.72;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
     .gwa-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
     .gwa-meta{font-size:10.5px;font-weight:600;opacity:.6}
@@ -707,7 +719,7 @@
     .gwa-open span{font-size:11px;font-weight:600}
     /* Empty showcase holders (paintGwHolders): the ad card's footprint, outlined and quiet. All
        colour is currentColor at low strength, so one rule works on every gateway theme. */
-    .gwh{position:relative;flex:1 1 0;min-height:300px;display:flex;flex-direction:column;border-radius:16px;
+    .gwh{position:relative;flex:1 1 0;min-height:170px;max-height:min(390px, 42vh);display:flex;flex-direction:column;border-radius:16px;
       border:1.5px dashed color-mix(in srgb, currentColor 22%, transparent);background:color-mix(in srgb, currentColor 3%, transparent)}
     .gwh-tag{position:absolute;top:12px;left:12px;font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
       padding:4px 9px;border-radius:99px;border:1px solid color-mix(in srgb, currentColor 25%, transparent);opacity:.6}
@@ -1225,7 +1237,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-25"></script>
+<script src="genexxo-data.js?v=2026.08.26-26"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -2002,7 +2014,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-25';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-26';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -3741,7 +3753,7 @@ function paintGwAppAds(gw, L, R){
   const acc = (gw.theme||{}).accent || '#111116';
   const apps = (gw.apps||[]).slice().sort((a,b)=>(!!b.url)-(!!a.url));
   const ini = n => n.split(' ').map(w=>w[0]).join('').slice(0,2);
-  const card = (a, i) => `<div class="gwa" onclick="openApp('${esc(a.key||a.name)}')">
+  const card = (a, i) => `<div class="gwa gwa-app" onclick="openApp('${esc(a.key||a.name)}')">
       <div class="gwa-media" style="background:${a.shots&&a.shots[i%a.shots.length]?`url('${a.shots[i%a.shots.length]}') center top/cover, `:''}${a.color}">${a.shots&&a.shots.length?'':`<div class="gwa-mono">${ini(a.name)}</div>`}
         <span class="gwa-badge" style="left:auto;right:12px">${a.url?'⚡ Instant':'Coming soon'}</span></div>
       <div class="gwa-body">
