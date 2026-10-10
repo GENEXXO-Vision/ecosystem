@@ -170,6 +170,24 @@
   .bk-sum span{opacity:.55;font-weight:600}.bk-sum b{text-align:right}
   .bk-done{text-align:center;padding:26px 6px 10px}.bk-done .ck{width:64px;height:64px;border-radius:50%;background:#22C55E;color:#04210F;font-size:32px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
   .bk-done h3{font-size:19px;font-weight:800}.bk-done p{font-size:13px;opacity:.65;margin-top:6px;line-height:1.5}
+  /* COMMUNITY (2026-10-10): the community's OWN site, so the canvas wears browser chrome (lock + its
+     domain) instead of the app frame bar, and a floating GENEXXO pill is the fast way back. */
+  .cm-bar{flex-shrink:0;display:flex;align-items:center;gap:8px;padding:calc(8px + env(safe-area-inset-top,0px)) 10px 8px;background:#E9E9EE;color:#111;border-bottom:1px solid rgba(0,0,0,.08)}
+  .cm-url{flex:1;min-width:0;display:flex;align-items:center;gap:6px;background:#fff;border-radius:10px;padding:7px 11px;font-size:13px;font-weight:600;color:#333}
+  .cm-url b{font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cm-gx{flex-shrink:0;display:flex;align-items:center;gap:5px;font-size:11px;font-weight:800;color:#111;padding:6px 9px;border-radius:99px;background:#fff}
+  .cm-gx i,.cm-pill i{font-style:normal;width:18px;height:18px;border-radius:5px;background:#111116;color:#fff;font-size:8.5px;font-weight:900;display:flex;align-items:center;justify-content:center}
+  @media (max-width:480px){ .cm-gx{font-size:0;gap:0;padding:6px} .cm-url{font-size:12.5px} }   /* phone: the domain gets the room */
+  .cm-star{flex-shrink:0;cursor:pointer;font-size:11.5px;font-weight:800;color:#111;padding:6px 10px;border-radius:99px;background:#fff;white-space:nowrap}
+  .cm-star.on{color:#B45309;background:#FEF3C7}
+  .cm-pill{position:absolute;left:12px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:5;display:flex;align-items:center;gap:8px;padding:9px 14px 9px 9px;border-radius:99px;
+    background:#111116;color:#fff;font-size:12.5px;font-weight:800;box-shadow:0 8px 24px rgba(0,0,0,.35);cursor:pointer}
+  .cm-pill i{background:#fff;color:#111;width:22px;height:22px;font-size:9.5px}
+  .cm-enter{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:22px;background-size:cover;background-position:center}
+  .cm-enter::before{content:'';position:absolute;inset:0;background:rgba(11,11,15,.72)}
+  .cm-card{position:relative;width:100%;max-width:370px;background:#17171E;border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:20px;color:#fff;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+  .cm-card h3{font-size:17px;font-weight:800;margin:12px 0 2px}.cm-card p{font-size:12px;opacity:.6;font-weight:600}
+  .cm-crest{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#fff}
   /* ★ panel: the row a "You're in…" card just added glows once, so the eye follows it down */
   .fav-new{animation:favNew 1.6s ease-out}
   @keyframes favNew{0%{background:rgba(245,184,0,.38);box-shadow:0 0 0 1px rgba(245,184,0,.7)}100%{background:transparent;box-shadow:0 0 0 1px rgba(245,184,0,0)}}
@@ -1266,7 +1284,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-28"></script>
+<script src="genexxo-data.js?v=2026.08.26-29"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1349,14 +1367,14 @@ function loadFavs(){
   try{
     if(new URLSearchParams(location.search).get('favs')==='reset'){
       localStorage.removeItem('gx_favs'); localStorage.removeItem('gx_brandFavs');
-      localStorage.removeItem('gx_sectorFavs'); localStorage.removeItem('gx_recent'); localStorage.removeItem('gx_wallet'); localStorage.removeItem('gx_proFavs');
+      localStorage.removeItem('gx_sectorFavs'); localStorage.removeItem('gx_recent'); localStorage.removeItem('gx_wallet'); localStorage.removeItem('gx_proFavs'); localStorage.removeItem('gx_commFavs'); localStorage.removeItem('gx_commStars');
     }
-    const g=localStorage.getItem('gx_favs'), b=localStorage.getItem('gx_brandFavs'), w=localStorage.getItem('gx_wallet'), pf=localStorage.getItem('gx_proFavs');
+    const g=localStorage.getItem('gx_favs'), b=localStorage.getItem('gx_brandFavs'), w=localStorage.getItem('gx_wallet'), pf=localStorage.getItem('gx_proFavs'), cm=localStorage.getItem('gx_commFavs'), cs=localStorage.getItem('gx_commStars');
     const sc=localStorage.getItem('gx_sectorFavs'), rc=localStorage.getItem('gx_recent');
     return { favs: g?JSON.parse(g):[...YOUR_GATEWAYS], brandFavs: b?JSON.parse(b):[],
              sectorFavs: sc?JSON.parse(sc):[], recent: rc?JSON.parse(rc):[],
-             wallet: w?JSON.parse(w):[{name:'Route Logger',color:'#4ADE80',gw:'ClimbXX'}], proFavs: pf?JSON.parse(pf):[] };
-  }catch(e){ return { favs:[...YOUR_GATEWAYS], brandFavs:[], sectorFavs:[], recent:[], wallet:[{name:'Route Logger',color:'#4ADE80',gw:'ClimbXX'}], proFavs:[] }; }
+             wallet: w?JSON.parse(w):[{name:'Route Logger',color:'#4ADE80',gw:'ClimbXX'}], proFavs: pf?JSON.parse(pf):[], commFavs: cm?JSON.parse(cm):[], commStars: cs?JSON.parse(cs):(cm?JSON.parse(cm):[]) };
+  }catch(e){ return { favs:[...YOUR_GATEWAYS], brandFavs:[], sectorFavs:[], recent:[], wallet:[{name:'Route Logger',color:'#4ADE80',gw:'ClimbXX'}], proFavs:[], commFavs:[], commStars:[] }; }
 }
 function saveFavs(){
   try{
@@ -1366,6 +1384,8 @@ function saveFavs(){
     localStorage.setItem('gx_recent', JSON.stringify(state.recent));
     localStorage.setItem('gx_wallet', JSON.stringify(state.wallet));
     localStorage.setItem('gx_proFavs', JSON.stringify(state.proFavs));
+    localStorage.setItem('gx_commFavs', JSON.stringify(state.commFavs));
+    localStorage.setItem('gx_commStars', JSON.stringify(state.commStars));
   }catch(e){}
 }
 /* Recent activity (2026-07-31): every committed navigation to a real place — a sector,
@@ -2004,7 +2024,9 @@ const state = {
   purchases:[...PURCHASES_INIT.purchases],   // filed orders (persisted) — see loadPurchases
   orderSeq: PURCHASES_INIT.seq,              // running counter behind each brand's order ref
   wallet:[...FAVS_INIT.wallet],
-  proFavs:[...FAVS_INIT.proFavs],  // favourite Pro Zones (keys), 2026-10-10    // favourite APPS (2026-10-10: "wallet" is now just favourites; Profile › My Apps lists it)
+  proFavs:[...FAVS_INIT.proFavs],
+  commFavs:[...FAVS_INIT.commFavs],  // communities you've JOINED (keys): membership, shown in Profile › My Communities
+  commStars:[...FAVS_INIT.commStars],// communities you've FAVOURITED (keys): your ★ panel shortcut. Joining also stars.  // favourite Pro Zones (keys), 2026-10-10    // favourite APPS (2026-10-10: "wallet" is now just favourites; Profile › My Apps lists it)
   favs:[...FAVS_INIT.favs],        // seeded from YOUR_GATEWAYS on first run, else restored from localStorage
   showFavs:false, favTab:'favs',   // ★ panel open? + which tab: 'favs' | 'recent' | 'live'
   askSector:false,                 // desktop: Sectors tab tapped with none chosen → prompt header
@@ -2047,7 +2069,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-28';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-29';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2249,7 +2271,8 @@ function backTarget(){
   return null;   // already at the Network hub with nothing stacked
 }
 function goBack(){
-  if (state.app && state.app.kind==='pro'){ proBack(); return; }   // booking step → previous step → the zone → out
+  if (state.app && state.app.kind==='pro'){ proBack(); return; }
+  if (state.app && state.app.kind==='community'){ closeApp(); return; }   // leave the community → back where you were   // booking step → previous step → the zone → out
   if (state.app){ (state.app.running && state.app.fromPage) ? backToAppPage() : closeApp(); return; }   // app → its page → out
   // 0) a utility tab floating over a gateway → close it and leave the gateway standing
   if (state.utilOver){ state.utilOver=null; render(); return; }
@@ -2317,12 +2340,15 @@ function commitFavPending(){
       else { const hit=appByName(k); state.wallet.push({name:k, color:hit?hit.app.color:'#444', gw:hit?hit.gw.name:''}); added.push(k); }
       return;
     }
-    const list = t==='gw' ? state.favs : t==='brand' ? state.brandFavs : t==='pro' ? state.proFavs : state.sectorFavs;
-    const name = t==='gw' ? ((gwMetaFromKey(k)||{}).name||k) : t==='brand' ? ((ZONES[k]||{}).name||k) : t==='pro' ? (((proByKey(k)||{}).pro||{}).name||k) : ((sectorOf(k)||{}).name||k);
+    const list = t==='gw' ? state.favs : t==='brand' ? state.brandFavs : t==='pro' ? state.proFavs : t==='comm' ? state.commStars : state.sectorFavs;
+    const name = t==='gw' ? ((gwMetaFromKey(k)||{}).name||k) : t==='brand' ? ((ZONES[k]||{}).name||k) : t==='pro' ? (((proByKey(k)||{}).pro||{}).name||k) : t==='comm' ? (((commByKey(k)||{}).comm||{}).name||k) : ((sectorOf(k)||{}).name||k);
     const j = list.indexOf(k);
     if(j>=0){ list.splice(j,1); removed.push(name); } else { list.push(k); added.push(name); }
   });
   saveFavs();
+  if(tags.some(t=>t.startsWith('comm:'))){
+    try{ if(state.screen==='gateway' && state.gwZones && state.gwZoneTab==='communities') repaintGateway({body:true}); }catch(_){}
+  }
   if(tags.some(t=>t.startsWith('pro:'))){
     try{ if(state.screen==='gateway' && state.gwZones && state.gwZoneTab==='pros') repaintGateway({body:true}); }catch(_){}
   }
@@ -2406,6 +2432,9 @@ function favPanelHtml(){
   const prRow = k => { const hit=proByKey(k); if(!hit) return ''; const x=hit.pro, saved=state.proFavs.includes(k);
     return shell(`${tile(x.color, proIni(x.name), 11)}${nm(x.name, hit.gw.name+' · '+x.role)}${starFor(saved,'pro:'+k)}`,
       `state.showFavs=false;render();openPro('${k}')`, state.app&&state.app.kind==='pro'&&state.app.key===k, 'pro:'+k, saved); };
+  const cmRow = k => { const hit=commByKey(k); if(!hit) return ''; const x=hit.comm, saved=state.commStars.includes(k);
+    return shell(`${tile(x.color, proIni(x.name), 11)}${nm(x.name, hit.gw.name+' · '+x.members.toLocaleString()+' members')}${starFor(saved,'comm:'+k)}`,
+      `state.showFavs=false;render();openComm('${k}')`, state.app&&state.app.kind==='community'&&state.app.key===k, 'comm:'+k, saved); };
   const brRow = k => { const z=ZONES[k]; if(!z) return ''; const gm=gwMetaFromKey(z.gw); const saved=state.brandFavs.includes(k);
     const mono=z.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
     return shell(`${tile(z.gradient||z.color||'#333',mono,11)}${nm(z.name, (gm?gm.name:'')+(z.tier?' · '+z.tier:''))}${starFor(saved,'brand:'+k)}`,
@@ -2459,7 +2488,7 @@ function favPanelHtml(){
     const hint = `<div style="margin:12px 8px -4px;font-size:11px;font-weight:600;opacity:${nPend?'.85':'.45'};${nPend?'color:#F5B800':''}">${nPend
       ? `${nPend} change${nPend>1?'s':''} · saved when you close`
       : 'Tap ★ to remove a favourite · changes save when you close'}</div>`;
-    bodyHtml = (state.favs.length||state.brandFavs.length||state.sectorFavs.length||state.wallet.length||state.proFavs.length ? hint : '') +
+    bodyHtml = (state.favs.length||state.brandFavs.length||state.sectorFavs.length||state.wallet.length||state.proFavs.length||state.commStars.length ? hint : '') +
       section('SECTORS', state.sectorFavs.map(secRow),
         'No sectors pinned yet — tap ☆ on any sector to keep it here.') +
       section('GATEWAYS', state.favs.map(gwRow),
@@ -2470,7 +2499,8 @@ function favPanelHtml(){
         'No apps yet — tap ☆ on any app to keep it here.') +
       section('PROS', state.proFavs.map(prRow),
         'No pros yet — tap ☆ on any Pro Zone to keep it here.') +
-      section('OTHER', [], 'Communities you join will collect here as the ecosystem opens up.');
+      section('COMMUNITIES', state.commStars.map(cmRow),
+        'No communities yet — tap ☆ on any community, or join one, to keep it here.');
   } else if(tab==='live'){
     // Every gateway that is actually built out, network-wide — the "what can I see working
     // right now?" list. Derived from GATEWAYS itself, so it can never fall out of step with
@@ -2501,7 +2531,7 @@ function favPanelHtml(){
       section('BRANDS', of('brand').map(brRow), 'Brand zones you open will appear here.') +
       section('APPS', of('app').map(apRow), 'Apps you open will appear here.') +
       section('PROS', of('pro').map(prRow), 'Pro Zones you visit will appear here.') +
-      section('OTHER', [], 'Communities will appear here as you explore them.');
+      section('COMMUNITIES', of('comm').map(cmRow), 'Communities you visit will appear here.');
   }
 
   const tabBtn = (k, label) => `<div onclick="setFavTab('${k}')" style="flex:1;text-align:center;padding:9px 6px;border-radius:11px;font-weight:800;font-size:12.5px;cursor:pointer;transition:background .18s;${tab===k?'background:#F5B800;color:#141414':'background:rgba(255,255,255,.08);color:rgba(255,255,255,.7)'}">${label}</div>`;
@@ -3736,7 +3766,7 @@ function buildGwPanels(){
      gateway's palette. Sean tried a light paper first and chose this: same distinction, quieter. Ads for brands, not a shop: no
      products or checkout here; "a gateway is not a shop" still holds. */
   if(state.screen==='gateway' && state.app){       // an app or Pro Zone is open in the centre: the gutters explain it
-    state.app.kind==='pro' ? paintProPanels(gw, L, R) : paintAppPanels(gw, L, R);
+    state.app.kind==='pro' ? paintProPanels(gw, L, R) : state.app.kind==='community' ? paintCommPanels(gw, L, R) : paintAppPanels(gw, L, R);
     L.dataset.gw = R.dataset.gw = '';
     return;
   }
@@ -3752,6 +3782,11 @@ function buildGwPanels(){
   // Apps tab with openable apps: app ads, each with the app's real screenshot (2026-10-09).
   if(state.screen==='gateway' && state.gwZones && state.gwZoneTab==='apps' && (gw.apps||[]).some(a=>a.url&&(a.shots||[]).length)){
     paintGwAppAds(gw, L, R);
+    L.dataset.gw = R.dataset.gw = '';
+    return;
+  }
+  if(state.screen==='gateway' && state.gwZones && state.gwZoneTab==='communities' && (gw.communities||[]).length){
+    paintGwCommAds(gw, L, R);
     L.dataset.gw = R.dataset.gw = '';
     return;
   }
@@ -4150,10 +4185,27 @@ function closeApp(instant){
    handler runs, so every control in the bar (★, domain, GENEXXO mark, ⓘ…) just works. #topBack is
    exempt: Back already steps app → page → out, and closing first would make it overshoot. On the phone
    the canvas covers the bar, so none of this can fire there. */
+/* Extended 2026-10-10 (Sean): on desktop the same goes for EVERYTHING layered over the page — a utility tab
+   floating over the gateway (Events, Discover, AI, Profile), the ★ and ⓘ panels, Apply, product sheets, the
+   shop menu, a receipt. Tapping the bar means "take me there", so they all close first. Exception: the
+   control that toggles an already-open panel (★ with Favourites open, ⓘ with Info open) is left to close it
+   itself, rather than being closed and then reopened. If the tapped control doesn't re-render (some return
+   early), we render once ourselves so the closed layers actually leave the screen. */
 document.addEventListener('click', e => {
-  if(!state.app || !e.target.closest) return;
+  if(!e.target.closest) return;
   if(!e.target.closest('#frame .top') || e.target.closest('#topBack') || e.target.closest('#appCanvas')) return;
-  closeApp(true);
+  if(state.app) closeApp(true);
+  if(!(typeof DESKTOP==='function' && DESKTOP())) return;      // phone: overlays cover the bar, so this can't arise
+  const on = (e.target.closest('[onclick]') || {getAttribute:()=>''}).getAttribute('onclick') || '';
+  let changed = false;
+  if(state.showFavs  && !/toggleFavPanel/.test(on)){ commitFavPending(); state.showFavs=false; changed=true; }
+  if(state.showInfo  && !/toggleInfo/.test(on)){ state.showInfo=false; changed=true; }
+  if(state.showApply && !/toggleApply/.test(on)){ state.showApply=false; changed=true; }
+  if(state.utilOver){ state.utilOver=null; changed=true; }
+  if(state.zoneProduct!=null || state.shopMenu || state.receipt){ state.zoneProduct=null; state.shopMenu=false; state.receipt=null; changed=true; }
+  if(!changed) return;
+  const n = render._n || 0;
+  setTimeout(()=>{ if((render._n||0)===n) render(); }, 0);
 }, true);
 /* ═════════ PRO ZONES (2026-10-10) ═════════
    People who sell their time: guides, coaches, specialists. A Pro Zone opens in the SAME canvas as an app
@@ -4331,6 +4383,146 @@ function paintProPanels(gw, L, R){
     ${others.length?`<div class="gac"><div style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.5;margin-bottom:4px">More pros in ${esc(gw.name)}</div>
       ${others.map(p=>`<div class="gac-row" style="cursor:pointer" onclick="openPro('${p.key}')"><i style="width:26px;height:26px;border-radius:8px;background:${p.color};font-size:9.5px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center">${proIni(p.name)}</i><div><b>${p.name}</b><span>${p.role} · ★ ${p.rating}</span></div></div>`).join('')}</div>`:''}`;
 }
+/* ═════════ COMMUNITIES (2026-10-10) ═════════
+   GENEXXO as the central node: communities keep their own sites (their own domain, design and moderators);
+   the GENEXXO login is the key to all of them. The canvas wears browser chrome showing the community's
+   domain, a one-time "Enter with GENEXXO" screen shares only name + handle, and a floating GENEXXO pill is the
+   fast way back. The site (apps/community-site.html, sandboxed like an app) emits join / rsvp, which land in
+   the ★ panel (COMMUNITIES), Profile › My Communities, Your week and Events. */
+function commByKey(key){
+  for(const gk in GATEWAYS) for(const x of (GATEWAYS[gk].communities||[])) if(x.key===key) return { comm:x, gw:GATEWAYS[gk], gwKey:gk };
+  return null;
+}
+let _commReadyTimer = null;
+function openComm(key){
+  const hit = commByKey(key); if(!hit) return;
+  closeApp(true);
+  const {comm:x, gw} = hit;
+  state.app = { kind:'community', key, gwKey:hit.gwKey, screen:state.screen, running:false };
+  logVisit('comm', key);
+  const el = document.createElement('div'); el.id = 'appCanvas';
+  const st = state.commStars.includes(key);
+  el.innerHTML = `<div class="cm-bar"><div class="cm-url">🔒 <b>${x.domain}</b></div>
+      <div class="cm-star ${st?'on':''}" id="cmStar" onclick="toggleCommStar('${key}')" title="${st?'Remove from favourites':'Add to favourites'}">${st?'★ Favourite':'☆ Favourite'}</div>
+      <div class="cm-gx" title="Signed in with GENEXXO"><i>XX</i>GENEXXO</div></div>
+    <div class="ac-body" id="acBody"></div>
+    <div class="cm-pill" onclick="closeApp()" title="Back to GENEXXO"><i>XX</i>Back to ${gw.name}</div>`;
+  $('frame').appendChild(el);
+  (_appStore('gx_commGrants')[key] ? mountComm : askComm)(hit);
+  if($('frame').classList.contains('panels-float')) try{ buildGwPanels(); }catch(_){}
+}
+function askComm(hit){
+  const {comm:x, gw} = hit;
+  $('acBody').innerHTML = `<div class="cm-enter" style="background-image:url('${x.img}')"><div class="cm-card">
+      <div class="cm-crest" style="background:${x.color}">${proIni(x.name)}</div>
+      <h3>Enter ${x.name} with GENEXXO</h3>
+      <p>${x.domain} · ${x.members.toLocaleString()} members · ${x.scope}</p>
+      <div class="ac-perm-row" style="margin-top:12px"><i>👤</i><div><b>Your name and handle</b><span>So the community knows who you are. No new account, no password.</span></div></div>
+      <div class="ac-perm-row"><i>${gw.emoji||'⭐'}</i><div><b>That you're on ${gw.name}</b><span>Your interest, so you see the right threads and events.</span></div></div>
+      <div class="ac-perm-row"><i>🚫</i><div><b>Never your email or activity</b><span>Your favourites, bookings and other communities stay private.</span></div></div>
+      <button class="ac-allow" id="cmEnter">Enter with GENEXXO</button>
+      <button class="ac-cancel" onclick="closeApp()">Not now</button>
+    </div></div>`;
+  $('cmEnter').onclick = () => { const g=_appStore('gx_commGrants'); g[x.key]=true; _appSave('gx_commGrants', g); mountComm(hit);
+    if($('frame').classList.contains('panels-float')) try{ buildGwPanels(); }catch(_){} };
+}
+function mountComm(hit){
+  clearTimeout(_commReadyTimer);
+  state.app.running = true; state.app.ready = false;
+  $('acBody').innerHTML = `<iframe src="apps/community-site.html?v=${BUILD}" sandbox="allow-scripts allow-forms" title="${hit.comm.name}" allow=""></iframe>`;
+  _commReadyTimer = setTimeout(()=>{
+    if(!state.app || state.app.kind!=='community' || state.app.ready) return;
+    $('acBody').innerHTML = `<div class="ac-perm"><div class="ac-perm-card" style="text-align:center"><div style="font-size:30px">⚠️</div>
+      <h3>${hit.comm.name} couldn't load</h3><p>Check your connection and try again.</p>
+      <button class="ac-allow" onclick="mountComm(commByKey(state.app.key))">Try again</button><button class="ac-cancel" onclick="closeApp()">Back to GENEXXO</button></div></div>`;
+  }, 6000);
+}
+function toggleCommStar(key){
+  const i = state.commStars.indexOf(key); if(i>=0) state.commStars.splice(i,1); else state.commStars.push(key);
+  saveFavs(); syncCommStar(key);
+  if(state.screen==='gateway' && state.gwZones && state.gwZoneTab==='communities') try{ repaintGateway({body:true}); }catch(_){}
+}
+function syncCommStar(key){
+  const b = $('cmStar'); if(!b || !state.app || state.app.key!==key) return;
+  const on = state.commStars.includes(key); b.classList.toggle('on', on); b.textContent = on?'★ Favourite':'☆ Favourite';
+  b.title = on?'Remove from favourites':'Add to favourites';
+}
+function commJoin(key, on){
+  const i = state.commFavs.indexOf(key);
+  if(on && i<0) state.commFavs.push(key); if(!on && i>=0) state.commFavs.splice(i,1);
+  if(on && !state.commStars.includes(key)){ state.commStars.push(key); syncCommStar(key); }   // joining also favourites
+  saveFavs();
+  if(state.screen==='gateway' && state.gwZones && state.gwZoneTab==='communities') try{ repaintGateway({body:true}); }catch(_){}
+  if($('frame').classList.contains('panels-float') && state.app && state.app.kind==='community') try{ buildGwPanels(); }catch(_){}
+}
+window.addEventListener('message', e => {
+  if(!state.app || state.app.kind!=='community') return;
+  const fr = document.querySelector('#appCanvas iframe'); if(!fr || e.source!==fr.contentWindow) return;
+  const m = e.data || {}; if(!m.gx) return;
+  const hit = commByKey(state.app.key); if(!hit) return;
+  const {comm:x, gw} = hit;
+  if(m.type==='ready'){
+    state.app.ready = true; clearTimeout(_commReadyTimer);
+    const rsvps = aiLive().filter(w=>w.comm===x.key).map(w=>w.title);
+    fr.contentWindow.postMessage({gx:1, type:'init', gateway:gw.name, grants:['profile'], user:{name:'You', handle:'@you'},
+      data:_appStore('gx_appData')['comm:'+x.key]||null, extra:{community:x, joined:state.commFavs.includes(x.key), rsvps}}, '*');
+  } else if(m.type==='save'){
+    const d=_appStore('gx_appData'); d['comm:'+x.key]=m.data; _appSave('gx_appData', d);
+  } else if(m.type==='join'){
+    commJoin(x.key, !!m.on); toast(m.on ? `✓ Joined ${x.name}` : `Left ${x.name}`);
+  } else if(m.type==='rsvp'){
+    const ev = (x.events||[]).find(v=>v.title===m.title); if(!ev) return;
+    if(m.on){ const d=new Date(); d.setHours(12,0,0,0); d.setDate(d.getDate()+ev.day);
+      aiAddToWeek([{d, time:ev.time, icon:'👥', title:ev.title, src:gw.name, prov:x.name, comm:x.key, grad:`linear-gradient(135deg,${x.color},#111116)`}]);
+      toast(`✓ You're going · in Your week and Events`); }
+    else { const w=aiWeek().find(v=>v.comm===x.key && v.title===ev.title && !v.status); if(w){ w.status='cancelled'; w._ev=null; } toast('RSVP removed'); }
+  }
+});
+function myCommunitiesHtml(){
+  const list = state.commFavs.map(k=>commByKey(k)).filter(Boolean);
+  return `<div class="sect"><div class="sect-h"><div class="t">My Communities</div><div class="a">${list.length}</div></div></div>`
+    + (list.length ? list.map(({comm:x, gw})=>`<div class="wapp"><div class="lg" style="background:${x.color}">${proIni(x.name)}</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:800">${x.name}</div><div style="font-size:10.5px;color:var(--muted);font-weight:600">${x.domain}</div></div>
+        <button class="btn" style="background:#111116;color:#fff;margin-right:6px" onclick="openComm('${x.key}')">Enter</button>
+        <button class="btn" style="background:rgba(17,17,22,.05);color:var(--muted)" onclick="commJoin('${x.key}',false);render()">Leave</button></div>`).join('')
+      : `<div class="empty">Join communities from any gateway’s Communities tab —<br>one GENEXXO login opens them all.</div>`);
+}
+/* Desktop gutters. Communities tab: community ads. A community open: what GENEXXO shares (the trust story
+   of a login that crosses sites) and your communities, so hopping between them is one tap. */
+function paintGwCommAds(gw, L, R){
+  liftGwPanels(gw, L, R);
+  const acc = (gw.theme||{}).accent || '#111116', list = gw.communities||[];
+  const card = x => `<div class="gwa" onclick="openComm('${x.key}')">
+      <div class="gwa-media" style="background:url('${x.img}') center/cover, ${x.color}"><span class="gwa-badge">● ${x.online} online</span></div>
+      <div class="gwa-body">
+        <div class="gwa-who"><div class="gwa-chip" style="background:${x.color}">${proIni(x.name)}</div><div><div class="gwa-n">${esc(x.name)}</div><div class="gwa-t">${x.members.toLocaleString()} members · ${x.scope}</div></div></div>
+        <div class="gwa-hl">${esc(x.tagline)}</div>
+        <div class="gwa-row"><span class="gwa-meta">🔒 ${x.domain}</span><span class="gwa-cta" style="background:${x.color}">${state.commFavs.includes(x.key)?'Open ›':'Enter ›'}</span></div>
+      </div></div>`;
+  const side = (items, head, note, foot) => `<div class="gwa-h"><b style="color:${acc}">${head}</b><span>${note}</span></div>
+    <div class="gwa-list">${items.map(card).join('')}</div>
+    <div class="gwa-foot"><span>One GENEXXO login · every community</span><b style="color:${acc}">${foot}</b></div>`;
+  const nL = Math.min(2, Math.ceil(list.length/2));
+  L.innerHTML = side(list.slice(0,nL), '👥 Communities', gw.name, 'All communities ›');
+  R.innerHTML = side(list.slice(nL,nL+2), '👥 Also on '+esc(gw.name), list.length+' communities', `Bring your community to ${esc(gw.name)} ›`);
+}
+function paintCommPanels(gw, L, R){
+  liftGwPanels(gw, L, R);
+  const hit = commByKey(state.app.key); if(!hit) return;
+  const {comm:x} = hit, acc = (gw.theme||{}).accent || 'var(--ink)';
+  const mine = state.commFavs.map(k=>commByKey(k)).filter(h=>h && h.comm.key!==x.key);
+  const others = (gw.communities||[]).filter(c=>c.key!==x.key && !state.commFavs.includes(c.key));
+  const row = c => `<div class="gac-row" style="cursor:pointer" onclick="openComm('${c.key}')"><i style="width:26px;height:26px;border-radius:8px;background:${c.color};font-size:9.5px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center">${proIni(c.name)}</i><div><b>${c.name}</b><span>${c.domain}</span></div></div>`;
+  L.innerHTML = `<div class="gwa-h"><b style="color:${acc}">🔑 Signed in with GENEXXO</b><span>${esc(x.name)}</span></div>
+    <div class="gac"><div class="gac-row"><i>👤</i><div><b>Shared: name and handle</b><span>That's all ${esc(x.name)} sees.</span></div></div>
+      <div class="gac-row"><i>🚫</i><div><b>Never shared</b><span>Your email, password, favourites, bookings or other communities.</span></div></div>
+      <div class="gac-row"><i>🌐</i><div><b>Their site, their rules</b><span>${x.domain} keeps its own moderators and culture. GENEXXO is the login, not the landlord.</span></div></div>
+      <span class="gac-btn" onclick="(function(){const g=_appStore('gx_commGrants');delete g['${x.key}'];_appSave('gx_commGrants',g);commJoin('${x.key}',false);closeApp();toast('Signed out of ${esc(x.name)}');})()">Sign out of this community</span></div>`;
+  R.innerHTML = `<div class="gwa-h"><b style="color:${acc}">👥 Your communities</b><span>${state.commFavs.length} joined</span></div>
+    <div class="gac">${mine.length ? mine.map(h=>row(h.comm)).join('') : `<div class="gac-row"><i>✦</i><div><b>${state.commFavs.includes(x.key)?'This is your first':'Join to keep it here'}</b><span>Communities you join show here, and in your ★ panel.</span></div></div>`}</div>
+    ${others.length?`<div class="gac"><div style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.5;margin-bottom:4px">More on ${esc(gw.name)}</div>${others.map(row).join('')}</div>`:''}
+    <div class="gwa-foot"><span>One login · every community</span></div>`;
+}
 function revokeApp(key){
   const g = _appStore('gx_appGrants'); delete g[key]; _appSave('gx_appGrants', g);
   closeApp(); toast('Permissions revoked — it will ask again next time');
@@ -4342,7 +4534,7 @@ function toggleAppQuiet(name, color, gwName){
   try{ paintGwPanelList('a'); }catch(_){}
 }
 window.addEventListener('message', e => {
-  if(!state.app || !state.app.running) return;
+  if(!state.app || !state.app.running || state.app.kind) return;   // pro / community canvases have their own handling
   const fr = document.querySelector('#appCanvas iframe');
   if(!fr || e.source !== fr.contentWindow) return;          // only the app we are running
   const m = e.data || {}; if(!m.gx) return;
@@ -4541,9 +4733,20 @@ function renderGateway(){
       body = (gw.pros||[]).length ? sift(gw.pros).map(x=>x.key?proCard(x):zoneCard(x)).join('')
         : `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.55">Pro Zones — guides, coaches, specialists —<br>open here when ${gw.name} goes live.</div>`;
     } else if (z==='communities'){
-      // Outside groups — clubs, forums, chapters. Placeholder cards for the shell.
-      body = GW_COMMUNITY_ROWS(gw).map(a=>infoCard(a[0],a[1],a[2],a[3],a[4])).join('')
-        + `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.5;margin-top:2px">External communities plug in here — placeholder cards for now.</div>`;
+      // Communities with their own sites, entered with the GENEXXO login (2026-10-10). Gateways without
+      // any keep the placeholder cards.
+      body = (gw.communities||[]).length
+        ? gw.communities.map(x=>{ const joined = state.commFavs.includes(x.key); return `
+          <div class="gcard" style="background:${t.cardBg};border-color:${t.cardBorder};color:${t.text};cursor:pointer" onclick="openComm('${x.key}')">
+            <div class="hd" style="margin-bottom:6px"><div class="av" style="background:${x.color};border-radius:12px">${proIni(x.name)}</div>
+              <div style="flex:1;min-width:0"><div class="an">${x.name}</div><div class="as">${x.members.toLocaleString()} members · ${x.online} online · ${x.scope}</div></div>
+              <button class="btn" style="background:${joined?'transparent':t.accent};color:${joined?t.text:'#fff'};border:1px solid ${joined?t.cardBorder:t.accent}" onclick="event.stopPropagation();openComm('${x.key}')">${joined?'✓ Joined':'Enter'}</button>
+              <button class="btn" style="min-width:40px;font-size:16px;margin-left:6px;background:transparent;color:${state.commStars.includes(x.key)?'#F5B800':t.text};border:1px solid ${state.commStars.includes(x.key)?'rgba(245,184,0,.55)':t.cardBorder}" title="${state.commStars.includes(x.key)?'Remove from favourites':'Add to favourites'}" onclick="event.stopPropagation();toggleCommStar('${x.key}')">${state.commStars.includes(x.key)?'★':'☆'}</button></div>
+            <div class="tx" style="opacity:.7;font-size:12px">${x.tagline}</div>
+            <div style="margin-top:8px;font-size:10.5px;font-weight:700;opacity:.55">🔒 ${x.domain} · sign in with GENEXXO</div>
+          </div>`; }).join('')
+        : GW_COMMUNITY_ROWS(gw).map(a=>infoCard(a[0],a[1],a[2],a[3],a[4])).join('')
+          + `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.5;margin-top:2px">External communities plug in here — placeholder cards for now.</div>`;
     } else if (z==='business'){
       // Corporate / manufacturers / services — the B2B side of the gateway. Placeholder cards.
       body = GW_BUSINESS_ROWS(gw).map(a=>infoCard(a[0],a[1],a[2],a[3],a[4])).join('')
@@ -5771,7 +5974,7 @@ function aiBookingsHtml(){
       <div class="ic" style="background:${a.grad}">${w.icon}</div>
       <div style="flex:1;min-width:0">
         <div class="h"><b>${escHtml(w.title)}</b>${status}</div>
-        <div class="s">${when} · ${w.pro?`with ${escHtml(w.prov)} · ${w.src}`:`via ${w.src}`}</div>
+        <div class="s">${when} · ${w.pro||w.comm?`${w.comm?'RSVP · ':'with '}${escHtml(w.prov)} · ${w.src}`:`via ${w.src}`}</div>
         ${acts}
       </div></div>`;
   }).join('');
@@ -5780,8 +5983,8 @@ function aiBookingsHtml(){
 function aiBookedEvents(){
   return aiLive().filter(w=>w.booked).map(w=> w._ev || (w._ev = {
     type:'Bookmark', icon:w.icon, time:dayLabel(w.d)+(w.time&&w.time!=='—'?' '+w.time:''), title:w.title,
-    desc: w.pro ? `Booked direct with ${w.prov} in ${w.src}. You pay them; GENEXXO never touches funds.` : `Booked by your GENEXXO AI through the ${w.src} agent — direct with the provider.`,
-    label:'Your plans', accentC:'#111116', go: w.pro ? `openPro('${w.pro}')` : `setTab('ai')`,
+    desc: w.comm ? `You're going, via ${w.prov} on ${w.src}.` : w.pro ? `Booked direct with ${w.prov} in ${w.src}. You pay them; GENEXXO never touches funds.` : `Booked by your GENEXXO AI through the ${w.src} agent — direct with the provider.`,
+    label:'Your plans', accentC:'#111116', go: w.comm ? `openComm('${w.comm}')` : w.pro ? `openPro('${w.pro}')` : `setTab('ai')`,
   }));
 }
 function aiWeekHtml(){
@@ -6258,6 +6461,12 @@ function evAll(){
       out.push({gw:z.gw, zone:k, type:'Event', icon:'📅', time:(ev.when||'').split(' · ')[0].replace(/,\s*\d{4}$/,''), title:ev.title, desc:ev.desc||''});   // year dropped: the feed's own dates are yearless
     });
   });
+  // Community events (2026-10-10): every hosted community's calendar flows into GENEXXO Events.
+  Object.keys(GATEWAYS).forEach(gk=>(GATEWAYS[gk].communities||[]).forEach(c=>(c.events||[]).forEach(ev=>{
+    if (seen.has(ev.title)) return; seen.add(ev.title);
+    const d = new Date(); d.setHours(12,0,0,0); d.setDate(d.getDate()+ev.day);
+    out.push({gw:gk, type:'Event', icon:'👥', time:dayLabel(d)+' '+ev.time, title:ev.title, desc:`${c.name} · ${ev.where}`, go:`openComm('${c.key}')`});
+  })));
   return (evAll._c = out);
 }
 /* Where Events was opened from. Floating over a gateway (desktop) the place is still on screen,
@@ -6358,6 +6567,7 @@ function profileBody(){
       ${(appByName(w.name)||{app:{}}).app.url?`<button class="btn" style="background:#111116;color:#fff;margin-right:6px" onclick="openApp('${appByName(w.name).app.key}',true)">Open</button>`:''}
       <button class="btn" style="background:rgba(17,17,22,.05);color:var(--muted)" onclick="toggleApp('${esc(w.name)}')" title="Remove from favourites">Remove</button>
     </div>`).join('') : `<div class="empty">Tap ☆ on any app to keep it here —<br>your apps follow you across every gateway.</div>`}
+    ${myCommunitiesHtml()}
     ${aiBookingsHtml()}
     <div class="sect"><div class="sect-h"><div class="t">My Purchases</div><div class="a">${state.purchases.length}</div></div></div>
     ${state.purchases.length
@@ -6382,6 +6592,7 @@ function renderProfile(){
 
 /* ═════════ RENDER ═════════ */
 function render(){
+  render._n = (render._n||0) + 1;   // lets the masthead rule tell whether a click already re-rendered
   // Leaving the screen an app was opened over (the masthead stays live on desktop) closes the app.
   if(state.app && state.app.screen !== state.screen) closeApp(true);
   let html='';

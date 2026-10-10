@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Community</title>
+<style>
+/* Community site template (2026-10-10). One page every hosted community shares, filled with its own name,
+   colours, threads and events, which the GENEXXO host passes in on init (ctx.extra.community). It is the
+   COMMUNITY's site, not GENEXXO's: light, forum-like, its own voice. GENEXXO is only the login, shown in a
+   quiet "Signed in with GENEXXO" strip. Join and RSVP are emitted back to the host (GX.emit), so they show
+   up in the ★ panel, Profile and Events. A new thread is kept with the site's own data (GX.save). */
+:root{--c:#E85D3A;--bg:#F6F5F2;--card:#fff;--line:rgba(20,20,20,.09);--ink:#1A1A1A;--mut:rgba(26,26,26,.55)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;max-width:640px;margin:0 auto;padding-bottom:84px}
+.banner{height:150px;background:#ccc center/cover;position:relative}
+.banner::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.45))}
+.head{background:var(--card);padding:0 16px 14px;border-bottom:1px solid var(--line)}
+.crest{width:64px;height:64px;border-radius:16px;background:var(--c);color:#fff;font-weight:900;font-size:22px;display:flex;align-items:center;justify-content:center;margin-top:-32px;position:relative;z-index:2;border:4px solid var(--card)}
+.head h1{font-size:21px;font-weight:800;margin-top:8px;letter-spacing:-.01em}.head p{color:var(--mut);font-size:13px;margin-top:2px}
+.stats{display:flex;gap:14px;margin-top:10px;font-size:12.5px;color:var(--mut);font-weight:600;align-items:center;flex-wrap:wrap}
+.stats b{color:var(--ink)}.dot{width:8px;height:8px;border-radius:50%;background:#22C55E;display:inline-block;margin-right:4px}
+.join{margin-top:12px;width:100%;font:inherit;font-weight:800;font-size:15px;padding:11px;border-radius:11px;border:0;background:var(--c);color:#fff;cursor:pointer}
+.join.on{background:transparent;color:var(--c);border:1.5px solid var(--c)}
+.gx{display:flex;align-items:center;gap:8px;margin:12px 16px 0;padding:9px 12px;border-radius:11px;background:#111116;color:#fff;font-size:12px;font-weight:700}
+.gx i{width:22px;height:22px;border-radius:6px;background:#fff;color:#111;font-style:normal;font-weight:900;font-size:10px;display:flex;align-items:center;justify-content:center}
+.gx span{opacity:.6;font-weight:600;margin-left:auto}
+.nav{display:flex;gap:4px;padding:12px 16px 0}
+.nav button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;padding:8px 12px;border-radius:99px;cursor:pointer}
+.nav button.on{background:var(--c);color:#fff}
+main{padding:10px 16px}
+.t{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px;display:flex;gap:12px}
+.vote{display:flex;flex-direction:column;align-items:center;min-width:34px;color:var(--mut);font-weight:800;font-size:12.5px;cursor:pointer;user-select:none}
+.vote b{font-size:16px;line-height:1}.vote.on{color:var(--c)}
+.t h3{font-size:14.5px;font-weight:700;line-height:1.3}.meta{font-size:11.5px;color:var(--mut);margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tag{font-size:9.5px;font-weight:800;letter-spacing:.06em;padding:2px 7px;border-radius:99px;background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--c)}
+.new{display:flex;gap:8px;margin-bottom:10px}.new input{flex:1;font:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:#fff}
+.new button{font:inherit;font-weight:800;padding:0 14px;border:0;border-radius:11px;background:var(--ink);color:#fff;cursor:pointer}
+.ev{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px;margin-bottom:8px;display:flex;gap:12px;align-items:center}
+.cal{width:50px;text-align:center;border-radius:11px;background:color-mix(in srgb,var(--c) 12%,#fff);padding:6px 0;flex-shrink:0}
+.cal small{display:block;font-size:10px;font-weight:800;color:var(--c);text-transform:uppercase}.cal b{font-size:19px}
+.ev h3{font-size:14px}.ev p{font-size:12px;color:var(--mut)}
+.rsvp{margin-left:auto;font:inherit;font-size:12px;font-weight:800;padding:7px 12px;border-radius:99px;border:1.5px solid var(--c);background:transparent;color:var(--c);cursor:pointer;white-space:nowrap}
+.rsvp.on{background:var(--c);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px}
+.card h4{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin-bottom:8px}
+.card li{margin-left:18px;padding:3px 0;font-size:13.5px}
+.mods{display:flex;gap:8px;flex-wrap:wrap}.mods span{font-size:12.5px;font-weight:700;padding:5px 10px;border-radius:99px;background:var(--bg)}
+.foot{text-align:center;font-size:11px;color:var(--mut);padding:14px 16px}
+.note{font-size:12px;color:var(--mut);text-align:center;padding:10px}
+</style></head><body>
+<div class="banner" id="banner"></div>
+<div class="head"><div class="crest" id="crest">··</div><h1 id="name">Loading…</h1><p id="tag"></p>
+  <div class="stats" id="stats"></div><button class="join" id="join">Join</button></div>
+<div class="gx"><i>XX</i><div id="who">Signed in with GENEXXO</div><span id="gw"></span></div>
+<div class="nav" id="nav"><button data-tab="threads" class="on">Threads</button><button data-tab="events">Events</button><button data-tab="about">About</button></div>
+<main id="v"></main>
+<div class="foot" id="foot"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const DEMO = {key:'demo', name:'Community', domain:'community.genexxo.com', color:'#E85D3A', img:'', scope:'Local', where:'', members:0, online:0,
+  tagline:'Open inside GENEXXO to see this community.', about:'', rules:[], mods:[], threads:[], events:[]};
+let C, K, S = { tab:'threads', joined:false, rsvps:[], votes:{} };
+GX.init({ extra:{community:DEMO}, seed:()=>({mine:[], votes:{}}) }).then(ctx => {
+  C = ctx; K = ctx.extra.community || DEMO; S.joined = !!ctx.extra.joined; S.rsvps = ctx.extra.rsvps || []; S.votes = (ctx.data && ctx.data.votes) || {};
+  document.documentElement.style.setProperty('--c', K.color);
+  document.title = K.name;
+  document.getElementById('banner').style.backgroundImage = K.img ? `url('${K.img}')` : '';
+  document.getElementById('crest').textContent = K.name.split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  document.getElementById('name').textContent = K.name;
+  document.getElementById('tag').textContent = K.tagline;
+  document.getElementById('who').textContent = ctx.user ? `Signed in with GENEXXO as ${ctx.user.handle}` : 'Demo mode · open inside GENEXXO to sign in';
+  document.getElementById('gw').textContent = ctx.gateway;
+  document.getElementById('foot').innerHTML = `${GX.esc(K.domain)} · hosted on ${GX.esc(ctx.gateway)} · powered by GENEXXO`;
+  paint();
+});
+const mine = () => (C.data && C.data.mine) || [];
+function head(){
+  document.getElementById('stats').innerHTML = `<span><b>${(K.members + (S.joined?1:0)).toLocaleString()}</b> members</span><span><span class="dot"></span><b>${K.online}</b> online</span><span>${GX.esc(K.scope)} · ${GX.esc(K.where)}</span>`;
+  const j = document.getElementById('join'); j.classList.toggle('on', S.joined); j.textContent = S.joined ? '✓ Joined' : 'Join community';
+}
+function vThreads(){
+  const all = [...mine().map(x=>({...x, mine:true})), ...K.threads];
+  return (S.joined ? `<div class="new"><input id="nt" placeholder="Start a thread…" maxlength="120"><button id="post">Post</button></div>` : `<div class="note">Join to start threads and RSVP to events.</div>`)
+    + all.map((x,i)=>{ const id=x.t; const on=!!S.votes[id]; return `<div class="t"><div class="vote ${on?'on':''}" data-v="${GX.esc(id)}"><b>▲</b>${x.votes+(on?1:0)}</div>
+      <div><h3>${GX.esc(x.t)}</h3><div class="meta"><span class="tag">${GX.esc(x.tag)}</span>${GX.esc(x.by)} · ${x.ago===0?'today':x.ago===1?'yesterday':x.ago+' days ago'} · ${x.replies} replies</div></div></div>`; }).join('');
+}
+function vEvents(){
+  return K.events.map(e=>{ const d=GX.today(e.day), on=S.rsvps.includes(e.title); return `<div class="ev"><div class="cal"><small>${d.toLocaleDateString('en-GB',{month:'short'})}</small><b>${d.getDate()}</b></div>
+    <div><h3>${GX.esc(e.title)}</h3><p>${GX.day(d,{weekday:'long'})} · ${e.time} · ${GX.esc(e.where)}</p></div>
+    ${S.joined?`<button class="rsvp ${on?'on':''}" data-r="${GX.esc(e.title)}">${on?'✓ Going':'RSVP'}</button>`:''}</div>`; }).join('')
+    + `<div class="note">${S.joined?'Events you RSVP to appear in your GENEXXO Events and Your week.':'Join to RSVP.'}</div>`;
+}
+function vAbout(){
+  return `<div class="card"><h4>About</h4><p style="font-size:13.5px;line-height:1.55">${GX.esc(K.about)}</p></div>
+    <div class="card"><h4>House rules</h4><ul>${K.rules.map(r=>`<li>${GX.esc(r)}</li>`).join('')}</ul></div>
+    <div class="card"><h4>Moderators</h4><div class="mods">${K.mods.map(m=>`<span>${GX.esc(m)}</span>`).join('')}</div></div>
+    <div class="card"><h4>Signing in</h4><p style="font-size:12.5px;color:var(--mut)">This community uses GENEXXO sign-in. We see your name and handle, never your email or password, and you can leave any time.</p></div>`;
+}
+function paint(){
+  head();
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on', b.dataset.tab===S.tab));
+  const v = document.getElementById('v'); v.innerHTML = S.tab==='threads'?vThreads():S.tab==='events'?vEvents():vAbout();
+  v.querySelectorAll('[data-v]').forEach(e=>e.onclick=()=>{ const k=e.dataset.v; S.votes[k]=!S.votes[k]; C.data.votes=S.votes; GX.save(C.data); paint(); });
+  v.querySelectorAll('[data-r]').forEach(e=>e.onclick=()=>{ const t=e.dataset.r, on=!S.rsvps.includes(t);
+    S.rsvps = on ? [...S.rsvps, t] : S.rsvps.filter(x=>x!==t); GX.emit('rsvp', {title:t, on}); paint(); });
+  const p = document.getElementById('post'); if(p) p.onclick=()=>{ const i=document.getElementById('nt'), t=i.value.trim(); if(!t){ i.focus(); return; }
+    C.data.mine = [{t, by:(C.user&&C.user.handle)||'@you', tag:'NEW', replies:0, ago:0, votes:1}, ...mine()]; GX.save(C.data); paint(); };
+}
+document.getElementById('join').onclick = () => { S.joined = !S.joined; GX.emit('join', {on:S.joined}); paint(); };
+document.getElementById('nav').onclick = e => { const b=e.target.closest('button'); if(!b) return; S.tab=b.dataset.tab; paint(); };
+</script></body></html>

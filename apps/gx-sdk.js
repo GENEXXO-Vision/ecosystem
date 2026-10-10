@@ -1,4 +1,4 @@
-/* GENEXXO App SDK, v1 (2026-10-09).
+/* GENEXXO App SDK, v1.1 (2026-10-09; emit + extra added 2026-10-10).
    The small library a third-party app includes to talk to the GENEXXO host it runs inside. The app
    runs in a sandboxed iframe with no access to GENEXXO itself; everything goes through postMessage:
      GX.init({seed})  → Promise<{gateway, user, grants, data, standalone}>
@@ -14,7 +14,7 @@
   window.addEventListener('message', e => {
     const m = e.data || {}; if(!m.gx) return;
     if(m.type==='init' && !ctx && GX._resolve){
-      ctx = { gateway:m.gateway, user:m.user, grants:m.grants||[], data:m.data, standalone:false };
+      ctx = { gateway:m.gateway, user:m.user, grants:m.grants||[], data:m.data, extra:m.extra||{}, standalone:false };
       GX._resolve(ctx);
     }
     if(m.type==='posted' && onPosted){ const f=onPosted; onPosted=null; f(true); }
@@ -25,7 +25,7 @@
       return new Promise(res => {
         GX._resolve = c => { if(c.data==null && opts.seed) c.data = opts.seed(); res(c); };
         send({type:'ready'});
-        setTimeout(()=>{ if(!ctx){ ctx = {gateway:opts.gateway||'GENEXXO', user:null, grants:['feed','profile'], data:opts.seed?opts.seed():null, standalone:true}; res(ctx); } }, 700);
+        setTimeout(()=>{ if(!ctx){ ctx = {gateway:opts.gateway||'GENEXXO', user:null, grants:['feed','profile'], data:opts.seed?opts.seed():null, extra:opts.extra||{}, standalone:true}; res(ctx); } }, 700);
       });
     },
     save(data){ if(ctx && !ctx.standalone) send({type:'save', data}); },
@@ -37,6 +37,9 @@
       });
     },
     can(p){ return !!(ctx && ctx.grants.includes(p)); },
+    /* v1.1 (2026-10-10): a site can tell the host about an action it should reflect, e.g. a community
+       join or an event RSVP. ctx.extra carries anything the host passes in on init. */
+    emit(type, payload){ if(ctx && !ctx.standalone) send(Object.assign({type}, payload||{})); },
     /* Helpers every demo app wants: a PRNG seeded by a string (forecasts that change daily but hold
        steady within a day), today-relative dates, and escaping for anything user-typed. */
     rng(seedStr){ let h=2166136261; for(const c of String(seedStr)) h=Math.imul(h^c.charCodeAt(0),16777619);
