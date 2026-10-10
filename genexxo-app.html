@@ -141,6 +141,35 @@
   .ap-row p{font-size:12.5px;line-height:1.5;opacity:.75;margin-top:4px}
   .ap-stars{color:#F5B800;font-size:12px;letter-spacing:1px}
   .ap-safe{margin-top:16px;padding:13px 14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);font-size:11.5px;font-weight:600;opacity:.75;line-height:1.5}
+  /* PRO ZONE (2026-10-10): a person's space in the same canvas as apps — hero photo, then the .ap page. */
+  .pz-hero{position:relative;height:200px;margin:-18px -16px 0;background:#222 center/cover}
+  .pz-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,15,0) 30%,rgba(11,11,15,.75) 70%,#0B0B0F 100%)}
+  .pz-id{position:absolute;left:16px;right:16px;bottom:12px;display:flex;align-items:flex-end;gap:12px;z-index:2}
+  .pz-av{width:62px;height:62px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:900;color:#fff;border:3px solid #0B0B0F;flex-shrink:0}
+  .pz-id h2{font-size:20px;font-weight:800;line-height:1.15}.pz-id p{font-size:12px;font-weight:600;opacity:.7;margin-top:2px}
+  .pz-ver{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;color:#4ADE80;margin-top:3px}
+  .pz-svc{display:flex;gap:12px;align-items:center;padding:13px;border:1px solid rgba(255,255,255,.08);border-radius:14px;margin-bottom:8px;background:rgba(255,255,255,.03)}
+  .pz-svc b{display:block;font-size:14px}.pz-svc span{font-size:11.5px;opacity:.6;font-weight:600;line-height:1.4;display:block}
+  .pz-price{margin-left:auto;text-align:right;flex-shrink:0}.pz-price b{font-size:15px}.pz-price small{display:block;font-size:10.5px;opacity:.55;font-weight:700}
+  .pz-bk{font:inherit;font-size:12px;font-weight:800;padding:7px 13px;border-radius:99px;border:0;color:#fff;cursor:pointer;margin-top:6px}
+  .pz-cred{display:flex;gap:9px;font-size:13px;font-weight:600;padding:6px 0}
+  .pz-facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.pz-facts div{border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:9px 11px}
+  .pz-facts span{display:block;font-size:9.5px;font-weight:800;opacity:.5;text-transform:uppercase;letter-spacing:.06em}.pz-facts b{font-size:12.5px}
+  .bk-steps{display:flex;gap:6px;margin:4px 0 16px}.bk-steps i{flex:1;height:4px;border-radius:99px;background:rgba(255,255,255,.12)}.bk-steps i.on{background:#F5B800}
+  .bk-h{display:flex;align-items:center;gap:10px;margin-bottom:6px}.bk-h b{font-size:17px}.bk-back{cursor:pointer;font-size:13px;font-weight:800;opacity:.6}
+  .bk-opt{cursor:pointer}.bk-opt.on{border-color:#F5B800;background:rgba(245,184,0,.08)}
+  .bk-days{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;margin:0 -16px;padding-left:16px;padding-right:16px}
+  .bk-day{flex-shrink:0;width:58px;text-align:center;border:1px solid rgba(255,255,255,.1);border-radius:13px;padding:8px 0;cursor:pointer}
+  .bk-day small{display:block;font-size:10px;font-weight:800;opacity:.55}.bk-day b{display:block;font-size:18px}.bk-day.on{border-color:#F5B800;background:rgba(245,184,0,.1)}
+  .bk-day.off{opacity:.25;cursor:default}
+  .bk-times{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px}
+  .bk-t{text-align:center;padding:10px 0;border:1px solid rgba(255,255,255,.1);border-radius:11px;font-weight:800;font-size:13.5px;cursor:pointer}
+  .bk-t.on{border-color:#F5B800;color:#F5B800}.bk-t.off{opacity:.25;text-decoration:line-through;cursor:default}
+  .bk-sum{border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:4px 14px;margin-top:6px}
+  .bk-sum div{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:13px}.bk-sum div:last-child{border:0}
+  .bk-sum span{opacity:.55;font-weight:600}.bk-sum b{text-align:right}
+  .bk-done{text-align:center;padding:26px 6px 10px}.bk-done .ck{width:64px;height:64px;border-radius:50%;background:#22C55E;color:#04210F;font-size:32px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+  .bk-done h3{font-size:19px;font-weight:800}.bk-done p{font-size:13px;opacity:.65;margin-top:6px;line-height:1.5}
   /* ★ panel: the row a "You're in…" card just added glows once, so the eye follows it down */
   .fav-new{animation:favNew 1.6s ease-out}
   @keyframes favNew{0%{background:rgba(245,184,0,.38);box-shadow:0 0 0 1px rgba(245,184,0,.7)}100%{background:transparent;box-shadow:0 0 0 1px rgba(245,184,0,0)}}
@@ -1237,7 +1266,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-27"></script>
+<script src="genexxo-data.js?v=2026.08.26-28"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1320,14 +1349,14 @@ function loadFavs(){
   try{
     if(new URLSearchParams(location.search).get('favs')==='reset'){
       localStorage.removeItem('gx_favs'); localStorage.removeItem('gx_brandFavs');
-      localStorage.removeItem('gx_sectorFavs'); localStorage.removeItem('gx_recent'); localStorage.removeItem('gx_wallet');
+      localStorage.removeItem('gx_sectorFavs'); localStorage.removeItem('gx_recent'); localStorage.removeItem('gx_wallet'); localStorage.removeItem('gx_proFavs');
     }
-    const g=localStorage.getItem('gx_favs'), b=localStorage.getItem('gx_brandFavs'), w=localStorage.getItem('gx_wallet');
+    const g=localStorage.getItem('gx_favs'), b=localStorage.getItem('gx_brandFavs'), w=localStorage.getItem('gx_wallet'), pf=localStorage.getItem('gx_proFavs');
     const sc=localStorage.getItem('gx_sectorFavs'), rc=localStorage.getItem('gx_recent');
     return { favs: g?JSON.parse(g):[...YOUR_GATEWAYS], brandFavs: b?JSON.parse(b):[],
              sectorFavs: sc?JSON.parse(sc):[], recent: rc?JSON.parse(rc):[],
-             wallet: w?JSON.parse(w):[{name:'Route Logger',color:'#4ADE80',gw:'ClimbXX'}] };
-  }catch(e){ return { favs:[...YOUR_GATEWAYS], brandFavs:[], sectorFavs:[], recent:[], wallet:[{name:'Route Logger',color:'#4ADE80',gw:'ClimbXX'}] }; }
+             wallet: w?JSON.parse(w):[{name:'Route Logger',color:'#4ADE80',gw:'ClimbXX'}], proFavs: pf?JSON.parse(pf):[] };
+  }catch(e){ return { favs:[...YOUR_GATEWAYS], brandFavs:[], sectorFavs:[], recent:[], wallet:[{name:'Route Logger',color:'#4ADE80',gw:'ClimbXX'}], proFavs:[] }; }
 }
 function saveFavs(){
   try{
@@ -1336,6 +1365,7 @@ function saveFavs(){
     localStorage.setItem('gx_sectorFavs', JSON.stringify(state.sectorFavs));
     localStorage.setItem('gx_recent', JSON.stringify(state.recent));
     localStorage.setItem('gx_wallet', JSON.stringify(state.wallet));
+    localStorage.setItem('gx_proFavs', JSON.stringify(state.proFavs));
   }catch(e){}
 }
 /* Recent activity (2026-07-31): every committed navigation to a real place — a sector,
@@ -1973,7 +2003,8 @@ const state = {
   checkoutBrand:null, checkoutDone:null, receipt:null,   // brand-direct checkout sheet · confirmation · My Purchases receipt
   purchases:[...PURCHASES_INIT.purchases],   // filed orders (persisted) — see loadPurchases
   orderSeq: PURCHASES_INIT.seq,              // running counter behind each brand's order ref
-  wallet:[...FAVS_INIT.wallet],    // favourite APPS (2026-10-10: "wallet" is now just favourites; Profile › My Apps lists it)
+  wallet:[...FAVS_INIT.wallet],
+  proFavs:[...FAVS_INIT.proFavs],  // favourite Pro Zones (keys), 2026-10-10    // favourite APPS (2026-10-10: "wallet" is now just favourites; Profile › My Apps lists it)
   favs:[...FAVS_INIT.favs],        // seeded from YOUR_GATEWAYS on first run, else restored from localStorage
   showFavs:false, favTab:'favs',   // ★ panel open? + which tab: 'favs' | 'recent' | 'live'
   askSector:false,                 // desktop: Sectors tab tapped with none chosen → prompt header
@@ -2016,7 +2047,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-27';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-28';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2218,6 +2249,7 @@ function backTarget(){
   return null;   // already at the Network hub with nothing stacked
 }
 function goBack(){
+  if (state.app && state.app.kind==='pro'){ proBack(); return; }   // booking step → previous step → the zone → out
   if (state.app){ (state.app.running && state.app.fromPage) ? backToAppPage() : closeApp(); return; }   // app → its page → out
   // 0) a utility tab floating over a gateway → close it and leave the gateway standing
   if (state.utilOver){ state.utilOver=null; render(); return; }
@@ -2285,12 +2317,15 @@ function commitFavPending(){
       else { const hit=appByName(k); state.wallet.push({name:k, color:hit?hit.app.color:'#444', gw:hit?hit.gw.name:''}); added.push(k); }
       return;
     }
-    const list = t==='gw' ? state.favs : t==='brand' ? state.brandFavs : state.sectorFavs;
-    const name = t==='gw' ? ((gwMetaFromKey(k)||{}).name||k) : t==='brand' ? ((ZONES[k]||{}).name||k) : ((sectorOf(k)||{}).name||k);
+    const list = t==='gw' ? state.favs : t==='brand' ? state.brandFavs : t==='pro' ? state.proFavs : state.sectorFavs;
+    const name = t==='gw' ? ((gwMetaFromKey(k)||{}).name||k) : t==='brand' ? ((ZONES[k]||{}).name||k) : t==='pro' ? (((proByKey(k)||{}).pro||{}).name||k) : ((sectorOf(k)||{}).name||k);
     const j = list.indexOf(k);
     if(j>=0){ list.splice(j,1); removed.push(name); } else { list.push(k); added.push(name); }
   });
   saveFavs();
+  if(tags.some(t=>t.startsWith('pro:'))){
+    try{ if(state.screen==='gateway' && state.gwZones && state.gwZoneTab==='pros') repaintGateway({body:true}); }catch(_){}
+  }
   if(tags.some(t=>t.startsWith('app:'))){
     try{ if(state.screen==='gateway' && state.gwZones && state.gwZoneTab==='apps') repaintGateway({body:true}); }catch(_){}
     try{ paintGwPanelList('a'); }catch(_){}
@@ -2368,6 +2403,9 @@ function favPanelHtml(){
     const saved=state.wallet.some(x=>x.name===name), col=(a&&a.color)||w.color||'#444', gwn=(hit&&hit.gw.name)||w.gw||'';
     return shell(`${tile(col, name.split(' ').map(x=>x[0]).join('').slice(0,2), 11)}${nm(name, gwn+(a&&a.dev?' · '+a.dev:''))}${starFor(saved,'app:'+name)}`,
       a?`state.showFavs=false;render();openApp('${esc(a.key||a.name)}')`:'', state.app&&a&&state.app.key===(a.key||a.name), 'app:'+name, saved); };
+  const prRow = k => { const hit=proByKey(k); if(!hit) return ''; const x=hit.pro, saved=state.proFavs.includes(k);
+    return shell(`${tile(x.color, proIni(x.name), 11)}${nm(x.name, hit.gw.name+' · '+x.role)}${starFor(saved,'pro:'+k)}`,
+      `state.showFavs=false;render();openPro('${k}')`, state.app&&state.app.kind==='pro'&&state.app.key===k, 'pro:'+k, saved); };
   const brRow = k => { const z=ZONES[k]; if(!z) return ''; const gm=gwMetaFromKey(z.gw); const saved=state.brandFavs.includes(k);
     const mono=z.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
     return shell(`${tile(z.gradient||z.color||'#333',mono,11)}${nm(z.name, (gm?gm.name:'')+(z.tier?' · '+z.tier:''))}${starFor(saved,'brand:'+k)}`,
@@ -2421,7 +2459,7 @@ function favPanelHtml(){
     const hint = `<div style="margin:12px 8px -4px;font-size:11px;font-weight:600;opacity:${nPend?'.85':'.45'};${nPend?'color:#F5B800':''}">${nPend
       ? `${nPend} change${nPend>1?'s':''} · saved when you close`
       : 'Tap ★ to remove a favourite · changes save when you close'}</div>`;
-    bodyHtml = (state.favs.length||state.brandFavs.length||state.sectorFavs.length||state.wallet.length ? hint : '') +
+    bodyHtml = (state.favs.length||state.brandFavs.length||state.sectorFavs.length||state.wallet.length||state.proFavs.length ? hint : '') +
       section('SECTORS', state.sectorFavs.map(secRow),
         'No sectors pinned yet — tap ☆ on any sector to keep it here.') +
       section('GATEWAYS', state.favs.map(gwRow),
@@ -2430,7 +2468,9 @@ function favPanelHtml(){
         'No brands pinned yet — tap ☆ on any brand zone.') +
       section('APPS', state.wallet.map(w=>apRow(w.name)),
         'No apps yet — tap ☆ on any app to keep it here.') +
-      section('OTHER', [], 'Pro Zones and communities you pin will collect here as the ecosystem opens up.');
+      section('PROS', state.proFavs.map(prRow),
+        'No pros yet — tap ☆ on any Pro Zone to keep it here.') +
+      section('OTHER', [], 'Communities you join will collect here as the ecosystem opens up.');
   } else if(tab==='live'){
     // Every gateway that is actually built out, network-wide — the "what can I see working
     // right now?" list. Derived from GATEWAYS itself, so it can never fall out of step with
@@ -2460,7 +2500,8 @@ function favPanelHtml(){
       section('GATEWAYS', of('gateway').map(gwRow), 'Gateways you visit will appear here.') +
       section('BRANDS', of('brand').map(brRow), 'Brand zones you open will appear here.') +
       section('APPS', of('app').map(apRow), 'Apps you open will appear here.') +
-      section('OTHER', [], 'Pro Zones and communities will appear here as you explore them.');
+      section('PROS', of('pro').map(prRow), 'Pro Zones you visit will appear here.') +
+      section('OTHER', [], 'Communities will appear here as you explore them.');
   }
 
   const tabBtn = (k, label) => `<div onclick="setFavTab('${k}')" style="flex:1;text-align:center;padding:9px 6px;border-radius:11px;font-weight:800;font-size:12.5px;cursor:pointer;transition:background .18s;${tab===k?'background:#F5B800;color:#141414':'background:rgba(255,255,255,.08);color:rgba(255,255,255,.7)'}">${label}</div>`;
@@ -3694,8 +3735,8 @@ function buildGwPanels(){
      accent (computed per gateway), so the showroom reads apart from the feed without leaving the
      gateway's palette. Sean tried a light paper first and chose this: same distinction, quieter. Ads for brands, not a shop: no
      products or checkout here; "a gateway is not a shop" still holds. */
-  if(state.screen==='gateway' && state.app){       // an app runs in the centre: the gutters explain it
-    paintAppPanels(gw, L, R);
+  if(state.screen==='gateway' && state.app){       // an app or Pro Zone is open in the centre: the gutters explain it
+    state.app.kind==='pro' ? paintProPanels(gw, L, R) : paintAppPanels(gw, L, R);
     L.dataset.gw = R.dataset.gw = '';
     return;
   }
@@ -3711,6 +3752,11 @@ function buildGwPanels(){
   // Apps tab with openable apps: app ads, each with the app's real screenshot (2026-10-09).
   if(state.screen==='gateway' && state.gwZones && state.gwZoneTab==='apps' && (gw.apps||[]).some(a=>a.url&&(a.shots||[]).length)){
     paintGwAppAds(gw, L, R);
+    L.dataset.gw = R.dataset.gw = '';
+    return;
+  }
+  if(state.screen==='gateway' && state.gwZones && state.gwZoneTab==='pros' && (gw.pros||[]).some(x=>x.key)){
+    paintGwProAds(gw, L, R);
     L.dataset.gw = R.dataset.gw = '';
     return;
   }
@@ -4109,6 +4155,182 @@ document.addEventListener('click', e => {
   if(!e.target.closest('#frame .top') || e.target.closest('#topBack') || e.target.closest('#appCanvas')) return;
   closeApp(true);
 }, true);
+/* ═════════ PRO ZONES (2026-10-10) ═════════
+   People who sell their time: guides, coaches, specialists. A Pro Zone opens in the SAME canvas as an app
+   (state.app.kind==='pro'), so it inherits the frame bar, ☆, ✕, Back, and on desktop "tap the masthead to
+   leave". Its core action is Book: service → slot → confirm. You pay the pro directly (GENEXXO never
+   touches funds), and the booking lands in My bookings, Your week and Events, beside the AI bookings. */
+const proIni = n => n.split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+function proByKey(key){
+  for(const gk in GATEWAYS) for(const x of (GATEWAYS[gk].pros||[])) if(x.key===key) return { pro:x, gw:GATEWAYS[gk], gwKey:gk };
+  return null;
+}
+const proMoney = (x, v) => v===0 ? 'Free' : (x.cur==='CHF' ? 'CHF ' : x.cur) + v.toLocaleString('en-GB');
+function toggleProFav(key){
+  const i = state.proFavs.indexOf(key); if(i>=0) state.proFavs.splice(i,1); else state.proFavs.push(key);
+  saveFavs();
+  if(state.screen==='gateway' && state.gwZones && state.gwZoneTab==='pros') try{ repaintGateway({body:true}); }catch(_){}
+  const b=$('acWallet'); if(b && state.app && state.app.kind==='pro'){ const on=state.proFavs.includes(state.app.key); b.classList.toggle('on',on); b.textContent=on?'★ In favourites':'☆ Add to favourites'; }
+  if(state.app && state.app.kind==='pro' && !state.app.book) paintProPage(true);
+}
+function openPro(key, tab){
+  const hit = proByKey(key); if(!hit) return;
+  closeApp(true);
+  const {pro, gw} = hit;
+  state.app = { kind:'pro', key, gwKey:hit.gwKey, screen:state.screen, running:false, tab:'about', book:null };
+  logVisit('pro', key);
+  const on = state.proFavs.includes(key);
+  const el = document.createElement('div'); el.id = 'appCanvas';
+  el.innerHTML = `<div class="ac-bar">
+      <div class="ac-ic" style="background:${pro.color};color:#fff">${proIni(pro.name)}</div>
+      <div class="ac-tx"><b>${pro.name}</b><span id="acSub">Pro Zone · ${gw.name}</span></div>
+      <div class="ac-btn ${on?'on':''}" id="acWallet" onclick="toggleProFav('${key}')">${on?'★ In favourites':'☆ Add to favourites'}</div>
+      <div class="ac-x" onclick="closeApp()" title="Close"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></div>
+    </div><div class="ac-body" id="acBody"></div>`;
+  $('frame').appendChild(el);
+  if(tab==='book') proBook(); else paintProPage();
+  if($('frame').classList.contains('panels-float')) try{ buildGwPanels(); }catch(_){}
+}
+function proBack(){
+  const b = state.app.book;
+  if(b && b.step==='slot'){ b.step='service'; paintProBook(); return; }
+  if(b && b.step==='confirm'){ b.step='slot'; paintProBook(); return; }
+  if(b && b.step!=='done' && b.fromPage){ state.app.book=null; paintProPage(); return; }
+  closeApp();
+}
+function setProTab(t){ state.app.tab=t; paintProPage(true); }
+function paintProPage(keepScroll){
+  const hit = state.app && proByKey(state.app.key); if(!hit) return;
+  const {pro:x, gw} = hit, tab = state.app.tab||'about', fav = state.proFavs.includes(x.key);
+  const old = document.querySelector('#acBody .ap'), top = keepScroll && old ? old.scrollTop : 0;
+  const stars = n => '★'.repeat(n)+'☆'.repeat(5-n);
+  const from = Math.min(...x.services.map(v=>v.price).filter(v=>v>0));
+  const about = `<div class="ap-txt">${x.about}</div>
+    <div class="pz-facts"><div><span>Based</span><b>${x.base}</b></div><div><span>Languages</span><b>${x.langs}</b></div>
+      <div><span>Experience</span><b>${x.years} years</b></div><div><span>Reviews</span><b>★ ${x.rating} · ${x.reviewsN}</b></div></div>
+    ${x.creds.map(c=>`<div class="pz-cred"><span style="color:#4ADE80">✓</span>${c}</div>`).join('')}
+    <div class="ap-safe">🤝 <b>Booked through GENEXXO, paid directly.</b> You pay ${x.name}, not GENEXXO. Free cancellation up to 48 hours before, and messages arrive in your GENEXXO inbox.</div>`;
+  const services = x.services.map(v=>`<div class="pz-svc"><div style="flex:1;min-width:0"><b>${v.name}</b><span>${v.desc}</span></div>
+      <div class="pz-price"><b>${proMoney(x,v.price)}</b><small>${v.dur}</small><button class="pz-bk" style="background:${x.color}" onclick="proBook('${v.id}')">Book</button></div></div>`).join('');
+  const reviews = `<div style="display:flex;align-items:baseline;gap:9px;margin-bottom:4px"><b style="font-size:30px">${x.rating}</b><span class="ap-stars" style="font-size:15px">${stars(Math.round(+x.rating))}</span><span style="font-size:11.5px;opacity:.5;font-weight:600">${x.reviewsN} reviews from booked clients</span></div>`
+    + x.reviews.map(r=>`<div class="ap-row"><div class="ap-row-h">${r.who}<span>${_ago(r.ago)}</span></div><div class="ap-stars">${stars(r.stars)}</div><p>${r.text}</p></div>`).join('');
+  const posts = x.posts.map(q=>`<div class="ap-row"><div class="ap-row-h">${x.name}<span>${_ago(q.ago)}</span></div><p>${q.text}</p></div>`).join('');
+  $('acBody').innerHTML = `<div class="ap">
+    <div class="pz-hero" style="background-image:url('${x.img}')"><div class="pz-id"><div class="pz-av" style="background:${x.color}">${proIni(x.name)}</div>
+      <div><h2>${x.name}</h2><p>${x.role} · ${x.base}</p><div class="pz-ver">✓ Verified pro</div></div></div></div>
+    <div class="ap-meta"><div><b>${x.rating} ★</b><span>Rating</span></div><div><b>${x.reviewsN}</b><span>Reviews</span></div>
+      <div><b>${x.years} yrs</b><span>Experience</span></div><div><b>${isFinite(from)?proMoney(x,from):'Free'}</b><span>From</span></div></div>
+    <div class="ap-cta"><button class="ap-open" style="background:${x.color};color:#fff" onclick="proBook()">Book</button>
+      <button class="ap-sub ${fav?'on':''}" onclick="toggleProFav('${x.key}')">${fav?'★ Favourite':'☆ Favourite'}</button></div>
+    <div class="ap-instant">Pay ${x.name} directly · GENEXXO never touches your money</div>
+    <div class="ap-tabs">${[['about','About'],['services','Services'],['reviews','Reviews'],['posts','Posts']].map(([k,l])=>`<div class="${tab===k?'on':''}" style="${tab===k?`border-color:${x.color}`:''}" onclick="setProTab('${k}')">${l}</div>`).join('')}</div>
+    ${tab==='about'?about:tab==='services'?services:tab==='reviews'?reviews:posts}
+  </div>`;
+  if(top) document.querySelector('#acBody .ap').scrollTop = top;
+}
+/* Availability: the pro's working weekdays over the next 14 days, minus some already booked out —
+   seeded by pro + date, so it looks real and holds steady within a day. */
+function proSlots(x){
+  const r = (seed => { let h=2166136261; for(const c of seed) h=Math.imul(h^c.charCodeAt(0),16777619); return () => { h^=h<<13; h^=h>>>17; h^=h<<5; return ((h>>>0)%1000)/1000; }; })(x.key+new Date().toDateString());
+  const out=[]; for(let i=1;i<=14;i++){ const d=new Date(); d.setHours(12,0,0,0); d.setDate(d.getDate()+i);
+    const works = x.avail.days.includes(d.getDay()), times = x.avail.times.map(t=>({t, taken: r()<.3}));
+    const full = works && (r()<.2 || times.every(t=>t.taken));   // a day with no free slot reads Full, never "open"
+    out.push({d, iso:d.toISOString().slice(0,10), works, full, times}); }
+  return out;
+}
+function proBook(sid){
+  const fromPage = !!document.querySelector('#acBody .ap .ap-tabs');
+  state.app.book = { step: sid ? 'slot' : 'service', sid: sid || null, iso:null, time:null, fromPage };
+  paintProBook();
+}
+function proPick(field, v){ const b=state.app.book; b[field]=v; if(field==='iso') b.time=null; paintProBook(); }
+function proNext(){ const b=state.app.book; b.step = b.step==='service' ? 'slot' : 'confirm'; paintProBook(); }
+function paintProBook(){
+  const hit = state.app && proByKey(state.app.key); if(!hit) return;
+  const {pro:x, gw} = hit, b = state.app.book, svc = x.services.find(v=>v.id===b.sid);
+  const n = {service:1, slot:2, confirm:3, done:3}[b.step];
+  const back = (b.step!=='done') ? `<span class="bk-back" onclick="goBack()">‹ Back</span>` : '';
+  let body = '';
+  if(b.step==='service'){
+    body = `<div class="bk-h">${back}<b>Choose a service</b></div>` + x.services.map(v=>`<div class="pz-svc bk-opt ${b.sid===v.id?'on':''}" onclick="proPick('sid','${v.id}')">
+      <div style="flex:1;min-width:0"><b>${v.name}</b><span>${v.desc}</span></div><div class="pz-price"><b>${proMoney(x,v.price)}</b><small>${v.dur}</small></div></div>`).join('')
+      + `<button class="ac-allow" ${b.sid?'':'disabled style="opacity:.4"'} onclick="proNext()">Choose a time ›</button>`;
+  } else if(b.step==='slot'){
+    const days = proSlots(x), day = days.find(d=>d.iso===b.iso);
+    body = `<div class="bk-h">${back}<b>Pick a day and time</b></div><div style="font-size:12px;opacity:.6;font-weight:600;margin-bottom:10px">${svc.name} · ${svc.dur}</div>
+      <div class="bk-days">${days.map(d=>{ const ok=d.works&&!d.full; return `<div class="bk-day ${ok?'':'off'} ${b.iso===d.iso?'on':''}" ${ok?`onclick="proPick('iso','${d.iso}')"`:''}>
+        <small>${d.d.toLocaleDateString('en-GB',{weekday:'short'})}</small><b>${d.d.getDate()}</b><small>${ok?d.d.toLocaleDateString('en-GB',{month:'short'}):d.works?'Full':'—'}</small></div>`; }).join('')}</div>
+      ${day?`<div class="bk-times">${day.times.map(t=>`<div class="bk-t ${t.taken?'off':''} ${b.time===t.t?'on':''}" ${t.taken?'':`onclick="proPick('time','${t.t}')"`}>${t.t}</div>`).join('')}</div>`
+           :`<div style="font-size:12px;opacity:.5;text-align:center;margin-top:14px">Choose a day to see times</div>`}
+      <button class="ac-allow" style="margin-top:16px;${b.iso&&b.time?'':'opacity:.4'}" ${b.iso&&b.time?'':'disabled'} onclick="proNext()">Review booking ›</button>`;
+  } else if(b.step==='confirm'){
+    const d = new Date(b.iso+'T12:00');
+    body = `<div class="bk-h">${back}<b>Confirm your booking</b></div>
+      <div class="bk-sum"><div><span>Pro</span><b>${x.name} ✓</b></div><div><span>Service</span><b>${svc.name}</b></div>
+        <div><span>When</span><b>${d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})} · ${b.time}</b></div><div><span>Duration</span><b>${svc.dur}</b></div>
+        <div><span>Where</span><b>${x.base}</b></div><div><span>Price</span><b>${proMoney(x,svc.price)}</b></div></div>
+      <div class="ap-safe">💳 <b>You pay ${x.name} directly</b>, on the day or by their invoice. GENEXXO arranges the booking and never touches your money. Free cancellation up to 48 hours before.</div>
+      <button class="ac-allow" onclick="proConfirm()">Confirm booking</button>`;
+  } else {
+    const d = new Date(b.iso+'T12:00');
+    body = `<div class="bk-done"><div class="ck">✓</div><h3>You're booked</h3>
+      <p><b>${svc.name}</b> with ${x.name}<br>${d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})} · ${b.time}</p>
+      <p style="font-size:12px">It's in Profile › My bookings, Your week and Events. ${x.name.split(' ')[0]} will message you before the day.</p></div>
+      <button class="ac-allow" onclick="state.app.book=null;paintProPage()">Done</button>
+      <button class="ac-cancel" onclick="closeApp(true);setTab('profile')">View my bookings</button>`;
+  }
+  $('acBody').innerHTML = `<div class="ap"><div class="bk-steps">${[1,2,3].map(i=>`<i class="${i<=n?'on':''}"></i>`).join('')}</div>${body}</div>`;
+}
+function proConfirm(){
+  const hit = proByKey(state.app.key); if(!hit) return;
+  const {pro:x, gw} = hit, b = state.app.book, svc = x.services.find(v=>v.id===b.sid);
+  if(state.proReplacing){ const old=aiWeek().find(w=>w.id===state.proReplacing); if(old){ old.status='changed'; old._ev=null; } state.proReplacing=null; }
+  aiAddToWeek([{ d:new Date(b.iso+'T12:00'), time:b.time, icon:gw.emoji||'⭐', title:svc.name, src:gw.name, prov:x.name, pro:x.key,
+    grad:`linear-gradient(135deg,${x.color},#111116)` }]);
+  b.step='done'; paintProBook();
+  toast(`✓ Booked with ${x.name}`);
+}
+function proChangeBooking(id){
+  const w = aiWeek().find(x=>x.id===id); if(!w || !w.pro) return;
+  state.proReplacing = id; openPro(w.pro, 'book');
+}
+/* Desktop gutters. Pros tab: pro ads (action photo, Book). Pro Zone open: what "verified" means, and
+   how booking works — the trust story told beside the person. */
+function paintGwProAds(gw, L, R){
+  liftGwPanels(gw, L, R);
+  const acc = (gw.theme||{}).accent || '#111116', pros = (gw.pros||[]).filter(x=>x.key);
+  const card = x => `<div class="gwa" onclick="openPro('${x.key}')">
+      <div class="gwa-media" style="background:url('${x.img}') center/cover, ${x.color}"><span class="gwa-badge">✓ Verified pro</span></div>
+      <div class="gwa-body">
+        <div class="gwa-who"><div class="gwa-chip" style="background:${x.color}">${proIni(x.name)}</div><div><div class="gwa-n">${esc(x.name)}</div><div class="gwa-t">${esc(x.role)}</div></div></div>
+        <div class="gwa-hl">${esc(x.tag)}</div>
+        <div class="gwa-row"><span class="gwa-meta">★ ${x.rating} · ${x.reviewsN} reviews</span><span class="gwa-cta" style="background:${x.color}" onclick="event.stopPropagation();openPro('${x.key}','book')">Book ›</span></div>
+      </div></div>`;
+  const side = (items, head, note, foot) => `<div class="gwa-h"><b style="color:${acc}">${head}</b><span>${note}</span></div>
+    <div class="gwa-list">${items.map(card).join('')}</div>
+    <div class="gwa-foot"><span>Book direct · pay the pro</span><b style="color:${acc}">${foot}</b></div>`;
+  const nL = Math.min(2, Math.ceil(pros.length/2));
+  L.innerHTML = side(pros.slice(0,nL), '✦ Featured pros', gw.name, 'All pros ›');
+  R.innerHTML = side(pros.slice(nL,nL+2), '✦ Also in '+esc(gw.name), pros.length+' pros', `Become a Pro on ${esc(gw.name)} ›`);
+}
+function paintProPanels(gw, L, R){
+  liftGwPanels(gw, L, R);
+  const hit = proByKey(state.app.key); if(!hit) return;
+  const {pro:x} = hit, acc = (gw.theme||{}).accent || 'var(--ink)';
+  const others = (gw.pros||[]).filter(p=>p.key && p.key!==x.key);
+  L.innerHTML = `<div class="gwa-h"><b style="color:${acc}">✓ Verified pro</b><span>${esc(x.name)}</span></div>
+    <div class="gac">${x.creds.map(c=>`<div class="gac-row"><i>✓</i><div><b>${esc(c)}</b><span>Checked by GENEXXO</span></div></div>`).join('')}
+      <div class="gac-row"><i>🪪</i><div><b>Identity verified</b><span>Real person, real business, checked documents.</span></div></div>
+      <div class="gac-row"><i>★</i><div><b>${x.reviewsN} reviews, ${x.rating} average</b><span>Only from clients who actually booked.</span></div></div></div>
+    <div class="gwa-foot"><span>${esc(x.base)} · ${x.years} years</span></div>`;
+  R.innerHTML = `<div class="gwa-h"><b style="color:${acc}">🤝 How booking works</b><span>${esc(gw.name)}</span></div>
+    <div class="gac"><div class="gac-row"><i>📅</i><div><b>Pick a time</b><span>Live availability for the next two weeks.</span></div></div>
+      <div class="gac-row"><i>💳</i><div><b>Pay the pro directly</b><span>GENEXXO arranges the booking and never touches your money.</span></div></div>
+      <div class="gac-row"><i>↩️</i><div><b>Free cancellation</b><span>Up to 48 hours before. Change or cancel from Profile › My bookings.</span></div></div>
+      <div class="gac-row"><i>💬</i><div><b>Messages in GENEXXO</b><span>Plans and kit lists arrive in your inbox.</span></div></div></div>
+    ${others.length?`<div class="gac"><div style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.5;margin-bottom:4px">More pros in ${esc(gw.name)}</div>
+      ${others.map(p=>`<div class="gac-row" style="cursor:pointer" onclick="openPro('${p.key}')"><i style="width:26px;height:26px;border-radius:8px;background:${p.color};font-size:9.5px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center">${proIni(p.name)}</i><div><b>${p.name}</b><span>${p.role} · ★ ${p.rating}</span></div></div>`).join('')}</div>`:''}`;
+}
 function revokeApp(key){
   const g = _appStore('gx_appGrants'); delete g[key]; _appSave('gx_appGrants', g);
   closeApp(); toast('Permissions revoked — it will ask again next time');
@@ -4236,6 +4458,15 @@ function renderGateway(){
       ${openable?`<div style="margin-top:9px;font-size:10px;font-weight:800;letter-spacing:.04em;color:${t.accent}">Open zone ›</div>`:''}
     </div>`;};
 
+  // A Pro Zone card: tap for the zone, Book jumps straight to booking, ☆ favourites it.
+  const proCard = x => { const fav = state.proFavs.includes(x.key); return `
+    <div class="gcard" style="background:${t.cardBg};border-color:${t.cardBorder};color:${t.text};cursor:pointer" onclick="openPro('${x.key}')">
+      <div class="hd" style="margin-bottom:6px"><div class="av" style="background:${x.color};border-radius:12px">${proIni(x.name)}</div>
+        <div style="flex:1;min-width:0"><div class="an">${x.name}</div><div class="as">${x.role} · ★ ${x.rating} (${x.reviewsN})</div></div>
+        <button class="btn" style="background:${t.accent};color:#fff;border:1px solid ${t.accent};margin-right:6px" onclick="event.stopPropagation();openPro('${x.key}','book')">Book</button>
+        <button class="btn" style="min-width:40px;font-size:16px;background:transparent;color:${fav?'#F5B800':t.text};border:1px solid ${fav?'rgba(245,184,0,.55)':t.cardBorder}" title="${fav?'Remove from favourites':'Add to favourites'}" onclick="event.stopPropagation();toggleProFav('${x.key}')">${fav?'★':'☆'}</button></div>
+      <div class="tx" style="opacity:.7;font-size:12px">✓ Verified · ${x.tag} · ${x.base}</div>
+    </div>`; };
   // Themed placeholder card for the "more" layers (Communities / Business) — no live data yet.
   const infoCard = (initials, title, sub, tag, cta) => `
     <div class="gcard" style="background:${t.cardBg};border-color:${t.cardBorder};color:${t.text}">
@@ -4307,7 +4538,7 @@ function renderGateway(){
         </div>`;}).join('')
         : `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.55">Gateway apps land here when ${gw.name} goes live.</div>`;
     } else if (z==='pros'){
-      body = (gw.pros||[]).length ? sift(gw.pros).map(zoneCard).join('')
+      body = (gw.pros||[]).length ? sift(gw.pros).map(x=>x.key?proCard(x):zoneCard(x)).join('')
         : `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.55">Pro Zones — guides, coaches, specialists —<br>open here when ${gw.name} goes live.</div>`;
     } else if (z==='communities'){
       // Outside groups — clubs, forums, chapters. Placeholder cards for the shell.
@@ -5523,7 +5754,7 @@ function aiChangeBooking(id){
 function aiBookingsHtml(){
   const list = aiWeek().filter(w=>w.booked).sort((a,b)=>(a.status?1:0)-(b.status?1:0) || a.d-b.d);
   const head = `<div class="sect"><div class="sect-h"><div class="t">My bookings</div><div class="a">${list.filter(w=>!w.status).length}</div></div></div>`;
-  if(!list.length) return head + `<div class="empty">Tables, flights, rides and trips your AI agents book —<br>every one lands here to change or cancel.
+  if(!list.length) return head + `<div class="empty">Tables, flights, rides and trips your AI agents book, and sessions with pros —<br>every one lands here to change or cancel.
       <div style="margin-top:10px"><span class="bkbtn" onclick="setTab('ai')">Ask your AI to book something ›</span></div></div>`;
   return head + list.map(w=>{
     const when = dayLabel(w.d)+(w.time&&w.time!=='—'?' · '+w.time:'');
@@ -5534,13 +5765,13 @@ function aiBookingsHtml(){
                  : `<span class="bkst">Confirmed</span>`;
     const acts = w.status ? `<div class="bknote">${w.status==='cancelled'?`${escHtml(provider)} notified · no charge`:'Replaced by your new booking'}</div>`
       : asking ? `<div class="bkacts"><span class="q">Cancel this booking?</span><span class="bkbtn" onclick="aiAskCancel('${w.id}')">Keep it</span><span class="bkbtn red" onclick="aiCancelBooking('${w.id}')">Yes, cancel</span></div>`
-      : `<div class="bkacts">${AI_CHANGE_FLOW[w.src]?`<span class="bkbtn" onclick="aiChangeBooking('${w.id}')">Change</span>`:''}<span class="bkbtn" onclick="aiAskCancel('${w.id}')">Cancel</span></div>`;
-    const a = taskAgent(Object.keys(TASK_AGENTS).find(k=>TASK_AGENTS[k].name===w.src) || (w.src==='ClimbXX'?'climb':'holiday'));
+      : `<div class="bkacts">${w.pro?`<span class="bkbtn" onclick="proChangeBooking('${w.id}')">Change</span>`:AI_CHANGE_FLOW[w.src]?`<span class="bkbtn" onclick="aiChangeBooking('${w.id}')">Change</span>`:''}<span class="bkbtn" onclick="aiAskCancel('${w.id}')">Cancel</span></div>`;
+    const a = w.grad ? {grad:w.grad} : taskAgent(Object.keys(TASK_AGENTS).find(k=>TASK_AGENTS[k].name===w.src) || (w.src==='ClimbXX'?'climb':'holiday'));
     return `<div class="bkrow${w.status?' off':''}">
       <div class="ic" style="background:${a.grad}">${w.icon}</div>
       <div style="flex:1;min-width:0">
         <div class="h"><b>${escHtml(w.title)}</b>${status}</div>
-        <div class="s">${when} · via ${w.src}</div>
+        <div class="s">${when} · ${w.pro?`with ${escHtml(w.prov)} · ${w.src}`:`via ${w.src}`}</div>
         ${acts}
       </div></div>`;
   }).join('');
@@ -5549,8 +5780,8 @@ function aiBookingsHtml(){
 function aiBookedEvents(){
   return aiLive().filter(w=>w.booked).map(w=> w._ev || (w._ev = {
     type:'Bookmark', icon:w.icon, time:dayLabel(w.d)+(w.time&&w.time!=='—'?' '+w.time:''), title:w.title,
-    desc:`Booked by your GENEXXO AI through the ${w.src} agent — direct with the provider.`,
-    label:'Your plans', accentC:'#111116', go:`setTab('ai')`,
+    desc: w.pro ? `Booked direct with ${w.prov} in ${w.src}. You pay them; GENEXXO never touches funds.` : `Booked by your GENEXXO AI through the ${w.src} agent — direct with the provider.`,
+    label:'Your plans', accentC:'#111116', go: w.pro ? `openPro('${w.pro}')` : `setTab('ai')`,
   }));
 }
 function aiWeekHtml(){
