@@ -1237,7 +1237,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-26"></script>
+<script src="genexxo-data.js?v=2026.08.26-27"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1320,13 +1320,14 @@ function loadFavs(){
   try{
     if(new URLSearchParams(location.search).get('favs')==='reset'){
       localStorage.removeItem('gx_favs'); localStorage.removeItem('gx_brandFavs');
-      localStorage.removeItem('gx_sectorFavs'); localStorage.removeItem('gx_recent');
+      localStorage.removeItem('gx_sectorFavs'); localStorage.removeItem('gx_recent'); localStorage.removeItem('gx_wallet');
     }
-    const g=localStorage.getItem('gx_favs'), b=localStorage.getItem('gx_brandFavs');
+    const g=localStorage.getItem('gx_favs'), b=localStorage.getItem('gx_brandFavs'), w=localStorage.getItem('gx_wallet');
     const sc=localStorage.getItem('gx_sectorFavs'), rc=localStorage.getItem('gx_recent');
     return { favs: g?JSON.parse(g):[...YOUR_GATEWAYS], brandFavs: b?JSON.parse(b):[],
-             sectorFavs: sc?JSON.parse(sc):[], recent: rc?JSON.parse(rc):[] };
-  }catch(e){ return { favs:[...YOUR_GATEWAYS], brandFavs:[], sectorFavs:[], recent:[] }; }
+             sectorFavs: sc?JSON.parse(sc):[], recent: rc?JSON.parse(rc):[],
+             wallet: w?JSON.parse(w):[{name:'Route Logger',color:'#4ADE80',gw:'ClimbXX'}] };
+  }catch(e){ return { favs:[...YOUR_GATEWAYS], brandFavs:[], sectorFavs:[], recent:[], wallet:[{name:'Route Logger',color:'#4ADE80',gw:'ClimbXX'}] }; }
 }
 function saveFavs(){
   try{
@@ -1334,6 +1335,7 @@ function saveFavs(){
     localStorage.setItem('gx_brandFavs', JSON.stringify(state.brandFavs));
     localStorage.setItem('gx_sectorFavs', JSON.stringify(state.sectorFavs));
     localStorage.setItem('gx_recent', JSON.stringify(state.recent));
+    localStorage.setItem('gx_wallet', JSON.stringify(state.wallet));
   }catch(e){}
 }
 /* Recent activity (2026-07-31): every committed navigation to a real place — a sector,
@@ -1971,7 +1973,7 @@ const state = {
   checkoutBrand:null, checkoutDone:null, receipt:null,   // brand-direct checkout sheet · confirmation · My Purchases receipt
   purchases:[...PURCHASES_INIT.purchases],   // filed orders (persisted) — see loadPurchases
   orderSeq: PURCHASES_INIT.seq,              // running counter behind each brand's order ref
-  wallet:[{name:'Route Logger',color:'#4ADE80',gw:'ClimbXX'}],
+  wallet:[...FAVS_INIT.wallet],    // favourite APPS (2026-10-10: "wallet" is now just favourites; Profile › My Apps lists it)
   favs:[...FAVS_INIT.favs],        // seeded from YOUR_GATEWAYS on first run, else restored from localStorage
   showFavs:false, favTab:'favs',   // ★ panel open? + which tab: 'favs' | 'recent' | 'live'
   askSector:false,                 // desktop: Sectors tab tapped with none chosen → prompt header
@@ -2014,7 +2016,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-26';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-27';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2277,12 +2279,22 @@ function commitFavPending(){
   const removed = [], added = [];
   tags.forEach(tag=>{
     const i = tag.indexOf(':'), t = tag.slice(0,i), k = tag.slice(i+1);
+    if(t==='app'){                                   // apps live in state.wallet as {name,color,gw}
+      const j = state.wallet.findIndex(w=>w.name===k);
+      if(j>=0){ state.wallet.splice(j,1); removed.push(k); }
+      else { const hit=appByName(k); state.wallet.push({name:k, color:hit?hit.app.color:'#444', gw:hit?hit.gw.name:''}); added.push(k); }
+      return;
+    }
     const list = t==='gw' ? state.favs : t==='brand' ? state.brandFavs : state.sectorFavs;
     const name = t==='gw' ? ((gwMetaFromKey(k)||{}).name||k) : t==='brand' ? ((ZONES[k]||{}).name||k) : ((sectorOf(k)||{}).name||k);
     const j = list.indexOf(k);
     if(j>=0){ list.splice(j,1); removed.push(name); } else { list.push(k); added.push(name); }
   });
   saveFavs();
+  if(tags.some(t=>t.startsWith('app:'))){
+    try{ if(state.screen==='gateway' && state.gwZones && state.gwZoneTab==='apps') repaintGateway({body:true}); }catch(_){}
+    try{ paintGwPanelList('a'); }catch(_){}
+  }
   const one = (arr, verb, prep) => arr.length===1 ? `${verb} ${arr[0]} ${prep} favourites` : `${verb} ${arr.length} favourites`;
   const msg = removed.length && added.length ? `★ Favourites updated · ${added.length} added, ${removed.length} removed`
             : removed.length ? one(removed,'Removed','from') : '★ '+one(added,'Added','to');
@@ -2352,6 +2364,10 @@ function favPanelHtml(){
   const gwRow = k => { const g=gwMetaFromKey(k); if(!g) return ''; const s=sectorOf(g.sector); const saved=state.favs.includes(k);
     return shell(`${tile(g.gradient,g.emoji)}${nm(gwLabel(g.name), s?s.name:'', g.live)}${starFor(saved,'gw:'+k)}`,
       `state.showFavs=false;openGateway('${g.name}','${gwSecOf(g)}')`, k===state.gateway, 'gw:'+k, saved); };
+  const apRow = name => { const hit=appByName(name), a=hit&&hit.app, w=state.wallet.find(x=>x.name===name)||{};
+    const saved=state.wallet.some(x=>x.name===name), col=(a&&a.color)||w.color||'#444', gwn=(hit&&hit.gw.name)||w.gw||'';
+    return shell(`${tile(col, name.split(' ').map(x=>x[0]).join('').slice(0,2), 11)}${nm(name, gwn+(a&&a.dev?' · '+a.dev:''))}${starFor(saved,'app:'+name)}`,
+      a?`state.showFavs=false;render();openApp('${esc(a.key||a.name)}')`:'', state.app&&a&&state.app.key===(a.key||a.name), 'app:'+name, saved); };
   const brRow = k => { const z=ZONES[k]; if(!z) return ''; const gm=gwMetaFromKey(z.gw); const saved=state.brandFavs.includes(k);
     const mono=z.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
     return shell(`${tile(z.gradient||z.color||'#333',mono,11)}${nm(z.name, (gm?gm.name:'')+(z.tier?' · '+z.tier:''))}${starFor(saved,'brand:'+k)}`,
@@ -2405,14 +2421,16 @@ function favPanelHtml(){
     const hint = `<div style="margin:12px 8px -4px;font-size:11px;font-weight:600;opacity:${nPend?'.85':'.45'};${nPend?'color:#F5B800':''}">${nPend
       ? `${nPend} change${nPend>1?'s':''} · saved when you close`
       : 'Tap ★ to remove a favourite · changes save when you close'}</div>`;
-    bodyHtml = (state.favs.length||state.brandFavs.length||state.sectorFavs.length ? hint : '') +
+    bodyHtml = (state.favs.length||state.brandFavs.length||state.sectorFavs.length||state.wallet.length ? hint : '') +
       section('SECTORS', state.sectorFavs.map(secRow),
         'No sectors pinned yet — tap ☆ on any sector to keep it here.') +
       section('GATEWAYS', state.favs.map(gwRow),
         'No gateways pinned yet — tap ☆ on any gateway.') +
       section('BRANDS', state.brandFavs.map(brRow),
         'No brands pinned yet — tap ☆ on any brand zone.') +
-      section('OTHER', [], 'Pro Zones, apps and communities you pin will collect here as the ecosystem opens up.');
+      section('APPS', state.wallet.map(w=>apRow(w.name)),
+        'No apps yet — tap ☆ on any app to keep it here.') +
+      section('OTHER', [], 'Pro Zones and communities you pin will collect here as the ecosystem opens up.');
   } else if(tab==='live'){
     // Every gateway that is actually built out, network-wide — the "what can I see working
     // right now?" list. Derived from GATEWAYS itself, so it can never fall out of step with
@@ -2441,7 +2459,8 @@ function favPanelHtml(){
       section('SECTORS', of('sector').map(secRow), 'Sectors you open will appear here.') +
       section('GATEWAYS', of('gateway').map(gwRow), 'Gateways you visit will appear here.') +
       section('BRANDS', of('brand').map(brRow), 'Brand zones you open will appear here.') +
-      section('OTHER', [], 'Pro Zones, apps and communities will appear here as you explore them.');
+      section('APPS', of('app').map(apRow), 'Apps you open will appear here.') +
+      section('OTHER', [], 'Pro Zones and communities will appear here as you explore them.');
   }
 
   const tabBtn = (k, label) => `<div onclick="setFavTab('${k}')" style="flex:1;text-align:center;padding:9px 6px;border-radius:11px;font-weight:800;font-size:12.5px;cursor:pointer;transition:background .18s;${tab===k?'background:#F5B800;color:#141414':'background:rgba(255,255,255,.08);color:rgba(255,255,255,.7)'}">${label}</div>`;
@@ -3881,8 +3900,8 @@ function gwPanelCard(o, t, bd, cb, accent){
   const ink = t.text||'var(--ink)';
   const feat = o.slot==='FEATURED';
   const action = o.app
-    ? `<span class="gwp-chip" style="background:${o.added?'transparent':accent};color:${o.added?ink:'#fff'};border:1px solid ${o.added?bd:accent}"
-         onclick="event.stopPropagation();toggleAppFromPanel('${esc(o.name)}','${o.color}','${esc(state._gwObj.name)}')">${o.added?'Added ✓':'Add'}</span>`
+    ? `<span class="gwp-chip" style="background:transparent;color:${o.added?'#F5B800':ink};border:1px solid ${o.added?'rgba(245,184,0,.55)':bd}"
+         onclick="event.stopPropagation();toggleAppFromPanel('${esc(o.name)}','${o.color}','${esc(state._gwObj.name)}')" title="${o.added?'Remove from favourites':'Add to favourites'}">${o.added?'★ Favourite':'☆ Favourite'}</span>`
     : '';
   return `<div class="gwp-card${o.click?' tap':''}" style="background:${cb};border-color:${bd};--acc:${accent}"
     ${o.click?`onclick="${o.click}" title="${o.app?`${esc(o.name)}: details, then Open — runs instantly`:`Open ${esc(o.name)} — the full post is in its zone`}"`:''}>
@@ -3924,6 +3943,7 @@ const stripTags = s => (s||'').replace(/<[^>]*>/g,'');
 function toggleAppFromPanel(name,color,gwName){
   const i = state.wallet.findIndex(w=>w.name===name);
   if(i>=0) state.wallet.splice(i,1); else state.wallet.push({name,color,gw:gwName});
+  saveFavs();
   paintGwPanelList('a');
   if(state.screen==='gateway' && state.gwZones && state.gwZoneTab==='apps'){
     try{ repaintGateway({body:true}); }catch(_){}
@@ -3957,19 +3977,21 @@ function openApp(key, run){
   closeApp(true);
   const {app, gw} = hit, ini = app.name.split(' ').map(w=>w[0]).join('').slice(0,2);
   key = hit.app.key || hit.app.name;
+  logVisit('app', hit.app.name);
   state.app = { key, gwKey:hit.gwKey, posted:false, screen:state.screen, running:false, tab:'about' };
   const inW = () => state.wallet.some(w=>w.name===app.name);
   const el = document.createElement('div'); el.id = 'appCanvas';
   el.innerHTML = `<div class="ac-bar">
       <div class="ac-ic" style="background:${app.color}">${ini}</div>
       <div class="ac-tx"><b>${app.name}</b><span id="acSub">${gw.name} · App</span></div>
-      <div class="ac-btn ${inW()?'on':''}" id="acWallet">${inW()?'★ In wallet':'☆ Add to wallet'}</div>
+      <div class="ac-btn ${inW()?'on':''}" id="acWallet">${inW()?'★ In favourites':'☆ Add to favourites'}</div>
       <div class="ac-x" onclick="closeApp()" title="Close"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></div>
     </div><div class="ac-body" id="acBody"></div>`;
   $('frame').appendChild(el);
   $('acWallet').onclick = () => {
     toggleAppQuiet(app.name, app.color, gw.name);
-    const b=$('acWallet'); b.classList.toggle('on', inW()); b.textContent = inW()?'★ In wallet':'☆ Add to wallet';
+    const b=$('acWallet'); b.classList.toggle('on', inW()); b.textContent = inW()?'★ In favourites':'☆ Add to favourites';
+    if(state.app && !state.app.running) paintAppPage(true);   // keep the page's ☆ Favourite in step
   };
   if(run) runApp(); else paintAppPage();
   if($('frame').classList.contains('panels-float')) try{ buildGwPanels(); }catch(_){}
@@ -3995,7 +4017,7 @@ function paintAppPage(keepScroll){
   const stars = n => '★'.repeat(n) + '☆'.repeat(5-n);
   const about = `<div class="ap-txt">${app.about || `${app.desc}. Built for ${gw.name}, it will open right here in the gateway, instantly, the moment it launches.`}</div>
     ${(app.features||[]).length?`<div class="ap-feat">${app.features.map(f=>`<div><i style="color:${app.color}">✓</i>${f}</div>`).join('')}</div>`:''}
-    <div class="ap-safe">🔒 <b>Runs sandboxed.</b> ${app.name} opens inside ${gw.name} with no install and can't see your favourites, wallet or other apps. It asks before it uses anything${(app.perms||[]).length?`: ${(app.perms||[]).map(p=>(APP_PERMS[p]||{}).t||p).join(', ').replace('{gw}',gw.name).toLowerCase()}`:''}.</div>`;
+    <div class="ap-safe">🔒 <b>Runs sandboxed.</b> ${app.name} opens inside ${gw.name} with no install and can't see your favourites or other apps. It asks before it uses anything${(app.perms||[]).length?`: ${(app.perms||[]).map(p=>(APP_PERMS[p]||{}).t||p).join(', ').replace('{gw}',gw.name).toLowerCase()}`:''}.</div>`;
   const updates = (app.updates||[]).length ? app.updates.map(u=>`<div class="ap-row"><div class="ap-row-h">Version ${u.v}<span>${_ago(u.ago)}</span></div><p>${u.notes}</p></div>`).join('')
     : `<div class="ap-txt" style="opacity:.55">No releases yet. ${app.name} is in development for ${gw.name}.</div>`;
   const reviews = (app.reviews||[]).length ? `<div style="display:flex;align-items:baseline;gap:9px;margin-bottom:4px"><b style="font-size:30px">${app.rating}</b><span class="ap-stars" style="font-size:15px">${stars(Math.round(+app.rating))}</span><span style="font-size:11.5px;opacity:.5;font-weight:600">${app.users} users</span></div>`
@@ -4012,7 +4034,7 @@ function paintAppPage(keepScroll){
     <div class="ap-cta">
       ${live?`<button class="ap-open" style="background:${app.color}" onclick="runApp()">Open</button>`
             :`<button class="ap-open soon" onclick="this.textContent='✓ We\'ll tell you';this.disabled=true">Notify me</button>`}
-      <button class="ap-sub ${inW?'on':''}" onclick="toggleAppQuiet('${esc(app.name)}','${app.color}','${esc(gw.name)}');paintAppPage(true);var b=$('acWallet');if(b){var on=state.wallet.some(w=>w.name==='${esc(app.name)}');b.classList.toggle('on',on);b.textContent=on?'★ In wallet':'☆ Add to wallet';}">${inW?'★ In wallet':'☆ Wallet'}</button></div>
+      <button class="ap-sub ${inW?'on':''}" onclick="toggleAppQuiet('${esc(app.name)}','${app.color}','${esc(gw.name)}');paintAppPage(true);var b=$('acWallet');if(b){var on=state.wallet.some(w=>w.name==='${esc(app.name)}');b.classList.toggle('on',on);b.textContent=on?'★ In favourites':'☆ Add to favourites';}">${inW?'★ Favourite':'☆ Favourite'}</button></div>
     <div class="ap-instant">${live?'Opens instantly inside the gateway · nothing to download':`Coming to ${gw.name}`}</div>
     <div class="ap-shots">${(app.shots||[]).length ? app.shots.map(u=>`<img src="${u}" alt="" loading="lazy">`).join('')
         : [1,2,3].map(()=>`<div class="ap-shot-ph">Preview soon</div>`).join('')}</div>
@@ -4076,6 +4098,17 @@ function closeApp(instant){
   // A post made from inside the app should be visible the moment you are back on the feed.
   if(was.posted && state.screen==='gateway' && !state.gwZones) try{ repaintGateway({body:true}); }catch(_){}
 }
+/* Desktop: the masthead stays visible above a running app, so tapping it means "leave the app and go
+   there" (Sean, 2026-10-10). The ★ opened UNDER the canvas, and the gateway domain did nothing because
+   you were already "in" the gateway. A capture-phase listener closes the app before the tap's own
+   handler runs, so every control in the bar (★, domain, GENEXXO mark, ⓘ…) just works. #topBack is
+   exempt: Back already steps app → page → out, and closing first would make it overshoot. On the phone
+   the canvas covers the bar, so none of this can fire there. */
+document.addEventListener('click', e => {
+  if(!state.app || !e.target.closest) return;
+  if(!e.target.closest('#frame .top') || e.target.closest('#topBack') || e.target.closest('#appCanvas')) return;
+  closeApp(true);
+}, true);
 function revokeApp(key){
   const g = _appStore('gx_appGrants'); delete g[key]; _appSave('gx_appGrants', g);
   closeApp(); toast('Permissions revoked — it will ask again next time');
@@ -4083,6 +4116,7 @@ function revokeApp(key){
 function toggleAppQuiet(name, color, gwName){
   const i = state.wallet.findIndex(w=>w.name===name);
   if(i>=0) state.wallet.splice(i,1); else state.wallet.push({name,color,gw:gwName});
+  saveFavs();
   try{ paintGwPanelList('a'); }catch(_){}
 }
 window.addEventListener('message', e => {
@@ -4134,13 +4168,13 @@ function paintAppPanels(gw, L, R){
   const others = (gw.apps||[]).filter(a=>a.name!==app.name);
   L.innerHTML = `<div class="gwa-h"><b style="color:${acc}">🔒 Permissions</b><span>${app.name}</span></div>
     <div class="gac">${permRows}${grants.length?`<span class="gac-btn" onclick="revokeApp('${app.key}')">Revoke access</span>`:''}</div>
-    <div class="gac"><div class="gac-row"><i>🧱</i><div><b>Sandboxed</b><span>It runs isolated from GENEXXO: it can't read your favourites, wallet, other apps or browsing.</span></div></div>
+    <div class="gac"><div class="gac-row"><i>🧱</i><div><b>Sandboxed</b><span>It runs isolated from GENEXXO: it can't read your favourites, other apps or browsing.</span></div></div>
       <div class="gac-row"><i>⚡</i><div><b>Instant · no install</b><span>Opens straight from the gateway. Nothing downloads to your phone.</span></div></div></div>
     <div class="gwa-foot"><span>${app.dev?`By ${esc(app.dev)}`:''}${app.rating?` · ★ ${app.rating}`:''}${app.users?` · ${app.users} users`:''}</span></div>`;
   R.innerHTML = `<div class="gwa-h"><b style="color:${acc}">⚡ Connected</b><span>in ${esc(gw.name)}</span></div>
     <div class="gac"><div class="gac-row"><i>📣</i><div><b>Shares land in the ${esc(gw.name)} feed</b><span>Your sends show up alongside the community, tagged with the app.</span></div></div>
       <div class="gac-row"><i>👤</i><div><b>One identity</b><span>Signed in with GENEXXO. The same you in every gateway, with no new account.</span></div></div>
-      <div class="gac-row"><i>💼</i><div><b>Wallet</b><span>Add it once and it follows you across the network.</span></div></div></div>
+      <div class="gac-row"><i>★</i><div><b>Favourites</b><span>Star it once and it's in your ★ panel and Profile › My Apps, everywhere.</span></div></div></div>
     ${others.length?`<div class="gac"><div style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.5;margin-bottom:4px">Also in ${esc(gw.name)}</div>
       ${others.map(a=>`<div class="gac-row"><i style="width:22px;height:22px;border-radius:7px;background:${a.color};font-size:9px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center">${a.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</i><div><b>${a.name}</b><span>${a.desc||''}${a.url?'':' · coming soon'}</span></div></div>`).join('')}</div>`:''}
     <div class="gwa-foot"><span>Apps run in the gateway canvas</span><b style="color:${acc}">Build on ${esc(gw.name)} ›</b></div>`;
@@ -4269,7 +4303,7 @@ function renderGateway(){
           <div class="hd" style="margin-bottom:6px"><div class="av" style="background:${a.color};border-radius:11px">${a.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
             <div style="flex:1"><div class="an">${a.name}</div><div class="as">${a.desc}</div></div>
             ${a.url?`<button class="btn" style="background:${t.accent};color:#fff;border:1px solid ${t.accent};margin-right:6px" onclick="event.stopPropagation();openApp('${a.key}',true)">Open</button>`:''}
-            <button class="btn" style="background:${inW?t.cardBg:(a.url?'transparent':t.accent)};color:${inW||a.url?t.text:'#fff'};border:1px solid ${inW||a.url?t.cardBorder:t.accent}" onclick="event.stopPropagation();toggleApp('${esc(a.name)}','${a.color}','${gw.name}')">${inW?'Added ✓':'Add'}</button></div>
+            <button class="btn" style="min-width:40px;font-size:16px;background:transparent;color:${inW?'#F5B800':t.text};border:1px solid ${inW?'rgba(245,184,0,.55)':t.cardBorder}" onclick="event.stopPropagation();toggleApp('${esc(a.name)}','${a.color}','${gw.name}')" title="${inW?'Remove from favourites':'Add to favourites'}">${inW?'★':'☆'}</button></div>
         </div>`;}).join('')
         : `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.55">Gateway apps land here when ${gw.name} goes live.</div>`;
     } else if (z==='pros'){
@@ -4368,7 +4402,8 @@ function repaintGateway(opt){
 function toggleApp(name,color,gwName){
   const i = state.wallet.findIndex(w=>w.name===name);
   if (i>=0) state.wallet.splice(i,1); else state.wallet.push({name,color,gw:gwName});
-  render();
+  saveFavs();
+  if (state.screen==='gateway') repaintGateway({body:true}); else render();   // render() inside a gateway resets videos + scroll
 }
 
 /* Communities and Business have no directory behind them yet — these placeholder rows are
@@ -6085,13 +6120,13 @@ function profileBody(){
       <div><div style="font-size:18px;font-weight:800">Your profile</div>
       <div style="font-size:11.5px;color:var(--muted);font-weight:600">One identity · every gateway · 14.2K followers</div></div>
     </div>
-    <div class="sect"><div class="sect-h"><div class="t">Your apps</div><div class="a">${state.wallet.length}</div></div></div>
+    <div class="sect"><div class="sect-h"><div class="t">My Apps</div><div class="a">${state.wallet.length}</div></div></div>
     ${state.wallet.length ? state.wallet.map(w=>`
     <div class="wapp"><div class="lg" style="background:${w.color}">${w.name.split(' ').map(x=>x[0]).join('').slice(0,2)}</div>
       <div style="flex:1"><div style="font-size:13px;font-weight:800">${w.name}</div><div style="font-size:10.5px;color:var(--muted);font-weight:600">${w.gw}</div></div>
       ${(appByName(w.name)||{app:{}}).app.url?`<button class="btn" style="background:#111116;color:#fff;margin-right:6px" onclick="openApp('${appByName(w.name).app.key}',true)">Open</button>`:''}
-      <button class="btn" style="background:rgba(17,17,22,.05);color:var(--muted)" onclick="toggleApp('${esc(w.name)}')">Remove</button>
-    </div>`).join('') : `<div class="empty">Apps you add from any gateway live here —<br>your wallet travels the whole ecosystem.</div>`}
+      <button class="btn" style="background:rgba(17,17,22,.05);color:var(--muted)" onclick="toggleApp('${esc(w.name)}')" title="Remove from favourites">Remove</button>
+    </div>`).join('') : `<div class="empty">Tap ☆ on any app to keep it here —<br>your apps follow you across every gateway.</div>`}
     ${aiBookingsHtml()}
     <div class="sect"><div class="sect-h"><div class="t">My Purchases</div><div class="a">${state.purchases.length}</div></div></div>
     ${state.purchases.length
