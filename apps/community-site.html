@@ -102,7 +102,8 @@ function paint(){
   v.querySelectorAll('[data-r]').forEach(e=>e.onclick=()=>{ const t=e.dataset.r, on=!S.rsvps.includes(t);
     S.rsvps = on ? [...S.rsvps, t] : S.rsvps.filter(x=>x!==t); GX.emit('rsvp', {title:t, on}); paint(); });
   const p = document.getElementById('post'); if(p) p.onclick=()=>{ const i=document.getElementById('nt'), t=i.value.trim(); if(!t){ i.focus(); return; }
-    C.data.mine = [{t, by:(C.user&&C.user.handle)||'@you', tag:'NEW', replies:0, ago:0, votes:1}, ...mine()]; GX.save(C.data); paint(); };
+    C.data.mine = [{t, by:(C.user&&C.user.handle)||'@you', tag:'NEW', replies:0, ago:0, votes:1}, ...mine()]; GX.save(C.data);
+    GX.emit('thread', {t}); paint(); };   // the host adds it to your profile's Posts
 }
 document.getElementById('join').onclick = () => { S.joined = !S.joined; GX.emit('join', {on:S.joined}); paint(); };
 document.getElementById('nav').onclick = e => { const b=e.target.closest('button'); if(!b) return; S.tab=b.dataset.tab; paint(); };

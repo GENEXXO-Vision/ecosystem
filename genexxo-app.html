@@ -188,6 +188,55 @@
   .cm-card{position:relative;width:100%;max-width:370px;background:#17171E;border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:20px;color:#fff;box-shadow:0 20px 50px rgba(0,0,0,.5)}
   .cm-card h3{font-size:17px;font-weight:800;margin:12px 0 2px}.cm-card p{font-size:12px;opacity:.6;font-weight:600}
   .cm-crest{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#fff}
+  /* PROFILE (2026-10-11): the user's control centre — identity header, Posts · Plans · Library, Settings. */
+  .pf-cover{height:120px;background:#ccc center/cover;margin:0}
+  .pf-head{padding:0 16px 12px;position:relative}
+  .pf-av{width:84px;height:84px;border-radius:50%;border:4px solid var(--bg);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:26px;margin-top:-42px}
+  .pf-acts{position:absolute;right:16px;top:10px;display:flex;gap:7px}
+  .pf-btn{font:inherit;font-size:12.5px;font-weight:800;padding:8px 13px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+  .pf-btn.ic{width:38px;padding:5px 0;text-align:center;font-size:17px;line-height:1.2}
+  .pf-name{font-size:21px;font-weight:800;margin-top:8px;display:flex;align-items:center;gap:7px}
+  .pf-id{font-size:10px;font-weight:800;padding:3px 8px;border-radius:99px;background:#111116;color:#fff;letter-spacing:.04em}
+  .pf-handle{font-size:13px;color:var(--muted);font-weight:600}
+  .pf-bio{font-size:13.5px;line-height:1.5;margin-top:8px}
+  .pf-meta{font-size:12px;color:var(--muted);font-weight:600;margin-top:6px}
+  .pf-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+  .pf-chip{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:800;padding:5px 10px 5px 6px;border-radius:99px;background:#fff;border:1px solid var(--line);cursor:pointer}
+  .pf-chip i{font-style:normal;width:18px;height:18px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px}
+  .pf-stats{display:flex;gap:18px;margin-top:12px;font-size:13px;color:var(--muted);font-weight:600}.pf-stats b{color:var(--ink);font-weight:800}
+  .pf-tabs{display:flex;border-bottom:1px solid var(--line);margin-top:4px;position:sticky;top:var(--stick-top,53px);background:var(--bg);z-index:5}
+  .pf-tabs div{flex:1;text-align:center;padding:12px 0 11px;font-size:13.5px;font-weight:800;color:var(--muted);cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px}
+  .pf-tabs div.on{color:var(--ink);border-color:var(--ink)}
+  .pf-compose{margin:12px 16px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px}
+  .pf-compose textarea{width:100%;border:0;resize:none;font:inherit;font-size:14.5px;outline:none;min-height:54px;background:transparent}
+  .pf-compose .row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:9px;margin-top:4px}
+  .pf-gw{font-size:11.5px;font-weight:800;padding:5px 10px;border-radius:99px;border:1px solid var(--line);cursor:pointer;color:var(--muted)}
+  .pf-gw.on{background:#111116;color:#fff;border-color:#111116}
+  .pf-post-btn{margin-left:auto;font:inherit;font-weight:800;font-size:13px;padding:8px 16px;border-radius:99px;border:0;background:#111116;color:#fff;cursor:pointer}
+  .pf-post{display:flex;gap:11px;padding:14px 16px;border-bottom:1px solid var(--line)}
+  .pf-post .av{width:40px;height:40px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:13px}
+  .pf-post .h{font-size:13px;font-weight:800}.pf-post .h span{color:var(--muted);font-weight:600}
+  .pf-post .tx{font-size:14px;line-height:1.5;margin-top:3px}
+  .pf-post .ctx{display:inline-flex;gap:5px;align-items:center;margin-top:7px;font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:99px;background:rgba(17,17,22,.05);color:var(--muted)}
+  .pf-post .eng{font-size:11.5px;color:var(--muted);font-weight:700;margin-top:8px;display:flex;gap:16px}
+  #pfSet{position:fixed;left:50%;transform:translateX(-50%);top:0;bottom:0;width:100%;max-width:430px;z-index:70;background:var(--bg);display:flex;flex-direction:column}
+  .ps-top{display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top,0px)) 14px 12px;border-bottom:1px solid var(--line);background:#fff}
+  .ps-top b{flex:1;font-size:17px;font-weight:800}.ps-back{font-size:14px;font-weight:800;cursor:pointer;color:var(--muted)}
+  .ps-x{width:32px;height:32px;border-radius:99px;background:rgba(17,17,22,.06);display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .ps-body{flex:1;overflow-y:auto;padding:12px 14px 30px}
+  .ps-grp{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:12px}
+  .ps-h{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:14px 4px 6px}
+  .ps-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--line);cursor:pointer}
+  .ps-row:last-child{border-bottom:0}.ps-row.static{cursor:default}
+  .ps-row .ic{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:rgba(17,17,22,.05)}
+  .ps-row .tx{flex:1;min-width:0}.ps-row .tx b{display:block;font-size:13.5px}.ps-row .tx span{display:block;font-size:11.5px;color:var(--muted);font-weight:600;margin-top:1px}
+  .ps-row .go{color:var(--muted);font-weight:800}
+  .ps-act{font:inherit;font-size:12px;font-weight:800;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
+  .ps-act.red{color:#DC2626;border-color:rgba(220,38,38,.35)}
+  .ps-sw{width:44px;height:26px;border-radius:99px;background:rgba(17,17,22,.15);position:relative;flex-shrink:0}
+  .ps-sw::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .15s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .ps-sw.on{background:#22C55E}.ps-sw.on::after{left:21px}
+  .ps-note{font-size:12px;color:var(--muted);line-height:1.5;padding:4px 4px 0}
   /* ★ panel: the row a "You're in…" card just added glows once, so the eye follows it down */
   .fav-new{animation:favNew 1.6s ease-out}
   @keyframes favNew{0%{background:rgba(245,184,0,.38);box-shadow:0 0 0 1px rgba(245,184,0,.7)}100%{background:transparent;box-shadow:0 0 0 1px rgba(245,184,0,0)}}
@@ -842,9 +891,9 @@
        !important is unavoidable — the two panels carry their widths as inline styles. */
     #frame{--sheet-w:min(600px, calc(min(1480px,100vw) - 2 * var(--panel-w)));
            --frame-w:min(1480px,100vw)}
-    .gx-panel,#infoFeed,#psheet,#shopMenu,.gxsheet,#zoneCanvas,#appCanvas{max-width:var(--sheet-w)!important}
+    .gx-panel,#infoFeed,#psheet,#shopMenu,.gxsheet,#zoneCanvas,#appCanvas,#pfSet{max-width:var(--sheet-w)!important}
     /* Full height ones start below the bar; the bottom-anchored sheets are unaffected. */
-    #infoFeed,.gx-panel[style*="top:0"],#appCanvas{top:var(--top-h,53px)!important}
+    #infoFeed,.gx-panel[style*="top:0"],#appCanvas,#pfSet{top:var(--top-h,53px)!important}
     /* A scrim only as wide as the sheet would leave the gutters bright while the middle
        dims — it has to dim everything behind, or it does not read as modal. */
     #psheetScrim,#shopMenuScrim,.gxscrim{max-width:var(--frame-w)!important;top:var(--top-h,53px)!important}
@@ -1284,7 +1333,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-29"></script>
+<script src="genexxo-data.js?v=2026.08.26-30"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1357,6 +1406,18 @@ NETWORK_FEED.push({ videoOnly:true, video:'genexxo-videos/supernova-app.mp4', _s
   NETWORK_FEED.splice(spa < 0 ? NETWORK_FEED.length : spa, 0, clip);
 })();
 
+/* The demo user (2026-10-11): one fictional persona everywhere — profile, app bridge, community sign-in,
+   posts. Fictional by design; the email is example.com. */
+const USER = { name:'Alex Morgan', handle:'@alexm', ini:'AM', bio:'Climber, surfer, occasional ski tourer. Chasing dry rock and clean swell from London.',
+  location:'London', joined:'March 2026', followers:'14.2K', following:312, email:'alex.morgan@example.com', phone:'+44 7••• ••• 482',
+  cover:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&h=400&fit=crop&q=75', grad:'linear-gradient(135deg,#E85D3A,#7C3AED)' };
+/* Your own posts: written in Profile, shared from apps, or started in communities. Persisted; seeded so the
+   tab never opens empty. ts = epoch ms. */
+function myPostsSeed(){ const h=36e5, now=Date.now(); return [
+  {ts:now-5*h, text:'Dawn session at Fistral before work. Chest-high and glassy, the cold was worth it.', gw:'SurfXX', via:'', badge:'POST'},
+  {ts:now-26*h, text:'Sent <b>Pinch Me</b> (7a) at Stanage, redpoint on the fourth go. Friction was perfect.', gw:'ClimbXX', via:'Route Logger', badge:'SEND'},
+  {ts:now-74*h, text:'Booked my first proper off-piste day with a guide in Verbier. Nervous and very excited.', gw:'SkiXX', via:'', badge:'POST'},
+];}
 /* Your gateways (from desktop profile data) */
 const YOUR_GATEWAYS = ['climb','ski','surf','cycle','sail'];
 
@@ -1367,7 +1428,7 @@ function loadFavs(){
   try{
     if(new URLSearchParams(location.search).get('favs')==='reset'){
       localStorage.removeItem('gx_favs'); localStorage.removeItem('gx_brandFavs');
-      localStorage.removeItem('gx_sectorFavs'); localStorage.removeItem('gx_recent'); localStorage.removeItem('gx_wallet'); localStorage.removeItem('gx_proFavs'); localStorage.removeItem('gx_commFavs'); localStorage.removeItem('gx_commStars');
+      localStorage.removeItem('gx_sectorFavs'); localStorage.removeItem('gx_recent'); localStorage.removeItem('gx_wallet'); localStorage.removeItem('gx_proFavs'); localStorage.removeItem('gx_commFavs'); localStorage.removeItem('gx_commStars'); localStorage.removeItem('gx_myPosts');
     }
     const g=localStorage.getItem('gx_favs'), b=localStorage.getItem('gx_brandFavs'), w=localStorage.getItem('gx_wallet'), pf=localStorage.getItem('gx_proFavs'), cm=localStorage.getItem('gx_commFavs'), cs=localStorage.getItem('gx_commStars');
     const sc=localStorage.getItem('gx_sectorFavs'), rc=localStorage.getItem('gx_recent');
@@ -1399,6 +1460,8 @@ function logVisit(t, k){
   saveFavs();
 }
 const FAVS_INIT = loadFavs();
+function loadJSON(k, dflt){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):dflt(); }catch(e){ return dflt(); } }
+function saveJSON(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
 
 /* My Purchases — orders placed DIRECT with a brand (GENEXXO never touches funds; it just
    files the confirmation). Persisted like favs so "recorded in your profile" survives reload.
@@ -2026,7 +2089,11 @@ const state = {
   wallet:[...FAVS_INIT.wallet],
   proFavs:[...FAVS_INIT.proFavs],
   commFavs:[...FAVS_INIT.commFavs],  // communities you've JOINED (keys): membership, shown in Profile › My Communities
-  commStars:[...FAVS_INIT.commStars],// communities you've FAVOURITED (keys): your ★ panel shortcut. Joining also stars.  // favourite Pro Zones (keys), 2026-10-10    // favourite APPS (2026-10-10: "wallet" is now just favourites; Profile › My Apps lists it)
+  commStars:[...FAVS_INIT.commStars],
+  myPosts: loadJSON('gx_myPosts', myPostsSeed),             // your own posts (Profile › Posts)
+  settings: loadJSON('gx_settings', ()=>({twoStep:true, loginAlerts:true, publicProfile:true, postsTo:'Everyone', discoverable:true,
+            showCommunities:true, aiFeed:true, nBookings:true, nReplies:true, nApps:true, nAgents:true, nDigest:false, devices:['iphone','mac','ipad']})),
+  profileTab:'posts', setPage:null,                         // Profile tab · Settings page (null = closed, 'root' = list)// communities you've FAVOURITED (keys): your ★ panel shortcut. Joining also stars.  // favourite Pro Zones (keys), 2026-10-10    // favourite APPS (2026-10-10: "wallet" is now just favourites; Profile › My Apps lists it)
   favs:[...FAVS_INIT.favs],        // seeded from YOUR_GATEWAYS on first run, else restored from localStorage
   showFavs:false, favTab:'favs',   // ★ panel open? + which tab: 'favs' | 'recent' | 'live'
   askSector:false,                 // desktop: Sectors tab tapped with none chosen → prompt header
@@ -2069,7 +2136,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-29';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-30';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2271,6 +2338,7 @@ function backTarget(){
   return null;   // already at the Network hub with nothing stacked
 }
 function goBack(){
+  if (state.setPage){ state.setPage==='root' ? closeSettings() : openSettings('root'); return; }   // settings page → list → closed
   if (state.app && state.app.kind==='pro'){ proBack(); return; }
   if (state.app && state.app.kind==='community'){ closeApp(); return; }   // leave the community → back where you were   // booking step → previous step → the zone → out
   if (state.app){ (state.app.running && state.app.fromPage) ? backToAppPage() : closeApp(); return; }   // app → its page → out
@@ -3493,9 +3561,9 @@ function topBar(gw){
       <div onclick="event.stopPropagation();toggleInfo()" title="About GENEXXO"
         style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;color:#111116;opacity:${state.showInfo?'1':'.5'};${state.showInfo?'background:rgba(17,17,22,.06)':''}">
         <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 7.4h.01"/></svg></div>
-      <div onclick="event.stopPropagation();toggleApply()" title="Apply to join"
+      <div onclick="event.stopPropagation();toggleApply()" title="Apply to join · sign up as a brand, pro, app or community"
         style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;color:#111116;opacity:${state.showApply?'1':'.5'};${state.showApply?'background:rgba(17,17,22,.06)':''}">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></div>` : ''}
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2.5l4.5 4.5L9.5 17H5v-4.5L15 2.5z"/><path d="M13 4.5l4.5 4.5"/><path d="M3 21.2c2.4-1.5 4.2-1.5 5.8 0s3.6 1.5 6.2 0"/></svg></div>` : ''}
       ${`<div id="gwStar" class="favhit" onclick="event.stopPropagation();toggleFavPanel()" title="Favourite gateways"
         style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;font-size:19px;line-height:1;color:${state.showFavs?'#F5B800':'#111116'};opacity:${state.showFavs?'1':'.5'};${state.showFavs?'background:rgba(245,184,0,.14)':''}">${state.showFavs?'★':'☆'}</div>`}
     </div>`}
@@ -4202,6 +4270,7 @@ document.addEventListener('click', e => {
   if(state.showInfo  && !/toggleInfo/.test(on)){ state.showInfo=false; changed=true; }
   if(state.showApply && !/toggleApply/.test(on)){ state.showApply=false; changed=true; }
   if(state.utilOver){ state.utilOver=null; changed=true; }
+  if(state.setPage){ state.setPage=null; changed=true; }
   if(state.zoneProduct!=null || state.shopMenu || state.receipt){ state.zoneProduct=null; state.shopMenu=false; state.receipt=null; changed=true; }
   if(!changed) return;
   const n = render._n || 0;
@@ -4464,12 +4533,14 @@ window.addEventListener('message', e => {
   if(m.type==='ready'){
     state.app.ready = true; clearTimeout(_commReadyTimer);
     const rsvps = aiLive().filter(w=>w.comm===x.key).map(w=>w.title);
-    fr.contentWindow.postMessage({gx:1, type:'init', gateway:gw.name, grants:['profile'], user:{name:'You', handle:'@you'},
+    fr.contentWindow.postMessage({gx:1, type:'init', gateway:gw.name, grants:['profile'], user:{name:USER.name, handle:USER.handle},
       data:_appStore('gx_appData')['comm:'+x.key]||null, extra:{community:x, joined:state.commFavs.includes(x.key), rsvps}}, '*');
   } else if(m.type==='save'){
     const d=_appStore('gx_appData'); d['comm:'+x.key]=m.data; _appSave('gx_appData', d);
   } else if(m.type==='join'){
     commJoin(x.key, !!m.on); toast(m.on ? `✓ Joined ${x.name}` : `Left ${x.name}`);
+  } else if(m.type==='thread'){
+    addMyPost({text:`Started a thread in <b>${x.name}</b>: ${escHtml(String(m.t||'').slice(0,120))}`, gw:gw.name, via:x.name, badge:'THREAD'});
   } else if(m.type==='rsvp'){
     const ev = (x.events||[]).find(v=>v.title===m.title); if(!ev) return;
     if(m.on){ const d=new Date(); d.setHours(12,0,0,0); d.setDate(d.getDate()+ev.day);
@@ -4543,17 +4614,18 @@ window.addEventListener('message', e => {
   if(m.type==='ready'){
     state.app.ready = true; clearTimeout(_appReadyTimer);
     fr.contentWindow.postMessage({gx:1, type:'init', gateway:hit.gw.name, grants,
-      user: grants.includes('profile') ? {name:'You', handle:'@you'} : null,
+      user: grants.includes('profile') ? {name:USER.name, handle:USER.handle} : null,
       data: _appStore('gx_appData')[state.app.key] || null}, '*');
   } else if(m.type==='save'){
     const d = _appStore('gx_appData'); d[state.app.key] = m.data; _appSave('gx_appData', d);
   } else if(m.type==='post' && grants.includes('feed')){
     const text = String(m.text||'').replace(/<(?!\/?b>)[^>]*>/g,'').slice(0,400);   // third-party text: only <b> survives
-    const card = { av:'YOU', avBg:`linear-gradient(135deg,${hit.app.color},#15803D)`, author:'You',
+    const card = { av:USER.ini, avBg:USER.grad, author:USER.name,
       sub:`via ${hit.app.name} · Just now`, badge:String(m.badge||'APP').slice(0,12).toUpperCase(), text, eng:'♡ 0 · 💬 0 · ↗ 0' };
     (hit.gw.feed || (hit.gw.feed=[])).unshift(card);
     if(state._gwObj && state._gwObj!==hit.gw && state._gwObj.name===hit.gw.name && state._gwObj.feed) state._gwObj.feed.unshift(card);
     state.app.posted = true;
+    addMyPost({text, gw:hit.gw.name, via:hit.app.name, badge:card.badge});
     fr.contentWindow.postMessage({gx:1, type:'posted'}, '*');
     toast(`📣 Posted to the ${hit.gw.name} feed`);
   }
@@ -6550,36 +6622,171 @@ function renderEvents(){
 /* ═════════ PROFILE ═════════ */
 // Profile body, shared by the root Profile tab and the in-zone Profile peek (so tapping
 // Profile inside a brand zone shows the SAME identity without swapping the bottom bar).
-function profileBody(){
-  const entries = [['genexxo.com',''],['climbxx.com','climb'],['skixx.com','ski'],['surfxx.com','surf'],['cyclexx.com','cycle']];
-  const sim = entries.map(([d,e])=>`<div class="chip ${state.entryDomain===d?'on':''}" onclick="location.search='?dev${e?('&entry='+e):''}'">${d}</div>`).join('');
-  const dev = /[?&]dev\b/.test(location.search);   // prototype tools stay out of real users' way
-  return `
-    <div class="sect" style="display:flex;align-items:center;gap:14px;padding-top:22px">
-      <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#111116,#3a3a44);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:17px">You</div>
-      <div><div style="font-size:18px;font-weight:800">Your profile</div>
-      <div style="font-size:11.5px;color:var(--muted);font-weight:600">One identity · every gateway · 14.2K followers</div></div>
-    </div>
-    <div class="sect"><div class="sect-h"><div class="t">My Apps</div><div class="a">${state.wallet.length}</div></div></div>
-    ${state.wallet.length ? state.wallet.map(w=>`
+function addMyPost(p){ state.myPosts.unshift({ts:Date.now(), ...p}); saveJSON('gx_myPosts', state.myPosts); }
+const _since = ts => { const m=Math.round((Date.now()-ts)/6e4); return m<1?'now':m<60?m+'m':m<1440?Math.round(m/60)+'h':Math.round(m/1440)+'d'; };
+function setProfileTab(t){ state.profileTab=t; render(); }
+function pfComposeGw(g){ state._pfGw=g; const el=document.getElementById('pfText'); const v=el?el.value:''; render(); const n=document.getElementById('pfText'); if(n){ n.value=v; n.focus(); } }
+function pfPost(){
+  const el=document.getElementById('pfText'), t=(el&&el.value||'').trim(); if(!t){ el&&el.focus(); return; }
+  const gw = state._pfGw || null, text = escHtml(t).slice(0,400);
+  addMyPost({text, gw:gw||'', via:'', badge:'POST'});
+  if(gw){ const k=gwKeyFromName(gw), g=GATEWAYS[k];
+    if(g) (g.feed||(g.feed=[])).unshift({av:USER.ini, avBg:USER.grad, author:USER.name, sub:`${USER.handle} · Just now`, badge:'POST', text, eng:'♡ 0 · 💬 0 · ↗ 0'}); }
+  render(); toast(gw?`Posted to your profile and the ${gw} feed`:'Posted to your profile');
+}
+function shareProfile(){
+  const url='genexxo.com/'+USER.handle;
+  try{ navigator.clipboard && navigator.clipboard.writeText('https://'+url); }catch(_){}
+  toast('Profile link copied · '+url);
+}
+function pfPostsHtml(){
+  const gws = state.favs.slice(0,5).map(k=>gwMetaFromKey(k)).filter(Boolean);
+  const compose = `<div class="pf-compose"><textarea id="pfText" maxlength="400" placeholder="Share something with your followers…"></textarea>
+    <div class="row"><span style="font-size:11px;font-weight:700;color:var(--muted)">Also post to</span>
+      ${gws.map(g=>`<span class="pf-gw ${state._pfGw===g.name?'on':''}" onclick="pfComposeGw(${state._pfGw===g.name?'null':`'${g.name}'`})">${g.emoji} ${g.name}</span>`).join('')}
+      <button class="pf-post-btn" onclick="pfPost()">Post</button></div></div>`;
+  const list = state.myPosts.map(p=>`<div class="pf-post"><div class="av" style="background:${USER.grad}">${USER.ini}</div><div style="flex:1;min-width:0">
+      <div class="h">${USER.name} <span>${USER.handle} · ${_since(p.ts)}</span></div>
+      <div class="tx">${p.text}</div>
+      ${p.gw||p.via?`<div class="ctx">${p.gw?`${(gwMetaFromKey(gwKeyFromName(p.gw))||{}).emoji||''} ${p.gw}`:''}${p.via?` · via ${p.via}`:''}</div>`:''}
+      <div class="eng"><span>♡ ${(p.text.length*7)%240}</span><span>💬 ${(p.text.length*3)%40}</span><span>↗ ${(p.text.length)%18}</span></div></div></div>`).join('');
+  return compose + (list || `<div class="empty">Your posts — written here, shared from apps, or started in communities — appear here.</div>`);
+}
+function pfPlansHtml(){
+  const done = state.purchases.length;
+  return `${aiWeekHtml()}${aiBookingsHtml()}
+    <div class="sect"><div class="sect-h"><div class="t">Purchases</div><div class="a">${done}</div></div></div>
+    ${done ? state.purchases.map(o=>purchaseCard(o)).join('') : `<div class="empty">Orders you place with brands across GENEXXO —<br>bought direct, receipts filed here.</div>`}
+    <div style="height:14px"></div>`;
+}
+function pfLibraryHtml(){
+  const apps = state.wallet.length ? state.wallet.map(w=>`
     <div class="wapp"><div class="lg" style="background:${w.color}">${w.name.split(' ').map(x=>x[0]).join('').slice(0,2)}</div>
       <div style="flex:1"><div style="font-size:13px;font-weight:800">${w.name}</div><div style="font-size:10.5px;color:var(--muted);font-weight:600">${w.gw}</div></div>
       ${(appByName(w.name)||{app:{}}).app.url?`<button class="btn" style="background:#111116;color:#fff;margin-right:6px" onclick="openApp('${appByName(w.name).app.key}',true)">Open</button>`:''}
       <button class="btn" style="background:rgba(17,17,22,.05);color:var(--muted)" onclick="toggleApp('${esc(w.name)}')" title="Remove from favourites">Remove</button>
-    </div>`).join('') : `<div class="empty">Tap ☆ on any app to keep it here —<br>your apps follow you across every gateway.</div>`}
+    </div>`).join('') : `<div class="empty">Tap ☆ on any app to keep it here —<br>your apps follow you across every gateway.</div>`;
+  const pros = state.proFavs.map(k=>proByKey(k)).filter(Boolean);
+  const brands = state.brandFavs.filter(k=>ZONES[k]);
+  return `<div class="sect"><div class="sect-h"><div class="t">My Apps</div><div class="a">${state.wallet.length}</div></div></div>${apps}
     ${myCommunitiesHtml()}
-    ${aiBookingsHtml()}
-    <div class="sect"><div class="sect-h"><div class="t">My Purchases</div><div class="a">${state.purchases.length}</div></div></div>
-    ${state.purchases.length
-      ? state.purchases.map(o=>purchaseCard(o)).join('')
-      : `<div class="empty">Orders you place with brands across GENEXXO —<br>bought direct, receipts filed here.</div>`}
+    <div class="sect"><div class="sect-h"><div class="t">Pros</div><div class="a">${pros.length}</div></div></div>
+    ${pros.length ? pros.map(({pro:x, gw})=>`<div class="wapp" style="cursor:pointer" onclick="openPro('${x.key}')"><div class="lg" style="background:${x.color}">${proIni(x.name)}</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:800">${x.name}</div><div style="font-size:10.5px;color:var(--muted);font-weight:600">${x.role} · ${gw.name}</div></div>
+      <button class="btn" style="background:#111116;color:#fff" onclick="event.stopPropagation();openPro('${x.key}','book')">Book</button></div>`).join('')
+      : `<div class="empty">Tap ☆ on a Pro Zone to keep your guides and coaches here.</div>`}
+    <div class="sect"><div class="sect-h"><div class="t">Brands</div><div class="a">${brands.length}</div></div></div>
+    ${brands.length ? brands.map(k=>{ const z=ZONES[k]; return `<div class="wapp" style="cursor:pointer" onclick="openZoneFav('${k}')"><div class="lg" style="background:${z.gradient||z.color}">${proIni(z.name)}</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:800">${z.name}</div><div style="font-size:10.5px;color:var(--muted);font-weight:600">${z.tagline||''}</div></div></div>`; }).join('')
+      : `<div class="empty">Tap ☆ in a brand zone to follow it here.</div>`}
     <div class="sect"><div class="sect-h"><div class="t">Saved</div></div></div>
-    <div class="empty">Bookmark anything across GENEXXO —<br>posts, products, brands — it collects here.</div>
-    ${dev?`<div class="sect"><div class="sect-h"><div class="t">Prototype: simulate entry domain</div></div></div>
-    <div style="padding:0 16px;font-size:11.5px;color:var(--muted);font-weight:600;line-height:1.5;margin-bottom:10px">Same shell, different front door. Installing from climbxx.com boots this app inside ClimbXX — the whole ecosystem still ships.</div>
-    <div class="chips" style="padding-top:0;flex-wrap:wrap">${sim}</div>`:''}
+    <div class="empty">Bookmark anything across GENEXXO —<br>posts, products, brands — it collects here.</div><div style="height:14px"></div>`;
+}
+function profileBody(){
+  const tab = state.profileTab || 'posts';
+  const gws = state.favs.slice(0,6).map(k=>gwMetaFromKey(k)).filter(Boolean);
+  return `<div class="pf-cover" style="background-image:url('${USER.cover}')"></div>
+    <div class="pf-head">
+      <div class="pf-acts"><button class="pf-btn" onclick="openSettings('account')">Edit profile</button><button class="pf-btn" onclick="shareProfile()">Share</button>
+        <button class="pf-btn ic" onclick="openSettings('root')" title="Settings">⚙</button></div>
+      <div class="pf-av" style="background:${USER.grad}">${USER.ini}</div>
+      <div class="pf-name">${USER.name} <span class="pf-id">✓ GENEXXO ID</span></div>
+      <div class="pf-handle">${USER.handle}</div>
+      <div class="pf-bio">${USER.bio}</div>
+      <div class="pf-meta">📍 ${USER.location} · Joined ${USER.joined}</div>
+      ${gws.length?`<div class="pf-chips">${gws.map(g=>`<span class="pf-chip" onclick="openGateway('${g.name}','${gwSecOf(g)}')"><i style="background:${g.gradient}">${g.emoji}</i>${g.name}</span>`).join('')}</div>`:''}
+      <div class="pf-stats"><span><b>${state.myPosts.length}</b> Posts</span><span><b>${USER.followers}</b> Followers</span><span><b>${USER.following}</b> Following</span><span><b>${state.commFavs.length}</b> Communities</span></div>
+    </div>
+    <div class="pf-tabs">${[['posts','Posts'],['plans','Plans'],['library','Library']].map(([k,l])=>`<div class="${tab===k?'on':''}" onclick="setProfileTab('${k}')">${l}</div>`).join('')}</div>
+    ${tab==='posts'?pfPostsHtml():tab==='plans'?pfPlansHtml():pfLibraryHtml()}
     <div onclick="vdbgTap()" style="text-align:center;padding:22px 16px 4px;font-size:10.5px;letter-spacing:.06em;color:var(--muted);opacity:.7;font-weight:700">GENEXXO · build ${BUILD}</div>
     <div style="height:16px"></div>`;
+}
+/* ═════════ SETTINGS — the control centre (2026-10-11) ═════════
+   Real where the data is real (Connected apps & communities reads the actual grants and revokes them;
+   Payments lists the providers you've actually paid), believable elsewhere (Account, Security, Privacy,
+   Notifications) with toggles that work and persist (gx_settings). Desktop: the shared overlay rule. */
+function openSettings(page){ state.setPage = page || 'root'; render(); const b=document.querySelector('.ps-body'); if(b) b.scrollTop=0; }
+function closeSettings(){ state.setPage = null; render(); }
+function setToggle(k){ state.settings[k] = !state.settings[k]; saveJSON('gx_settings', state.settings); render(); }
+function setChoice(k, v){ state.settings[k] = v; saveJSON('gx_settings', state.settings); render(); }
+function signOutOthers(){ state.settings.devices = ['iphone']; saveJSON('gx_settings', state.settings); render(); toast('Signed out of 2 other devices'); }
+function revokeAppGrant(key){ const g=_appStore('gx_appGrants'); delete g[key]; _appSave('gx_appGrants', g); render(); toast('Access revoked — it will ask again next time'); }
+function revokeCommGrant(key){ const g=_appStore('gx_commGrants'); delete g[key]; _appSave('gx_commGrants', g); commJoin(key,false); render(); toast('Signed out of that community'); }
+const _DEVICES = {iphone:['📱','iPhone 16 · this device','London · active now'], mac:['💻','MacBook Pro','London · 2 hours ago'], ipad:['📟','iPad Air','Newquay · 3 days ago']};
+function settingsHtml(){
+  const pg = state.setPage; if(!pg) return '';
+  const S = state.settings;
+  const sw = (k, title, sub, ic) => `<div class="ps-row" onclick="setToggle('${k}')">${ic?`<div class="ic">${ic}</div>`:''}<div class="tx"><b>${title}</b>${sub?`<span>${sub}</span>`:''}</div><div class="ps-sw ${S[k]?'on':''}"></div></div>`;
+  const row = (ic, title, sub, onclick, right) => `<div class="ps-row ${onclick?'':'static'}" ${onclick?`onclick="${onclick}"`:''}><div class="ic">${ic}</div><div class="tx"><b>${title}</b>${sub?`<span>${sub}</span>`:''}</div>${right!=null?right:(onclick?'<span class="go">›</span>':'')}</div>`;
+  const appG = _appStore('gx_appGrants'), commG = _appStore('gx_commGrants');
+  const appKeys = Object.keys(appG).filter(k=>appByKey(k)), commKeys = Object.keys(commG).filter(k=>commByKey(k));
+  const providers = [...new Set([...state.purchases.map(o=>o.brandName||o.brand||'').filter(Boolean), ...aiWeek().filter(w=>w.booked&&w.prov).map(w=>w.prov)])];
+  const titles = {root:'Settings', account:'Account', security:'Security', connected:'Connected apps & communities', privacy:'Privacy', notifications:'Notifications', payments:'Payments', data:'Your data', about:'About'};
+  let body = '';
+  if(pg==='root'){
+    body = `<div class="ps-grp">${row(`<span style="font-weight:900;font-size:12px;color:#fff;background:${USER.grad};width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center">${USER.ini}</span>`, USER.name, USER.handle+' · ✓ GENEXXO ID', "openSettings('account')")}</div>
+      <div class="ps-grp">
+        ${row('🔐','Security', `Passkeys · two-step ${S.twoStep?'on':'off'} · ${S.devices.length} device${S.devices.length>1?'s':''}`, "openSettings('security')")}
+        ${row('🔗','Connected apps & communities', `Your GENEXXO login is used by ${appKeys.length} app${appKeys.length===1?'':'s'} and ${commKeys.length} communit${commKeys.length===1?'y':'ies'}`, "openSettings('connected')")}
+        ${row('👁️','Privacy', S.publicProfile?`Public profile · posts to ${S.postsTo}`:'Private profile', "openSettings('privacy')")}
+        ${row('🔔','Notifications', 'Bookings, replies, app alerts, agents', "openSettings('notifications')")}</div>
+      <div class="ps-grp">
+        ${row('💳','Payments', 'GENEXXO never holds your money', "openSettings('payments')")}
+        ${row('📦','Your data', 'Download or delete', "openSettings('data')")}
+        ${row('ⓘ','About', 'GENEXXO · build '+BUILD, "openSettings('about')")}</div>
+      <div class="ps-grp">${row('↪️','Sign out', '', "toast('Demo: you stay signed in')", '')}</div>`;
+  } else if(pg==='account'){
+    body = `<div class="ps-grp">${row('👤','Name', USER.name, "toast('Editing your profile comes next')")}${row('@','Handle', USER.handle, "toast('Handles can be changed once a month')")}
+      ${row('📝','Bio', USER.bio, "toast('Editing your profile comes next')")}${row('📍','Location', USER.location, "toast('Editing your profile comes next')")}</div>
+      <div class="ps-h">Private</div><div class="ps-grp">${row('✉️','Email', USER.email+' · verified', '', '')}${row('📞','Phone', USER.phone+' · verified', '', '')}</div>
+      <div class="ps-note">Your email and phone are never shared with apps, pros or communities. They see only your name and handle, and only when you allow it.</div>`;
+  } else if(pg==='security'){
+    body = `<div class="ps-grp">${row('🔑','Password', 'Changed 3 months ago', "toast('A reset link has been sent to your email')", '<button class="ps-act">Change</button>')}
+        ${row('🪪','Passkeys', '2 passkeys · iPhone, MacBook', '', '')}
+        ${sw('twoStep','Two-step verification','A code on a new device, every time','🛡️')}
+        ${sw('loginAlerts','Sign-in alerts','Tell me when my account is used somewhere new','🚨')}</div>
+      <div class="ps-h">Signed-in devices</div>
+      <div class="ps-grp">${S.devices.map(d=>row(_DEVICES[d][0], _DEVICES[d][1], _DEVICES[d][2], '', '')).join('')}</div>
+      ${S.devices.length>1?`<button class="ps-act red" style="width:100%;padding:11px" onclick="signOutOthers()">Sign out of all other devices</button>`:''}`;
+  } else if(pg==='connected'){
+    body = `<div class="ps-note" style="padding:0 4px 8px">Everything you've signed into with GENEXXO, and exactly what each one can see. Revoke any time.</div>
+      <div class="ps-h">Apps · ${appKeys.length}</div>
+      <div class="ps-grp">${appKeys.length ? appKeys.map(k=>{ const {app, gw}=appByKey(k); return row(`<span style="background:${app.color};width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff">${app.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</span>`,
+          app.name, `${gw.name} · can ${appG[k].map(p=>{ const t=(APP_PERMS[p]||{t:p}).t; return (t.charAt(0).toLowerCase()+t.slice(1)).replace('{gw}',gw.name); }).join(' and ')}`, '', `<button class="ps-act red" onclick="event.stopPropagation();revokeAppGrant('${k}')">Revoke</button>`); }).join('')
+        : row('⚡','No apps yet','Apps ask permission the first time you open them', '', '')}</div>
+      <div class="ps-h">Communities · ${commKeys.length}</div>
+      <div class="ps-grp">${commKeys.length ? commKeys.map(k=>{ const {comm:x}=commByKey(k); return row(`<span style="background:${x.color};width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff">${proIni(x.name)}</span>`,
+          x.name, `${x.domain} · sees your name and handle`, '', `<button class="ps-act red" onclick="event.stopPropagation();revokeCommGrant('${k}')">Sign out</button>`); }).join('')
+        : row('👥','No communities yet','Enter one from any gateway’s Communities tab', '', '')}</div>
+      <div class="ps-note">Never shared with any of them: your email, password, favourites, bookings, or the other apps and communities you use.</div>`;
+  } else if(pg==='privacy'){
+    body = `<div class="ps-grp">${sw('publicProfile','Public profile','Anyone on GENEXXO can see your profile','🌍')}${sw('discoverable','Findable by handle','People can search for '+USER.handle,'🔎')}
+        ${sw('showCommunities','Show my communities','List the communities you’ve joined on your profile','👥')}${sw('aiFeed','Personalised feeds','Let your Host AI tune feeds to what you favourite','✦')}</div>
+      <div class="ps-h">Who can see your posts</div>
+      <div class="ps-grp">${['Everyone','Followers','Only me'].map(v=>row(v==='Everyone'?'🌍':v==='Followers'?'👥':'🔒', v, '', `setChoice('postsTo','${v}')`, S.postsTo===v?'<b style="color:#22C55E">✓</b>':'')).join('')}</div>`;
+  } else if(pg==='notifications'){
+    body = `<div class="ps-grp">${sw('nBookings','Bookings & plans','Confirmations, changes and reminders','📅')}${sw('nReplies','Community replies','When someone replies to your threads','💬')}
+      ${sw('nApps','App alerts','Surf alerts, snow alerts and more, from apps you allow','⚡')}${sw('nAgents','Gateway agents','When your Host AI or a gateway agent has news for you','✦')}
+      ${sw('nDigest','Weekly digest','A Sunday summary of your gateways','🗞️')}</div>`;
+  } else if(pg==='payments'){
+    body = `<div class="ps-grp">${row('🤝','GENEXXO never holds your money', 'You pay brands and pros directly. GENEXXO arranges, they charge. No stored cards, no wallet balance.', '', '')}</div>
+      <div class="ps-h">Providers you've paid · ${providers.length}</div>
+      <div class="ps-grp">${providers.length ? providers.map(n=>row('🏷️', escHtml(n), 'Paid directly · receipts in Profile › Plans', '', '')).join('') : row('🧾','Nobody yet','Book a pro or buy from a brand and they appear here', '', '')}</div>`;
+  } else if(pg==='data'){
+    body = `<div class="ps-grp">${row('⬇️','Download your data', 'Posts, favourites, bookings and connections, as a file', "toast('We’ll email you a download link within a few minutes')")}
+      ${row('🗑️','Delete account', 'Removes your GENEXXO ID and signs you out of every app and community', "toast('Demo: nothing has been deleted')", '<button class="ps-act red">Delete</button>')}</div>
+      <div class="ps-note">Deleting your account also revokes every connected app and community. Brands and pros keep only the receipts the law requires.</div>`;
+  } else if(pg==='about'){
+    const entries = [['genexxo.com',''],['climbxx.com','climb'],['skixx.com','ski'],['surfxx.com','surf'],['cyclexx.com','cycle']];
+    const dev = /[?&]dev\b/.test(location.search);
+    body = `<div class="ps-grp">${row('XX','GENEXXO', 'The Organizing Layer for the Internet', '', '')}${row('🔢','Build', BUILD, '', '')}${row('📄','Terms & privacy policy', '', "toast('Opens genexxo.com/legal')")}${row('❓','Help', '', "toast('Opens help in the AI tab')")}</div>
+      ${dev?`<div class="ps-h">Prototype: simulate entry domain</div><div class="ps-grp" style="padding:12px"><div class="ps-note" style="padding:0 0 8px">Same shell, different front door.</div>
+        <div class="chips" style="padding:0;flex-wrap:wrap">${entries.map(([d,e])=>`<div class="chip ${state.entryDomain===d?'on':''}" onclick="location.search='?dev${e?('&entry='+e):''}'">${d}</div>`).join('')}</div></div>`:''}`;
+  }
+  return `<div id="pfSet"><div class="ps-top">${pg!=='root'?`<span class="ps-back" onclick="openSettings('root')">‹ Settings</span>`:''}<b>${pg==='root'?'Settings':''}</b>
+      <div class="ps-x" onclick="closeSettings()" title="Close"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></div></div>
+    <div class="ps-body">${pg!=='root'?`<div style="font-size:20px;font-weight:800;margin:4px 4px 12px">${titles[pg]}</div>`:''}${body}</div></div>`;
 }
 function renderProfile(){
   return `${topBar()}
@@ -6587,7 +6794,8 @@ function renderProfile(){
   ${applyPanelHtml()}
   ${infoPanelHtml()}
   <div class="push">${profileBody()}</div>
-  ${receiptSheetHtml()}`;
+  ${receiptSheetHtml()}
+  ${settingsHtml()}`;
 }
 
 /* ═════════ RENDER ═════════ */
