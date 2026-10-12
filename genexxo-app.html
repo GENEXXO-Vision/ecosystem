@@ -1333,7 +1333,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-30"></script>
+<script src="genexxo-data.js?v=2026.08.26-31"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1406,6 +1406,26 @@ NETWORK_FEED.push({ videoOnly:true, video:'genexxo-videos/supernova-app.mp4', _s
   NETWORK_FEED.splice(spa < 0 ? NETWORK_FEED.length : spa, 0, clip);
 })();
 
+/* Neighbourhood display order (Sean, 2026-10-12): Sport & Play leads — it is the Adventure showcase's home.
+   SECTOR_GROUPS is a GENERATED block in genexxo-data.js (apply-handoff.py), so the order is set here at boot,
+   not in the data, or the next taxonomy rebuild would silently undo it. Every consumer — the Sectors drawer,
+   its Jump menu, Discover's chips and sections — iterates SECTOR_GROUPS, so one move covers them all.
+   To lead with another neighbourhood, change the key. */
+const SECTOR_GROUP_FIRST = ['sportplay'];
+/* …and within a neighbourhood, these sectors lead it (Sean, 2026-10-12: Adventure above Sports). SECTORS is
+   generated too; each key moves to just before the first sector of its own group, so only its group changes. */
+const SECTOR_FIRST = ['adventure'];
+(function(){
+  SECTOR_GROUP_FIRST.slice().reverse().forEach(k=>{
+    const i = SECTOR_GROUPS.findIndex(g=>g.key===k);
+    if(i>0) SECTOR_GROUPS.unshift(SECTOR_GROUPS.splice(i,1)[0]);
+  });
+  SECTOR_FIRST.slice().reverse().forEach(k=>{
+    const i = SECTORS.findIndex(x=>x.key===k); if(i<0) return;
+    const head = SECTORS.findIndex(x=>x.group===SECTORS[i].group);
+    if(head>=0 && head<i) SECTORS.splice(head, 0, SECTORS.splice(i,1)[0]);
+  });
+})();
 /* The demo user (2026-10-11): one fictional persona everywhere — profile, app bridge, community sign-in,
    posts. Fictional by design; the email is example.com. */
 const USER = { name:'Alex Morgan', handle:'@alexm', ini:'AM', bio:'Climber, surfer, occasional ski tourer. Chasing dry rock and clean swell from London.',
@@ -2136,7 +2156,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-30';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-31';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
