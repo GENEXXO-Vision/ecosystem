@@ -188,6 +188,32 @@
   .cm-card{position:relative;width:100%;max-width:370px;background:#17171E;border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:20px;color:#fff;box-shadow:0 20px 50px rgba(0,0,0,.5)}
   .cm-card h3{font-size:17px;font-weight:800;margin:12px 0 2px}.cm-card p{font-size:12px;opacity:.6;font-weight:600}
   .cm-crest{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#fff}
+  /* BUSINESS ZONE (2026-10-13): the B2B space, inside the brand-zone page. */
+  .bz-hero{height:150px;border-radius:18px 18px 0 0;background:#ddd center/cover;margin:12px 14px 0}
+  .bz-card{margin:0 14px 10px;background:#fff;border:1px solid var(--line);border-radius:0 0 18px 18px;padding:14px}
+  .bz-card.solo{border-radius:18px;margin-top:12px}
+  .bz-tier{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:800;letter-spacing:.05em;padding:3px 8px;border-radius:99px;text-transform:uppercase}
+  .bz-tier.Verified{background:#DCFCE7;color:#15803D}.bz-tier.Claimed{background:#DBEAFE;color:#1D4ED8}.bz-tier.Listed{background:#F1F5F9;color:#64748B}
+  .bz-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+  .bz-stats div{background:#F7F7F8;border-radius:12px;padding:9px;text-align:center}.bz-stats b{display:block;font-size:15px}.bz-stats span{font-size:9.5px;font-weight:800;color:var(--muted);text-transform:uppercase}
+  .bz-cta{display:flex;gap:8px;margin-top:12px}
+  .bz-cta button{font:inherit;font-weight:800;font-size:13.5px;padding:11px 14px;border-radius:12px;cursor:pointer;border:1px solid var(--line);background:#fff}
+  .bz-cta .pri{flex:1;border:0;color:#fff}
+  .bz-h{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:16px 18px 7px}
+  .bz-row{display:flex;gap:12px;align-items:center;margin:0 14px 8px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px}
+  .bz-row .ic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:12px;flex-shrink:0}
+  .bz-row b{display:block;font-size:13.5px}.bz-row span{display:block;font-size:12px;color:var(--muted);line-height:1.4}
+  .bz-specs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 14px}
+  .bz-specs div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px}.bz-specs span{display:block;font-size:9.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}.bz-specs b{font-size:12.5px}
+  .bz-chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 14px}
+  .bz-chip{font-size:11.5px;font-weight:700;padding:6px 11px;border-radius:99px;background:#fff;border:1px solid var(--line)}
+  .bz-form{margin:12px 14px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px}
+  .bz-form label{display:block;font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:12px 0 6px}
+  .bz-form label:first-child{margin-top:0}
+  .bz-form textarea,.bz-form input{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:#FAFAFB;resize:none}
+  .bz-when{display:flex;gap:6px;flex-wrap:wrap}.bz-when span{font-size:12px;font-weight:800;padding:7px 12px;border-radius:99px;border:1px solid var(--line);cursor:pointer;color:var(--muted)}
+  .bz-when span.on{background:#111116;color:#fff;border-color:#111116}
+  .bz-send{width:100%;margin-top:14px;font:inherit;font-weight:900;font-size:15px;padding:13px;border:0;border-radius:12px;color:#fff;cursor:pointer}
   /* PROFILE (2026-10-11): the user's control centre — identity header, Posts · Plans · Library, Settings. */
   .pf-cover{height:120px;background:#ccc center/cover;margin:0}
   .pf-head{padding:0 16px 12px;position:relative}
@@ -1458,7 +1484,7 @@ function loadFavs(){
   try{
     if(new URLSearchParams(location.search).get('favs')==='reset'){
       localStorage.removeItem('gx_favs'); localStorage.removeItem('gx_brandFavs');
-      localStorage.removeItem('gx_sectorFavs'); localStorage.removeItem('gx_recent'); localStorage.removeItem('gx_wallet'); localStorage.removeItem('gx_proFavs'); localStorage.removeItem('gx_commFavs'); localStorage.removeItem('gx_commStars'); localStorage.removeItem('gx_myPosts');
+      localStorage.removeItem('gx_sectorFavs'); localStorage.removeItem('gx_recent'); localStorage.removeItem('gx_wallet'); localStorage.removeItem('gx_proFavs'); localStorage.removeItem('gx_commFavs'); localStorage.removeItem('gx_commStars'); localStorage.removeItem('gx_myPosts'); localStorage.removeItem('gx_bizFavs'); localStorage.removeItem('gx_enquiries');
     }
     const g=localStorage.getItem('gx_favs'), b=localStorage.getItem('gx_brandFavs'), w=localStorage.getItem('gx_wallet'), pf=localStorage.getItem('gx_proFavs'), cm=localStorage.getItem('gx_commFavs'), cs=localStorage.getItem('gx_commStars');
     const sc=localStorage.getItem('gx_sectorFavs'), rc=localStorage.getItem('gx_recent');
@@ -2120,7 +2146,9 @@ const state = {
   proFavs:[...FAVS_INIT.proFavs],
   commFavs:[...FAVS_INIT.commFavs],  // communities you've JOINED (keys): membership, shown in Profile › My Communities
   commStars:[...FAVS_INIT.commStars],
-  myPosts: loadJSON('gx_myPosts', myPostsSeed),             // your own posts (Profile › Posts)
+  myPosts: loadJSON('gx_myPosts', myPostsSeed),
+  bizFavs: loadJSON('gx_bizFavs', ()=>[]),                   // favourite Business Zones (keys), 2026-10-13
+  enquiries: loadJSON('gx_enquiries', ()=>[]),               // quote requests sent to businesses             // your own posts (Profile › Posts)
   settings: loadJSON('gx_settings', ()=>({twoStep:true, loginAlerts:true, publicProfile:true, postsTo:'Everyone', discoverable:true,
             showCommunities:true, aiFeed:true, nBookings:true, nReplies:true, nApps:true, nAgents:true, nDigest:false, devices:['iphone','mac','ipad']})),
   profileTab:'posts', setPage:null,                         // Profile tab · Settings page (null = closed, 'root' = list)// communities you've FAVOURITED (keys): your ★ panel shortcut. Joining also stars.  // favourite Pro Zones (keys), 2026-10-10    // favourite APPS (2026-10-10: "wallet" is now just favourites; Profile › My Apps lists it)
@@ -2439,8 +2467,8 @@ function commitFavPending(){
       else { const hit=appByName(k); state.wallet.push({name:k, color:hit?hit.app.color:'#444', gw:hit?hit.gw.name:''}); added.push(k); }
       return;
     }
-    const list = t==='gw' ? state.favs : t==='brand' ? state.brandFavs : t==='pro' ? state.proFavs : t==='comm' ? state.commStars : state.sectorFavs;
-    const name = t==='gw' ? ((gwMetaFromKey(k)||{}).name||k) : t==='brand' ? ((ZONES[k]||{}).name||k) : t==='pro' ? (((proByKey(k)||{}).pro||{}).name||k) : t==='comm' ? (((commByKey(k)||{}).comm||{}).name||k) : ((sectorOf(k)||{}).name||k);
+    const list = t==='gw' ? state.favs : t==='brand' ? state.brandFavs : t==='pro' ? state.proFavs : t==='comm' ? state.commStars : t==='biz' ? state.bizFavs : state.sectorFavs;
+    const name = t==='gw' ? ((gwMetaFromKey(k)||{}).name||k) : t==='brand' ? ((ZONES[k]||{}).name||k) : t==='pro' ? (((proByKey(k)||{}).pro||{}).name||k) : t==='comm' ? (((commByKey(k)||{}).comm||{}).name||k) : t==='biz' ? ((ZONES[k]||{}).name||k) : ((sectorOf(k)||{}).name||k);
     const j = list.indexOf(k);
     if(j>=0){ list.splice(j,1); removed.push(name); } else { list.push(k); added.push(name); }
   });
@@ -2464,9 +2492,9 @@ function commitFavPending(){
    glows once where it now lives. The mark is cleared straight after the paint, so no later render
    replays the glow. */
 function favAddFromCard(fn, key){
-  const tag = {toggleFav:'gw:', toggleBrandFav:'brand:', toggleSectorFav:'sector:'}[fn] + key;
+  const tag = {toggleFav:'gw:', toggleBrandFav:'brand:', toggleSectorFav:'sector:', toggleBizFav:'biz:'}[fn] + key;
   state._favJustAdded = tag; state.favTab = 'favs';
-  ({toggleFav, toggleBrandFav, toggleSectorFav})[fn](key);        // each saves and renders
+  ({toggleFav, toggleBrandFav, toggleSectorFav, toggleBizFav})[fn](key);        // each saves and renders
   state._favJustAdded = null;
   const row = document.querySelector('.gx-panel .fav-new');
   if(row) row.scrollIntoView({block:'nearest', behavior:'smooth'});
@@ -2534,6 +2562,9 @@ function favPanelHtml(){
   const cmRow = k => { const hit=commByKey(k); if(!hit) return ''; const x=hit.comm, saved=state.commStars.includes(k);
     return shell(`${tile(x.color, proIni(x.name), 11)}${nm(x.name, hit.gw.name+' · '+x.members.toLocaleString()+' members')}${starFor(saved,'comm:'+k)}`,
       `state.showFavs=false;render();openComm('${k}')`, state.app&&state.app.kind==='community'&&state.app.key===k, 'comm:'+k, saved); };
+  const bzRow = k => { const z=ZONES[k]; if(!z) return ''; const gm=gwMetaFromKey(z.gw), saved=state.bizFavs.includes(k);
+    return shell(`${tile(z.gradient||z.color||'#333', zoneInitials(z.name), 11)}${nm(z.name, (gm?gm.name:'')+' · '+z.category)}${starFor(saved,'biz:'+k)}`,
+      `openZoneFav('${k}')`, k===state.zone, 'biz:'+k, saved); };
   const brRow = k => { const z=ZONES[k]; if(!z) return ''; const gm=gwMetaFromKey(z.gw); const saved=state.brandFavs.includes(k);
     const mono=z.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
     return shell(`${tile(z.gradient||z.color||'#333',mono,11)}${nm(z.name, (gm?gm.name:'')+(z.tier?' · '+z.tier:''))}${starFor(saved,'brand:'+k)}`,
@@ -2569,6 +2600,8 @@ function favPanelHtml(){
       return here('Gateway', gwLabel(g.name), sc?sc.name+' sector':'', tile(g.gradient,g.emoji), state.favs.includes(k), 'toggleFav', k, small); };
     if(state.screen==='zone' && ZONES[state.zone]){
       const z=ZONES[state.zone], mono=z.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+      if(z.kind==='business') return here('Business', z.name, bizTierLabel(z.tier)+' · '+z.category, tile(z.gradient||z.color||'#333',mono,11), state.bizFavs.includes(z.key), 'toggleBizFav', z.key)
+           + gwCard(z.gw, true);
       return here('Brand', z.name, z.tier||'', tile(z.gradient||z.color||'#333',mono,11), state.brandFavs.includes(z.key), 'toggleBrandFav', z.key)
            + gwCard(z.gw, true);
     }
@@ -2587,7 +2620,7 @@ function favPanelHtml(){
     const hint = `<div style="margin:12px 8px -4px;font-size:11px;font-weight:600;opacity:${nPend?'.85':'.45'};${nPend?'color:#F5B800':''}">${nPend
       ? `${nPend} change${nPend>1?'s':''} · saved when you close`
       : 'Tap ★ to remove a favourite · changes save when you close'}</div>`;
-    bodyHtml = (state.favs.length||state.brandFavs.length||state.sectorFavs.length||state.wallet.length||state.proFavs.length||state.commStars.length ? hint : '') +
+    bodyHtml = (state.favs.length||state.brandFavs.length||state.sectorFavs.length||state.wallet.length||state.proFavs.length||state.commStars.length||state.bizFavs.length ? hint : '') +
       section('SECTORS', state.sectorFavs.map(secRow),
         'No sectors pinned yet — tap ☆ on any sector to keep it here.') +
       section('GATEWAYS', state.favs.map(gwRow),
@@ -2598,6 +2631,8 @@ function favPanelHtml(){
         'No apps yet — tap ☆ on any app to keep it here.') +
       section('PROS', state.proFavs.map(prRow),
         'No pros yet — tap ☆ on any Pro Zone to keep it here.') +
+      section('BUSINESSES', state.bizFavs.map(bzRow),
+        'No businesses yet — tap ☆ on any Business Zone to keep it here.') +
       section('COMMUNITIES', state.commStars.map(cmRow),
         'No communities yet — tap ☆ on any community, or join one, to keep it here.');
   } else if(tab==='live'){
@@ -2630,6 +2665,7 @@ function favPanelHtml(){
       section('BRANDS', of('brand').map(brRow), 'Brand zones you open will appear here.') +
       section('APPS', of('app').map(apRow), 'Apps you open will appear here.') +
       section('PROS', of('pro').map(prRow), 'Pro Zones you visit will appear here.') +
+      section('BUSINESSES', of('biz').map(bzRow), 'Business Zones you visit will appear here.') +
       section('COMMUNITIES', of('comm').map(cmRow), 'Communities you visit will appear here.');
   }
 
@@ -3048,7 +3084,8 @@ const ZONE_LAYERS = {
    brand, it isn't: you are in a shop, and what you want is the shelf of neighbouring shops.
    That is what the drawer becomes — the fast switch between brands, glance and move on. */
 function zoneLayer(){
-  return (state.screen==='zone' && state.zone) ? 'brands' : null;
+  if(!(state.screen==='zone' && state.zone)) return null;
+  return (ZONES[state.zone] && ZONES[state.zone].kind==='business') ? 'business' : 'brands';
 }
 // The gateway whose lists we are showing — a brand zone borrows its parent's.
 function zoneLayerGw(){
@@ -3064,6 +3101,8 @@ function zoneLayerItems(gw, layer){
   if(layer==='apps') return (gw.apps||[]).map(a=>({ name:a.name, sub:a.desc, color:a.color }));
   if(layer==='pros') return (gw.pros||[]).map(p=>({
     name:p.name, sub:p.tag||p.tier, color:p.color, gradient:p.gradient }));
+  if(layer==='business' && (gw.businesses||[]).length) return gw.businesses.filter(k=>ZONES[k]).map(k=>{ const z=ZONES[k];
+    return { key:k, name:z.name, sub:z.tagline, color:z.color, gradient:z.gradient, click:`openZone('${k}')` }; });
   const rows = layer==='communities' ? GW_COMMUNITY_ROWS(gw)
              : layer==='business'    ? GW_BUSINESS_ROWS(gw) : [];
   return rows.map(r=>({ name:r[1], sub:r[2], color:(gw.theme&&gw.theme.accent)||'#888' }));
@@ -3874,6 +3913,7 @@ function buildGwPanels(){
   const accent = z ? z.color : (t.accent||'var(--ink)');
   const head = label => `<div class="gwp-h" style="color:${accent}">${label}</div>`;
 
+  if(z && z.kind==='business'){ paintBizPanels(z, gw, L, R); L.dataset.gw = R.dataset.gw = ''; return; }
   if(z){
     /* One commerce slot: an image frame over a two-line caption. Deliberately EMPTY — the
        template the creative drops into, not a rendering of z.products. It carries the
@@ -3918,6 +3958,11 @@ function buildGwPanels(){
   // Apps tab with openable apps: app ads, each with the app's real screenshot (2026-10-09).
   if(state.screen==='gateway' && state.gwZones && state.gwZoneTab==='apps' && (gw.apps||[]).some(a=>a.url&&(a.shots||[]).length)){
     paintGwAppAds(gw, L, R);
+    L.dataset.gw = R.dataset.gw = '';
+    return;
+  }
+  if(state.screen==='gateway' && state.gwZones && state.gwZoneTab==='business' && (gw.businesses||[]).length){
+    paintGwBizAds(gw, L, R);
     L.dataset.gw = R.dataset.gw = '';
     return;
   }
@@ -4894,9 +4939,20 @@ function renderGateway(){
         : GW_COMMUNITY_ROWS(gw).map(a=>infoCard(a[0],a[1],a[2],a[3],a[4])).join('')
           + `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.5;margin-top:2px">External communities plug in here — placeholder cards for now.</div>`;
     } else if (z==='business'){
-      // Corporate / manufacturers / services — the B2B side of the gateway. Placeholder cards.
-      body = GW_BUSINESS_ROWS(gw).map(a=>infoCard(a[0],a[1],a[2],a[3],a[4])).join('')
-        + `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.5;margin-top:2px">Corporate, manufacturers & services list here — placeholder for now.</div>`;
+      // Business Zones (2026-10-13): the B2B side — manufacturers, distributors, service firms. Gateways
+      // without any keep the placeholder cards.
+      body = (gw.businesses||[]).length
+        ? gw.businesses.filter(k=>ZONES[k]).map(k=>{ const b=ZONES[k], fav=state.bizFavs.includes(k); return `
+          <div class="gcard" style="background:${t.cardBg};border-color:${t.cardBorder};color:${t.text};cursor:pointer" onclick="openZone('${k}')">
+            <div class="hd" style="margin-bottom:6px"><div class="av" style="background:${b.gradient};border-radius:12px">${zoneInitials(b.name)}</div>
+              <div style="flex:1;min-width:0"><div class="an">${b.name}</div><div class="as">${b.category} · ${b.about.founded.split(' · ')[0]}</div></div>
+              <button class="btn" style="background:${t.accent};color:#fff;border:1px solid ${t.accent};margin-right:6px" onclick="event.stopPropagation();openZone('${k}','contact')">Quote</button>
+              <button class="btn" style="min-width:40px;font-size:16px;background:transparent;color:${fav?'#F5B800':t.text};border:1px solid ${fav?'rgba(245,184,0,.55)':t.cardBorder}" title="${fav?'Remove from favourites':'Add to favourites'}" onclick="event.stopPropagation();toggleBizFav('${k}')">${fav?'★':'☆'}</button></div>
+            <div class="tx" style="opacity:.72;font-size:12px"><span class="bz-tier ${b.tier}">${bizTierLabel(b.tier)}</span> ${b.tagline}</div>
+            <div style="margin-top:7px;font-size:10.5px;font-weight:700;opacity:.55">Supplies ${b.supplies.length} in ${gw.name} · ${b.stats.clients}</div>
+          </div>`; }).join('')
+        : GW_BUSINESS_ROWS(gw).map(a=>infoCard(a[0],a[1],a[2],a[3],a[4])).join('')
+          + `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.5;margin-top:2px">Corporate, manufacturers & services list here — placeholder for now.</div>`;
     } else {
       body = gw.brandZones.length ? sift(gw.brandZones).map(zoneCard).join('')
         : `<div class="empty" style="border-color:${t.cardBorder};color:${t.text};opacity:.55">Brand Zones open here when ${gw.name} goes live.</div>`;
@@ -5023,12 +5079,13 @@ function openZone(k, tab){
   state.zoneBarPage = (landTab==='events'||landTab==='about'||landTab==='media') ? 'more' : 'main';
   state.screen='zone'; state._before=null; state.showFavs=false;
   state.tab='home';   // committing to a real place — clear any open util tab (mirrors openGateway)
-  logVisit('brand', k);
+  logVisit(ZONES[k].kind==='business' ? 'biz' : 'brand', k);
   render(); $('screen').scrollTo(0,0); if(window.__resetChrome) window.__resetChrome();
 }
 function zoneToGateway(){   // escape up one rung — land on the ★ layer where you entered
+  const wasBiz = ZONES[state.zone] && ZONES[state.zone].kind==='business';
   state.zone=null; state.zoneProduct=null; state.screen='gateway';
-  state.gwZones=true; state.gwZoneTab='brands';
+  state.gwZones=true; state.gwZoneTab = wasBiz ? 'business' : 'brands';
   render(); $('screen').scrollTo(0,0); if(window.__resetChrome) window.__resetChrome();
 }
 function zoneSwitch(k){   // deck swatch / drawer: switch brand in place, KEEPING your tab
@@ -5044,7 +5101,9 @@ function pickZone(k){ closeDrawerR(); zoneSwitch(k); }
 function zoneStepList(){
   if (state.screen!=='zone' || !state.zone) return null;
   const gw = zoneLayerGw(); if(!gw) return null;
-  const list = (gw.brandZones||[]).filter(b=>b.key && ZONES[b.key]), n = list.length;
+  const isBiz = ZONES[state.zone] && ZONES[state.zone].kind==='business';
+  const list = isBiz ? (gw.businesses||[]).filter(k=>ZONES[k]).map(k=>({key:k, name:ZONES[k].name}))
+                     : (gw.brandZones||[]).filter(b=>b.key && ZONES[b.key]), n = list.length;
   if (n < 2) return null;
   const i = Math.max(0, list.findIndex(b=>b.key===state.zone));
   return { list, i, prev:list[(i-1+n)%n], next:list[(i+1)%n] };
@@ -5265,7 +5324,13 @@ function zoneMedia(z){
 
 function zoneAbout(z){
   const a=z.about;
-  return `
+  const suppliers = Object.values(ZONES).filter(b=>b.kind==='business' && (b.supplies||[]).some(s=>s.kind==='brand' && s.key===z.key));
+  return (suppliers.length ? `<div class="zcard" style="margin-top:12px">
+    <div style="font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;margin-bottom:9px">Supply chain · made with</div>
+    ${suppliers.map(b=>{ const s=b.supplies.find(x=>x.key===z.key); return `<div onclick="openZone('${b.key}')" style="display:flex;gap:10px;align-items:center;padding:7px 0;cursor:pointer">
+      <div style="width:32px;height:32px;border-radius:9px;background:${b.gradient};color:#fff;font-weight:900;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${zoneInitials(b.name)}</div>
+      <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:800">${b.name} <span class="bz-tier ${b.tier}" style="margin-left:4px">${bizTierLabel(b.tier)}</span></div><div style="font-size:11.5px;color:var(--muted)">${s.what}</div></div>
+      <span style="color:var(--muted);font-weight:800">›</span></div>`; }).join('')}</div>` : '') + `
   <div class="zcard" style="margin-top:12px">
     <div style="font-size:10px;font-weight:800;letter-spacing:.08em;color:${z.color}">${a.founded.toUpperCase()}</div>
     <div style="font-size:13px;line-height:1.6;margin-top:8px">${a.story}</div>
@@ -5432,6 +5497,7 @@ function renderZonePage(){
       style="margin-left:auto;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;font-size:19px;line-height:1;color:${zInkStar};opacity:${state.showFavs?'1':'.72'};${state.showFavs?'background:rgba(255,255,255,.18)':''}">${state.showFavs?'★':'☆'}</div>
   </div>`;
 
+  if(z.kind==='business') return renderBizZone(z, gw, head);
   const bag=state.bag.length;
   // Two-page zone sub-bar — same grammar as the gateway commercial bar: a › / ‹ arrow on the
   // right flips between two triads. Page 1 = Feed · Shop · Bag, page 2 = Media · About · Events.
@@ -5475,6 +5541,127 @@ function renderZonePage(){
   ${checkoutSheetHtml()}`;
 }
 
+/* ═════════ BUSINESS ZONES (2026-10-13) ═════════
+   The B2B side of a gateway — manufacturers, distributors, service firms — as ZONES with kind:'business'. They
+   open in the brand-zone page (same header, Back, stepper, drawer, ★) with B2B tabs instead of Shop/Bag:
+   Feed · Capabilities · Work · Contact. Work shows the supply chain — the brands and pros they supply, each a
+   link — and a brand's About shows its suppliers back: the hidden economy, visible from both ends. Contact
+   sends a quote request (simulated) tracked in Profile › Plans. Tier badge = Listed / Claimed / Verified. */
+const bizTierLabel = t => t==='Verified' ? '✓✓ Verified' : t==='Claimed' ? '✓ Claimed' : 'Listed';
+function toggleBizFav(k){
+  const i = state.bizFavs.indexOf(k); if(i>=0) state.bizFavs.splice(i,1); else state.bizFavs.push(k);
+  saveJSON('gx_bizFavs', state.bizFavs);
+  if(state.screen==='gateway' && state.gwZones) try{ repaintGateway({body:true}); return; }catch(_){}
+  render();
+}
+function bizPick(v){ state._bizWhen = v; const keep=['bzNeed','bzQty','bzCo'].map(id=>($(id)||{}).value||''); render(); ['bzNeed','bzQty','bzCo'].forEach((id,i)=>{ const e=$(id); if(e) e.value=keep[i]; }); }
+function bizSendEnquiry(k){
+  const z = ZONES[k]; if(!z) return;
+  const need = (($('bzNeed')||{}).value||'').trim(); if(!need){ $('bzNeed') && $('bzNeed').focus(); return; }
+  state.enquiries.unshift({ts:Date.now(), biz:k, need:escHtml(need).slice(0,300), qty:escHtml((($('bzQty')||{}).value||'').trim()).slice(0,40),
+    when: state._bizWhen||'Exploring', company: escHtml((($('bzCo')||{}).value||'').trim()).slice(0,60) || USER.name, status:'Sent'});
+  saveJSON('gx_enquiries', state.enquiries); state._bizWhen = null; state._bizSent = k;
+  render(); toast(`✓ Enquiry sent to ${z.name}`);
+}
+function enquiriesHtml(){
+  const list = state.enquiries.filter(e=>ZONES[e.biz]);
+  if(!list.length) return '';
+  return `<div class="sect"><div class="sect-h"><div class="t">Enquiries</div><div class="a">${list.length}</div></div></div>`
+    + list.map(e=>{ const z=ZONES[e.biz]; return `<div class="bkrow" style="cursor:pointer" onclick="openZoneFav('${e.biz}','contact')">
+      <div class="ic" style="background:${z.gradient};font-size:12px;font-weight:900;color:#fff">${zoneInitials(z.name)}</div>
+      <div style="flex:1;min-width:0"><div class="h"><b>${z.name}</b><span class="bkst">${e.status}</span></div>
+        <div class="s">${e.need.slice(0,70)}${e.need.length>70?'…':''}</div>
+        <div class="s">${e.qty?e.qty+' · ':''}${e.when} · ${_since(e.ts)} ago · ${z.contact.response.toLowerCase()}</div></div></div>`; }).join('');
+}
+function renderBizZone(z, gw, head){
+  const T = [['feed','Feed'],['caps','Capabilities'],['work','Work'],['contact','Contact']];
+  const tab = T.some(t=>t[0]===state.zoneTab) ? state.zoneTab : 'feed';
+  const at = i => (i+.5)/T.length;
+  const bar = `<div class="substick netbar" style="background:${z.gradient}">${T.map(([k,lb],i)=> tab===k
+      ? `<div class="ntab on" style="pointer-events:none;${tabInk(z.gradient,at(i),true)}">${lb}</div>`
+      : `<div class="ntab" style="${tabInk(z.gradient,at(i),false)}" onclick="setZoneTab('${k}')">${lb}</div>`).join('')}</div>`;
+  const fav = state.bizFavs.includes(z.key), gwName = (gw&&gw.name)||'';
+  const link = s => { if(s.kind==='brand'){ const b=ZONES[s.key]; return b?{name:b.name, grad:b.gradient||b.color, go:`openZoneFav('${s.key}')`, label:'Brand'}:null; }
+    const hit=proByKey(s.key); return hit?{name:hit.pro.name, grad:hit.pro.color, go:`openPro('${s.key}')`, label:'Pro'}:null; };
+  let body = '';
+  if(tab==='feed'){
+    body = `<div class="bz-hero" style="background-image:url('${z.img}')"></div>
+      <div class="bz-card"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><b style="font-size:18px">${z.name}</b><span class="bz-tier ${z.tier}">${bizTierLabel(z.tier)}</span></div>
+        <div style="font-size:12.5px;color:var(--muted);font-weight:600;margin-top:3px">${z.category} · ${z.about.founded}</div>
+        <div style="font-size:14px;line-height:1.5;margin-top:8px">${z.tagline}</div>
+        <div class="bz-stats"><div><b>${z.stats.years} yrs</b><span>Trading</span></div><div><b>${z.stats.staff}</b><span>Team</span></div><div><b style="font-size:12.5px">${z.stats.clients}</b><span>Clients</span></div></div>
+        <div class="bz-cta"><button class="pri" style="background:${z.color}" onclick="setZoneTab('contact')">Request a quote</button>
+          <button onclick="toggleBizFav('${z.key}')" style="${fav?'color:#B45309;border-color:rgba(245,184,0,.6)':''}">${fav?'★ Favourite':'☆ Favourite'}</button></div></div>
+      <div class="bz-h">Latest from ${z.name}</div>
+      ${z.feed.map(p=>`<div class="bz-row" style="align-items:flex-start"><div class="ic" style="background:${z.gradient}">${zoneInitials(z.name)}</div><div><span style="font-weight:700">${p.sub}</span><b style="font-weight:600;margin-top:2px">${p.text}</b></div></div>`).join('')}
+      ${z.supplies.length?`<div class="bz-h">Supplies in ${gwName}</div>${z.supplies.map(s=>{ const l=link(s); return l?`<div class="bz-row" style="cursor:pointer" onclick="${l.go}"><div class="ic" style="background:${l.grad}">${zoneInitials(l.name)}</div><div style="flex:1"><b>${l.name}</b><span>${s.what}</span></div><span style="color:var(--muted);font-weight:800">›</span></div>`:''; }).join('')}`:''}`;
+  } else if(tab==='caps'){
+    body = `<div class="bz-h">What we do</div>${z.caps.map(c=>`<div class="bz-row" style="align-items:flex-start"><div class="ic" style="background:${z.gradient}">✓</div><div><b>${c.name}</b><span>${c.detail}</span></div></div>`).join('')}
+      <div class="bz-h">Working with us</div>
+      <div class="bz-specs"><div><span>Minimum order</span><b>${z.specs.moq}</b></div><div><span>Lead time</span><b>${z.specs.lead}</b></div><div><span>Ships to</span><b>${z.specs.regions}</b></div></div>
+      <div class="bz-h">Certifications</div><div class="bz-chips">${z.specs.certs.map(c=>`<span class="bz-chip">🏅 ${c}</span>`).join('')}</div>
+      <div class="bz-h">About</div><div class="bz-card solo" style="margin-top:0"><div style="font-size:13.5px;line-height:1.55">${z.about.story}</div></div>`;
+  } else if(tab==='work'){
+    body = `<div class="bz-h">Supply chain · ${gwName}</div>${z.supplies.map(s=>{ const l=link(s); return l?`<div class="bz-row" style="cursor:pointer" onclick="${l.go}"><div class="ic" style="background:${l.grad}">${zoneInitials(l.name)}</div><div style="flex:1"><b>${l.name} <span style="display:inline;font-size:10px;font-weight:800;color:var(--muted)">· ${l.label}</span></b><span>${s.what}</span></div><span style="color:var(--muted);font-weight:800">›</span></div>`:''; }).join('')}
+      <div class="bz-h">Case studies</div>${z.cases.map(c=>`<div class="bz-card solo" style="margin-top:0;margin-bottom:8px"><b style="font-size:14px">${c.title}</b><div style="font-size:13px;line-height:1.5;color:var(--muted);margin-top:4px">${c.text}</div></div>`).join('')}`;
+  } else {
+    const mine = state.enquiries.filter(e=>e.biz===z.key), sent = state._bizSent===z.key;
+    const W = ['ASAP','1–3 months','3–6 months','Exploring'];
+    body = (sent ? `<div class="bz-card solo" style="text-align:center;border-color:#86EFAC"><div style="font-size:30px">✓</div><b style="font-size:16px">Enquiry sent to ${z.name}</b>
+          <div style="font-size:12.5px;color:var(--muted);margin-top:4px">${z.contact.person} · ${z.contact.response.toLowerCase()}. It's in Profile › Plans.</div></div>` : '')
+      + `<div class="bz-form"><b style="font-size:16px">Request a quote</b><div style="font-size:12px;color:var(--muted);margin:2px 0 6px">${z.contact.person} · ${z.contact.response}</div>
+        <label>What do you need?</label><textarea id="bzNeed" rows="3" placeholder="e.g. A competition-grade sole compound for a new shoe line"></textarea>
+        <label>Quantity</label><input id="bzQty" placeholder="e.g. ${z.specs.moq}">
+        <label>Timeline</label><div class="bz-when">${W.map(v=>`<span class="${(state._bizWhen||'Exploring')===v?'on':''}" onclick="bizPick('${v}')">${v}</span>`).join('')}</div>
+        <label>Your company</label><input id="bzCo" placeholder="${USER.name} · independent">
+        <button class="bz-send" style="background:${z.color}" onclick="bizSendEnquiry('${z.key}')">Send enquiry</button>
+        <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px">Sent with your GENEXXO ID. ${z.name} sees your name and company, never your email, until you choose to share it.</div></div>
+      <div class="bz-cta" style="margin:0 14px"><button style="flex:1" onclick="toast('${z.contact.person.split(',')[0]} will suggest times in your GENEXXO inbox')">📅 Book a call</button></div>`
+      + (mine.length ? `<div class="bz-h">Your enquiries</div>${mine.map(e=>`<div class="bz-row"><div class="ic" style="background:${z.gradient}">✉</div><div><b>${e.need.slice(0,60)}${e.need.length>60?'…':''}</b><span>${e.status} · ${_since(e.ts)} ago · ${e.when}</span></div></div>`).join('')}` : '');
+    if(sent) state._bizSent = null;
+  }
+  return `${head}
+  <div class="push" style="background:#FBFBFC;color:var(--ink);min-height:calc(100dvh - 53px);margin-top:-1px">
+    ${bar}${body}<div style="height:24px"></div>
+  </div>
+  ${favPanelHtml()}`;
+}
+/* Desktop gutters. Business tab: business ads. A Business Zone open: what "verified" means for a business, and
+   its supply chain in this gateway. */
+function paintGwBizAds(gw, L, R){
+  liftGwPanels(gw, L, R);
+  const acc = (gw.theme||{}).accent || '#111116', list = (gw.businesses||[]).filter(k=>ZONES[k]).map(k=>ZONES[k]);
+  const card = b => `<div class="gwa" onclick="openZone('${b.key}')">
+      <div class="gwa-media" style="background:url('${b.img}') center/cover, ${b.color}"><span class="gwa-badge">${bizTierLabel(b.tier)}</span></div>
+      <div class="gwa-body">
+        <div class="gwa-who"><div class="gwa-chip" style="background:${b.gradient}">${zoneInitials(b.name)}</div><div><div class="gwa-n">${esc(b.name)}</div><div class="gwa-t">${b.category} · ${b.stats.years} yrs</div></div></div>
+        <div class="gwa-hl">${esc(b.tagline)}</div>
+        <div class="gwa-row"><span class="gwa-meta">${esc(b.stats.clients)}</span><span class="gwa-cta" style="background:${b.color}" onclick="event.stopPropagation();openZone('${b.key}','contact')">Quote ›</span></div>
+      </div></div>`;
+  const side = (items, head, note, foot) => `<div class="gwa-h"><b style="color:${acc}">${head}</b><span>${note}</span></div>
+    <div class="gwa-list">${items.map(card).join('')}</div>
+    <div class="gwa-foot"><span>Business to business · ${esc(gw.name)}</span><b style="color:${acc}">${foot}</b></div>`;
+  const nL = Math.min(2, Math.ceil(list.length/2));
+  L.innerHTML = side(list.slice(0,nL), '🏭 Businesses', gw.name, 'All businesses ›');
+  R.innerHTML = side(list.slice(nL,nL+2), '🏭 Also in '+esc(gw.name), list.length+' businesses', `List your business ›`);
+}
+function paintBizPanels(z, gw, L, R){
+  if(!gw) return; liftGwPanels(gw, L, R);
+  const acc = (gw.theme||{}).accent || 'var(--ink)';
+  const tiers = [['Listed','A public listing, unclaimed'],['Claimed','The business manages it and verified its email and domain'],['Verified','Documents, certifications and trade references checked']];
+  const reached = tiers.findIndex(t=>t[0]===z.tier);
+  const others = (gw.businesses||[]).filter(k=>k!==z.key && ZONES[k]).map(k=>ZONES[k]);
+  L.innerHTML = `<div class="gwa-h"><b style="color:${acc}">🏅 ${bizTierLabel(z.tier)} business</b><span>${esc(z.name)}</span></div>
+    <div class="gac">${tiers.map((t,i)=>`<div class="gac-row" style="opacity:${i<=reached?1:.45}"><i>${i<=reached?'✓':'○'}</i><div><b>${t[0]}</b><span>${t[1]}</span></div></div>`).join('')}</div>
+    <div class="gac">${z.specs.certs.map(c=>`<div class="gac-row"><i>🏅</i><div><b>${esc(c)}</b><span>Certificate on file</span></div></div>`).join('')}</div>
+    <div class="gwa-foot"><span>${esc(z.about.founded)}</span></div>`;
+  R.innerHTML = `<div class="gwa-h"><b style="color:${acc}">🔗 Supply chain</b><span>in ${esc(gw.name)}</span></div>
+    <div class="gac">${z.supplies.map(s=>{ const b = s.kind==='brand' ? ZONES[s.key] : null, pr = s.kind==='pro' ? proByKey(s.key) : null;
+      const name = b ? b.name : pr ? pr.pro.name : s.key, color = b ? (b.gradient||b.color) : pr ? pr.pro.color : '#888', go = b ? `openZoneFav('${s.key}')` : `openPro('${s.key}')`;
+      return `<div class="gac-row" style="cursor:pointer" onclick="${go}"><i style="width:26px;height:26px;border-radius:8px;background:${color};font-size:9.5px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center">${zoneInitials(name)}</i><div><b>${esc(name)}</b><span>${esc(s.what)}</span></div></div>`; }).join('')}</div>
+    ${others.length?`<div class="gac"><div style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.5;margin-bottom:4px">More businesses in ${esc(gw.name)}</div>
+      ${others.map(b=>`<div class="gac-row" style="cursor:pointer" onclick="openZone('${b.key}')"><i style="width:26px;height:26px;border-radius:8px;background:${b.gradient};font-size:9.5px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center">${zoneInitials(b.name)}</i><div><b>${b.name}</b><span>${b.category} · ${bizTierLabel(b.tier)}</span></div></div>`).join('')}</div>`:''}`;
+}
 // The Shop category overlay — a 3/4 bottom sheet listing the brand's own collections.
 // Renders only while the Shop tab is live AND the overlay is toggled open. Scrim dismisses;
 // a full-width Brand Specials feature tile (if the brand flagged any) sits above the grid of
@@ -5733,9 +5920,11 @@ function renderDiscover(bodyOnly){
     const brands = Object.keys(ZONES).map(k=>({k, z:ZONES[k], r:brandRank(ZONES[k], q)}))
       .filter(b=>b.r>=0).sort((a,b)=> a.r-b.r || a.z.name.localeCompare(b.z.name));
     const head = (label, n) => `<div class="gwsec gwsec-wide">${label} · ${n}</div>`;
-    const bRows = brands.map(({k,z})=>brandrow(k,z)).join('');
+    const bz = brands.filter(b=>b.z.kind!=='business'), biz = brands.filter(b=>b.z.kind==='business');   // businesses get their own head
+    const bRows = bz.map(({k,z})=>brandrow(k,z)).join(''), zRows = biz.map(({k,z})=>brandrow(k,z)).join('');
     const gRows = hits.map(h=>gwrow(h.n,h.sk)).join('');
-    inner = (brands.length ? head('Brand Zones', brands.length) + bRows : '')
+    inner = (bz.length ? head('Brand Zones', bz.length) + bRows : '')
+          + (biz.length ? head('Businesses', biz.length) + zRows : '')
           + (hits.length   ? head('Gateways', hits.length) + gRows : '')
           || `<div class="empty">Nothing matches “${escHtml(state.discoverQ)}”</div>`;
   } else if(state.discoverSector){
@@ -6730,7 +6919,7 @@ function pfPostsHtml(){
 }
 function pfPlansHtml(){
   const done = state.purchases.length;
-  return `${aiWeekHtml()}${aiBookingsHtml()}
+  return `${aiWeekHtml()}${aiBookingsHtml()}${enquiriesHtml()}
     <div class="sect"><div class="sect-h"><div class="t">Purchases</div><div class="a">${done}</div></div></div>
     ${done ? state.purchases.map(o=>purchaseCard(o)).join('') : `<div class="empty">Orders you place with brands across GENEXXO —<br>bought direct, receipts filed here.</div>`}
     <div style="height:14px"></div>`;
@@ -6751,6 +6940,11 @@ function pfLibraryHtml(){
       <div style="flex:1"><div style="font-size:13px;font-weight:800">${x.name}</div><div style="font-size:10.5px;color:var(--muted);font-weight:600">${x.role} · ${gw.name}</div></div>
       <button class="btn" style="background:#111116;color:#fff" onclick="event.stopPropagation();openPro('${x.key}','book')">Book</button></div>`).join('')
       : `<div class="empty">Tap ☆ on a Pro Zone to keep your guides and coaches here.</div>`}
+    <div class="sect"><div class="sect-h"><div class="t">Businesses</div><div class="a">${state.bizFavs.length}</div></div></div>
+    ${state.bizFavs.filter(k=>ZONES[k]).length ? state.bizFavs.filter(k=>ZONES[k]).map(k=>{ const b=ZONES[k]; return `<div class="wapp" style="cursor:pointer" onclick="openZoneFav('${k}')"><div class="lg" style="background:${b.gradient}">${zoneInitials(b.name)}</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:800">${b.name}</div><div style="font-size:10.5px;color:var(--muted);font-weight:600">${b.category} · ${bizTierLabel(b.tier)}</div></div>
+      <button class="btn" style="background:#111116;color:#fff" onclick="event.stopPropagation();openZoneFav('${k}','contact')">Quote</button></div>`; }).join('')
+      : `<div class="empty">Tap ☆ in a Business Zone to keep suppliers and partners here.</div>`}
     <div class="sect"><div class="sect-h"><div class="t">Brands</div><div class="a">${brands.length}</div></div></div>
     ${brands.length ? brands.map(k=>{ const z=ZONES[k]; return `<div class="wapp" style="cursor:pointer" onclick="openZoneFav('${k}')"><div class="lg" style="background:${z.gradient||z.color}">${proIni(z.name)}</div>
       <div style="flex:1"><div style="font-size:13px;font-weight:800">${z.name}</div><div style="font-size:10.5px;color:var(--muted);font-weight:600">${z.tagline||''}</div></div></div>`; }).join('')
