@@ -1333,7 +1333,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-31"></script>
+<script src="genexxo-data.js?v=2026.08.26-32"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -2156,7 +2156,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-31';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-32';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2230,6 +2230,7 @@ function openGateway(name, sectorKey){
   state.screen = 'gateway'; state.gwTab = 'network'; state.space = 'All Feed'; state.showFavs = false; state.returnGw = null;
   state.gwZones = false; state.gwZoneTab = 'brands'; state.gwBarPage = 'commerce'; state.gwLayerQ=''; state.gwLayerFilt='all';
   state.zone = null; state.zoneProduct = null; state._zoneIn = false;
+  ['drawerList','drawerRList'].forEach(id=>{ const l=$(id); if(l && !PANELS_PINNED()) settleListScroll(l, 0); });   // a new place: drawers start fresh
   state._before = null; state.tab = 'home';   // committed to a real place — tab toggle memory resets
   logVisit('gateway', key);
   state._domainIn = true;    // arrival → let the domain assemble itself once (see domainMark)
@@ -2959,6 +2960,30 @@ function activeGatewayName(){
 }
 /* a lighter wash of a header gradient + its lead colour — the shared recipe both drawers
    use to tint the row for the sector/gateway you're currently inside */
+/* Readable text on gradient bars (Sean, 2026-10-13). Tab and top bars wore white text whatever the colour, so
+   on light gradients (CycleXX's yellow, ClimbXX's orange end, Whirl's gold) labels faded. A bar can run dark
+   to light (CycleXX: black → yellow), so one colour for the whole bar fails at one end: inkAt() reads the
+   gradient AT a label's position and picks near-black or white for that label. The threshold is luminance
+   0.33 — only genuinely light colours flip; mid tones (purple, mid blue) keep white. */
+function _gradStops(g){
+  const m = String(g||'').match(/#[0-9a-fA-F]{6}\b/g) || [];
+  return m.map(h=>{ const n=parseInt(h.slice(1),16); return [n>>16, n>>8&255, n&255]; });
+}
+function _relLum(rgb){ const c=rgb.map(v=>{ v/=255; return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4); }); return .2126*c[0]+.7152*c[1]+.0722*c[2]; }
+function gradAt(g, t){                                   // colour at fraction t (0..1) along the gradient
+  const st=_gradStops(g); if(!st.length) return [17,17,22]; if(st.length===1) return st[0];
+  if(/225deg/.test(g)) t = 1-t;                          // the mirrored "more" page reads right-to-left
+  const x=Math.max(0,Math.min(1,t))*(st.length-1), i=Math.min(st.length-2,Math.floor(x)), f=x-i;
+  return st[i].map((v,k)=>Math.round(v+(st[i+1][k]-v)*f));
+}
+const INK_DARK = '#111116';
+function inkAt(g, t){ return _relLum(gradAt(g,t)) > 0.33 ? 'dark' : 'light'; }
+function inkAvg(g){ const st=_gradStops(g); if(!st.length) return 'light'; return st.reduce((a,c)=>a+_relLum(c),0)/st.length > 0.33 ? 'dark' : 'light'; }
+/* Per-label style for a bar label at fraction t: text colour, and the active pill to match. */
+function tabInk(g, t, on){
+  if(inkAt(g,t)==='light') return '';                    // the default CSS (white) already fits
+  return `color:${on?INK_DARK:'rgba(17,17,22,.62)'};${on?'background:rgba(17,17,22,.12);':''}`;
+}
 function washFor(grad){
   const cols = (grad && grad.match(/#[0-9a-fA-F]{6}/g)) || ['#888888'];
   const accent = cols[0];
@@ -3095,14 +3120,23 @@ function syncGwChrome(){
    Called on every build, not just on open, so it survives the round trip out to a gateway and
    back — on desktop the panel never opens at all, and a pinned list that only positioned itself
    once would drift out of step with the screen behind it. */
+/* Set a drawer list's scroll so it actually sticks (Sean, 2026-10-13). After a fling the list keeps gliding,
+   and a phone IGNORES a programmatic scrollTop while that momentum is live: switch gateway via ★, reopen the
+   drawer, and it was still where you flung it. Briefly removing overflow ends the momentum; then the position
+   is applied, and applied again on the next frame once the drawer is actually on screen. */
+function settleListScroll(list, top){
+  if(!list) return;
+  const apply = () => { list.style.overflowY='hidden'; void list.offsetHeight; list.scrollTop = Math.max(0, top); list.style.overflowY=''; };
+  apply(); requestAnimationFrame(apply);
+}
 function revealActiveSector(){
   const dl=$('drawerList'); if(!dl) return;
   const act=$('drawerActiveRow');
-  if(!act){ dl.scrollTop=0; return; }              // no sector yet → the top of the list
+  if(!act){ settleListScroll(dl, 0); return; }     // no sector yet → the top of the list
   const sec = dl.querySelector('.gwsec');          // any divider: they are all the same height
   const pad = sec ? sec.getBoundingClientRect().height : 0;
   const dr=dl.getBoundingClientRect(), ar=act.getBoundingClientRect();
-  dl.scrollTop = Math.max(0, dl.scrollTop + (ar.top - dr.top) - pad);
+  settleListScroll(dl, dl.scrollTop + (ar.top - dr.top) - pad);
 }
 function buildDrawer(){
   const layer = zoneLayer();
@@ -3315,9 +3349,9 @@ function openDrawerR(){
   const dlr=$('drawerRList'), actR=$('drawerRActiveRow');
   if(actR){                                        // inside a gateway → bring its row into view
     const dr=dlr.getBoundingClientRect(), ar=actR.getBoundingClientRect();
-    dlr.scrollTop += (ar.top - dr.top) - (dlr.clientHeight - ar.height)/2;
+    settleListScroll(dlr, dlr.scrollTop + (ar.top - dr.top) - (dlr.clientHeight - ar.height)/2);
   } else {
-    dlr.scrollTop = 0;
+    settleListScroll(dlr, 0);
   }
   frame.classList.add('drawer-open-r');
   clearNudge('edgeR');
@@ -4781,13 +4815,15 @@ function renderGateway(){
   // Both pages are drawn on one track so the bar can be SWIPED between them (see
   // initGwBarSwipe); the off-screen page is clipped by .gwbar-vp. The arrow sits outside
   // the track — it's chrome for the carousel, not part of it.
-  const pgTabs = list => list.map(([k,lb])=>`<div class="ntab ${gwTabOn(k)?'on':''}" onclick="tapGwZone('${k}')">${lb}</div>`).join('');
+  // Each label's ink follows the gradient behind it (tabInk). Labels sit at roughly even fractions of the bar;
+  // the › arrow sits at the far right.
+  const pgTabs = list => list.map(([k,lb],i)=>`<div class="ntab ${gwTabOn(k)?'on':''}" style="${tabInk(barBg,(i+.5)/(list.length+.4),gwTabOn(k))}" onclick="tapGwZone('${k}')">${lb}</div>`).join('');
   bar = `<div class="substick netbar" style="background:${barBg}">
     <div class="gwbar-vp"><div class="gwbar-track" style="transform:translateX(${onMore?'-50%':'0%'})">
       <div class="gwbar-pg">${pgTabs(GW_PAGE1)}</div>
       <div class="gwbar-pg">${pgTabs(GW_PAGE2)}</div>
     </div></div>
-    <div class="ntab${arrowNudge}" style="flex:0 0 30px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px" onclick="tapGwBarPage()" title="${onMore?'Back to Feed · Brands · Apps':'More — Pros · Communities · Business'}">${barArrow}</div>
+    <div class="ntab${arrowNudge}" style="flex:0 0 30px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px;${tabInk(barBg,.97,true).replace(/background:[^;]*;/,'')}" onclick="tapGwBarPage()" title="${onMore?'Back to Feed · Brands · Apps':'More — Pros · Communities · Business'}">${barArrow}</div>
   </div>`;
 
   if (state.gwZones){
@@ -5363,7 +5399,8 @@ function renderZonePage(){
   // brand deck, and the ‹ClimbXX tablet are gone. The one way back to the main domain
   // (the gateway) lives on the shared bottom bar; brand-switching lives in the Brands sub-tab.
   // (2026-07-27 s3: AI & Profile are ecosystem-level now — no in-zone peek borrows this bar.)
-  const head = `<div class="top gw" style="background:${z.gradient};color:#fff">
+  const zInkName = inkAt(z.gradient,.3)==='dark' ? INK_DARK : '#fff', zInkStar = inkAt(z.gradient,.95)==='dark' ? INK_DARK : '#fff';
+  const head = `<div class="top gw" style="background:${z.gradient};color:${zInkName}">
     <!-- A brand zone is the brand's space, so its mark leads the bar, not GENEXXO's (2026-09-27): the
          logo on a white tile, or its initials in the brand colour. Tapping it goes to the brand's own
          home (its feed), as the name beside it does; GENEXXO home is Back → the gateway's logo. -->
@@ -5374,7 +5411,7 @@ function renderZonePage(){
              : `<span style="font-size:10px;font-weight:800;letter-spacing:0">${zoneInitials(z.name)}</span>`}</div></div>
     <div onclick="zoneToFeed()" title="${esc(z.name)} feed" style="font-family:var(--cond);font-weight:700;font-size:16px;letter-spacing:.01em;margin-left:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer">${z.name}</div>
     <div class="favhit" onclick="event.stopPropagation();toggleFavPanel()" title="Favourites"
-      style="margin-left:auto;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;font-size:19px;line-height:1;color:#fff;opacity:${state.showFavs?'1':'.72'};${state.showFavs?'background:rgba(255,255,255,.18)':''}">${state.showFavs?'★':'☆'}</div>
+      style="margin-left:auto;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;font-size:19px;line-height:1;color:${zInkStar};opacity:${state.showFavs?'1':'.72'};${state.showFavs?'background:rgba(255,255,255,.18)':''}">${state.showFavs?'★':'☆'}</div>
   </div>`;
 
   const bag=state.bag.length;
@@ -5389,14 +5426,15 @@ function renderZonePage(){
   const zBarBg = onMore ? z.gradient.replace('135deg','225deg') : z.gradient;
   // Shop is special: it stays tappable even when active, because tapping it toggles the category
   // overlay (open ⇄ close). Every other heading locks (pointer-events:none) once it's the live view.
+  const zt = k => (zTabs.findIndex(x=>x[0]===k)+.5)/(zTabs.length+.4);   // label position along the bar
   const cTab=(k,lb)=> k==='shop'
-    ? `<div class="ntab${state.zoneTab==='shop'?' on':''}" onclick="tapShop()">${lb}</div>`
+    ? `<div class="ntab${state.zoneTab==='shop'?' on':''}" style="${tabInk(zBarBg,zt(k),state.zoneTab==='shop')}" onclick="tapShop()">${lb}</div>`
     : state.zoneTab===k
-      ? `<div class="ntab on" style="pointer-events:none">${lb}</div>`
-      : `<div class="ntab" onclick="setZoneTab('${k}')">${lb}</div>`;
+      ? `<div class="ntab on" style="pointer-events:none;${tabInk(zBarBg,zt(k),true)}">${lb}</div>`
+      : `<div class="ntab" style="${tabInk(zBarBg,zt(k),false)}" onclick="setZoneTab('${k}')">${lb}</div>`;
   const bar = `<div class="substick netbar" style="background:${zBarBg}">
       ${zTabs.map(([k,lb])=>cTab(k,lb)).join('')}
-      <div class="ntab" style="flex:0 0 30px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px" onclick="tapZoneBarPage()" title="${onMore?'Back to Feed · Shop · Bag':'More — Media · About · Events'}">${zBarArrow}</div>
+      <div class="ntab" style="flex:0 0 30px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px;${tabInk(zBarBg,.97,true).replace(/background:[^;]*;/,'')}" onclick="tapZoneBarPage()" title="${onMore?'Back to Feed · Shop · Bag':'More — Media · About · Events'}">${zBarArrow}</div>
     </div>`;
 
   const body = state.zoneTab==='products' ? zoneProductList(z)
