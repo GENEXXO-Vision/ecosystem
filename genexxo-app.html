@@ -300,6 +300,16 @@
   .netbar{position:sticky;top:var(--top-h,53px);z-index:30;display:flex;gap:6px;padding:7px 14px}
   .ntab{flex:1;text-align:center;font-size:12.5px;font-weight:700;color:rgba(255,255,255,.5);padding:7px 0;border-radius:99px;cursor:pointer;transition:color .15s,background .15s}
   .ntab.on{color:#fff;background:rgba(255,255,255,.15)}
+  /* Framed trial: white bar, dark labels, the gateway gradient as 4px strips top and bottom (border-box layer). */
+  .netbar.framed{border-top:4px solid transparent;border-bottom:4px solid transparent;padding:4px 14px}
+  .netbar.framed .ntab{color:rgba(17,17,22,.5)}
+  .netbar.framed .ntab.on{color:#111116;background:rgba(17,17,22,.07)}
+  /* Hover on the white bar (Sean, 2026-10-13): the label keeps its own colour (the shared hover rule turned it
+     white, so it vanished) and a lighter pill fades in, then out — for a moment the active and hovered pills show
+     together. The base .ntab transition gives the fade. */
+  @media (hover:hover) and (pointer:fine){
+    .netbar.framed .ntab:not(.on):hover{color:rgba(17,17,22,.75);background:rgba(17,17,22,.045)}
+  }
   /* Events scope — Network · Sector · Gateway. A segmented control, not more chips: it changes
      WHICH calendar you are reading, the chips beneath filter within it. Both layouts. */
   .evscope{display:flex;gap:4px;margin:2px 16px 4px;padding:4px;border-radius:14px;background:rgba(17,17,22,.05)}
@@ -1333,7 +1343,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-32"></script>
+<script src="genexxo-data.js?v=2026.08.26-33"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -2156,7 +2166,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-32';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-33';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2965,6 +2975,10 @@ function activeGatewayName(){
    to light (CycleXX: black → yellow), so one colour for the whole bar fails at one end: inkAt() reads the
    gradient AT a label's position and picks near-black or white for that label. The threshold is luminance
    0.33 — only genuinely light colours flip; mid tones (purple, mid blue) keep white. */
+/* Gateway tab bar style (2026-10-13). Trialled on Adventure, then adopted everywhere by Sean: a white bar framed
+   by the gateway's gradient sets the GATEWAY level apart from the network/sector bars and from brand zones, and
+   every label reads on every colour. 'all' = every gateway; a list of sector keys scopes it; [] = off. */
+const GW_BAR_FRAMED = 'all';
 function _gradStops(g){
   const m = String(g||'').match(/#[0-9a-fA-F]{6}\b/g) || [];
   return m.map(h=>{ const n=parseInt(h.slice(1),16); return [n>>16, n>>8&255, n&255]; });
@@ -4815,15 +4829,19 @@ function renderGateway(){
   // Both pages are drawn on one track so the bar can be SWIPED between them (see
   // initGwBarSwipe); the off-screen page is clipped by .gwbar-vp. The arrow sits outside
   // the track — it's chrome for the carousel, not part of it.
-  // Each label's ink follows the gradient behind it (tabInk). Labels sit at roughly even fractions of the bar;
-  // the › arrow sits at the far right.
-  const pgTabs = list => list.map(([k,lb],i)=>`<div class="ntab ${gwTabOn(k)?'on':''}" style="${tabInk(barBg,(i+.5)/(list.length+.4),gwTabOn(k))}" onclick="tapGwZone('${k}')">${lb}</div>`).join('');
-  bar = `<div class="substick netbar" style="background:${barBg}">
+  // The framed bar (GW_BAR_FRAMED, 2026-10-13): white with dark labels, framed top and bottom by thin strips of the
+  // gateway's own gradient.
+  const framed = GW_BAR_FRAMED==='all' || GW_BAR_FRAMED.includes(gwSecOf(gw) || gw.sector);
+  // Otherwise each label's ink follows the gradient behind it (tabInk). Labels sit at roughly even fractions of
+  // the bar; the › arrow sits at the far right.
+  const labInk = (i,n,on) => framed ? '' : tabInk(barBg,(i+.5)/(n+.4),on);
+  const pgTabs = list => list.map(([k,lb],i)=>`<div class="ntab ${gwTabOn(k)?'on':''}" style="${labInk(i,list.length,gwTabOn(k))}" onclick="tapGwZone('${k}')">${lb}</div>`).join('');
+  bar = `<div class="substick netbar${framed?' framed':''}" style="${framed?`background:linear-gradient(#fff,#fff) padding-box, ${barBg} border-box`:`background:${barBg}`}">
     <div class="gwbar-vp"><div class="gwbar-track" style="transform:translateX(${onMore?'-50%':'0%'})">
       <div class="gwbar-pg">${pgTabs(GW_PAGE1)}</div>
       <div class="gwbar-pg">${pgTabs(GW_PAGE2)}</div>
     </div></div>
-    <div class="ntab${arrowNudge}" style="flex:0 0 30px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px;${tabInk(barBg,.97,true).replace(/background:[^;]*;/,'')}" onclick="tapGwBarPage()" title="${onMore?'Back to Feed · Brands · Apps':'More — Pros · Communities · Business'}">${barArrow}</div>
+    <div class="ntab${arrowNudge}" style="flex:0 0 30px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px;${framed?'':tabInk(barBg,.97,true).replace(/background:[^;]*;/,'')}" onclick="tapGwBarPage()" title="${onMore?'Back to Feed · Brands · Apps':'More — Pros · Communities · Business'}">${barArrow}</div>
   </div>`;
 
   if (state.gwZones){
