@@ -188,6 +188,59 @@
   .cm-card{position:relative;width:100%;max-width:370px;background:#17171E;border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:20px;color:#fff;box-shadow:0 20px 50px rgba(0,0,0,.5)}
   .cm-card h3{font-size:17px;font-weight:800;margin:12px 0 2px}.cm-card p{font-size:12px;opacity:.6;font-weight:600}
   .cm-crest{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#fff}
+  /* LAB CANVAS (2026-10-14): a zone (brand / business) presented as a canvas inside the shell. */
+  #frame.lab-canvas #zstep{display:none!important}           /* quick switch moves into the canvas header */
+  .cvtop{position:relative;z-index:31;background:#fff;color:var(--ink);padding:10px 12px 10px;border-bottom:1px solid var(--line)}
+  .cvchip{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;padding:4px 10px 4px 4px;border-radius:99px;background:#F1F1F3;color:var(--muted);cursor:pointer;margin-bottom:8px}
+  .cvchip i{font-style:normal;width:18px;height:18px;border-radius:5px;background:#111116;color:#fff;font-size:8px;font-weight:900;display:flex;align-items:center;justify-content:center}
+  .cvrow{display:flex;align-items:center;gap:11px}
+  .cvid{flex:1;min-width:0}
+  .cvid b{display:flex;align-items:center;gap:7px;font-size:17px;font-weight:800;line-height:1.15;min-width:0}
+  .cvid b span.nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cvid small{display:block;font-size:11.5px;color:var(--muted);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cvbadge{flex-shrink:0;font-size:9px;font-weight:800;letter-spacing:.07em;padding:2px 7px;border-radius:99px}
+  .cvstep{display:flex;flex-direction:column;gap:2px;flex-shrink:0}
+  .cvstep div{width:28px;height:21px;border-radius:7px;background:#F1F1F3;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);cursor:pointer}
+  .cvbtn{width:34px;height:34px;border-radius:99px;background:#F1F1F3;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;flex-shrink:0;color:var(--muted)}
+  .cvbtn.on{color:#B45309;background:#FEF3C7}
+  .push.cv-in{animation:cvIn .32s cubic-bezier(.2,.75,.2,1)}
+  #frame.lab-canvas #screen .push img,#frame.lab-canvas #appCanvas img{-webkit-user-drag:none;user-select:none}   /* so a swipe isn't an image drag */
+  /* LAB: apps, pros and communities wear the same canvas header and leave room for the REAL bottom bar */
+  #appCanvas.lab{background:#FBFBFC;color:var(--ink);bottom:calc(var(--bar-h) + var(--safe-b))}
+  #appCanvas.lab .cvtop{flex-shrink:0}
+  #appCanvas.lab .cm-pill{display:none}
+  #appCanvas.lab .ap{background:#0B0B0F;color:#fff}
+  #appCanvas.lab.lab-run{bottom:0;background:#0B0B0F;color:#fff}
+  #appCanvas.lab.lab-run .ac-body{padding-bottom:50px}
+  .cvcap{margin-left:auto;display:flex;align-items:center;border:1px solid rgba(255,255,255,.22);border-radius:99px;overflow:hidden;flex-shrink:0}
+  .cvcap div{width:44px;height:30px;color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .cvcap div+div{border-left:1px solid rgba(255,255,255,.22)}
+  .cvhost{position:absolute;left:0;right:0;bottom:0;height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 14px var(--safe-b);background:#fff;color:var(--ink);border-top:3px solid transparent;z-index:3}
+  .cvhost .lb{flex:1;display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:var(--muted)}.cvhost .lb.r{justify-content:flex-end}
+  .cvhost .lb i{font-style:normal;width:18px;height:18px;border-radius:5px;background:#111116;color:#fff;font-size:8px;font-weight:900;display:flex;align-items:center;justify-content:center}
+  .cvhost .ai{width:44px;height:44px;border-radius:50%;margin-top:-18px;border:3px solid #fff;color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer}
+  .cvmenu{position:absolute;left:0;right:0;bottom:50px;z-index:4;background:#fff;color:var(--ink);border-radius:20px 20px 0 0;box-shadow:0 -14px 40px rgba(0,0,0,.25);padding:14px 16px 10px}
+  /* LAB: the zone-scoped sheets the canvas bar opens (Discover · AI · Events · Profile) */
+  #cvScrim{position:fixed;inset:0;z-index:94;background:rgba(0,0,0,.28);animation:cvFade .2s ease}
+  #cvSheet{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--bar-h) + var(--safe-b));width:100%;max-width:430px;max-height:74%;overflow-y:auto;z-index:95;
+    background:#fff;color:var(--ink);border-radius:22px 22px 0 0;box-shadow:0 -14px 40px rgba(0,0,0,.22);padding:16px 15px 18px;animation:cvUp .26s cubic-bezier(.2,.75,.2,1)}
+  @keyframes cvUp{from{transform:translateX(-50%) translateY(30px);opacity:.3}to{transform:translateX(-50%);opacity:1}}
+  @keyframes cvFade{from{opacity:0}}
+  #cvSheet h3{font-size:16px;font-weight:800}#cvSheet .sub{font-size:12px;color:var(--muted);margin-top:2px}
+  #cvSheet input{width:100%;margin-top:12px;font:inherit;font-size:15px;padding:11px 13px;border:1px solid var(--line);border-radius:12px;background:#F7F7F8}
+  .cvr{display:flex;align-items:center;gap:11px;padding:11px 12px;border:1px solid var(--line);border-radius:13px;margin-top:8px;cursor:pointer}
+  .cvr b{display:block;font-size:13.5px}.cvr span{display:block;font-size:11.5px;color:var(--muted);line-height:1.4}
+  .cvr .k{font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);flex-shrink:0;padding:3px 7px;border-radius:99px;background:#F3F3F5}
+  .cvr button{margin-left:auto;font:inherit;font-size:12px;font-weight:800;padding:7px 13px;border-radius:99px;border:0;color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0}
+  .cvchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.cvchips span{font-size:12.5px;font-weight:700;padding:8px 12px;border-radius:99px;background:#F3F3F5;cursor:pointer}
+  .cvbub{margin-top:10px;padding:11px 13px;border-radius:14px;background:#F6F6F8;font-size:13.5px;line-height:1.5}.cvbub.me{background:#111116;color:#fff;margin-left:28%}
+  .cvyou{border:1.5px solid;border-radius:16px;padding:12px 13px;margin-top:12px}
+  .cvyou h4{font-size:13.5px;font-weight:800;margin-bottom:4px}.cvyou .li{display:flex;gap:8px;font-size:12.5px;padding:4px 0}.cvyou .li em{font-style:normal;width:18px;text-align:center}
+  .cvyou .sees{margin-top:6px;padding-top:8px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted)}
+  .cvmenu h4{font-size:15px;font-weight:800}.cvmenu p{font-size:11.5px;color:var(--muted);margin:2px 0 6px}
+  .cvmenu div.r{display:flex;align-items:center;gap:12px;padding:11px 2px;border-bottom:1px solid var(--line);font-size:14px;font-weight:700;cursor:pointer}
+  .cvmenu div.r:last-child{border-bottom:0}.cvmenu div.r em{font-style:normal;width:28px;height:28px;border-radius:8px;background:#F3F3F5;display:flex;align-items:center;justify-content:center}
+  @keyframes cvIn{from{transform:translateY(28px);opacity:.4}to{transform:none;opacity:1}}
   /* BUSINESS ZONE (2026-10-13): the B2B space, inside the brand-zone page. */
   .bz-hero{height:150px;border-radius:18px 18px 0 0;background:#ddd center/cover;margin:12px 14px 0}
   .bz-card{margin:0 14px 10px;background:#fff;border:1px solid var(--line);border-radius:0 0 18px 18px;padding:14px}
@@ -927,7 +980,7 @@
        !important is unavoidable — the two panels carry their widths as inline styles. */
     #frame{--sheet-w:min(600px, calc(min(1480px,100vw) - 2 * var(--panel-w)));
            --frame-w:min(1480px,100vw)}
-    .gx-panel,#infoFeed,#psheet,#shopMenu,.gxsheet,#zoneCanvas,#appCanvas,#pfSet{max-width:var(--sheet-w)!important}
+    .gx-panel,#infoFeed,#psheet,#shopMenu,.gxsheet,#zoneCanvas,#appCanvas,#pfSet,#cvSheet{max-width:var(--sheet-w)!important}
     /* Full height ones start below the bar; the bottom-anchored sheets are unaffected. */
     #infoFeed,.gx-panel[style*="top:0"],#appCanvas,#pfSet{top:var(--top-h,53px)!important}
     /* A scrim only as wide as the sheet would leave the gutters bright while the middle
@@ -1369,7 +1422,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-34"></script>
+<script src="genexxo-data.js?v=2026.08.26-35"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1462,6 +1515,19 @@ const SECTOR_FIRST = ['adventure'];
     if(head>=0 && head<i) SECTORS.splice(head, 0, SECTORS.splice(i,1)[0]);
   });
 })();
+/* ═════════ CANVAS SHELL (2026-10-14) — ON FOR EVERYONE from -35 ═════════
+   Every zone opens as a canvas inside the unchanged shell — spec in _lab/canvas-shell/SPEC.md. Built as a lab on
+   the canvas-shell branch, then made the default by Sean the same day. The flag is still named LAB_CANVAS.
+   Escape hatch: genexxo-app.html?lab=off restores the old zone pages on that device (it persists); ?lab=on (or
+   ?lab=canvas) brings the canvas back. The pre-canvas build is frozen at Archive/genexxo-app-34-pre-canvas.html
+   and git tag pre-canvas-34. */
+const favLabel = on => LAB_CANVAS ? (on?'★':'☆') : (on?'★ In favourites':'☆ Add to favourites');
+const LAB_CANVAS = (()=>{ try{
+  const q = new URLSearchParams(location.search).get('lab');
+  if(q==='off') localStorage.setItem('gx_lab','off');
+  if(q==='on' || q==='canvas') localStorage.removeItem('gx_lab');
+  return localStorage.getItem('gx_lab')!=='off';
+}catch(e){ return !/[?&]lab=off\b/.test(location.search); } })();
 /* The demo user (2026-10-11): one fictional persona everywhere — profile, app bridge, community sign-in,
    posts. Fictional by design; the email is example.com. */
 const USER = { name:'Alex Morgan', handle:'@alexm', ini:'AM', bio:'Climber, surfer, occasional ski tourer. Chasing dry rock and clean swell from London.',
@@ -2136,6 +2202,7 @@ const state = {
   discoverMemo:null,     // {sector, group, q, gw, scroll} — same idea for Discover: a look at one
                          // gateway and back should return you to the tile you were browsing
   app:null,                                   // the app running in the canvas: {key, gwKey, posted, screen}
+  cvHist:[], cvFrom:null, cvSheet:null,      // … · which zone-scoped sheet is open (discover | ai | events | profile)                     // LAB canvas: the trail INSIDE the open zone canvas · where it was opened from
   zone:null, zoneTab:'feed', _zoneIn:false,   // zone canvas: open zone key + its tab (feed | products | about)
   zoneProduct:null, zoneSize:null, bag:[], zoneFollow:{},   // product sheet + session bag/follows
   shopMenu:false, shopCat:null,   // Shop category overlay (open?) + the active category filter (null = show all)
@@ -2194,7 +2261,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-34';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-35';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2397,12 +2464,15 @@ function backTarget(){
   return null;   // already at the Network hub with nothing stacked
 }
 function goBack(){
+  if (LAB_CANVAS && state.cvSheet){ cvSheetClose(); return; }
   if (state.setPage){ state.setPage==='root' ? closeSettings() : openSettings('root'); return; }   // settings page → list → closed
   if (state.app && state.app.kind==='pro'){ proBack(); return; }
   if (state.app && state.app.kind==='community'){ closeApp(); return; }   // leave the community → back where you were   // booking step → previous step → the zone → out
   if (state.app){ (state.app.running && state.app.fromPage) ? backToAppPage() : closeApp(); return; }   // app → its page → out
   // 0) a utility tab floating over a gateway → close it and leave the gateway standing
   if (state.utilOver){ state.utilOver=null; render(); return; }
+  if (LAB_CANVAS && state.cvSheet){ cvSheetClose(); return; }
+  if (LAB_CANVAS && state.screen==='zone' && !UTIL_TABS.includes(state.tab)){ canvasBack(); return; }   // LAB: Back stays inside the canvas
   // 1) an open utility tab (Discover/AI/Events/Profile) → toggle it shut, restoring _before
   if (UTIL_TABS.includes(state.tab)){ setTab(state.tab); return; }
   // 2) a product sheet is open in a zone → just close the sheet
@@ -3678,6 +3748,7 @@ function topBar(gw){
 }
 
 const ICONS = {
+  close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>',
   back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 5l-7 7 7 7"/></svg>',
   home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>',
   discover:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
@@ -3725,7 +3796,17 @@ function tabBar(){
   tb.style.background = gw ? `${t.bg}f2` : '';
   tb.style.borderTopColor = gw ? t.cardBorder : '';
   const tabs = [['back','Back'],['discover','Discover'],['ai','AI'],['events','Events'],['profile','Profile']];
-  const canBack = !!backTarget() || !!(state._hist && state._hist.length) || (state.screen==='gateway' && state.gwZones) || state.zoneProduct!=null;
+  // LAB canvas mode: the SAME bar, with a strip of the zone's colour on top; Back retraces the canvas, and at the
+  // canvas's first page it reads Close.
+  const cvApp = LAB_CANVAS && state.app && !(!state.app.kind && state.app.running) && $('appCanvas');   // app home page, pro, community (a running APP hides the bar)
+  const inCanvas = cvApp || (LAB_CANVAS && state.screen==='zone' && ZONES[state.zone] && !state.utilOver && !UTIL_TABS.includes(state.tab));
+  const cvGrad = !inCanvas ? '' : cvApp ? (()=>{ const a=state.app, h = a.kind==='pro'?proByKey(a.key):a.kind==='community'?commByKey(a.key):appByKey(a.key);
+      const c = h ? (a.kind==='pro'?h.pro.color:a.kind==='community'?h.comm.color:h.app.color) : '#111116'; return `linear-gradient(90deg,${c},#111116)`; })() : ZONES[state.zone].gradient;
+  tb.style.borderTop = inCanvas ? '3px solid transparent' : '';
+  tb.style.borderImage = inCanvas ? `${cvGrad} 1` : '';
+  const cvRoot = inCanvas && (cvApp ? !(state.app.kind==='pro' && state.app.book && state.app.book.step!=='done' && state.app.book.fromPage)
+                                    : (!state.cvHist.length && state.zoneProduct==null && !state.shopMenu));
+  const canBack = inCanvas || !!backTarget() || !!(state._hist && state._hist.length) || (state.screen==='gateway' && state.gwZones) || state.zoneProduct!=null;
   const dead = gw ? `${t.text}24` : 'rgba(17,17,22,.16)';   // Back with nowhere to go
   /* Desktop's masthead Back mirrors this one: same goBack(), same canBack. Where the bottom Back
      greys out, this one leaves — a dimmed control in the top bar is clutter, not information.
@@ -3741,7 +3822,12 @@ function tabBar(){
   tb.innerHTML = tabs.map(([k,lb]) => {
     if (k==='back'){
       const col = canBack ? idle : dead;
+      if(cvRoot) return `<div class="tab" style="color:${idle}" onclick="goBack()" title="Close · back to ${esc((gw&&gw.name)||'GENEXXO')}">${ICONS.close}<div class="lb">Close</div></div>`;
       return `<div class="tab" style="color:${col}${canBack?'':';pointer-events:none'}" onclick="goBack()">${ICONS.back}<div class="lb">${lb}</div></div>`;
+    }
+    if(inCanvas){   // LAB canvas: the same button, scoped to the zone, opening/closing its sheet
+      const on = state.cvSheet===k;
+      return `<div class="tab ${on?'on':''}" style="color:${on?active:idle}" onclick="cvSheetTap('${k}')">${ICONS[k]}<div class="lb">${lb}</div></div>`;
     }
     // A floating utility tab lights its own slot — state.tab still names the screen underneath.
     const lit = (state.utilOver || state.tab) === k;
@@ -4246,16 +4332,17 @@ function openApp(key, run){
   el.innerHTML = `<div class="ac-bar">
       <div class="ac-ic" style="background:${app.color}">${ini}</div>
       <div class="ac-tx"><b>${app.name}</b><span id="acSub">${gw.name} · App</span></div>
-      <div class="ac-btn ${inW()?'on':''}" id="acWallet">${inW()?'★ In favourites':'☆ Add to favourites'}</div>
+      <div class="ac-btn ${inW()?'on':''}" id="acWallet">${favLabel(inW())}</div>
       <div class="ac-x" onclick="closeApp()" title="Close"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></div>
     </div><div class="ac-body" id="acBody"></div>`;
   $('frame').appendChild(el);
   $('acWallet').onclick = () => {
     toggleAppQuiet(app.name, app.color, gw.name);
-    const b=$('acWallet'); b.classList.toggle('on', inW()); b.textContent = inW()?'★ In favourites':'☆ Add to favourites';
+    const b=$('acWallet'); b.classList.toggle('on', inW()); b.textContent = favLabel(inW());
     if(state.app && !state.app.running) paintAppPage(true);   // keep the page's ☆ Favourite in step
   };
   if(run) runApp(); else paintAppPage();
+  labCanvasDress();
   if($('frame').classList.contains('panels-float')) try{ buildGwPanels(); }catch(_){}
 }
 /* The page → the app, in place. The frame bar stays; only the body changes. */
@@ -4266,6 +4353,7 @@ function runApp(){
   const sub = $('acSub'); if(sub) sub.textContent = `Sandboxed · running in ${hit.gw.name}`;
   const granted = _appStore('gx_appGrants')[hit.app.key];
   (granted ? mountApp : askAppPerms)(hit);
+  labCanvasDress();
   if($('frame').classList.contains('panels-float')) try{ buildGwPanels(); }catch(_){}
 }
 const _ago = d => d<=0?'Today':d===1?'Yesterday':d<7?`${d} days ago`:d<14?'Last week':d<60?`${Math.round(d/7)} weeks ago`:`${Math.round(d/30)} months ago`;
@@ -4296,7 +4384,7 @@ function paintAppPage(keepScroll){
     <div class="ap-cta">
       ${live?`<button class="ap-open" style="background:${app.color}" onclick="runApp()">Open</button>`
             :`<button class="ap-open soon" onclick="this.textContent='✓ We\'ll tell you';this.disabled=true">Notify me</button>`}
-      <button class="ap-sub ${inW?'on':''}" onclick="toggleAppQuiet('${esc(app.name)}','${app.color}','${esc(gw.name)}');paintAppPage(true);var b=$('acWallet');if(b){var on=state.wallet.some(w=>w.name==='${esc(app.name)}');b.classList.toggle('on',on);b.textContent=on?'★ In favourites':'☆ Add to favourites';}">${inW?'★ Favourite':'☆ Favourite'}</button></div>
+      <button class="ap-sub ${inW?'on':''}" onclick="toggleAppQuiet('${esc(app.name)}','${app.color}','${esc(gw.name)}');paintAppPage(true);var b=$('acWallet');if(b){var on=state.wallet.some(w=>w.name==='${esc(app.name)}');b.classList.toggle('on',on);b.textContent=favLabel(on);}">${inW?'★ Favourite':'☆ Favourite'}</button></div>
     <div class="ap-instant">${live?'Opens instantly inside the gateway · nothing to download':`Coming to ${gw.name}`}</div>
     <div class="ap-shots">${(app.shots||[]).length ? app.shots.map(u=>`<img src="${u}" alt="" loading="lazy">`).join('')
         : [1,2,3].map(()=>`<div class="ap-shot-ph">Preview soon</div>`).join('')}</div>
@@ -4344,18 +4432,240 @@ function mountApp(hit){
       </div></div>`;
   }, 6000);
 }
+/* LAB: dress the app/pro/community canvas in the shared canvas grammar. Engines untouched. */
+function labCanvasSiblings(){
+  const a = state.app; if(!a) return [];
+  const gw = GATEWAYS[a.gwKey] || {};
+  if(a.kind==='pro') return (gw.pros||[]).filter(x=>x.key).map(x=>({key:x.key, name:x.name}));
+  if(a.kind==='community') return (gw.communities||[]).map(x=>({key:x.key, name:x.name}));
+  return (gw.apps||[]).filter(x=>x.url).map(x=>({key:x.key, name:x.name}));
+}
+function labCanvasStep(d){
+  const l = labCanvasSiblings(), a = state.app; if(l.length<2) return;
+  const i = Math.max(0, l.findIndex(x=>x.key===a.key)), k = l[(i+d+l.length)%l.length].key;
+  a.kind==='pro' ? openPro(k) : a.kind==='community' ? openComm(k) : openApp(k);
+}
+function labCanvasDress(){
+  if(!LAB_CANVAS || !state.app) return;
+  const el = $('appCanvas'); if(!el) return;
+  el.classList.add('lab');
+  const a = state.app, kind = a.kind || 'app';
+  const hit = kind==='pro' ? proByKey(a.key) : kind==='community' ? commByKey(a.key) : appByKey(a.key);
+  if(!hit) return;
+  const z = kind==='pro' ? hit.pro : kind==='community' ? hit.comm : hit.app, gw = hit.gw;
+  const [lab, col] = {app:['APP','#16A34A'], pro:['PRO','#7C3AED'], community:['COMMUNITY','#0284C7']}[kind];
+  const fav = kind==='pro' ? state.proFavs.includes(a.key) : kind==='community' ? state.commStars.includes(a.key) : state.wallet.some(w=>w.name===z.name);
+  const favGo = kind==='pro' ? `toggleProFav('${a.key}')` : kind==='community' ? `toggleCommStar('${a.key}')` : '';
+  const sib = labCanvasSiblings().length > 1;
+  const ini = (z.name||'').split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const appRunning = kind==='app' && !!a.running;   // only a third-party app 'runs'; a community site is a page
+  el.classList.toggle('lab-run', appRunning);
+  let head = el.querySelector('.cvtop, .ac-bar');
+  if(kind==='community'){                      // keep the community's own address bar; add a close chip on the phone
+    const cm = el.querySelector('.cm-bar');
+    if(cm && !DESKTOP() && !el.querySelector('.cvchip')) cm.insertAdjacentHTML('afterbegin', `<span class="cvchip" style="margin:0" onclick="closeApp()"><i>XX</i>✕</span>`);
+    tabBar(); return;
+  }
+  const html = a.running
+    ? `<div class="ac-bar"><div class="ac-ic" style="background:${z.color}">${ini}</div><div class="ac-tx"><b>${z.name}</b><span id="acSub">Sandboxed · running in ${gw.name}</span></div>
+        <div class="cvcap"><div onclick="labCanvasMenu()" title="More">•••</div><div onclick="backToAppPage()" title="Close the app">✕</div></div></div>`
+    : `<div class="cvtop">${DESKTOP() ? '' : `<span class="cvchip" onclick="closeApp()"><i>XX</i>${esc(gw.name)} · close</span>`}
+        <div class="cvrow"><div style="width:44px;height:44px;border-radius:13px;background:${kind==='app'?`linear-gradient(135deg,${z.color},#111116)`:z.color};color:#fff;font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${ini}</div>
+          <div class="cvid"><b><span class="nm">${z.name}</span><span class="cvbadge" style="background:${col}1A;color:${col}">${lab}</span></b><small id="acSub">${kind==='pro'?`${z.role} · ${z.base}`:(z.tagline||z.desc||'')}</small></div>
+          ${sib?`<div class="cvstep"><div onclick="labCanvasStep(-1)" title="Previous">▲</div><div onclick="labCanvasStep(1)" title="Next">▼</div></div>`:''}
+          <div class="cvbtn ${fav?'on':''}" id="acWallet" ${favGo?`onclick="${favGo}"`:''} title="${fav?'Remove from favourites':'Add to favourites'}">${fav?'★':'☆'}</div>
+          <div class="cvbtn" onclick="closeApp()" title="Close · back to ${esc(gw.name)}">✕</div></div></div>`;
+  if(head) head.outerHTML = html; else el.insertAdjacentHTML('afterbegin', html);
+  if(kind==='app' && !a.running){ const b=$('acWallet'); if(b) b.onclick = () => { toggleAppQuiet(z.name, z.color, gw.name); const on=state.wallet.some(w=>w.name===z.name); b.classList.toggle('on',on); b.textContent=favLabel(on); paintAppPage(true); }; }
+  // the running app's slim host bar (presentation): Hosted on GENEXXO · AI · Sandboxed
+  const host = el.querySelector('.cvhost');
+  if(a.running && !host) el.insertAdjacentHTML('beforeend', `<div class="cvhost" style="border-image:linear-gradient(90deg,${z.color},#111116) 1"><div class="lb"><i>XX</i>Hosted on GENEXXO</div>
+      <div class="ai" style="background:linear-gradient(135deg,${z.color},#111116)" onclick="toast('✦ Your GENEXXO AI is briefed on ${esc(z.name)} · ask it anything in the AI tab')" title="Ask AI about ${esc(z.name)}">✦</div><div class="lb r">🔒 Sandboxed</div></div>`);
+  if(!a.running && host) host.remove();
+  const menu = el.querySelector('.cvmenu'); if(menu && !a.running) menu.remove();
+  tabBar();
+}
+/* ═════════ LAB: zone-scoped sheets (step 4) ═════════
+   Inside a canvas, Discover · AI · Events · Profile are the same buttons scoped to the zone: search this zone, its
+   assistant, its events, and your profile with a "You & <zone>" card. Tap again (or Back) to close. Real data. */
+function cvCtx(){
+  if(state.app){ const a=state.app, kind=a.kind||'app';
+    const h = kind==='pro'?proByKey(a.key):kind==='community'?commByKey(a.key):appByKey(a.key); if(!h) return null;
+    const z = kind==='pro'?h.pro:kind==='community'?h.comm:h.app;
+    return {kind, key:a.key, z, gw:h.gw, name:z.name, color:z.color, grad:kind==='app'?`linear-gradient(135deg,${z.color},#111116)`:z.color}; }
+  if(state.screen==='zone' && ZONES[state.zone]){ const z=ZONES[state.zone];
+    return {kind:z.kind==='business'?'business':'brand', key:z.key, z, gw:state._gwObj||GATEWAYS[z.gw], name:z.name, color:z.color, grad:z.gradient}; }
+  return null;
+}
+function cvSheetTap(k){ if(state.cvSheet===k){ cvSheetClose(); return; } state.cvSheet=k; state._cvQ=''; state._cvAsk=null; cvSheetPaint(); }
+function cvSheetClose(quiet){
+  state.cvSheet=null; const a=$('cvSheet'), b=$('cvScrim'); if(a) a.remove(); if(b) b.remove();
+  if(!quiet) try{ tabBar(); }catch(_){}
+}
+const cvPlain = h => String(h||'').replace(/<[^>]+>/g,'');
+function cvIndex(c){
+  const z=c.z, out=[];
+  if(c.kind==='brand'){
+    (z.products||[]).forEach((p,i)=>out.push({k:'Product', t:p.name, s:`${p.price} · ${p.desc||''}`, go:`cvSheetClose();setZoneTab('shop');openProduct(${i})`}));
+    (z.feed||[]).filter(p=>p.text).forEach(p=>out.push({k:'Post', t:cvPlain(p.text).slice(0,70), s:p.sub||'', go:`cvSheetClose();setZoneTab('feed')`}));
+  } else if(c.kind==='business'){
+    z.caps.forEach(x=>out.push({k:'Capability', t:x.name, s:x.detail, go:`cvSheetClose();setZoneTab('caps')`}));
+    z.cases.forEach(x=>out.push({k:'Case study', t:x.title, s:x.text, go:`cvSheetClose();setZoneTab('work')`}));
+    z.feed.forEach(x=>out.push({k:'Post', t:x.text, s:x.sub, go:`cvSheetClose();setZoneTab('feed')`}));
+  } else if(c.kind==='pro'){
+    z.services.forEach(v=>out.push({k:'Service', t:v.name, s:`${v.dur} · ${proMoney(z,v.price)} · ${v.desc}`, go:`cvSheetClose();proBook('${v.id}')`}));
+    z.posts.forEach(q=>out.push({k:'Post', t:q.text, s:_ago(q.ago), go:`cvSheetClose();setProTab('posts')`}));
+  } else if(c.kind==='community'){
+    z.threads.forEach(t=>out.push({k:'Thread', t:t.t, s:`${t.by} · ${t.tag} · ${t.replies} replies`, go:`cvSheetClose()`}));
+    z.events.forEach(e=>out.push({k:'Event', t:e.title, s:`${e.time} · ${e.where}`, go:`cvSheetTap('events')`}));
+  } else {
+    (z.features||[]).forEach(f=>out.push({k:'Feature', t:f, s:z.name, go:`cvSheetClose();setAppTab('about')`}));
+    (z.updates||[]).forEach(u=>out.push({k:'Update', t:'Version '+u.v, s:u.notes, go:`cvSheetClose();setAppTab('updates')`}));
+  }
+  return out;
+}
+function cvEvents(c){
+  const z=c.z;
+  if(c.kind==='brand') return zoneEventList(z).filter(e=>e.title).map(e=>({t:e.title, w:e.when||e.now||'', cta:'RSVP', go:`toast('✓ Added to your Events')`}));
+  if(c.kind==='community') return z.events.map(e=>({t:e.title, w:`${e.time} · ${e.where}`, cta:'RSVP', go:`toast('RSVP inside the community · it lands in Your week')`}));
+  if(c.kind==='pro'){ const open = proSlots(z).filter(d=>d.works && !d.full).slice(0,3);
+    return open.map(d=>({t:z.services[0].name, w:`${d.d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'})} · ${d.times.find(t=>!t.taken).t}`, cta:'Book', go:`cvSheetClose();proBook('${z.services[0].id}')`})); }
+  if(c.kind==='business') return z.feed.filter(p=>/show|event|open day|training|hall/i.test(p.sub+' '+p.text)).map(p=>({t:p.text, w:p.sub, cta:'RSVP', go:`toast('✓ Added to your Events')`}));
+  return [];
+}
+const CV_PROMPTS = { brand:['Which size am I?','What’s new this season?','Is there a resole or repair service?'],
+  business:['What’s your minimum order?','Can you do a custom run?','Who do you supply here?'],
+  pro:['Which service suits a beginner?','When are you free next?','What should I bring?'],
+  community:['What’s on this week?','Who are the moderators?','Is it beginner friendly?'],
+  app:['What can this app do?','Is my data private?','How do I share to the feed?'] };
+function cvAnswer(c, q){
+  const z=c.z, n=c.name;
+  if(c.kind==='brand') return /size/i.test(q) ? `Most people size down half to one size in ${n}. Tell me your street size and I’ll suggest a fit.` : /new/i.test(q) ? `New this season: ${((z.products||[])[0]||{}).name||'the latest range'}. Want me to open it?` : `Yes — ${n} runs it through partner workshops. I can book you in.`;
+  if(c.kind==='business') return /minimum/i.test(q) ? `${n}’s minimum order is ${z.specs.moq}, with a lead time of ${z.specs.lead}.` : /custom/i.test(q) ? (z.caps[1]?z.caps[1].detail:'Custom work is possible — send an enquiry.') : `In ${c.gw.name} they supply ${z.supplies.map(s=>(ZONES[s.key]||(proByKey(s.key)||{}).pro||{}).name).filter(Boolean).join(' and ')}.`;
+  if(c.kind==='pro') return /beginner/i.test(q) ? `I’d start with “${z.services[z.services.length-1].name}”. It’s the gentlest way in.` : /free/i.test(q) ? (()=>{ const d=proSlots(z).find(x=>x.works&&!x.full); return d?`Next opening: ${d.d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'})}. Shall I hold it?`:'They’re fully booked for two weeks.'; })() : `Bring your usual kit — ${n} sends a full list when you book.`;
+  if(c.kind==='community') return /week/i.test(q) ? `This week: ${z.events[0].title}, ${z.events[0].time} at ${z.events[0].where}.` : /moderators/i.test(q) ? `The moderators are ${z.mods.join(' and ')}.` : `Yes. The first house rule is “${z.rules[0]}”.`;
+  return /private/i.test(q) ? `${n} runs sandboxed. It sees only your name and handle, and only if you allow it.` : /share/i.test(q) ? `Inside the app, tap Share — it posts to the ${c.gw.name} feed, tagged with ${n}.` : (z.about||z.desc);
+}
+function cvYou(c){
+  const z=c.z, rows=[], add=(e,t)=>rows.push(`<div class="li"><em>${e}</em>${t}</div>`);
+  if(c.kind==='brand'){ add(state.brandFavs.includes(z.key)?'★':'☆', state.brandFavs.includes(z.key)?'In your favourites':'Not in your favourites');
+    add('➕', state.zoneFollow[z.key]?'Following':'Not following');
+    const o=state.purchases.filter(p=>p.brand===z.key); add('📦', o.length?`${o.length} order${o.length>1?'s':''} · latest ${o[0].items.map(i=>i.name).join(', ')} · ${o[0].date}`:'No orders yet'); }
+  else if(c.kind==='business'){ add(state.bizFavs.includes(z.key)?'★':'☆', state.bizFavs.includes(z.key)?'In your favourites':'Not in your favourites');
+    const e=state.enquiries.filter(x=>x.biz===z.key); add('✉️', e.length?`${e.length} enquir${e.length>1?'ies':'y'} · latest ${_since(e[0].ts)} ago`:'No enquiries yet'); }
+  else if(c.kind==='pro'){ add(state.proFavs.includes(z.key)?'★':'☆', state.proFavs.includes(z.key)?'In your favourites':'Not in your favourites');
+    const b=aiLive().filter(w=>w.pro===z.key); add('📅', b.length?`Booked · ${b[0].title} · ${dayLabel(b[0].d)} ${b[0].time}`:'No bookings yet'); }
+  else if(c.kind==='community'){ add(state.commStars.includes(z.key)?'★':'☆', state.commStars.includes(z.key)?'In your favourites':'Not in your favourites');
+    add('👥', state.commFavs.includes(z.key)?'Member':'Not a member yet');
+    const r=aiLive().filter(w=>w.comm===z.key); if(r.length) add('📅', `Going · ${r[0].title}`); }
+  else { const fav=state.wallet.some(w=>w.name===z.name); add(fav?'★':'☆', fav?'In your favourites':'Not in your favourites');
+    const sh=state.myPosts.filter(p=>p.via===z.name).length; add('📣', sh?`${sh} share${sh>1?'s':''} to the feed`:'Nothing shared yet'); }
+  const sees = c.kind==='app' ? ((_appStore('gx_appGrants')[z.key]||[]).length ? 'your name and handle'+((_appStore('gx_appGrants')[z.key]||[]).includes('feed')?' · posts when you tap Share':'') : 'nothing yet — it asks first') : 'your name and handle only';
+  return `<div class="cvyou" style="border-color:${c.color}66"><h4>You &amp; ${esc(c.name)}</h4>${rows.join('')}<div class="sees">🔒 ${esc(c.name)} sees <b>${sees}</b></div></div>`;
+}
+function cvSheetPaint(){
+  const c = cvCtx(); if(!c || !state.cvSheet){ cvSheetClose(); return; }
+  const k = state.cvSheet, label = {brand:'brand',business:'business',pro:'pro',community:'community',app:'app'}[c.kind];
+  let h='';
+  if(k==='discover'){
+    const q=(state._cvQ||'').toLowerCase(), all=cvIndex(c), hits=q?all.filter(i=>(i.t+' '+i.s).toLowerCase().includes(q)):all;
+    h = `<h3>Search ${esc(c.name)}</h3><div class="sub">Everything inside this ${label}, not the whole of GENEXXO</div>
+      <input id="cvQ" value="${esc(state._cvQ||'')}" placeholder="Search ${esc(c.name)}…" oninput="state._cvQ=this.value;cvSheetPaint()">
+      ${hits.slice(0,10).map(i=>`<div class="cvr" onclick="${i.go}"><span class="k">${i.k}</span><div style="min-width:0"><b>${esc(cvPlain(i.t))}</b><span>${esc(cvPlain(i.s)).slice(0,90)}</span></div></div>`).join('') || `<div class="sub" style="text-align:center;padding:16px">Nothing matches in this ${label}</div>`}`;
+  } else if(k==='events'){
+    const ev=cvEvents(c);
+    h = `<h3>${esc(c.name)} events</h3><div class="sub">What's on with this ${label}</div>`
+      + (ev.length ? ev.map(e=>`<div class="cvr"><div style="flex:1;min-width:0"><b>${esc(cvPlain(e.t))}</b><span>${esc(e.w)}</span></div><button style="background:${c.color}" onclick="event.stopPropagation();${e.go}">${e.cta}</button></div>`).join('')
+        : `<div class="sub" style="text-align:center;padding:18px">No events yet · follow ${esc(c.name)} to hear first</div>`);
+  } else if(k==='ai'){
+    const q=state._cvAsk;
+    h = `<h3>✦ ${esc(c.name)} assistant</h3><div class="sub">Your GENEXXO AI, briefed on this ${label}. It knows where you are.</div>
+      ${q?`<div class="cvbub me">${esc(q)}</div><div class="cvbub">${esc(cvAnswer(c,q))}</div>`:''}
+      <div class="cvchips">${CV_PROMPTS[c.kind].map(p=>`<span onclick="state._cvAsk=this.textContent;cvSheetPaint()">${p}</span>`).join('')}</div>`;
+  } else {
+    h = `<div style="display:flex;align-items:center;gap:12px"><div style="width:52px;height:52px;border-radius:50%;background:${USER.grad};color:#fff;font-weight:900;font-size:17px;display:flex;align-items:center;justify-content:center">${USER.ini}</div>
+        <div><h3>${USER.name} <span style="font-size:9px;font-weight:800;padding:2px 7px;border-radius:99px;background:#111116;color:#fff;vertical-align:3px">✓ GENEXXO ID</span></h3><div class="sub">${USER.handle} · the same profile everywhere</div></div></div>
+      ${cvYou(c)}
+      <div class="cvr" onclick="cvSheetClose(true);${state.app?'closeApp(true);':'canvasClose();'}setTab('profile')"><div style="flex:1"><b>Open your full profile</b><span>Posts · Plans · Library · Settings</span></div><span style="color:var(--muted);font-weight:800">›</span></div>`;
+  }
+  let sh=$('cvSheet');
+  if(!sh){ $('frame').insertAdjacentHTML('beforeend', `<div id="cvScrim" onclick="cvSheetClose()"></div><div id="cvSheet"></div>`); sh=$('cvSheet'); }
+  sh.innerHTML = h;
+  const qi=$('cvQ'); if(qi && document.activeElement!==qi && state._cvQ){ qi.focus({preventScroll:true}); qi.setSelectionRange(qi.value.length,qi.value.length); }
+  try{ tabBar(); }catch(_){}
+}
+
+/* ═════════ LAB: swipe between a canvas's tabs (step 4) ═════════
+   Swipe left = next tab, right = previous. Only a clearly sideways swipe counts; scrollers (shots, day pickers,
+   bars) keep their own gestures; at either end nothing happens. Brand / business tabs join the canvas trail. */
+(function(){
+  let x0=null, y0=null, t0=0;
+  const tabsFor = () => {
+    if(state.app){ const a=state.app; if(a.kind==='pro' && !a.book) return {list:['about','services','reviews','posts'], cur:a.tab, set:t=>setProTab(t)};
+      if(!a.kind && !a.running) return {list:['about','updates','reviews'], cur:a.tab, set:t=>setAppTab(t)}; return null; }
+    if(state.screen==='zone' && ZONES[state.zone] && state.zoneProduct==null){
+      const biz = ZONES[state.zone].kind==='business';
+      const list = biz ? ['feed','caps','work','contact'] : ['feed','shop','bag','media','about','events'];
+      return {list, cur:state.zoneTab, set:t=>{ if(!biz) state.zoneBarPage = ['media','about','events'].includes(t)?'more':'main'; setZoneTab(t); }};
+    }
+    return null;
+  };
+  /* Robust to the browser taking the gesture over: an image drag or a native pan fires pointercancel, so the
+     swipe is judged from the last tracked position on pointerup OR pointercancel, with touch events as a
+     fallback for phones. Images inside the canvas aren't draggable (CSS). */
+  let x1=0, y1=0, done=false;
+  const start = (x,y,target) => {
+    if(!LAB_CANVAS || state.cvSheet || !target || !target.closest) return;
+    const inCv = target.closest('#appCanvas .ac-body') || (state.screen==='zone' && target.closest('#screen .push'));
+    if(!inCv || target.closest('iframe,input,textarea,select,.ap-shots,.bk-days,.netbar,.gwbar-vp,.chips')) return;
+    x0=x1=x; y0=y1=y; t0=Date.now(); done=false;
+  };
+  const move = (x,y) => { if(x0!=null){ x1=x; y1=y; } };
+  const end = () => {
+    if(x0==null || done) return; done=true;
+    const dx=x1-x0, dy=y1-y0, dt=Date.now()-t0; x0=null;
+    if(Math.abs(dx)<60 || Math.abs(dx)<Math.abs(dy)*1.6 || dt>800) return;
+    const T = tabsFor(); if(!T) return;
+    const i = T.list.indexOf(T.cur), j = dx<0 ? i+1 : i-1;
+    if(i<0 || j<0 || j>=T.list.length) return;
+    T.set(T.list[j]);
+  };
+  // Mouse / pen through pointer events; touch ONLY through touch events — a touch's pointer stream is cancelled the
+  // moment the browser starts panning, which would end the swipe before the finger lifts.
+  document.addEventListener('pointerdown', e=>{ if(e.pointerType!=='touch') start(e.clientX,e.clientY,e.target); }, true);
+  document.addEventListener('pointermove', e=>{ if(e.pointerType!=='touch') move(e.clientX,e.clientY); }, true);
+  document.addEventListener('pointerup', e=>{ if(e.pointerType!=='touch') end(); }, true);
+  document.addEventListener('pointercancel', e=>{ if(e.pointerType!=='touch') end(); }, true);
+  document.addEventListener('touchstart', e=>{ if(x0==null){ const t=e.touches[0]; start(t.clientX,t.clientY,e.target); } }, {capture:true, passive:true});
+  document.addEventListener('touchmove', e=>{ const t=e.touches[0]; move(t.clientX,t.clientY); }, {capture:true, passive:true});
+  document.addEventListener('touchend', end, {capture:true, passive:true});
+})();
+/* The GENEXXO capsule menu on a running app — GENEXXO's, the app can't change or hide it. Tap ••• again to close. */
+function labCanvasMenu(){
+  const el = $('appCanvas'); if(!el) return; const m = el.querySelector('.cvmenu'); if(m){ m.remove(); return; }
+  const hit = appByKey(state.app.key); if(!hit) return; const z = hit.app, on = state.wallet.some(w=>w.name===z.name);
+  el.insertAdjacentHTML('beforeend', `<div class="cvmenu"><h4>${z.name}</h4><p>GENEXXO menu · the app can't change or hide this</p>
+    <div class="r" onclick="toggleAppQuiet('${esc(z.name)}','${z.color}','${esc(hit.gw.name)}');labCanvasMenu();labCanvasMenu();toast(state.wallet.some(w=>w.name==='${esc(z.name)}')?'★ Added to favourites':'Removed from favourites')"><em>${on?'★':'☆'}</em>${on?'In favourites':'Add to favourites'}</div>
+    <div class="r" onclick="toast('Link to ${esc(z.name)} copied')"><em>↗</em>Share ${z.name}</div>
+    <div class="r" onclick="toast('✦ Your GENEXXO AI is briefed on ${esc(z.name)}')"><em>✦</em>Ask AI about this app</div>
+    <div class="r" onclick="revokeApp('${z.key}')"><em>🔒</em>Permissions · revoke access</div>
+    <div class="r" onclick="toast('Thanks, our team will take a look')"><em>⚑</em>Report a problem</div></div>`);
+}
 function runAppRetry(){ const hit = state.app && appByKey(state.app.key); if(hit) mountApp(hit); }
 function backToAppPage(){
   if(!state.app) return; state.app.running=false;
   const hit = appByKey(state.app.key), sub = $('acSub'); if(sub && hit) sub.textContent = `${hit.gw.name} · App`;
   paintAppPage();
+  labCanvasDress();
   if($('frame').classList.contains('panels-float')) try{ buildGwPanels(); }catch(_){}
 }
 function closeApp(instant){
   clearTimeout(_appReadyTimer);
+  if(LAB_CANVAS) cvSheetClose(true);
   const el = $('appCanvas'); const was = state.app; state.app = null;
   if(el){ if(instant) el.remove(); else { el.classList.add('out'); setTimeout(()=>el.remove(), 200); } }
   if(!was) return;
+  if(LAB_CANVAS) try{ tabBar(); }catch(_){}
   if($('frame').classList.contains('panels-float')) try{ buildGwPanels(); }catch(_){}
   // A post made from inside the app should be visible the moment you are back on the feed.
   if(was.posted && state.screen==='gateway' && !state.gwZones) try{ repaintGateway({body:true}); }catch(_){}
@@ -4376,6 +4686,11 @@ document.addEventListener('click', e => {
   if(!e.target.closest) return;
   if(!e.target.closest('#frame .top') || e.target.closest('#topBack') || e.target.closest('#appCanvas')) return;
   if(state.app) closeApp(true);
+  if(LAB_CANVAS && state.screen==='zone' && DESKTOP()){   // LAB: the masthead leaves a zone canvas, then does what you tapped
+    const f = state.cvFrom || {}; state.zone=null; state.zoneProduct=null; state.shopMenu=false; state.screen='gateway'; state.cvHist=[];
+    state.gwZones=!!f.gwZones; state.gwZoneTab=f.gwZoneTab||'brands';
+    const n0 = render._n || 0; setTimeout(()=>{ if((render._n||0)===n0) render(); }, 0);
+  }
   if(!(typeof DESKTOP==='function' && DESKTOP())) return;      // phone: overlays cover the bar, so this can't arise
   const on = (e.target.closest('[onclick]') || {getAttribute:()=>''}).getAttribute('onclick') || '';
   let changed = false;
@@ -4404,7 +4719,7 @@ function toggleProFav(key){
   const i = state.proFavs.indexOf(key); if(i>=0) state.proFavs.splice(i,1); else state.proFavs.push(key);
   saveFavs();
   if(state.screen==='gateway' && state.gwZones && state.gwZoneTab==='pros') try{ repaintGateway({body:true}); }catch(_){}
-  const b=$('acWallet'); if(b && state.app && state.app.kind==='pro'){ const on=state.proFavs.includes(state.app.key); b.classList.toggle('on',on); b.textContent=on?'★ In favourites':'☆ Add to favourites'; }
+  const b=$('acWallet'); if(b && state.app && state.app.kind==='pro'){ const on=state.proFavs.includes(state.app.key); b.classList.toggle('on',on); b.textContent=favLabel(on); }
   if(state.app && state.app.kind==='pro' && !state.app.book) paintProPage(true);
 }
 function openPro(key, tab){
@@ -4418,11 +4733,12 @@ function openPro(key, tab){
   el.innerHTML = `<div class="ac-bar">
       <div class="ac-ic" style="background:${pro.color};color:#fff">${proIni(pro.name)}</div>
       <div class="ac-tx"><b>${pro.name}</b><span id="acSub">Pro Zone · ${gw.name}</span></div>
-      <div class="ac-btn ${on?'on':''}" id="acWallet" onclick="toggleProFav('${key}')">${on?'★ In favourites':'☆ Add to favourites'}</div>
+      <div class="ac-btn ${on?'on':''}" id="acWallet" onclick="toggleProFav('${key}')">${favLabel(on)}</div>
       <div class="ac-x" onclick="closeApp()" title="Close"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></div>
     </div><div class="ac-body" id="acBody"></div>`;
   $('frame').appendChild(el);
   if(tab==='book') proBook(); else paintProPage();
+  labCanvasDress();
   if($('frame').classList.contains('panels-float')) try{ buildGwPanels(); }catch(_){}
 }
 function proBack(){
@@ -4434,6 +4750,7 @@ function proBack(){
 }
 function setProTab(t){ state.app.tab=t; paintProPage(true); }
 function paintProPage(keepScroll){
+  if(LAB_CANVAS) setTimeout(()=>{ try{ tabBar(); }catch(_){} }, 0);
   const hit = state.app && proByKey(state.app.key); if(!hit) return;
   const {pro:x, gw} = hit, tab = state.app.tab||'about', fav = state.proFavs.includes(x.key);
   const old = document.querySelector('#acBody .ap'), top = keepScroll && old ? old.scrollTop : 0;
@@ -4480,6 +4797,7 @@ function proBook(sid){
 function proPick(field, v){ const b=state.app.book; b[field]=v; if(field==='iso') b.time=null; paintProBook(); }
 function proNext(){ const b=state.app.book; b.step = b.step==='service' ? 'slot' : 'confirm'; paintProBook(); }
 function paintProBook(){
+  if(LAB_CANVAS) setTimeout(()=>{ try{ tabBar(); }catch(_){} }, 0);
   const hit = state.app && proByKey(state.app.key); if(!hit) return;
   const {pro:x, gw} = hit, b = state.app.book, svc = x.services.find(v=>v.id===b.sid);
   const n = {service:1, slot:2, confirm:3, done:3}[b.step];
@@ -4591,6 +4909,7 @@ function openComm(key){
     <div class="cm-pill" onclick="closeApp()" title="Back to GENEXXO"><i>XX</i>Back to ${gw.name}</div>`;
   $('frame').appendChild(el);
   (_appStore('gx_commGrants')[key] ? mountComm : askComm)(hit);
+  labCanvasDress();
   if($('frame').classList.contains('panels-float')) try{ buildGwPanels(); }catch(_){}
 }
 function askComm(hit){
@@ -5074,6 +5393,10 @@ function openZone(k, tab){
   // Optional `tab` deep-links a sub-view (e.g. 'events' from the network calendar); the sub-bar
   // page follows it — Media/About/Events live on page 2 ('more'), everything else on page 1.
   const landTab = tab||'feed';
+  if(LAB_CANVAS){   // the canvas remembers where it was opened from, and starts a fresh trail of its own
+    state.cvFrom = state.screen==='gateway' ? {gwZones:state.gwZones, gwZoneTab:state.gwZoneTab, gwBarPage:state.gwBarPage, scroll:$('screen').scrollTop} : {gwZones:false};
+    state.cvHist = []; state._cvIn = true;
+  }
   state.zone=k; state.zoneTab=landTab; state.zoneProduct=null; state.zoneSize=null;
   state.shopMenu=false; state.shopCat=null;   // fresh zone → no lingering Shop overlay/filter
   state.zoneBarPage = (landTab==='events'||landTab==='about'||landTab==='media') ? 'more' : 'main';
@@ -5081,6 +5404,23 @@ function openZone(k, tab){
   state.tab='home';   // committing to a real place — clear any open util tab (mirrors openGateway)
   logVisit(ZONES[k].kind==='business' ? 'biz' : 'brand', k);
   render(); $('screen').scrollTo(0,0); if(window.__resetChrome) window.__resetChrome();
+}
+/* LAB canvas: Back retraces the canvas's own trail (tabs, a product); with nothing left it closes the canvas and you
+   land in the gateway exactly where you opened it — same layer, same scroll. */
+function canvasBack(){
+  if(state.zoneProduct!=null){ const h=state.cvHist[state.cvHist.length-1]; if(h && h.product) state.cvHist.pop(); state.zoneProduct=null; render(); return; }
+  if(state.shopMenu){ state.shopMenu=false; render(); return; }
+  const h = state.cvHist.pop();
+  if(!h){ canvasClose(); return; }
+  if(h.product){ canvasBack(); return; }
+  state.zoneTab=h.zoneTab; state.zoneBarPage=h.zoneBarPage; state.zoneProduct=null; render(); $('screen').scrollTo(0,0);
+}
+function canvasClose(){
+  cvSheetClose(true);
+  const f = state.cvFrom || {gwZones:false};
+  state.zone=null; state.zoneProduct=null; state.shopMenu=false; state.screen='gateway'; state.cvHist=[];
+  state.gwZones=!!f.gwZones; state.gwZoneTab=f.gwZoneTab||'brands'; state.gwBarPage=f.gwBarPage||'commerce';
+  render(); $('screen').scrollTo(0, f.scroll||0); if(window.__resetChrome) window.__resetChrome();
 }
 function zoneToGateway(){   // escape up one rung — land on the ★ layer where you entered
   const wasBiz = ZONES[state.zone] && ZONES[state.zone].kind==='business';
@@ -5090,6 +5430,7 @@ function zoneToGateway(){   // escape up one rung — land on the ★ layer wher
 }
 function zoneSwitch(k){   // deck swatch / drawer: switch brand in place, KEEPING your tab
   if(k===state.zone || !ZONES[k]) return;
+  if(LAB_CANVAS){ state.cvHist = []; cvSheetClose(true); }   // a different zone in the same canvas: a fresh trail, no stale sheet
   state.zone=k; state.zoneProduct=null; state.zoneSize=null; render();
   $('screen').scrollTo(0,0);
 }
@@ -5119,7 +5460,7 @@ function syncZoneStep(){
   $('frame').classList.toggle('zstep-on', !!zl);
   if (zl){ $('zPrev').title = 'Previous brand · '+zl.prev.name; $('zNext').title = 'Next brand · '+zl.next.name; }
 }
-function setZoneTab(t){ state.zoneTab=t; state.zoneProduct=null; state.shopMenu=false; if(t!=='shop') state.shopCat=null; render(); $('screen').scrollTo(0,0); }
+function setZoneTab(t){ if(LAB_CANVAS && t!==state.zoneTab) state.cvHist.push({zoneTab:state.zoneTab, zoneBarPage:state.zoneBarPage}); state.zoneTab=t; state.zoneProduct=null; state.shopMenu=false; if(t!=='shop') state.shopCat=null; render(); $('screen').scrollTo(0,0); }
 /* Tapping the brand name on the zone top bar returns to the brand feed (Feed · Shop · Bag page). */
 function zoneToFeed(){ state.zoneTab='feed'; state.zoneBarPage='main'; state.zoneProduct=null; state.shopMenu=false; state.shopCat=null; render(); $('screen').scrollTo(0,0); }
 /* ── Shop category overlay ──────────────────────────────────────────────
@@ -5145,7 +5486,7 @@ function toggleZoneFollow(k){ state.zoneFollow[k]=!state.zoneFollow[k]; render()
 // zoneAiToggle / zoneProfileToggle / zoneAiReset / zoneAiBody deleted with the zone bottom bar.
 
 /* ── product bottom sheet ── */
-function openProduct(i){ state.zoneProduct=i; state.zoneSize=null; state.shopMenu=false; render(); }
+function openProduct(i){ if(LAB_CANVAS) state.cvHist.push({product:true}); state.zoneProduct=i; state.zoneSize=null; state.shopMenu=false; render(); }
 function closeProduct(){ state.zoneProduct=null; render(); }
 function pickSize(s){ state.zoneSize=s; render(); }
 function bagToggle(){
@@ -5168,7 +5509,7 @@ function zoneFeed(z){
         <div style="display:flex;align-items:center;gap:5px"><div style="font-size:16.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${z.name}</div>${z.verified?`<span style="color:${z.color};font-size:12px">✔</span>`:''}</div>
         <div style="font-size:11px;color:var(--muted);font-weight:600">${z.tagline}</div>
       </div>
-      <div onclick="toggleBrandFav('${z.key}')" title="${faved?'Remove from favourites':'Add to favourites'}"
+      ${LAB_CANVAS?'':'<!--lab hides-->'}<div ${LAB_CANVAS?'hidden ':''}onclick="toggleBrandFav('${z.key}')" title="${faved?'Remove from favourites':'Add to favourites'}"
         style="flex-shrink:0;font-size:23px;line-height:1;cursor:pointer;padding:2px 2px 2px 6px;color:${faved?'#F5B800':'rgba(17,17,22,.26)'}">${faved?'★':'☆'}</div>
     </div>
     <div style="display:flex;gap:20px;margin:13px 2px 0">
@@ -5474,6 +5815,23 @@ function zoneBag(z){
 }
 
 // (ZICONS removed 2026-07-27 s3 — its only consumer was the retired zone bottom bar.)
+/* LAB canvas header: identity, quick switch, ☆, ✕ — and on the phone a small chip back to the gateway, because the
+   canvas covers the GENEXXO top bar there. On desktop the gateway masthead stays above it. */
+function canvasHead(z, gw){
+  const biz = z.kind==='business', fav = biz ? state.bizFavs.includes(z.key) : state.brandFavs.includes(z.key);
+  const [lab, col] = biz ? ['BUSINESS','#0F766E'] : ['BRAND','#E84D3A'];
+  const zl = zoneStepList();
+  return `${DESKTOP() ? topBar(gw) : ''}
+  <div class="cvtop">
+    ${DESKTOP() ? '' : `<span class="cvchip" onclick="canvasClose()"><i>XX</i>${esc((gw&&gw.name)||'GENEXXO')} · close</span>`}
+    <div class="cvrow">${brandAvatar(z, 44, 13, 15)}
+      <div class="cvid"><b><span class="nm">${z.name}</span><span class="cvbadge" style="background:${col}1A;color:${col}">${lab}</span></b><small>${z.tagline||''}</small></div>
+      ${zl ? `<div class="cvstep"><div onclick="zoneStep(-1)" title="Previous · ${esc(zl.prev.name)}">▲</div><div onclick="zoneStep(1)" title="Next · ${esc(zl.next.name)}">▼</div></div>` : ''}
+      <div class="cvbtn ${fav?'on':''}" onclick="${biz?`toggleBizFav('${z.key}')`:`toggleBrandFav('${z.key}')`}" title="${fav?'Remove from favourites':'Add to favourites'}">${fav?'★':'☆'}</div>
+      <div class="cvbtn" onclick="canvasClose()" title="Close · back to ${esc((gw&&gw.name)||'GENEXXO')}">✕</div>
+    </div>
+  </div>`;
+}
 function renderZonePage(){
   const z=ZONES[state.zone]; if(!z){ state.screen='gateway'; return renderGateway(); }
   const gw=state._gwObj || GATEWAYS[z.gw];
@@ -5497,7 +5855,8 @@ function renderZonePage(){
       style="margin-left:auto;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;font-size:19px;line-height:1;color:${zInkStar};opacity:${state.showFavs?'1':'.72'};${state.showFavs?'background:rgba(255,255,255,.18)':''}">${state.showFavs?'★':'☆'}</div>
   </div>`;
 
-  if(z.kind==='business') return renderBizZone(z, gw, head);
+  const cvHead = LAB_CANVAS ? canvasHead(z, gw) : head;
+  if(z.kind==='business') return renderBizZone(z, gw, cvHead);
   const bag=state.bag.length;
   // Two-page zone sub-bar — same grammar as the gateway commercial bar: a › / ‹ arrow on the
   // right flips between two triads. Page 1 = Feed · Shop · Bag, page 2 = Media · About · Events.
@@ -5516,8 +5875,9 @@ function renderZonePage(){
     : state.zoneTab===k
       ? `<div class="ntab on" style="pointer-events:none;${tabInk(zBarBg,zt(k),true)}">${lb}</div>`
       : `<div class="ntab" style="${tabInk(zBarBg,zt(k),false)}" onclick="setZoneTab('${k}')">${lb}</div>`;
-  const bar = `<div class="substick netbar" style="background:${zBarBg}">
-      ${zTabs.map(([k,lb])=>cTab(k,lb)).join('')}
+  const zFramed = LAB_CANVAS;   // LAB: the zone's tabs wear the framed white bar, framed by the zone's own gradient
+  const bar = `<div class="substick netbar${zFramed?' framed':''}" style="${zFramed?`background:linear-gradient(#fff,#fff) padding-box, ${z.gradient} border-box`:`background:${zBarBg}`}">
+      ${zTabs.map(([k,lb])=>zFramed ? cTab(k,lb).replace(/ style="[^"]*"/,(m)=>m.includes('pointer-events')?' style="pointer-events:none"':'') : cTab(k,lb)).join('')}
       <div class="ntab" style="flex:0 0 30px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px;${tabInk(zBarBg,.97,true).replace(/background:[^;]*;/,'')}" onclick="tapZoneBarPage()" title="${onMore?'Back to Feed · Shop · Bag':'More — Media · About · Events'}">${zBarArrow}</div>
     </div>`;
 
@@ -5528,8 +5888,9 @@ function renderZonePage(){
     : state.zoneTab==='media' ? zoneMedia(z)
     : state.zoneTab==='events' ? zoneEvents(z)
     : zoneFeed(z);
-  return `${head}
-  <div class="push" style="background:#FBFBFC;color:var(--ink);min-height:calc(100dvh - 53px);margin-top:-1px">
+  const cvIn = LAB_CANVAS && state._cvIn; state._cvIn = false;
+  return `${cvHead}
+  <div class="push${cvIn?' cv-in':''}" style="background:#FBFBFC;color:var(--ink);min-height:calc(100dvh - 53px);margin-top:-1px">
     ${bar}
     <div style="height:6px"></div>
     ${body}
@@ -5577,7 +5938,10 @@ function renderBizZone(z, gw, head){
   const T = [['feed','Feed'],['caps','Capabilities'],['work','Work'],['contact','Contact']];
   const tab = T.some(t=>t[0]===state.zoneTab) ? state.zoneTab : 'feed';
   const at = i => (i+.5)/T.length;
-  const bar = `<div class="substick netbar" style="background:${z.gradient}">${T.map(([k,lb],i)=> tab===k
+  const bar = LAB_CANVAS
+    ? `<div class="substick netbar framed" style="background:linear-gradient(#fff,#fff) padding-box, ${z.gradient} border-box">${T.map(([k,lb])=> tab===k
+        ? `<div class="ntab on" style="pointer-events:none">${lb}</div>` : `<div class="ntab" onclick="setZoneTab('${k}')">${lb}</div>`).join('')}</div>`
+    : `<div class="substick netbar" style="background:${z.gradient}">${T.map(([k,lb],i)=> tab===k
       ? `<div class="ntab on" style="pointer-events:none;${tabInk(z.gradient,at(i),true)}">${lb}</div>`
       : `<div class="ntab" style="${tabInk(z.gradient,at(i),false)}" onclick="setZoneTab('${k}')">${lb}</div>`).join('')}</div>`;
   const fav = state.bizFavs.includes(z.key), gwName = (gw&&gw.name)||'';
@@ -5620,8 +5984,9 @@ function renderBizZone(z, gw, head){
       + (mine.length ? `<div class="bz-h">Your enquiries</div>${mine.map(e=>`<div class="bz-row"><div class="ic" style="background:${z.gradient}">✉</div><div><b>${e.need.slice(0,60)}${e.need.length>60?'…':''}</b><span>${e.status} · ${_since(e.ts)} ago · ${e.when}</span></div></div>`).join('')}` : '');
     if(sent) state._bizSent = null;
   }
+  const cvIn = LAB_CANVAS && state._cvIn; state._cvIn = false;
   return `${head}
-  <div class="push" style="background:#FBFBFC;color:var(--ink);min-height:calc(100dvh - 53px);margin-top:-1px">
+  <div class="push${cvIn?' cv-in':''}" style="background:#FBFBFC;color:var(--ink);min-height:calc(100dvh - 53px);margin-top:-1px">
     ${bar}${body}<div style="height:24px"></div>
   </div>
   ${favPanelHtml()}`;
@@ -7071,6 +7436,7 @@ function renderProfile(){
 /* ═════════ RENDER ═════════ */
 function render(){
   render._n = (render._n||0) + 1;   // lets the masthead rule tell whether a click already re-rendered
+  $('frame').classList.toggle('lab-canvas', LAB_CANVAS);
   // Leaving the screen an app was opened over (the masthead stays live on desktop) closes the app.
   if(state.app && state.app.screen !== state.screen) closeApp(true);
   let html='';
