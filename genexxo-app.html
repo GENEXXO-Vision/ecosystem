@@ -209,6 +209,13 @@
   #appCanvas.lab{background:#FBFBFC;color:var(--ink);bottom:calc(var(--bar-h) + var(--safe-b))}
   #appCanvas.lab .cvtop{flex-shrink:0}
   #appCanvas.lab .cm-pill{display:none}
+  /* The quick-switch drawer over an app / pro / community canvas: drawer, scrim and half-moon lift above it
+     (#appCanvas is z 90), so the drawer slides OVER the canvas as it does over a brand zone. A running app owns
+     its own navigation, so the half-moon steps aside there. */
+  #frame.cv-open #edge{z-index:91}
+  #frame.cv-open #scrim{z-index:92}
+  #frame.cv-open #drawer{z-index:93}
+  #frame.cv-run #edge{display:none!important}
   /* App + pro canvases get the zone's framed tab bar at the top, like brands; the in-page tab row steps aside. */
   #appCanvas.lab .cvtabs{position:relative;top:auto;flex-shrink:0;z-index:30}
   #appCanvas.lab .ap-tabs{display:none}
@@ -1431,7 +1438,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-36"></script>
+<script src="genexxo-data.js?v=2026.08.26-37"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -2270,7 +2277,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-36';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-37';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -3059,6 +3066,9 @@ function gwApply(kind){ toast(`${kind} applications open with the live build`); 
    (utility tabs have no sub-bar — sit flush under the top bar instead) */
 function drawerFlushTop(){
   const frame=$('frame');
+  const cv = LAB_CANVAS && state.app && $('appCanvas');   // over a canvas: flush under its header / tab bar
+  if(cv){ const h = cv.querySelector('.cvtabs') || cv.querySelector('.cvtop, .cm-bar, .ac-bar');
+    if(h) return Math.max(0, Math.round(h.getBoundingClientRect().bottom - frame.getBoundingClientRect().top)); }
   const el = $('screen').querySelector('.substick, .gw-tabs') || $('screen').querySelector('.top');
   return el ? Math.max(0, Math.round(el.getBoundingClientRect().bottom - frame.getBoundingClientRect().top)) : 94;
 }
@@ -3163,11 +3173,13 @@ const ZONE_LAYERS = {
    brand, it isn't: you are in a shop, and what you want is the shelf of neighbouring shops.
    That is what the drawer becomes — the fast switch between brands, glance and move on. */
 function zoneLayer(){
+  if(LAB_CANVAS && state.app && $('appCanvas')) return {pro:'pros', community:'communities'}[state.app.kind] || 'apps';   // canvas: its neighbours
   if(!(state.screen==='zone' && state.zone)) return null;
   return (ZONES[state.zone] && ZONES[state.zone].kind==='business') ? 'business' : 'brands';
 }
 // The gateway whose lists we are showing — a brand zone borrows its parent's.
 function zoneLayerGw(){
+  if(LAB_CANVAS && state.app && GATEWAYS[state.app.gwKey]) return GATEWAYS[state.app.gwKey];
   const z = (state.screen==='zone') ? ZONES[state.zone] : null;
   return state._gwObj || (z && GATEWAYS[z.gw]) || null;
 }
@@ -3177,9 +3189,13 @@ function zoneLayerItems(gw, layer){
   if(layer==='brands') return (gw.brandZones||[]).map(b=>({
     key:b.key, name:b.name, sub:b.tag||b.tier, color:b.color, gradient:b.gradient, logo:b.logo,
     click:(b.key && ZONES[b.key]) ? `openZone('${b.key}')` : '' }));
-  if(layer==='apps') return (gw.apps||[]).map(a=>({ name:a.name, sub:a.desc, color:a.color }));
-  if(layer==='pros') return (gw.pros||[]).map(p=>({
-    name:p.name, sub:p.tag||p.tier, color:p.color, gradient:p.gradient }));
+  // App / pro / community rows open their canvas (closing the drawer first, as a brand's re-render does).
+  if(layer==='apps') return (gw.apps||[]).map(a=>({ key:a.key, name:a.name, sub:a.desc, color:a.color,
+    gradient:`linear-gradient(135deg,${a.color},#111116)`, click:a.key?`closeDrawer();openApp('${a.key}')`:'' }));
+  if(layer==='pros') return (gw.pros||[]).map(p=>({ key:p.key,
+    name:p.name, sub:p.role||p.tag||p.tier, color:p.color, gradient:p.gradient, click:p.key?`closeDrawer();openPro('${p.key}')`:'' }));
+  if(layer==='communities' && (gw.communities||[]).length) return gw.communities.map(c=>({ key:c.key, name:c.name,
+    sub:c.tagline||c.where, color:c.color, click:`closeDrawer();openComm('${c.key}')` }));
   if(layer==='business' && (gw.businesses||[]).length) return gw.businesses.filter(k=>ZONES[k]).map(k=>{ const z=ZONES[k];
     return { key:k, name:z.name, sub:z.tagline, color:z.color, gradient:z.gradient, click:`openZone('${k}')` }; });
   const rows = layer==='communities' ? GW_COMMUNITY_ROWS(gw)
@@ -3194,7 +3210,7 @@ function zoneLayerRow(o){
     : `<div class="zic" style="background:${o.gradient||o.color||'#33333a'}">${zoneInitials(o.name)}</div>`;
   // Standing inside a brand, mark its card — same id the sector list uses, so openDrawer()
   // scrolls it into view without knowing anything about layers.
-  const on = !!(o.key && o.key===state.zone);
+  const on = !!(o.key && o.key===(state.app ? state.app.key : state.zone));
   const accent = o.color || '#33333a';
   return `<div class="zrow${on?' on':''}${o.click?'':' flat'}"${on?' id="drawerActiveRow"':''}${o.click?` onclick="${o.click}"`:''}>
     ${on?`<i class="zbar" style="background:${accent}"></i>`:''}
@@ -3384,6 +3400,7 @@ function openDrawer(){
   // override it — and strand it there on the way back to a pinned screen.
   if(!DESKTOP()){ const off = drawerFlushTop();
     $('drawer').style.top = off+'px'; $('scrim').style.top = off+'px'; }
+  syncGwChrome();                                // head + list follow wherever you are (incl. an open canvas)
   state.secQuery=''; { const si=$('secSearch'); if(si) si.value=''; }   // fresh search each open
   { const p=$('secJump'); if(p) p.hidden=true; }                        // jump popover closed on open
   buildDrawer();                                 // reflect the sector you're currently inside
@@ -4476,6 +4493,14 @@ function labCanvasStep(d){
   const i = Math.max(0, l.findIndex(x=>x.key===a.key)), k = l[(i+d+l.length)%l.length].key;
   a.kind==='pro' ? openPro(k) : a.kind==='community' ? openComm(k) : openApp(k);
 }
+/* The drawer follows the canvas: its list becomes this canvas's neighbours (apps / pros / communities), it opens
+   above the canvas, and a pinned desktop panel repaints. Called on every dress and on close. */
+function cvSyncDrawer(){
+  const fr=$('frame'), on = LAB_CANVAS && !!state.app && !!$('appCanvas');
+  fr.classList.toggle('cv-open', on);
+  fr.classList.toggle('cv-run', on && !state.app.kind && !!state.app.running);
+  try{ syncGwChrome(); if(PANELS_PINNED() || fr.classList.contains('drawer-open')){ buildDrawer(); revealActiveSector(); } }catch(_){}
+}
 function labCanvasDress(){
   if(!LAB_CANVAS || !state.app) return;
   const el = $('appCanvas'); if(!el) return;
@@ -4495,7 +4520,7 @@ function labCanvasDress(){
   if(kind==='community'){                      // keep the community's own address bar; add a close chip on the phone
     const cm = el.querySelector('.cm-bar');
     if(cm && !DESKTOP() && !el.querySelector('.cvchip')) cm.insertAdjacentHTML('afterbegin', `<span class="cvchip" style="margin:0" onclick="closeApp()"><i>XX</i>✕</span>`);
-    tabBar(); return;
+    cvSyncDrawer(); tabBar(); return;
   }
   const html = a.running
     ? `<div class="ac-bar"><div class="ac-ic" style="background:${z.color}">${ini}</div><div class="ac-tx"><b>${z.name}</b><span id="acSub">Sandboxed · running in ${gw.name}</span></div>
@@ -4515,6 +4540,7 @@ function labCanvasDress(){
   if(!a.running && host) host.remove();
   const menu = el.querySelector('.cvmenu'); if(menu && !a.running) menu.remove();
   cvTabsPaint();
+  cvSyncDrawer();
   tabBar();
 }
 /* ═════════ LAB: zone-scoped sheets (step 4) ═════════
@@ -4650,6 +4676,7 @@ function cvSheetPaint(){
     if(!LAB_CANVAS || state.cvSheet || !target || !target.closest) return;
     const inCv = target.closest('#appCanvas .ac-body') || (state.screen==='zone' && target.closest('#screen .push'));
     if(!inCv || target.closest('iframe,input,textarea,select,.ap-shots,.bk-days,.netbar,.gwbar-vp,.chips')) return;
+    { const fr=$('frame').getBoundingClientRect(); if(x-fr.left<30 || fr.right-x<30) return; }   // edges belong to the drawers
     x0=x1=x; y0=y1=y; t0=Date.now(); done=false;
   };
   const move = (x,y) => { if(x0!=null){ x1=x; y1=y; } };
@@ -4697,7 +4724,7 @@ function closeApp(instant){
   const el = $('appCanvas'); const was = state.app; state.app = null;
   if(el){ if(instant) el.remove(); else { el.classList.add('out'); setTimeout(()=>el.remove(), 200); } }
   if(!was) return;
-  if(LAB_CANVAS) try{ tabBar(); }catch(_){}
+  if(LAB_CANVAS){ try{ tabBar(); }catch(_){} cvSyncDrawer(); }
   if($('frame').classList.contains('panels-float')) try{ buildGwPanels(); }catch(_){}
   // A post made from inside the app should be visible the moment you are back on the feed.
   if(was.posted && state.screen==='gateway' && !state.gwZones) try{ repaintGateway({body:true}); }catch(_){}
