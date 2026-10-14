@@ -209,6 +209,15 @@
   #appCanvas.lab{background:#FBFBFC;color:var(--ink);bottom:calc(var(--bar-h) + var(--safe-b))}
   #appCanvas.lab .cvtop{flex-shrink:0}
   #appCanvas.lab .cm-pill{display:none}
+  /* App + pro canvases get the zone's framed tab bar at the top, like brands; the in-page tab row steps aside. */
+  #appCanvas.lab .cvtabs{position:relative;top:auto;flex-shrink:0;z-index:30}
+  #appCanvas.lab .ap-tabs{display:none}
+  #appCanvas.lab .ap-tabs + *{margin-top:20px}
+  .ap-post{display:flex;gap:10px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+  .ap-post .av{width:34px;height:34px;border-radius:10px;color:#fff;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .ap-post b{font-size:13px}.ap-post b span{font-weight:600;opacity:.45;margin-left:6px;font-size:11.5px}
+  .ap-post p{margin:3px 0 0;font-size:13px;line-height:1.5;opacity:.85}
+  .ap-post .tag{display:inline-block;margin-top:6px;font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:99px;background:rgba(255,255,255,.08)}
   #appCanvas.lab .ap{background:#0B0B0F;color:#fff}
   #appCanvas.lab.lab-run{bottom:0;background:#0B0B0F;color:#fff}
   #appCanvas.lab.lab-run .ac-body{padding-bottom:50px}
@@ -2468,7 +2477,7 @@ function goBack(){
   if (state.setPage){ state.setPage==='root' ? closeSettings() : openSettings('root'); return; }   // settings page → list → closed
   if (state.app && state.app.kind==='pro'){ proBack(); return; }
   if (state.app && state.app.kind==='community'){ closeApp(); return; }   // leave the community → back where you were   // booking step → previous step → the zone → out
-  if (state.app){ (state.app.running && state.app.fromPage) ? backToAppPage() : closeApp(); return; }   // app → its page → out
+  if (state.app){ (state.app.running && state.app.fromPage) ? backToAppPage() : (!state.app.running && cvTabPop()) ? 0 : closeApp(); return; }   // app → its page → out
   // 0) a utility tab floating over a gateway → close it and leave the gateway standing
   if (state.utilOver){ state.utilOver=null; render(); return; }
   if (LAB_CANVAS && state.cvSheet){ cvSheetClose(); return; }
@@ -3804,7 +3813,7 @@ function tabBar(){
       const c = h ? (a.kind==='pro'?h.pro.color:a.kind==='community'?h.comm.color:h.app.color) : '#111116'; return `linear-gradient(90deg,${c},#111116)`; })() : ZONES[state.zone].gradient;
   tb.style.borderTop = inCanvas ? '3px solid transparent' : '';
   tb.style.borderImage = inCanvas ? `${cvGrad} 1` : '';
-  const cvRoot = inCanvas && (cvApp ? !(state.app.kind==='pro' && state.app.book && state.app.book.step!=='done' && state.app.book.fromPage)
+  const cvRoot = inCanvas && (cvApp ? !(state.app.kind==='pro' && state.app.book && state.app.book.step!=='done' && state.app.book.fromPage) && !(state.app.hist||[]).length
                                     : (!state.cvHist.length && state.zoneProduct==null && !state.shopMenu));
   const canBack = inCanvas || !!backTarget() || !!(state._hist && state._hist.length) || (state.screen==='gateway' && state.gwZones) || state.zoneProduct!=null;
   const dead = gw ? `${t.text}24` : 'rgba(17,17,22,.16)';   // Back with nowhere to go
@@ -4326,7 +4335,7 @@ function openApp(key, run){
   const {app, gw} = hit, ini = app.name.split(' ').map(w=>w[0]).join('').slice(0,2);
   key = hit.app.key || hit.app.name;
   logVisit('app', hit.app.name);
-  state.app = { key, gwKey:hit.gwKey, posted:false, screen:state.screen, running:false, tab:'about' };
+  state.app = { key, gwKey:hit.gwKey, posted:false, screen:state.screen, running:false, tab:LAB_CANVAS?'feed':'about', hist:[] };
   const inW = () => state.wallet.some(w=>w.name===app.name);
   const el = document.createElement('div'); el.id = 'appCanvas';
   el.innerHTML = `<div class="ac-bar">
@@ -4357,7 +4366,24 @@ function runApp(){
   if($('frame').classList.contains('panels-float')) try{ buildGwPanels(); }catch(_){}
 }
 const _ago = d => d<=0?'Today':d===1?'Yesterday':d<7?`${d} days ago`:d<14?'Last week':d<60?`${Math.round(d/7)} weeks ago`:`${Math.round(d/30)} months ago`;
-function setAppTab(t){ if(!state.app) return; state.app.tab=t; paintAppPage(true); }
+function setAppTab(t){ if(!state.app) return; cvTabPush(t); state.app.tab=t; paintAppPage(true); }
+/* Canvas mode: a tab change is a Back step inside the canvas (spec: tabs, swipes, a product, booking steps). */
+function cvTabPush(t){ const a=state.app; if(LAB_CANVAS && a && t!==a.tab){ (a.hist=a.hist||[]).push(a.tab); } }
+function cvTabPop(){ const a=state.app; if(!LAB_CANVAS || !a || !(a.hist||[]).length) return false;
+  a.tab=a.hist.pop(); a.kind==='pro' ? paintProPage(true) : paintAppPage(true); return true; }
+const CV_APP_TABS = {app:[['feed','Feed'],['reviews','Reviews'],['about','About']], pro:[['feed','Feed'],['services','Services'],['reviews','Reviews'],['about','About']]};
+/* The framed tab bar at the top of an app / pro canvas: the zone's gradient as the frame, like a brand's bar. */
+function cvTabsPaint(){
+  const el=$('appCanvas'); if(!el) return; const old=el.querySelector('.cvtabs');
+  const a=state.app, kind=a && (a.kind||'app');
+  if(!LAB_CANVAS || !a || !CV_APP_TABS[kind] || a.running || a.book){ if(old) old.remove(); return; }
+  const h = kind==='pro'?proByKey(a.key):appByKey(a.key); if(!h) return;
+  const c = kind==='pro'?h.pro.color:h.app.color, grad = `linear-gradient(90deg,${c},#111116)`;
+  const html = `<div class="cvtabs netbar framed" style="background:linear-gradient(#fff,#fff) padding-box, ${grad} border-box">${CV_APP_TABS[kind].map(([k,lb])=> a.tab===k
+      ? `<div class="ntab on" style="pointer-events:none">${lb}</div>` : `<div class="ntab" onclick="${kind==='pro'?'setProTab':'setAppTab'}('${k}')">${lb}</div>`).join('')}</div>`;
+  if(old) old.outerHTML=html; else $('acBody').insertAdjacentHTML('beforebegin', html);
+  setTimeout(()=>{ try{ tabBar(); }catch(_){} }, 0);   // Back ⇄ Close follows the tab trail
+}
 function paintAppPage(keepScroll){
   const hit = state.app && appByKey(state.app.key); if(!hit) return;
   const {app, gw} = hit, live = !!app.url, tab = state.app.tab||'about';
@@ -4373,6 +4399,10 @@ function paintAppPage(keepScroll){
   const reviews = (app.reviews||[]).length ? `<div style="display:flex;align-items:baseline;gap:9px;margin-bottom:4px"><b style="font-size:30px">${app.rating}</b><span class="ap-stars" style="font-size:15px">${stars(Math.round(+app.rating))}</span><span style="font-size:11.5px;opacity:.5;font-weight:600">${app.users} users</span></div>`
       + app.reviews.map(r=>`<div class="ap-row"><div class="ap-row-h">${r.who}<span>${_ago(r.ago)}</span></div><div class="ap-stars">${stars(r.stars)}</div><p>${r.text}</p></div>`).join('')
     : `<div class="ap-txt" style="opacity:.55">Reviews open when ${app.name} launches.</div>`;
+  const av = `<div class="av" style="background:linear-gradient(135deg,${app.color},#111116)">${ini}</div>`;
+  const feed = [ ...(app.updates||[]).map(u=>`<div class="ap-post">${av}<div><b>${app.name}<span>${_ago(u.ago)}</span></b><p>${u.notes}</p><span class="tag">Version ${u.v}</span></div></div>`),
+      ...(app.reviews||[]).slice(0,1).map(r=>`<div class="ap-post">${av}<div><b>${app.name}<span>${_ago(r.ago+1)}</span></b><p>Thanks ${r.who.split(' ')[0]} for the ${r.stars}★ review: "${r.text}"</p><span class="tag">Community</span></div></div>`),
+      `<div class="ap-post">${av}<div><b>${app.name}<span>${live?'Launch':'Coming soon'}</span></b><p>${live?`${app.name} is live in ${gw.name}. It opens instantly, right here, with nothing to install.`:`${app.name} is being built for ${gw.name}. Favourite it and we'll tell you the moment it opens.`}</p><span class="tag">${gw.name}</span></div></div>` ].join('');
   $('acBody').innerHTML = `<div class="ap">
     <div class="ap-hd"><div class="ap-ic" style="background:${app.color}">${ini}</div>
       <div><h2>${app.name}</h2><p>${app.tagline || app.desc}</p><p style="opacity:.45">${app.dev?`By ${app.dev} · `:''}${gw.name}</p></div></div>
@@ -4389,9 +4419,10 @@ function paintAppPage(keepScroll){
     <div class="ap-shots">${(app.shots||[]).length ? app.shots.map(u=>`<img src="${u}" alt="" loading="lazy">`).join('')
         : [1,2,3].map(()=>`<div class="ap-shot-ph">Preview soon</div>`).join('')}</div>
     <div class="ap-tabs">${[['about','About'],['updates','Updates'],['reviews','Reviews']].map(([k,l])=>`<div class="${tab===k?'on':''}" style="${tab===k?`border-color:${app.color}`:''}" onclick="setAppTab('${k}')">${l}</div>`).join('')}</div>
-    ${tab==='about'?about:tab==='updates'?updates:reviews}
+    ${tab==='feed'?feed:tab==='about'?about:tab==='updates'?updates:reviews}
   </div>`;
   if(top) document.querySelector('#acBody .ap').scrollTop = top;
+  cvTabsPaint();
 }
 function askAppPerms(hit){
   const {app, gw} = hit, ini = app.name.split(' ').map(w=>w[0]).join('').slice(0,2);
@@ -4483,6 +4514,7 @@ function labCanvasDress(){
       <div class="ai" style="background:linear-gradient(135deg,${z.color},#111116)" onclick="toast('✦ Your GENEXXO AI is briefed on ${esc(z.name)} · ask it anything in the AI tab')" title="Ask AI about ${esc(z.name)}">✦</div><div class="lb r">🔒 Sandboxed</div></div>`);
   if(!a.running && host) host.remove();
   const menu = el.querySelector('.cvmenu'); if(menu && !a.running) menu.remove();
+  cvTabsPaint();
   tabBar();
 }
 /* ═════════ LAB: zone-scoped sheets (step 4) ═════════
@@ -4514,13 +4546,13 @@ function cvIndex(c){
     z.feed.forEach(x=>out.push({k:'Post', t:x.text, s:x.sub, go:`cvSheetClose();setZoneTab('feed')`}));
   } else if(c.kind==='pro'){
     z.services.forEach(v=>out.push({k:'Service', t:v.name, s:`${v.dur} · ${proMoney(z,v.price)} · ${v.desc}`, go:`cvSheetClose();proBook('${v.id}')`}));
-    z.posts.forEach(q=>out.push({k:'Post', t:q.text, s:_ago(q.ago), go:`cvSheetClose();setProTab('posts')`}));
+    z.posts.forEach(q=>out.push({k:'Post', t:q.text, s:_ago(q.ago), go:`cvSheetClose();setProTab('feed')`}));
   } else if(c.kind==='community'){
     z.threads.forEach(t=>out.push({k:'Thread', t:t.t, s:`${t.by} · ${t.tag} · ${t.replies} replies`, go:`cvSheetClose()`}));
     z.events.forEach(e=>out.push({k:'Event', t:e.title, s:`${e.time} · ${e.where}`, go:`cvSheetTap('events')`}));
   } else {
     (z.features||[]).forEach(f=>out.push({k:'Feature', t:f, s:z.name, go:`cvSheetClose();setAppTab('about')`}));
-    (z.updates||[]).forEach(u=>out.push({k:'Update', t:'Version '+u.v, s:u.notes, go:`cvSheetClose();setAppTab('updates')`}));
+    (z.updates||[]).forEach(u=>out.push({k:'Update', t:'Version '+u.v, s:u.notes, go:`cvSheetClose();setAppTab('feed')`}));
   }
   return out;
 }
@@ -4601,8 +4633,8 @@ function cvSheetPaint(){
 (function(){
   let x0=null, y0=null, t0=0;
   const tabsFor = () => {
-    if(state.app){ const a=state.app; if(a.kind==='pro' && !a.book) return {list:['about','services','reviews','posts'], cur:a.tab, set:t=>setProTab(t)};
-      if(!a.kind && !a.running) return {list:['about','updates','reviews'], cur:a.tab, set:t=>setAppTab(t)}; return null; }
+    if(state.app){ const a=state.app; if(a.kind==='pro' && !a.book) return {list:CV_APP_TABS.pro.map(t=>t[0]), cur:a.tab, set:t=>setProTab(t)};
+      if(!a.kind && !a.running) return {list:CV_APP_TABS.app.map(t=>t[0]), cur:a.tab, set:t=>setAppTab(t)}; return null; }
     if(state.screen==='zone' && ZONES[state.zone] && state.zoneProduct==null){
       const biz = ZONES[state.zone].kind==='business';
       const list = biz ? ['feed','caps','work','contact'] : ['feed','shop','bag','media','about','events'];
@@ -4726,7 +4758,7 @@ function openPro(key, tab){
   const hit = proByKey(key); if(!hit) return;
   closeApp(true);
   const {pro, gw} = hit;
-  state.app = { kind:'pro', key, gwKey:hit.gwKey, screen:state.screen, running:false, tab:'about', book:null };
+  state.app = { kind:'pro', key, gwKey:hit.gwKey, screen:state.screen, running:false, tab:LAB_CANVAS?'feed':'about', book:null, hist:[] };
   logVisit('pro', key);
   const on = state.proFavs.includes(key);
   const el = document.createElement('div'); el.id = 'appCanvas';
@@ -4746,9 +4778,10 @@ function proBack(){
   if(b && b.step==='slot'){ b.step='service'; paintProBook(); return; }
   if(b && b.step==='confirm'){ b.step='slot'; paintProBook(); return; }
   if(b && b.step!=='done' && b.fromPage){ state.app.book=null; paintProPage(); return; }
+  if(!b && cvTabPop()) return;
   closeApp();
 }
-function setProTab(t){ state.app.tab=t; paintProPage(true); }
+function setProTab(t){ cvTabPush(t); state.app.tab=t; paintProPage(true); }
 function paintProPage(keepScroll){
   if(LAB_CANVAS) setTimeout(()=>{ try{ tabBar(); }catch(_){} }, 0);
   const hit = state.app && proByKey(state.app.key); if(!hit) return;
@@ -4765,7 +4798,9 @@ function paintProPage(keepScroll){
       <div class="pz-price"><b>${proMoney(x,v.price)}</b><small>${v.dur}</small><button class="pz-bk" style="background:${x.color}" onclick="proBook('${v.id}')">Book</button></div></div>`).join('');
   const reviews = `<div style="display:flex;align-items:baseline;gap:9px;margin-bottom:4px"><b style="font-size:30px">${x.rating}</b><span class="ap-stars" style="font-size:15px">${stars(Math.round(+x.rating))}</span><span style="font-size:11.5px;opacity:.5;font-weight:600">${x.reviewsN} reviews from booked clients</span></div>`
     + x.reviews.map(r=>`<div class="ap-row"><div class="ap-row-h">${r.who}<span>${_ago(r.ago)}</span></div><div class="ap-stars">${stars(r.stars)}</div><p>${r.text}</p></div>`).join('');
-  const posts = x.posts.map(q=>`<div class="ap-row"><div class="ap-row-h">${x.name}<span>${_ago(q.ago)}</span></div><p>${q.text}</p></div>`).join('');
+  const posts = LAB_CANVAS
+    ? x.posts.map(q=>`<div class="ap-post"><div class="av" style="background:${x.color}">${proIni(x.name)}</div><div><b>${x.name}<span>${_ago(q.ago)}</span></b><p>${q.text}</p><span class="tag">${x.role}</span></div></div>`).join('')
+    : x.posts.map(q=>`<div class="ap-row"><div class="ap-row-h">${x.name}<span>${_ago(q.ago)}</span></div><p>${q.text}</p></div>`).join('');
   $('acBody').innerHTML = `<div class="ap">
     <div class="pz-hero" style="background-image:url('${x.img}')"><div class="pz-id"><div class="pz-av" style="background:${x.color}">${proIni(x.name)}</div>
       <div><h2>${x.name}</h2><p>${x.role} · ${x.base}</p><div class="pz-ver">✓ Verified pro</div></div></div></div>
@@ -4778,6 +4813,7 @@ function paintProPage(keepScroll){
     ${tab==='about'?about:tab==='services'?services:tab==='reviews'?reviews:posts}
   </div>`;
   if(top) document.querySelector('#acBody .ap').scrollTop = top;
+  cvTabsPaint();
 }
 /* Availability: the pro's working weekdays over the next 14 days, minus some already booked out —
    seeded by pro + date, so it looks real and holds steady within a day. */
@@ -4797,7 +4833,7 @@ function proBook(sid){
 function proPick(field, v){ const b=state.app.book; b[field]=v; if(field==='iso') b.time=null; paintProBook(); }
 function proNext(){ const b=state.app.book; b.step = b.step==='service' ? 'slot' : 'confirm'; paintProBook(); }
 function paintProBook(){
-  if(LAB_CANVAS) setTimeout(()=>{ try{ tabBar(); }catch(_){} }, 0);
+  if(LAB_CANVAS){ setTimeout(()=>{ try{ tabBar(); }catch(_){} }, 0); cvTabsPaint(); }
   const hit = state.app && proByKey(state.app.key); if(!hit) return;
   const {pro:x, gw} = hit, b = state.app.book, svc = x.services.find(v=>v.id===b.sid);
   const n = {service:1, slot:2, confirm:3, done:3}[b.step];
