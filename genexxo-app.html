@@ -1438,7 +1438,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-37"></script>
+<script src="genexxo-data.js?v=2026.08.26-38"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -2277,7 +2277,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-37';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-38';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -4501,6 +4501,16 @@ function cvSyncDrawer(){
   fr.classList.toggle('cv-run', on && !state.app.kind && !!state.app.running);
   try{ syncGwChrome(); if(PANELS_PINNED() || fr.classList.contains('drawer-open')){ buildDrawer(); revealActiveSector(); } }catch(_){}
 }
+/* Phone: an app / pro / community canvas starts BELOW the screen's top bar (the gateway's), as it does on desktop,
+   so ClimbXX stays in view and a tap on it leaves the canvas (the masthead rule). A running app takes the screen. */
+function cvGwTop(){
+  const el=$('appCanvas'); if(!el) return;
+  if(DESKTOP() || !LAB_CANVAS || !state.app || (!state.app.kind && state.app.running)){ el.style.top=''; return; }
+  if(window.__resetChrome) window.__resetChrome();
+  const t=$('screen').querySelector('.top');
+  // layout height, not the painted rect: the bar may still be sliding back in from a scroll-hide
+  el.style.top = t ? Math.round($('screen').getBoundingClientRect().top - $('frame').getBoundingClientRect().top + t.offsetHeight)+'px' : '';   // the bar is sticky at the screen's top
+}
 function labCanvasDress(){
   if(!LAB_CANVAS || !state.app) return;
   const el = $('appCanvas'); if(!el) return;
@@ -4518,15 +4528,13 @@ function labCanvasDress(){
   el.classList.toggle('lab-run', appRunning);
   let head = el.querySelector('.cvtop, .ac-bar');
   if(kind==='community'){                      // keep the community's own address bar; add a close chip on the phone
-    const cm = el.querySelector('.cm-bar');
-    if(cm && !DESKTOP() && !el.querySelector('.cvchip')) cm.insertAdjacentHTML('afterbegin', `<span class="cvchip" style="margin:0" onclick="closeApp()"><i>XX</i>✕</span>`);
-    cvSyncDrawer(); tabBar(); return;
+    cvGwTop(); cvSyncDrawer(); tabBar(); return;
   }
   const html = a.running
     ? `<div class="ac-bar"><div class="ac-ic" style="background:${z.color}">${ini}</div><div class="ac-tx"><b>${z.name}</b><span id="acSub">Sandboxed · running in ${gw.name}</span></div>
         <div class="cvcap"><div onclick="labCanvasMenu()" title="More">•••</div><div onclick="backToAppPage()" title="Close the app">✕</div></div></div>`
-    : `<div class="cvtop">${DESKTOP() ? '' : `<span class="cvchip" onclick="closeApp()"><i>XX</i>${esc(gw.name)} · close</span>`}
-        <div class="cvrow"><div style="width:44px;height:44px;border-radius:13px;background:${kind==='app'?`linear-gradient(135deg,${z.color},#111116)`:z.color};color:#fff;font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${ini}</div>
+    : `<div class="cvtop">
+        <div class="cvrow"><div style="width:38px;height:38px;border-radius:11px;background:${kind==='app'?`linear-gradient(135deg,${z.color},#111116)`:z.color};color:#fff;font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${ini}</div>
           <div class="cvid"><b><span class="nm">${z.name}</span><span class="cvbadge" style="background:${col}1A;color:${col}">${lab}</span></b><small id="acSub">${kind==='pro'?`${z.role} · ${z.base}`:(z.tagline||z.desc||'')}</small></div>
           ${sib?`<div class="cvstep"><div onclick="labCanvasStep(-1)" title="Previous">▲</div><div onclick="labCanvasStep(1)" title="Next">▼</div></div>`:''}
           <div class="cvbtn ${fav?'on':''}" id="acWallet" ${favGo?`onclick="${favGo}"`:''} title="${fav?'Remove from favourites':'Add to favourites'}">${fav?'★':'☆'}</div>
@@ -4540,6 +4548,7 @@ function labCanvasDress(){
   if(!a.running && host) host.remove();
   const menu = el.querySelector('.cvmenu'); if(menu && !a.running) menu.remove();
   cvTabsPaint();
+  cvGwTop();
   cvSyncDrawer();
   tabBar();
 }
@@ -4745,7 +4754,7 @@ document.addEventListener('click', e => {
   if(!e.target.closest) return;
   if(!e.target.closest('#frame .top') || e.target.closest('#topBack') || e.target.closest('#appCanvas')) return;
   if(state.app) closeApp(true);
-  if(LAB_CANVAS && state.screen==='zone' && DESKTOP()){   // LAB: the masthead leaves a zone canvas, then does what you tapped
+  if(LAB_CANVAS && state.screen==='zone'){   // canvas: the gateway bar leaves a zone canvas, then does what you tapped (both layouts)
     const f = state.cvFrom || {}; state.zone=null; state.zoneProduct=null; state.shopMenu=false; state.screen='gateway'; state.cvHist=[];
     state.gwZones=!!f.gwZones; state.gwZoneTab=f.gwZoneTab||'brands';
     const n0 = render._n || 0; setTimeout(()=>{ if((render._n||0)===n0) render(); }, 0);
@@ -5884,10 +5893,11 @@ function canvasHead(z, gw){
   const biz = z.kind==='business', fav = biz ? state.bizFavs.includes(z.key) : state.brandFavs.includes(z.key);
   const [lab, col] = biz ? ['BUSINESS','#0F766E'] : ['BRAND','#E84D3A'];
   const zl = zoneStepList();
-  return `${DESKTOP() ? topBar(gw) : ''}
+  // The gateway's own top bar stays above the canvas on BOTH layouts (Sean, 2026-10-14: "helps the user remember
+  // where they are"). It replaced the phone's "XX ClimbXX · close" chip row; tapping it leaves the canvas.
+  return `${topBar(gw)}
   <div class="cvtop">
-    ${DESKTOP() ? '' : `<span class="cvchip" onclick="canvasClose()"><i>XX</i>${esc((gw&&gw.name)||'GENEXXO')} · close</span>`}
-    <div class="cvrow">${brandAvatar(z, 44, 13, 15)}
+    <div class="cvrow">${brandAvatar(z, 38, 11, 13)}
       <div class="cvid"><b><span class="nm">${z.name}</span><span class="cvbadge" style="background:${col}1A;color:${col}">${lab}</span></b><small>${z.tagline||''}</small></div>
       ${zl ? `<div class="cvstep"><div onclick="zoneStep(-1)" title="Previous · ${esc(zl.prev.name)}">▲</div><div onclick="zoneStep(1)" title="Next · ${esc(zl.next.name)}">▼</div></div>` : ''}
       <div class="cvbtn ${fav?'on':''}" onclick="${biz?`toggleBizFav('${z.key}')`:`toggleBrandFav('${z.key}')`}" title="${fav?'Remove from favourites':'Add to favourites'}">${fav?'★':'☆'}</div>
