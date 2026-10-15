@@ -1132,12 +1132,47 @@
   .trend .t{font-size:11px;font-weight:700;padding:5px 11px;border-radius:99px}
 
   /* discover */
+  /* Discover — your personal space (renderForYou) */
+  .fy-top{display:flex;align-items:flex-start;gap:10px;padding:18px 16px 4px}
+  .fy-hi{font-size:22px;font-weight:800;letter-spacing:-.01em}
+  .fy-sub{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:3px}
+  .fy-h{display:flex;align-items:baseline;justify-content:space-between;padding:20px 18px 8px}
+  .fy-h b{font-size:15px;font-weight:800}.fy-h span{font-size:11px;color:var(--muted);font-weight:600}
+  .fy-card{margin:0 16px 12px;border-radius:18px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 6px 22px rgba(0,0,0,.06);cursor:pointer}
+  .fy-img{height:150px;background:#ddd center/cover;position:relative}
+  .fy-tag{position:absolute;left:12px;bottom:10px;font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,.92);color:#111116}
+  .fy-body{padding:13px 15px 13px}
+  .fy-kick{font-size:10.5px;font-weight:800;color:var(--muted);margin-bottom:5px}
+  .fy-t{font-size:16px;font-weight:800;line-height:1.25}
+  .fy-x{font-size:12.5px;line-height:1.5;color:#3b3b44;margin-top:5px}
+  .fy-rows{margin-top:9px;border-top:1px solid var(--line)}
+  .fy-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .fy-ri{width:30px;height:30px;border-radius:9px;background:#F3F3F5;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+  .fy-rt{flex:1;min-width:0}.fy-rt b{display:block;font-size:13px}.fy-rt span{display:block;font-size:11px;color:var(--muted);font-weight:600}
+  .fy-chev{color:var(--muted);font-weight:800}
+  .fy-foot{display:flex;align-items:center;gap:10px;margin-top:11px}
+  .fy-why{flex:1;min-width:0;font-size:10.5px;font-weight:700;color:var(--muted);line-height:1.35;cursor:pointer;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .fy-cta{font-size:11.5px;font-weight:800;padding:7px 13px;border-radius:99px;background:#111116;color:#fff;white-space:nowrap}
+  .fy-knows{margin:18px 16px 0;padding:14px 15px;border-radius:16px;background:#F1F1F4}
+  .fy-kh{display:flex;justify-content:space-between;align-items:baseline}.fy-kh b{font-size:13px}.fy-kh span{font-size:11.5px;font-weight:800;cursor:pointer}
+  .fy-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+  .fy-chips span{font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:99px;background:#fff;border:1px solid var(--line);cursor:pointer}
+  .fy-chips span.off{opacity:.45;text-decoration:line-through}
+  .fy-kx{font-size:11px;color:var(--muted);line-height:1.5;margin-top:9px}
+  .fy-offnote{margin:4px 18px 0;font-size:11px;color:var(--muted);font-weight:600}
+  .topsearch{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;flex-shrink:0}
+  .topsearch svg{width:20px;height:20px}
   .utilx{width:32px;height:32px;border-radius:99px;flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;
     background:rgba(17,17,22,.06);color:rgba(17,17,22,.62);transition:background .15s,color .15s}
   .utilx:hover{background:rgba(17,17,22,.11);color:#111116}
   .utilx.on-photo{position:absolute;top:10px;right:12px;background:rgba(255,255,255,.88);color:#111116;box-shadow:0 2px 10px rgba(0,0,0,.18)}
   .uxrow{display:flex;align-items:center;gap:8px;padding-right:16px}
   .uxrow > .evscope{flex:1;min-width:0;margin-right:0}
+  /* iPhone: Safari zooms the whole page in when you focus a field whose text is under 16px, and the zoomed page
+     hid the search results (Sean, 2026-10-15). Touch screens get 16px in every field; desktop keeps its sizes. */
+  @media (hover:none) and (pointer:coarse){ input:not([type=checkbox]):not([type=radio]), textarea, select{font-size:16px!important} }
+  #discoverSearch::-webkit-search-cancel-button{display:none}   /* type=search: our own ✕ closes; no second clear button */
   .searchstick{position:sticky;top:var(--stick-top,53px);z-index:31;padding:14px 16px 8px;background:rgba(247,247,248,.94);backdrop-filter:blur(14px);transition:top .28s cubic-bezier(.4,0,.2,1)}
   .searchbox{margin:0;display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 13px}
   .searchbox input{border:none;outline:none;flex:1;font-family:var(--font);font-size:13.5px;background:transparent;color:var(--ink)}
@@ -1476,7 +1511,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-42"></script>
+<script src="genexxo-data.js?v=2026.08.26-43"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -2305,8 +2340,8 @@ const state = {
   myPosts: loadJSON('gx_myPosts', myPostsSeed),
   bizFavs: loadJSON('gx_bizFavs', ()=>[]),                   // favourite Business Zones (keys), 2026-10-13
   enquiries: loadJSON('gx_enquiries', ()=>[]),               // quote requests sent to businesses             // your own posts (Profile › Posts)
-  settings: loadJSON('gx_settings', ()=>({twoStep:true, loginAlerts:true, publicProfile:true, postsTo:'Everyone', discoverable:true,
-            showCommunities:true, aiFeed:true, nBookings:true, nReplies:true, nApps:true, nAgents:true, nDigest:false, devices:['iphone','mac','ipad']})),
+  settings: Object.assign({dxLocation:true, dxDates:true, dxBookings:true, dxApps:true}, loadJSON('gx_settings', ()=>({twoStep:true, loginAlerts:true, publicProfile:true, postsTo:'Everyone', discoverable:true,
+            showCommunities:true, aiFeed:true, nBookings:true, nReplies:true, nApps:true, nAgents:true, nDigest:false, devices:['iphone','mac','ipad']}))),
   profileTab:'posts', setPage:null,                         // Profile tab · Settings page (null = closed, 'root' = list)// communities you've FAVOURITED (keys): your ★ panel shortcut. Joining also stars.  // favourite Pro Zones (keys), 2026-10-10    // favourite APPS (2026-10-10: "wallet" is now just favourites; Profile › My Apps lists it)
   favs:pinFavs(FAVS_INIT.favs),    // seeded from YOUR_GATEWAYS on first run, else restored; the pinned five always lead
   showFavs:false, favTab:'favs',   // ★ panel open? + which tab: 'favs' | 'recent' | 'live'
@@ -2350,7 +2385,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-42';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-43';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2446,7 +2481,7 @@ function goHub(){ state._before=null; state._hist=[]; state.eventsMemo=null; sta
 /* Home always takes you home. The other four are toggles: first tap opens the tab
    (remembering where you were), a second tap closes it and puts you straight back —
    same place, same scroll. */
-const UTIL_TABS = ['discover','ai','events','profile'];
+const UTIL_TABS = ['discover','ai','events','profile','search'];   // 'search' opens from the top bar (2026-10-15)
 /* A small ✕ at the top right of each bottom-tab window (Sean, 2026-10-15): the same as tapping the tab again. Each
    window makes room by moving things LEFT (a shorter search box, a shorter scope switch) rather than down; Events
    moves its "Live" count onto the subtitle line. */
@@ -2459,7 +2494,7 @@ function setTab(t){
      screen change, because there is no place to save and restore. See syncUtilOverlay(). */
   if (DESKTOP() && UTIL_TABS.includes(t) && (state.screen==='gateway' || state.screen==='zone')){
     state.utilOver = (state.utilOver===t) ? null : t;
-    if (state.utilOver==='discover'){          // fresh cards each open, unless a memo says otherwise
+    if (state.utilOver==='search'){            // fresh cards each open, unless a memo says otherwise
       const m = state.discoverMemo;
       state.discoverSector = m ? m.sector : null;
       state.discoverGroup  = m ? m.group  : null;
@@ -2470,7 +2505,7 @@ function setTab(t){
        `t` (the tab tapped), not state.utilOver, so closing Events keeps its place the way a
        second tap does on the phone. */
     if(t!=='events')   state.eventsMemo=null;
-    if(t!=='discover') state.discoverMemo=null;
+    if(t!=='search') state.discoverMemo=null;
     if(t==='events' && !state.eventsMemo) state.eventsScope = state._evScopeNext || 'network';   // fresh open → the Network calendar (unless asked)
     state._evScopeNext = null;
     if(t==='ai') state.aiScope = null;                                   // fresh open → the gateway's agent if you're in one
@@ -2481,7 +2516,7 @@ function setTab(t){
     const ov=$('utilOver');
     if(ov){
       const memo = state.utilOver==='events'   ? state.eventsMemo
-                 : state.utilOver==='discover' ? state.discoverMemo : null;
+                 : state.utilOver==='search' ? state.discoverMemo : null;
       ov.scrollTo(0, memo ? memo.scroll||0 : 0);
     }
     return;
@@ -2511,19 +2546,20 @@ function setTab(t){
     scroll:$('screen').scrollTop,
   };
   state.tab=t; state.screen='root'; state.gateway=null; state._gwObj=null; state.showFavs=false; state.returnGw=null;
-  if(t==='discover'){                              // fresh cards view each open — unless you are
+  if(t==='search'){                                // fresh cards view each open — unless you are
     const m = state.discoverMemo;                  // coming straight back from a gateway
     state.discoverSector = m ? m.sector : null;
     state.discoverGroup  = m ? m.group  : null;
     state.discoverQ      = m ? m.q      : '';
   }
   if(t!=='events')   state.eventsMemo=null;        // opening any other tab ends the glimpse
-  if(t!=='discover') state.discoverMemo=null;
+  if(t!=='search') state.discoverMemo=null;
   if(t==='events' && !state.eventsMemo) state.eventsScope = state._evScopeNext || 'network';   // fresh open → the Network calendar (unless asked)
   state._evScopeNext = null;
   if(t==='ai') state.aiScope = null;                                   // fresh open → the gateway's agent if you're in one
   render();
-  const memo = t==='events' ? state.eventsMemo : t==='discover' ? state.discoverMemo : null;
+  if(t==='search' && !state.discoverMemo) setTimeout(()=>{ const i=$('discoverSearch'); if(i) i.focus({preventScroll:true}); }, 60);
+  const memo = t==='events' ? state.eventsMemo : t==='search' ? state.discoverMemo : null;
   $('screen').scrollTo(0, memo ? memo.scroll||0 : 0);
   if(memo && window.__syncChrome) window.__syncChrome();   // restored, not scrolled — bars stay put
 }
@@ -3827,6 +3863,7 @@ function topBar(gw){
   const dotBg = themed ? (gw.theme.dark?'#fff':'#111116') : '#111116';
   const dotFg = themed ? (gw.theme.dark?'#111116':'#fff') : '#fff';
   const showWord = !inGw || DESKTOP();
+  const searchOn = state.tab==='search' || state.utilOver==='search';
   // ★, ⓘ and Apply ride the top bar on EVERY root-level screen — the hub and all four utility
   // tabs (2026-08-26). They were gated to tab==='home' with nothing gained by it: Discover, AI,
   // Events and Profile simply lost their favourites star for no reason. Sector screens still
@@ -3839,8 +3876,10 @@ function topBar(gw){
     ${inGw?`
     <div onclick="event.stopPropagation();gwHome()" title="${gw.name}.com home"
       style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--cond);font-weight:700;font-size:19px;letter-spacing:.02em;cursor:pointer;padding:6px 10px;margin:-6px -10px">${domainMark(gw.name)}</div>
+    <div class="topsearch" onclick="event.stopPropagation();setTab('search')" title="Search GENEXXO"
+      style="margin-left:auto;color:${gw.theme.text};opacity:${searchOn?'1':'.55'};${searchOn?`background:${gw.theme.accent}22`:''}">${ICONS.search}</div>
     <div id="gwStar" class="favhit" onclick="event.stopPropagation();toggleFavPanel()" title="Favourite gateways"
-      style="margin-left:auto;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;font-size:19px;line-height:1;color:${state.showFavs?gw.theme.accent:gw.theme.text};opacity:${state.showFavs?'1':'.55'};${state.showFavs?`background:${gw.theme.accent}22`:''}">${state.showFavs?'★':'☆'}</div>`
+      style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;font-size:19px;line-height:1;color:${state.showFavs?gw.theme.accent:gw.theme.text};opacity:${state.showFavs?'1':'.55'};${state.showFavs?`background:${gw.theme.accent}22`:''}">${state.showFavs?'★':'☆'}</div>`
     :`<div style="margin-left:auto;display:flex;align-items:center;gap:6px">
       ${(state.screen==='sector' && state.returnGw && state.returnGw.sector===state.sector) ? `
         <div onclick="state._gwFrom='sector';openGateway('${state.returnGw.name}','${state.sector}')" title="Back to ${state.returnGw.name}"
@@ -3848,6 +3887,8 @@ function topBar(gw){
           <span style="opacity:.45;font-size:14px;line-height:1">‹</span>
           <span style="width:18px;height:18px;border-radius:6px;background:${state.returnGw.gradient};display:flex;align-items:center;justify-content:center;font-size:10px">${state.returnGw.emoji}</span>
           ${state.returnGw.name}</div>` : ''}
+      <div class="topsearch" onclick="event.stopPropagation();setTab('search')" title="Search GENEXXO"
+        style="color:#111116;opacity:${searchOn?'1':'.5'};${searchOn?'background:rgba(17,17,22,.06)':''}">${ICONS.search}</div>
       ${state.screen!=='sector' ? `
       <div onclick="event.stopPropagation();toggleInfo()" title="About GENEXXO"
         style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;color:#111116;opacity:${state.showInfo?'1':'.5'};${state.showInfo?'background:rgba(17,17,22,.06)':''}">
@@ -3865,7 +3906,8 @@ const ICONS = {
   close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>',
   back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 5l-7 7 7 7"/></svg>',
   home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>',
-  discover:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
+  discover:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2.1 4.9-4.9 2.1 2.1-4.9z"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
   ai:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9z"/></svg>',
   events:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>',
   profile:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>',
@@ -3884,7 +3926,7 @@ function syncUtilOverlay(){
   const on = !!state.utilOver;
   $('frame').classList.toggle('util-over', on);
   if(!on){ el.innerHTML=''; return; }
-  const fn = {discover:renderDiscover, ai:renderAI, events:renderEvents, profile:renderProfile}[state.utilOver];
+  const fn = {discover:renderForYou, search:renderDiscover, ai:renderAI, events:renderEvents, profile:renderProfile}[state.utilOver];
   if(!fn){ state.utilOver=null; el.innerHTML=''; $('frame').classList.remove('util-over'); return; }
   el.innerHTML = fn();
   // Every utility renderer emits topBar(). The masthead is still on screen above the overlay,
@@ -3941,7 +3983,7 @@ function tabBar(){
     }
     if(inCanvas){   // LAB canvas: the same button, scoped to the zone, opening/closing its sheet
       const on = state.cvSheet===k;
-      return `<div class="tab ${on?'on':''}" style="color:${on?active:idle}" onclick="cvSheetTap('${k}')">${ICONS[k]}<div class="lb">${lb}</div></div>`;
+      return `<div class="tab ${on?'on':''}" style="color:${on?active:idle}" onclick="cvSheetTap('${k}')">${k==='discover'?ICONS.search:ICONS[k]}<div class="lb">${k==='discover'?'Search':lb}</div></div>`;
     }
     // A floating utility tab lights its own slot — state.tab still names the screen underneath.
     const lit = (state.utilOver || state.tab) === k;
@@ -6439,7 +6481,7 @@ function renderDiscover(bodyOnly){
       <div class="em" style="background:${logo?'#fff':(z.gradient||z.color)};${logo?'padding:6px;border:1px solid var(--line)':'font-size:14px;font-weight:800'}">${
         logo?`<img src="${mediaUrl(logo)}" alt="" style="width:100%;height:100%;object-fit:contain">`:ini}</div>
       <div style="flex:1;min-width:0"><div class="nm">${escHtml(z.name)}</div><div class="dm" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${g?g.name+' · ':''}${escHtml(z.tagline||'')}</div></div>
-      <div class="badge" style="background:${z.color}1f;color:${z.color}">BRAND</div>
+      <div class="badge" style="background:${z.color}1f;color:${z.color}">${z.kind==='business'?'BUSINESS':'BRAND'}</div>
     </div>`;
   };
   let inner;
@@ -6536,7 +6578,7 @@ function renderDiscover(bodyOnly){
     <div class="searchstick" style="display:flex;align-items:center;gap:8px">
       <div class="searchbox" style="flex:1;min-width:0">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(17,17,22,.4)" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-        <input id="discoverSearch" placeholder="Search gateways, brands, anything…" value="${esc(state.discoverQ)}"
+        <input id="discoverSearch" type="search" enterkeyhint="search" placeholder="Search gateways, brands, anything…" value="${esc(state.discoverQ)}"
                autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
                oninput="onDiscoverSearch(this.value)">
       </div>${utilX()}
@@ -6600,6 +6642,97 @@ function onDiscoverSearch(v){
 /* ═════════ FEED TAB — same Network surface as Home, opened on the Feed view.
    Home tab = The Network › Sectors, Feed tab = The Network › Feed; the switcher and
    the bottom bar stay in sync. Sector feeds live on their sector screens. ═════════ */
+/* ═════════ DISCOVER — your personal space (2026-10-15) ═════════
+   Search moved to the top bar; Discover is now where ideas come to YOU, unasked, from what GENEXXO knows: the
+   weekend where you live, a birthday you saved, a trip you booked, your apps. AI is where you ask; this is where
+   it offers. Every card says why it is there ("Because you…"), and each source can be switched off in
+   Profile › Settings › Privacy, which removes its cards here. All people, places and plans are the demo persona's
+   (Alex Morgan, London; partner Sam), fictional; every link opens a real zone, app, pro or community. */
+// Settings live on the Profile screen, so Manage goes there first, then opens Privacy.
+function fyManage(){ if(!(state.tab==='profile' || state.utilOver==='profile')) setTab('profile'); openSettings('privacy'); }
+const FY_IMG = id => `https://images.unsplash.com/${id}?w=800&h=420&fit=crop&q=75`;
+function fyCard(c){
+  const rows = (c.rows||[]).map(r=>`<div class="fy-row" onclick="event.stopPropagation();${r.go}"><span class="fy-ri">${r.icon}</span><div class="fy-rt"><b>${r.t}</b><span>${r.s}</span></div><span class="fy-chev">›</span></div>`).join('');
+  return `<div class="fy-card" ${c.go?`onclick="${c.go}"`:''}>
+    ${c.img ? `<div class="fy-img" style="background-image:url('${c.img}')">${c.tag?`<span class="fy-tag">${c.tag}</span>`:''}</div>` : ''}
+    <div class="fy-body">
+      ${!c.img && c.tag ? `<div class="fy-kick">${c.tag}</div>` : ''}
+      <div class="fy-t">${c.title}</div>
+      ${c.text ? `<div class="fy-x">${c.text}</div>` : ''}
+      ${rows ? `<div class="fy-rows">${rows}</div>` : ''}
+      <div class="fy-foot"><span class="fy-why" onclick="event.stopPropagation();fyManage()" title="Why am I seeing this?">ⓘ ${c.why}</span>
+        ${c.cta ? `<span class="fy-cta" onclick="event.stopPropagation();${c.cta.go}">${c.cta.label} ›</span>` : ''}</div>
+    </div></div>`;
+}
+function renderForYou(){
+  const S = state.settings, on = k => S[k] !== false;
+  const now = new Date(), hr = now.getHours();
+  const hi = hr<12 ? 'Good morning' : hr<18 ? 'Good afternoon' : 'Good evening';
+  const sat = nextDow(6), sun = plusDays(sat,1), bday = plusDays(new Date(),9), verbier = plusDays(nextDow(6),21);
+  const d = x => x.toLocaleDateString('en-GB',{weekday:'short', day:'numeric', month:'short'});
+  const sec = (h, sub, cards) => cards.length ? `<div class="fy-h"><b>${h}</b><span>${sub}</span></div>${cards.join('')}` : '';
+  const week = aiWeek().filter(w=>!w.status).slice().sort((a,b)=>a.d-b.d).slice(0,3);
+
+  const weekend = [];
+  if(on('dxLocation') || on('dxApps')) weekend.push(fyCard({img:FY_IMG('photo-1601224748193-d24f166b5c77'), tag:'🧗 Dry rock · Saturday',
+    title:'Stanage will be dry on Saturday', text:'72% dry rock by 10am, 11°C and a light westerly. Your project on the Popular End is in condition.',
+    why:'Because you climb at Stanage · Route Logger', cta:{label:'Check Conditions', go:"openApp('conditions')"}, go:"openApp('conditions')"}));
+  if(on('dxLocation') || on('dxApps')) weekend.push(fyCard({img:FY_IMG('photo-1455264745730-cb3b76250ae8'), tag:`🌊 ${d(sun)} · dawn`,
+    title:'Fistral: chest-high and offshore', text:'Best window 06:40–09:00 on the push. Cornwall Dawn Patrol are paddling out at 06:45.',
+    why:'Because your last surf was at Fistral', cta:{label:'See the swell', go:"openApp('wave-tracker')"},
+    rows:[{icon:'👥', t:'Cornwall Dawn Patrol', s:'Join the paddle-out', go:"openComm('cornwall-dawn-patrol')"}]}));
+  if(week.length) weekend.push(fyCard({tag:'📅 Already in your week', title:`${week.length} plan${week.length>1?'s':''} lined up`,
+    rows: week.map(w=>({icon:w.icon||'📌', t:esc(w.title), s:`${d(w.d)}${w.time?' · '+w.time:''}${w.src?' · '+esc(w.src):''}`, go:"setTab('ai')"})),
+    why:'From your plans', cta:{label:'Open your week', go:"setTab('ai')"}}));
+
+  const life = [];
+  if(on('dxDates')) life.push(fyCard({tag:`🎂 In 9 days · ${d(bday)}`, title:'Sam’s birthday',
+    text:'Ideas from the places you both like:',
+    rows:[{icon:'⌚', t:'Bullheart One', s:'The climbing wearable · £249', go:"openZoneFav('bullheart')"},
+          {icon:'🏄', t:'Surf lesson for two in Ericeira', s:'Ribeira Surf Coaching · a weekend away', go:"openPro('ribeira-surf-coaching')"},
+          {icon:'🏔️', t:'A guided day in Chamonix', s:'Chamonix Guides Collective · from €420', go:"openPro('chamonix-guides')"}],
+    why:'Because you added Sam’s birthday', cta:{label:'More ideas from AI', go:"setTab('ai');setTimeout(()=>sendAI('Birthday ideas for Sam'),80)"}}));
+  if(on('dxBookings')) life.push(fyCard({img:FY_IMG('photo-1551524559-8af4e6624178'), tag:`⛷️ In 3 weeks · ${d(verbier)}`,
+    title:'Your off-piste day in Verbier', text:'You’re booked with Verbier Freeride Guides. Three things to sort before you go:',
+    rows:[{icon:'🏔️', t:'Avalanche safety course', s:'Snowcraft · 2 days, Chamonix & Verbier', go:"openPro('snowcraft-avalanche')"},
+          {icon:'❄️', t:'Snow Report', s:'40cm fresh at Verbier this week', go:"openApp('snow-report')"},
+          {icon:'🎿', t:'Kit check: transceiver, probe, shovel', s:'Sabran demo days are open', go:"openZoneFav('sabran')"}],
+    why:'Because you booked Verbier Freeride Guides'}));
+
+  const near = [];
+  if(on('dxLocation')) near.push(fyCard({img:FY_IMG('photo-1522163182402-834f871fd851'), tag:'📍 London · Thursday',
+    title:'London Bouldering Collective social', text:'Thursday at 19:00. 63 members online now, and new problems went up this week.',
+    why:`Because you’re in ${USER.location}`, cta:{label:'Enter', go:"openComm('london-bouldering')"}, go:"openComm('london-bouldering')"}));
+  if(on('dxLocation')) near.push(fyCard({tag:`👟 ${d(sat)} · Shoreditch`, title:'Lithos resole pop-up',
+    text:'Bring your worn shoes: free rand check and 20% off resoles, one day only.',
+    why:'Because you’re in London and climb in Lithos', cta:{label:'Visit Lithos', go:"openZoneFav('lithos-sport')"}}));
+
+  const you = [];
+  if(on('dxApps')) you.push(fyCard({img:FY_IMG('photo-1564769662533-4f00a87b4056'), tag:'📈 Your climbing',
+    title:'Stuck at 7a+? It’s usually footwork', text:'6 sends this month, top grade 7a+ for three months. A session with a coach breaks most plateaus.',
+    why:'Because Route Logger shows your grades', cta:{label:'Meet Beta Coaching', go:"openPro('beta-coaching')"}, go:"openPro('beta-coaching')"}));
+
+  const off = [['dxLocation','📍 Location'],['dxDates','🎂 Dates'],['dxBookings','📅 Bookings'],['dxApps','⚡ Apps']].filter(([k])=>!on(k));
+  const knows = `<div class="fy-knows"><div class="fy-kh"><b>What Discover uses</b><span onclick="fyManage()">Manage ›</span></div>
+    <div class="fy-chips">${[['dxLocation','📍 '+USER.location],['dxDates','🎂 1 date'],['dxBookings','📅 1 trip'],['dxApps','⚡ Route Logger']].map(([k,l])=>
+      `<span class="${on(k)?'':'off'}" onclick="setToggle('${k}')" title="${on(k)?'Tap to stop using this':'Tap to use this again'}">${l}${on(k)?'':' · off'}</span>`).join('')}</div>
+    <div class="fy-kx">Only you see this page. Nothing here is shared with brands, and turning a source off removes its ideas straight away.</div></div>`;
+
+  const cards = sec('This weekend', `${d(sat)} – ${d(sun)}`, weekend) + sec('Coming up in your life', 'from your dates & trips', life)
+    + sec(`Near you in ${USER.location}`, 'from your location', near) + sec('For you', 'from your apps', you);
+  return `${topBar()}
+  ${favPanelHtml()}
+  ${applyPanelHtml()}
+  ${infoPanelHtml()}
+  <div class="push fy">
+    <div class="fy-top"><div style="flex:1;min-width:0"><div class="fy-hi">${hi}, ${USER.name.split(' ')[0]}</div>
+      <div class="fy-sub">${on('dxLocation')?`📍 ${USER.location} · `:''}${d(now)} · ideas from what GENEXXO knows about you</div></div>${utilX()}</div>
+    ${cards || `<div class="empty">Everything Discover uses is switched off, so there’s nothing to suggest. Turn a source back on below.</div>`}
+    ${off.length && cards ? `<div class="fy-offnote">${off.map(o=>o[1]).join(', ')} switched off, so those ideas are hidden.</div>` : ''}
+    ${knows}
+    <div style="height:18px"></div>
+  </div>`;
+}
 /* ═════════ AI — the GENEXXO Host (2026-07-22: conversational) ═════════
    The Host is network-level; gateway agents are the specialists. The hand-off
    happens IN-THREAD: a gateway-shaped question gets a network-layer answer plus
@@ -6694,6 +6827,12 @@ function aiBackToHost(){
 function aiReset(){ _aiTaskTimers.forEach(clearTimeout); _aiTaskTimers=[]; state._aiFade=true; state.aiThread=[]; state.aiAgent=null; state.aiTyping=false; state.aiPendingQ=''; render(); utilHost().scrollTo(0,0); }
 
 function hostAnswer(q){
+  if(/birthday|sam\b/i.test(q)){
+    return `Three ideas for <b>Sam</b>, all from places you already use:<div style="margin-top:8px"><b>Bullheart One</b> (£249): the climbing wearable, if Sam trains.</div>
+      <div style="margin-top:6px"><b>A surf lesson for two</b> with Ribeira Surf Coaching in Ericeira, a weekend away in one.</div>
+      <div style="margin-top:6px"><b>A guided day in Chamonix</b> with Chamonix Guides Collective, from €420.</div>
+      <div style="margin-top:9px;opacity:.65;font-size:12px">Want me to hold a date? I’ll check Sam’s calendar is clear first.</div>`;
+  }
   if(/plan|week|schedule|diary/i.test(q)){
     const picks=EVENTS_FEED.filter(e=>e.gw&&['Event','Podcast','Bookmark','Drop'].includes(e.type)).slice(0,5);
     const rows=picks.map(e=>`<div style="display:flex;gap:7px;align-items:baseline;margin-top:7px"><span>${e.icon}</span><b style="white-space:nowrap">${e.time}</b><span style="opacity:.75">${e.title}</span></div>`).join('');
@@ -7580,6 +7719,9 @@ function settingsHtml(){
   } else if(pg==='privacy'){
     body = `<div class="ps-grp">${sw('publicProfile','Public profile','Anyone on GENEXXO can see your profile','🌍')}${sw('discoverable','Findable by handle','People can search for '+USER.handle,'🔎')}
         ${sw('showCommunities','Show my communities','List the communities you’ve joined on your profile','👥')}${sw('aiFeed','Personalised feeds','Let your Host AI tune feeds to what you favourite','✦')}</div>
+      <div class="ps-h">What Discover can use</div>
+      <div class="ps-grp">${sw('dxLocation','Your location','Ideas near where you are · '+USER.location,'📍')}${sw('dxDates','Dates you’ve added','Birthdays and anniversaries you saved','🎂')}
+        ${sw('dxBookings','Your bookings & trips','Prep for what’s coming up','📅')}${sw('dxApps','Apps you’ve allowed','e.g. Route Logger grades, surf sessions','⚡')}</div>
       <div class="ps-h">Who can see your posts</div>
       <div class="ps-grp">${['Everyone','Followers','Only me'].map(v=>row(v==='Everyone'?'🌍':v==='Followers'?'👥':'🔒', v, '', `setChoice('postsTo','${v}')`, S.postsTo===v?'<b style="color:#22C55E">✓</b>':'')).join('')}</div>`;
   } else if(pg==='notifications'){
@@ -7627,7 +7769,7 @@ function render(){
   else if (state.screen==='sector') html = renderSector();
   else {
     document.title = 'GENEXXO'; $('metaTheme').content = '#ffffff';
-    html = {home:renderHome, discover:renderDiscover, ai:renderAI, events:renderEvents, profile:renderProfile}[state.tab]();
+    html = {home:renderHome, discover:renderForYou, search:renderDiscover, ai:renderAI, events:renderEvents, profile:renderProfile}[state.tab]();
   }
   // Kill the OUTGOING page's in-flight video downloads BEFORE replacing it (2026-08-04).
   // Rapid gateway-hopping otherwise leaves each abandoned page's half-loaded clips
@@ -7710,6 +7852,11 @@ function render(){
     const y = screen.scrollTop;
     // A programmatic scroll (the AI following its own replies) holds the chrome where it is.
     if (window.__chromeHold && performance.now() < window.__chromeHold){ lastY = y; ticking = false; return; }
+    /* Typing holds the chrome too (2026-10-15, Sean: phone search showed no results as he typed). With the soft
+       keyboard open, each keystroke's redraw nudges the scroll; toggling the bars then relayouts the frame, and a
+       phone drops focus from the field. While a field in the screen has focus, the bars stay exactly where they are. */
+    const ae = document.activeElement;
+    if (ae && (ae.tagName==='INPUT' || ae.tagName==='TEXTAREA') && screen.contains(ae)){ lastY = y; ticking = false; return; }
     if (y <= 6) frame.classList.remove('chrome-hidden');          // at the top → always show
     else if (y > lastY + 4) frame.classList.add('chrome-hidden');  // scrolling down → hide
     else if (y < lastY - 4) frame.classList.remove('chrome-hidden');// scrolling up → reveal
