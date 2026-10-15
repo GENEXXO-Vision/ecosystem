@@ -1132,6 +1132,12 @@
   .trend .t{font-size:11px;font-weight:700;padding:5px 11px;border-radius:99px}
 
   /* discover */
+  .utilx{width:32px;height:32px;border-radius:99px;flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;
+    background:rgba(17,17,22,.06);color:rgba(17,17,22,.62);transition:background .15s,color .15s}
+  .utilx:hover{background:rgba(17,17,22,.11);color:#111116}
+  .utilx.on-photo{position:absolute;top:10px;right:12px;background:rgba(255,255,255,.88);color:#111116;box-shadow:0 2px 10px rgba(0,0,0,.18)}
+  .uxrow{display:flex;align-items:center;gap:8px;padding-right:16px}
+  .uxrow > .evscope{flex:1;min-width:0;margin-right:0}
   .searchstick{position:sticky;top:var(--stick-top,53px);z-index:31;padding:14px 16px 8px;background:rgba(247,247,248,.94);backdrop-filter:blur(14px);transition:top .28s cubic-bezier(.4,0,.2,1)}
   .searchbox{margin:0;display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 13px}
   .searchbox input{border:none;outline:none;flex:1;font-family:var(--font);font-size:13.5px;background:transparent;color:var(--ink)}
@@ -1470,7 +1476,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-41"></script>
+<script src="genexxo-data.js?v=2026.08.26-42"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -1590,6 +1596,12 @@ function myPostsSeed(){ const h=36e5, now=Date.now(); return [
 ];}
 /* Your gateways (from desktop profile data) */
 const YOUR_GATEWAYS = ['climb','ski','surf','cycle','sail'];
+/* The five Adventure showcase gateways are PINNED (Sean, 2026-10-15): always favourites, always first, and their
+   star can't be turned off. They lead the hub's right panel; every other live gateway lists below with its own ☆. */
+const PINNED_GWS = ['climb','ski','surf','cycle','sail'];
+const gwPinned = k => PINNED_GWS.includes(k);
+const pinFavs = list => [...PINNED_GWS, ...(list||[]).filter(k=>!gwPinned(k))];
+const pinnedToast = k => toast(`📌 ${((gwMetaFromKey(k)||{}).name)||'This gateway'} is a demo gateway · pinned to your favourites`);
 
 /* Favourites persistence (2026-07-27): gateway + brand favourites survive a reload /
    an HTML update via localStorage. First run seeds gateways from YOUR_GATEWAYS; after
@@ -2296,7 +2308,7 @@ const state = {
   settings: loadJSON('gx_settings', ()=>({twoStep:true, loginAlerts:true, publicProfile:true, postsTo:'Everyone', discoverable:true,
             showCommunities:true, aiFeed:true, nBookings:true, nReplies:true, nApps:true, nAgents:true, nDigest:false, devices:['iphone','mac','ipad']})),
   profileTab:'posts', setPage:null,                         // Profile tab · Settings page (null = closed, 'root' = list)// communities you've FAVOURITED (keys): your ★ panel shortcut. Joining also stars.  // favourite Pro Zones (keys), 2026-10-10    // favourite APPS (2026-10-10: "wallet" is now just favourites; Profile › My Apps lists it)
-  favs:[...FAVS_INIT.favs],        // seeded from YOUR_GATEWAYS on first run, else restored from localStorage
+  favs:pinFavs(FAVS_INIT.favs),    // seeded from YOUR_GATEWAYS on first run, else restored; the pinned five always lead
   showFavs:false, favTab:'favs',   // ★ panel open? + which tab: 'favs' | 'recent' | 'live'
   askSector:false,                 // desktop: Sectors tab tapped with none chosen → prompt header
   utilOver:null,                   // desktop: utility tab floating over a gateway/zone
@@ -2338,7 +2350,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-41';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-42';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2435,6 +2447,11 @@ function goHub(){ state._before=null; state._hist=[]; state.eventsMemo=null; sta
    (remembering where you were), a second tap closes it and puts you straight back —
    same place, same scroll. */
 const UTIL_TABS = ['discover','ai','events','profile'];
+/* A small ✕ at the top right of each bottom-tab window (Sean, 2026-10-15): the same as tapping the tab again. Each
+   window makes room by moving things LEFT (a shorter search box, a shorter scope switch) rather than down; Events
+   moves its "Live" count onto the subtitle line. */
+function utilClose(){ const t = state.utilOver || state.tab; if(UTIL_TABS.includes(t)) setTab(t); }
+const utilX = cls => `<div class="utilx${cls?' '+cls:''}" onclick="event.stopPropagation();utilClose()" title="Close" aria-label="Close"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></div>`;
 function setTab(t){
   if (t==='home'){ goHub(); $('screen').scrollTo(0,0); return; }
   /* Desktop, standing in a gateway or zone: open the tab OVER it rather than switching to it.
@@ -2511,6 +2528,7 @@ function setTab(t){
   if(memo && window.__syncChrome) window.__syncChrome();   // restored, not scrolled — bars stay put
 }
 function toggleFav(key){
+  if(gwPinned(key)){ pinnedToast(key); return; }
   const i = state.favs.indexOf(key);
   if (i>=0) state.favs.splice(i,1); else state.favs.push(key);
   saveFavs(); render();
@@ -2598,6 +2616,7 @@ function setFavTab(t){ if(state.favTab===t) return; state.favTab=t; render(); }
    when the panel closes, or just before a row is opened, and a toast says what happened. Toggling
    the same ★ twice cancels out, so a mis-tap never needs undoing. */
 function favMark(tag){
+  if(tag.startsWith('gw:') && gwPinned(tag.slice(3))){ pinnedToast(tag.slice(3)); return; }
   state.favPending = state.favPending || {};
   if(state.favPending[tag]) delete state.favPending[tag]; else state.favPending[tag] = true;
   render();
@@ -2683,7 +2702,9 @@ function favPanelHtml(){
      opened), when commitFavPending() applies the lot and says what changed. Tap on, tap off — the
      ★ is its own undo, so the panel needs no Edit mode and no Undo bar. */
   const pend = state.favPending || {};
-  const starFor = (saved, tag) => { const on = saved !== !!pend[tag];
+  const starFor = (saved, tag) => { if(tag.startsWith('gw:') && gwPinned(tag.slice(3)))   // pinned: a lock, not a toggle
+      return `<div onclick="event.stopPropagation();pinnedToast('${tag.slice(3)}')" title="Demo gateway · pinned" style="font-size:15px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:default">📌</div>`;
+    const on = saved !== !!pend[tag];
     return `<div onclick="event.stopPropagation();favMark('${tag}')" title="${on?'Tap to remove from favourites':'Tap to add to favourites'}"
       style="font-size:21px;line-height:1;width:32px;height:32px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;
       color:${on?'#F5B800':'#0b0b0f'};${on?'':'-webkit-text-stroke:1px rgba(255,255,255,.5);'}">★</div>`; };
@@ -3366,7 +3387,8 @@ function buildDrawer(){
   }
   let out='', gi=-1;                              // browse view → sticky sub-section dividers, master order
   for(const grp of SECTOR_GROUPS){
-    const tiles = SECTORS.filter(s=>s.group===grp.key);
+    // Live sectors lead their group (Sean, 2026-10-15); the rest keep the master order beneath them.
+    const tiles = SECTORS.filter(s=>s.group===grp.key).sort((a,b)=>(sectorIsLive(b.key)?1:0)-(sectorIsLive(a.key)?1:0));
     if(!tiles.length) continue;
     out += `<div class="gwanchor" id="secsec-${++gi}"></div><div class="gwsec">${grp.label}</div>`
          + tiles.map(s=>drawerSecRow(s,active)).join('');
@@ -3697,7 +3719,9 @@ function buildDrawerRLive(){
   const srow=$('gwSearchRow'); if(srow) srow.style.display = '';   // search drives this list too
   const actGw = activeGatewayName();
   const actKey = actGw ? gwKeyFromName(actGw) : null;
-  const rowStar = k => `<div onclick="event.stopPropagation();toggleFavQuiet('${k}')"
+  const rowStar = k => gwPinned(k)
+    ? `<div onclick="event.stopPropagation();pinnedToast('${k}')" title="Demo gateway · pinned" style="font-size:12px;line-height:1;padding:6px 2px 6px 8px">📌</div>`
+    : `<div onclick="event.stopPropagation();toggleFavQuiet('${k}')" title="${state.favs.includes(k)?'Remove from favourites':'Add to favourites'}"
     style="font-size:15px;line-height:1;padding:6px 2px 6px 8px;cursor:pointer;color:${state.favs.includes(k)?'#F5B800':'rgba(17,17,22,.22)'}">${state.favs.includes(k)?'★':'☆'}</div>`;
 
   const keys = Object.keys(GATEWAYS).filter(k=>{
@@ -3716,8 +3740,10 @@ function buildDrawerRLive(){
       <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${LIVE_DOT}${rowStar(k)}</div>
     </div>`;
   };
-  const pinned = keys.filter(k=>state.favs.includes(k));
-  const rest   = keys.filter(k=>!state.favs.includes(k));
+  // Pinned = the showcase five, always, in their own order. Everything else stays put below; its ☆ marks a
+  // favourite (for the ★ panel) without moving the row.
+  const pinned = PINNED_GWS.filter(k=>keys.includes(k));
+  const rest   = keys.filter(k=>!gwPinned(k));
 
   /* Neutral header, deliberately. The tint means "you are in this sector" — with none chosen
      there is nothing to signal, and colouring it anyway would say the same thing as a real
@@ -3725,8 +3751,8 @@ function buildDrawerRLive(){
   setDrawerRHead(
     `<span class="dic-sm" style="background:linear-gradient(135deg,#16A34A,#22C55E)">◉</span>Live Gateways · ${Object.keys(GATEWAYS).length}`);
   $('drawerRList').innerHTML = keys.length
-    ? (pinned.length ? `<div class="gwsec">PINNED · ${pinned.length}</div>` + pinned.map(row).join('') : '')
-      + `<div class="gwsec">${pinned.length?'EVERYTHING LIVE':'BUILT & LIVE'} · ${rest.length}</div>`
+    ? (pinned.length ? `<div class="gwsec">📌 DEMO GATEWAYS · ${pinned.length}</div>` + pinned.map(row).join('') : '')
+      + `<div class="gwsec">${pinned.length?'ALSO LIVE':'BUILT & LIVE'} · ${rest.length}</div>`
       + rest.map(row).join('')
     : `<div class="empty">No live gateways match “${escHtml(state.gwQuery)}”.</div>`;
   updateGwJump(null, q);                       // ungrouped list → no Jump ▾
@@ -3757,6 +3783,7 @@ function buildRightList(){
   if(activeSectorKey()) buildDrawerR(); else buildDrawerRLive();
 }
 function toggleFavQuiet(k){    // toggle without a full render — the drawer stays open
+  if(gwPinned(k)){ pinnedToast(k); return; }
   const i=state.favs.indexOf(k);
   if(i>=0) state.favs.splice(i,1); else state.favs.push(k);
   saveFavs(); buildRightList();
@@ -6484,7 +6511,7 @@ function renderDiscover(bodyOnly){
     let body='';
     for(const grp of SECTOR_GROUPS){
       if(state.discoverGroup && state.discoverGroup!==grp.key) continue;
-      const tiles=SECTORS.filter(x=>x.group===grp.key); if(!tiles.length) continue;
+      const tiles=SECTORS.filter(x=>x.group===grp.key).sort((a,b)=>(sectorIsLive(b.key)?1:0)-(sectorIsLive(a.key)?1:0)); if(!tiles.length) continue;   // live first, as in the sector list
       body += `<div class="secgrouphd">${grp.label}</div><div class="seccards">`
         + tiles.map(s=>{
             const live=sectorIsLive(s.key), c=gwCount(s.key);
@@ -6506,13 +6533,13 @@ function renderDiscover(bodyOnly){
   ${applyPanelHtml()}
   ${infoPanelHtml()}
   <div class="push">
-    <div class="searchstick">
-      <div class="searchbox">
+    <div class="searchstick" style="display:flex;align-items:center;gap:8px">
+      <div class="searchbox" style="flex:1;min-width:0">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(17,17,22,.4)" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
         <input id="discoverSearch" placeholder="Search gateways, brands, anything…" value="${esc(state.discoverQ)}"
                autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
                oninput="onDiscoverSearch(this.value)">
-      </div>
+      </div>${utilX()}
     </div>
     <div id="discoverBody" onclick="var p=document.getElementById('discJump');if(p&&!p.hidden)p.hidden=true">${inner}</div>
     <div style="height:14px"></div>
@@ -7032,10 +7059,10 @@ function setAiScope(k){ state.aiScope = k; render(); const sc=utilHost(); if(sc)
 function aiGwThread(key){ const t = state.gwThreads || (state.gwThreads = {}); return t[key] || (t[key] = []); }
 function aiCurThread(){ const c = aiGwCtx(); return aiScope()==='gw' ? aiGwThread(c.key) : state.aiThread; }
 function aiScopeTabs(ctx, scope){
-  return `<div class="evscope aiscope">
+  return `<div class="uxrow"><div class="evscope aiscope">
     <div class="evsc${scope==='host'?' on':''}" onclick="setAiScope('host')"><span class="ic">✦</span><span class="lb">GENEXXO Host</span></div>
     <div class="evsc${scope==='gw'?' on':''}" onclick="setAiScope('gw')"><span class="ic">${ctx.g.emoji}</span><span class="lb">${escHtml(ctx.g.name)} Agent</span></div>
-  </div>`;
+  </div>${utilX()}</div>`;
 }
 function gwAgentReset(){ const c=aiGwCtx(); if(!c) return; _aiTaskTimers.forEach(clearTimeout); _aiTaskTimers=[];
   state.gwThreads[c.key] = []; state.gwTyping = false; state._aiFade = true; render(); utilHost().scrollTo(0,0); }
@@ -7234,6 +7261,7 @@ function renderAI(){
         <div style="width:46px;height:46px;border-radius:16px;background:linear-gradient(135deg,#111116,#3a3a44);display:flex;align-items:center;justify-content:center;color:#fff;font-size:21px">✦</div>
         <div><div style="font-size:16.5px;font-weight:800">GENEXXO Host</div>
         <div style="font-size:11px;color:var(--muted);font-weight:600">One AI across every gateway you belong to</div></div>
+        ${scopeTabs ? '' : `<div style="margin-left:auto">${utilX()}</div>`}
       </div>
       <div class="bub" style="background:#fff;border:1px solid var(--line)">Hi there — I can work across your whole network: your gateways, their brands, agents and communities. Where do we start?</div>
       ${aiWeekHtml()}
@@ -7260,6 +7288,7 @@ function renderAI(){
         <div style="font-size:14px;font-weight:800">GENEXXO Host</div>
       </div>
       <div onclick="aiReset()" style="margin-left:auto;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;border:1px solid var(--line);border-radius:99px;padding:5px 11px;background:#fff">New chat</div>
+      ${scopeTabs ? '' : utilX()}
     </div>
     <div id="aiConvo">${aiConvoHtml()}</div>
     ${inputRow}
@@ -7386,8 +7415,9 @@ function renderEvents(){
       </div>
       <div><div style="font-size:16.5px;font-weight:800">Events</div>
       <div style="font-size:11px;color:var(--muted);font-weight:600">Live, upcoming & breaking ${
-        scope==='gateway' ? 'inside '+escHtml(ctx.gwName) : scope==='sector' ? 'across '+escHtml(ctx.sName) : 'across the network'}</div></div>
-      ${liveCount ? `<div style="margin-left:auto;display:flex;align-items:center;gap:5px;font-size:10.5px;color:#EF4444;font-weight:700;white-space:nowrap"><span class="livedot"></span>${liveCount} Live</div>` : ''}
+        scope==='gateway' ? 'inside '+escHtml(ctx.gwName) : scope==='sector' ? 'across '+escHtml(ctx.sName) : 'across the network'}</div>
+      ${liveCount ? `<div style="display:flex;align-items:center;gap:5px;font-size:10.5px;color:#EF4444;font-weight:700;white-space:nowrap;margin-top:3px"><span class="livedot"></span>${liveCount} Live now</div>` : ''}</div>
+      <div style="margin-left:auto;align-self:flex-start">${utilX()}</div>
     </div>
     ${scopes.length>1 ? `<div class="evscope">${scopes.map(([k,ic,lb])=>{
         const n = ALL.filter(e=>evInScope(e,k,ctx)).length;
@@ -7472,7 +7502,7 @@ function pfLibraryHtml(){
 function profileBody(){
   const tab = state.profileTab || 'posts';
   const gws = state.favs.slice(0,6).map(k=>gwMetaFromKey(k)).filter(Boolean);
-  return `<div class="pf-cover" style="background-image:url('${USER.cover}')"></div>
+  return `<div class="pf-cover" style="background-image:url('${USER.cover}');position:relative">${utilX('on-photo')}</div>
     <div class="pf-head">
       <div class="pf-acts"><button class="pf-btn" onclick="openSettings('account')">Edit profile</button><button class="pf-btn" onclick="shareProfile()">Share</button>
         <button class="pf-btn ic" onclick="openSettings('root')" title="Settings">⚙</button></div>
