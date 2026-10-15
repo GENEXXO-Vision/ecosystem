@@ -960,7 +960,8 @@
     .gwh-yours .gwh-art b{font-size:12px;letter-spacing:.06em;text-transform:none}
     .gwh-line{font-size:12.5px;font-weight:700;line-height:1.4;opacity:.75}
     .gwh-note{font-size:11px;opacity:.45}
-    .gwh-yours .gwh-cta{opacity:1}
+    .gwh-yours .gwh-cta{opacity:.6}
+    .gwh-yours:hover .gwh-cta{opacity:1;color:var(--acc)}
     .gwh-cta{font-size:11.5px;font-weight:800;padding:6px 13px;border-radius:99px;border:1px solid color-mix(in srgb, currentColor 25%, transparent);opacity:.45}
     /* Gutters while an app runs in the centre (paintAppPanels): what it may touch, what it connects to. */
     .gac{margin:0 10px 10px;padding:13px 14px;border-radius:14px;border:1px solid color-mix(in srgb, currentColor 14%, transparent);
@@ -1511,7 +1512,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-45"></script>
+<script src="genexxo-data.js?v=2026.08.26-46"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -2385,7 +2386,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-45';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-46';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -4270,7 +4271,7 @@ function gwaYours(kind, gw, acc){
       <span class="gwh-tag">Available</span>
       <div class="gwh-art"><span>${y.glyph}</span><b>${y.your}</b></div>
       <div class="gwh-body"><div class="gwh-line">${y.line.replace('{gw}', nm)}</div>
-        <div class="gwa-row"><span class="gwh-note">Showcase slot</span><span class="gwh-cta" style="color:${acc}">Claim this space ›</span></div></div>
+        <div class="gwa-row"><span class="gwh-note">Showcase slot</span><span class="gwh-cta">Claim this space ›</span></div></div>
     </div>`;
 }
 function gwaFill(gw, L, R, kind){
@@ -4474,9 +4475,9 @@ function gwPanelYours(sec, gw, bd, accent){
              : sec.k==='apps'   ? `<span style="flex:1"></span><span class="gwp-chip" style="${ghost}">☆ Favourite</span>`
              : '';
   return `<div class="gwp-card gwp-slot-open gwp-yours" style="border-color:${bd};--acc:${accent}" onclick="toast('${esc(sec.your.replace('Your ','Claim a ').replace(' here',''))} on ${esc(gw.name)} · partner sign-ups open at launch')">
-    <div class="gwp-slot" style="color:${accent}">AVAILABLE</div>
+    <div class="gwp-slot" style="opacity:.4">AVAILABLE</div>
     <div class="gwp-top">
-      <div class="gwp-av gwp-av-ghost" style="border-color:${bd};color:${accent}">${sec.glyph}</div>
+      <div class="gwp-av gwp-av-ghost" style="border-color:${bd};opacity:.5">${sec.glyph}</div>
       <div class="gwp-tx"><div class="gwp-nm">${sec.your}</div><div class="gwp-sb">Open on ${esc(gw.domain||gw.name)}</div></div>
     </div>
     <div class="gwp-meta">${meta}<span style="flex:1"></span></div>
