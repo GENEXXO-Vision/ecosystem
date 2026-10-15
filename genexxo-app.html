@@ -1134,7 +1134,10 @@
 
   /* discover */
   /* Discover — your personal space (renderForYou) */
-  .fy-top{display:flex;align-items:flex-start;gap:10px;padding:18px 16px 4px}
+  /* The greeting sticks as you scroll (Sean, 2026-10-15): you always know where you are, and the ✕ is always in
+     reach. Same surface and same line as the search row (.searchstick), so it follows the bars when they hide. */
+  .fy-top{display:flex;align-items:flex-start;gap:10px;padding:14px 16px 10px;position:sticky;top:var(--stick-top,53px);z-index:31;
+    background:rgba(247,247,248,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:top .28s cubic-bezier(.4,0,.2,1)}
   .fy-hi{font-size:22px;font-weight:800;letter-spacing:-.01em}
   .fy-sub{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:3px}
   .fy-h{display:flex;align-items:baseline;justify-content:space-between;padding:20px 18px 8px}
@@ -1512,7 +1515,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-46"></script>
+<script src="genexxo-data.js?v=2026.08.26-47"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -2386,7 +2389,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-46';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-47';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -7905,6 +7908,35 @@ function render(){
       if(el.value !== el._gxLast){ el._gxLast = el.value; el.dispatchEvent(new Event('input', {bubbles:true})); }
     }, 200);
   });
+})();
+
+/* Second net for the live search (2026-10-16, Sean's Samsung still showed no results). Some Android keyboards
+   report the word being composed (compositionupdate.data) before the field's value catches up. So for the Discover
+   search, the query is rebuilt from what was in the box when composition began plus the composing word, and the
+   results follow that, whatever the field's value says. */
+(function(){
+  let pre = null;
+  const isQ = x => x && x.id==='discoverSearch';
+  document.addEventListener('compositionstart', e => { if(!isQ(e.target)) return; const x=e.target, c=x.selectionStart==null?x.value.length:x.selectionStart; pre = x.value.slice(0, c); }, true);
+  document.addEventListener('compositionupdate', e => { if(!isQ(e.target) || pre==null) return; const q = pre + (e.data||''); if(q !== state.discoverQ) onDiscoverSearch(q); }, true);
+  document.addEventListener('compositionend', e => { if(!isQ(e.target)) return; pre = null; const v=e.target.value; setTimeout(()=>{ if(v===e.target.value && v!==state.discoverQ) onDiscoverSearch(v); }, 0); }, true);
+})();
+/* ?debug=1 — an on-screen log for testing on a real phone: build, browser, every event on a text field, every
+   search handled, and any error. Off unless asked for; nothing is stored. */
+(function(){
+  if(!/[?&]debug=1\b/.test(location.search)) return;
+  const box = document.createElement('div');
+  box.style.cssText = 'position:fixed;left:6px;right:6px;bottom:70px;max-height:34vh;overflow:auto;z-index:9999;background:rgba(0,0,0,.86);color:#9FE;font:10px/1.35 ui-monospace,monospace;padding:6px 8px;border-radius:8px;pointer-events:none;white-space:pre-wrap';
+  document.body.appendChild(box);
+  const lines = [`build ${BUILD} · ${innerWidth}×${innerHeight} · ${navigator.userAgent.replace(/^Mozilla\/5\.0 /,'').slice(0,90)}`];
+  const log = t => { lines.push(t); if(lines.length>40) lines.splice(1,1); box.textContent = lines.join('\n'); box.scrollTop = box.scrollHeight; };
+  log('debug on');
+  ['focusin','keydown','beforeinput','input','compositionstart','compositionupdate','compositionend','change','blur'].forEach(t=>document.addEventListener(t, e=>{
+    const x=e.target; if(!x || !/INPUT|TEXTAREA/.test(x.tagName)) return;
+    log(`${t}${e.data!=null?' data="'+e.data+'"':''}${e.key?' key='+e.key:''} value="${x.value}" #${x.id||x.className}`);
+  }, true));
+  const o = window.onDiscoverSearch; window.onDiscoverSearch = function(v){ log(`→ search "${v}" · bodies=${document.querySelectorAll('#discoverBody').length}`); try{ return o(v); }catch(err){ log('ERROR in search: '+err.message); throw err; } };
+  window.addEventListener('error', e => log('ERROR '+e.message+' @'+(e.lineno||'?')));
 })();
 
 /* ═════════ LEFT SECTOR DRAWER — content + edge-swipe gestures ═════════ */
