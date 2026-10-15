@@ -1511,7 +1511,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-43"></script>
+<script src="genexxo-data.js?v=2026.08.26-44"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -2385,7 +2385,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-43';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-44';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -7875,6 +7875,26 @@ function render(){
   // after a programmatic scroll (e.g. restoring your place), adopt the new position
   // without treating the jump as a scroll — chrome stays put until YOU scroll again
   window.__syncChrome = () => { lastY = screen.scrollTop; frame.classList.remove('chrome-hidden'); };
+})();
+
+/* ═════════ KEYBOARD-PROOF TYPING (2026-10-15) ═════════
+   Sean's Android (Samsung Keyboard): "choco" sat in the search box and no results came. Predictive keyboards can
+   hold a word in composition and not fire `input` until it is committed, so a live search waits for a space that
+   never comes. While any field with an oninput handler has focus, its value is checked five times a second and,
+   if it changed without an event, one is dispatched, so every live search in the app updates on every keyboard.
+   Real input events keep the record current, so nothing is ever handled twice. */
+(function(){
+  let timer = null, el = null;
+  document.addEventListener('input', e => { const x = e.target; if(x && x.tagName==='INPUT') x._gxLast = x.value; }, true);
+  document.addEventListener('focusin', e => {
+    const x = e.target; if(!x || x.tagName!=='INPUT' || !x.hasAttribute('oninput')) return;
+    el = x; if(el._gxLast === undefined) el._gxLast = el.value;
+    clearInterval(timer);
+    timer = setInterval(() => {
+      if(!el || document.activeElement!==el){ clearInterval(timer); timer = null; return; }
+      if(el.value !== el._gxLast){ el._gxLast = el.value; el.dispatchEvent(new Event('input', {bubbles:true})); }
+    }, 200);
+  });
 })();
 
 /* ═════════ LEFT SECTOR DRAWER — content + edge-swipe gestures ═════════ */
