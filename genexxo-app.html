@@ -817,6 +817,25 @@
        the shared data. Search and filter sit in a shell that is built once; only .gwp-list
        repaints, so typing never destroys the input. */
     .gwp-h span{font-size:12px;margin-right:6px}
+    .gwp-sec{margin-bottom:14px}
+    /* Sectioned: two halves, each its own scroller (header fixed, cards scroll beneath, a fade says there is more). */
+    .gwp-list:has(.gwp-sec){display:flex;flex-direction:column;gap:12px}
+    .gwp-list:has(.gwp-sec) .gwp-sec{flex:1 1 0;min-height:0;display:flex;flex-direction:column;margin:0}
+    /* Compact cards in the halves: no latest-post line, so the real ones leave room for a couple of open cards. */
+    .gwp-scroll .gwp-line{display:none}
+    .gwp-scroll .gwp-card{padding:9px 11px}
+    .gwp-scroll .gwp-slot{margin-bottom:5px}
+    .gwp-scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-bottom:18px;scrollbar-width:thin;
+      -webkit-mask-image:linear-gradient(#000 calc(100% - 30px),transparent);mask-image:linear-gradient(#000 calc(100% - 30px),transparent)}
+    .gwp-more{margin:0 10px 8px;padding:4px 2px;font-size:10.5px;font-weight:800;cursor:pointer;opacity:.85}
+    .gwp-more:hover{opacity:1;text-decoration:underline}
+    .gwp-sec .gwp-h{display:flex;align-items:baseline;padding:0 14px 9px;flex-shrink:0;background:none!important}
+    .gwp-h em{margin-left:auto;font-style:normal;font-size:9px;letter-spacing:.08em;opacity:.5;font-weight:700}
+    .gwp-yours{cursor:pointer;padding:9px 11px}
+    .gwp-yours .gwp-nm{opacity:.7}
+    .gwp-yours .gwp-av{display:flex;align-items:center;justify-content:center;font-size:12px}
+    .gwp-yours:hover{border-color:var(--acc)!important;border-style:solid}
+    .gwp-yours:hover .gwp-nm{opacity:1}
     .gwp-list{flex:1;min-height:0}
     /* The slot tag — why this card has the prime spot. */
     .gwp-slot{font-size:8.5px;font-weight:800;letter-spacing:.14em;margin-bottom:7px}
@@ -1444,7 +1463,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-39"></script>
+<script src="genexxo-data.js?v=2026.08.26-40"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -2283,7 +2302,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-39';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-40';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -4107,8 +4126,9 @@ function buildGwPanels(){
   const gwKey = Object.keys(GATEWAYS).find(k=>GATEWAYS[k]===gw) || gw.name;
   if(L.dataset.gw !== gwKey){
     L.dataset.gw = R.dataset.gw = gwKey;
-    L.innerHTML = gwPanelShell('b','◆','Brand Zones', accent);
-    R.innerHTML = gwPanelShell('a','⚙','Apps &amp; Tools', accent);
+    L.innerHTML = gwPanelShell('b');
+    R.innerHTML = gwPanelShell('a');
+    L.scrollTop = R.scrollTop = 0;                 // a new gateway's gutters start at the top
   }
   paintGwPanelList('b'); paintGwPanelList('a');
 }
@@ -4219,44 +4239,63 @@ function paintGwAds(gw, L, R){
    SHOWCASE — a short, curated set with an editorial reason for each slot — and the drawer is
    the INDEX, where everything lives and can be searched and switched between. Giving the panel
    its own search made two half-browse surfaces competing for one job. */
-function gwPanelShell(side, glyph, label, accent){
-  return `<div class="gwp-h" style="color:${accent}"><span>${glyph}</span>${label}</div>
-    <div class="gwp-list" id="gwpList${side}"></div>
+function gwPanelShell(side){
+  return `<div class="gwp-list" id="gwpList${side}"></div>
     <div class="gwp-foot" id="gwpFoot${side}"></div>`;
 }
-// Five slots a side. Real listings fill from the top; the rest stand open and say so.
-const GWP_SLOTS = 5;
+/* Two sections a side (Sean, 2026-10-15): Brand Zones then Business Zones on the left, Apps & Tools then Pro Zones
+   on the right. Each shows up to three real listings, then a run of open "Your … here" cards, so the gutters say
+   how every layer of a gateway behaves: a few placements taken, many more waiting. Every gateway gets the same
+   shape; one without listings yet is all open cards. Each section is its own scroller, and the two split the panel
+   in half (Sean, 2026-10-15), so Business and Pro Zones sit level halfway up and stay in view while you scroll one
+   set alone. */
+const GWP_REAL = 3, GWP_OPEN = 6;
+const GWP_SECTIONS = {
+  b: [ {k:'brands',   glyph:'◆', label:'Brand Zones',    your:'Your brand zone here'},
+       {k:'business', glyph:'▣', label:'Business Zones', your:'Your business zone here'} ],
+  a: [ {k:'apps',     glyph:'⚙', label:'Apps &amp; Tools', your:'Your app here'},
+       {k:'pros',     glyph:'✦', label:'Pro Zones',      your:'Your pro zone here'} ],
+};
+function gwPanelItems(gw, k){
+  if(k==='brands') return (gw.brandZones||[]).map(b=>{
+    const z = b.key && ZONES[b.key];                    // the zone carries the real numbers
+    return { key:b.key, name:b.name, color:b.color, logo:b.logo, tier:b.tier||(z&&z.tier),
+      sub:(z&&z.tagline)||b.tag||'',
+      line:(z&&z.feed&&z.feed[0]&&z.feed[0].text)||'',  // most recent post, as the deck showed
+      followers:(z&&z.stats&&z.stats.followers)||'', products:(z&&z.stats&&z.stats.products)||'',
+      click:z?`openZone('${b.key}')`:'' };
+  });
+  if(k==='business') return (gw.businesses||[]).filter(x=>ZONES[x]).map(x=>{ const z=ZONES[x];
+    return { key:x, name:z.name, color:z.color, logo:z.logo, tier:z.tier, sub:z.tagline||'',
+      line:(z.feed&&z.feed[0]&&z.feed[0].text)||'', click:`openZone('${x}')` }; });
+  if(k==='pros') return (gw.pros||[]).filter(x=>x.key).map(x=>({ name:x.name, color:x.color, tier:x.tier,
+    sub:`${x.role} · ${x.base}`, line:(x.posts&&x.posts[0]&&x.posts[0].text)||'',
+    rating:`★ ${x.rating} · ${x.reviewsN} reviews`, click:`openPro('${x.key}')` }));
+  return (gw.apps||[]).map(a=>({ name:a.name, color:a.color, sub:a.desc||'',
+    app:true, added:state.wallet.some(w=>w.name===a.name), click:`openApp('${esc(a.key||a.name)}')` }));
+}
 function paintGwPanelList(side){
   const list = $('gwpList'+side), foot = $('gwpFoot'+side); if(!list) return;
   const gw = state._gwObj; if(!gw) return;
   const t = gw.theme||{}, bd = t.cardBorder||'var(--line)', cb = t.cardBg||'#fff';
   const accent = t.accent||'var(--ink)';
-
-  let items;
-  if(side==='b'){
-    items = (gw.brandZones||[]).map(b=>{
-      const z = b.key && ZONES[b.key];                    // the zone carries the real numbers
-      return { key:b.key, name:b.name, color:b.color, logo:b.logo, tier:b.tier||(z&&z.tier),
-        sub:(z&&z.tagline)||b.tag||'',
-        line:(z&&z.feed&&z.feed[0]&&z.feed[0].text)||'',  // most recent post, as the deck showed
-        followers:(z&&z.stats&&z.stats.followers)||'', products:(z&&z.stats&&z.stats.products)||'',
-        click:z?`openZone('${b.key}')`:'' };
-    });
-  } else {
-    items = (gw.apps||[]).map(a=>({ name:a.name, color:a.color, sub:a.desc||'',
-      app:true, added:state.wallet.some(w=>w.name===a.name), click:`openApp('${esc(a.key||a.name)}')` }));
-  }
   /* The slot tag is the point of the panel: it says WHY this one has the prime spot, rather
      than leaving it to look like an arbitrary top-five. It describes the SLOT, not the record —
      a curated placement — which is why "New" is honest here even though nothing in the data
      carries a date. Founding partners take the Featured slots; everything else is New. */
-  items = items.slice(0, GWP_SLOTS).map(o=>({...o,
-    slot: /founding/i.test(o.tier||'') ? 'FEATURED' : 'NEW' }));
-
-  const open = Math.max(0, GWP_SLOTS - items.length);
-  list.innerHTML = items.map(o=>gwPanelCard(o,t,bd,cb,accent)).join('')
-    + Array.from({length:open}, (_,i)=>gwPanelOpenSlot(i, items.length, bd, accent, side)).join('');
-
+  list.innerHTML = GWP_SECTIONS[side].map(sec=>{
+    const all = gwPanelItems(gw, sec.k), items = all.slice(0, GWP_REAL).map(o=>({...o,
+      slot: /founding/i.test(o.tier||'') ? 'FEATURED' : 'NEW' }));
+    return `<div class="gwp-sec" id="gwpSec-${sec.k}">
+      <div class="gwp-h" style="color:${accent};background:${t.bg||'var(--bg)'}"><span>${sec.glyph}</span>${sec.label}
+        <em>${all.length ? `${all.length} live` : 'Open'}</em></div>
+      <div class="gwp-scroll">
+      ${items.map(o=>gwPanelCard(o,t,bd,cb,accent)).join('')}
+      ${all.length > GWP_REAL ? `<div class="gwp-more" style="color:${accent}" onclick="tapGwZone('${sec.k}')">See all ${all.length} ${sec.label.replace('&amp;','&').toLowerCase()} ›</div>` : ''}
+      ${Array.from({length:GWP_OPEN}, ()=>gwPanelYours(sec, gw, bd, accent)).join('')}
+      </div>
+    </div>`;
+  }).join('');
   // The ⓘ — collapsed to a dot, expands in place. Same affordance the deck's sidebars carried.
   const openKey = side==='b' ? 'gwPanelInfoB' : 'gwPanelInfoA';
   foot.innerHTML = state[openKey]
@@ -4264,8 +4303,8 @@ function paintGwPanelList(side){
          <div class="gwp-info-h"><b>ⓘ ${escHtml(gw.domain||gw.name)}</b>
            <span onclick="toggleGwPanelInfo('${side}')">✕</span></div>
          <div class="gwp-info-b">${side==='b'
-           ? 'Brands with a space inside this gateway. Each runs its own zone — feed, shop and community — reachable here or at its own address.'
-           : 'Apps, tools and agents built for this gateway. Add one and it follows you across the network.'}</div>
+           ? 'Brands and businesses with a space inside this gateway. Each runs its own zone (feed, shop or capabilities) reachable here or at its own address. The open cards are spaces still to be taken.'
+           : 'Apps and tools built for this gateway, and the pros who work in it. Apps open instantly; pros take bookings directly. The open cards are spaces still to be taken.'}</div>
        </div>`
     : `<div class="gwp-info-btn" onclick="toggleGwPanelInfo('${side}')" title="About this panel">ⓘ</div>`;
 }
@@ -4296,22 +4335,17 @@ function gwPanelCard(o, t, bd, cb, accent){
     ${o.line?`<div class="gwp-line">${stripTags(o.line)}</div>`:''}
     <div class="gwp-meta">
       ${o.followers?`<span>👥 ${o.followers}</span>`:''}
-      ${o.products?`<span>📦 ${o.products}</span>`:''}
+      ${o.products?`<span>📦 ${o.products}</span>`:''}${o.rating?`<span>${o.rating}</span>`:''}
       <span style="flex:1"></span>${action}
     </div>
   </div>`;
 }
-/* An unfilled slot. Drawn as a real card in outline rather than hidden, so the panel always
-   reads as five places — the empty ones are inventory, not a rendering failure. */
-function gwPanelOpenSlot(i, filled, bd, accent, side){
-  const label = (filled + i) < 2 ? 'FEATURED' : 'NEW';
-  return `<div class="gwp-card gwp-slot-open" style="border-color:${bd}">
-    <div class="gwp-slot" style="opacity:.32">${label}</div>
+/* An open space in a section: a dashed card that says whose it could be. Tapping explains how a space is taken. */
+function gwPanelYours(sec, gw, bd, accent){
+  return `<div class="gwp-card gwp-slot-open gwp-yours" style="border-color:${bd};--acc:${accent}" onclick="toast('${esc(sec.your.replace('Your ','Claim a ').replace(' here',''))} on ${esc(gw.name)} · partner sign-ups open at launch')">
     <div class="gwp-top">
-      <div class="gwp-av gwp-av-ghost" style="border-color:${bd}"></div>
-      <div class="gwp-tx"><span class="gwp-skel" style="width:62%"></span><span class="gwp-skel" style="width:40%"></span></div>
-    </div>
-    <div class="gwp-meta"><span style="flex:1"></span>
+      <div class="gwp-av gwp-av-ghost" style="border-color:${bd};color:${accent}">${sec.glyph}</div>
+      <div class="gwp-tx"><div class="gwp-nm">${sec.your}</div><div class="gwp-sb">Open on ${esc(gw.domain||gw.name)}</div></div>
       <span class="gwp-chip" style="border:1px dashed ${bd};color:${accent};background:transparent">Available</span>
     </div>
   </div>`;
