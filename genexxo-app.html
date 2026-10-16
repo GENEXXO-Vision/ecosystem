@@ -436,9 +436,12 @@
      dragged with the thumb (Feed·Brands·Apps ⇄ Pros·Communities·Business) instead of
      only tapping the › arrow. touch-action:pan-y lets vertical scrolling through. */
   .gwbar-vp{flex:1;overflow:hidden;touch-action:pan-y}
-  .gwbar-track{display:flex;width:200%}
+  /* A LOOP since 2026-10-16 (Sean: "keep scrolling any way we want"): four slots, [page 2 copy · page 1 · page 2 ·
+     page 1 copy], so › always moves forward and swipes work both ways; the copies let the slide run past an end,
+     then the track jumps silently to the real page. See GWBAR_POS / tapGwBarPage(dir). */
+  .gwbar-track{display:flex;width:400%}
   .gwbar-track.snap{transition:transform .24s cubic-bezier(.4,0,.2,1)}
-  .gwbar-pg{width:50%;display:flex;gap:6px}
+  .gwbar-pg{width:25%;display:flex;gap:6px}
   .ntab.idt{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
   /* ── Left sector drawer (X-style edge swipe) ── */
@@ -1515,7 +1518,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-47"></script>
+<script src="genexxo-data.js?v=2026.08.26-48"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
@@ -2389,7 +2392,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-47';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-48';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -3170,14 +3173,19 @@ function tapGwZone(k){
 /* Set when a bar SWIPE just ended — swallows the click the browser fires on whichever
    tab happened to be under the thumb, so dragging never opens a zone by accident. */
 let _gwBarSwipeAt = 0;
-function tapGwBarPage(){
+const GWBAR_POS = slot => `translateX(${-slot*25}%)`;   // slot 1 = page 1, slot 2 = page 2; 0 and 3 are the wrap copies
+function tapGwBarPage(dir){
+  dir = dir < 0 ? -1 : 1;
   clearNudge('barMore');   // the pulse has done its job — retire it forever
   // Flipping only drops you back to the feed if you were IN a zone. If you're already on
   // the feed, nothing below the bar changes — so don't touch it, and don't steal your place.
   const leavingZone = state.gwZones;
-  state.gwBarPage = state.gwBarPage==='more' ? 'commerce' : 'more';
+  const onMore = state.gwBarPage==='more';
+  // Where the slide runs to: the neighbour in that direction, which is a wrap copy when going past an end.
+  const via = onMore ? (dir>0 ? 3 : 1) : (dir>0 ? 2 : 0);
+  state.gwBarPage = onMore ? 'commerce' : 'more';
   state.gwZones=false;
-  repaintGateway({animateBar:true, body:leavingZone});
+  repaintGateway({animateBar:true, barVia:via, body:leavingZone});
 }
 /* Apply track button — used by the Profile "Apply to join" section (interim home for Apply,
    moved off the gateway bar 2026-07-27). Placeholder until the real application flow exists. */
@@ -5417,7 +5425,6 @@ function renderGateway(){
   const GW_PAGE1 = [['feed','Feed'],['brands','Brands'],['apps','Apps']];
   const GW_PAGE2 = [['pros','Pros'],['communities','Communities'],['business','Business']];
   const onMore = state.gwBarPage==='more';
-  const barArrow = onMore ? '‹' : '›';
   // On the 'more' page the gradient mirrors horizontally (135deg → 225deg) so the shading
   // reads right-to-left — a subtle cue that you've flipped pages.
   const barBg = onMore ? gw.gradient.replace('135deg','225deg') : gw.gradient;
@@ -5436,11 +5443,14 @@ function renderGateway(){
   const labInk = (i,n,on) => framed ? '' : tabInk(barBg,(i+.5)/(n+.4),on);
   const pgTabs = list => list.map(([k,lb],i)=>`<div class="ntab ${gwTabOn(k)?'on':''}" style="${labInk(i,list.length,gwTabOn(k))}" onclick="tapGwZone('${k}')">${lb}</div>`).join('');
   bar = `<div class="substick netbar${framed?' framed':''}" style="${framed?`background:linear-gradient(#fff,#fff) padding-box, ${barBg} border-box`:`background:${barBg}`}">
-    <div class="gwbar-vp"><div class="gwbar-track" style="transform:translateX(${onMore?'-50%':'0%'})">
+    <div class="ntab gwbar-arr" style="flex:0 0 26px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px;${onMore?'':'visibility:hidden;pointer-events:none;'}${framed?'':tabInk(barBg,.03,true).replace(/background:[^;]*;/,'')}" onclick="tapGwBarPage(-1)" title="Back to Feed · Brands · Apps">‹</div>
+    <div class="gwbar-vp"><div class="gwbar-track" style="transform:${GWBAR_POS(onMore?2:1)}">
+      <div class="gwbar-pg" aria-hidden="true">${pgTabs(GW_PAGE2)}</div>
       <div class="gwbar-pg">${pgTabs(GW_PAGE1)}</div>
       <div class="gwbar-pg">${pgTabs(GW_PAGE2)}</div>
+      <div class="gwbar-pg" aria-hidden="true">${pgTabs(GW_PAGE1)}</div>
     </div></div>
-    <div class="ntab${arrowNudge}" style="flex:0 0 30px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px;${framed?'':tabInk(barBg,.97,true).replace(/background:[^;]*;/,'')}" onclick="tapGwBarPage()" title="${onMore?'Back to Feed · Brands · Apps':'More — Pros · Communities · Business'}">${barArrow}</div>
+    <div class="ntab gwbar-arr${arrowNudge}" style="flex:0 0 26px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px;${framed?'':tabInk(barBg,.97,true).replace(/background:[^;]*;/,'')}" onclick="tapGwBarPage(1)" title="${onMore?'Round to Feed · Brands · Apps':'More — Pros · Communities · Business'}">›</div>
   </div>`;
 
   if (state.gwZones){
@@ -5571,7 +5581,12 @@ function repaintGateway(opt){
     track.style.transform = from;
     void track.offsetWidth;                    // force a reflow so the start position takes
     track.classList.add('snap');
-    track.style.transform = state.gwBarPage==='more' ? 'translateX(-50%)' : 'translateX(0%)';
+    const home = state.gwBarPage==='more' ? 2 : 1, via = opt.barVia==null ? home : opt.barVia;
+    track.style.transform = GWBAR_POS(via);
+    if (via !== home) setTimeout(()=>{            // ran onto a wrap copy: jump, unseen, to the real page
+      if (!track.isConnected) return;
+      track.classList.remove('snap'); track.style.transform = GWBAR_POS(home);
+    }, 260);
   }
 
   // ── the body, only when it's genuinely different content
@@ -6099,7 +6114,6 @@ function renderZonePage(){
   const Z_PAGE2 = [['media','Media'],['about','About'],['events','Events']];
   const onMore = state.zoneBarPage==='more';
   const zTabs = onMore ? Z_PAGE2 : Z_PAGE1;
-  const zBarArrow = onMore ? '‹' : '›';
   const zBarBg = onMore ? z.gradient.replace('135deg','225deg') : z.gradient;
   // Shop is special: it stays tappable even when active, because tapping it toggles the category
   // overlay (open ⇄ close). Every other heading locks (pointer-events:none) once it's the live view.
@@ -6111,8 +6125,9 @@ function renderZonePage(){
       : `<div class="ntab" style="${tabInk(zBarBg,zt(k),false)}" onclick="setZoneTab('${k}')">${lb}</div>`;
   const zFramed = LAB_CANVAS;   // LAB: the zone's tabs wear the framed white bar, framed by the zone's own gradient
   const bar = `<div class="substick netbar${zFramed?' framed':''}" style="${zFramed?`background:linear-gradient(#fff,#fff) padding-box, ${z.gradient} border-box`:`background:${zBarBg}`}">
+      <div class="ntab" style="flex:0 0 26px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px;${onMore?'':'visibility:hidden;pointer-events:none;'}${zFramed?'':tabInk(zBarBg,.03,true).replace(/background:[^;]*;/,'')}" onclick="tapZoneBarPage()" title="Back to Feed · Shop · Bag">‹</div>
       ${zTabs.map(([k,lb])=>zFramed ? cTab(k,lb).replace(/ style="[^"]*"/,(m)=>m.includes('pointer-events')?' style="pointer-events:none"':'') : cTab(k,lb)).join('')}
-      <div class="ntab" style="flex:0 0 30px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px;${tabInk(zBarBg,.97,true).replace(/background:[^;]*;/,'')}" onclick="tapZoneBarPage()" title="${onMore?'Back to Feed · Shop · Bag':'More — Media · About · Events'}">${zBarArrow}</div>
+      <div class="ntab" style="flex:0 0 26px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px;${zFramed?'':tabInk(zBarBg,.97,true).replace(/background:[^;]*;/,'')}" onclick="tapZoneBarPage()" title="${onMore?'Round to Feed · Shop · Bag':'More — Media · About · Events'}">›</div>
     </div>`;
 
   const body = state.zoneTab==='products' ? zoneProductList(z)
@@ -7822,6 +7837,11 @@ function render(){
         : ($('gwPanelL').innerHTML='', $('gwPanelR').innerHTML='',
            $('gwPanelL').dataset.gw = $('gwPanelR').dataset.gw = '',
            $('screen').style.background=''); } catch(_){}
+  } else {
+    /* Phone width: the gateway's colour painted behind the desktop gutters must not outlive the desktop layout
+       (Sean, 2026-10-16: shrink the window in a gateway, tap a bottom tab, and it opened on the gateway's dark
+       background). The phone screens carry their own backgrounds, so the inline paint is simply cleared. */
+    $('screen').style.background = '';
   }
   if (typeof PANELS_PINNED === 'function' && PANELS_PINNED()){
     /* openDrawer()/openDrawerR() pin a floating panel flush under whatever sub-bar the
@@ -7982,7 +8002,7 @@ buildDrawer();
     if (!vp) return;
     track = vp.querySelector('.gwbar-track'); if(!track) return;
     w = vp.getBoundingClientRect().width;
-    base = state.gwBarPage==='more' ? -w : 0;      // px, so the drag maths stays in one unit
+    base = -(state.gwBarPage==='more' ? 2 : 1) * w;   // px, so the drag maths stays in one unit (slot × page width)
     sx = e.touches[0].clientX; sy = e.touches[0].clientY;
     drag=true; decided=false; moved=false;
     track.classList.remove('snap');
@@ -7998,9 +8018,7 @@ buildDrawer();
     }
     e.preventDefault();                                           // it's ours now
     moved = true;
-    let x = base + dx;
-    if (x > 0)  x = x*.3;                                         // rubber-band past the first page
-    if (x < -w) x = -w + (x+w)*.3;                                // …and past the last
+    const x = base + Math.max(-w, Math.min(w, dx));               // a loop: either way is a page, at most one
     track.style.transform = `translateX(${x}px)`;
   }, {passive:false});
   screen.addEventListener('touchend', e=>{
@@ -8008,12 +8026,11 @@ buildDrawer();
     if(!moved) return;                                            // a tap, not a drag — leave it to onclick
     _gwBarSwipeAt = Date.now();                                   // swallow the click this release fires
     const dx = e.changedTouches[0].clientX - sx;
-    const onMore = state.gwBarPage==='more';
-    const flip = Math.abs(dx) > w*.22 && (onMore ? dx>0 : dx<0);  // far enough, and in a valid direction
+    const flip = Math.abs(dx) > w*.22;                            // far enough; every direction is valid in a loop
     if (flip){
       // Commit straight away — repaintGateway picks the track up from wherever the finger
       // left it and runs it home, so there's no wait and no double movement.
-      tapGwBarPage();
+      tapGwBarPage(dx < 0 ? 1 : -1);
     } else {
       track.classList.add('snap');                                // didn't make it — spring back
       track.style.transform = `translateX(${base}px)`;
