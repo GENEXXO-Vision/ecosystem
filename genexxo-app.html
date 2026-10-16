@@ -6,7 +6,9 @@
 <meta name="theme-color" content="#ffffff" id="metaTheme">
 <title>GENEXXO</title>
 <!-- ── PWA · add-to-home-screen launches full-screen (standalone). Icons + manifest.json live at the deploy root. ── -->
-<link rel="manifest" href="manifest.json">
+<!-- genexxo.webmanifest (2026-10-17, -52): a NEW file with an "id", so Chrome/Android install a fresh app identity and cannot reuse
+     the old icon they remember for the old one. manifest.json stays (same content, no id) for anything that still points at it. -->
+<link rel="manifest" href="genexxo.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1545,7 +1547,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-51"></script>
+<script src="genexxo-data.js?v=2026.08.26-52"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
@@ -2445,7 +2447,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-51';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-52';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
