@@ -2,1369 +2,644 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F7F8">
 <title>GENEXXO — The Organizing Layer for the Internet</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="description" content="GENEXXO: 10,000+ single-word XX .com domains, deployed by a Supernova Application as the organizing layer for the internet.">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+<!--
+  GENEXXO WEBSITE v2 — HOME (2026-10-16)
+  The website home (v2, live from 2026-10-16), rebuilt in the app's branding (tokens: website/brand.html).
+  The rule from the app: GENEXXO stays monochrome; the colour lives in the pages (sectors, gateways, brands).
+  Figures: "60+ Sectors" replaces the old site's "45" (Sean, 2026-10-04 wording).
+-->
+<link rel="stylesheet" href="site.css">
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{font-size:16px;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:#0a0a0f;color:#e8e4df;overflow-x:hidden}
+  /* ── hero: the app's welcome intro ── */
+  #stage{position:relative;min-height:100svh;background:var(--stage);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:calc(var(--top-h) + 30px) 0 40px}
+  #stage .sp-light{position:absolute;inset:0;background:var(--bg);opacity:0}
+  #stage .sp-mark{position:relative;width:min(80%,560px);height:auto;overflow:visible;cursor:pointer}
+  #stage .sp-rule{position:relative;width:0;height:2px;border-radius:2px;background:#231F20;margin-top:28px}
+  #stage .sp-tags{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:24px;text-align:center;padding:0 24px;font-family:var(--intro)}
+  #stage .sp-t1{font-size:12px;font-weight:500;letter-spacing:.32em;text-transform:uppercase;color:var(--tag);opacity:0}
+  #stage .sp-t2{font-size:clamp(22px,3.2vw,32px);font-weight:300;color:#231F20;opacity:0}
+  #stage .sp-in{opacity:0}
+  #stage .sp-move{transform-box:view-box;transform-origin:230px 28.5px;transform:translate(-70px,0) scale(3.4)}
+  #stage .sp-edge{stroke-dasharray:1;stroke-dashoffset:1}
+  #stage .sp-sweep{transform:translateX(-40px)}
+  #stage .sp-mini,#stage .sp-fill2,#stage .sp-gene,#stage .sp-oh{opacity:0}
+  /* the XX lights up at the centre of the screen, then rises into place with the settle (--drop is set in intro()) */
+  #stage .sp-mark{animation:spRise 2s cubic-bezier(.65,0,.25,1) both}
+  #stage .sp-light{animation:spIn .8s 1.4s ease forwards}
+  #stage .sp-in{animation:spIn .45s ease-out forwards}
+  #stage .sp-move{animation:spSettle 2s cubic-bezier(.65,0,.25,1) forwards}
+  #stage .sp-edge{animation:spDraw 1s .2s cubic-bezier(.45,0,.2,1) forwards}
+  #stage .sp-glow{animation:spDraw 1s .2s cubic-bezier(.45,0,.2,1) forwards,spGlow 1.4s .2s ease-in-out forwards}
+  #stage .sp-sweep{animation:spSweep .8s .85s cubic-bezier(.4,0,.2,1) forwards}
+  #stage .sp-mini{animation:spMini 1.5s .45s ease forwards}
+  #stage .sp-fill2{animation:spIn .6s 1.5s ease forwards}
+  #stage .sp-fill1,#stage .sp-goldedge{animation:spOut .6s 1.55s ease forwards}
+  #stage .sp-gene{animation:spFromR .55s 1.95s cubic-bezier(.2,.75,.2,1) forwards}
+  #stage .sp-oh{animation:spFromL .55s 1.95s cubic-bezier(.2,.75,.2,1) forwards}
+  #stage .sp-rule{animation:spRule .6s 2.2s cubic-bezier(.2,.75,.2,1) forwards}
+  #stage .sp-t1{animation:spLine .55s 2.3s cubic-bezier(.2,.75,.2,1) forwards}
+  #stage .sp-t2{animation:spLine .55s 2.55s cubic-bezier(.2,.75,.2,1) forwards}
+  #stage .after{position:relative;opacity:0;animation:spLine .6s 2.9s cubic-bezier(.2,.75,.2,1) forwards;display:flex;flex-direction:column;align-items:center;text-align:center;width:100%}
+  #stage .home-line{margin-top:10px;font-size:15px;color:var(--soft)}
+  .stats{display:flex;gap:clamp(22px,5vw,56px);margin-top:34px}
+  .stat b{display:block;font-family:var(--cond);font-weight:700;font-size:clamp(30px,4vw,40px);letter-spacing:.02em;line-height:1}
+  .stat span{font-family:var(--cond);font-weight:600;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  .hero-btns{display:flex;gap:10px;margin-top:32px;flex-wrap:wrap;justify-content:center}
+  @keyframes spIn{to{opacity:1}}
+  @keyframes spOut{to{opacity:0}}
+  @keyframes spSettle{0%,62.5%{transform:translate(-70px,0) scale(3.4)}100%{transform:none}}
+  @keyframes spRise{0%,62.5%{transform:translateY(var(--drop,0px))}100%{transform:none}}
+  @keyframes spDraw{to{stroke-dashoffset:0}}
+  @keyframes spGlow{0%{opacity:0}35%{opacity:1}100%{opacity:.35}}
+  @keyframes spSweep{to{transform:translateX(120px)}}
+  @keyframes spMini{0%{opacity:0}30%,55%{opacity:1}75%,100%{opacity:0}}
+  @keyframes spFromR{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
+  @keyframes spFromL{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+  @keyframes spRule{to{width:132px}}
+  @keyframes spLine{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-/* ── TOPBAR + SIDEBAR NAV ── */
-.site-topbar{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;align-items:center;padding:0 20px;gap:14px;background:rgba(10,10,15,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.04)}
-.topbar-menu{width:42px;height:42px;background:none;border:1px solid rgba(255,255,255,.1);border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:0;transition:all .2s;flex-shrink:0}
-.topbar-menu span{display:block;width:22px;height:2.5px;background:rgba(255,255,255,.85);border-radius:2px;transition:all .2s}
-.topbar-menu:hover{border-color:rgba(232,77,58,.3);background:rgba(232,77,58,.06)}
-.topbar-menu:hover span{background:rgba(255,255,255,1)}
-.topbar-logo svg{width:100px;height:auto}
-.topbar-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.25);text-transform:uppercase}
-.sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:299;opacity:0;pointer-events:none;transition:opacity .3s}
-.sidebar-overlay.open{opacity:1;pointer-events:all}
-.sidebar{position:fixed;top:0;left:0;width:300px;height:100vh;background:#111118;border-right:1px solid rgba(255,255,255,.06);z-index:300;display:flex;flex-direction:column;overflow-y:auto;transform:translateX(-100%);transition:transform .3s ease}
-.sidebar.open{transform:translateX(0)}
-.sidebar-header{padding:24px 24px 20px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between}
-.sidebar-header-left{display:flex;align-items:center;gap:14px}
-.sidebar-xx-mark{width:36px;height:28px;flex-shrink:0}
-.sidebar-xx-mark svg{width:100%;height:100%;display:block}
-.sidebar-subtitle{font-size:12px;color:#9394a5;letter-spacing:2px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;font-weight:500}
-.sidebar-close{width:32px;height:32px;background:none;border:1px solid rgba(255,255,255,.06);border-radius:8px;color:#5e5f72;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.sidebar-close:hover{color:#e8e8ed;border-color:rgba(232,77,58,.3)}
-.sidebar nav{padding:16px 0;flex:1}
-.nav-item{display:block;padding:10px 24px;color:#9394a5;text-decoration:none;font-size:14px;border-left:2px solid transparent;transition:all .2s}
-.nav-item:hover{color:#e8e8ed;background:rgba(232,77,58,.1);border-left-color:#E84D3A}
-.nav-item.active{color:#E84D3A;font-weight:600;background:rgba(232,77,58,.1);border-left-color:#E84D3A}
-.nav-group-label{padding:20px 24px 6px;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#E84D3A;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none;transition:opacity .2s}.nav-group-label:hover{opacity:.8}.nav-group-chevron{font-size:10px;transition:transform .3s ease;transform:rotate(0deg)}.nav-group-label.expanded .nav-group-chevron{transform:rotate(90deg)}.nav-group-items{max-height:0;overflow:hidden;transition:max-height .35s ease}.nav-home{color:#E84D3A!important;font-weight:600;font-size:15px}.nav-about{color:#E84D3A!important;font-weight:700;font-size:12px;letter-spacing:2px;margin-top:12px}
-.nav-sub{padding-left:40px;font-size:13px}
-@media(min-width:768px){
-  .site-topbar{padding:0 32px}
-  .topbar-logo svg{width:110px}
-}
+  /* domain marquee: colour arrives through the domains */
+  .marquee{position:relative;width:100%;margin-top:46px;display:flex;flex-direction:column;gap:10px;-webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+  .mq-row{display:flex;gap:10px;width:max-content;animation:mq 70s linear infinite}
+  .mq-row.rev{animation-direction:reverse;animation-duration:85s}
+  .marquee:hover .mq-row{animation-play-state:paused}
+  @keyframes mq{to{transform:translateX(-50%)}}
+  .dom{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:99px;padding:6px 14px 6px 6px;font-size:13.5px;font-weight:700;white-space:nowrap}
+  .dom i{width:22px;height:22px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff}
+  .dom i .gx-mono{width:14px;height:14px}
+  .dom em{font-style:normal;color:var(--muted);font-weight:500}
 
-/* ── LAYOUT ── */
-.section{position:relative;overflow:hidden}
-.container{max-width:1100px;margin:0 auto;padding:0 20px;position:relative;z-index:2}
-@media(min-width:768px){.container{padding:0 40px}}
-@media(min-width:1200px){.container{padding:0 60px}}
+  /* ── sections ── */
+  section{padding:clamp(72px,10vw,120px) 0;overflow-x:clip}
+  .eyebrow{display:flex;align-items:center;gap:10px;font-family:var(--cond);font-weight:700;font-size:13.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  .eyebrow .n{color:var(--ink)}
+  h2{font-size:clamp(32px,4.6vw,54px);font-weight:800;letter-spacing:-.03em;line-height:1.04}
+  h2 .soft{color:rgba(17,17,22,.38)}
+  .lede{margin-top:18px;font-size:clamp(16px,1.5vw,18px);line-height:1.6;color:var(--soft);max-width:560px}
 
-/* ── TYPOGRAPHY ── */
-.headline{font-size:1.8rem;font-weight:900;letter-spacing:-.04em;line-height:1.1;margin-bottom:16px}
-.gradient{background:linear-gradient(135deg,#E84D3A,#FF6B4A,#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.gradient2{background:linear-gradient(135deg,#4A6CF7,#8B5CF6,#E84D3A);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.body-text{font-size:.92rem;font-weight:400;color:rgba(255,255,255,.5);line-height:1.7;max-width:600px}
-.section-tag{font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#E84D3A;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.section-tag::before{content:'';width:16px;height:2px;background:linear-gradient(90deg,#E84D3A,#8B5CF6);border-radius:1px}
-@media(min-width:768px){
-  .headline{font-size:2.8rem;margin-bottom:20px}
-  .body-text{font-size:1.05rem;line-height:1.75}
-}
-@media(min-width:1200px){.headline{font-size:3.4rem}}
+  /* opening statement */
+  .statement{max-width:860px;margin:0 auto;text-align:center}
+  .statement p{font-size:clamp(20px,2.4vw,28px);line-height:1.45;font-weight:500;letter-spacing:-.01em;color:rgba(17,17,22,.55)}
+  .statement p + p{margin-top:26px}
+  .statement strong{color:var(--ink);font-weight:700}
+  .layer-head{text-align:center;margin-top:clamp(70px,9vw,110px)}
+  .layer-head .gx-dot{width:52px;height:52px;border-radius:15px;margin:0 auto 22px}
+  .layer-head .gx-dot .gx-mono{width:36px;height:36px}
+  .layer-head h2{font-size:clamp(36px,5.4vw,64px)}
 
-/* ── ANIMATIONS ── */
-@keyframes domainScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.reveal{opacity:0;transform:translateY(28px);transition:all .7s cubic-bezier(.16,1,.3,1)}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.reveal-delay-1{transition-delay:.12s}
-.reveal-delay-2{transition-delay:.24s}
-.reveal-delay-3{transition-delay:.36s}
-.reveal-delay-4{transition-delay:.48s}
+  /* chapter: text + visual */
+  .chapter{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,6vw,90px);align-items:center}
+  .chapter.flip .ch-text{order:2}
+  @media (max-width:900px){ .chapter{grid-template-columns:1fr} .chapter.flip .ch-text{order:0} }
+  .feats{display:grid;gap:12px;margin-top:30px}
+  .feats.two{grid-template-columns:1fr 1fr}
+  @media (max-width:560px){ .feats.two{grid-template-columns:1fr} }
+  .feat{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start}
+  .feat .ic{width:40px;height:40px;border-radius:12px;background:var(--bg);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+  .feat .k{font-family:var(--cond);font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .feat b{display:block;font-size:16px;font-weight:800;letter-spacing:-.01em;margin-top:1px}
+  .feat p{font-size:14px;line-height:1.5;color:var(--soft);margin-top:3px}
 
-/* ── BACKGROUNDS ── */
-.bg-noise{position:absolute;inset:0;opacity:.03;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-.bg-radial{position:absolute;width:400px;height:400px;border-radius:50%;filter:blur(100px);opacity:.12;pointer-events:none}
-.section-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(232,77,58,.15),rgba(139,92,246,.1),transparent);margin:0 auto;max-width:800px}
+  .alt{background:#fff;border-block:1px solid var(--line)}
 
-/* ══════════════════════════════════════════════
-   HERO
-   ══════════════════════════════════════════════ */
-.hero{min-height:100vh;min-height:100dvh;display:flex;align-items:flex-end;justify-content:center;text-align:center;padding:0;position:relative}
-.hero-canvas{position:absolute;inset:0;z-index:0;pointer-events:none}
-.hero-content{position:relative;z-index:3;width:100%;background:linear-gradient(to top,rgba(10,10,15,.95) 0%,rgba(10,10,15,.8) 60%,transparent 100%);padding:30px 20px 16px}
-.hero-wordmark{max-width:280px;margin:0 auto 12px;filter:drop-shadow(0 0 20px rgba(232,77,58,.3)) drop-shadow(0 0 40px rgba(139,92,246,.12))}
-.hero-wordmark svg{width:100%;height:auto}
-.hero-tagline{font-size:1.25rem;font-weight:300;color:rgba(255,255,255,.85);letter-spacing:.03em;margin-bottom:6px}
-.hero-sub{font-size:.92rem;color:rgba(255,255,255,.35);margin-bottom:16px}
-.hero-stats{display:flex;justify-content:center;gap:24px}
-.hero-stat .val{font-size:1.4rem;font-weight:900;color:#E84D3A;font-family:'JetBrains Mono',monospace}
-.hero-stat .lbl{font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;opacity:.3;margin-top:2px}
-.domain-ticker{overflow:hidden;margin:14px -20px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
-.domain-ticker-inner{display:flex;gap:10px;animation:domainScroll 30s linear infinite;width:max-content}
-.domain-ticker-inner .d{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;padding:4px 10px;border-radius:7px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);white-space:nowrap;color:rgba(255,255,255,.4)}
-@media(min-width:768px){
-  .hero{padding:0}
-  .hero-content{padding:50px 40px 30px}
-  .hero-wordmark{max-width:500px;margin:0 auto 20px}
-  .hero-tagline{font-size:1.6rem;margin-bottom:8px}
-  .hero-sub{font-size:1.05rem;margin-bottom:28px}
-  .hero-stats{gap:50px}
-  .hero-stat .val{font-size:1.8rem}
-  .domain-ticker{max-width:800px;margin:28px auto 0}
-}
+  /* phone frames holding real app screenshots */
+  /* squarer than an iPhone, with a status bar above the screenshot so the corners never clip the app's own top bar.
+     The bar's colour is sampled from the top of each screenshot (phoneBars() below). Sizes follow the phone's width (cqw). */
+  .phone{width:min(300px,72vw);border-radius:34px;padding:8px;background:#111116;box-shadow:0 40px 80px -30px rgba(17,17,22,.45),0 0 0 1px rgba(255,255,255,.06) inset;position:relative;container-type:inline-size}
+  .phone .screen{border-radius:24px;overflow:hidden;background:var(--sb,#F7F7F8);color:var(--sbInk,#111116);transition:background .3s}
+  .phone .sb{height:9cqw;display:flex;align-items:center;justify-content:space-between;padding:1.5cqw 8cqw 0;font:700 4cqw/1 var(--font);letter-spacing:-.01em}
+  .phone .sb svg{height:3.6cqw;width:auto;fill:currentColor}
+  .phone .sb .ic{display:flex;gap:1.6cqw;align-items:center}
+  .phone img{width:100%;height:auto;aspect-ratio:390/844;object-fit:cover}
+  .vis{position:relative;display:flex;justify-content:center;align-items:center;min-height:420px}
 
-/* ══════════════════════════════════════════════
-   COLLECTION
-   ══════════════════════════════════════════════ */
-.collection{padding:80px 0}
-.pillar-grid{display:grid;gap:16px;margin-top:28px}
-.pillar-card{border-radius:14px;padding:24px 20px;position:relative;overflow:hidden}
-.pillar-card .bar{position:absolute;top:0;left:0;right:0;height:3px}
-.pillar-card .icon{font-size:1.5rem;margin-bottom:10px}
-.pillar-card .tag{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
-.pillar-card .title{font-size:1rem;font-weight:800;margin-bottom:8px;line-height:1.25}
-.pillar-card .desc{font-size:.78rem;opacity:.45;line-height:1.55}
-@media(min-width:768px){
-  .pillar-grid{grid-template-columns:1fr 1fr 1fr;gap:24px}
-}
+  /* supernova: sector colour radiating out of the XX */
+  .nova{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+  .nova .ring{position:absolute;border:1px solid var(--line);border-radius:50%}
+  .nova .spark{position:absolute;width:10px;height:10px;border-radius:50%;opacity:0;animation:spark 4.8s cubic-bezier(.2,.6,.3,1) infinite}
+  @keyframes spark{0%{transform:rotate(var(--a)) translateX(30px) scale(.4);opacity:0}15%{opacity:1}100%{transform:rotate(var(--a)) translateX(var(--r)) scale(1);opacity:0}}
 
-/* ══════════════════════════════════════════════
-   CANVAS SECTIONS (two-col on desktop)
-   ══════════════════════════════════════════════ */
-.canvas-section{padding:60px 0;position:relative}
-.canvas-row{display:flex;flex-direction:column;gap:24px}
-.canvas-header{order:1}
-.canvas-visual{order:2;position:relative;width:100%;height:380px;border-radius:16px;overflow:hidden;background:#06060a}
-.canvas-visual canvas{width:100%;height:100%}
-.canvas-body{order:3}
-@media(min-width:768px){
-  .canvas-section{padding:80px 0}
-  .canvas-row{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:16px 48px;align-items:center}
-  .canvas-header{order:unset;grid-column:2;grid-row:1;align-self:end}
-  .canvas-visual{order:unset;grid-column:1;grid-row:1 / 3;height:480px}
-  .canvas-body{order:unset;grid-column:2;grid-row:2;align-self:start}
-  .canvas-row.reverse .canvas-visual{grid-column:2}
-  .canvas-row.reverse .canvas-header{grid-column:1}
-  .canvas-row.reverse .canvas-body{grid-column:1}
-}
+  /* the collection: one huge address — the word rolls, XX.com holds still.
+     All three parts share one line box (1.25) and sit on its floor, so descenders (g, y, p) have room and baselines agree. */
+  .slot{text-align:center;padding:clamp(24px,4vw,44px) 0 6px}
+  .big{font-size:clamp(44px,10vw,132px);font-weight:800;letter-spacing:-.045em;line-height:1.25;display:inline-flex;align-items:flex-end;justify-content:center;white-space:nowrap}
+  .big > span{display:inline-block;line-height:1.25}
+  .big .w{position:relative;overflow:hidden;height:1.25em;text-align:right;white-space:nowrap;transition:width .6s cubic-bezier(.65,0,.25,1)}
+  .big .w span{display:block;line-height:1.25;padding-right:.02em;background:var(--c);-webkit-background-clip:text;background-clip:text;color:transparent;transition:transform .6s cubic-bezier(.65,0,.25,1),opacity .4s}
+  .big .w span.out{transform:translateY(-100%);opacity:0}
+  .big .w span.in{transform:translateY(100%);opacity:0}
+  .big .xx{color:var(--ink)}
+  .big .com{color:rgba(17,17,22,.28)}
+  .slot .of{margin-top:22px;font-family:var(--cond);font-weight:700;font-size:15px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .slot .lede{margin:10px auto 0;max-width:520px}
+  .feats.row{grid-template-columns:repeat(3,1fr);margin-top:40px}
+  @media (max-width:760px){ .feats.row{grid-template-columns:1fr} }
 
-/* ── Feature cards ── */
-.feature-cards{display:grid;gap:12px;margin-top:20px}
-.feature-card{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05)}
-.feature-card .fc-icon{font-size:1.3rem;flex-shrink:0}
-.feature-card .fc-title{font-size:.78rem;font-weight:700;margin-bottom:2px}
-.feature-card .fc-desc{font-size:.68rem;color:rgba(255,255,255,.45);line-height:1.4}
-@media(min-width:768px){.feature-cards{grid-template-columns:1fr 1fr;gap:14px}}
+  /* gateways fan */
+  .fan{position:relative;height:520px;width:100%}
+  .fan .phone{position:absolute;top:50%;left:50%;width:220px;transition:transform .5s cubic-bezier(.2,.75,.2,1)}
+  .fan .p1{transform:translate(-50%,-50%) translateX(-150px) rotate(-9deg) scale(.88)}
+  .fan .p2{transform:translate(-50%,-50%) translateX(150px) rotate(9deg) scale(.88)}
+  .fan .p0{transform:translate(-50%,-50%);z-index:2}
+  .fan:hover .p1{transform:translate(-50%,-50%) translateX(-175px) rotate(-12deg) scale(.88)}
+  .fan:hover .p2{transform:translate(-50%,-50%) translateX(175px) rotate(12deg) scale(.88)}
+  @media (max-width:560px){ .fan{height:440px} .fan .phone{width:180px} .fan .p1{transform:translate(-50%,-50%) translateX(-95px) rotate(-9deg) scale(.82)} .fan .p2{transform:translate(-50%,-50%) translateX(95px) rotate(9deg) scale(.82)} .fan:hover .p1,.fan:hover .p2{transform:translate(-50%,-50%) scale(.82)} }
+  .bigstats{display:flex;gap:clamp(24px,5vw,54px);margin-top:34px}
+  .bigstats .stat b{font-size:clamp(40px,5vw,56px)}
+  .gwchips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+  .gwchip{display:flex;align-items:center;gap:8px;padding:5px 13px 5px 5px;border-radius:99px;color:#fff;font-weight:800;font-size:13px}
+  .gwchip i{width:24px;height:24px;border-radius:99px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:12px}
 
-/* ── Info cards ── */
-.info-cards{display:grid;gap:12px;margin-top:20px}
-.info-card{border-radius:14px;padding:20px 18px;backdrop-filter:blur(10px)}
-.info-card-tag{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
-.info-card-title{font-size:.78rem;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:6px}
-.info-card-desc{font-size:.7rem;color:rgba(255,255,255,.45);line-height:1.55}
-@media(min-width:768px){.info-cards{grid-template-columns:1fr 1fr 1fr;gap:16px}}
+  /* network diagram */
+  #net{width:100%;max-width:560px;height:auto;overflow:visible}
+  #net .edge{stroke:rgba(17,17,22,.09);stroke-width:1}
+  #net .pulse{stroke-width:2.6;stroke-linecap:round;fill:none;stroke-dasharray:16 200;animation:flow 3.2s linear infinite}
+  @keyframes flow{from{stroke-dashoffset:205}to{stroke-dashoffset:0}}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:22px;font-size:12.5px;color:var(--soft)}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .legend i{width:10px;height:10px;border-radius:3px}
 
-/* ── DEMO CARD ── */
-.demo-card-wrap{max-width:560px;margin:0 auto;padding:0 20px}
-.demo-card{position:relative;border-radius:18px;padding:2px;background:linear-gradient(135deg,#E84D3A,#8B5CF6,#4A6CF7);cursor:pointer;text-decoration:none;display:block;transition:transform .3s,box-shadow .3s}
-.demo-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(139,92,246,.25)}
-.demo-card-inner{border-radius:16px;background:rgba(10,10,15,.92);backdrop-filter:blur(20px);padding:32px 28px;text-align:center}
-.demo-card-badge{display:inline-block;font-size:.55rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#E84D3A;background:rgba(232,77,58,.1);padding:5px 14px;border-radius:20px;margin-bottom:14px}
-.demo-card-title{font-size:1.1rem;font-weight:800;color:rgba(255,255,255,.95);margin-bottom:10px;background:linear-gradient(135deg,#E84D3A,#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.demo-card-desc{font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:16px}
-.demo-card-note{font-size:.6rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.25)}
-.demo-card-arrow{display:inline-block;margin-top:12px;font-size:.85rem;font-weight:800;color:#8B5CF6;letter-spacing:.08em;animation:pulseLaunch 1.5s ease-in-out infinite;transition:letter-spacing .3s}
-.demo-card:hover .demo-card-arrow{letter-spacing:.16em;animation:none}
-@keyframes pulseLaunch{0%,100%{opacity:.6}50%{opacity:1}}
-@media(min-width:768px){.demo-card-wrap{padding:0}.demo-card-title{font-size:1.25rem}.demo-card-inner{padding:40px 36px}}
+  /* hub feature grid */
+  .grid4{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:30px}
+  @media (max-width:560px){ .grid4{grid-template-columns:1fr} }
 
-/* ── EXPLORE CARDS GRID ── */
-.explore-grid{display:grid;grid-template-columns:1fr;gap:12px;max-width:560px;margin:0 auto;padding:0 20px}
-.explore-card{display:block;text-decoration:none;color:inherit;border-radius:12px;padding:18px 20px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);transition:all .25s;position:relative;overflow:hidden}
-.explore-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#E84D3A,#8B5CF6,#4A6CF7);opacity:0;transition:opacity .25s}
-.explore-card:hover{background:rgba(255,255,255,.04);border-color:rgba(139,92,246,.2);transform:translateY(-2px)}
-.explore-card:hover::after{opacity:1}
-.explore-card-tag{font-size:.5rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
-.explore-card-title{font-size:.82rem;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:4px}
-.explore-card-desc{font-size:.68rem;color:rgba(255,255,255,.4);line-height:1.5}
-.explore-card-arrow{position:absolute;top:16px;right:18px;font-size:1.1rem;color:#E84D3A;animation:pulseArrow 1.5s ease-in-out infinite;transition:all .25s}
-.explore-card:hover .explore-card-arrow{color:#8B5CF6;transform:translateX(5px)}
-@keyframes pulseArrow{0%,100%{opacity:.5;transform:translateX(0)}50%{opacity:1;transform:translateX(4px)}}
-@media(min-width:768px){.explore-grid{grid-template-columns:1fr 1fr;padding:0}.explore-card{padding:20px 22px}}
+  /* facilitator */
+  .flow{display:flex;align-items:center;justify-content:center;gap:0;margin:clamp(40px,6vw,60px) auto 0;max-width:820px}
+  .node{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px 18px;text-align:center;min-width:150px}
+  .node .ic{font-size:24px}
+  .node b{display:block;font-size:14.5px;font-weight:800;margin-top:6px}
+  .node span{font-size:12px;color:var(--muted)}
+  .node.hub{background:#111116;color:#fff;border-color:#111116}
+  .node.hub .gx-dot{background:#fff;color:#111116;margin:0 auto}
+  .node.hub > span{color:rgba(255,255,255,.55)}
+  .wire{flex:1;height:2px;min-width:30px;background:repeating-linear-gradient(90deg,rgba(17,17,22,.25) 0 6px,transparent 6px 12px);background-size:24px 2px;animation:wire 1s linear infinite}
+  @keyframes wire{to{background-position:24px 0}}
+  @media (max-width:640px){ .flow{flex-direction:column} .wire{width:2px;height:28px;flex:none;min-width:0;background:repeating-linear-gradient(180deg,rgba(17,17,22,.25) 0 6px,transparent 6px 12px);background-size:2px 24px} @keyframes wire{to{background-position:0 24px}} }
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:40px}
+  @media (max-width:860px){ .grid3{grid-template-columns:1fr 1fr} }
+  @media (max-width:560px){ .grid3{grid-template-columns:1fr} }
+  /* the five zone types, as the app names them; the model they all sit on is the dark card */
+  .zones .model{background:#111116;color:#fff;border-color:#111116}
+  .zones .model .ic{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12)}
+  .zones .model .k{color:rgba(255,255,255,.5)}
+  .zones .model p{color:rgba(255,255,255,.66)}
+  .node.who{display:flex;flex-direction:column;gap:5px;text-align:left;padding:12px;min-width:180px}
+  .who-row{display:flex;align-items:center;gap:9px;font-size:13.5px;font-weight:700;padding:4px 6px}
+  .who-row i{font-style:normal;width:24px;height:24px;border-radius:7px;background:var(--bg);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px}
+  .node.who > span{text-align:center;margin-top:4px}
+  .card3{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:24px 22px}
+  .card3 .k{font-family:var(--cond);font-weight:700;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .card3 h3{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-top:4px}
+  .card3 p{font-size:14.5px;line-height:1.55;color:var(--soft);margin-top:8px}
+  .card3 .ic{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:21px;margin-bottom:16px;background:var(--bg);border:1px solid var(--line)}
+  .centre{text-align:center}
+  .centre .lede{margin-left:auto;margin-right:auto}
+  .centre .eyebrow{justify-content:center}
 
-/* ── OPPORTUNITY SECTION ── */
-.opp-section{padding:0 20px 60px;max-width:800px;margin:0 auto}
-.opp-divider{display:flex;align-items:center;gap:16px;margin-bottom:50px}
-.opp-divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(232,77,58,.15),rgba(139,92,246,.1),transparent)}
-.opp-header{text-align:center;margin-bottom:40px}
-.opp-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;background:rgba(232,77,58,.06);border:1px solid rgba(232,77,58,.2);border-radius:100px;font-size:.55rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#E84D3A;margin-bottom:16px}
-.opp-badge::before{content:'';width:5px;height:5px;background:#E84D3A;border-radius:50%;animation:oppPulse 2s infinite}
-@keyframes oppPulse{0%,100%{opacity:1}50%{opacity:.4}}
-.opp-title{font-size:1.6rem;font-weight:800;letter-spacing:-.03em}
-.opp-thesis{position:relative;border-radius:16px;border:1px solid rgba(255,255,255,.06);overflow:hidden;margin-bottom:40px;background:rgba(255,255,255,.02)}
-.opp-thesis::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#E84D3A,#8B5CF6,#4A6CF7)}
-.opp-thesis::after{content:'';position:absolute;top:0;left:0;width:2px;height:100%;background:linear-gradient(180deg,#E84D3A,#8B5CF6,#4A6CF7);opacity:.5}
-.opp-thesis-inner{padding:36px 32px 36px 36px}
-.opp-thesis p{font-size:.88rem;color:rgba(255,255,255,.5);line-height:1.85;margin-bottom:20px}
-.opp-thesis p:last-child{margin-bottom:0}
-.opp-thesis strong{color:rgba(255,255,255,.8);font-weight:600}
-.opp-thesis-divider{width:48px;height:1px;background:linear-gradient(90deg,#E84D3A,#8B5CF6);margin:24px 0;opacity:.5}
-.opp-thesis-close{font-size:.95rem;font-weight:500;font-style:italic;line-height:1.5;background:linear-gradient(135deg,#E84D3A,#8B5CF6,#4A6CF7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.opp-who-label{font-size:.55rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#8B5CF6;text-align:center;margin-bottom:16px}
-.opp-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:36px}
-.opp-card{border-radius:12px;padding:22px 20px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);position:relative;overflow:hidden;transition:all .25s}
-.opp-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#E84D3A,#8B5CF6,#4A6CF7);opacity:0;transition:opacity .25s}
-.opp-card:hover{background:rgba(255,255,255,.04);border-color:rgba(139,92,246,.2);transform:translateY(-2px)}
-.opp-card:hover::after{opacity:1}
-.opp-card-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;margin-bottom:12px}
-.opp-card h3{font-size:.82rem;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:6px}
-.opp-card p{font-size:.7rem;color:rgba(255,255,255,.4);line-height:1.6}
-.opp-final{text-align:center;border-radius:14px;padding:28px 24px;background:linear-gradient(135deg,rgba(232,77,58,.04),rgba(139,92,246,.03),rgba(74,108,247,.02));border:1px solid rgba(255,255,255,.06);position:relative;overflow:hidden}
-.opp-final::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,#E84D3A,#8B5CF6,#4A6CF7)}
-.opp-final p{font-size:.78rem;color:rgba(255,255,255,.45);line-height:1.8}
-.opp-final strong{color:rgba(255,255,255,.75);font-weight:600}
-.opp-final-divider{width:48px;height:1px;background:linear-gradient(90deg,#E84D3A,#8B5CF6);margin:20px auto;opacity:.5}
-.opp-final-line{font-size:.95rem;font-weight:600;font-style:italic;background:linear-gradient(135deg,#E84D3A,#8B5CF6,#4A6CF7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.opp-final-line:hover{opacity:.7}
-@media(min-width:768px){
-  .opp-section{padding:0 40px 60px}
-  .opp-title{font-size:2rem}
-  .opp-thesis-inner{padding:44px 44px 44px 48px}
-  .opp-thesis p{font-size:.95rem}
-  .opp-grid{grid-template-columns:1fr 1fr}
-  .opp-final{padding:36px 36px}
-}
+  /* agents */
+  .agents{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+  .agent{display:flex;align-items:center;gap:8px;padding:5px 13px 5px 5px;border-radius:99px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:700}
+  .agent i{width:26px;height:26px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:13px;color:#fff}
+  .agent i .gx-mono{width:16px;height:16px}
 
-/* ── Metrics row ── */
-.metrics{display:flex;gap:24px;margin-top:20px;flex-wrap:wrap}
-.metric{text-align:center}
-.metric-value{font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,#E84D3A,#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.metric-label{font-size:.6rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:3px}
+  /* explore */
+  .explore{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:36px}
+  @media (max-width:760px){ .explore{grid-template-columns:1fr} }
+  .xcard{background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px 22px 20px;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s,border-color .2s;min-height:170px}
+  .xcard:hover{transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(17,17,22,.25);border-color:rgba(17,17,22,.14)}
+  .xcard .k{font-family:var(--cond);font-weight:700;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between}
+  .xcard .k .arr{font-family:var(--font);font-size:18px;color:var(--ink);transition:transform .2s}
+  .xcard:hover .arr{transform:translateX(4px)}
+  .xcard h3{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-top:10px}
+  .xcard p{font-size:14.5px;line-height:1.5;color:var(--soft);margin-top:6px}
+  .xdemo{grid-column:1/-1;background:var(--stage);color:#fff;border-color:var(--stage);display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:28px;position:relative;overflow:hidden}
+  .xdemo::before{content:"";position:absolute;right:-80px;top:-80px;width:320px;height:320px;border-radius:50%;background:var(--grad);opacity:.28;filter:blur(60px)}
+  .xdemo .k{color:rgba(255,255,255,.5)}
+  .xdemo h3{font-size:clamp(24px,3vw,32px)}
+  .xdemo p{color:rgba(255,255,255,.65)}
+  .xdemo .tagrow{display:flex;gap:8px;margin-top:14px}
+  .xdemo .tagrow span{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(255,255,255,.18);border-radius:99px;padding:5px 10px;color:rgba(255,255,255,.75)}
+  .xdemo .go{position:relative;background:#fff;color:#111116;padding:14px 22px;border-radius:99px;font-weight:800;font-size:14px;white-space:nowrap}
+  .xdemo:hover{box-shadow:0 22px 50px -22px rgba(7,7,8,.6)}
+  @media (max-width:640px){ .xdemo{grid-template-columns:1fr} .xdemo .go{justify-self:start} }
 
-/* ── Hub features ── */
-.hub-grid{display:grid;gap:10px;margin-top:20px}
-.hub-row{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border-radius:12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05)}
-.hub-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px}
-.hub-title{font-size:.78rem;font-weight:700;margin-bottom:2px}
-.hub-desc{font-size:.68rem;color:rgba(255,255,255,.45);line-height:1.4}
-@media(min-width:768px){.hub-grid{grid-template-columns:1fr 1fr;gap:12px}}
+  /* the opportunity: the intro's stage, reversed */
+  .dark{background:var(--stage);color:#fff}
+  .dark .eyebrow{color:rgba(255,255,255,.45)}
+  .dark .eyebrow .n{color:rgba(255,255,255,.85)}
+  .dark h2 .soft{color:rgba(255,255,255,.38)}
+  .dark .lede,.dark .body p{color:rgba(255,255,255,.66)}
+  .dark .body{max-width:780px;margin-top:28px}
+  .dark .body p{font-size:clamp(16px,1.5vw,18.5px);line-height:1.7}
+  .dark .body p + p{margin-top:18px}
+  .dark .body strong{color:#fff}
+  .ops{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:56px}
+  @media (max-width:760px){ .ops{grid-template-columns:1fr} }
+  .op{border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.035);border-radius:22px;padding:24px}
+  .op .ic{width:42px;height:42px;border-radius:12px;border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:17px;color:#fff}
+  .op h3{font-size:20px;font-weight:800;margin-top:16px;letter-spacing:-.01em}
+  .op p{font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.6);margin-top:8px}
+  .closing{margin-top:64px;padding-top:44px;border-top:1px solid rgba(255,255,255,.1);max-width:860px}
+  .closing p{font-size:clamp(20px,2.4vw,28px);line-height:1.45;font-weight:500;color:rgba(255,255,255,.55);letter-spacing:-.01em}
+  .closing p + p{margin-top:20px}
+  .closing strong{color:#fff;font-weight:700}
+  .gold-rule{width:132px;height:2px;border-radius:2px;background:linear-gradient(90deg,#8a5a12,#f7c95a,#fff1c4,#e0a53a);margin-bottom:28px}
 
-/* ══════════════════════════════════════════════
-   CLOSING / VISION
-   ══════════════════════════════════════════════ */
-.closing{min-height:80vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:80px 20px;position:relative}
-.closing-canvas{position:absolute;inset:0;z-index:0}
-.closing-content{position:relative;z-index:2}
-.closing-wordmark{max-width:220px;margin:0 auto 24px;filter:drop-shadow(0 0 20px rgba(232,77,58,.3)) drop-shadow(0 0 40px rgba(139,92,246,.12))}
-.closing-wordmark svg{width:100%;height:auto}
-.closing-title{font-size:1.8rem;font-weight:900;line-height:1.15;margin-bottom:24px}
-.closing-text{max-width:640px;margin:0 auto;font-size:.88rem;color:rgba(255,255,255,.5);line-height:1.75;font-weight:400}
-.closing-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px;justify-items:center;margin:28px auto 0;max-width:300px}
-.closing-stats .val{font-size:1.1rem;font-weight:900;font-family:'JetBrains Mono',monospace}
-.closing-stats .lbl{font-size:.55rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;opacity:.3;margin-top:2px}
-@media(min-width:768px){
-  .closing-wordmark{max-width:340px}
-  .closing-title{font-size:clamp(1.8rem,4vw,3.2rem)}
-  .closing-text{font-size:clamp(.88rem,1.4vw,1.05rem);line-height:1.8}
-  .closing-stats{max-width:none;display:flex;gap:40px;justify-content:center}
-  .closing-stats .val{font-size:1.4rem}
-}
-
-/* ── Footer ── */
-.site-footer{padding:40px 20px;text-align:center;border-top:1px solid rgba(255,255,255,.04)}
-.site-footer p{font-size:.65rem;color:rgba(255,255,255,.2);letter-spacing:.1em;text-transform:uppercase}
-
-/* ── Cookie Consent Banner ── */
-.cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:9998;background:#111118;border-top:1px solid rgba(139,92,246,.15);padding:20px 24px;transform:translateY(100%);transition:transform .4s ease;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
-.cookie-banner.show{transform:translateY(0)}
-.cookie-banner-text{font-size:.82rem;color:rgba(255,255,255,.5);line-height:1.6;max-width:560px;text-align:center}
-.cookie-banner-text strong{color:rgba(255,255,255,.8);font-weight:600}
-.cookie-banner-text a{color:#8B5CF6;text-decoration:none;font-weight:500}
-.cookie-banner-text a:hover{color:#A78BFA}
-.cookie-banner-btns{display:flex;gap:10px;flex-shrink:0}
-.cookie-btn{padding:9px 20px;border-radius:8px;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .2s;border:none}
-.cookie-btn-accept{background:linear-gradient(135deg,#E84D3A,#8B5CF6);color:#fff}
-.cookie-btn-accept:hover{filter:brightness(1.15);transform:translateY(-1px)}
-.cookie-btn-reject{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45)}
-.cookie-btn-reject:hover{background:rgba(255,255,255,.08);color:rgba(255,255,255,.7)}
-@media(max-width:600px){.cookie-banner{flex-direction:column;padding:18px 20px}.cookie-banner-btns{width:100%;justify-content:center}}
+  /* contact */
+  .contact{text-align:center}
+  .contact .gx-dot{width:52px;height:52px;border-radius:15px;margin:0 auto 20px}
+  .contact .gx-dot .gx-mono{width:36px;height:36px}
+  .contact .mail{display:inline-block;margin-top:14px;font-size:clamp(20px,2.6vw,28px);font-weight:700;letter-spacing:-.01em;border-bottom:2px solid var(--line);padding-bottom:2px;transition:border-color .2s}
+  .contact .mail:hover{border-color:var(--ink)}
+  .social{display:flex;gap:10px;justify-content:center;margin-top:26px}
+  .social a{width:44px;height:44px;border-radius:99px;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;transition:border-color .2s}
+  .social a:hover{border-color:rgba(17,17,22,.25)}
+  .social svg{width:18px;height:18px;fill:var(--ink)}
+  /* reveal on scroll (only when JS has run; without it, everything shows) */
+  .js .rv{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.2,.75,.2,1),transform .8s cubic-bezier(.2,.75,.2,1)}
+  .js .rv.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    #stage *{animation-duration:1ms!important;animation-delay:0s!important}
+    .mq-row,.spark,.pulse,.wire{animation:none!important}
+    .js .rv{opacity:1;transform:none;transition:none}
+    html{scroll-behavior:auto}
+  }
 </style>
 </head>
-<body>
+<body data-page="index">
 
-<!-- ── TOPBAR ── -->
-<header class="site-topbar">
-  <button class="topbar-menu" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
-  <div class="topbar-logo">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 57.2">
-      <defs><linearGradient id="gNav" x1="74.1" y1="-57.4" x2="245.8" y2="114.3" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#E84D3A"/><stop offset=".6" stop-color="#8B5CF6"/><stop offset="1" stop-color="#4A6CF7"/></linearGradient></defs>
-      <path fill="url(#gNav)" d="M230.1,1.8h0c0,.1,0,0,0,0h.1ZM203.7,1.8h-8.9l15.3,23.1,4.6-6.5-11-16.6ZM245.5,38.8l10.9,16.5h8.9l-15.3-23.1-4.5,6.7ZM247.6,28.5l-4.5,6.7h0l-8.7,13.2-4.4,6.7-4.4-6.7-8.7-13.2-13.2,20h-8.9l16.7-25.3h0s.9-1.4.9-1.4h0l4.4-6.7,8.7-13.2,4.4-6.7,4.4,6.7,8.7,13.2,13.2-20h8.9l-17.6,26.7ZM238.7,28.5l-8.7-13.2-8.7,13.2,8.7,13.2,8.7-13.2ZM211.6,29.9h0s0,0,0,0ZM212.5,28.5h0l-.9,1.3.9-1.3ZM52.2,17.2c-2-5.1-5.2-9.1-9.7-11.9-4.4-2.8-9.5-4.2-15.2-4.2s-9.6,1.2-13.8,3.5c-4.2,2.3-7.5,5.6-9.9,9.7C1.2,18.5,0,23.2,0,28.4s1.2,9.9,3.7,14.1c2.4,4.2,5.7,7.4,9.9,9.7,4.2,2.3,8.8,3.5,13.8,3.5s8.9-1,12.8-3.1c3.8-2.1,6.9-4.9,9.3-8.4,2.4-3.5,3.9-7.3,4.4-11.5v-6.9h-29.5v7h20.1c-.7,4.6-2.5,8.2-5.5,10.9-3,2.7-6.9,4-11.6,4s-6.7-.8-9.5-2.4c-2.8-1.6-4.9-3.9-6.5-6.8-1.6-3-2.4-6.4-2.4-10.2s.8-7.2,2.4-10.2c1.6-2.9,3.7-5.2,6.5-6.8,2.8-1.6,5.9-2.4,9.5-2.4s6.1.7,8.6,2c2.5,1.4,4.4,3.4,5.8,6h10.6ZM92.1,8.8V1.7h-29.6v53.6h29.6v-7.2h-20.8v-16.4h18.5v-7.2h-18.5v-15.7h20.8ZM146.9,1.7h-8.8v39.9L111.7,1.7h-8.8v53.6h8.8V15.3l26.4,40h8.8V1.7ZM188,8.8V1.7h-29.6v53.6h29.6v-7.2h-20.8v-16.4h18.5v-7.2h-18.5v-15.7h20.8ZM292.5,55.8c5,0,9.6-1.2,13.8-3.5,4.2-2.3,7.5-5.6,9.9-9.8,2.4-4.2,3.6-8.9,3.6-14.1s-1.2-9.9-3.6-14.1c-2.4-4.2-5.7-7.4-9.9-9.7-4.2-2.3-8.8-3.5-13.8-3.5s-9.6,1.2-13.8,3.5c-4.2,2.3-7.5,5.6-9.9,9.7-2.4,4.2-3.7,8.9-3.7,14.1s1.2,10,3.7,14.1c2.4,4.2,5.8,7.5,9.9,9.8,4.2,2.3,8.8,3.5,13.8,3.5ZM292.5,48.2c-3.5,0-6.7-.8-9.5-2.4-2.8-1.6-4.9-3.9-6.5-6.9-1.6-3-2.4-6.5-2.4-10.4s.8-7.4,2.4-10.4c1.6-3,3.7-5.3,6.5-6.9,2.8-1.6,5.9-2.4,9.5-2.4s6.7.8,9.5,2.4c2.8,1.6,4.9,3.9,6.5,6.9,1.6,3,2.4,6.4,2.4,10.4s-.8,7.4-2.4,10.4c-1.6,3-3.7,5.3-6.5,6.9-2.8,1.6-5.9,2.4-9.5,2.4Z"/>
-    </svg>
-  </div>
-</header>
-
-<!-- ── SIDEBAR OVERLAY ── -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-header">
-    <div class="sidebar-header-left">
-      <div class="sidebar-xx-mark"><svg viewBox="484 0 176 138" xmlns="http://www.w3.org/2000/svg"><path fill="#8B5CF6" fill-rule="evenodd" d="M 616,69.25 L 604.8,85.9 L 583.2,118.7 L 572.3,135.3 L 561.4,118.7 L 539.7,85.9 L 506.9,135.6 L 484.8,135.6 L 526.3,72.7 L 528.6,69.25 L 539.5,52.6 L 561.1,19.8 L 572,3.16 L 583,19.8 L 604.6,52.6 L 637.4,2.9 L 659.5,2.9 L 615.8,69.25 Z M 593.9,69.25 L 572.3,36.45 L 550.7,69.25 L 572.3,102.04 Z"/><path fill="#8B5CF6" d="M 610.5,94.6 L 637.6,135.6 L 659.7,135.6 L 621.7,77.9 Z"/><path fill="#8B5CF6" d="M 506.9,2.9 L 484.8,2.9 L 522.8,60.3 L 534.3,44.2 Z"/></svg></div>
-      <div class="sidebar-subtitle">GENEXXO</div>
+<!-- ═════════ HERO: the app's intro ═════════ -->
+<div id="stage">
+  <div class="sp-light"></div>
+  <svg class="sp-mark" id="spMark" viewBox="0 0 320 57.2" role="img" aria-label="GENEXXO"></svg>
+  <div class="sp-rule"></div>
+  <div class="sp-tags"><div class="sp-t1">A Supernova Application</div><h1 class="sp-t2" style="font:inherit;font-size:clamp(22px,3.2vw,32px);font-weight:300">The Organizing Layer for the Internet</h1></div>
+  <div class="after">
+    <div class="home-line">Where everything finds its natural home</div>
+    <div class="stats">
+      <div class="stat"><b>10,000+</b><span>XX Domains</span></div>
+      <div class="stat"><b>60+</b><span>Sectors</span></div>
+      <div class="stat"><b>15 yrs</b><span>Assembled</span></div>
     </div>
-    <button class="sidebar-close" onclick="toggleSidebar()">&#10005;</button>
-  </div>
-  <nav>
-    <a href="index.html" class="nav-item nav-home active">Home</a>
-    <a href="collection.html" class="nav-item">The Collection</a>
-    <a href="domain-gallery.html" class="nav-item">Domain Gallery</a>
-    <a href="ultimate-asset.html" class="nav-item">One Organizing Layer</a>
-    <a href="the-edge.html" class="nav-item">The Winning Edge</a>
-    <a href="genexxo-app.html" target="_blank" class="nav-item">GENEXXO DEMO</a>
-    <div class="nav-group-label" onclick="toggleSeriesNav()">Vision Series <span class="nav-group-chevron">&#9654;</span></div>
-    <a href="genexxo-vision-series.html" class="nav-item nav-sub">Series Overview</a>
-    <div class="nav-group-items" id="seriesItems">
-      <a href="genexxo-vision-series/part-1-the-collection.html" class="nav-item nav-sub">I &mdash; The Collection</a>
-      <a href="genexxo-vision-series/part-2-the-supernova-application.html" class="nav-item nav-sub">II &mdash; The Supernova Application</a>
-      <a href="genexxo-vision-series/part-3-the-facilitator-model.html" class="nav-item nav-sub">III &mdash; The Facilitator Model</a>
-      <a href="genexxo-vision-series/part-4-the-multi-dimensional-network.html" class="nav-item nav-sub">IV &mdash; The Multi-Dimensional Network</a>
-      <a href="genexxo-vision-series/part-5-content.html" class="nav-item nav-sub">V &mdash; Content</a>
-      <a href="genexxo-vision-series/part-6-community.html" class="nav-item nav-sub">VI &mdash; Community</a>
-      <a href="genexxo-vision-series/part-7-commerce-brand-zones.html" class="nav-item nav-sub">VII &mdash; Commerce &amp; Brand Zones</a>
-      <a href="genexxo-vision-series/part-8-ai-the-ecosystem.html" class="nav-item nav-sub">VIII &mdash; AI: The Ecosystem</a>
-      <a href="genexxo-vision-series/part-9-ai-agentic-intelligence.html" class="nav-item nav-sub">IX &mdash; AI: Agentic Intelligence</a>
-      <a href="genexxo-vision-series/part-10-network-effects.html" class="nav-item nav-sub">X &mdash; Network Effects</a>
-      <a href="genexxo-vision-series/part-11-innovation.html" class="nav-item nav-sub">XI &mdash; Innovation</a>
-      <a href="genexxo-vision-series/part-12-the-genexxo-vision.html" class="nav-item nav-sub">XII &mdash; The GENEXXO Vision</a>
+    <div class="hero-btns">
+      <a class="btn btn-dark" href="genexxo-app.html">Launch the demo →</a>
+      <a class="btn btn-line" href="#layer">Explore the vision</a>
     </div>
-    <a href="about.html" class="nav-item nav-about">ABOUT US</a>
-  </nav>
-</aside>
-
-<!-- ══════════════════════════════════════════════
-     HERO
-     ══════════════════════════════════════════════ -->
-<section class="hero section" id="hero">
-  <div class="bg-noise"></div>
-  <canvas class="hero-canvas" id="supernovaCanvas"></canvas>
-  <div class="hero-content">
-    <div class="hero-wordmark reveal">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 57.2">
-        <defs><linearGradient id="gHero" x1="74.1" y1="-57.4" x2="245.8" y2="114.3" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#E84D3A"/><stop offset=".6" stop-color="#8B5CF6"/><stop offset="1" stop-color="#4A6CF7"/></linearGradient></defs>
-        <path fill="url(#gHero)" d="M230.1,1.8h0c0,.1,0,0,0,0h.1ZM203.7,1.8h-8.9l15.3,23.1,4.6-6.5-11-16.6ZM245.5,38.8l10.9,16.5h8.9l-15.3-23.1-4.5,6.7ZM247.6,28.5l-4.5,6.7h0l-8.7,13.2-4.4,6.7-4.4-6.7-8.7-13.2-13.2,20h-8.9l16.7-25.3h0s.9-1.4.9-1.4h0l4.4-6.7,8.7-13.2,4.4-6.7,4.4,6.7,8.7,13.2,13.2-20h8.9l-17.6,26.7ZM238.7,28.5l-8.7-13.2-8.7,13.2,8.7,13.2,8.7-13.2ZM211.6,29.9h0s0,0,0,0ZM212.5,28.5h0l-.9,1.3.9-1.3ZM52.2,17.2c-2-5.1-5.2-9.1-9.7-11.9-4.4-2.8-9.5-4.2-15.2-4.2s-9.6,1.2-13.8,3.5c-4.2,2.3-7.5,5.6-9.9,9.7C1.2,18.5,0,23.2,0,28.4s1.2,9.9,3.7,14.1c2.4,4.2,5.7,7.4,9.9,9.7,4.2,2.3,8.8,3.5,13.8,3.5s8.9-1,12.8-3.1c3.8-2.1,6.9-4.9,9.3-8.4,2.4-3.5,3.9-7.3,4.4-11.5v-6.9h-29.5v7h20.1c-.7,4.6-2.5,8.2-5.5,10.9-3,2.7-6.9,4-11.6,4s-6.7-.8-9.5-2.4c-2.8-1.6-4.9-3.9-6.5-6.8-1.6-3-2.4-6.4-2.4-10.2s.8-7.2,2.4-10.2c1.6-2.9,3.7-5.2,6.5-6.8,2.8-1.6,5.9-2.4,9.5-2.4s6.1.7,8.6,2c2.5,1.4,4.4,3.4,5.8,6h10.6ZM92.1,8.8V1.7h-29.6v53.6h29.6v-7.2h-20.8v-16.4h18.5v-7.2h-18.5v-15.7h20.8ZM146.9,1.7h-8.8v39.9L111.7,1.7h-8.8v53.6h8.8V15.3l26.4,40h8.8V1.7ZM188,8.8V1.7h-29.6v53.6h29.6v-7.2h-20.8v-16.4h18.5v-7.2h-18.5v-15.7h20.8ZM292.5,55.8c5,0,9.6-1.2,13.8-3.5,4.2-2.3,7.5-5.6,9.9-9.8,2.4-4.2,3.6-8.9,3.6-14.1s-1.2-9.9-3.6-14.1c-2.4-4.2-5.7-7.4-9.9-9.7-4.2-2.3-8.8-3.5-13.8-3.5s-9.6,1.2-13.8,3.5c-4.2,2.3-7.5,5.6-9.9,9.7-2.4,4.2-3.7,8.9-3.7,14.1s1.2,10,3.7,14.1c2.4,4.2,5.8,7.5,9.9,9.8,4.2,2.3,8.8,3.5,13.8,3.5ZM292.5,48.2c-3.5,0-6.7-.8-9.5-2.4-2.8-1.6-4.9-3.9-6.5-6.9-1.6-3-2.4-6.5-2.4-10.4s.8-7.4,2.4-10.4c1.6-3,3.7-5.3,6.5-6.9,2.8-1.6,5.9-2.4,9.5-2.4s6.7.8,9.5,2.4c2.8,1.6,4.9,3.9,6.5,6.9,1.6,3,2.4,6.4,2.4,10.4s-.8,7.4-2.4,10.4c-1.6,3-3.7,5.3-6.5,6.9-2.8,1.6-5.9,2.4-9.5,2.4Z"/>
-      </svg>
-    </div>
-    <div class="hero-tagline reveal reveal-delay-1">The Organizing Layer for the Internet</div>
-    <div class="hero-sub reveal reveal-delay-2">Where everything finds its natural home</div>
-    <div class="hero-stats reveal reveal-delay-3">
-      <div class="hero-stat"><div class="val">10,000+</div><div class="lbl">XX Domains</div></div>
-      <div class="hero-stat"><div class="val">45</div><div class="lbl">Sectors</div></div>
-      <div class="hero-stat"><div class="val">15 yrs</div><div class="lbl">Assembled</div></div>
-    </div>
-    <div class="domain-ticker reveal reveal-delay-4">
-      <div class="domain-ticker-inner">
-        <span class="d">ClimbXX.com</span><span class="d">SurfXX.com</span><span class="d">CryptoXX.com</span><span class="d">FashionXX.com</span><span class="d">DroneXX.com</span>
-        <span class="d">CycleXX.com</span><span class="d">SkiXX.com</span><span class="d">TechXX.com</span><span class="d">BeautyXX.com</span><span class="d">FoodXX.com</span>
-        <span class="d">PropertyXX.com</span><span class="d">SportsXX.com</span><span class="d">MusicXX.com</span><span class="d">FinanceXX.com</span><span class="d">HealthXX.com</span>
-        <span class="d">ClimbXX.com</span><span class="d">SurfXX.com</span><span class="d">CryptoXX.com</span><span class="d">FashionXX.com</span><span class="d">DroneXX.com</span>
-        <span class="d">CycleXX.com</span><span class="d">SkiXX.com</span><span class="d">TechXX.com</span><span class="d">BeautyXX.com</span><span class="d">FoodXX.com</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════
-     THE COLLECTION
-     ══════════════════════════════════════════════ -->
-<div class="section-divider"></div>
-<section class="canvas-section section" id="collection">
-  <div class="bg-noise"></div>
-  <div class="container">
-    <div class="opp-thesis reveal" style="margin-bottom:40px">
-      <div class="opp-thesis-inner">
-        <p>The internet is approaching a structural transition. AI agents, autonomous commerce, and an unprecedented volume of content are converging on a digital landscape that was <strong>never designed to organise them</strong>. The platforms that exist today will not absorb what's coming &mdash; they'll overflow into noise, fragmentation, and chaos.</p>
-        <p>What's needed is not another app, not another platform, not another feature. What's needed is a <strong>new organizing layer</strong> &mdash; specialised, interconnected, AI-native, and anchored by infrastructure that reaches into every category of human activity. A foundation for a network where everything finds its natural home.</p>
-      </div>
-    </div>
-    <div class="opp-header reveal" style="padding-bottom:40px"><div class="opp-title" style="color:#fff">This is the Organizing Layer</div></div>
-    <div class="canvas-row reverse">
-      <div class="canvas-visual reveal" id="collectionVisual">
-        <canvas id="collectionCanvas"></canvas>
-      </div>
-      <div class="canvas-header">
-        <div class="section-tag reveal">The Collection</div>
-        <div class="headline reveal reveal-delay-1"><span class="gradient">The Asset That Makes</span><br>It All Possible</div>
-      </div>
-      <div class="canvas-body">
-        <div class="body-text reveal reveal-delay-2">Over 10,000 branded single word dot com domains. Every category and niche.</div>
-        <div class="feature-cards reveal reveal-delay-3" style="margin-top:16px">
-          <div class="feature-card" style="border-left:2px solid #E84D3A">
-            <div class="fc-icon">&#x1F3D7;</div>
-            <div><div class="fc-title" style="color:#E84D3A">The Foundation</div><div class="fc-desc">Domains are the Bedrock of the Internet</div></div>
-          </div>
-          <div class="feature-card" style="border-left:2px solid #8B5CF6">
-            <div class="fc-icon">&#x2728;</div>
-            <div><div class="fc-title" style="color:#8B5CF6">The Branding</div><div class="fc-desc">The XX unifies the ecosystem</div></div>
-          </div>
-          <div class="feature-card" style="border-left:2px solid #4A6CF7">
-            <div class="fc-icon">&#x1F6E1;</div>
-            <div><div class="fc-title" style="color:#4A6CF7">The Protection</div><div class="fc-desc">A linguistic moat that cannot be crossed</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════
-     PLATFORM — Supernova App
-     ══════════════════════════════════════════════ -->
-<div class="section-divider"></div>
-<section class="canvas-section section" id="platform">
-  <div class="bg-noise"></div>
-  <div class="container">
-    <div class="canvas-row">
-      <div class="canvas-visual reveal" id="appVisual">
-        <canvas id="supernovaAppCanvas"></canvas>
-      </div>
-      <div class="canvas-header">
-        <div class="section-tag reveal">The Supernova App</div>
-        <div class="headline reveal reveal-delay-1">Deployed by a<br><span class="gradient">Supernova Application</span></div>
-      </div>
-      <div class="canvas-body">
-        <div class="body-text reveal reveal-delay-2">Domains blast out across the digital universe &mdash; Sector by Sector &mdash; developed on PWA architecture.</div>
-        <div class="feature-cards reveal reveal-delay-3">
-          <div class="feature-card">
-            <div class="fc-icon">&#x1F6E0;</div>
-            <div><div class="fc-title" style="color:#E84D3A">Supernova Expansion</div><div class="fc-desc">Not super app compression.</div></div>
-          </div>
-          <div class="feature-card">
-            <div class="fc-icon">&#x1F310;</div>
-            <div><div class="fc-title" style="color:#4A6CF7">Universal Access</div><div class="fc-desc">Open web &mdash; no app stores.</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── PLATFORM — Gateways ── -->
-<section class="canvas-section section" id="gateways">
-  <div class="bg-noise"></div>
-  <div class="container">
-    <div class="canvas-row reverse">
-      <div class="canvas-visual reveal" id="gatewayVisual">
-        <canvas id="gatewayCanvas"></canvas>
-      </div>
-      <div class="canvas-header">
-        <div class="section-tag reveal">The Gateways</div>
-        <div class="headline reveal reveal-delay-1">Every Domain Becomes<br><span class="gradient">A Gravitational Gateway</span></div>
-      </div>
-      <div class="canvas-body">
-        <div class="body-text reveal reveal-delay-2">Thousands of gateways &mdash; each one a self-evolving microbrand &mdash; reaching into every category, every niche, connecting the digital and physical worlds, attracting content, communities, commerce &mdash; AI tools and apps.</div>
-        <div class="metrics reveal reveal-delay-3">
-          <div class="metric"><div class="metric-value">10K+</div><div class="metric-label">Gateways</div></div>
-          <div class="metric"><div class="metric-value">7</div><div class="metric-label">Forces</div></div>
-          <div class="metric"><div class="metric-value">1</div><div class="metric-label">Ecosystem</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── PLATFORM — Network ── -->
-<section class="canvas-section section" id="network">
-  <div class="bg-noise"></div>
-  <div class="container">
-    <div class="canvas-row">
-      <div class="canvas-visual reveal" id="networkVisual">
-        <canvas id="networkCanvas"></canvas>
-      </div>
-      <div class="canvas-header">
-        <div class="section-tag reveal">The Network</div>
-        <div class="headline reveal reveal-delay-1"><span class="gradient2">A Multi-Dimensional Ecosystem</span></div>
-      </div>
-      <div class="canvas-body">
-        <div class="body-text reveal reveal-delay-2">Every gateway interconnected &mdash; every gateway leads to the GENEXXO Hub. A network with horizontal breadth and vertical depth.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── PLATFORM — The Hub ── -->
-<section class="canvas-section section" id="hub">
-  <div class="bg-noise"></div>
-  <div class="bg-radial" style="background:radial-gradient(circle,rgba(232,77,58,.12),transparent);top:-50px;left:50%;transform:translateX(-50%)"></div>
-  <div class="container">
-    <div class="canvas-row reverse">
-      <div class="canvas-visual reveal" id="hubVisual" style="display:flex;align-items:center;justify-content:center;background:transparent">
-        <canvas id="hubCanvas" style="width:260px;height:260px"></canvas>
-      </div>
-      <div class="canvas-header">
-        <div class="section-tag reveal">The Hub</div>
-        <div class="headline reveal reveal-delay-1">The GENEXXO Hub<br><span class="gradient">Where Your Universe Begins</span></div>
-      </div>
-      <div class="canvas-body">
-        <div class="body-text reveal reveal-delay-2">One hub. Every gateway. A personalised nexus powered by AI, shaped by you.</div>
-        <div class="hub-grid reveal reveal-delay-3">
-          <div class="hub-row"><div class="hub-dot" style="background:#E84D3A"></div><div><div class="hub-title">Personalised Feed</div><div class="hub-desc">The best of the network curated for you.</div></div></div>
-          <div class="hub-row"><div class="hub-dot" style="background:#8B5CF6"></div><div><div class="hub-title">AI Supernova Host</div><div class="hub-desc">Your intelligent guide across the ecosystem.</div></div></div>
-          <div class="hub-row"><div class="hub-dot" style="background:#4A6CF7"></div><div><div class="hub-title">One Profile. One Wallet.</div><div class="hub-desc">A single identity across the ecosystem.</div></div></div>
-          <div class="hub-row"><div class="hub-dot" style="background:#10B981"></div><div><div class="hub-title">Discovery Engine</div><div class="hub-desc">Where new journeys begin and passions develop.</div></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════
-     THE FACILITATOR
-     ══════════════════════════════════════════════ -->
-<div class="section-divider"></div>
-<section class="canvas-section section" id="model">
-  <div class="bg-noise"></div>
-  <div class="container">
-    <div class="canvas-row">
-      <div class="canvas-visual reveal" id="bizVisual">
-        <canvas id="bizCanvas"></canvas>
-      </div>
-      <div class="canvas-header">
-        <div class="section-tag reveal">The Facilitator</div>
-        <div class="headline reveal reveal-delay-1">Where Everybody<br><span class="gradient">Thrives</span></div>
-      </div>
-      <div class="canvas-body">
-        <div class="body-text reveal reveal-delay-2">GENEXXO provides the playing field for everyone to play.</div>
-        <div class="info-cards reveal reveal-delay-3">
-          <div class="info-card" style="background:rgba(232,77,58,.06);border:1px solid rgba(232,77,58,.12)">
-            <div class="info-card-tag" style="color:#E84D3A">Brand Zones</div>
-            <div class="info-card-title">Live Inside Communities</div>
-            <div class="info-card-desc">An extension of their D2C models where they control the consumer journey.</div>
-          </div>
-          <div class="info-card" style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.12)">
-            <div class="info-card-tag" style="color:#8B5CF6">Zero Logistics</div>
-            <div class="info-card-title">The Facilitator Model</div>
-            <div class="info-card-desc">GENEXXO never touches a product or ships a package. We facilitate the connection.</div>
-          </div>
-          <div class="info-card" style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.12)">
-            <div class="info-card-tag" style="color:#10B981">PWA App Store</div>
-            <div class="info-card-title">Apps On Demand</div>
-            <div class="info-card-desc">Specialised tools and experiences for every domain &mdash; instantly available.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════
-     INTELLIGENCE
-     ══════════════════════════════════════════════ -->
-<div class="section-divider"></div>
-<section class="canvas-section section" id="intelligence">
-  <div class="bg-noise"></div>
-  <div class="container">
-    <div class="canvas-row reverse">
-      <div class="canvas-visual reveal" id="aiVisual">
-        <canvas id="aiCanvas"></canvas>
-      </div>
-      <div class="canvas-header">
-        <div class="section-tag reveal">Supernova Intelligence</div>
-        <div class="headline reveal reveal-delay-1">AI in the DNA<br><span class="gradient">From Day One</span></div>
-      </div>
-      <div class="canvas-body">
-        <div class="body-text reveal reveal-delay-2">Intelligence woven into every layer. A Supernova Host that guards and guides. Specialised AI in every domain.</div>
-        <div class="info-cards reveal reveal-delay-3">
-          <div class="info-card" style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.12)">
-            <div class="info-card-tag" style="color:#8B5CF6">The Host</div>
-            <div class="info-card-title">Supernova Guardian</div>
-            <div class="info-card-desc">Your AI companion at the centre. It knows the entire ecosystem.</div>
-          </div>
-          <div class="info-card" style="background:rgba(232,77,58,.06);border:1px solid rgba(232,77,58,.12)">
-            <div class="info-card-tag" style="color:#E84D3A">Vertical Depth</div>
-            <div class="info-card-title">Domain-Native AI</div>
-            <div class="info-card-desc">Every gateway breeds specialised intelligence. Thousands of experts.</div>
-          </div>
-          <div class="info-card" style="background:rgba(74,108,247,.06);border:1px solid rgba(74,108,247,.12)">
-            <div class="info-card-tag" style="color:#4A6CF7">Horizontal Reach</div>
-            <div class="info-card-title">The Paradox, Solved</div>
-            <div class="info-card-desc">Vertical depth with horizontal intelligence flowing seamlessly.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ── EXPLORE CARDS ── -->
-<div class="opp-header reveal" style="padding-top:60px"><div class="opp-title">Explore The Vision</div></div>
-<div id="decks" class="explore-grid reveal" style="padding-top:30px;padding-bottom:30px">
-  <a class="explore-card" href="collection.html">
-    <div class="explore-card-tag" style="color:#8B5CF6">The Foundation</div>
-    <span class="explore-card-arrow">&rarr;</span>
-    <div class="explore-card-title">The Collection</div>
-    <div class="explore-card-desc">Domain infrastructure, portfolio architecture, and the XX naming convention.</div>
-  </a>
-  <a class="explore-card" href="domain-gallery.html">
-    <div class="explore-card-tag" style="color:#4A6CF7">The Collection</div>
-    <span class="explore-card-arrow">&rarr;</span>
-    <div class="explore-card-title">Domain Gallery</div>
-    <div class="explore-card-desc">Explore the GENEXXO collection across all 45 commercial categories.</div>
-  </a>
-  <a class="explore-card" href="ultimate-asset.html">
-    <div class="explore-card-tag" style="color:#E84D3A">The Defining Argument</div>
-    <span class="explore-card-arrow">&rarr;</span>
-    <div class="explore-card-title">There Can Only Be One Organizing Layer</div>
-    <div class="explore-card-desc">The logic that eliminates every alternative &mdash; and reveals the only foundation it can be built on.</div>
-  </a>
-  <a class="explore-card" href="the-edge.html">
-    <div class="explore-card-tag" style="color:#10B981">The Marketing Edge</div>
-    <span class="explore-card-arrow">&rarr;</span>
-    <div class="explore-card-title">The Edge That Wins</div>
-    <div class="explore-card-desc">Why the XX collection is the ultimate marketing asset &mdash; 10,000 micro-brands, each a gateway to its audience.</div>
-  </a>
-</div>
-
-<!-- ── LIVE DEMO CARD ── -->
-<div class="demo-card-wrap reveal" style="padding-bottom:60px">
-  <a class="demo-card" href="genexxo-app.html" target="_blank">
-    <div class="demo-card-inner">
-      <div class="demo-card-badge" style="font-size:.75rem;padding:7px 18px;margin-bottom:16px">Live Demo</div>
-      <div class="demo-card-title">The Supernova Application</div>
-      <div class="demo-card-desc">Interactive demo &mdash; explore the hub and gateway ecosystem architecture in action</div>
-      <div class="demo-card-note">Mobile &amp; Desktop</div>
-      <div class="demo-card-arrow">LAUNCH DEMO &rarr;</div>
-    </div>
-  </a>
-</div>
-
-<!-- ══════════════════════════════════════════════
-     STRATEGIC CORPORATE OPPORTUNITY
-     ══════════════════════════════════════════════ -->
-<div class="opp-divider"></div>
-<div class="opp-section">
-  <div class="opp-header reveal">
-    <div class="opp-badge">Strategic Corporate Opportunity</div>
-    <div class="opp-title">The Defining Moment</div>
-  </div>
-
-  <div class="opp-thesis reveal">
-    <div class="opp-thesis-inner">
-      <p>Two forces have converged &mdash; an unreplicable domain foundation and the rise of AI &mdash; creating a <strong>once-in-a-generation opportunity</strong> to develop the organizing framework for the next era of the internet.</p>
-      <p>GENEXXO is a semantic namespace &mdash; 10,000+ premium single-word .com domains, unified under one signature, structured across 45 categories of human activity. Assembled over 15 years. Now locked and complete. This is a <strong>linguistic moat, not a technology moat</strong>. Technology is a commodity. Namespace is scarce. There can only be one complete collection &mdash; and it already exists.</p>
-      <p>The right corporation won't need to be convinced. They'll see the collection, understand the architecture, and recognise what fifteen years of quiet assembly has made possible.</p>
-    </div>
-  </div>
-
-  <div class="opp-header reveal" style="margin-bottom:24px">
-    <div class="opp-title">The Opportunity Ahead</div>
-    <div style="letter-spacing:.06em;font-size:.78rem;font-weight:400;color:rgba(255,255,255,.45);margin-top:8px">The organizing layer doesn't belong to one industry. It sits at the intersection of all of them.</div>
-  </div>
-  <div class="opp-grid">
-    <div class="opp-card reveal">
-      <div class="opp-card-icon" style="background:rgba(74,108,247,.1)">&#9881;</div>
-      <h3>Technology</h3>
-      <p>The world's leading technology corporations possess the AI capabilities, cloud infrastructure, and global reach to activate GENEXXO at scale &mdash; transforming the XX collection into the foundational layer for the next era of digital commerce and discovery.</p>
-    </div>
-    <div class="opp-card reveal reveal-delay-1">
-      <div class="opp-card-icon" style="background:rgba(16,185,129,.08)">&#9733;</div>
-      <h3>Retail &amp; Commerce</h3>
-      <p>Global retail and marketplace leaders seeking digital transformation gain the gateway architecture to create authentic category leadership across thousands of specialised destinations.</p>
-    </div>
-    <div class="opp-card reveal reveal-delay-2">
-      <div class="opp-card-icon" style="background:rgba(139,92,246,.08)">&#9670;</div>
-      <h3>Media, Finance &amp; Institutions</h3>
-      <p>Major entertainment, financial, and institutional players could leverage GENEXXO's organising framework to build entirely new ecosystems &mdash; combining their sector expertise with 10,000 category-native gateways.</p>
-    </div>
-    <div class="opp-card reveal reveal-delay-3">
-      <div class="opp-card-icon" style="background:rgba(232,77,58,.08)">&#10038;</div>
-      <h3>New Models</h3>
-      <p>Beyond traditional structures, GENEXXO opens the door to co-development, joint ventures, and models that haven't been invented yet. The right conversation could shape something entirely new.</p>
-    </div>
-  </div>
-
-  <div class="opp-final reveal">
-    <p>GENEXXO is <strong>foundational infrastructure</strong> &mdash; 10,000+ anchors for a network that reaches into every category that exists. Interconnected. AI-native. Unreplicable at any price.</p>
-    <p><strong>The question now is which visionary corporation will make the first move and develop<br>'The Organizing Layer for the Internet.'</strong></p>
-    <div class="opp-final-divider"></div>
-    <a href="about.html" class="opp-final-line" style="text-decoration:none;display:inline-block;transition:opacity .2s">Let's Connect &mdash; Team GENEXXO</a>
-    <div style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;color:rgba(255,255,255,.35)">Contact Us: hello@genexxo.com</div>
-    <div style="margin-top:16px;display:flex;gap:20px;justify-content:center;align-items:center">
-      <a href="https://www.linkedin.com/company/genexxovision" target="_blank" style="opacity:.35;transition:opacity .2s" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='.35'"><svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M20.47 2H3.53A1.45 1.45 0 002 3.47v17.06A1.45 1.45 0 003.47 22h17.06A1.45 1.45 0 0022 20.53V3.47A1.45 1.45 0 0020.47 2zM8.09 18.74h-3v-9h3v9zM6.59 8.48a1.56 1.56 0 110-3.12 1.56 1.56 0 010 3.12zM18.91 18.74h-3v-4.26c0-1.08-.43-1.82-1.44-1.82a1.43 1.43 0 00-1.35.95 1.72 1.72 0 00-.08.65v4.48h-3v-9h3v1.3a3 3 0 012.71-1.49c2 0 3.16 1.29 3.16 3.78v5.41z"/></svg></a>
-      <a href="https://x.com/GENEXXOvision" target="_blank" style="opacity:.35;transition:opacity .2s" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='.35'"><svg width="18" height="18" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-    </div>
-    <div style="margin-top:16px;display:flex;gap:16px;justify-content:center">
-      <a href="https://www.genexxovision.com/assets/terms-of-service.pdf" target="_blank" style="font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.1em;color:rgba(255,255,255,.25);text-decoration:none;transition:color .2s">Terms of Service</a>
-      <span style="color:rgba(255,255,255,.1)">&middot;</span>
-      <a href="https://www.genexxovision.com/assets/privacy-policy.pdf" target="_blank" style="font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.1em;color:rgba(255,255,255,.25);text-decoration:none;transition:color .2s">Privacy Policy</a>
-    </div>
+    <div class="marquee" aria-hidden="true"><div class="mq-row" id="mq1"></div><div class="mq-row rev" id="mq2"></div></div>
   </div>
 </div>
 
-<footer class="site-footer">
-  <p>GENEXXO &mdash; The Organizing Layer for the Internet</p>
-</footer>
+<!-- ═════════ OPENING STATEMENT ═════════ -->
+<section>
+  <div class="wrap">
+    <div class="statement rv">
+      <p>The internet is approaching a structural transition. AI agents, autonomous commerce, and an unprecedented volume of content are converging on a digital landscape that was <strong>never designed to organize them</strong>. The platforms that exist today will not absorb what’s coming — they’ll overflow into noise, fragmentation, and chaos.</p>
+      <p>What’s needed is not another app, not another platform, not another feature. What’s needed is <strong>a new organizing layer</strong> — specialised, interconnected, AI-native, and anchored by infrastructure that reaches into every category of human activity. A foundation for a network where <strong>everything finds its natural home</strong>.</p>
+    </div>
+    <div class="layer-head rv" id="layer">
+      <div class="gx-dot"><span class="gx-mono"></span></div>
+      <h2>This is the<br>Organizing Layer</h2>
+    </div>
+  </div>
+</section>
 
+<!-- ═════════ 01 THE COLLECTION ═════════ -->
+<section class="alt">
+  <div class="wrap">
+    <div class="centre rv">
+      <div class="eyebrow"><span class="n">01</span> · The Collection</div>
+      <h2>The asset that <span class="soft">makes it all possible</span></h2>
+    </div>
+    <div class="slot rv">
+      <div class="big" aria-label="WordXX.com — one address per word"><span class="w" id="slotW"></span><span class="xx">XX</span><span class="com">.com</span></div>
+      <div class="of">One of 10,000+</div>
+      <p class="lede">Over 10,000 branded single word dot com domains. Every category and niche.</p>
+    </div>
+    <div class="feats row">
+      <div class="feat rv"><div class="ic">🏗</div><div><div class="k">The Foundation</div><b>Domains are the bedrock of the internet</b></div></div>
+      <div class="feat rv"><div class="ic">✨</div><div><div class="k">The Branding</div><b>The XX unifies the ecosystem</b></div></div>
+      <div class="feat rv"><div class="ic">🛡</div><div><div class="k">The Protection</div><b>A linguistic moat that cannot be crossed</b></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 02 THE SUPERNOVA APP ═════════ -->
+<section>
+  <div class="wrap chapter flip">
+    <div class="ch-text rv">
+      <div class="eyebrow"><span class="n">02</span> · The Supernova App</div>
+      <h2>Deployed by a<br><span class="soft">Supernova Application</span></h2>
+      <p class="lede">Domains blast out across the digital universe — Sector by Sector — developed on PWA architecture.</p>
+      <div class="feats two">
+        <div class="feat"><div class="ic">🛠</div><div><div class="k">Supernova Expansion</div><b>Not super app compression.</b></div></div>
+        <div class="feat"><div class="ic">🌐</div><div><div class="k">Universal Access</div><b>Open web — no app stores.</b></div></div>
+      </div>
+    </div>
+    <div class="vis rv">
+      <div class="nova" id="nova"></div>
+      <div class="phone"><img src="img/app-hub.jpg" alt="The GENEXXO app: the network feed" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 03 THE GATEWAYS ═════════ -->
+<section class="alt">
+  <div class="wrap chapter">
+    <div class="ch-text rv">
+      <div class="eyebrow"><span class="n">03</span> · The Gateways</div>
+      <h2>Every domain becomes<br><span class="soft">a gravitational gateway</span></h2>
+      <p class="lede">Thousands of gateways — each one a self-evolving microbrand — reaching into every category, every niche, connecting the digital and physical worlds, attracting content, communities, commerce — AI tools and apps.</p>
+      <div class="bigstats">
+        <div class="stat"><b>10K+</b><span>Gateways</span></div>
+        <div class="stat"><b>7</b><span>Forces</span></div>
+        <div class="stat"><b>1</b><span>Ecosystem</span></div>
+      </div>
+      <div class="gwchips">
+        <span class="gwchip" style="background:linear-gradient(135deg,#E85D3A,#FF8C42,#FFB347)"><i>🧗</i>ClimbXX</span>
+        <span class="gwchip" style="background:linear-gradient(135deg,#6D28D9,#8B5CF6,#A78BFA)"><i>⛷️</i>SkiXX</span>
+        <span class="gwchip" style="background:linear-gradient(135deg,#0A1628,#0066CC,#00AAFF)"><i>🏄</i>SurfXX</span>
+        <span class="gwchip" style="background:linear-gradient(135deg,#0F0F0F,#F5C400,#FFD700)"><i>🚴</i>CycleXX</span>
+        <span class="gwchip" style="background:linear-gradient(135deg,#0A1628,#1B3A6B,#C9A84C)"><i>⛵</i>SailXX</span>
+      </div>
+    </div>
+    <div class="rv">
+      <div class="fan">
+        <div class="phone p1"><img src="img/app-ski.jpg" alt="SkiXX gateway" loading="lazy"></div>
+        <div class="phone p2"><img src="img/app-surf.jpg" alt="SurfXX gateway" loading="lazy"></div>
+        <div class="phone p0"><img src="img/app-climb.jpg" alt="ClimbXX gateway" loading="lazy"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 04 THE NETWORK ═════════ -->
+<section>
+  <div class="wrap chapter flip">
+    <div class="ch-text rv">
+      <div class="eyebrow"><span class="n">04</span> · The Network</div>
+      <h2>A multi-dimensional<br><span class="soft">ecosystem</span></h2>
+      <p class="lede">Every gateway interconnected — every gateway leads to the GENEXXO Hub. A network with horizontal breadth and vertical depth.</p>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="vis rv"><svg id="net" viewBox="-300 -300 600 600" role="img" aria-label="The GENEXXO network: the hub at the centre, 68 sectors around it, and thousands of gateways beyond"></svg></div>
+  </div>
+</section>
+
+<!-- ═════════ 05 THE HUB ═════════ -->
+<section class="alt">
+  <div class="wrap chapter">
+    <div class="ch-text rv">
+      <div class="eyebrow"><span class="n">05</span> · The Hub</div>
+      <h2>The GENEXXO Hub<br><span class="soft">where your universe begins</span></h2>
+      <p class="lede">One hub. Every gateway. A personalised nexus powered by AI, shaped by you.</p>
+      <div class="grid4">
+        <div class="feat"><div class="ic">◎</div><div><b>Personalised Feed</b><p>The best of the network curated for you.</p></div></div>
+        <div class="feat"><div class="ic">✦</div><div><b>AI Supernova Host</b><p>Your intelligent guide across the ecosystem.</p></div></div>
+        <div class="feat"><div class="ic">◉</div><div><b>One Profile. One Wallet.</b><p>A single identity across the ecosystem.</p></div></div>
+        <div class="feat"><div class="ic">⌖</div><div><b>Discovery Engine</b><p>Where new journeys begin and passions develop.</p></div></div>
+      </div>
+    </div>
+    <div class="vis rv"><div class="phone"><img src="img/app-discover.jpg" alt="The GENEXXO hub: Discover, personalised for you" loading="lazy"></div></div>
+  </div>
+</section>
+
+<!-- ═════════ 06 THE FACILITATOR ═════════ -->
+<section>
+  <div class="wrap centre">
+    <div class="rv">
+      <div class="eyebrow"><span class="n">06</span> · The Facilitator</div>
+      <h2>Where everybody thrives</h2>
+      <p class="lede">GENEXXO provides the playing field for everyone to play.</p>
+    </div>
+    <div class="flow rv">
+      <div class="node who">
+        <div class="who-row"><i>◆</i>Brands</div><div class="who-row"><i>✦</i>Pros</div><div class="who-row"><i>▣</i>Businesses</div><div class="who-row"><i>◉</i>Communities</div><div class="who-row"><i>⚙</i>Apps &amp; Tools</div>
+        <span>sell, serve &amp; build direct</span>
+      </div>
+      <div class="wire"></div>
+      <div class="node hub"><div class="gx-dot"><span class="gx-mono"></span></div><b>GENEXXO</b><span>facilitates the connection</span></div>
+      <div class="wire"></div>
+      <div class="node"><div class="ic">◎</div><b>You</b><span>buy, book &amp; join direct</span></div>
+    </div>
+    <div class="grid3 zones" style="text-align:left">
+      <div class="card3 rv"><div class="ic">◆</div><div class="k">Brand Zones</div><h3>Live inside communities</h3><p>An extension of their D2C models where they control the consumer journey.</p></div>
+      <div class="card3 rv"><div class="ic">✦</div><div class="k">Pro Zones</div><h3>Book the experts</h3><p>Guides, coaches and instructors who sell their time. Pick a service and a slot — you pay the pro directly.</p></div>
+      <div class="card3 rv"><div class="ic">▣</div><div class="k">Business Zones</div><h3>The B2B side of every gateway</h3><p>The makers and suppliers behind the brands and pros, linked into one supply chain. Request a quote in a tap.</p></div>
+      <div class="card3 rv"><div class="ic">◉</div><div class="k">Communities</div><h3>Their own home, one key</h3><p>Communities keep their own sites, design and moderators. One GENEXXO login opens every door.</p></div>
+      <div class="card3 rv"><div class="ic">⚙</div><div class="k">Apps &amp; Tools</div><h3>Apps on demand</h3><p>Specialised tools and experiences for every domain — instantly available. A PWA app store: no downloads, no gatekeepers.</p></div>
+      <div class="card3 rv model"><div class="ic">⇄</div><div class="k">Zero Logistics</div><h3>The Facilitator Model</h3><p>GENEXXO never touches a product or ships a package. We facilitate the connection.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 07 SUPERNOVA INTELLIGENCE ═════════ -->
+<section class="alt">
+  <div class="wrap chapter flip">
+    <div class="ch-text rv">
+      <div class="eyebrow"><span class="n">07</span> · Supernova Intelligence</div>
+      <h2>AI in the DNA<br><span class="soft">from day one</span></h2>
+      <p class="lede">Intelligence woven into every layer. A Supernova Host that guards and guides. Specialised AI in every domain.</p>
+      <div class="feats">
+        <div class="feat"><div class="ic">✦</div><div><div class="k">The Host</div><b>Supernova Guardian</b><p>Your AI companion at the centre. It knows the entire ecosystem.</p></div></div>
+        <div class="feat"><div class="ic">↧</div><div><div class="k">Vertical Depth</div><b>Domain-Native AI</b><p>Every gateway breeds specialised intelligence. Thousands of experts.</p></div></div>
+        <div class="feat"><div class="ic">↔</div><div><div class="k">Horizontal Reach</div><b>The Paradox, Solved</b><p>Vertical depth with horizontal intelligence flowing seamlessly.</p></div></div>
+      </div>
+      <div class="agents">
+        <span class="agent"><i style="background:#111116"><span class="gx-mono"></span></i>GENEXXO Host</span>
+        <span class="agent"><i style="background:linear-gradient(135deg,#E85D3A,#FF8C42)">🧗</i>ClimbXX Agent</span>
+        <span class="agent"><i style="background:linear-gradient(135deg,#FB923C,#DC2626)">🍽️</i>RestaurantXX</span>
+        <span class="agent"><i style="background:linear-gradient(135deg,#38BDF8,#2563EB)">✈️</i>FlightXX</span>
+        <span class="agent"><i style="background:linear-gradient(135deg,#A78BFA,#6D28D9)">🏨</i>HotelXX</span>
+      </div>
+    </div>
+    <div class="vis rv"><div class="phone"><img src="img/app-ai.jpg" alt="The GENEXXO Host: one AI across every gateway" loading="lazy"></div></div>
+  </div>
+</section>
+
+<!-- ═════════ EXPLORE THE VISION ═════════ -->
+<section>
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow">Explore the vision</div>
+      <h2>Go deeper</h2>
+    </div>
+    <div class="explore">
+      <a class="xcard rv" href="collection.html"><div class="k">The Foundation <span class="arr">→</span></div><h3>The Collection</h3><p>Domain infrastructure, portfolio architecture, and the XX naming convention.</p></a>
+      <a class="xcard rv" href="domain-gallery.html"><div class="k">The Collection <span class="arr">→</span></div><h3>Domain Gallery</h3><p>Explore the GENEXXO collection across 60+ sectors.</p></a>
+      <a class="xcard rv" href="ultimate-asset.html"><div class="k">The Defining Argument <span class="arr">→</span></div><h3>There Can Only Be One Organizing Layer</h3><p>The logic that eliminates every alternative — and reveals the only foundation it can be built on.</p></a>
+      <a class="xcard rv" href="the-edge.html"><div class="k">The Marketing Edge <span class="arr">→</span></div><h3>The Edge That Wins</h3><p>Why the XX collection is the ultimate marketing asset — 10,000 micro-brands, each a gateway to its audience.</p></a>
+      <a class="xcard xdemo rv" href="genexxo-app.html">
+        <div><div class="k">Live Demo</div><h3>The Supernova Application</h3><p>Interactive demo — explore the hub and gateway ecosystem architecture in action.</p><div class="tagrow"><span>Mobile &amp; Desktop</span><span>Installable</span></div></div>
+        <span class="go">Launch demo →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ THE OPPORTUNITY ═════════ -->
+<section class="dark">
+  <div class="wrap">
+    <div class="rv">
+      <div class="gold-rule"></div>
+      <div class="eyebrow"><span class="n">Strategic Corporate Opportunity</span></div>
+      <h2>The Defining Moment</h2>
+      <p class="lede" style="max-width:720px">Two forces have converged — an unreplicable domain foundation and the rise of AI — creating a once-in-a-generation opportunity to develop the organizing framework for the next era of the internet.</p>
+    </div>
+    <div class="body rv">
+      <p>GENEXXO is a semantic namespace — 10,000+ premium single-word .com domains, unified under one signature, structured across 60+ sectors of human activity. Assembled over 15 years. Now locked and complete. This is a <strong>linguistic moat, not a technology moat</strong>. Technology is a commodity. Namespace is scarce. There can only be one complete collection — and it already exists.</p>
+      <p>The right corporation won’t need to be convinced. They’ll see the collection, understand the architecture, and recognise what fifteen years of quiet assembly has made possible.</p>
+    </div>
+
+    <div class="rv" style="margin-top:80px">
+      <div class="eyebrow">The Opportunity Ahead</div>
+      <h2 style="font-size:clamp(26px,3.4vw,40px)">The organizing layer doesn’t belong to one industry.<br><span class="soft">It sits at the intersection of all of them.</span></h2>
+    </div>
+    <div class="ops">
+      <div class="op rv"><div class="ic">⚙</div><h3>Technology</h3><p>The world’s leading technology corporations possess the AI capabilities, cloud infrastructure, and global reach to activate GENEXXO at scale — transforming the XX collection into the foundational layer for the next era of digital commerce and discovery.</p></div>
+      <div class="op rv"><div class="ic">★</div><h3>Retail &amp; Commerce</h3><p>Global retail and marketplace leaders seeking digital transformation gain the gateway architecture to create authentic category leadership across thousands of specialised destinations.</p></div>
+      <div class="op rv"><div class="ic">◆</div><h3>Media, Finance &amp; Institutions</h3><p>Major entertainment, financial, and institutional players could leverage GENEXXO’s organizing framework to build entirely new ecosystems — combining their sector expertise with 10,000 category-native gateways.</p></div>
+      <div class="op rv"><div class="ic">✶</div><h3>New Models</h3><p>Beyond traditional structures, GENEXXO opens the door to co-development, joint ventures, and models that haven’t been invented yet. The right conversation could shape something entirely new.</p></div>
+    </div>
+
+    <div class="closing rv">
+      <p><strong>GENEXXO is foundational infrastructure</strong> — 10,000+ anchors for a network that reaches into every category that exists. Interconnected. AI-native. Unreplicable at any price.</p>
+      <p>The question now is which visionary corporation will make the first move and develop <strong>‘The Organizing Layer for the Internet.’</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ CONTACT ═════════ -->
+<section>
+  <div class="wrap contact rv">
+    <div class="gx-dot"><span class="gx-mono"></span></div>
+    <div class="eyebrow" style="justify-content:center">Let’s Connect</div>
+    <h2><a href="about.html">Team GENEXXO</a></h2>
+    <a class="mail" href="mailto:hello@genexxo.com">hello@genexxo.com</a>
+    <div class="social">
+      <a href="https://www.linkedin.com/company/genexxovision" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a>
+      <a href="https://x.com/GENEXXOvision" target="_blank" rel="noopener" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64z"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<script src="site-data.js"></script>
+<script src="site.js"></script>
 <script>
-/* ══════════════════════════════════════════════
-   UTILITY: Resize canvas to container
-   ══════════════════════════════════════════════ */
-function fitCanvas(canvas, container) {
-  const dpr=window.devicePixelRatio||1;
-  const w=container.offsetWidth;const h=container.offsetHeight;
-  canvas.width=w*dpr;canvas.height=h*dpr;
-  canvas.style.width=w+'px';canvas.style.height=h+'px';
-  canvas.getContext('2d').setTransform(dpr,0,0,dpr,0,0);
-  canvas._w=w;canvas._h=h;
+const DOMAINS=[["Sleep","linear-gradient(135deg,#6D28D9,#A78BFA)"],["Spa","linear-gradient(135deg,#0D5C63,#1A8A7A)"],["Yoga","linear-gradient(135deg,#0D5C63,#1A8A7A)"],["Running","linear-gradient(135deg,#B91C1C,#EF4444)"],["Dance","linear-gradient(135deg,#B91C1C,#EF4444)"],["Diet","linear-gradient(135deg,#166534,#84CC16)"],["Vegan","linear-gradient(135deg,#166534,#84CC16)"],["Skin","linear-gradient(135deg,#DB2777,#F472B6)"],["Perfume","linear-gradient(135deg,#DB2777,#F472B6)"],["Sneaker","linear-gradient(135deg,#1a1a2e,#333)"],["Vintage","linear-gradient(135deg,#1a1a2e,#333)"],["Luxury","linear-gradient(135deg,#1a1a2e,#333)"],["Denim","linear-gradient(135deg,#1a1a2e,#333)"],["Watch","linear-gradient(135deg,#831843,#DB2777)"],["Kitchen","linear-gradient(135deg,#78716C,#A8A29E)"],["Pizza","linear-gradient(135deg,#16A34A,#4ADE80)"],["Restaurant","linear-gradient(135deg,#16A34A,#4ADE80)"],["Coffee","linear-gradient(135deg,#7F1D1D,#DC2626)"],["Cat","linear-gradient(135deg,#92400E,#D97706)"],["Horse","linear-gradient(135deg,#92400E,#D97706)"],["Baby","linear-gradient(135deg,#2563EB,#60A5FA)"],["Wedding","linear-gradient(135deg,#9D174D,#F472B6)"],["Football","linear-gradient(135deg,#15803D,#22C55E)"],["Tennis","linear-gradient(135deg,#15803D,#22C55E)"],["Ski","linear-gradient(135deg,#15803D,#22C55E)"],["Sail","linear-gradient(135deg,#15803D,#22C55E)"],["Golf","linear-gradient(135deg,#15803D,#22C55E)"],["Cycle","linear-gradient(135deg,#15803D,#22C55E)"],["Diving","linear-gradient(135deg,#E85D3A,#FF8C42)"],["Fishing","linear-gradient(135deg,#E85D3A,#FF8C42)"],["Surf","linear-gradient(135deg,#E85D3A,#FF8C42)"],["Snowboard","linear-gradient(135deg,#E85D3A,#FF8C42)"],["Climb","linear-gradient(135deg,#E85D3A,#FF8C42)"],["Skate","linear-gradient(135deg,#E85D3A,#FF8C42)"],["Kite","linear-gradient(135deg,#E85D3A,#FF8C42)"],["Hike","linear-gradient(135deg,#E85D3A,#FF8C42)"],["Trek","linear-gradient(135deg,#E85D3A,#FF8C42)"],["Mountain","linear-gradient(135deg,#E85D3A,#FF8C42)"],["Chess","linear-gradient(135deg,#B45309,#FBBF24)"],["Comedy","linear-gradient(135deg,#4C1D95,#A78BFA)"],["Poetry","linear-gradient(135deg,#7C2D12,#D97706)"],["Design","linear-gradient(135deg,#9333EA,#F0ABFC)"],["Photo","linear-gradient(135deg,#334155,#94A3B8)"],["Film","linear-gradient(135deg,#7C3AED,#A78BFA)"],["Cruise","linear-gradient(135deg,#0891B2,#22D3EE)"],["Holiday","linear-gradient(135deg,#0891B2,#22D3EE)"],["Safari","linear-gradient(135deg,#0891B2,#22D3EE)"],["Flight","linear-gradient(135deg,#0891B2,#22D3EE)"],["Hotel","linear-gradient(135deg,#0891B2,#22D3EE)"],["Island","linear-gradient(135deg,#0891B2,#22D3EE)"],["Taxi","linear-gradient(135deg,#334155,#64748B)"],["Drone","linear-gradient(135deg,#1E3A8A,#60A5FA)"],["Invest","linear-gradient(135deg,#0F172A,#1E3A5F)"],["Insurance","linear-gradient(135deg,#0F172A,#1E3A5F)"],["Bitcoin","linear-gradient(135deg,#0F172A,#1E3A5F)"],["Startup","linear-gradient(135deg,#334155,#64748B)"],["Jobs","linear-gradient(135deg,#1E40AF,#3B82F6)"],["Property","linear-gradient(135deg,#0D9488,#2DD4BF)"],["Solar","linear-gradient(135deg,#CA8A04,#FACC15)"],["Electric","linear-gradient(135deg,#CA8A04,#FACC15)"],["Ocean","linear-gradient(135deg,#14532D,#22C55E)"],["Architecture","linear-gradient(135deg,#92400E,#F59E0B)"]];
+const SECT={"groups":[{"key":"healthbody","label":"Health, Mind & Body"},{"key":"styleself","label":"Style & Self"},{"key":"hometable","label":"Home & Table"},{"key":"familylife","label":"Family & Life"},{"key":"sportplay","label":"Sport & Play"},{"key":"artsent","label":"Arts & Entertainment"},{"key":"travelplaces","label":"Travel & Places"},{"key":"gettingaround","label":"Getting Around"},{"key":"moneywork","label":"Money & Work"},{"key":"techfrontier","label":"Tech & Frontier"},{"key":"peoplesociety","label":"People & Society"},{"key":"earthnatureind","label":"Earth, Nature & Industry"}],"sectors":[{"n":"Health","i":"💊","g":"linear-gradient(135deg,#0891B2,#67E8F9)","grp":"healthbody"},{"n":"Mind","i":"🧠","g":"linear-gradient(135deg,#6D28D9,#A78BFA)","grp":"healthbody"},{"n":"Wellness","i":"🧘","g":"linear-gradient(135deg,#0D5C63,#1A8A7A)","grp":"healthbody"},{"n":"Fitness","i":"🏋️","g":"linear-gradient(135deg,#B91C1C,#EF4444)","grp":"healthbody"},{"n":"Nutrition","i":"🥗","g":"linear-gradient(135deg,#166534,#84CC16)","grp":"healthbody"},{"n":"Beauty","i":"💄","g":"linear-gradient(135deg,#DB2777,#F472B6)","grp":"healthbody"},{"n":"Fashion","i":"✦","g":"linear-gradient(135deg,#1a1a2e,#333)","grp":"styleself"},{"n":"Jewelry","i":"💎","g":"linear-gradient(135deg,#831843,#DB2777)","grp":"styleself"},{"n":"Accessories","i":"👜","g":"linear-gradient(135deg,#7C2D12,#B45309)","grp":"styleself"},{"n":"Identity","i":"🪪","g":"linear-gradient(135deg,#7C3AED,#A78BFA)","grp":"styleself"},{"n":"Home","i":"🏡","g":"linear-gradient(135deg,#78716C,#A8A29E)","grp":"hometable"},{"n":"Garden","i":"🌱","g":"linear-gradient(135deg,#15803D,#65A30D)","grp":"hometable"},{"n":"Food","i":"🍝","g":"linear-gradient(135deg,#16A34A,#4ADE80)","grp":"hometable"},{"n":"Drinks","i":"🍷","g":"linear-gradient(135deg,#7F1D1D,#DC2626)","grp":"hometable"},{"n":"Pets","i":"🐾","g":"linear-gradient(135deg,#92400E,#D97706)","grp":"hometable"},{"n":"Family & Relationships","i":"👪","g":"linear-gradient(135deg,#1D4ED8,#93C5FD)","grp":"familylife"},{"n":"Parenting","i":"👶","g":"linear-gradient(135deg,#2563EB,#60A5FA)","grp":"familylife"},{"n":"Celebrations","i":"🎉","g":"linear-gradient(135deg,#9D174D,#F472B6)","grp":"familylife"},{"n":"Sports","i":"⚽","g":"linear-gradient(135deg,#15803D,#22C55E)","grp":"sportplay"},{"n":"Adventure","i":"⚡","g":"linear-gradient(135deg,#E85D3A,#FF8C42)","grp":"sportplay"},{"n":"Games","i":"♟️","g":"linear-gradient(135deg,#B45309,#FBBF24)","grp":"sportplay"},{"n":"Gaming","i":"🎮","g":"linear-gradient(135deg,#15803D,#14532D)","grp":"sportplay"},{"n":"Gambling","i":"🎰","g":"linear-gradient(135deg,#7F1D1D,#B91C1C)","grp":"sportplay"},{"n":"Hobbies","i":"🎵","g":"linear-gradient(135deg,#B45309,#D97706)","grp":"sportplay"},{"n":"Music","i":"🎶","g":"linear-gradient(135deg,#7C3AED,#C084FC)","grp":"artsent"},{"n":"Genre","i":"🏷️","g":"linear-gradient(135deg,#4C1D95,#A78BFA)","grp":"artsent"},{"n":"Books","i":"📚","g":"linear-gradient(135deg,#7C2D12,#D97706)","grp":"artsent"},{"n":"Performing Arts","i":"🎭","g":"linear-gradient(135deg,#9F1239,#FB7185)","grp":"artsent"},{"n":"Art","i":"🎨","g":"linear-gradient(135deg,#9333EA,#F0ABFC)","grp":"artsent"},{"n":"Photography","i":"📷","g":"linear-gradient(135deg,#334155,#94A3B8)","grp":"artsent"},{"n":"Media","i":"🎥","g":"linear-gradient(135deg,#7C3AED,#A78BFA)","grp":"artsent"},{"n":"Travel","i":"🏖️","g":"linear-gradient(135deg,#0891B2,#22D3EE)","grp":"travelplaces"},{"n":"Places","i":"📍","g":"linear-gradient(135deg,#0F766E,#5EEAD4)","grp":"travelplaces"},{"n":"Leisure","i":"🎡","g":"linear-gradient(135deg,#7E22CE,#EC4899)","grp":"travelplaces"},{"n":"Cars","i":"🏎️","g":"linear-gradient(135deg,#DC2626,#991B1B)","grp":"gettingaround"},{"n":"Transit","i":"🚆","g":"linear-gradient(135deg,#334155,#64748B)","grp":"gettingaround"},{"n":"Aviation","i":"🛩️","g":"linear-gradient(135deg,#1E3A8A,#60A5FA)","grp":"gettingaround"},{"n":"Boating","i":"⛵","g":"linear-gradient(135deg,#0C4A6E,#0EA5E9)","grp":"gettingaround"},{"n":"Logistics","i":"🚛","g":"linear-gradient(135deg,#1E40AF,#3B82F6)","grp":"gettingaround"},{"n":"Finance","i":"📊","g":"linear-gradient(135deg,#0F172A,#1E3A5F)","grp":"moneywork"},{"n":"Crypto","i":"🪙","g":"linear-gradient(135deg,#B45309,#FBBF24)","grp":"moneywork"},{"n":"Business","i":"🏢","g":"linear-gradient(135deg,#334155,#64748B)","grp":"moneywork"},{"n":"Marketing","i":"📣","g":"linear-gradient(135deg,#DB2777,#FB923C)","grp":"moneywork"},{"n":"Careers","i":"💼","g":"linear-gradient(135deg,#1E40AF,#3B82F6)","grp":"moneywork"},{"n":"Real Estate","i":"🏠","g":"linear-gradient(135deg,#0D9488,#2DD4BF)","grp":"moneywork"},{"n":"Tech","i":"💻","g":"linear-gradient(135deg,#7C3AED,#A78BFA)","grp":"techfrontier"},{"n":"AI","i":"🤖","g":"linear-gradient(135deg,#4338CA,#22D3EE)","grp":"techfrontier"},{"n":"Security","i":"🛡️","g":"linear-gradient(135deg,#1E293B,#475569)","grp":"techfrontier"},{"n":"Science","i":"🔬","g":"linear-gradient(135deg,#0F766E,#2DD4BF)","grp":"techfrontier"},{"n":"Space","i":"🚀","g":"linear-gradient(135deg,#1E1B4B,#6366F1)","grp":"techfrontier"},{"n":"Education","i":"🎓","g":"linear-gradient(135deg,#1D4ED8,#60A5FA)","grp":"peoplesociety"},{"n":"Languages","i":"🗣️","g":"linear-gradient(135deg,#3730A3,#A5B4FC)","grp":"peoplesociety"},{"n":"Cultures","i":"🌍","g":"linear-gradient(135deg,#9333EA,#C084FC)","grp":"peoplesociety"},{"n":"Religion","i":"🕊️","g":"linear-gradient(135deg,#4338CA,#818CF8)","grp":"peoplesociety"},{"n":"Spirituality","i":"✨","g":"linear-gradient(135deg,#6D28D9,#8B5CF6)","grp":"peoplesociety"},{"n":"Society","i":"⚖️","g":"linear-gradient(135deg,#7C2D12,#EA580C)","grp":"peoplesociety"},{"n":"Government","i":"🏛️","g":"linear-gradient(135deg,#334155,#94A3B8)","grp":"peoplesociety"},{"n":"Nonprofit","i":"🤝","g":"linear-gradient(135deg,#047857,#34D399)","grp":"peoplesociety"},{"n":"Law","i":"⚖️","g":"linear-gradient(135deg,#1E3A5F,#334155)","grp":"peoplesociety"},{"n":"Defense","i":"🚀","g":"linear-gradient(135deg,#1E3A5F,#3B82F6)","grp":"peoplesociety"},{"n":"Manufacturing","i":"🏭","g":"linear-gradient(135deg,#475569,#94A3B8)","grp":"earthnatureind"},{"n":"Chemical","i":"🧪","g":"linear-gradient(135deg,#0891B2,#06B6D4)","grp":"earthnatureind"},{"n":"Materials","i":"🪨","g":"linear-gradient(135deg,#78716C,#A8A29E)","grp":"earthnatureind"},{"n":"Energy","i":"🔋","g":"linear-gradient(135deg,#CA8A04,#FACC15)","grp":"earthnatureind"},{"n":"Environment","i":"🌍","g":"linear-gradient(135deg,#15803D,#16A34A)","grp":"earthnatureind"},{"n":"Nature","i":"🌲","g":"linear-gradient(135deg,#14532D,#22C55E)","grp":"earthnatureind"},{"n":"Agriculture","i":"🌾","g":"linear-gradient(135deg,#166534,#4ADE80)","grp":"earthnatureind"},{"n":"Construction","i":"🏗️","g":"linear-gradient(135deg,#92400E,#F59E0B)","grp":"earthnatureind"}]};
+
+/* ── the intro, as welcomeSplash() in genexxo-app.html, minus the fly into the top bar ── */
+function intro(){
+  $('spMark').innerHTML=`<defs>
+      <clipPath id="spClip"><path d="${XX}"/></clipPath>
+      <linearGradient id="spBlack" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2b2a30"/><stop offset=".55" stop-color="#121115"/><stop offset="1" stop-color="#201e24"/></linearGradient>
+      <linearGradient id="spGold" gradientUnits="userSpaceOnUse" x1="195" y1="0" x2="265" y2="57"><stop offset="0" stop-color="#8a5a12"/><stop offset=".35" stop-color="#f7c95a"/><stop offset=".55" stop-color="#fff1c4"/><stop offset=".8" stop-color="#e0a53a"/><stop offset="1" stop-color="#9c6a1a"/></linearGradient>
+      <linearGradient id="spSilver" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#dfe3ec" stop-opacity="0"/><stop offset=".5" stop-color="#eef1f7" stop-opacity=".85"/><stop offset="1" stop-color="#dfe3ec" stop-opacity="0"/></linearGradient>
+      <filter id="spGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="3.2" numOctaves="1" seed="7" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  .28 0 0 0 -.1" result="na"/><feComposite in="na" in2="SourceGraphic" operator="in" result="g"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="g"/></feMerge></filter>
+      <filter id="spBlur" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation=".9"/></filter>
+    </defs>
+    <path class="sp-gene" d="${GENE}" fill="#231F20"/>
+    <path class="sp-oh" d="${OH}" fill="#231F20"/>
+    <g class="sp-in"><g class="sp-move">
+      <g class="sp-fill1"><path d="${XX}" fill="url(#spBlack)" filter="url(#spGrain)"/></g>
+      <g clip-path="url(#spClip)"><g transform="skewX(-22)"><rect class="sp-sweep" x="200" y="-10" width="16" height="80" fill="url(#spSilver)"/></g></g>
+      <path class="sp-fill2" d="${XX}" fill="#231F20"/>
+      <g class="sp-goldedge">
+        <path class="sp-glow" d="${XX}" pathLength="1" fill="none" stroke="#f5b800" stroke-width="1.1" stroke-linejoin="round" filter="url(#spBlur)" opacity="0"/>
+        <path class="sp-edge" d="${XX}" pathLength="1" fill="none" stroke="url(#spGold)" stroke-width=".42" stroke-linejoin="round"/></g>
+      <g class="sp-mini" fill="#fff" transform="translate(254.6 11.2) rotate(-56.6) scale(.052) translate(-160 -28.6)"><path d="${GENE}"/><path d="${XX}"/><path d="${OH}"/></g>
+    </g></g>`;
+  /* how far the mark sits above the middle of the screen */
+  const m=$('spMark').getBoundingClientRect(), st=$('stage').getBoundingClientRect();
+  const below=$('top')?$('top').getBoundingClientRect().bottom:0;   // centre in what's visible under the top bar
+  const mid=(Math.max(st.top,below)+Math.min(innerHeight,st.bottom))/2;
+  $('spMark').style.setProperty('--drop',Math.max(0,Math.round(mid-(m.top+m.height/2)))+'px');
 }
+intro();
+/* tapping the mark replays only the mark (the rest of the hero is already there) */
+$('spMark').onclick=function replay(){const m=$('spMark'),c=m.cloneNode(false);m.replaceWith(c);c.onclick=replay;intro();};
 
-/* ══════════════════════════════════════════════
-   SIDEBAR TOGGLE
-   ══════════════════════════════════════════════ */
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sidebarOverlay').classList.toggle('open');
-}
-
-/* ══════════════════════════════════════════════
-   SERIES NAV TOGGLE
-   ══════════════════════════════════════════════ */
-function toggleSeriesNav(){
-  var el=document.getElementById('seriesItems');
-  var label=document.querySelector('.nav-group-label');
-  if(el.style.maxHeight&&el.style.maxHeight!=='0px'){
-    el.style.maxHeight='0px';label.classList.remove('expanded');
-  }else{
-    el.style.maxHeight=el.scrollHeight+'px';label.classList.add('expanded');
-  }
-}
-
-/* ══════════════════════════════════════════════
-   REVEAL ON SCROLL
-   ══════════════════════════════════════════════ */
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-}, { threshold: 0.15 });
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-/* ══════════════════════════════════════════════
-   SUPERNOVA CANVAS — Hero
-   ══════════════════════════════════════════════ */
-(function(){
-  const snCanvas = document.getElementById('supernovaCanvas');
-  const snCtx = snCanvas.getContext('2d');
-  let snW, snH, cx, cy;
-  const COLORS = ['#E84D3A','#8B5CF6','#4A6CF7','#10B981','#F59E0B','#EC4899','#06B6D4','#F97316','#A855F7','#EF4444'];
-  const DOMAINS = ['ClimbXX','SurfXX','CryptoXX','FashionXX','FoodXX','HealthXX','CycleXX','SkiXX','TechXX','BeautyXX','SwimXX','DroneXX','MusicXX','FinanceXX','YogaXX','ScubaXX','SailXX','WellnessXX','PropertyXX','SportsXX','CookXX','TravelXX','FlyXX','HikeXX','KayakXX','ScubaXX','GiftXX','GlideXX','WineXX','FilmXX'];
-  const RINGS_BASE = [
-    {rPct:.12,count:5,nodeR:6.5,dash:[2,8],opacity:.1,labelAll:true,glowR:3},
-    {rPct:.22,count:7,nodeR:5.5,dash:[3,9],opacity:.08,labelAll:true,glowR:2.5},
-    {rPct:.33,count:8,nodeR:4.5,dash:[3,11],opacity:.06,labelAll:true,glowR:2},
-    {rPct:.44,count:10,nodeR:3.5,dash:[4,12],opacity:.04,labelAll:false,glowR:1},
-  ];
-  let RINGS = RINGS_BASE;
-  class GatewayNode{constructor(ri,pi,gi){const ring=RINGS[ri];this.ringIdx=ri;this.ringR=ring.r;const offset=ri*.4;this.angle=offset+(pi/ring.count)*Math.PI*2;this.r=ring.nodeR;this.color=COLORS[gi%COLORS.length];this.label=DOMAINS[gi]||'XX';this.showLabel=ring.labelAll||(pi%3===0);this.glowR=ring.glowR;this.pulsePhase=gi*.47;this.x=0;this.y=0}calcPos(){this.x=cx+Math.cos(this.angle)*this.ringR;this.y=cy+Math.sin(this.angle)*this.ringR}draw(t){const pulse=.75+.25*Math.sin(t*.0018+this.pulsePhase);const drawR=this.r*pulse;if(this.glowR>0){const grd=snCtx.createRadialGradient(this.x,this.y,0,this.x,this.y,drawR*this.glowR*2.5);grd.addColorStop(0,this.color+'28');grd.addColorStop(1,this.color+'00');snCtx.fillStyle=grd;snCtx.beginPath();snCtx.arc(this.x,this.y,drawR*this.glowR*2.5,0,Math.PI*2);snCtx.fill()}snCtx.beginPath();snCtx.arc(this.x,this.y,drawR,0,Math.PI*2);snCtx.fillStyle=this.color+'bb';snCtx.fill();snCtx.beginPath();snCtx.arc(this.x,this.y,drawR*.35,0,Math.PI*2);snCtx.fillStyle='#ffffff99';snCtx.fill();if(this.showLabel){snCtx.font=`600 ${this.ringIdx<2?9:7}px "JetBrains Mono",monospace`;snCtx.fillStyle=this.color+(this.ringIdx<2?'99':'66');snCtx.textAlign='center';snCtx.fillText(this.label,this.x,this.y-drawR-4)}}}
-  let edges=[],nodes=[],travelers=[],hubPulses=[],ringRotations=RINGS_BASE.map(()=>0);let WEB_MAX_DIST=120;
-  function buildEdges(){edges=[];for(let i=0;i<nodes.length;i++){edges.push({a:-1,b:i,hubLine:true});for(let j=i+1;j<nodes.length;j++){const dx=nodes[i].x-nodes[j].x;const dy=nodes[i].y-nodes[j].y;const dist=Math.sqrt(dx*dx+dy*dy);if(dist<WEB_MAX_DIST)edges.push({a:i,b:j,dist,hubLine:false})}}}
-  function drawCobweb(t){edges.forEach(e=>{let ax,ay,bx,by;if(e.hubLine){ax=cx;ay=cy;bx=nodes[e.b].x;by=nodes[e.b].y}else{ax=nodes[e.a].x;ay=nodes[e.a].y;bx=nodes[e.b].x;by=nodes[e.b].y}let alpha;if(e.hubLine)alpha=.06+.02*Math.sin(t*.001+e.b*.3);else alpha=(.04+.02*Math.sin(t*.0015+e.a*.2))*(1-(e.dist||0)/WEB_MAX_DIST);snCtx.beginPath();snCtx.moveTo(ax,ay);snCtx.lineTo(bx,by);snCtx.strokeStyle=`rgba(255,255,255,${alpha})`;snCtx.lineWidth=e.hubLine?.5:.3;snCtx.stroke()})}
-  class TravelPulse{constructor(){this.reset()}reset(){this.edgeIdx=Math.floor(Math.random()*edges.length);this.t=0;this.speed=.003+Math.random()*.006;this.color=COLORS[Math.floor(Math.random()*COLORS.length)];this.size=1+Math.random()*1;this.forward=Math.random()>.5}update(){this.t+=this.speed;if(this.t>1)this.reset()}draw(){const e=edges[this.edgeIdx];if(!e)return;let ax,ay,bx,by;if(e.hubLine){ax=cx;ay=cy;bx=nodes[e.b].x;by=nodes[e.b].y}else{ax=nodes[e.a].x;ay=nodes[e.a].y;bx=nodes[e.b].x;by=nodes[e.b].y}const prog=this.forward?this.t:1-this.t;const px=ax+(bx-ax)*prog;const py=ay+(by-ay)*prog;const grd=snCtx.createRadialGradient(px,py,0,px,py,this.size*3);grd.addColorStop(0,this.color+'50');grd.addColorStop(1,this.color+'00');snCtx.fillStyle=grd;snCtx.beginPath();snCtx.arc(px,py,this.size*3,0,Math.PI*2);snCtx.fill();snCtx.beginPath();snCtx.arc(px,py,this.size,0,Math.PI*2);snCtx.fillStyle=this.color+'dd';snCtx.fill()}}
-  class HubPulse{constructor(d){this.delay=d;this.reset();this.r=d}reset(){this.r=0;this.maxR=200;this.speed=.35+Math.random()*.15;this.color=COLORS[Math.floor(Math.random()*COLORS.length)]}update(){this.r+=this.speed;if(this.r>this.maxR)this.reset()}draw(){const alpha=.15*(1-this.r/this.maxR);if(alpha<.005)return;snCtx.beginPath();snCtx.arc(cx,cy,this.r,0,Math.PI*2);snCtx.strokeStyle=this.color;snCtx.globalAlpha=alpha;snCtx.lineWidth=.7;snCtx.stroke();snCtx.globalAlpha=1}}
-  function initSupernova(){const el=document.querySelector('.hero');const dpr=window.devicePixelRatio||1;snW=el.offsetWidth;snH=el.offsetHeight;snCanvas.width=snW*dpr;snCanvas.height=snH*dpr;snCanvas.style.width=snW+'px';snCanvas.style.height=snH+'px';snCtx.setTransform(dpr,0,0,dpr,0,0);cx=snW/2;cy=snH*.38;const maxR=Math.min(snW*.45,snH*.48);RINGS=RINGS_BASE.map(rb=>({...rb,r:maxR*rb.rPct/.44}));WEB_MAX_DIST=maxR*.75;nodes=[];let gi=0;RINGS.forEach((ring,ri)=>{for(let i=0;i<ring.count;i++){const n=new GatewayNode(ri,i,gi);n.calcPos();nodes.push(n);gi++}});buildEdges();travelers=[];for(let i=0;i<18;i++){const tp=new TravelPulse();tp.t=Math.random();travelers.push(tp)}hubPulses=[];for(let i=0;i<3;i++)hubPulses.push(new HubPulse(i*70))}
-  function drawHubCore(t){const grd=snCtx.createRadialGradient(cx,cy,0,cx,cy,90);grd.addColorStop(0,'rgba(232,77,58,.22)');grd.addColorStop(.35,'rgba(139,92,246,.1)');grd.addColorStop(1,'rgba(232,77,58,0)');snCtx.fillStyle=grd;snCtx.beginPath();snCtx.arc(cx,cy,90,0,Math.PI*2);snCtx.fill();const cs=45+5*Math.sin(t*.002);const cg=snCtx.createRadialGradient(cx,cy,0,cx,cy,cs);cg.addColorStop(0,'rgba(255,255,255,.9)');cg.addColorStop(.3,'rgba(232,77,58,.65)');cg.addColorStop(.65,'rgba(139,92,246,.25)');cg.addColorStop(1,'rgba(74,108,247,0)');snCtx.fillStyle=cg;snCtx.beginPath();snCtx.arc(cx,cy,cs,0,Math.PI*2);snCtx.fill();snCtx.beginPath();snCtx.arc(cx,cy,14,0,Math.PI*2);snCtx.fillStyle='#ffffffee';snCtx.fill();snCtx.font='800 11px "Plus Jakarta Sans",sans-serif';snCtx.fillStyle='#E84D3A';snCtx.textAlign='center';snCtx.fillText('HUB',cx,cy+5)}
-  function drawRings(t){RINGS.forEach((ring,i)=>{ringRotations[i]+=(i%2===0?.00008:-.00006);snCtx.save();snCtx.translate(cx,cy);snCtx.rotate(ringRotations[i]);snCtx.beginPath();snCtx.arc(0,0,ring.r,0,Math.PI*2);snCtx.strokeStyle=`rgba(255,255,255,${ring.opacity})`;snCtx.setLineDash(ring.dash);snCtx.lineWidth=.6;snCtx.stroke();snCtx.restore()});snCtx.setLineDash([])}
-  function animate(t){snCtx.clearRect(0,0,snW,snH);hubPulses.forEach(p=>{p.update();p.draw()});drawRings(t);drawCobweb(t);travelers.forEach(tp=>{tp.update();tp.draw()});nodes.forEach(n=>n.draw(t));drawHubCore(t);requestAnimationFrame(animate)}
-  initSupernova();animate(0);window.addEventListener('resize',initSupernova);
+/* ── phones: a status bar above each screenshot, coloured from the screenshot's own top edge ── */
+(function phoneBars(){
+  const SIG='<svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>';
+  const BAT='<svg viewBox="0 0 27 12"><rect x=".5" y=".5" width="23" height="11" rx="3.5" fill="none" stroke="currentColor" opacity=".45"/><rect x="2.5" y="2.5" width="19" height="7" rx="2"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".45"/></svg>';
+  document.querySelectorAll('.phone img').forEach(img=>{
+    const scr=document.createElement('div');scr.className='screen';
+    img.replaceWith(scr);scr.innerHTML=`<div class="sb"><span>9:41</span><span class="ic">${SIG}${BAT}</span></div>`;scr.append(img);
+    const tint=()=>{try{
+      const c=document.createElement('canvas');c.width=c.height=1;const x=c.getContext('2d');
+      x.drawImage(img,img.naturalWidth/2,2,1,1,0,0,1,1);const [r,g,b]=x.getImageData(0,0,1,1).data;
+      scr.style.setProperty('--sb',`rgb(${r},${g},${b})`);
+      scr.style.setProperty('--sbInk',(.299*r+.587*g+.114*b)/255>.55?'#111116':'#fff');
+    }catch(e){}};
+    img.complete&&img.naturalWidth?tint():img.addEventListener('load',tint,{once:true});
+  });
 })();
 
-/* ══════════════════════════════════════════════
-   COLLECTION CANVAS — Domain assembly animation
-   ══════════════════════════════════════════════ */
+/* ── domain marquee: real names from the taxonomy, in their sector's colour ── */
+const dom=([w,g])=>`<span class="dom"><i style="background:${g}"><span class="gx-mono"></span></i>${w}XX<em>.com</em></span>`;
+const half=Math.ceil(DOMAINS.length/2), r1=DOMAINS.slice(0,half), r2=DOMAINS.slice(half);
+$('mq1').innerHTML=(r1.map(dom).join('')).repeat(2);
+$('mq2').innerHTML=(r2.map(dom).join('')).repeat(2);
+const byName=Object.fromEntries(DOMAINS.map(d=>[d[0].toLowerCase(),d]));
+/* the collection: the word rolls up in its sector's colour, the box eases to the new width so XX.com glides with it */
 (function(){
-  const cc=document.getElementById('collectionCanvas');if(!cc)return;
-  const ctx=cc.getContext('2d');
-  const container=document.getElementById('collectionVisual');
-  let W,H;
-  const DOMAINS=[
-    {word:'Beauty',color:'#EC4899'},
-    {word:'Health',color:'#10B981'},
-    {word:'Fashion',color:'#8B5CF6'},
-    {word:'Wellness',color:'#E84D3A'},
-    {word:'Travel',color:'#4A6CF7'}
-  ];
-  const CYCLE=2200,PAUSE=400,TOTAL=DOMAINS.length*(CYCLE+PAUSE);
-  let startTime=0;
-  const particles=[];
+  /* written as WordXX so make-data.js picks them up and colours them */
+  const W=['SurfXX','CoffeeXX','YogaXX','CryptoXX','SkinXX','ClimbXX','DroneXX','GolfXX','ChessXX','PropertyXX','SolarXX','PetXX'].map(w=>w.slice(0,-2));let i=0;
+  const host=$('slotW'), reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const make=w=>{const s=document.createElement('span');s.textContent=w;s.style.setProperty('--c',dColour(w));return s};
+  host.append(make(W[0]));
+  setInterval(()=>{
+    i=(i+1)%W.length;const old=host.lastChild,nw=make(W[i]);
+    host.style.width=old.offsetWidth+'px';
+    nw.className='in';nw.style.cssText+=';position:absolute;right:0;top:0';host.append(nw);
+    const target=nw.offsetWidth;
+    requestAnimationFrame(()=>{host.style.width=target+'px';old.classList.add('out');nw.classList.remove('in')});
+    setTimeout(()=>{old.remove();nw.style.position='';nw.style.right='';nw.style.top=''},reduce?0:650);
+  },2200);
+})();
 
-  function init(){
-    fitCanvas(cc,container);W=cc._w;H=cc._h;
-    startTime=performance.now();
-    particles.length=0;
-  }
+/* ── supernova: sector colours radiating outward ── */
+(function(){
+  const n=$('nova'); let h='';
+  [150,230,310].forEach(d=>h+=`<div class="ring" style="width:${d*2}px;height:${d*2}px"></div>`);
+  const gs=SECT.sectors.map(s=>s.g);
+  for(let i=0;i<28;i++){const a=(i*360/28)+(i%2?6:0);h+=`<i class="spark" style="--a:${a}deg;--r:${250+(i%3)*45}px;background:${gs[(i*7)%gs.length]};animation-delay:${(i%7)*.68}s"></i>`;}
+  n.innerHTML=h;
+})();
 
-  function spawnBurst(x,y,color){
-    for(let i=0;i<12;i++){
-      const angle=Math.random()*Math.PI*2;
-      const speed=1+Math.random()*3;
-      particles.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1,color,size:1.5+Math.random()*2});
+/* ── network: hub → 68 sectors → thousands of gateways ── */
+(function(){
+  const svg=$('net'), S=SECT.sectors, first=g=>(g.match(/#[0-9A-Fa-f]{3,6}/)||['#999'])[0], last=g=>{const m=g.match(/#[0-9A-Fa-f]{3,6}/g)||['#999'];return m[m.length-1]};
+  let seed=7; const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;   // fixed seed: the same picture every load
+  let defs='',edges='',gws='',nodes='',pulses='';
+  const R=190, step=Math.PI*2/S.length;
+  S.forEach((s,i)=>{
+    const a=i*step-Math.PI/2, x=Math.cos(a)*R, y=Math.sin(a)*R, id='sg'+i, c=last(s.g);
+    defs+=`<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${first(s.g)}"/><stop offset="1" stop-color="${c}"/></linearGradient>`;
+    edges+=`<line class="edge" x1="0" y1="0" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}"/>`;
+    if(i%5===0) pulses+=`<line class="pulse" x1="0" y1="0" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${first(s.g)}" style="animation-delay:${(i/5*.31).toFixed(2)}s"/>`;
+    /* each sector's gateways scatter just beyond it */
+    for(let k=0;k<5;k++){
+      const ga=a+(rnd()-.5)*step*1.1, gr=R+34+rnd()*58, gx=Math.cos(ga)*gr, gy=Math.sin(ga)*gr;
+      gws+=`<line class="edge" x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${gx.toFixed(1)}" y2="${gy.toFixed(1)}" style="opacity:.6"/><circle cx="${gx.toFixed(1)}" cy="${gy.toFixed(1)}" r="${(2+rnd()*1.6).toFixed(1)}" fill="${c}" opacity=".55"/>`;
     }
-  }
-
-  function draw(time){
-    ctx.clearRect(0,0,W,H);
-    const elapsed=(time-startTime)%TOTAL;
-    const _dc=W>500;
-    const baseY=H/2;
-    const spacing=_dc?70:50;
-    const startY=baseY-(DOMAINS.length-1)*spacing/2;
-
-    // Draw all domains
-    DOMAINS.forEach((d,i)=>{
-      const slotStart=i*(CYCLE+PAUSE);
-      const slotElapsed=elapsed-slotStart;
-      const cy=startY+i*spacing;
-      const cx=W/2;
-
-      // Determine phase
-      let wordAlpha=0,xxAlpha=0,comAlpha=0,xxOffsetY=0,glowAlpha=0;
-      const showFromPrev=elapsed>=slotStart+CYCLE+PAUSE;
-      const isBeforeTurn=elapsed<slotStart;
-
-      if(showFromPrev||(!isBeforeTurn&&slotElapsed>=0)){
-        if(showFromPrev){
-          wordAlpha=1;xxAlpha=1;comAlpha=1;glowAlpha=.15;
-        } else {
-          // Phase 1: word fades in (0-400ms)
-          const p1=Math.min(slotElapsed/400,1);
-          wordAlpha=p1;
-          // Phase 2: XX drops in (400-900ms)
-          if(slotElapsed>400){
-            const p2=Math.min((slotElapsed-400)/500,1);
-            const ease=1-Math.pow(1-p2,3);
-            xxAlpha=ease;
-            xxOffsetY=-30*(1-ease);
-            if(p2>=.95&&p2<1)spawnBurst(cx+(_dc?8:4),cy+xxOffsetY,d.color);
-          }
-          // Phase 3: .com slides in (900-1400ms)
-          if(slotElapsed>900){
-            const p3=Math.min((slotElapsed-900)/500,1);
-            comAlpha=p3;
-          }
-          // Phase 4: glow settles (1400-2000ms)
-          if(slotElapsed>1400){
-            const p4=Math.min((slotElapsed-1400)/600,1);
-            glowAlpha=.15*p4;
-          }
-        }
-      }
-
-      if(wordAlpha<=0)return;
-
-      const fontSize=_dc?28:18;
-      const xxSize=_dc?28:18;
-      const comSize=_dc?20:14;
-
-      // Measure text widths for positioning
-      ctx.font=`700 ${fontSize}px "Plus Jakarta Sans",sans-serif`;
-      const wordW=ctx.measureText(d.word).width;
-      ctx.font=`800 ${xxSize}px "Plus Jakarta Sans",sans-serif`;
-      const xxW=ctx.measureText('XX').width;
-      ctx.font=`600 ${comSize}px "Plus Jakarta Sans",sans-serif`;
-      const comW=ctx.measureText('.com').width;
-
-      const totalW=wordW+xxW+comW+(_dc?6:4);
-      const leftX=cx-totalW/2;
-
-      // Glow behind
-      if(glowAlpha>0){
-        const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,_dc?120:80);
-        grd.addColorStop(0,d.color+Math.round(glowAlpha*255).toString(16).padStart(2,'0'));
-        grd.addColorStop(1,'transparent');
-        ctx.fillStyle=grd;ctx.beginPath();ctx.arc(cx,cy,_dc?120:80,0,Math.PI*2);ctx.fill();
-      }
-
-      // Word
-      ctx.font=`700 ${fontSize}px "Plus Jakarta Sans",sans-serif`;
-      ctx.fillStyle=`rgba(255,255,255,${wordAlpha*.9})`;
-      ctx.textAlign='left';ctx.textBaseline='middle';
-      ctx.fillText(d.word,leftX,cy);
-
-      // XX
-      if(xxAlpha>0){
-        ctx.font=`800 ${xxSize}px "Plus Jakarta Sans",sans-serif`;
-        ctx.fillStyle=d.color+Math.round(xxAlpha*255).toString(16).padStart(2,'0');
-        ctx.shadowColor=d.color;ctx.shadowBlur=xxAlpha*15;
-        ctx.fillText('XX',leftX+wordW,cy+xxOffsetY);
-        ctx.shadowBlur=0;
-      }
-
-      // .com
-      if(comAlpha>0){
-        ctx.font=`600 ${comSize}px "Plus Jakarta Sans",sans-serif`;
-        ctx.fillStyle=`rgba(255,255,255,${comAlpha*.5})`;
-        ctx.fillText('.com',leftX+wordW+xxW+(_dc?6:4),cy);
-      }
-    });
-
-    // Particles
-    for(let i=particles.length-1;i>=0;i--){
-      const p=particles[i];
-      p.x+=p.vx;p.y+=p.vy;p.vx*=.96;p.vy*=.96;p.life-=.025;
-      if(p.life<=0){particles.splice(i,1);continue}
-      ctx.beginPath();ctx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);
-      ctx.fillStyle=p.color;ctx.globalAlpha=p.life*.6;ctx.fill();ctx.globalAlpha=1;
-    }
-
-    requestAnimationFrame(draw);
-  }
-
-  init();startTime=performance.now();requestAnimationFrame(draw);
-  window.addEventListener('resize',()=>{init();startTime=performance.now()});
+    nodes+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="7.5" fill="url(#${id})"><title>${s.n}</title></circle>`;
+  });
+  /* the hub: the XX tile at the centre */
+  nodes+=`<rect x="-34" y="-34" width="68" height="68" rx="20" fill="#111116"/><g transform="translate(-23 -17.6) scale(.62)"><path fill="#fff" transform="translate(-193 0)" d="${XX}"/></g>`;
+  svg.innerHTML=`<defs>${defs}</defs>${edges}${gws}${pulses}${nodes}`;
+  $('legend').innerHTML=`<span><i style="background:#111116"></i>GENEXXO Hub</span><span><i style="background:var(--grad)"></i>${S.length} sectors</span><span><i style="background:#bbb;border-radius:99px;width:7px;height:7px"></i>thousands of gateways</span>`;
 })();
 
-/* ══════════════════════════════════════════════
-   SUPERNOVA APP CANVAS
-   ══════════════════════════════════════════════ */
-(function(){
-  const sc=document.getElementById('supernovaAppCanvas');if(!sc)return;const sx=sc.getContext('2d');
-  const container=document.getElementById('appVisual');let W,H,cx,cy;
-  const RINGS=[{domains:[{name:'ClimbXX',color:'#E84D3A'},{name:'SurfXX',color:'#4A6CF7'},{name:'CryptoXX',color:'#F59E0B'},{name:'FashionXX',color:'#EC4899'}]},{domains:[{name:'CookXX',color:'#F97316'},{name:'CycleXX',color:'#10B981'},{name:'YogaXX',color:'#8B5CF6'},{name:'SkiXX',color:'#06B6D4'},{name:'GolfXX',color:'#4A6CF7'}]},{domains:[{name:'HikeXX',color:'#10B981'},{name:'SailXX',color:'#4A6CF7'},{name:'WellnessXX',color:'#E84D3A'},{name:'FlyXX',color:'#06B6D4'},{name:'TravelXX',color:'#10B981'},{name:'BuildXX',color:'#F97316'}]}];
-  let ringData=[],startTime=0;const RING_DEPLOY_TIME=3000,RING_STAGGER=2500,TOTAL_CYCLE=RING_STAGGER*RINGS.length+RING_DEPLOY_TIME+2000;
-  function easeOutCubic(t){return 1-Math.pow(1-t,3)}
-  function init(){fitCanvas(sc,container);W=sc._w;H=sc._h;cx=W/2;cy=H/2;const minDim=Math.min(W,H);const radii=[minDim*.16,minDim*.28,minDim*.40];ringData=RINGS.map((ring,ri)=>{const r=radii[ri];const nodes=ring.domains.map((d,di)=>{const angle=(di/ring.domains.length)*Math.PI*2-Math.PI/2;return{finalX:cx+Math.cos(angle)*r,finalY:cy+Math.sin(angle)*r,angle,...d}});return{r,nodes,deployStart:ri*RING_STAGGER}});startTime=performance.now()}
-  function draw(time){sx.clearRect(0,0,W,H);const elapsed=(time-startTime)%TOTAL_CYCLE;const outerG=sx.createRadialGradient(cx,cy,0,cx,cy,60);outerG.addColorStop(0,'rgba(232,77,58,.4)');outerG.addColorStop(.4,'rgba(139,92,246,.15)');outerG.addColorStop(1,'transparent');sx.fillStyle=outerG;sx.beginPath();sx.arc(cx,cy,60,0,Math.PI*2);sx.fill();const coreR=22;const coreG=sx.createRadialGradient(cx,cy,0,cx,cy,coreR);coreG.addColorStop(0,'#fff');coreG.addColorStop(.2,'#E84D3A');coreG.addColorStop(.7,'rgba(139,92,246,.7)');coreG.addColorStop(1,'transparent');sx.fillStyle=coreG;sx.beginPath();sx.arc(cx,cy,coreR,0,Math.PI*2);sx.fill();const iconS=14;sx.beginPath();sx.roundRect(cx-iconS,cy-iconS-1,iconS*2,iconS*2,4);sx.fillStyle='rgba(232,77,58,.85)';sx.fill();const _ds=W>500;sx.font=_ds?'800 20px "Plus Jakarta Sans",sans-serif':'800 12px "Plus Jakarta Sans",sans-serif';sx.fillStyle='#fff';sx.textAlign='center';sx.fillText('XX',cx,cy+(_ds?6:4));sx.font=_ds?'700 12px "Plus Jakarta Sans",sans-serif':'700 8px "Plus Jakarta Sans",sans-serif';sx.fillStyle='rgba(255,255,255,.6)';sx.fillText('SUPERNOVA',cx,cy+(_ds?36:30));ringData.forEach((ring,ri)=>{const ringElapsed=elapsed-ring.deployStart;if(ringElapsed<0)return;const rawT=Math.min(ringElapsed/RING_DEPLOY_TIME,1);const t=easeOutCubic(rawT);if(rawT<1){const waveR=ring.r*t;sx.beginPath();sx.arc(cx,cy,waveR,0,Math.PI*2);sx.strokeStyle=`rgba(232,77,58,${.25*(1-rawT)})`;sx.lineWidth=1.5;sx.stroke()}const trackAlpha=t*.06;sx.beginPath();sx.arc(cx,cy,ring.r,0,Math.PI*2);sx.strokeStyle=`rgba(255,255,255,${trackAlpha})`;sx.lineWidth=1;sx.setLineDash([3,5]);sx.stroke();sx.setLineDash([]);ring.nodes.forEach((n,ni)=>{const nodeDelay=(ni/ring.nodes.length)*.3;const nodeT=Math.max(0,Math.min((rawT-nodeDelay)/(1-nodeDelay),1));const nt=easeOutCubic(nodeT);if(nt<=0)return;const nx=cx+(n.finalX-cx)*nt;const ny=cy+(n.finalY-cy)*nt;sx.beginPath();sx.moveTo(cx,cy);sx.lineTo(nx,ny);sx.strokeStyle=n.color+Math.round(nt*20).toString(16).padStart(2,'0');sx.lineWidth=.4;sx.stroke();const ng=sx.createRadialGradient(nx,ny,0,nx,ny,12);ng.addColorStop(0,n.color+Math.round(nt*64).toString(16).padStart(2,'0'));ng.addColorStop(1,'transparent');sx.fillStyle=ng;sx.beginPath();sx.arc(nx,ny,16,0,Math.PI*2);sx.fill();const nodeR=ri<1?6:4.5;sx.beginPath();sx.arc(nx,ny,nodeR*nt,0,Math.PI*2);const cg=sx.createRadialGradient(nx,ny,0,nx,ny,nodeR*nt);cg.addColorStop(0,n.color);cg.addColorStop(1,n.color+'70');sx.fillStyle=cg;sx.globalAlpha=nt;sx.fill();sx.globalAlpha=1;if(nt>.7){const labelAlpha=(nt-.7)/.3;sx.font=ri<1?(_ds?'600 14px "JetBrains Mono",monospace':'600 9px "JetBrains Mono",monospace'):(_ds?'600 12px "JetBrains Mono",monospace':'600 7px "JetBrains Mono",monospace');sx.fillStyle=`rgba(255,255,255,${labelAlpha*(ri<1?.7:.45)})`;sx.textAlign='center';const lx=nx+Math.cos(n.angle)*(nodeR+14);const ly=ny+Math.sin(n.angle)*(nodeR+14);sx.fillText(n.name,lx,ly+3)}});if(rawT>=1){for(let i=0;i<ring.nodes.length;i++){const a=ring.nodes[i];const b=ring.nodes[(i+1)%ring.nodes.length];sx.beginPath();sx.moveTo(a.finalX,a.finalY);sx.lineTo(b.finalX,b.finalY);sx.strokeStyle='rgba(255,255,255,.04)';sx.lineWidth=.4;sx.stroke()}}});requestAnimationFrame(draw)}
-  init();startTime=performance.now();requestAnimationFrame(draw);window.addEventListener('resize',()=>{init();startTime=performance.now()});
-})();
-
-/* ══════════════════════════════════════════════
-   GATEWAY CANVAS
-   ══════════════════════════════════════════════ */
-(function(){
-  const gc=document.getElementById('gatewayCanvas');const gx=gc.getContext('2d');
-  const container=document.getElementById('gatewayVisual');let W,H,cx,cy;
-  const FORCES=[{label:'Content',color:'#E84D3A',angle:0},{label:'Community',color:'#8B5CF6',angle:0},{label:'Commerce',color:'#4A6CF7',angle:0},{label:'AI Agents',color:'#10B981',angle:0},{label:'Brands',color:'#F59E0B',angle:0},{label:'Creators',color:'#EC4899',angle:0},{label:'Devs',color:'#06B6D4',angle:0}];
-  class InwardParticle{constructor(fi){this.fi=fi;this.reset()}reset(){const f=FORCES[this.fi];const spread=(Math.random()-.5)*.6;const angle=f.angle+spread;const dist=180+Math.random()*80;this.x=cx+Math.cos(angle)*dist;this.y=cy+Math.sin(angle)*dist;this.color=f.color;this.size=1+Math.random()*1.5;this.speed=.35+Math.random()*.6;this.opacity=.15+Math.random()*.35}update(){const dx=cx-this.x;const dy=cy-this.y;const dist=Math.sqrt(dx*dx+dy*dy);if(dist<25){this.reset();return}this.x+=(dx/dist)*this.speed;this.y+=(dy/dist)*this.speed;this.speed*=1.003;this.opacity=Math.min(.6,this.opacity+.0004)}draw(){gx.beginPath();gx.arc(this.x,this.y,this.size,0,Math.PI*2);gx.fillStyle=this.color;gx.globalAlpha=this.opacity;gx.fill();gx.globalAlpha=1}}
-  class GravityRing{constructor(d){this.delay=d;this.reset();this.r=250-d}reset(){this.r=250;this.color=FORCES[Math.floor(Math.random()*FORCES.length)].color}update(){this.r-=.25;if(this.r<20)this.reset()}draw(){const alpha=.1*(this.r/250);if(alpha<.005)return;gx.beginPath();gx.arc(cx,cy,this.r,0,Math.PI*2);gx.strokeStyle=this.color;gx.globalAlpha=alpha;gx.lineWidth=.6;gx.stroke();gx.globalAlpha=1}}
-  let particles=[],gravRings=[];
-  function init(){fitCanvas(gc,container);W=gc._w;H=gc._h;cx=W/2;cy=H/2;FORCES.forEach((f,i)=>{const sa=-Math.PI*5/6;const ea=Math.PI*5/6;f.angle=sa+(i/(FORCES.length-1))*(ea-sa)});particles=[];FORCES.forEach((_,fi)=>{for(let i=0;i<10;i++){const p=new InwardParticle(fi);const f=FORCES[fi];const dist=60+Math.random()*180;const spread=(Math.random()-.5)*.5;p.x=cx+Math.cos(f.angle+spread)*dist;p.y=cy+Math.sin(f.angle+spread)*dist;particles.push(p)}});gravRings=[];for(let i=0;i<5;i++)gravRings.push(new GravityRing(i*50))}
-  function draw(t){gx.clearRect(0,0,W,H);gravRings.forEach(r=>{r.update();r.draw()});const labelR=Math.min(W,H)*.42;FORCES.forEach((f,i)=>{const lx=cx+Math.cos(f.angle)*labelR;const ly=cy+Math.sin(f.angle)*labelR;const pulse=5+1.5*Math.sin(t*.002+i*.9);gx.beginPath();gx.arc(lx,ly,pulse,0,Math.PI*2);gx.fillStyle=f.color+'aa';gx.fill();const glowG=gx.createRadialGradient(lx,ly,0,lx,ly,pulse*3);glowG.addColorStop(0,f.color+'25');glowG.addColorStop(1,'transparent');gx.fillStyle=glowG;gx.beginPath();gx.arc(lx,ly,pulse*3,0,Math.PI*2);gx.fill();gx.font='700 10px "Plus Jakarta Sans",sans-serif';gx.fillStyle=f.color+'dd';gx.textAlign='center';gx.fillText(f.label,lx,ly-pulse-8);gx.beginPath();gx.moveTo(lx,ly);gx.lineTo(cx,cy);const lg=gx.createLinearGradient(lx,ly,cx,cy);lg.addColorStop(0,f.color+'15');lg.addColorStop(1,f.color+'03');gx.strokeStyle=lg;gx.lineWidth=.5;gx.stroke()});particles.forEach(p=>{p.update();p.draw()});const grd=gx.createRadialGradient(cx,cy,0,cx,cy,70);grd.addColorStop(0,'rgba(232,77,58,.25)');grd.addColorStop(.4,'rgba(139,92,246,.1)');grd.addColorStop(1,'rgba(232,77,58,0)');gx.fillStyle=grd;gx.beginPath();gx.arc(cx,cy,70,0,Math.PI*2);gx.fill();const cs=18+3*Math.sin(t*.002);const cg=gx.createRadialGradient(cx,cy,0,cx,cy,cs);cg.addColorStop(0,'rgba(255,255,255,.9)');cg.addColorStop(.3,'rgba(232,77,58,.65)');cg.addColorStop(.7,'rgba(139,92,246,.3)');cg.addColorStop(1,'rgba(74,108,247,0)');gx.fillStyle=cg;gx.beginPath();gx.arc(cx,cy,cs,0,Math.PI*2);gx.fill();gx.beginPath();gx.arc(cx,cy,5,0,Math.PI*2);gx.fillStyle='#ffffffee';gx.fill();gx.font='800 13px "Plus Jakarta Sans",sans-serif';gx.fillStyle='rgba(255,255,255,.85)';gx.textAlign='center';gx.fillText('DOMAIN',cx,cy-cs-14);gx.fillText('GATEWAY',cx,cy+cs+24);const mbR=cs+38+3*Math.sin(t*.003);const mbGlow=gx.createRadialGradient(cx,cy,mbR-4,cx,cy,mbR+6);mbGlow.addColorStop(0,'rgba(232,77,58,0)');mbGlow.addColorStop(.4,'rgba(232,77,58,.35)');mbGlow.addColorStop(.6,'rgba(139,92,246,.25)');mbGlow.addColorStop(1,'rgba(139,92,246,0)');gx.fillStyle=mbGlow;gx.beginPath();gx.arc(cx,cy,mbR+6,0,Math.PI*2);gx.fill();gx.beginPath();gx.arc(cx,cy,mbR,0,Math.PI*2);gx.strokeStyle='rgba(232,77,58,.5)';gx.lineWidth=1.5;gx.shadowColor='#E84D3A';gx.shadowBlur=12;gx.stroke();gx.shadowBlur=0;gx.font='700 9px "Plus Jakarta Sans",sans-serif';gx.fillStyle='rgba(232,77,58,.7)';const mbAngle=-Math.PI/2+.15*Math.sin(t*.001);gx.save();gx.translate(cx+Math.cos(mbAngle)*(mbR+1),cy+Math.sin(mbAngle)*(mbR+1));gx.fillText('MICROBRAND',0,-6);gx.restore();requestAnimationFrame(draw)}
-  init();draw(0);window.addEventListener('resize',init);
-})();
-
-/* ══════════════════════════════════════════════
-   NETWORK CANVAS
-   ══════════════════════════════════════════════ */
-(function(){
-  const nc=document.getElementById('networkCanvas');if(!nc)return;const nctx=nc.getContext('2d');
-  const container=document.getElementById('networkVisual');
-  const GATEWAYS=[{name:'SurfXX',color:'#4A6CF7'},{name:'CryptoXX',color:'#F59E0B'},{name:'TechXX',color:'#EC4899'},{name:'ClimbXX',color:'#10B981'},{name:'CookXX',color:'#F97316'},{name:'YogaXX',color:'#8B5CF6'},{name:'WellnessXX',color:'#EF4444'},{name:'FinanceXX',color:'#10B981'},{name:'BusinessXX',color:'#F59E0B'},{name:'BeautyXX',color:'#8B5CF6'},{name:'SkiXX',color:'#06B6D4'},{name:'ResortXX',color:'#4A6CF7'}];
-  let cx,cy,innerR,outerR,nodes=[],edges=[],pulses=[],hubPulses=[];
-  function init(){fitCanvas(nc,container);cx=nc._w/2;cy=nc._h/2;innerR=Math.min(nc._w,nc._h)*.22;outerR=Math.min(nc._w,nc._h)*.38;nodes=[];edges=[];pulses=[];hubPulses=[];for(let i=0;i<6;i++){const angle=(i/6)*Math.PI*2-Math.PI/2;nodes.push({x:cx+Math.cos(angle)*innerR,y:cy+Math.sin(angle)*innerR,angle,ring:0,...GATEWAYS[i]})}for(let i=0;i<6;i++){const angle=(i/6)*Math.PI*2-Math.PI/2+Math.PI/6;nodes.push({x:cx+Math.cos(angle)*outerR,y:cy+Math.sin(angle)*outerR,angle,ring:1,...GATEWAYS[6+i]})}for(let i=0;i<6;i++)edges.push({a:i,b:-1,type:'hub'});for(let i=6;i<12;i++)edges.push({a:i,b:-1,type:'hub'});for(let i=0;i<6;i++)edges.push({a:i,b:(i+1)%6,type:'peer'});for(let i=0;i<6;i++)edges.push({a:6+i,b:6+(i+1)%6,type:'peer'});for(let i=0;i<6;i++)edges.push({a:i,b:6+i,type:'cross'});for(let i=0;i<25;i++)pulses.push(newPulse());for(let i=0;i<3;i++)hubPulses.push({r:i*20,maxR:70,speed:.25+Math.random()*.12})}
-  function newPulse(){const edge=edges[Math.floor(Math.random()*edges.length)];return{edge,t:0,speed:.003+Math.random()*.004,forward:Math.random()>.5,size:1.2+Math.random()*1.2}}
-  function getPos(idx){return idx===-1?{x:cx,y:cy}:{x:nodes[idx].x,y:nodes[idx].y}}
-  function getCol(idx){return idx===-1?'#E84D3A':nodes[idx].color}
-  function draw(time){nctx.clearRect(0,0,nc.width,nc.height);nctx.strokeStyle='rgba(255,255,255,.04)';nctx.lineWidth=1;nctx.setLineDash([3,5]);nctx.beginPath();nctx.arc(cx,cy,innerR,0,Math.PI*2);nctx.stroke();nctx.beginPath();nctx.arc(cx,cy,outerR,0,Math.PI*2);nctx.stroke();nctx.setLineDash([]);edges.forEach(e=>{const a=getPos(e.a);const b=getPos(e.b);nctx.beginPath();nctx.moveTo(a.x,a.y);nctx.lineTo(b.x,b.y);nctx.strokeStyle=`rgba(255,255,255,${e.type==='hub'?.08:.05})`;nctx.lineWidth=e.type==='hub'?.8:.5;nctx.stroke()});pulses.forEach(p=>{const a=getPos(p.edge.a);const b=getPos(p.edge.b);const t=p.forward?p.t:1-p.t;const px=a.x+(b.x-a.x)*t;const py=a.y+(b.y-a.y)*t;const col=p.t<.5?getCol(p.edge.a):getCol(p.edge.b);nctx.beginPath();nctx.arc(px,py,p.size,0,Math.PI*2);nctx.fillStyle=col;nctx.globalAlpha=.5;nctx.fill();nctx.globalAlpha=1;p.t+=p.speed;if(p.t>1)Object.assign(p,newPulse())});hubPulses.forEach(hp=>{nctx.beginPath();nctx.arc(cx,cy,hp.r,0,Math.PI*2);nctx.strokeStyle=`rgba(232,77,58,${.2*(1-hp.r/hp.maxR)})`;nctx.lineWidth=1.2;nctx.stroke();hp.r+=hp.speed;if(hp.r>hp.maxR)hp.r=0});const hubGlow=nctx.createRadialGradient(cx,cy,0,cx,cy,80);hubGlow.addColorStop(0,'rgba(232,77,58,.25)');hubGlow.addColorStop(.35,'rgba(139,92,246,.12)');hubGlow.addColorStop(1,'transparent');nctx.fillStyle=hubGlow;nctx.beginPath();nctx.arc(cx,cy,80,0,Math.PI*2);nctx.fill();const cs=18+3*Math.sin(time*.002);const cg=nctx.createRadialGradient(cx,cy,0,cx,cy,cs);cg.addColorStop(0,'rgba(255,255,255,.9)');cg.addColorStop(.3,'rgba(232,77,58,.7)');cg.addColorStop(.7,'rgba(139,92,246,.3)');cg.addColorStop(1,'transparent');nctx.fillStyle=cg;nctx.beginPath();nctx.arc(cx,cy,cs,0,Math.PI*2);nctx.fill();nctx.beginPath();nctx.arc(cx,cy,5,0,Math.PI*2);nctx.fillStyle='#ffffffee';nctx.fill();const _dn=nc._w>500;nctx.font=_dn?'800 20px "Plus Jakarta Sans",sans-serif':'800 10px "Plus Jakarta Sans",sans-serif';nctx.fillStyle='rgba(255,255,255,.8)';nctx.textAlign='center';nctx.fillText('GENEXXO',cx,cy-cs-(_dn?10:6));nctx.font=_dn?'700 12px "Plus Jakarta Sans",sans-serif':'700 7px "Plus Jakarta Sans",sans-serif';nctx.fillStyle='rgba(255,255,255,.5)';nctx.fillText('HUB',cx,cy+cs+(_dn?18:14));nodes.forEach((n,i)=>{const nr=n.ring===0?6+Math.sin(time*.003+i)*1.2:4.5+Math.sin(time*.003+i)*1;nctx.beginPath();nctx.arc(n.x,n.y,nr,0,Math.PI*2);nctx.fillStyle=n.color+'CC';nctx.fill();nctx.font=n.ring===0?(_dn?'600 14px "JetBrains Mono",monospace':'600 8px "JetBrains Mono",monospace'):(_dn?'600 12px "JetBrains Mono",monospace':'600 7px "JetBrains Mono",monospace');nctx.fillStyle=n.ring===0?'rgba(255,255,255,.65)':'rgba(255,255,255,.4)';nctx.textAlign='center';let tx=n.x+Math.cos(n.angle)*(nr+14);let ty=n.y+Math.sin(n.angle)*(nr+14);nctx.fillText(n.name,tx,ty+3)});requestAnimationFrame(draw)}
-  init();requestAnimationFrame(draw);window.addEventListener('resize',init);
-})();
-
-/* ══════════════════════════════════════════════
-   HUB CANVAS — Pulsing arrows outward + HUB/Discovery text swap
-   ══════════════════════════════════════════════ */
-(function(){
-  const hc=document.getElementById('hubCanvas');if(!hc)return;const hctx=hc.getContext('2d');
-  let hcx,hcy,arrows=[],hubPulses=[];
-  const COLORS=['#E84D3A','#8B5CF6','#4A6CF7','#10B981','#F59E0B','#EC4899','#06B6D4','#F97316'];
-  const NUM_DIRS=12;
-  const LABELS=['HUB','DISCOVERY'];let labelIdx=0,labelTimer=0,fadePhase=0;// 0=showing, 1=fading out, 2=fading in
-
-  function init(){
-    const w=hc.parentElement.offsetWidth;const h=hc.parentElement.offsetHeight;
-    hc.width=w;hc.height=h;hc.style.width=w+'px';hc.style.height=h+'px';
-    hcx=w/2;hcy=h/2;
-    const maxR=Math.min(w,h)*.44;
-    arrows=[];
-    for(let d=0;d<NUM_DIRS;d++){
-      const angle=(d/NUM_DIRS)*Math.PI*2;
-      for(let i=0;i<3;i++){
-        arrows.push({
-          angle,
-          t:i/3,
-          speed:.004+Math.random()*.003,
-          color:COLORS[d%COLORS.length],
-          maxR,
-          size:Math.min(w,h)/220
-        });
-      }
-    }
-    hubPulses=[];
-    for(let i=0;i<4;i++)hubPulses.push({r:i*25,maxR:maxR*.8,speed:.3+Math.random()*.15});
-  }
-
-  function drawArrow(ctx,x,y,angle,size,color,alpha){
-    const len=6*size;const width=3*size;
-    ctx.save();ctx.translate(x,y);ctx.rotate(angle);
-    ctx.beginPath();ctx.moveTo(len,0);ctx.lineTo(-len*.3,width);ctx.lineTo(-len*.3,-width);ctx.closePath();
-    ctx.fillStyle=color;ctx.globalAlpha=alpha;ctx.fill();ctx.globalAlpha=1;ctx.restore();
-  }
-
-  function draw(time){
-    const w=hc.width,h=hc.height;
-    hctx.clearRect(0,0,w,h);
-
-    // Hub pulse rings
-    hubPulses.forEach(hp=>{
-      const alpha=.1*(1-hp.r/hp.maxR);
-      if(alpha>.003){hctx.beginPath();hctx.arc(hcx,hcy,hp.r,0,Math.PI*2);hctx.strokeStyle=`rgba(232,77,58,${alpha})`;hctx.lineWidth=.8;hctx.stroke()}
-      hp.r+=hp.speed;if(hp.r>hp.maxR)hp.r=0;
-    });
-
-    // Directional guide lines
-    for(let d=0;d<NUM_DIRS;d++){
-      const angle=(d/NUM_DIRS)*Math.PI*2;
-      const maxR=arrows[0].maxR;
-      const ex=hcx+Math.cos(angle)*maxR;
-      const ey=hcy+Math.sin(angle)*maxR;
-      hctx.beginPath();hctx.moveTo(hcx,hcy);hctx.lineTo(ex,ey);
-      hctx.strokeStyle='rgba(255,255,255,.03)';hctx.lineWidth=.5;hctx.stroke();
-    }
-
-    // Pulsing arrows
-    arrows.forEach(a=>{
-      a.t+=a.speed;if(a.t>1)a.t-=1;
-      const dist=30+a.t*(a.maxR-30);
-      const ax=hcx+Math.cos(a.angle)*dist;
-      const ay=hcy+Math.sin(a.angle)*dist;
-      const fade=a.t<.1?a.t/.1:a.t>.7?(1-a.t)/.3:1;
-      const alpha=fade*.5;
-
-      // Arrow glow trail
-      const gl=hctx.createRadialGradient(ax,ay,0,ax,ay,10*a.size);
-      gl.addColorStop(0,a.color+'25');gl.addColorStop(1,'transparent');
-      hctx.fillStyle=gl;hctx.beginPath();hctx.arc(ax,ay,10*a.size,0,Math.PI*2);hctx.fill();
-
-      drawArrow(hctx,ax,ay,a.angle,a.size,a.color,alpha);
-    });
-
-    // Central HUB glow
-    const s=Math.min(w,h)/220;
-    const glowR=50*s;
-    const outerGlow=hctx.createRadialGradient(hcx,hcy,0,hcx,hcy,glowR);
-    outerGlow.addColorStop(0,'rgba(232,77,58,.35)');outerGlow.addColorStop(.4,'rgba(139,92,246,.12)');
-    outerGlow.addColorStop(1,'transparent');
-    hctx.fillStyle=outerGlow;hctx.beginPath();hctx.arc(hcx,hcy,glowR,0,Math.PI*2);hctx.fill();
-
-    const pulse=(18+Math.sin(time*.002)*3)*s;
-    const cg=hctx.createRadialGradient(hcx,hcy,0,hcx,hcy,pulse);
-    cg.addColorStop(0,'#fff');cg.addColorStop(.2,'#E84D3A');
-    cg.addColorStop(.6,'rgba(139,92,246,.6)');cg.addColorStop(1,'transparent');
-    hctx.fillStyle=cg;hctx.beginPath();hctx.arc(hcx,hcy,pulse,0,Math.PI*2);hctx.fill();
-
-    hctx.beginPath();hctx.arc(hcx,hcy,4*s,0,Math.PI*2);hctx.fillStyle='#ffffffee';hctx.fill();
-
-    hctx.font=`800 ${Math.round(11*s)}px "Plus Jakarta Sans",sans-serif`;
-    hctx.fillStyle='rgba(255,255,255,.85)';
-    hctx.textAlign='center';hctx.textBaseline='middle';
-    hctx.fillText('DISCOVERY',hcx,hcy-pulse-Math.round(8*s));
-    hctx.font=`700 ${Math.round(9*s)}px "Plus Jakarta Sans",sans-serif`;
-    hctx.fillStyle='rgba(255,255,255,.5)';
-    hctx.fillText('HUB',hcx,hcy+pulse+Math.round(10*s));
-
-    requestAnimationFrame(draw);
-  }
-
-  init();requestAnimationFrame(draw);window.addEventListener('resize',init);
-})();
-
-/* ══════════════════════════════════════════════
-   FACILITATOR CANVAS — Gateway + Brand Zones + PWA Store
-   ══════════════════════════════════════════════ */
-(function(){
-  const bc=document.getElementById('bizCanvas');if(!bc)return;const bx=bc.getContext('2d');
-  const container=document.getElementById('bizVisual');let W,H,cx,cy;
-  let cardL={},cardR={},cardT={},cardB={},flowParticles=[];
-
-  function init(){
-    fitCanvas(bc,container);W=bc._w;H=bc._h;cx=W/2;cy=H/2;
-    const cardW=Math.min(W*.22,90);const cardH=cardW*.7;const gap=Math.min(W*.18,80);
-    const gapV=Math.min(H*.18,75);
-    cardL={x:cx-gap-cardW/2,y:cy,w:cardW,h:cardH,label:'BRANDS',label2:'',color:'#8B5CF6'};
-    cardR={x:cx+gap+cardW/2,y:cy,w:cardW,h:cardH,label:'CONSUMERS',label2:'',color:'#4A6CF7'};
-    cardT={x:cx,y:cy-gapV-cardH/2,w:cardW,h:cardH,label:'AI',label2:'AGENTS',color:'#10B981'};
-    cardB={x:cx,y:cy+gapV+cardH/2,w:cardW,h:cardH,label:'DEVELOPERS',label2:'',color:'#F97316'};
-    flowParticles=[];
-    [cardL,cardR,cardT,cardB].forEach(c=>{for(let i=0;i<4;i++)flowParticles.push(newFlow(c,true))})
-  }
-
-  function newFlow(card,randomStart){
-    const toGateway=Math.random()>.5;
-    const sx=toGateway?card.x:cx;const sy=toGateway?card.y:cy;
-    const ex=toGateway?cx:card.x;const ey=toGateway?cy:card.y;
-    return{t:randomStart?Math.random():0,speed:.004+Math.random()*.004,sx,sy,ex,ey,color:card.color,size:1.2+Math.random()*1,card}
-  }
-
-  function drawCard(card,time){
-    const x=card.x-card.w/2;const y=card.y-card.h/2;
-    const pulse=Math.sin(time*.002)*.015;
-
-    // Card border glow
-    const borderG=bx.createLinearGradient(x,y,x+card.w,y+card.h);
-    borderG.addColorStop(0,card.color+'60');borderG.addColorStop(1,card.color+'20');
-    bx.beginPath();bx.roundRect(x-1,y-1,card.w+2,card.h+2,10);
-    bx.strokeStyle=borderG;bx.lineWidth=1.5;bx.stroke();
-
-    // Card background
-    bx.beginPath();bx.roundRect(x,y,card.w,card.h,9);
-    bx.fillStyle='rgba(10,10,15,.85)';bx.fill();
-
-    // Card inner glow
-    const ig=bx.createRadialGradient(card.x,card.y,0,card.x,card.y,card.w*.6);
-    ig.addColorStop(0,card.color+'12');ig.addColorStop(1,'transparent');
-    bx.fillStyle=ig;bx.beginPath();bx.roundRect(x,y,card.w,card.h,9);bx.fill();
-
-    // Icon dot
-    const iconR=4+Math.sin(time*.003)*1;
-    bx.beginPath();bx.arc(card.x,card.y-8,iconR,0,Math.PI*2);
-    bx.fillStyle=card.color+'cc';bx.fill();
-
-    // Labels
-    bx.font='800 9px "Plus Jakarta Sans",sans-serif';
-    bx.fillStyle=card.color+'dd';bx.textAlign='center';
-    bx.fillText(card.label,card.x,card.y+10);
-    bx.font='800 8px "Plus Jakarta Sans",sans-serif';
-    bx.fillText(card.label2,card.x,card.y+22);
-  }
-
-  function drawGateway(time){
-    // Outer glow
-    const glowR=45;
-    const og=bx.createRadialGradient(cx,cy,0,cx,cy,glowR);
-    og.addColorStop(0,'rgba(232,77,58,.3)');og.addColorStop(.4,'rgba(139,92,246,.1)');
-    og.addColorStop(1,'transparent');
-    bx.fillStyle=og;bx.beginPath();bx.arc(cx,cy,glowR,0,Math.PI*2);bx.fill();
-
-    // Gateway ring
-    bx.beginPath();bx.arc(cx,cy,28,0,Math.PI*2);
-    bx.strokeStyle='rgba(232,77,58,.15)';bx.lineWidth=.6;bx.stroke();
-
-    // Core
-    const cs=16+2.5*Math.sin(time*.002);
-    const cg=bx.createRadialGradient(cx,cy,0,cx,cy,cs);
-    cg.addColorStop(0,'rgba(255,255,255,.9)');cg.addColorStop(.25,'rgba(232,77,58,.7)');
-    cg.addColorStop(.65,'rgba(139,92,246,.3)');cg.addColorStop(1,'transparent');
-    bx.fillStyle=cg;bx.beginPath();bx.arc(cx,cy,cs,0,Math.PI*2);bx.fill();
-
-    // Bright center
-    bx.beginPath();bx.arc(cx,cy,4,0,Math.PI*2);bx.fillStyle='#ffffffee';bx.fill();
-
-  }
-
-  function draw(time){
-    bx.clearRect(0,0,W,H);
-
-    // Connection lines
-    [cardL,cardR,cardT,cardB].forEach(card=>{
-      const lg=bx.createLinearGradient(card.x,card.y,cx,cy);
-      lg.addColorStop(0,card.color+'18');lg.addColorStop(.5,card.color+'08');lg.addColorStop(1,'rgba(232,77,58,.1)');
-      bx.beginPath();bx.moveTo(card.x,card.y);bx.lineTo(cx,cy);
-      bx.strokeStyle=lg;bx.lineWidth=1.5;bx.setLineDash([4,4]);bx.stroke();bx.setLineDash([]);
-    });
-
-    // Flow particles (data going back and forth)
-    flowParticles.forEach(p=>{
-      p.t+=p.speed;
-      if(p.t>1)Object.assign(p,newFlow(p.card,false));
-      const px=p.sx+(p.ex-p.sx)*p.t;
-      const py=p.sy+(p.ey-p.sy)*p.t;
-      const alpha=Math.sin(p.t*Math.PI)*.6;
-
-      const pg=bx.createRadialGradient(px,py,0,px,py,p.size*3);
-      pg.addColorStop(0,p.color+'40');pg.addColorStop(1,'transparent');
-      bx.fillStyle=pg;bx.beginPath();bx.arc(px,py,p.size*3,0,Math.PI*2);bx.fill();
-
-      bx.beginPath();bx.arc(px,py,p.size,0,Math.PI*2);
-      bx.fillStyle=p.color;bx.globalAlpha=alpha;bx.fill();bx.globalAlpha=1;
-    });
-
-    // Draw elements
-    drawCard(cardL,time);
-    drawCard(cardR,time);
-    drawCard(cardT,time);
-    drawCard(cardB,time);
-    drawGateway(time);
-
-    requestAnimationFrame(draw);
-  }
-
-  init();requestAnimationFrame(draw);window.addEventListener('resize',init);
-})();
-
-/* ══════════════════════════════════════════════
-   SUPERNOVA INTELLIGENCE CANVAS — Grid + white data flashes
-   ══════════════════════════════════════════════ */
-(function(){
-  const ac=document.getElementById('aiCanvas');if(!ac)return;const ax=ac.getContext('2d');
-  const container=document.getElementById('aiVisual');let W,H,cx,cy;
-  let gridH=[],gridV=[],nodes=[],dataFlashes=[];
-  const COLS=9,ROWS=7;
-
-  function init(){
-    fitCanvas(ac,container);W=ac._w;H=ac._h;cx=W/2;cy=H/2;
-    const padX=W*.08,padY=H*.08;
-    const spacingX=(W-padX*2)/(COLS-1);
-    const spacingY=(H-padY*2)/(ROWS-1);
-
-    // Grid nodes
-    nodes=[];
-    for(let r=0;r<ROWS;r++){
-      for(let c=0;c<COLS;c++){
-        const x=padX+c*spacingX;
-        const y=padY+r*spacingY;
-        const distFromCenter=Math.sqrt((x-cx)**2+(y-cy)**2);
-        nodes.push({x,y,r,c,dist:distFromCenter,phase:r*1.3+c*.7});
-      }
-    }
-
-    // Horizontal grid lines
-    gridH=[];
-    for(let r=0;r<ROWS;r++){
-      gridH.push({y:padY+r*spacingY,x1:padX,x2:W-padX});
-    }
-    // Vertical grid lines
-    gridV=[];
-    for(let c=0;c<COLS;c++){
-      gridV.push({x:padX+c*spacingX,y1:padY,y2:H-padY});
-    }
-
-    // Data flashes — white pulses traveling along grid lines
-    dataFlashes=[];
-    for(let i=0;i<30;i++) dataFlashes.push(newFlash());
-  }
-
-  function newFlash(){
-    const isH=Math.random()>.5;
-    if(isH){
-      const row=gridH[Math.floor(Math.random()*gridH.length)];
-      const forward=Math.random()>.5;
-      return{type:'h',y:row.y,x1:row.x1,x2:row.x2,t:Math.random(),
-        speed:.006+Math.random()*.012,forward,size:1.5+Math.random()*2}
-    }else{
-      const col=gridV[Math.floor(Math.random()*gridV.length)];
-      const down=Math.random()>.5;
-      return{type:'v',x:col.x,y1:col.y1,y2:col.y2,t:Math.random(),
-        speed:.006+Math.random()*.012,forward:down,size:1.5+Math.random()*2}
-    }
-  }
-
-  function draw(time){
-    ax.clearRect(0,0,W,H);
-
-    // Draw grid lines — faint
-    gridH.forEach(l=>{
-      ax.beginPath();ax.moveTo(l.x1,l.y);ax.lineTo(l.x2,l.y);
-      ax.strokeStyle='rgba(139,92,246,.04)';ax.lineWidth=.5;ax.stroke();
-    });
-    gridV.forEach(l=>{
-      ax.beginPath();ax.moveTo(l.x,l.y1);ax.lineTo(l.x,l.y2);
-      ax.strokeStyle='rgba(139,92,246,.04)';ax.lineWidth=.5;ax.stroke();
-    });
-
-    // Grid intersection nodes — subtle dots
-    const maxDist=Math.sqrt(cx*cx+cy*cy);
-    nodes.forEach(n=>{
-      const pulse=.6+.4*Math.sin(time*.003+n.phase);
-      const proximity=1-n.dist/maxDist;
-      const r=1+proximity*1.5;
-      const alpha=(.06+proximity*.08)*pulse;
-      ax.beginPath();ax.arc(n.x,n.y,r,0,Math.PI*2);
-      ax.fillStyle=`rgba(139,92,246,${alpha})`;ax.fill();
-    });
-
-    // Data flashes — bright white streaks along grid lines
-    dataFlashes.forEach(f=>{
-      f.t+=f.speed;
-      if(f.t>1)Object.assign(f,newFlash());
-      const prog=f.forward?f.t:1-f.t;
-      let px,py;
-      if(f.type==='h'){
-        px=f.x1+(f.x2-f.x1)*prog;py=f.y;
-      }else{
-        px=f.x;py=f.y1+(f.y2-f.y1)*prog;
-      }
-      const alpha=Math.sin(f.t*Math.PI);
-
-      // Bright white glow
-      const g=ax.createRadialGradient(px,py,0,px,py,f.size*5);
-      g.addColorStop(0,`rgba(255,255,255,${(alpha*.5).toFixed(2)})`);
-      g.addColorStop(.3,`rgba(139,92,246,${(alpha*.15).toFixed(2)})`);
-      g.addColorStop(1,'transparent');
-      ax.fillStyle=g;ax.beginPath();ax.arc(px,py,f.size*5,0,Math.PI*2);ax.fill();
-
-      // White hot core
-      ax.beginPath();ax.arc(px,py,f.size,0,Math.PI*2);
-      ax.fillStyle='#fff';ax.globalAlpha=alpha*.9;ax.fill();
-      ax.globalAlpha=1;
-
-      // Streak trail
-      const trailLen=f.type==='h'?18:18;
-      const dir=f.forward?-1:1;
-      for(let tr=1;tr<=4;tr++){
-        const ta=alpha*(1-tr/4)*.3;
-        let tx=px,ty=py;
-        if(f.type==='h')tx+=dir*tr*(trailLen/4);
-        else ty+=dir*tr*(trailLen/4);
-        ax.beginPath();ax.arc(tx,ty,f.size*.5,0,Math.PI*2);
-        ax.fillStyle='#fff';ax.globalAlpha=ta;ax.fill();ax.globalAlpha=1;
-      }
-    });
-
-    // Central Supernova glow
-    const glowR=75;
-    const og=ax.createRadialGradient(cx,cy,0,cx,cy,glowR);
-    og.addColorStop(0,'rgba(139,92,246,.3)');og.addColorStop(.3,'rgba(232,77,58,.12)');
-    og.addColorStop(.6,'rgba(74,108,247,.05)');og.addColorStop(1,'transparent');
-    ax.fillStyle=og;ax.beginPath();ax.arc(cx,cy,glowR,0,Math.PI*2);ax.fill();
-
-    // Core ring
-    ax.beginPath();ax.arc(cx,cy,32,0,Math.PI*2);
-    ax.strokeStyle='rgba(139,92,246,.1)';ax.lineWidth=.6;ax.stroke();
-
-    const pulse=22+4*Math.sin(time*.002);
-    const cg=ax.createRadialGradient(cx,cy,0,cx,cy,pulse);
-    cg.addColorStop(0,'#fff');cg.addColorStop(.15,'#8B5CF6');
-    cg.addColorStop(.5,'rgba(232,77,58,.5)');
-    cg.addColorStop(1,'transparent');
-    ax.fillStyle=cg;ax.beginPath();ax.arc(cx,cy,pulse,0,Math.PI*2);ax.fill();
-
-    ax.beginPath();ax.arc(cx,cy,6,0,Math.PI*2);ax.fillStyle='#ffffffee';ax.fill();
-
-    ax.font='800 14px "Plus Jakarta Sans",sans-serif';
-    ax.fillStyle='rgba(255,255,255,.9)';ax.textAlign='center';
-    ax.fillText('SUPERNOVA',cx,cy-pulse-10);
-    ax.font='700 11px "Plus Jakarta Sans",sans-serif';
-    ax.fillStyle='rgba(139,92,246,.7)';
-    ax.fillText('INTELLIGENCE',cx,cy+pulse+18);
-
-    requestAnimationFrame(draw);
-  }
-
-  init();requestAnimationFrame(draw);window.addEventListener('resize',init);
-})();
-
-/* ══════════════════════════════════════════════
-   CLOSING CANVAS
-   ══════════════════════════════════════════════ */
-(function(){
-  const cc=document.getElementById('closingCanvas');if(!cc)return;const cx2=cc.getContext('2d');
-  let W,H,mx,my,rings=[],drifters=[];
-  function init(){const el=document.querySelector('.closing');W=cc.width=el.offsetWidth;H=cc.height=el.offsetHeight;mx=W/2;my=H/2;rings=[];for(let i=0;i<5;i++)rings.push({r:i*30,maxR:Math.min(W,H)*.45,speed:.12+Math.random()*.08});drifters=[];for(let i=0;i<25;i++)drifters.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,size:.4+Math.random()*1.2,alpha:.04+Math.random()*.1,color:['#E84D3A','#8B5CF6','#4A6CF7','#10B981','#F59E0B','#EC4899'][Math.floor(Math.random()*6)]})}
-  function draw(time){cx2.clearRect(0,0,W,H);const breath=.3+Math.sin(time*.0008)*.1;const cg=cx2.createRadialGradient(mx,my,0,mx,my,Math.min(W,H)*.4);cg.addColorStop(0,`rgba(232,77,58,${breath*.12})`);cg.addColorStop(.3,`rgba(139,92,246,${breath*.06})`);cg.addColorStop(.6,`rgba(74,108,247,${breath*.03})`);cg.addColorStop(1,'transparent');cx2.fillStyle=cg;cx2.fillRect(0,0,W,H);rings.forEach(r=>{const alpha=.1*(1-r.r/r.maxR);cx2.beginPath();cx2.arc(mx,my,r.r,0,Math.PI*2);cx2.strokeStyle=`rgba(232,77,58,${alpha})`;cx2.lineWidth=.8;cx2.stroke();r.r+=r.speed;if(r.r>r.maxR)r.r=0});drifters.forEach(d=>{d.x+=d.vx;d.y+=d.vy;if(d.x<0||d.x>W)d.vx*=-1;if(d.y<0||d.y>H)d.vy*=-1;cx2.beginPath();cx2.arc(d.x,d.y,d.size,0,Math.PI*2);cx2.fillStyle=d.color;cx2.globalAlpha=d.alpha;cx2.fill();cx2.globalAlpha=1});requestAnimationFrame(draw)}
-  init();requestAnimationFrame(draw);window.addEventListener('resize',init);
-})();
-</script>
-
-<!-- ── Cookie Consent Banner ── -->
-<div class="cookie-banner" id="cookieBanner">
-  <div class="cookie-banner-text"><strong>Cookie Preferences</strong><br>We use cookies to ensure the website functions properly and to analyze traffic. You can choose to allow only necessary cookies or enable optional cookies for analytics. Please read our <a href="https://www.genexxovision.com/assets/terms-of-service.pdf" target="_blank">Terms of Service</a> and <a href="https://www.genexxovision.com/assets/privacy-policy.pdf" target="_blank">Privacy Policy</a> before making your selection.</div>
-  <div class="cookie-banner-btns">
-    <button class="cookie-btn cookie-btn-accept" onclick="setCookieConsent('accepted')">Accept Optional</button>
-    <button class="cookie-btn cookie-btn-reject" onclick="setCookieConsent('rejected')">Reject Optional</button>
-  </div>
-</div>
-<script>
-(function(){
-  if(!localStorage.getItem('genexxo_cookies')){
-    setTimeout(function(){document.getElementById('cookieBanner').classList.add('show')},1500);
-  }
-})();
-function setCookieConsent(choice){
-  localStorage.setItem('genexxo_cookies',choice);
-  document.getElementById('cookieBanner').classList.remove('show');
-}
 </script>
 </body>
 </html>
