@@ -1518,8 +1518,34 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-48"></script>
+<script src="genexxo-data.js?v=2026.08.26-49"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
+<script>
+/* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
+   error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
+   visitor is left with an empty frame and no way out. Instead: a quiet "Loading" and an automatic reload, up to
+   3 times; then a Retry button. sw.js (v5) also falls back to the last good copy, so installed apps rarely get here. */
+(function(){
+  var ok = typeof GATEWAYS !== 'undefined' && typeof ZONES !== 'undefined' && typeof gwRank === 'function';
+  var K = 'gx_loadTries', n = 0;
+  try { n = +sessionStorage.getItem(K) || 0; } catch(e){}
+  if (ok) { try { sessionStorage.removeItem(K); } catch(e){} return; }
+  var d = document.createElement('div');
+  d.id = 'loadGuard';
+  d.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:#F7F7F8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font:600 15px/1.5 -apple-system,system-ui,sans-serif;color:#111116;text-align:center;padding:24px';
+  var retry = function(){ location.reload(); };
+  if (n < 3) {
+    try { sessionStorage.setItem(K, n + 1); } catch(e){}
+    d.innerHTML = '<div style="width:28px;height:28px;border-radius:50%;border:3px solid rgba(17,17,22,.12);border-top-color:#111116;animation:lgspin .8s linear infinite"></div><div>Loading GENEXXO…</div><style>@keyframes lgspin{to{transform:rotate(360deg)}}</style>';
+    setTimeout(retry, 1200 + n * 800);
+  } else {
+    try { sessionStorage.removeItem(K); } catch(e){}
+    d.innerHTML = '<div style="font-size:17px;font-weight:800">Couldn’t reach GENEXXO just now</div><div style="font-weight:500;color:rgba(17,17,22,.7)">The connection dropped while loading. It usually works on a second try.</div><button style="margin-top:6px;font:700 14px -apple-system,system-ui,sans-serif;padding:11px 22px;border-radius:99px;border:0;background:#111116;color:#fff;cursor:pointer">Retry</button>';
+    d.querySelector('button').onclick = retry;
+  }
+  document.body.appendChild(d);
+})();
+</script>
 <script>
 /* ═════════ DATA — extracted from desktop V1 (genexxo-deck copy.html) ═════════ */
 
@@ -2392,7 +2418,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-48';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-49';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view

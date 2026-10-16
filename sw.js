@@ -20,7 +20,8 @@
      instantly, then silently REVALIDATED in the background (v4: HEAD + size compare — see
      revalidateMedia), so a re-uploaded clip at the same path shows up on the NEXT view.
      This is deliberately not the jsDelivr trap: nothing is pinned for days. */
-const CACHE = 'genexxo-shell-v4';   // v4: the shell became genexxo-app.html (2026-08-28)
+const CACHE = 'genexxo-shell-v4';   // v4: the shell became genexxo-app.html (2026-08-28). v5 SW logic (2026-10-16)
+                                    // falls back to this cache on an error RESPONSE too, not only on a network throw.
 const MEDIA = 'genexxo-media-v1';
 /* The shell was genexxo-mobile.html until 2026-08-28. It serves desktop too, and a link
    people were asked to open on a laptop should not say 'mobile'. The old path survives as a
@@ -164,8 +165,11 @@ self.addEventListener('fetch', (e) => {
     e.respondWith((async () => {
       try {
         const net = await fetch(req.url, { cache: 'no-cache' });
-        if (net && net.ok) (await caches.open(CACHE)).put(DATA, net.clone());   // bare key, no ?v=
-        return net;
+        if (net && net.ok) { (await caches.open(CACHE)).put(DATA, net.clone()); return net; }   // bare key, no ?v=
+        // v5 (2026-10-16): the host can ANSWER with an error page (Cloudflare 520/525 that day). That is a
+        // response, not a throw, so it used to go straight to the app as its "data" -> blank app. The last
+        // good copy beats an error page; with no copy yet, pass the error on and let the app's load guard retry.
+        return (await caches.match(DATA)) || net;
       } catch (_) {
         return (await caches.match(DATA)) || Response.error();
       }
@@ -182,6 +186,7 @@ self.addEventListener('fetch', (e) => {
       // {cache:'no-cache'} = ALWAYS revalidate with origin, never trust the stale HTTP cache.
       const net = await fetch(req.url, { cache: 'no-cache' });   // NETWORK FIRST (truly fresh)
       if (isShell && net && net.ok) { (await caches.open(CACHE)).put(SHELL, net.clone()); }
+      if (isShell && net && !net.ok) { const c = await caches.match(SHELL); if (c) return c; }   // v5: error page -> last good shell
       return net;
     } catch (_) {
       return (await caches.match(SHELL)) || (await caches.match(req)) || Response.error();
