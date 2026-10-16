@@ -394,6 +394,27 @@
   @keyframes spFromL{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
   @keyframes spRule{to{width:132px}}
   @keyframes spLine{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  /* ── LAUNCH FLOW (2026-10-16, -50): opened from the home screen, Android has just shown the launch icon — the
+     gold-rimmed XX, GENEXXO on its arm, centred on #070708 (manifest icon-launch-*, background_color). The intro
+     must not start again: it opens on that exact frame (lit, edge drawn, same size via --s0, centred via --dy)
+     and goes straight into the settle. Same artwork, about a second shorter. Browser visits keep the full intro. */
+  #splash.launch .sp-in{opacity:1;animation:spDropL 1.25s cubic-bezier(.65,0,.25,1) both}
+  #splash.launch .sp-move{animation:spSettleL 1.25s cubic-bezier(.65,0,.25,1) both}
+  #splash.launch .sp-edge{stroke-dashoffset:0;animation:spOut .6s .7s ease forwards}
+  #splash.launch .sp-glow{stroke-dashoffset:0;opacity:.35;animation:spOut .6s .7s ease forwards}
+  #splash.launch .sp-goldedge{animation:spOut .6s .7s ease forwards}
+  #splash.launch .sp-fill1{animation:spOut .6s .7s ease forwards}
+  #splash.launch .sp-sweep{animation:spSweep .8s .05s cubic-bezier(.4,0,.2,1) forwards}
+  #splash.launch .sp-mini{opacity:1;animation:spFade .35s .35s ease forwards}
+  #splash.launch .sp-fill2{animation:spIn .6s .65s ease forwards}
+  #splash.launch .sp-light{animation:spIn .8s .55s ease forwards}
+  #splash.launch .sp-gene{animation:spFromR .5s 1s cubic-bezier(.2,.75,.2,1) forwards}
+  #splash.launch .sp-oh{animation:spFromL .5s 1s cubic-bezier(.2,.75,.2,1) forwards}
+  #splash.launch .sp-rule{animation:spRule .55s 1.2s cubic-bezier(.2,.75,.2,1) forwards}
+  #splash.launch .sp-t1{animation:spLine .5s 1.3s cubic-bezier(.2,.75,.2,1) forwards}
+  #splash.launch .sp-t2{animation:spLine .5s 1.5s cubic-bezier(.2,.75,.2,1) forwards}
+  @keyframes spSettleL{0%,28%{transform:translate(-70px,0) scale(var(--s0,3.4))}100%{transform:none}}
+  @keyframes spDropL{0%,28%{transform:translate(0,var(--dy,0px))}100%{transform:none}}
   @media (prefers-reduced-motion:reduce){ #splash *{animation-duration:1ms!important;animation-delay:0s!important} }
   #frame.chrome-hidden .gw-tabs,#frame.chrome-hidden .substick{transform:translateY(calc(-100% - 56px))}
 
@@ -1518,7 +1539,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-49"></script>
+<script src="genexxo-data.js?v=2026.08.26-50"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
@@ -2418,7 +2439,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-49';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-50';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -8148,7 +8169,20 @@ render();
   f.appendChild(el);
 
   const timers = [];
-  const done = () => { timers.forEach(clearTimeout); el.classList.add('out'); setTimeout(()=>el.remove(), 320); };
+  /* Opened from the home screen (an installed app): pick up from Android's launch icon instead of starting over.
+     Android 12+ draws the maskable launch icon at 240dp, so its XX (56% of the canvas) is ~134px wide, centred. */
+  const launch = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  const meta = $('metaTheme'), themeBefore = meta && meta.content;
+  const restoreTheme = () => { if(meta && meta.content === '#070708') meta.content = themeBefore || '#ffffff'; };
+  if(launch){
+    const mk = el.querySelector('.sp-mark'), m = mk.getBoundingClientRect();
+    const xxW = m.width*70.5/320, u = 320/m.width;                       // px -> SVG user units
+    el.style.setProperty('--s0', (134/xxW).toFixed(3));
+    el.style.setProperty('--dy', ((innerHeight/2 - (m.top + m.height/2))*u).toFixed(2) + 'px');
+    el.classList.add('launch');
+    if(meta){ meta.content = '#070708'; timers.push(setTimeout(restoreTheme, 950)); }   // status bar stays black until the stage lights up
+  }
+  const done = () => { timers.forEach(clearTimeout); restoreTheme(); el.classList.add('out'); setTimeout(()=>el.remove(), 320); };
   el.onclick = done;   // tap to skip
   if(matchMedia('(prefers-reduced-motion: reduce)').matches){ timers.push(setTimeout(done, 1600)); return; }
 
@@ -8165,7 +8199,7 @@ render();
     el.classList.add('fly', 'reveal');
     timers.push(setTimeout(()=>{ el.querySelector('.sp-fill2').style.fill = getComputedStyle(dot).color; }, 380));
     timers.push(setTimeout(()=>el.remove(), 800));
-  }, 3500));
+  }, launch ? 2500 : 3500));
 })();
 
 /* ═════════ UPDATE CHECK — Tier A (2026-07-31) — no service worker ═════════
