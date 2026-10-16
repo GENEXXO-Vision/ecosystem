@@ -1493,6 +1493,12 @@
 </style>
 </head>
 <body>
+<!-- BOOT COVER (2026-10-16, -51). The shell's markup is painted at once, but nothing runs until the 1.5 MB data file
+     has arrived, so visitors saw the empty frame for a moment before the intro appeared. This is the intro's first
+     frame (its #070708 stage), painted from the very first frame; welcomeSplash() removes it once the intro is on top.
+     If the app never gets that far it lifts itself after 12s, and the load guard's screen sits above it anyway. -->
+<div id="bootCover" style="position:fixed;inset:0;z-index:2147483646;background:#070708"></div>
+<script>setTimeout(function(){var c=document.getElementById('bootCover');if(c)c.remove();},12000);</script>
 <div id="frame">
   <div id="screen"></div>
   <!-- Desktop: a utility tab (Discover · AI · Events · Profile) floating over a gateway.
@@ -1539,7 +1545,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-50"></script>
+<script src="genexxo-data.js?v=2026.08.26-51"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
@@ -2439,7 +2445,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-50';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-51';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -8167,6 +8173,7 @@ render();
     <div class="sp-rule"></div>
     <div class="sp-tags"><div class="sp-t1">A Supernova Application</div><div class="sp-t2">The Organizing Layer for the Internet</div></div>`;
   f.appendChild(el);
+  { const c = $('bootCover'); if(c) c.remove(); }   // the intro now covers the shell itself (same black, no seam)
 
   const timers = [];
   /* Opened from the home screen (an installed app): pick up from Android's launch icon instead of starting over.
