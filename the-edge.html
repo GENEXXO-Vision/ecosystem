@@ -27,8 +27,24 @@
   .srcs{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
   .srcs span{font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:99px;background:#fff;border:1px solid var(--line);color:var(--soft)}
 
-  .photo{border-radius:24px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(17,17,22,.4)}
-  .photo img{width:100%;height:auto}
+  /* 02: not a subdirectory: a category page vs its own branded world */
+  .sd{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
+  @media (max-width:700px){ .sd{grid-template-columns:minmax(0,1fr)} }
+  .sd-win{border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#fff;box-shadow:0 30px 60px -36px rgba(17,17,22,.35)}
+  .sd-bar{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg);border-bottom:1px solid var(--line)}
+  .sd-bar .dots{display:flex;gap:5px;flex-shrink:0}
+  .sd-bar .dots i{width:8px;height:8px;border-radius:99px;background:rgba(17,17,22,.13)}
+  .sd-url{flex:1;min-width:0;background:#fff;border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sd-url b{color:var(--ink)}
+  .sd-gen{padding:14px;display:grid;gap:9px;aspect-ratio:412/430;align-content:start}
+  .sd-gen .crumb{font-size:11px;color:var(--muted);font-weight:600}
+  .sd-gen .ln{height:10px;border-radius:5px;background:rgba(17,17,22,.08)}
+  .sd-gen .card{height:74px;border-radius:12px;background:rgba(17,17,22,.05)}
+  .sd-gen .row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .sd-win img{width:100%;height:auto;display:block;object-fit:cover;object-position:top;aspect-ratio:412/430}
+  .sd-lbl{margin-top:10px;text-align:center;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .sd-lbl.on{color:var(--ink)}
+
   .cap{font-size:12.5px;color:var(--muted);margin-top:10px}
 
   /* network ripples */
@@ -38,11 +54,16 @@
   .rip .note{font-size:12.5px;color:var(--muted);margin-left:auto;padding-right:6px}
   @media (max-width:560px){ .rip .note{margin-left:0;width:100%} }
 
-  /* architecture: one XX, every palette */
-  .palettes{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px}
-  .pal{aspect-ratio:.8;border-radius:18px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-weight:800;font-size:13px}
-  .pal .gx-mono{width:40px;height:40px}
-  @media (max-width:640px){ .palettes{grid-template-columns:repeat(3,1fr)} .pal:nth-child(n+4){display:none} }
+  /* architecture: one XX, many worlds (each gateway's own feed photo, tinted in its palette) */
+  .worlds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  @media (max-width:700px){ .worlds{grid-template-columns:repeat(2,minmax(0,1fr))} }
+  .wd{aspect-ratio:1.15;border-radius:20px;color:#fff;padding:14px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;background:#111}
+  .wd .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.15)}
+  .wd .tint{position:absolute;inset:0;opacity:.8}
+  .wd .xx,.wd .nm{position:relative}
+  .wd .xx{width:46%;aspect-ratio:74/57.2;background:currentColor;-webkit-mask:var(--xx) center/contain no-repeat;mask:var(--xx) center/contain no-repeat;opacity:.95}
+  .wd b{font-size:17px;font-weight:800;text-shadow:0 1px 8px rgba(0,0,0,.25)}
+  .wd .nm span{display:block;font-family:var(--cond);font-size:13px;letter-spacing:.14em;text-transform:uppercase;opacity:.8;font-weight:700}
 
   /* mothership */
   .mother{text-align:center}
@@ -93,7 +114,13 @@
         <h2>Every gateway is its <span class="soft">own brand.</span></h2>
         <div class="prose"><p>Not a subdirectory. Not a tab inside an app. Each XX domain is a standalone micro-brand — with its own identity, its own voice, its own emotional connection to the audience it serves.</p></div>
       </div>
-      <div class="vis rv"><div class="photo"><img src="edge/edge-1.jpg" alt="PerfumeXX.com — a micro-brand with its own identity" loading="lazy"></div></div>
+      <div class="vis rv"><div class="sd">
+        <div><div class="sd-win"><div class="sd-bar"><span class="dots"><i></i><i></i><i></i></span><span class="sd-url">bigplatform.com/<b>categories/sport/cycling</b></span></div>
+          <div class="sd-gen" aria-hidden="true"><div class="crumb">Home › Categories › Sport › Cycling</div><div class="ln" style="width:55%"></div><div class="card"></div><div class="row"><div class="card"></div><div class="card"></div><div class="card"></div></div><div class="ln" style="width:80%"></div><div class="ln" style="width:65%"></div><div class="row"><div class="card"></div><div class="card"></div><div class="card"></div></div></div></div>
+          <div class="sd-lbl">A tab inside an app</div></div>
+        <div><div class="sd-win"><div class="sd-bar"><span class="dots"><i></i><i></i><i></i></span><span class="sd-url">🔒 <b>cyclexx.com</b></span></div><img src="img/app-cycle.jpg" alt="CycleXX.com in the GENEXXO demo: its own name, colours and feed" loading="lazy"></div>
+          <div class="sd-lbl on">Its own brand</div></div>
+      </div></div>
       <div class="kicker rv">The name tells you exactly where you belong.</div>
     </div>
   </div>
@@ -156,15 +183,8 @@
         <h2>Unified by XX. <span class="soft">Independent by design.</span></h2>
         <div class="prose"><p>Every gateway shares the signature — the unmistakable XX. But each one owns its sector’s visual identity. SurfXX feels like the ocean. FinanceXX feels like the markets.</p></div>
       </div>
-      <div class="vis rv"><div class="photo"><img src="edge/edge-3.jpg" alt="SurfXX.com and FinanceXX.com — one signature, two visual identities" loading="lazy"></div></div>
-      <div class="palettes rv">
-        <div class="pal" style="background:linear-gradient(135deg,#E85D3A,#FF8C42,#FFB347)"><span class="gx-mono"></span>ClimbXX</div>
-        <div class="pal" style="background:linear-gradient(135deg,#0A1628,#0066CC,#00AAFF)"><span class="gx-mono"></span>SurfXX</div>
-        <div class="pal" style="background:linear-gradient(135deg,#6D28D9,#8B5CF6,#A78BFA)"><span class="gx-mono"></span>SkiXX</div>
-        <div class="pal" style="background:linear-gradient(135deg,#0F0F0F,#F5C400,#FFD700)"><span class="gx-mono"></span>CycleXX</div>
-        <div class="pal" style="background:linear-gradient(135deg,#0A1628,#1B3A6B,#C9A84C)"><span class="gx-mono"></span>SailXX</div>
-      </div>
-      <p class="cap rv">Gateway palettes from the live demo: the same XX, each in its own world.</p>
+      <div class="vis rv"><div class="worlds" id="worlds"></div></div>
+      <p class="cap rv">Each tile is a real post from that gateway’s feed in the demo, in its own colours, under the same XX.</p>
       <div class="kicker rv">Unified at the network level. Authentic at the category level.</div>
     </div>
   </div>
@@ -213,6 +233,16 @@ $('ripples').innerHTML=[
   [['Fashion'],['Beauty','Jewelry'],'A trend ripples across sectors'],
   [['Climb'],['Hike','Trek'],'Shared traffic between neighbours'],
 ].map(([a,b,n])=>`<div class="rip">${a.map(dChip).join('')}<span class="to">→</span>${b.map(dChip).join('')}<span class="note">${n}</span></div>`).join('');
+
+/* the architecture: one signature, many worlds */
+$('worlds').innerHTML=[
+  ['Surf','The ocean','linear-gradient(135deg,#0A1628,#0066CC,#00AAFF)'],
+  ['Finance','The markets','linear-gradient(135deg,#0F172A,#1E3A8A,#64748B)'],
+  ['Climb','Rock & sunrise','linear-gradient(135deg,#E85D3A,#FF8C42,#FFB347)'],
+  ['Ski','Altitude','linear-gradient(135deg,#6D28D9,#8B5CF6,#A78BFA)'],
+  ['Coffee','The first cup','linear-gradient(135deg,#7F1D1D,#B45309,#D97706)'],
+  ['Garden','Growing things','linear-gradient(135deg,#14532D,#16A34A,#84CC16)'],
+].map(([n,m,g])=>`<div class="wd"><img class="ph" src="img/edge-worlds/${n.toLowerCase()}.jpg" alt="" loading="lazy"><div class="tint" style="background:${g}"></div><span class="xx"></span><div class="nm"><b>${n}XX.com</b><span>${m}</span></div></div>`).join('');
 
 $('motherMark').innerHTML=wordmark('#fff');
 </script>
