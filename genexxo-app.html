@@ -412,8 +412,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   #ibx .icomp input{flex:1;border:1px solid var(--line);border-radius:99px;padding:10px 14px;font:inherit;font-size:16px;outline:none;background:var(--bg)}
   #ibx .inote{margin:12px 16px;font-size:11.5px;line-height:1.5;color:var(--muted);font-weight:600}
   .pf-post .eng{font-size:11.5px;color:var(--muted);font-weight:700;margin-top:8px;display:flex;gap:16px}
-  #pfSet{position:fixed;left:50%;transform:translateX(-50%);top:0;bottom:0;width:100%;max-width:430px;z-index:70;background:var(--bg);display:flex;flex-direction:column}
-  .ps-top{display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top,0px)) 14px 12px;border-bottom:1px solid var(--line);background:#fff}
+  #pfSet{position:fixed;left:50%;transform:translateX(-50%);top:var(--top-h,53px);bottom:var(--tb-h,64px);width:100%;max-width:430px;z-index:70;background:var(--bg);display:flex;flex-direction:column}
+  .ps-top{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);background:#fff}
   .ps-top b{flex:1;font-size:17px;font-weight:800}.ps-back{font-size:14px;font-weight:800;cursor:pointer;color:var(--muted)}
   .ps-x{width:32px;height:32px;border-radius:99px;background:rgba(17,17,22,.06);display:flex;align-items:center;justify-content:center;cursor:pointer}
   .ps-body{flex:1;overflow-y:auto;padding:12px 14px 30px}
@@ -430,6 +430,12 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   .ps-sw::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .15s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
   .ps-sw.on{background:#22C55E}.ps-sw.on::after{left:21px}
   .ps-note{font-size:12px;color:var(--muted);line-height:1.5;padding:4px 4px 0}
+  /* Account (-57): interests, wallet passes */
+  .ps-chips{display:flex;flex-wrap:wrap;gap:7px;padding:12px}
+  .ps-chips span{font-size:12.5px;font-weight:800;padding:8px 13px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--muted);cursor:pointer}
+  .ps-chips span.on{background:#111116;color:#fff;border-color:#111116}
+  .ps-pass{border-radius:18px;color:#fff;padding:16px;margin-bottom:10px;min-height:118px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 10px 24px -14px rgba(0,0,0,.45)}
+  .ps-pass .i{font-size:22px}.ps-pass b{font-size:15px;font-weight:800;display:block}.ps-pass span{font-size:11.5px;opacity:.8;font-weight:600}
   /* ★ panel: the row a "You're in…" card just added glows once, so the eye follows it down */
   .fav-new{animation:favNew 1.6s ease-out}
   @keyframes favNew{0%{background:rgba(245,184,0,.38);box-shadow:0 0 0 1px rgba(245,184,0,.7)}100%{background:transparent;box-shadow:0 0 0 1px rgba(245,184,0,0)}}
@@ -1633,7 +1639,7 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-56"></script>
+<script src="genexxo-data.js?v=2026.08.26-57"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
@@ -2488,7 +2494,7 @@ const state = {
   myPosts: loadJSON('gx_myPosts', myPostsSeed),
   bizFavs: loadJSON('gx_bizFavs', ()=>[]),                   // favourite Business Zones (keys), 2026-10-13
   enquiries: loadJSON('gx_enquiries', ()=>[]),               // quote requests sent to businesses             // your own posts (Profile › Posts)
-  settings: Object.assign({dxLocation:true, dxDates:true, dxBookings:true, dxApps:true}, loadJSON('gx_settings', ()=>({twoStep:true, loginAlerts:true, publicProfile:true, postsTo:'Everyone', discoverable:true,
+  settings: Object.assign({dxLocation:true, dxDates:true, dxBookings:true, dxApps:true, aiMemory:true, privateAcct:false, msgAll:false, interests:['Climbing','Surf','Ski touring','Cycling']}, loadJSON('gx_settings', ()=>({twoStep:true, loginAlerts:true, publicProfile:true, postsTo:'Everyone', discoverable:true,
             showCommunities:true, aiFeed:true, nBookings:true, nReplies:true, nApps:true, nAgents:true, nDigest:false, devices:['iphone','mac','ipad']}))),
   profileTab:'posts', setPage:null,                         // Profile tab · Settings page (null = closed, 'root' = list)// communities you've FAVOURITED (keys): your ★ panel shortcut. Joining also stars.  // favourite Pro Zones (keys), 2026-10-10    // favourite APPS (2026-10-10: "wallet" is now just favourites; Profile › My Apps lists it)
   favs:pinFavs(FAVS_INIT.favs),    // seeded from YOUR_GATEWAYS on first run, else restored; the pinned five always lead
@@ -2533,7 +2539,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-56';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-57';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2636,6 +2642,10 @@ const UTIL_TABS = ['discover','ai','events','profile','search'];   // 'search' o
 function utilClose(){ const t = state.utilOver || state.tab; if(UTIL_TABS.includes(t)) setTab(t); }
 const utilX = cls => `<div class="utilx${cls?' '+cls:''}" onclick="event.stopPropagation();utilClose()" title="Close" aria-label="Close"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></div>`;
 function setTab(t){
+  if(state.setPage){   // Account sits like a tab now (-57): another tab closes it; Profile's own tab just closes Account
+    state.setPage = null;
+    if(t==='profile' && (state.utilOver||state.tab)==='profile'){ render(); return; }
+  }
   if (t==='home'){ goHub(); $('screen').scrollTo(0,0); return; }
   /* Desktop, standing in a gateway or zone: open the tab OVER it rather than switching to it.
      Second tap on the open one closes it — the same open/close grammar as the phone, minus the
@@ -8059,7 +8069,10 @@ function profileBody(){
    Real where the data is real (Connected apps & communities reads the actual grants and revokes them;
    Payments lists the providers you've actually paid), believable elsewhere (Account, Security, Privacy,
    Notifications) with toggles that work and persist (gx_settings). Desktop: the shared overlay rule. */
-function openSettings(page){ state.setPage = page || 'root'; render(); const b=document.querySelector('.ps-body'); if(b) b.scrollTop=0; }
+function accUnblock(n){ state.settings.blocked = (state.settings.blocked || ['spam-account-91','troll_tim']).filter(x=>x!==n); saveJSON('gx_settings', state.settings); render(); toast('Unblocked '+n); }
+function accForget(k){ state.settings.aiForgot = [...(state.settings.aiForgot||[]), k]; saveJSON('gx_settings', state.settings); render(); toast('Forgotten'); }
+function accInterest(t){ const m = state.settings.interests || []; state.settings.interests = m.includes(t) ? m.filter(x=>x!==t) : [...m, t]; saveJSON('gx_settings', state.settings); render(); }
+function openSettings(page){ state.setPage = page || 'root'; $('frame').classList.remove('chrome-hidden'); render(); const b=document.querySelector('.ps-body'); if(b) b.scrollTop=0; }
 function closeSettings(){ state.setPage = null; render(); }
 function setToggle(k){ state.settings[k] = !state.settings[k]; saveJSON('gx_settings', state.settings); render(); }
 function setChoice(k, v){ state.settings[k] = v; saveJSON('gx_settings', state.settings); render(); }
@@ -8075,20 +8088,89 @@ function settingsHtml(){
   const appG = _appStore('gx_appGrants'), commG = _appStore('gx_commGrants');
   const appKeys = Object.keys(appG).filter(k=>appByKey(k)), commKeys = Object.keys(commG).filter(k=>commByKey(k));
   const providers = [...new Set([...state.purchases.map(o=>o.brandName||o.brand||'').filter(Boolean), ...aiWeek().filter(w=>w.booked&&w.prov).map(w=>w.prov)])];
-  const titles = {root:'Settings', account:'Account', security:'Security', connected:'Connected apps & communities', privacy:'Privacy', notifications:'Notifications', payments:'Payments', data:'Your data', about:'About'};
+  const titles = {root:'Account', account:'Personal details', security:'Security', connected:'Connected apps & communities', privacy:'Privacy', notifications:'Notifications', payments:'Payments', data:'Your data', about:'About',
+    addresses:'Addresses', blocked:'Blocked & muted', ai:'What GENEXXO AI knows', interests:'Interests', wallet:'Wallet', subs:'Subscriptions & memberships', help:'Help & support', gid:'GENEXXO ID'};
+  const H = t => `<div class="ps-h">${t}</div>`;
   let body = '';
+  /* Account (-57, Profile v2 stage 3): deliberately separate and serious, in labelled groups (agreed mock). */
   if(pg==='root'){
-    body = `<div class="ps-grp">${row(`<span style="font-weight:900;font-size:12px;color:#fff;background:${USER.grad};width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center">${USER.ini}</span>`, USER.name, USER.handle+' · ✓ GENEXXO ID', "openSettings('account')")}</div>
-      <div class="ps-grp">
-        ${row('🔐','Security', `Passkeys · two-step ${S.twoStep?'on':'off'} · ${S.devices.length} device${S.devices.length>1?'s':''}`, "openSettings('security')")}
+    const blocked = (S.blocked || ['spam-account-91','troll_tim']).length;
+    body = `<div class="ps-grp">${row(`<span style="font-weight:900;font-size:12px;color:#fff;background:${USER.grad};width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center">${USER.ini}</span>`, USER.name, USER.email+' · ✓ GENEXXO ID verified', "openSettings('account')")}</div>
+      ${H('You')}<div class="ps-grp">
+        ${row('👤','Personal details', 'Name, handle, bio, email, phone', "openSettings('account')")}
+        ${row('✓','GENEXXO ID', 'Verified · one login across apps and communities', "openSettings('gid')")}
+        ${row('📍','Addresses', 'Home · London · 1 more', "openSettings('addresses')")}</div>
+      ${H('Security')}<div class="ps-grp">
+        ${row('🔐','Security', `Passkeys · two-step ${S.twoStep?'on':'off'} · ${S.devices.length} device${S.devices.length>1?'s':''}`, "openSettings('security')")}</div>
+      ${H('Privacy')}<div class="ps-grp">
+        ${row('👁️','Privacy', `${S.privateAcct?'Private account':'Public profile'} · ${S.msgAll?'anyone can message you':'messages from people you follow'}`, "openSettings('privacy')")}
+        ${row('🚫','Blocked & muted', `${blocked} blocked · 5 muted`, "openSettings('blocked')")}</div>
+      ${H('Apps, communities & AI')}<div class="ps-grp">
         ${row('🔗','Connected apps & communities', `Your GENEXXO login is used by ${appKeys.length} app${appKeys.length===1?'':'s'} and ${commKeys.length} communit${commKeys.length===1?'y':'ies'}`, "openSettings('connected')")}
-        ${row('👁️','Privacy', S.publicProfile?`Public profile · posts to ${S.postsTo}`:'Private profile', "openSettings('privacy')")}
-        ${row('🔔','Notifications', 'Bookings, replies, app alerts, agents', "openSettings('notifications')")}</div>
-      <div class="ps-grp">
+        ${row('✦','What GENEXXO AI knows', S.aiMemory===false?'Memory off · agents start fresh':'See and delete what your agents remember', "openSettings('ai')")}
+        ${row('🎯','Interests', (S.interests||[]).join(', ')||'None yet · tunes Discover', "openSettings('interests')")}</div>
+      ${H('Money & wallet')}<div class="ps-grp">
         ${row('💳','Payments', 'GENEXXO never holds your money', "openSettings('payments')")}
+        ${row('🎟️','Wallet', 'Your ID pass, memberships, tickets, loyalty · not money', "openSettings('wallet')")}
+        ${row('🔁','Subscriptions & memberships', 'Managed with each provider', "openSettings('subs')")}</div>
+      ${H('Notifications')}<div class="ps-grp">
+        ${row('🔔','Notifications', 'Bookings, replies, app alerts, agents', "openSettings('notifications')")}</div>
+      ${H('Data & help')}<div class="ps-grp">
         ${row('📦','Your data', 'Download or delete', "openSettings('data')")}
+        ${row('❓','Help & support', 'Ask the Host, contact GENEXXO, report a problem', "openSettings('help')")}
         ${row('ⓘ','About', 'GENEXXO · build '+BUILD, "openSettings('about')")}</div>
-      <div class="ps-grp">${row('↪️','Sign out', '', "toast('Demo: you stay signed in')", '')}</div>`;
+      <div class="ps-grp" style="margin-top:14px">${row('↪️','Sign out', '', "toast('Demo: you stay signed in')", '')}</div>`;
+  } else if(pg==='gid'){
+    body = `<div class="ps-pass" style="background:linear-gradient(135deg,#111116,#2b2a30)"><div class="i"><span class="gx-mono" style="width:26px;height:26px;color:#fff"></span></div><div><b>${USER.name}</b><span>${USER.handle} · ✓ verified · since ${USER.joined}</span></div></div>
+      <div class="ps-grp">${row('🔑','One login','Apps, communities and Pro Zones use your GENEXXO ID instead of their own accounts', '', '')}
+        ${row('🛡️','You choose what they see','Each one asks once; manage it in Connected apps & communities', "openSettings('connected')")}
+        ${row('✓','Verified','Email and phone confirmed · keeps fake accounts out', '', '')}</div>`;
+  } else if(pg==='addresses'){
+    body = `<div class="ps-grp">${row('🏠','Home','Flat 3, 18 Cedar Court, London E2 · default', "toast('Edit address')", '<button class="ps-act">Edit</button>')}
+        ${row('🏢','Work','4th floor, 21 Rope Walk, London SE1', "toast('Edit address')", '<button class="ps-act">Edit</button>')}</div>
+      <button class="ps-act" style="width:100%;padding:11px" onclick="toast('Add an address')">+ Add an address</button>
+      <div class="ps-note" style="margin-top:10px">Shared only with the brand you buy from, at its checkout. Never with apps, pros or communities.</div>`;
+  } else if(pg==='blocked'){
+    const list = S.blocked || ['spam-account-91','troll_tim'];
+    body = `${H('Blocked · '+list.length)}<div class="ps-grp">${list.length ? list.map(n=>row('🚫', escHtml(n), 'Can’t see your profile or message you', '', `<button class="ps-act" onclick="event.stopPropagation();accUnblock('${esc(n)}')">Unblock</button>`)).join('') : row('✓','Nobody blocked','', '', '')}</div>
+      ${H('Muted')}<div class="ps-grp">${row('🔇','5 accounts','Hidden from your feed; they aren’t told', "toast('Muted accounts')")}${row('🔤','2 words','“spoiler”, “crowded”: posts containing them are hidden', "toast('Muted words')")}</div>
+      <div class="ps-note">Blocking also stops someone booking you or quoting you if you run a Pro or Business Zone.</div>`;
+  } else if(pg==='ai'){
+    const forgot = S.aiForgot || [], on = S.aiMemory !== false;
+    const mem = [
+      ['loc','📍',`You’re based in ${USER.location}`,'From your profile'],
+      ['climb','🧗','You climb at Stanage, top grade 7a+','From Route Logger'],
+      S.dxDates!==false ? ['bday','🎂','Sam’s birthday, '+dayLabel(plusDays(new Date(),9)),'You added it'] : null,
+      ...aiLive().filter(w=>w.booked).slice(0,3).map(w=>['bk-'+(w.id||w.title),w.icon||'📅',`${w.title}, ${dayLabel(w.d)}`,`From your bookings · ${w.prov||w.src}`]),
+      state.favs.length ? ['favs','★',`Your places: ${state.favs.slice(0,3).map(k=>(gwMetaFromKey(k)||{}).name).filter(Boolean).join(', ')}${state.favs.length>3?' and '+(state.favs.length-3)+' more':''}`,'From your ★ favourites'] : null,
+      ['fly','✈️','You fly economy, aisle seat','From past bookings'],
+    ].filter(x=>x && !forgot.includes(x[0]));
+    body = `<div class="ps-note" style="padding:0 4px 10px">Only you see this. Your Host and the gateway agents use it to plan and suggest. Forget anything, or switch memory off entirely.</div>
+      <div class="ps-grp">${sw('aiMemory','AI memory', on?'On: agents remember the things below':'Off: agents start fresh every time','✦')}</div>
+      ${on?`${H('It remembers · '+mem.length)}<div class="ps-grp">${mem.map(([k,i,t,sub])=>row(i, escHtml(t), sub, '', `<button class="ps-act" onclick="event.stopPropagation();accForget('${k}')">Forget</button>`)).join('') || row('✓','Nothing remembered','', '', '')}</div>`:''}
+      <div class="ps-note">What Discover may use is in Privacy › What Discover can use.</div>`;
+  } else if(pg==='interests'){
+    const all = ['Climbing','Surf','Ski touring','Cycling','Sailing','Trail running','Coffee','Photography','Travel','Food','Wellness','Music'];
+    const mine = S.interests || [];
+    body = `<div class="ps-note" style="padding:0 4px 8px">Tap to add or remove. Interests tune Discover and the Host’s suggestions; they’re never shown to brands.</div>
+      <div class="ps-grp"><div class="ps-chips">${all.map(t=>`<span class="${mine.includes(t)?'on':''}" onclick="accInterest('${t}')">${t}</span>`).join('')}</div></div>`;
+  } else if(pg==='wallet'){
+    const comms = state.commFavs.map(k=>commByKey(k)).filter(Boolean), tickets = aiLive().filter(w=>w.comm);
+    body = `<div class="ps-grp">${row('🤝','Not money','Passes, tickets, memberships and loyalty. GENEXXO never holds funds.', '', '')}</div>
+      <div class="ps-pass" style="background:linear-gradient(135deg,#111116,#2b2a30)"><div class="i">🪪</div><div><b>GENEXXO ID</b><span>Your pass into apps and communities</span></div></div>
+      ${tickets.map(w=>`<div class="ps-pass" style="background:${w.grad||'linear-gradient(135deg,#E85D3A,#7C3AED)'}"><div class="i">🎟️</div><div><b>${escHtml(w.title)}</b><span>Ticket · ${dayLabel(w.d)}${w.time&&w.time!=='—'?' · '+w.time:''} · ${escHtml(w.prov)}</span></div></div>`).join('')}
+      ${comms.map(({comm:c})=>`<div class="ps-pass" style="background:linear-gradient(135deg,${c.color},#111116)"><div class="i">👥</div><div><b>${escHtml(c.name)}</b><span>Member · ${c.domain}</span></div></div>`).join('')}
+      <div class="ps-pass" style="background:linear-gradient(135deg,#E84D3A,#C4371F)"><div class="i">👟</div><div><b>Lithos resole card</b><span>2 of 5 · the 5th is free</span></div></div>
+      ${!tickets.length&&!comms.length?`<div class="ps-note">Join a community or RSVP to an event and its pass lands here.</div>`:''}`;
+  } else if(pg==='subs'){
+    body = `<div class="ps-grp">${row('⚡','Route Logger Pro','£3.99 a month · renews 2 Nov · billed by Route Logger', "toast('Opens Route Logger’s billing')", '<button class="ps-act">Manage</button>')}
+        ${row('👥','London Bouldering Collective','£8 a month · member · billed by the Collective', "toast('Opens the Collective’s membership page')", '<button class="ps-act">Manage</button>')}</div>
+      <div class="ps-note">Each provider bills you directly; GENEXXO shows them in one place and links you to manage or cancel.</div>`;
+  } else if(pg==='help'){
+    body = `<div class="ps-grp">${row('✦','Ask the Host','Quickest answers about anything on GENEXXO', "closeSettings();setTab('ai')")}
+        ${row('✉️','Contact GENEXXO','hello@genexxo.com · we reply within a day', "toast('Opens your email')")}
+        ${row('🐞','Report a problem','Tell us what went wrong; a screenshot helps', "toast('Thanks · report started')")}
+        ${row('📜','Community guidelines','How GENEXXO stays good for everyone', "toast('Opens the guidelines')")}</div>`;
   } else if(pg==='account'){
     body = `<div class="ps-grp">${row('👤','Name', USER.name, "toast('Editing your profile comes next')")}${row('@','Handle', USER.handle, "toast('Handles can be changed once a month')")}
       ${row('📝','Bio', USER.bio, "toast('Editing your profile comes next')")}${row('📍','Location', USER.location, "toast('Editing your profile comes next')")}</div>
@@ -8114,7 +8196,9 @@ function settingsHtml(){
         : row('👥','No communities yet','Enter one from any gateway’s Communities tab', '', '')}</div>
       <div class="ps-note">Never shared with any of them: your email, password, favourites, bookings, or the other apps and communities you use.</div>`;
   } else if(pg==='privacy'){
-    body = `<div class="ps-grp">${sw('publicProfile','Public profile','Anyone on GENEXXO can see your profile','🌍')}${sw('discoverable','Findable by handle','People can search for '+USER.handle,'🔎')}
+    body = `<div class="ps-grp">${sw('privateAcct','Private account','Approve who follows you; requests appear in Followers','🔒')}${sw('msgAll','Anyone can message me','Off: only people you follow can message you','💬')}
+        ${row('🚫','Blocked & muted','', "openSettings('blocked')")}</div>
+      <div class="ps-grp">${sw('publicProfile','Public profile','Anyone on GENEXXO can see your profile','🌍')}${sw('discoverable','Findable by handle','People can search for '+USER.handle,'🔎')}
         ${sw('showCommunities','Show my communities','List the communities you’ve joined on your profile','👥')}${sw('aiFeed','Personalised feeds','Let your Host AI tune feeds to what you favourite','✦')}</div>
       <div class="ps-h">What Discover can use</div>
       <div class="ps-grp">${sw('dxLocation','Your location','Ideas near where you are · '+USER.location,'📍')}${sw('dxDates','Dates you’ve added','Birthdays and anniversaries you saved','🎂')}
@@ -8140,7 +8224,7 @@ function settingsHtml(){
       ${dev?`<div class="ps-h">Prototype: simulate entry domain</div><div class="ps-grp" style="padding:12px"><div class="ps-note" style="padding:0 0 8px">Same shell, different front door.</div>
         <div class="chips" style="padding:0;flex-wrap:wrap">${entries.map(([d,e])=>`<div class="chip ${state.entryDomain===d?'on':''}" onclick="location.search='?dev${e?('&entry='+e):''}'">${d}</div>`).join('')}</div></div>`:''}`;
   }
-  return `<div id="pfSet"><div class="ps-top">${pg!=='root'?`<span class="ps-back" onclick="openSettings('root')">‹ Settings</span>`:''}<b>${pg==='root'?'Settings':''}</b>
+  return `<div id="pfSet"><div class="ps-top">${pg!=='root'?`<span class="ps-back" onclick="openSettings('root')">‹ Account</span>`:''}<b>${pg==='root'?'Account':''}</b>
       <div class="ps-x" onclick="closeSettings()" title="Close"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></div></div>
     <div class="ps-body">${pg!=='root'?`<div style="font-size:20px;font-weight:800;margin:4px 4px 12px">${titles[pg]}</div>`:''}${body}</div></div>`;
 }
@@ -8191,6 +8275,7 @@ function render(){
   lazyMedia();   // observe any <video data-vsrc> the fresh render just drew
   syncUtilOverlay();   // before tabBar() — it can clear state.utilOver, which the bar reads
   tabBar();
+  { const tb = $('tabbar'); if(tb) $('frame').style.setProperty('--tb-h', (tb.offsetHeight + (parseFloat(getComputedStyle(tb).bottom)||0)) + 'px'); }
   // Sectors drawer: every page. Gateways drawer: any sector context — a sector page OR a
   // gateway (shows its sibling gateways). Close both on any navigation.
   /* Desktop: the drawers are pinned open, so nothing "opens" them and nothing would ever
