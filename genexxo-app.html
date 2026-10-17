@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff" id="metaTheme">
+<script>/* home-screen launch (-54): mark it before the first paint and keep the status bar on the launch black */
+if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true){document.documentElement.classList.add('launch');document.getElementById('metaTheme').content='#070708';}</script>
 <title>GENEXXO</title>
 <!-- ── PWA · add-to-home-screen launches full-screen (standalone). Icons + manifest.json live at the deploy root. ── -->
 <!-- genexxo.webmanifest (2026-10-17, -52): a NEW file with an "id", so Chrome/Android install a fresh app identity and cannot reuse
@@ -396,34 +398,14 @@
   @keyframes spFromL{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
   @keyframes spRule{to{width:132px}}
   @keyframes spLine{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-  /* ── LAUNCH FLOW (2026-10-16, -50): opened from the home screen, Android has just shown the launch icon — the
-     gold-rimmed XX, GENEXXO on its arm, centred on #070708 (manifest icon-launch-*, background_color). The intro
-     must not start again: it opens on that exact frame (lit, edge drawn, same size via --s0, centred via --dy)
-     and goes straight into the settle. Same artwork, about a second shorter. Browser visits keep the full intro. */
-  /* -53 DIP & BLOOM: Android launch screens differ by phone (icon size, centring, name underneath), so the intro no longer
-     tries to overlap them pixel for pixel. Android's screen goes -> a beat of the same black (0.1s) -> the gold XX blooms in
-     from a touch larger and softer (0.32s) at Android's standard launch size -> the flow carries on. Any small mismatch
-     reads as part of the motion. The bloom is on .sp-mark with fill 'backwards' only, so it never holds the transform the
-     fly-out needs later. */
-  #splash.launch .sp-mark{animation:spBloomL .32s .1s cubic-bezier(.2,.75,.2,1) backwards}
-  #splash.launch .sp-in{opacity:1;animation:spDropL 1.45s cubic-bezier(.65,0,.25,1) both}
-  #splash.launch .sp-move{animation:spSettleL 1.45s cubic-bezier(.65,0,.25,1) both}
-  #splash.launch .sp-edge{stroke-dashoffset:0;animation:spOut .6s .9s ease forwards}
-  #splash.launch .sp-glow{stroke-dashoffset:0;opacity:.35;animation:spOut .6s .9s ease forwards}
-  #splash.launch .sp-goldedge{animation:spOut .6s .9s ease forwards}
-  #splash.launch .sp-fill1{animation:spOut .6s .9s ease forwards}
-  #splash.launch .sp-sweep{animation:spSweep .8s .3s cubic-bezier(.4,0,.2,1) forwards}
-  #splash.launch .sp-mini{opacity:1;animation:spFade .35s .55s ease forwards}
-  #splash.launch .sp-fill2{animation:spIn .6s .85s ease forwards}
-  #splash.launch .sp-light{animation:spIn .8s .75s ease forwards}
-  #splash.launch .sp-gene{animation:spFromR .5s 1.2s cubic-bezier(.2,.75,.2,1) forwards}
-  #splash.launch .sp-oh{animation:spFromL .5s 1.2s cubic-bezier(.2,.75,.2,1) forwards}
-  #splash.launch .sp-rule{animation:spRule .55s 1.4s cubic-bezier(.2,.75,.2,1) forwards}
-  #splash.launch .sp-t1{animation:spLine .5s 1.5s cubic-bezier(.2,.75,.2,1) forwards}
-  #splash.launch .sp-t2{animation:spLine .5s 1.7s cubic-bezier(.2,.75,.2,1) forwards}
-  @keyframes spBloomL{from{opacity:0;transform:scale(1.08);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
-  @keyframes spSettleL{0%,38%{transform:translate(-70px,0) scale(var(--s0,3.4))}100%{transform:none}}
-  @keyframes spDropL{0%,38%{transform:translate(0,var(--dy,0px))}100%{transform:none}}
+  /* ── HOME-SCREEN LAUNCH (-54, 2026-10-17). Android's launch screen IS the intro here: the gold XX on #070708 (manifest
+     icon-launch-*). The boot cover carries the same XX from the first frame (html.launch is set in <head>), holds a beat
+     once the app is ready, then fades away to reveal it. No second logo, nothing to line up across phones. Browser visits
+     keep the full intro. (Replaced -50's matched hand-over and -53's dip & bloom: Sean preferred the simpler fade.) */
+  #bootCover .bc-xx{display:none}
+  html.launch #bootCover{display:flex;align-items:center;justify-content:center;transition:opacity .6s ease}
+  html.launch #bootCover .bc-xx{display:block;width:134px;height:auto;overflow:visible}
+  html.launch #bootCover.gone{opacity:0}
   @media (prefers-reduced-motion:reduce){ #splash *{animation-duration:1ms!important;animation-delay:0s!important} }
   #frame.chrome-hidden .gw-tabs,#frame.chrome-hidden .substick{transform:translateY(calc(-100% - 56px))}
 
@@ -1506,7 +1488,15 @@
      has arrived, so visitors saw the empty frame for a moment before the intro appeared. This is the intro's first
      frame (its #070708 stage), painted from the very first frame; welcomeSplash() removes it once the intro is on top.
      If the app never gets that far it lifts itself after 12s, and the load guard's screen sits above it anyway. -->
-<div id="bootCover" style="position:fixed;inset:0;z-index:2147483646;background:#070708"></div>
+<div id="bootCover" style="position:fixed;inset:0;z-index:2147483646;background:#070708"><svg class="bc-xx" viewBox="194.6 1.7 70.7 53.7" aria-hidden="true"><defs>
+  <linearGradient id="bcK" gradientUnits="userSpaceOnUse" x1="195" y1="0" x2="265" y2="57"><stop offset="0" stop-color="#2b2a30"/><stop offset=".55" stop-color="#121115"/><stop offset="1" stop-color="#201e24"/></linearGradient>
+  <linearGradient id="bcG" gradientUnits="userSpaceOnUse" x1="195" y1="0" x2="265" y2="57"><stop offset="0" stop-color="#8a5a12"/><stop offset=".35" stop-color="#f7c95a"/><stop offset=".55" stop-color="#fff1c4"/><stop offset=".8" stop-color="#e0a53a"/><stop offset="1" stop-color="#9c6a1a"/></linearGradient>
+  <filter id="bcB" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation=".8"/></filter></defs>
+  <path d="M203.7,1.8h-8.9l15.3,23.1,4.6-6.5-11-16.6Z M245.5,38.8l10.9,16.5h8.9l-15.3-23.1-4.5,6.7Z M247.6,28.5l-4.5,6.7h0l-8.7,13.2-4.4,6.7-4.4-6.7-8.7-13.2-13.2,20h-8.9l16.7-25.3h0s.9-1.4.9-1.4h0l4.4-6.7,8.7-13.2,4.4-6.7,4.4,6.7,8.7,13.2,13.2-20h8.9l-17.6,26.7Z M238.7,28.5l-8.7-13.2-8.7,13.2,8.7,13.2,8.7-13.2Z" fill="url(#bcK)"/>
+  <path d="M203.7,1.8h-8.9l15.3,23.1,4.6-6.5-11-16.6Z M245.5,38.8l10.9,16.5h8.9l-15.3-23.1-4.5,6.7Z M247.6,28.5l-4.5,6.7h0l-8.7,13.2-4.4,6.7-4.4-6.7-8.7-13.2-13.2,20h-8.9l16.7-25.3h0s.9-1.4.9-1.4h0l4.4-6.7,8.7-13.2,4.4-6.7,4.4,6.7,8.7,13.2,13.2-20h8.9l-17.6,26.7Z M238.7,28.5l-8.7-13.2-8.7,13.2,8.7,13.2,8.7-13.2Z" fill="none" stroke="#f5b800" stroke-width="1" stroke-linejoin="round" filter="url(#bcB)" opacity=".35"/>
+  <path d="M203.7,1.8h-8.9l15.3,23.1,4.6-6.5-11-16.6Z M245.5,38.8l10.9,16.5h8.9l-15.3-23.1-4.5,6.7Z M247.6,28.5l-4.5,6.7h0l-8.7,13.2-4.4,6.7-4.4-6.7-8.7-13.2-13.2,20h-8.9l16.7-25.3h0s.9-1.4.9-1.4h0l4.4-6.7,8.7-13.2,4.4-6.7,4.4,6.7,8.7,13.2,13.2-20h8.9l-17.6,26.7Z M238.7,28.5l-8.7-13.2-8.7,13.2,8.7,13.2,8.7-13.2Z" fill="none" stroke="url(#bcG)" stroke-width=".55" stroke-linejoin="round"/>
+  <g fill="#fff" transform="translate(254.6 11.2) rotate(-56.6) scale(.052) translate(-160 -28.6)"><path d="M52.2,17.2c-2-5.1-5.2-9.1-9.7-11.9-4.4-2.8-9.5-4.2-15.2-4.2s-9.6,1.2-13.8,3.5c-4.2,2.3-7.5,5.6-9.9,9.7C1.2,18.5,0,23.2,0,28.4s1.2,9.9,3.7,14.1c2.4,4.2,5.7,7.4,9.9,9.7,4.2,2.3,8.8,3.5,13.8,3.5s8.9-1,12.8-3.1c3.8-2.1,6.9-4.9,9.3-8.4,2.4-3.5,3.9-7.3,4.4-11.5v-6.9h-29.5v7h20.1c-.7,4.6-2.5,8.2-5.5,10.9-3,2.7-6.9,4-11.6,4s-6.7-.8-9.5-2.4c-2.8-1.6-4.9-3.9-6.5-6.8-1.6-3-2.4-6.4-2.4-10.2s.8-7.2,2.4-10.2c1.6-2.9,3.7-5.2,6.5-6.8,2.8-1.6,5.9-2.4,9.5-2.4s6.1.7,8.6,2c2.5,1.4,4.4,3.4,5.8,6h10.6Z M92.1,8.8V1.7h-29.6v53.6h29.6v-7.2h-20.8v-16.4h18.5v-7.2h-18.5v-15.7h20.8Z M146.9,1.7h-8.8v39.9L111.7,1.7h-8.8v53.6h8.8V15.3l26.4,40h8.8V1.7Z M188,8.8V1.7h-29.6v53.6h29.6v-7.2h-20.8v-16.4h18.5v-7.2h-18.5v-15.7h20.8Z"/><path d="M203.7,1.8h-8.9l15.3,23.1,4.6-6.5-11-16.6Z M245.5,38.8l10.9,16.5h8.9l-15.3-23.1-4.5,6.7Z M247.6,28.5l-4.5,6.7h0l-8.7,13.2-4.4,6.7-4.4-6.7-8.7-13.2-13.2,20h-8.9l16.7-25.3h0s.9-1.4.9-1.4h0l4.4-6.7,8.7-13.2,4.4-6.7,4.4,6.7,8.7,13.2,13.2-20h8.9l-17.6,26.7Z M238.7,28.5l-8.7-13.2-8.7,13.2,8.7,13.2,8.7-13.2Z"/><path d="M292.5,55.8c5,0,9.6-1.2,13.8-3.5,4.2-2.3,7.5-5.6,9.9-9.8,2.4-4.2,3.6-8.9,3.6-14.1s-1.2-9.9-3.6-14.1c-2.4-4.2-5.7-7.4-9.9-9.7-4.2-2.3-8.8-3.5-13.8-3.5s-9.6,1.2-13.8,3.5c-4.2,2.3-7.5,5.6-9.9,9.7-2.4,4.2-3.7,8.9-3.7,14.1s1.2,10,3.7,14.1c2.4,4.2,5.8,7.5,9.9,9.8,4.2,2.3,8.8,3.5,13.8,3.5Z M292.5,48.2c-3.5,0-6.7-.8-9.5-2.4-2.8-1.6-4.9-3.9-6.5-6.9-1.6-3-2.4-6.5-2.4-10.4s.8-7.4,2.4-10.4c1.6-3,3.7-5.3,6.5-6.9,2.8-1.6,5.9-2.4,9.5-2.4s6.7.8,9.5,2.4c2.8,1.6,4.9,3.9,6.5,6.9,1.6,3,2.4,6.4,2.4,10.4s-.8,7.4-2.4,10.4c-1.6,3-3.7,5.3-6.5,6.9-2.8,1.6-5.9,2.4-9.5,2.4Z"/></g>
+</svg></div>
 <script>setTimeout(function(){var c=document.getElementById('bootCover');if(c)c.remove();},12000);</script>
 <div id="frame">
   <div id="screen"></div>
@@ -1554,7 +1544,7 @@
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-53"></script>
+<script src="genexxo-data.js?v=2026.08.26-54"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
@@ -2454,7 +2444,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-53';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-54';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -8154,6 +8144,17 @@ render();
    put the dot somewhere else, and its colour flips on dark themes. No visible dot → just fade out. */
 (function welcomeSplash(){
   const f = $('frame');
+  /* Opened from the home screen (-54): no intro. Android's launch screen was the intro and the boot cover still shows the
+     same gold XX; hold a beat, then fade it away to the app. The status bar stays on the launch black until the fade. */
+  if(document.documentElement.classList.contains('launch')){
+    const c = $('bootCover'), meta = $('metaTheme'), want = meta ? meta.content : '#ffffff';
+    if(meta) meta.content = '#070708';                      // render() has already set the app's colour; hold black a moment
+    setTimeout(()=>{
+      if(meta) meta.content = (want === '#070708') ? '#ffffff' : want;
+      if(c){ c.classList.add('gone'); setTimeout(()=>c.remove(), 700); }
+    }, 150);
+    return;
+  }
   const XX = 'M203.7,1.8h-8.9l15.3,23.1,4.6-6.5-11-16.6Z M245.5,38.8l10.9,16.5h8.9l-15.3-23.1-4.5,6.7Z M247.6,28.5l-4.5,6.7h0l-8.7,13.2-4.4,6.7-4.4-6.7-8.7-13.2-13.2,20h-8.9l16.7-25.3h0s.9-1.4.9-1.4h0l4.4-6.7,8.7-13.2,4.4-6.7,4.4,6.7,8.7,13.2,13.2-20h8.9l-17.6,26.7Z M238.7,28.5l-8.7-13.2-8.7,13.2,8.7,13.2,8.7-13.2Z';
   const GENE = 'M52.2,17.2c-2-5.1-5.2-9.1-9.7-11.9-4.4-2.8-9.5-4.2-15.2-4.2s-9.6,1.2-13.8,3.5c-4.2,2.3-7.5,5.6-9.9,9.7C1.2,18.5,0,23.2,0,28.4s1.2,9.9,3.7,14.1c2.4,4.2,5.7,7.4,9.9,9.7,4.2,2.3,8.8,3.5,13.8,3.5s8.9-1,12.8-3.1c3.8-2.1,6.9-4.9,9.3-8.4,2.4-3.5,3.9-7.3,4.4-11.5v-6.9h-29.5v7h20.1c-.7,4.6-2.5,8.2-5.5,10.9-3,2.7-6.9,4-11.6,4s-6.7-.8-9.5-2.4c-2.8-1.6-4.9-3.9-6.5-6.8-1.6-3-2.4-6.4-2.4-10.2s.8-7.2,2.4-10.2c1.6-2.9,3.7-5.2,6.5-6.8,2.8-1.6,5.9-2.4,9.5-2.4s6.1.7,8.6,2c2.5,1.4,4.4,3.4,5.8,6h10.6Z M92.1,8.8V1.7h-29.6v53.6h29.6v-7.2h-20.8v-16.4h18.5v-7.2h-18.5v-15.7h20.8Z M146.9,1.7h-8.8v39.9L111.7,1.7h-8.8v53.6h8.8V15.3l26.4,40h8.8V1.7Z M188,8.8V1.7h-29.6v53.6h29.6v-7.2h-20.8v-16.4h18.5v-7.2h-18.5v-15.7h20.8Z';
   const OH = 'M292.5,55.8c5,0,9.6-1.2,13.8-3.5,4.2-2.3,7.5-5.6,9.9-9.8,2.4-4.2,3.6-8.9,3.6-14.1s-1.2-9.9-3.6-14.1c-2.4-4.2-5.7-7.4-9.9-9.7-4.2-2.3-8.8-3.5-13.8-3.5s-9.6,1.2-13.8,3.5c-4.2,2.3-7.5,5.6-9.9,9.7-2.4,4.2-3.7,8.9-3.7,14.1s1.2,10,3.7,14.1c2.4,4.2,5.8,7.5,9.9,9.8,4.2,2.3,8.8,3.5,13.8,3.5Z M292.5,48.2c-3.5,0-6.7-.8-9.5-2.4-2.8-1.6-4.9-3.9-6.5-6.9-1.6-3-2.4-6.5-2.4-10.4s.8-7.4,2.4-10.4c1.6-3,3.7-5.3,6.5-6.9,2.8-1.6,5.9-2.4,9.5-2.4s6.7.8,9.5,2.4c2.8,1.6,4.9,3.9,6.5,6.9,1.6,3,2.4,6.4,2.4,10.4s-.8,7.4-2.4,10.4c-1.6,3-3.7,5.3-6.5,6.9-2.8,1.6-5.9,2.4-9.5,2.4Z';
@@ -8185,20 +8186,7 @@ render();
   { const c = $('bootCover'); if(c) c.remove(); }   // the intro now covers the shell itself (same black, no seam)
 
   const timers = [];
-  /* Opened from the home screen (an installed app): pick up from Android's launch icon instead of starting over.
-     Android 12+ draws the maskable launch icon at 240dp, so its XX (56% of the canvas) is ~134px wide, centred. */
-  const launch = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
-  const meta = $('metaTheme'), themeBefore = meta && meta.content;
-  const restoreTheme = () => { if(meta && meta.content === '#070708') meta.content = themeBefore || '#ffffff'; };
-  if(launch){
-    const mk = el.querySelector('.sp-mark'), m = mk.getBoundingClientRect();
-    const xxW = m.width*70.5/320, u = 320/m.width;                       // px -> SVG user units
-    el.style.setProperty('--s0', (134/xxW).toFixed(3));
-    el.style.setProperty('--dy', ((innerHeight/2 - (m.top + m.height/2))*u).toFixed(2) + 'px');
-    el.classList.add('launch');
-    if(meta){ meta.content = '#070708'; timers.push(setTimeout(restoreTheme, 1150)); }   // status bar stays black until the stage lights up
-  }
-  const done = () => { timers.forEach(clearTimeout); restoreTheme(); el.classList.add('out'); setTimeout(()=>el.remove(), 320); };
+  const done = () => { timers.forEach(clearTimeout); el.classList.add('out'); setTimeout(()=>el.remove(), 320); };
   el.onclick = done;   // tap to skip
   if(matchMedia('(prefers-reduced-motion: reduce)').matches){ timers.push(setTimeout(done, 1600)); return; }
 
@@ -8215,7 +8203,7 @@ render();
     el.classList.add('fly', 'reveal');
     timers.push(setTimeout(()=>{ el.querySelector('.sp-fill2').style.fill = getComputedStyle(dot).color; }, 380));
     timers.push(setTimeout(()=>el.remove(), 800));
-  }, launch ? 2700 : 3500));
+  }, 3500));
 })();
 
 /* ═════════ UPDATE CHECK — Tier A (2026-07-31) — no service worker ═════════
