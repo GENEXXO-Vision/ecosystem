@@ -370,6 +370,47 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   .pp-row{display:flex;align-items:center;gap:11px;padding:10px 2px;border-bottom:1px solid var(--line)}
   .pp-row .av{width:40px;height:40px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px}
   .pp-row b{font-size:13px;font-weight:800;display:block}.pp-row .s{font-size:11px;color:var(--muted);font-weight:600}
+  /* ── Inbox (-56): Activity + Messages, its own layer above everything (like #appCanvas), so opening it never
+     redraws the screen underneath (a gateway keeps its videos and scroll). Desktop: the centre measure. ── */
+  .ibx-ic{position:relative;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:99px;cursor:pointer;flex-shrink:0}
+  .ibx-ic svg{width:21px;height:21px}
+  .ibx-dot{position:absolute;top:3px;right:2px;min-width:16px;height:16px;padding:0 4px;border-radius:99px;background:#E84D3A;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #F7F7F8;line-height:1}
+  .ibx-dot.off{display:none}
+  /* -57: 🔔 and 💬 live in Profile (on the cover, beside ✕), and the Profile tab carries the unread total */
+  .pf-ibx{position:absolute;top:10px;right:12px;display:flex;gap:8px;align-items:center}
+  .pf-ibx .pb{position:relative;width:32px;height:32px;border-radius:99px;background:rgba(255,255,255,.88);color:#111116;box-shadow:0 2px 10px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .pf-ibx .pb svg{width:17px;height:17px}
+  .pf-ibx .pb .ibx-dot{top:-5px;right:-6px}
+  .pf-ibx .utilx.on-photo{position:static}
+  .tab{position:relative}
+  .tab .ibx-dot.tbd{top:1px;right:calc(50% - 22px);border-color:#fff}
+  #ibx{position:fixed;top:var(--ibx-top,53px);bottom:var(--ibx-bot,64px);left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:96;background:var(--bg);display:flex;flex-direction:column;animation:ibxIn .26s cubic-bezier(.32,.72,.28,1)}
+  @keyframes ibxIn{from{transform:translateX(-50%) translateX(28px);opacity:0}to{transform:translateX(-50%);opacity:1}}
+  #ibx .ihd{display:flex;align-items:center;gap:6px;padding:10px 10px 8px 12px;background:rgba(247,247,248,.95);border-bottom:1px solid var(--line);flex-shrink:0}
+  #ibx .ihd b{flex:1;font-size:16.5px;font-weight:800}
+  #ibx .ihb{width:36px;height:36px;border-radius:99px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink)}
+  #ibx .ihb:hover{background:rgba(17,17,22,.05)}#ibx .ihb svg{width:20px;height:20px}
+  #ibx .itabs{display:flex;gap:6px;padding:10px 12px 8px;flex-shrink:0}
+  #ibx .itabs span{font-size:12.5px;font-weight:800;padding:7px 14px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--muted);cursor:pointer}
+  #ibx .itabs span.on{background:#111116;color:#fff;border-color:#111116}
+  #ibx .itabs i{font-style:normal;margin-left:5px;font-size:10px;background:#E84D3A;color:#fff;border-radius:99px;padding:1px 6px}
+  #ibx .ibody{flex:1;overflow-y:auto;padding-bottom:24px}
+  #ibx .igrp{padding:12px 16px 6px;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  #ibx .irow{display:flex;align-items:center;gap:11px;padding:11px 16px;background:#fff;border-bottom:1px solid var(--line);cursor:pointer}
+  #ibx .irow.new{background:#FFFCF0}
+  #ibx .irow .av{width:42px;height:42px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px}
+  #ibx .irow .tx{flex:1;min-width:0;font-size:13.5px;line-height:1.4}
+  #ibx .irow .sb{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:1px}
+  #ibx .irow .one{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #ibx .ictx{margin:12px 14px 0;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;display:flex;gap:10px;align-items:center;cursor:pointer}
+  #ibx .imsgs{padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+  #ibx .bub{max-width:78%;padding:9px 12px;border-radius:16px;font-size:14px;line-height:1.45}
+  #ibx .bub.them{background:#fff;border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:5px}
+  #ibx .bub.me{background:#111116;color:#fff;align-self:flex-end;border-bottom-right-radius:5px}
+  #ibx .bub.typing{color:var(--muted);font-style:italic}
+  #ibx .icomp{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:#fff;flex-shrink:0}
+  #ibx .icomp input{flex:1;border:1px solid var(--line);border-radius:99px;padding:10px 14px;font:inherit;font-size:16px;outline:none;background:var(--bg)}
+  #ibx .inote{margin:12px 16px;font-size:11.5px;line-height:1.5;color:var(--muted);font-weight:600}
   .pf-post .eng{font-size:11.5px;color:var(--muted);font-weight:700;margin-top:8px;display:flex;gap:16px}
   #pfSet{position:fixed;left:50%;transform:translateX(-50%);top:0;bottom:0;width:100%;max-width:430px;z-index:70;background:var(--bg);display:flex;flex-direction:column}
   .ps-top{display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top,0px)) 14px 12px;border-bottom:1px solid var(--line);background:#fff}
@@ -1060,6 +1101,7 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
        It is fixed rather than living in the .top markup because there are two top bars
        (topBar() and the zone head) and it has to line up over both. */
     #frame{--tb-w:min(600px, calc(min(1480px, 100vw) - 2 * var(--panel-w)))}
+    #ibx{max-width:var(--tb-w,600px)}
     /* Discover's Jump panel is .gwjump — absolute, 12px in from its positioned ancestor. On the
        phone that is #frame, which is the screen. Here #frame spans all three columns, so the
        panel opened the full width of the window (2026-09-24). Pin it to the centre measure
@@ -1591,7 +1633,7 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-55"></script>
+<script src="genexxo-data.js?v=2026.08.26-56"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
@@ -2491,7 +2533,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-55';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-56';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -4094,11 +4136,11 @@ function tabBar(){
     }
     if(inCanvas){   // LAB canvas: the same button, scoped to the zone, opening/closing its sheet
       const on = state.cvSheet===k;
-      return `<div class="tab ${on?'on':''}" style="color:${on?active:idle}" onclick="cvSheetTap('${k}')">${k==='discover'?ICONS.search:ICONS[k]}<div class="lb">${k==='discover'?'Search':lb}</div></div>`;
+      return `<div class="tab ${on?'on':''}" style="color:${on?active:idle}" onclick="cvSheetTap('${k}')">${k==='discover'?ICONS.search:ICONS[k]}${k==='profile'?ibxTabDot():''}<div class="lb">${k==='discover'?'Search':lb}</div></div>`;
     }
     // A floating utility tab lights its own slot — state.tab still names the screen underneath.
     const lit = (state.utilOver || state.tab) === k;
-    return `<div class="tab ${lit?'on':''}" style="color:${lit?active:idle}" onclick="setTab('${k}')">${ICONS[k]}<div class="lb">${lb}</div></div>`;
+    return `<div class="tab ${lit?'on':''}" style="color:${lit?active:idle}" onclick="setTab('${k}')">${ICONS[k]}${k==='profile'?ibxTabDot():''}<div class="lb">${lb}</div></div>`;
   }).join('');
 }
 
@@ -4183,7 +4225,7 @@ function toast(msg){
   const f=$('frame'); let el=$('navToast');
   if(!el){
     el=document.createElement('div'); el.id='navToast';
-    el.style.cssText='position:absolute;left:50%;bottom:98px;transform:translateX(-50%) translateY(8px);z-index:80;background:#111116;color:#fff;font-size:12.5px;font-weight:700;padding:11px 17px;border-radius:99px;box-shadow:0 12px 32px rgba(0,0,0,.32);opacity:0;transition:opacity .2s,transform .2s;white-space:nowrap;pointer-events:none;max-width:88%';
+    el.style.cssText='position:absolute;left:50%;bottom:98px;transform:translateX(-50%) translateY(8px);z-index:99;background:#111116;color:#fff;font-size:12.5px;font-weight:700;padding:11px 17px;border-radius:99px;box-shadow:0 12px 32px rgba(0,0,0,.32);opacity:0;transition:opacity .2s,transform .2s;white-space:nowrap;pointer-events:none;max-width:88%';
     f.appendChild(el);
   }
   el.textContent=msg;
@@ -7871,6 +7913,115 @@ function peopleSheetHtml(){
         <span class="bkbtn" style="${following?'':'background:#111116;color:#fff;border-color:#111116'}" onclick="pfFollowBack(${i})">${following?'Following':fol?'Follow back':'Follow'}</span></div>`; }).join('')}
     <div style="font-size:11px;color:var(--muted);font-weight:600;line-height:1.5;margin-top:12px">${fol?'Requests appear when your account is private (Settings › Privacy).':'Following is social: their posts in your feed. ★ Favourites is navigation: a shortcut back to a place.'}</div></div>`;
 }
+/* ═════════ INBOX (-56, 2026-10-17): Activity + Messages, reachable from every screen ═════════
+   Profile v2 stage 2. -57: 🔔 and 💬 live on the Profile cover beside ✕ (the top bar stayed too crowded, Sean), and the
+   Profile tab carries the unread total, which draws people into their Profile. Both open ONE layer, #ibx, appended to #frame like
+   #appCanvas and painted by ibxPaint(), never by render(), so opening it inside a gateway keeps its videos and scroll.
+   Real events first (bookings, orders, quote requests), then fictional demo activity; replies get a short canned answer. */
+const IBX_SEED = [
+  {id:'a-verbier', g:'Today', ic:'✓', bg:'linear-gradient(135deg,#6D28D9,#A78BFA)', t:'<b>Verbier Freeride Guides</b> confirmed your off-piste day', s:'Booking · in Profile › Orders', go:"setTab('profile');setProfileTab('orders')"},
+  {id:'a-ship', g:'Today', ic:'📦', bg:'linear-gradient(135deg,#2B2B33,#0C0C10)', t:'Your <b>Bullheart One</b> has shipped', s:'Arrives Thursday · tracked', go:"setTab('profile');setProfileTab('orders')"},
+  {id:'a-maya', g:'Today', ic:'MC', bg:'linear-gradient(135deg,#0D9488,#2DD4BF)', t:'<b>Maya Chen</b> started following you', s:'Climbs at The Arch · 3 mutual', follow:true},
+  {id:'a-likes', g:'Today', ic:'♡', bg:'linear-gradient(135deg,#E84D3A,#F472B6)', t:'<b>212 people</b> liked your Fistral post', s:'Including Sam Rivera and 11 you follow', go:"setTab('profile');setProfileTab('posts')"},
+  {id:'a-rate', g:'This week', ic:'★', bg:'linear-gradient(135deg,#F5B800,#E0A53A)', t:'How was your session with <b>Beta Coaching</b>?', s:'Your review helps other climbers', go:"setTab('profile');setProfileTab('orders')"},
+  {id:'a-quote', g:'This week', ic:'💬', bg:'linear-gradient(135deg,#92400E,#F59E0B)', t:'<b>Foamcore Blanks</b> sent you a quote', s:'£180 · reply by Friday', thread:'foamcore'},
+  {id:'a-lbc', g:'This week', ic:'LB', bg:'linear-gradient(135deg,#E85D3A,#7C3AED)', t:'<b>London Bouldering Collective:</b> new problems set', s:'14 new in the cave', go:"openComm('london-bouldering')"},
+];
+const IBX_THREADS = [
+  {k:'verbier', who:'Verbier Freeride Guides', ini:'VF', bg:'linear-gradient(135deg,#6D28D9,#A78BFA)', kind:'Pros & brands', ago:'1h', unread:1,
+   ctx:['⛷️','Off-piste day · Verbier','Booking · confirmed', "setTab('profile');setProfileTab('orders')"], reply:'Perfect. We’ll bring a spare probe just in case. See you at Médran.',
+   msgs:[['them','Hi Alex, you’re confirmed for the off-piste day. Have you done an avalanche course yet?'],['me','Booked Snowcraft for the weekend before. Anything else I should bring?'],['them','Transceiver, probe, shovel. We can lend you a pack. See you at the Médran lift, 08:30.']]},
+  {k:'bullheart', who:'Bullheart', ini:'BH', bg:'linear-gradient(135deg,#2B2B33,#0C0C10)', kind:'Pros & brands', ago:'3h', unread:0,
+   ctx:['⌚','Bullheart One · £249','Order · shipped', "setTab('profile');setProfileTab('orders')"], reply:'You’re welcome! Any problems pairing, just message us here.',
+   msgs:[['me','Does the One work with Route Logger?'],['them','It does. Pair it in Route Logger › Devices and your attempts log automatically.'],['them','Tracking: arrives Thursday.']]},
+  {k:'sam', who:'Sam Rivera', ini:'SR', bg:'linear-gradient(135deg,#0066CC,#00AAFF)', kind:'People', ago:'Yesterday', unread:0, reply:'🤙 See you in the car park at 6.',
+   msgs:[['them','Saw the Fistral post 🔥'],['me','Dawn patrol again Sunday if you’re around'],['them','Fistral Sunday? I’m in.']]},
+  {k:'foamcore', who:'Foamcore Blanks', ini:'FB', bg:'linear-gradient(135deg,#92400E,#F59E0B)', kind:'Businesses', ago:'2d', unread:1,
+   ctx:['🏄','Custom 6’2 board blank','Quote · £180 · reply by Friday', "openZoneFav('foamcore-blanks','contact')"], reply:'Great, we’ll start the blank on Monday and send photos.',
+   msgs:[['me','Could you do a 6’2 blank with a slightly fuller nose?'],['them','Quote attached: £180 for the 6’2 blank. Lead time three weeks.']]},
+  {k:'lbc', who:'London Bouldering Collective', ini:'LB', bg:'linear-gradient(135deg,#E85D3A,#7C3AED)', kind:'People', ago:'3d', unread:0, reply:'See you Thursday!',
+   msgs:[['them','Thursday social moved to 19:00. New problems in the cave!']]},
+];
+const IBX_ICON = {
+  bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>',
+  chat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+};
+/* Real events first: what you actually booked, bought and asked for this session */
+function ibxActivity(){
+  const real = [];
+  aiWeek().filter(w=>w.booked && !w.status && w.id!=='bk-verbier').slice(-3).reverse().forEach(w=>real.push({id:'r-'+w.id, g:'Today', ic:w.icon, bg:w.grad||'#111116',
+    t:`<b>${escHtml(w.prov||w.src)}</b> confirmed ${escHtml(w.title)}`, s:`${dayLabel(w.d)}${w.time&&w.time!=='—'?' · '+w.time:''} · in Profile › Calendar`, go:"setTab('profile');setProfileTab('cal')"}));
+  state.purchases.slice(0,3).forEach(o=>real.push({id:'r-'+o.ref, g:'Today', ic:'🧾', bg:o.gradient, t:`<b>${o.brandName}</b> confirmed order #${o.ref}`, s:`${o.total} · receipt in Profile › Orders`, go:"setTab('profile');setProfileTab('orders')"}));
+  state.enquiries.filter(e=>ZONES[e.biz]).slice(0,2).forEach(e=>real.push({id:'r-q'+e.ts, g:'Today', ic:'📨', bg:ZONES[e.biz].gradient, t:`Quote request sent to <b>${ZONES[e.biz].name}</b>`, s:`${ZONES[e.biz].contact.response}`, go:"setTab('profile');setProfileTab('orders')"}));
+  return real.concat(IBX_SEED);
+}
+const ibxSeen = () => state.ibxSeen || (state.ibxSeen = {});
+const ibxUnreadA = () => ibxActivity().filter((a,i)=>!ibxSeen()[a.id] && (a.id.startsWith('r-') || i < 6)).length;   // demo: the newest few start unread
+const ibxUnreadM = () => IBX_THREADS.reduce((n,t)=>n+t.unread, 0);
+function ibxDot(n, k, cls){ return `<span class="ibx-dot ${cls||''} ${n?'':'off'}" data-ibx="${k}">${n}</span>`; }
+/* Profile cover, beside ✕: Activity and Messages (Sean, -57: the top bar stays clean; Profile is where your stuff lives) */
+function pfIbxButtons(){
+  return `<div class="pf-ibx"><div class="pb" onclick="event.stopPropagation();openInbox('activity')" title="Activity">${IBX_ICON.bell}${ibxDot(ibxUnreadA(),'a')}</div>
+    <div class="pb" onclick="event.stopPropagation();openInbox('messages')" title="Messages">${IBX_ICON.chat}${ibxDot(ibxUnreadM(),'m')}</div>${utilX('on-photo')}</div>`;
+}
+/* The unread total on the Profile tab, so people are drawn into their Profile */
+const ibxTabDot = () => ibxDot(ibxUnreadA()+ibxUnreadM(), 'all', 'tbd');
+function ibxSyncDots(){
+  const a = ibxUnreadA(), m = ibxUnreadM(), n = {a, m, all:a+m};
+  document.querySelectorAll('.ibx-dot').forEach(d=>{ const v = n[d.dataset.ibx]; d.textContent = v; d.classList.toggle('off', !v); });
+}
+function openInbox(tab){ state.ibx = {tab: tab||'activity', thread:null}; if(state.showFavs) commitFavPending(); ibxPaint(); }
+function closeInbox(){ state.ibx = null; ibxPaint(); }
+function ibxTab(t){ state.ibx.tab = t; state.ibx.thread = null; ibxPaint(); }
+function ibxGo(js){ closeInbox(); setTimeout(()=>{ try{ (new Function(js))(); }catch(e){} }, 30); }
+function ibxOpenThread(k){ const t = IBX_THREADS.find(x=>x.k===k); if(!t) return; t.unread = 0; state.ibx = {tab:'messages', thread:k}; ibxPaint(); }
+function ibxFollow(id){ ibxSeen()[id+':f'] = !ibxSeen()[id+':f']; ibxPaint(); toast(ibxSeen()[id+':f'] ? 'Following Maya Chen' : 'Unfollowed'); }
+function ibxSend(k){
+  const inp = document.getElementById('ibxIn'), v = inp && inp.value.trim(); if(!v) return;
+  const t = IBX_THREADS.find(x=>x.k===k); t.msgs.push(['me', escHtml(v)]); t.ago = 'Now'; t.typing = true; ibxPaint();
+  setTimeout(()=>{ t.typing = false; if(t.reply){ t.msgs.push(['them', t.reply]); t.reply = null; } if(state.ibx && state.ibx.thread===k) ibxPaint(); }, 1400);
+}
+function ibxPaint(){
+  let host = $('ibxHost'); if(!host){ host = document.createElement('div'); host.id = 'ibxHost'; $('frame').appendChild(host); }
+  const S = state.ibx; if(!S){ host.innerHTML = ''; ibxSyncDots(); return; }
+  /* ✕ top right like every other panel (Sean); a ← on the left only inside a thread */
+  const back = S.thread ? `<div class="ihb" onclick="ibxTab('messages')" title="Back to messages">${ICONS.back}</div>` : '';
+  const close = `<div class="utilx" onclick="closeInbox()" title="Close" aria-label="Close"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>`;
+  let body = '', title = 'Inbox', tabs = '', foot = '';
+  if(S.thread){
+    const t = IBX_THREADS.find(x=>x.k===S.thread); title = t.who;
+    body = `${t.ctx?`<div class="ictx" onclick="ibxGo(&quot;${t.ctx[3]}&quot;)"><span style="font-size:22px">${t.ctx[0]}</span><div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:800">${t.ctx[1]}</div><div class="sb" style="font-size:11.5px;color:var(--muted);font-weight:600">${t.ctx[2]}</div></div><span style="color:var(--muted);font-size:18px">›</span></div>`:''}
+      <div class="imsgs">${t.msgs.map(([w,m])=>`<div class="bub ${w}">${m}</div>`).join('')}${t.typing?`<div class="bub them typing">typing…</div>`:''}</div>`;
+    foot = `<div class="icomp"><input id="ibxIn" placeholder="Message ${t.who}…" onkeydown="if(event.key==='Enter')ibxSend('${t.k}')"><button class="bkbtn" style="background:#111116;color:#fff;border-color:#111116;padding:9px 16px" onclick="ibxSend('${t.k}')">Send</button></div>`;
+  } else {
+    const a = ibxUnreadA(), m = ibxUnreadM();
+    tabs = `<div class="itabs"><span class="${S.tab==='activity'?'on':''}" onclick="ibxTab('activity')">Activity${a&&S.tab!=='activity'?`<i>${a}</i>`:''}</span><span class="${S.tab==='messages'?'on':''}" onclick="ibxTab('messages')">Messages${m?`<i>${m}</i>`:''}</span></div>`;
+    if(S.tab==='activity'){
+      const list = ibxActivity(), wasNew = {}; list.forEach((x,i)=>{ wasNew[x.id] = !ibxSeen()[x.id] && (x.id.startsWith('r-') || i < 6); });
+      const groups = [...new Set(list.map(x=>x.g))];
+      body = groups.map(g=>`<div class="igrp">${g}</div>` + list.filter(x=>x.g===g).map(x=>{ const fol = ibxSeen()[x.id+':f'];
+        return `<div class="irow ${wasNew[x.id]?'new':''}" onclick="${x.thread?`ibxOpenThread('${x.thread}')`:x.go?`ibxGo(&quot;${x.go}&quot;)`:''}"><div class="av" style="background:${x.bg}">${x.ic}</div>
+          <div class="tx">${x.t}<div class="sb">${x.s}</div></div>${x.follow?`<span class="bkbtn" style="${fol?'':'background:#111116;color:#fff;border-color:#111116'}" onclick="event.stopPropagation();ibxFollow('${x.id}')">${fol?'Following':'Follow back'}</span>`:''}</div>`; }).join('')).join('')
+        + `<div class="inote">Everything that happens to you, in one place: follows, likes and replies, bookings, orders, quotes and review requests.</div>`;
+      list.forEach(x=>{ ibxSeen()[x.id] = true; });   // seen once shown: the badge clears, the highlight stays for this look
+    } else {
+      body = IBX_THREADS.map(t=>`<div class="irow ${t.unread?'new':''}" onclick="ibxOpenThread('${t.k}')"><div class="av" style="background:${t.bg}">${t.ini}</div>
+        <div class="tx"><b style="font-size:13.5px">${t.who}</b><div class="sb one">${(t.msgs[t.msgs.length-1]||['',''])[1]}</div></div>
+        <div style="text-align:right;flex-shrink:0"><div class="sb" style="font-size:11px;color:var(--muted);font-weight:600">${t.ago}</div>${t.unread?`<span class="ibx-dot" style="position:static;display:inline-flex;margin-top:4px;border:0">${t.unread}</span>`:''}</div></div>`).join('')
+        + `<div class="inote">Talk to a pro before you book, a brand about an order, a business about a quote. The booking or order rides along at the top of the chat.</div>`;
+    }
+  }
+  /* Like every other tab (Sean): below the top bar, above the tab bar, both still showing and live. The bars are
+     brought back if the phone had auto-hidden them; any navigation goes through render(), which closes the Inbox. */
+  $('frame').classList.remove('chrome-hidden');
+  const topEl = $('screen').querySelector('.top'), tb = $('tabbar');
+  host.style.setProperty('--ibx-top', (topEl ? topEl.offsetHeight : 0) + 'px');
+  host.style.setProperty('--ibx-bot', (tb ? tb.offsetHeight + (parseFloat(getComputedStyle(tb).bottom)||0) : 0) + 'px');
+  host.innerHTML = `<div id="ibx" role="dialog" aria-label="${title}"><div class="ihd">${back}<b style="${S.thread?'':'padding-left:4px'}">${title}</b>${close}</div>${tabs}<div class="ibody">${body}</div>${foot}</div>`;
+  if(S.thread){ const b = host.querySelector('.ibody'); if(b) b.scrollTop = b.scrollHeight; }
+  ibxSyncDots();
+}
+
 function pfPostsHtml(){
   const gws = state.favs.slice(0,5).map(k=>gwMetaFromKey(k)).filter(Boolean);
   const compose = `<div class="pf-compose"><textarea id="pfText" maxlength="400" placeholder="Share something with your followers…"></textarea>
@@ -7887,7 +8038,7 @@ function pfPostsHtml(){
 function profileBody(){
   const tab = ['posts','cal','orders','saved'].includes(state.profileTab) ? state.profileTab : 'posts';
   const comms = state.commFavs.map(k=>commByKey(k)).filter(Boolean);
-  return `<div class="pf-cover" style="background-image:url('${USER.cover}');position:relative">${utilX('on-photo')}</div>
+  return `<div class="pf-cover" style="background-image:url('${USER.cover}');position:relative">${pfIbxButtons()}</div>
     <div class="pf-head">
       <div class="pf-acts"><button class="pf-btn" onclick="openSettings('account')">Edit profile</button><button class="pf-btn" onclick="shareProfile()">Share</button>
         <button class="pf-btn ic" onclick="openSettings('root')" title="Settings">⚙</button></div>
@@ -8006,7 +8157,8 @@ function renderProfile(){
 
 /* ═════════ RENDER ═════════ */
 function render(){
-  render._n = (render._n||0) + 1;   // lets the masthead rule tell whether a click already re-rendered
+  render._n = (render._n||0) + 1;
+  if(state.ibx){ state.ibx = null; const h = $('ibxHost'); if(h) h.innerHTML = ''; }   // navigating away closes the Inbox (-56)   // lets the masthead rule tell whether a click already re-rendered
   $('frame').classList.toggle('lab-canvas', LAB_CANVAS);
   // Leaving the screen an app was opened over (the masthead stays live on desktop) closes the app.
   if(state.app && state.app.screen !== state.screen) closeApp(true);
