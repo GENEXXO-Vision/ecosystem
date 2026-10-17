@@ -382,6 +382,18 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   .pf-ibx .pb svg{width:17px;height:17px}
   .pf-ibx .pb .ibx-dot{top:-5px;right:-6px}
   .pf-ibx .utilx.on-photo{position:static}
+  /* Switch account (-58): your own Pro Zone dashboard */
+  @media (max-width:379px){ .pf-long{display:none} }   /* narrow phones: "Edit" so four buttons clear the avatar */
+  .pro-band{display:flex;align-items:center;gap:8px;background:#111116;color:#fff;padding:10px 16px;font-size:12.5px;font-weight:700}
+  .pro-band b{font-weight:800}.pro-band .bkbtn{margin-left:auto;background:#fff;color:#111116;border-color:#fff}
+  .pro-kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px}
+  .pro-kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+  .pro-kpi b{display:block;font-family:var(--cond);font-size:30px;font-weight:700;line-height:1.05}
+  .pro-kpi span{font-size:11.5px;color:var(--muted);font-weight:700}
+  .pro-vbadge{font-size:10px;font-weight:800;padding:3px 8px;border-radius:99px;background:#16A34A;color:#fff;letter-spacing:.04em}
+  .acct-row{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+  .acct-row .av{width:44px;height:44px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px}
+  .acct-row b{display:block;font-size:14px;font-weight:800}.acct-row .s{font-size:11.5px;color:var(--muted);font-weight:600}
   .tab{position:relative}
   .tab .ibx-dot.tbd{top:1px;right:calc(50% - 22px);border-color:#fff}
   #ibx{position:fixed;top:var(--ibx-top,53px);bottom:var(--ibx-bot,64px);left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:96;background:var(--bg);display:flex;flex-direction:column;animation:ibxIn .26s cubic-bezier(.32,.72,.28,1)}
@@ -1639,7 +1651,7 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-57"></script>
+<script src="genexxo-data.js?v=2026.08.26-58"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
@@ -2539,7 +2551,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-57';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-58';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -8032,6 +8044,54 @@ function ibxPaint(){
   ibxSyncDots();
 }
 
+/* ═════════ SWITCH ACCOUNT (-58, Profile v2 stage 4) ═════════
+   One GENEXXO ID, several hats: the personal you, plus any Pro or Business Zone you run (like Instagram's professional view
+   or LinkedIn pages). The demo persona also runs "Alex Morgan Coaching", a fictional Pro Zone in ClimbXX. Session-only. */
+const PRO_ME = {name:'Alex Morgan Coaching', ini:'AC', grad:'linear-gradient(135deg,#E85D3A,#FF8C42)', gw:'ClimbXX', emoji:'🧗',
+  tag:'Bouldering technique · London', cover:'photo-1522163182402-834f871fd851'};
+function openSwitch(){ state.pfSwitch = true; render(); }
+function closeSwitch(){ state.pfSwitch = false; render(); }
+function switchAcct(m){ state.acct = m; state.pfSwitch = false; state.setPage = null; render(); const s=$('screen'); if(s) s.scrollTop = 0;
+  toast(m==='pro' ? 'Now viewing as '+PRO_ME.name : 'Back to '+USER.name); }
+function switchSheetHtml(){
+  if(!state.pfSwitch) return '';
+  const cur = state.acct==='pro' ? 'pro' : 'me', tick = '<span class="bkst">Current</span>';
+  return `<div class="gxscrim" onclick="closeSwitch()"></div><div class="gxsheet">
+    <div style="width:38px;height:4px;border-radius:99px;background:rgba(17,17,22,.14);margin:0 auto 12px"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:16px;font-weight:800">Switch account</div><div onclick="closeSwitch()" style="font-size:13px;font-weight:800;color:var(--muted);cursor:pointer;padding:4px 6px">✕</div></div>
+    <div class="acct-row" onclick="switchAcct('me')"><div class="av" style="background:${USER.grad}">${USER.ini}</div><div style="flex:1;min-width:0"><b>${USER.name}</b><span class="s">Personal · ${USER.handle}</span></div>${cur==='me'?tick:''}</div>
+    <div class="acct-row" onclick="switchAcct('pro')"><div class="av" style="background:${PRO_ME.grad}">${PRO_ME.ini}</div><div style="flex:1;min-width:0"><b>${PRO_ME.name}</b><span class="s">Pro Zone · ${PRO_ME.emoji} ${PRO_ME.gw}</span></div>${cur==='pro'?tick:''}</div>
+    <div class="acct-row" onclick="closeSwitch();toggleApply()"><div class="av" style="background:rgba(17,17,22,.08);color:var(--ink);font-size:20px">+</div><div style="flex:1;min-width:0"><b>Add a Pro or Business Zone</b><span class="s">Sell your time, or list your business · same GENEXXO ID</span></div></div>
+    <div style="font-size:11px;color:var(--muted);font-weight:600;line-height:1.5;margin-top:12px">One GENEXXO ID, several hats: the personal you, plus any Pro or Business Zone you run.</div></div>`;
+}
+function pfProDash(){
+  const at = (d,t) => dayLabel(d)+' · '+t;
+  const sessions = [[nextDow(4),'18:00','Footwork clinic','4 people · The Arch'],[nextDow(6),'10:00','1:1 · Priya Nair','Mile End Climbing Wall'],[nextDow(0),'14:00','Intro to bouldering','6 people · The Arch']];
+  return `<div class="pro-band">⇄ Viewing as <b>${PRO_ME.name}</b><span class="bkbtn" onclick="switchAcct('me')">Switch back</span></div>
+    <div class="pf-cover" style="background-image:url('${FY_IMG(PRO_ME.cover)}');position:relative">${pfIbxButtons()}</div>
+    <div class="pf-head">
+      <div class="pf-acts"><button class="pf-btn" onclick="toast('Your public Pro Zone page, as clients see it')">Public page</button><button class="pf-btn" onclick="toast('Edit services, prices and availability')">Services</button>
+        <button class="pf-btn ic" onclick="openSwitch()" title="Switch account">⇄</button></div>
+      <div class="pf-av" style="background:${PRO_ME.grad}">${PRO_ME.ini}</div>
+      <div class="pf-name">${PRO_ME.name} <span class="pro-vbadge">✓ Verified pro</span></div>
+      <div class="pf-handle">Pro Zone · ${PRO_ME.emoji} ${PRO_ME.gw}</div>
+      <div class="pf-bio">${PRO_ME.tag}. Footwork, movement and getting past plateaus, for every level.</div>
+    </div>
+    <div class="sect"><div class="sect-h"><div class="t">This week</div><div class="a">your Pro Zone</div></div></div>
+    <div class="pro-kpis"><div class="pro-kpi"><b>6</b><span>Sessions booked</span></div><div class="pro-kpi"><b>2</b><span>New enquiries</span></div>
+      <div class="pro-kpi"><b>4.9 ★</b><span>18 reviews</span></div><div class="pro-kpi"><b>312</b><span>Profile visits</span></div></div>
+    <div class="sect"><div class="sect-h"><div class="t">Next sessions</div><div class="a">${sessions.length}</div></div></div>
+    ${sessions.map(([d,t,a,b])=>`<div class="bkrow" style="align-items:center"><div class="ic" style="background:#111116;color:#fff;font-size:10px;font-weight:800">${d.toLocaleDateString('en-GB',{weekday:'short'})}</div>
+      <div style="flex:1;min-width:0"><div class="h"><b>${a}</b><span class="bkst">Booked</span></div><div class="s">${at(d,t)} · ${b}</div></div></div>`).join('')}
+    <div class="sect"><div class="sect-h"><div class="t">Enquiries</div><div class="a">2 new</div></div></div>
+    ${[['Maya Chen','MC','linear-gradient(135deg,#0D9488,#2DD4BF)','Could you do a 1:1 on overhangs next week?'],['Tom Ashby','TA','linear-gradient(135deg,#E85D3A,#FF8C42)','A group of five for a birthday session, any Saturday?']].map(([n,i,g,q])=>`<div class="bkrow" style="align-items:center"><div class="ic" style="background:${g};color:#fff;font-size:12px;font-weight:800;border-radius:50%">${i}</div>
+      <div style="flex:1;min-width:0"><div class="h"><b>${n}</b></div><div class="s">${q}</div></div><span class="bkbtn" onclick="toast('Reply to ${n}')">Reply</span></div>`).join('')}
+    <div class="sect"><div class="sect-h"><div class="t">Latest reviews</div><div class="a">4.9 ★</div></div></div>
+    ${[['Priya N.','Fixed my footwork in one session. Sent my project the next weekend.'],['Jonas W.','Patient, clear, and great at spotting bad habits.']].map(([n,t])=>`<div class="bkrow"><div style="flex:1"><div style="color:#F5B800;letter-spacing:1px">★★★★★</div><div class="s" style="font-size:12px;color:var(--ink);font-weight:600;margin-top:3px">“${t}”</div><div class="s">${n}</div></div></div>`).join('')}
+    <div class="pf-priv">💳 Clients pay you directly through your payment provider. <b>GENEXXO facilitates the booking and never holds the money</b>; payouts show in your provider's dashboard.</div>
+    <div style="text-align:center;margin:16px 0 4px"><span class="bkbtn" onclick="switchAcct('me')">⇄ Switch back to ${USER.name}</span></div>
+    <div style="height:16px"></div>`;
+}
 function pfPostsHtml(){
   const gws = state.favs.slice(0,5).map(k=>gwMetaFromKey(k)).filter(Boolean);
   const compose = `<div class="pf-compose"><textarea id="pfText" maxlength="400" placeholder="Share something with your followers…"></textarea>
@@ -8046,12 +8106,13 @@ function pfPostsHtml(){
   return compose + (list || `<div class="empty">Your posts — written here, shared from apps, or started in communities — appear here.</div>`);
 }
 function profileBody(){
+  if(state.acct==='pro') return pfProDash();
   const tab = ['posts','cal','orders','saved'].includes(state.profileTab) ? state.profileTab : 'posts';
   const comms = state.commFavs.map(k=>commByKey(k)).filter(Boolean);
   return `<div class="pf-cover" style="background-image:url('${USER.cover}');position:relative">${pfIbxButtons()}</div>
     <div class="pf-head">
-      <div class="pf-acts"><button class="pf-btn" onclick="openSettings('account')">Edit profile</button><button class="pf-btn" onclick="shareProfile()">Share</button>
-        <button class="pf-btn ic" onclick="openSettings('root')" title="Settings">⚙</button></div>
+      <div class="pf-acts"><button class="pf-btn" onclick="openSettings('account')">Edit<span class="pf-long"> profile</span></button><button class="pf-btn" onclick="shareProfile()">Share</button>
+        <button class="pf-btn ic" onclick="openSwitch()" title="Switch account">⇄</button><button class="pf-btn ic" onclick="openSettings('root')" title="Account">⚙</button></div>
       <div class="pf-av" style="background:${USER.grad}">${USER.ini}</div>
       <div class="pf-name">${USER.name} <span class="pf-id">✓ GENEXXO ID</span></div>
       <div class="pf-handle">${USER.handle}</div>
@@ -8236,6 +8297,7 @@ function renderProfile(){
   <div class="push">${profileBody()}</div>
   ${receiptSheetHtml()}
   ${peopleSheetHtml()}
+  ${switchSheetHtml()}
   ${settingsHtml()}`;
 }
 
