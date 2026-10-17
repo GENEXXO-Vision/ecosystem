@@ -1651,7 +1651,7 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-58"></script>
+<script src="genexxo-data.js?v=2026.08.26-59"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
@@ -2551,7 +2551,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-58';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-59';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -6873,8 +6873,8 @@ function renderForYou(){
     why:'Because your last surf was at Fistral', cta:{label:'See the swell', go:"openApp('wave-tracker')"},
     rows:[{icon:'👥', t:'Cornwall Dawn Patrol', s:'Join the paddle-out', go:"openComm('cornwall-dawn-patrol')"}]}));
   if(week.length) weekend.push(fyCard({tag:'📅 Already in your week', title:`${week.length} plan${week.length>1?'s':''} lined up`,
-    rows: week.map(w=>({icon:w.icon||'📌', t:esc(w.title), s:`${d(w.d)}${w.time?' · '+w.time:''}${w.src?' · '+esc(w.src):''}`, go:"setTab('ai')"})),
-    why:'From your plans', cta:{label:'Open your week', go:"setTab('ai')"}}));
+    rows: week.map(w=>({icon:w.icon||'📌', t:esc(w.title), s:`${d(w.d)}${w.time?' · '+w.time:''}${w.src?' · '+esc(w.src):''}`, go:"setTab('profile');setProfileTab('cal')"})),
+    why:'From your plans', cta:{label:'Open your calendar', go:"setTab('profile');setProfileTab('cal')"}}));
 
   const life = [];
   if(on('dxDates')) life.push(fyCard({tag:`🎂 In 9 days · ${d(bday)}`, title:'Sam’s birthday',
@@ -7198,18 +7198,18 @@ function aiBookedEvents(){
   return aiLive().filter(w=>w.booked).map(w=> w._ev || (w._ev = {
     type:'Bookmark', icon:w.icon, time:dayLabel(w.d)+(w.time&&w.time!=='—'?' '+w.time:''), title:w.title,
     desc: w.comm ? `You're going, via ${w.prov} on ${w.src}.` : w.pro ? `Booked direct with ${w.prov} in ${w.src}. You pay them; GENEXXO never touches funds.` : `Booked by your GENEXXO AI through the ${w.src} agent — direct with the provider.`,
-    label:'Your plans', accentC:'#111116', go: w.comm ? `openComm('${w.comm}')` : w.pro ? `openPro('${w.pro}')` : `setTab('ai')`,
+    label:'Your plans', accentC:'#111116', go: w.comm ? `openComm('${w.comm}')` : w.pro ? `openPro('${w.pro}')` : `setTab('profile');setProfileTab('cal')`,
   }));
 }
-function aiWeekHtml(){
-  const items = [...aiLive()].sort((a,b)=>a.d-b.d || String(a.time).localeCompare(String(b.time)));
-  return `<div class="sect"><div class="sect-h"><div class="t">Your week</div><div class="a">${items.length} plans</div></div></div>
-    <div class="aiweek">${items.map(w=>`
-      <div class="aiwk${w.fresh?' fresh':''}">
-        <div class="d">${dayLabel(w.d)}${w.time&&w.time!=='—'?' · '+w.time:''}</div>
-        <div class="t"><span>${w.icon}</span>${escHtml(w.title)}</div>
-        <div class="s">${w.fresh?'Just booked · ':''}${w.src}</div>
-      </div>`).join('')}</div>`;
+/* -59 (Profile v2 stage 5): plans live in ONE calendar, Profile › Calendar. The AI front page keeps a single line
+   pointing there instead of its own strip of plan cards. */
+function aiWeekLinkHtml(){
+  const items = [...aiLive()].sort((a,b)=>a.d-b.d || String(a.time).localeCompare(String(b.time))), n = items[0], fresh = items.some(w=>w.fresh);
+  return `<div class="bkrow" style="cursor:pointer;align-items:center;margin-top:14px${fresh?';border-color:#111116':''}" onclick="setTab('profile');setProfileTab('cal')">
+    <div class="ic" style="background:#111116;color:#fff">📅</div>
+    <div style="flex:1;min-width:0"><div class="h"><b>Your week · ${items.length} plan${items.length===1?'':'s'}</b>${fresh?'<span class="bkst">Just booked</span>':''}</div>
+      <div class="s">${n?`Next: ${escHtml(n.title)}, ${dayLabel(n.d)}${n.time&&n.time!=='—'?' · '+n.time:''}`:'Nothing planned yet'}</div></div>
+    <span class="bkbtn">Calendar ›</span></div>`;
 }
 function aiTasksHtml(){
   return `<div class="sect"><div class="sect-h"><div class="t">Do it for me</div><div class="a">agents act for you</div></div></div>
@@ -7597,7 +7597,7 @@ function renderAI(){
         ${scopeTabs ? '' : `<div style="margin-left:auto">${utilX()}</div>`}
       </div>
       <div class="bub" style="background:#fff;border:1px solid var(--line)">Hi there — I can work across your whole network: your gateways, their brands, agents and communities. Where do we start?</div>
-      ${aiWeekHtml()}
+      ${aiWeekLinkHtml()}
       ${aiTasksHtml()}
       ${inputRow}
       <div class="prompts">${prompts.map(p=>`<div class="prompt" style="background:#fff;border-color:var(--line)" onclick="sendAI(this.textContent)">${p}</div>`).join('')}</div>
@@ -7758,6 +7758,8 @@ function renderEvents(){
       }).join('')}</div>` : ''}
     <div class="chips">${filts.map(([k,lb])=>`<div class="chip ${F===k?'on':''}" onclick="state.eventsFilter='${k}';state.eventsMemo=null;render();utilHost().scrollTo(0,0)">${lb}</div>`).join('')}</div>
     <div style="height:8px"></div>
+    ${F==='bookmarks'?`<div class="bkrow" style="cursor:pointer;align-items:center" onclick="setTab('profile');setProfileTab('cal')"><div class="ic" style="background:#111116;color:#fff">📅</div>
+      <div style="flex:1;min-width:0"><div class="h"><b>Your plans live in one calendar</b></div><div class="s">Bookings, RSVPs and reminders, wherever you made them</div></div><span class="bkbtn">Profile › Calendar</span></div>`:''}
     ${cards || (scope!=='network' && !inScope.length
       ? `<div class="empty">No events ${scope==='gateway'?'inside '+escHtml(ctx.gwName):'across '+escHtml(ctx.sName)} yet —<br>the Network calendar has everything else.</div>`
       : `<div class="empty">Nothing under this filter right now —<br>the network never sleeps for long.</div>`)}
@@ -7819,7 +7821,7 @@ function pfCalItems(){
     const kind = w.comm ? 'rsvp' : w.booked ? 'book' : 'plan';
     return { d:new Date(w.d), time:w.time, icon:w.icon, title:w.title, kind,
       sub: w.comm ? `${escHtml(w.prov)} · ${w.src}` : w.pro ? `with ${escHtml(w.prov)} · ${w.src}` : w.booked ? `via ${w.src}${w.prov?' · '+escHtml(w.prov):''}` : w.src,
-      go: w.comm ? `openComm('${w.comm}')` : w.pro ? `openPro('${w.pro}')` : `setTab('ai')` };
+      go: w.comm ? `openComm('${w.comm}')` : w.pro ? `openPro('${w.pro}')` : w.booked ? `setProfileTab('orders')` : `setTab('ai')` };
   });
   if(state.settings.dxDates !== false) items.push({ d:plusDays(new Date(),9), time:'', icon:'🎂', title:'Sam’s birthday', kind:'rem', sub:'3 gift ideas in Saved', go:`setProfileTab('saved')` });
   return items.sort((a,b)=>a.d-b.d || String(a.time).localeCompare(String(b.time)));
