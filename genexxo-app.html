@@ -1651,7 +1651,7 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-59"></script>
+<script src="genexxo-data.js?v=2026.08.26-60"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
@@ -2551,7 +2551,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-59';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-60';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2584,6 +2584,31 @@ function chromeBar(o){
    back into the feed you came from, right where you left off. Kept separate from
    the utility-tab toggle memory (_before) and the altitude fallback below. */
 let _navSilent = false;   // set while goBack does its own altitude descent, so those hops don't re-record
+/* ═════ TAB ORIGIN (-60, 2026-10-17) ═════
+   Sean: "if another canvas opens above, when we close it we should be back in the initial one." The navSnapshot rule
+   below still holds for Back in general (a tab is an overlay, not a place), but a canvas or gateway opened FROM a tab
+   remembers that tab exactly (which tab, Profile's sub-tab, Events' filter and scope, the scroll, and what was beneath),
+   and closing it, or Back from the gateway before you have moved on, puts you back there. */
+function placeSnap(){
+  return { tab:'home', screen:state.screen, sector:state.sector, gateway:state.gateway, _gwObj:state._gwObj, gwTab:state.gwTab, space:state.space,
+    returnGw:state.returnGw, gwZones:state.gwZones, gwZoneTab:state.gwZoneTab, gwBarPage:state.gwBarPage,
+    zone:state.zone, zoneTab:state.zoneTab, zoneBarPage:state.zoneBarPage, scroll:$('screen').scrollTop };
+}
+function tabOrigin(){
+  const t = state.utilOver || (UTIL_TABS.includes(state.tab) ? state.tab : null); if(!t) return null;
+  return { tab:t, over:!!state.utilOver, beneath: state.utilOver ? placeSnap() : (state._before ? {...state._before} : null),
+    profileTab:state.profileTab, eventsFilter:state.eventsFilter, eventsScope:state.eventsScope, scroll:utilHost().scrollTop };
+}
+function restoreTabOrigin(o){
+  state.zone=null; state.zoneProduct=null; state.shopMenu=false; state.cvHist=[]; state._gwOrigin=null;
+  _navSilent = true;
+  if(o.beneath) navRestore(o.beneath); else { state.screen='root'; state.tab='home'; state._before=null; }
+  state.utilOver=null; setTab(o.tab);            // reopens the tab over (desktop) or instead of (phone) what was beneath
+  _navSilent = false;
+  state.profileTab=o.profileTab; state.eventsFilter=o.eventsFilter; state.eventsScope=o.eventsScope;
+  render(); utilHost().scrollTo(0, o.scroll||0);
+  if(window.__syncChrome) window.__syncChrome();
+}
 function navSnapshot(){
   // A bottom-bar utility tab (Discover/AI/Events/Profile) is a toggleable overlay you
   // open/close by tapping it — never a real destination, so Back must not land you back
@@ -2615,6 +2640,7 @@ function navRestore(b){
   if (window.__syncChrome) window.__syncChrome();   // bars stay visible until you scroll again
 }
 function openGateway(name, sectorKey){
+  const fromTab = tabOrigin();   // -60: Back from this gateway, before you move on, returns to the tab
   pushHist();
   // Following a link OUT of a floating utility tab — the screen stays 'gateway', so the
   // overlay's own safety net cannot see this; close it explicitly or it hides the arrival.
@@ -2628,10 +2654,12 @@ function openGateway(name, sectorKey){
   ['drawerList','drawerRList'].forEach(id=>{ const l=$(id); if(l && !PANELS_PINNED()) settleListScroll(l, 0); });   // a new place: drawers start fresh
   state._before = null; state.tab = 'home';   // committed to a real place — tab toggle memory resets
   logVisit('gateway', key);
+  state._gwOrigin = fromTab ? {...fromTab, gwName:name} : null;
   state._domainIn = true;    // arrival → let the domain assemble itself once (see domainMark)
   render(); $('screen').scrollTo(0,0);
 }
 function openSector(key){
+  state._gwOrigin = null;   // moved on (-60)
   pushHist();
   // leaving a gateway for its own sector = a glimpse; remember the way back
   state.returnGw = (state.screen==='gateway' && state._gwObj && state._gwObj.sector===key)
@@ -2642,7 +2670,7 @@ function openSector(key){
   logVisit('sector', key);
   render(); $('screen').scrollTo(0,0);
 }
-function goHub(){ state._before=null; state._hist=[]; state.eventsMemo=null; state.discoverMemo=null; state.screen='root'; state.gateway=null; state._gwObj=null; state.showFavs=false; state.returnGw=null; state.zone=null; state.zoneProduct=null; state._zoneIn=false; state.tab='home'; render(); }
+function goHub(){ state._gwOrigin=null; state._before=null; state._hist=[]; state.eventsMemo=null; state.discoverMemo=null; state.screen='root'; state.gateway=null; state._gwObj=null; state.showFavs=false; state.returnGw=null; state.zone=null; state.zoneProduct=null; state._zoneIn=false; state.tab='home'; render(); }
 
 /* Home always takes you home. The other four are toggles: first tap opens the tab
    (remembering where you were), a second tap closes it and puts you straight back —
@@ -2780,6 +2808,8 @@ function goBack(){
   if (state.zoneProduct!=null){ closeProduct(); return; }
   // 3) a commercial layer (Brands/Apps/Pro's) is open on a gateway → collapse to its feed first
   if (state.screen==='gateway' && state.gwZones){ gwHome(); return; }
+  // 3b) a gateway opened from a tab, and you haven't moved on: Back returns to that tab (-60, Sean)
+  if (state.screen==='gateway' && state._gwOrigin && state._gwObj && state._gwOrigin.gwName===state._gwObj.name){ const o=state._gwOrigin; restoreTabOrigin(o); return; }
   // 4) descend one rung of altitude. This runs BEFORE history on purpose — see above.
   _navSilent = true;                                      // these moves are a climb, not a new jump
   const rung = backTarget();
@@ -3291,6 +3321,7 @@ function toggleBrandFav(k){
 }
 function openZoneFav(k, tab){   // jump into a pinned brand from anywhere — wire up its gateway first
   const z=ZONES[k]; if(!z) return;
+  state._zoneOrigin = tabOrigin();   // before anything is rewired: the tab this canvas opens from, if any (-60)
   pushHist();               // record the true origin BEFORE we rewire the gateway underneath
   state.showFavs=false;
   // getGateway(), not the raw def — it carries the taxonomy-resolved sector, so a brand zone
@@ -5807,7 +5838,9 @@ function openZone(k, tab){
   // page follows it — Media/About/Events live on page 2 ('more'), everything else on page 1.
   const landTab = tab||'feed';
   if(LAB_CANVAS){   // the canvas remembers where it was opened from, and starts a fresh trail of its own
-    state.cvFrom = state.screen==='gateway' ? {gwZones:state.gwZones, gwZoneTab:state.gwZoneTab, gwBarPage:state.gwBarPage, scroll:$('screen').scrollTop} : {gwZones:false};
+    const origin = state._zoneOrigin !== undefined ? state._zoneOrigin : tabOrigin(); state._zoneOrigin = undefined;
+    state.cvFrom = origin ? {tab:origin}
+      : state.screen==='gateway' ? {gwZones:state.gwZones, gwZoneTab:state.gwZoneTab, gwBarPage:state.gwBarPage, scroll:$('screen').scrollTop} : {gwZones:false};
     state.cvHist = []; state._cvIn = true;
   }
   state.zone=k; state.zoneTab=landTab; state.zoneProduct=null; state.zoneSize=null;
@@ -5831,6 +5864,7 @@ function canvasBack(){
 function canvasClose(){
   cvSheetClose(true);
   const f = state.cvFrom || {gwZones:false};
+  if(f.tab){ state.cvFrom=null; restoreTabOrigin(f.tab); return; }   // opened from a tab → back into that tab (-60)
   state.zone=null; state.zoneProduct=null; state.shopMenu=false; state.screen='gateway'; state.cvHist=[];
   state.gwZones=!!f.gwZones; state.gwZoneTab=f.gwZoneTab||'brands'; state.gwBarPage=f.gwBarPage||'commerce';
   render(); $('screen').scrollTo(0, f.scroll||0); if(window.__resetChrome) window.__resetChrome();
