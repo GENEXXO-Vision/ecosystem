@@ -323,6 +323,53 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   .pf-post .h{font-size:13px;font-weight:800}.pf-post .h span{color:var(--muted);font-weight:600}
   .pf-post .tx{font-size:14px;line-height:1.5;margin-top:3px}
   .pf-post .ctx{display:inline-flex;gap:5px;align-items:center;margin-top:7px;font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:99px;background:rgba(17,17,22,.05);color:var(--muted)}
+  /* ── Profile v2 (-55): Posts (public) · Calendar · Orders · Saved (only you); Followers / Following sheet ── */
+  .pf-tabs div small{display:block;font-size:8.5px;font-weight:800;letter-spacing:.08em;color:var(--muted);margin-top:1px;text-transform:uppercase;opacity:.8}
+  .pf-stats span.tap{cursor:pointer}.pf-stats span.tap:hover{color:var(--ink)}
+  .pf-priv{margin:12px 16px 2px;padding:9px 12px;border-radius:12px;background:rgba(17,17,22,.045);font-size:11.5px;line-height:1.5;color:var(--muted);font-weight:600}
+  .pf-priv b{color:var(--ink)}
+  .pf-seg{display:flex;gap:6px;padding:12px 16px 2px;overflow-x:auto;scrollbar-width:none}
+  .pf-seg::-webkit-scrollbar{display:none}
+  .pf-seg span{flex-shrink:0;font-size:12px;font-weight:800;padding:7px 12px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--muted);cursor:pointer}
+  .pf-seg span.on{background:#111116;color:#fff;border-color:#111116}
+  .cal-mo{padding:12px 16px 0;font-weight:800;font-size:14.5px}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:6px 16px 4px}
+  .cal-grid .dh{font-size:10px;font-weight:800;color:var(--muted);text-align:center;padding:3px 0}
+  .cal-grid .d{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;cursor:pointer;position:relative}
+  .cal-grid .d.mute{color:rgba(17,17,22,.25)}
+  .cal-grid .d.today{background:#111116;color:#fff}
+  .cal-grid .d.has::after{content:"";position:absolute;bottom:5px;width:5px;height:5px;border-radius:99px;background:var(--c,#111116)}
+  .cal-grid .d.today.has::after{background:#fff}
+  .cal-grid .d.sel{box-shadow:0 0 0 2px #111116}
+  .cal-day{padding:14px 16px 6px;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .cal-ev{display:flex;gap:11px;background:#fff;border:1px solid var(--line);border-radius:14px;margin:0 16px 8px;padding:11px 12px;cursor:pointer}
+  .cal-ev .bar{width:3px;border-radius:2px;flex-shrink:0}
+  .cal-ev .tm{width:44px;flex-shrink:0;font-size:12.5px;font-weight:800;padding-top:1px}
+  .cal-ev .tm small{display:block;font-size:9.5px;color:var(--muted);font-weight:700}
+  .cal-ev b{font-size:13px;font-weight:800;display:block}
+  .cal-ev .s{font-size:11px;color:var(--muted);font-weight:600}
+  .pf-kind{display:inline-block;margin-top:5px;font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:99px}
+  .k-book{background:rgba(74,108,247,.1);color:#3550d4}.k-rsvp{background:rgba(139,92,246,.12);color:#6d3fe0}.k-rem{background:rgba(245,184,0,.16);color:#8a6d00}.k-plan{background:rgba(17,17,22,.06);color:var(--muted)}
+  .ord-card{background:#fff;border:1px solid var(--line);border-radius:15px;margin:0 16px 10px;padding:13px 14px}
+  .ord-card .hd{display:flex;align-items:center;gap:11px}
+  .ord-card .lg{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
+  .ord-card b{font-size:13px;font-weight:800;display:block}
+  .ord-card .s{font-size:10.5px;color:var(--muted);font-weight:700;margin-top:1px}
+  .ord-steps{display:flex;gap:5px;margin-top:11px}.ord-steps i{flex:1;height:4px;border-radius:2px;background:rgba(17,17,22,.1)}.ord-steps i.on{background:#111116}
+  .ord-stepl{display:flex;justify-content:space-between;font-size:9.5px;font-weight:700;color:var(--muted);margin-top:4px}
+  .ord-rate{display:flex;align-items:center;gap:8px;margin-top:10px;padding:8px 10px;border-radius:11px;background:rgba(245,184,0,.09);font-size:11.5px;font-weight:700}
+  .ord-rate .st{color:#F5B800;letter-spacing:1px;font-size:15px;cursor:pointer}
+  .ord-acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+  .ord-qr{width:112px;height:112px;margin:10px auto 2px;display:block;background:#fff;padding:5px;border:1px solid var(--line);border-radius:10px}
+  .sv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 16px 0}
+  .sv-c{background:#fff;border:1px solid var(--line);border-radius:15px;overflow:hidden;cursor:pointer}
+  .sv-c .im{height:92px;display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:2px}
+  .sv-c .im div{background:#ddd center/cover}.sv-c .im div:first-child{grid-row:span 2}
+  .sv-c .cap{padding:8px 10px}.sv-c .cap b{font-size:12.5px;font-weight:800;display:block}.sv-c .cap span{font-size:10.5px;color:var(--muted);font-weight:600}
+  .sv-new{display:flex;align-items:center;justify-content:center;min-height:138px;color:var(--muted);font-weight:800;font-size:12.5px;border-style:dashed}
+  .pp-row{display:flex;align-items:center;gap:11px;padding:10px 2px;border-bottom:1px solid var(--line)}
+  .pp-row .av{width:40px;height:40px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px}
+  .pp-row b{font-size:13px;font-weight:800;display:block}.pp-row .s{font-size:11px;color:var(--muted);font-weight:600}
   .pf-post .eng{font-size:11.5px;color:var(--muted);font-weight:700;margin-top:8px;display:flex;gap:16px}
   #pfSet{position:fixed;left:50%;transform:translateX(-50%);top:0;bottom:0;width:100%;max-width:430px;z-index:70;background:var(--bg);display:flex;flex-direction:column}
   .ps-top{display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top,0px)) 14px 12px;border-bottom:1px solid var(--line);background:#fff}
@@ -1544,7 +1591,7 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-54"></script>
+<script src="genexxo-data.js?v=2026.08.26-55"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
@@ -2444,7 +2491,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-54';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-55';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -5122,7 +5169,7 @@ function paintProBook(){
     const d = new Date(b.iso+'T12:00');
     body = `<div class="bk-done"><div class="ck">✓</div><h3>You're booked</h3>
       <p><b>${svc.name}</b> with ${x.name}<br>${d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})} · ${b.time}</p>
-      <p style="font-size:12px">It's in Profile › My bookings, Your week and Events. ${x.name.split(' ')[0]} will message you before the day.</p></div>
+      <p style="font-size:12px">It's in Profile › Calendar and Orders, and in Events. ${x.name.split(' ')[0]} will message you before the day.</p></div>
       <button class="ac-allow" onclick="state.app.book=null;paintProPage()">Done</button>
       <button class="ac-cancel" onclick="closeApp(true);setTab('profile')">View my bookings</button>`;
   }
@@ -5173,7 +5220,7 @@ function paintProPanels(gw, L, R){
   R.innerHTML = `<div class="gwa-h"><b style="color:${acc}">🤝 How booking works</b><span>${esc(gw.name)}</span></div>
     <div class="gac"><div class="gac-row"><i>📅</i><div><b>Pick a time</b><span>Live availability for the next two weeks.</span></div></div>
       <div class="gac-row"><i>💳</i><div><b>Pay the pro directly</b><span>GENEXXO arranges the booking and never touches your money.</span></div></div>
-      <div class="gac-row"><i>↩️</i><div><b>Free cancellation</b><span>Up to 48 hours before. Change or cancel from Profile › My bookings.</span></div></div>
+      <div class="gac-row"><i>↩️</i><div><b>Free cancellation</b><span>Up to 48 hours before. Change or cancel from Profile › Orders.</span></div></div>
       <div class="gac-row"><i>💬</i><div><b>Messages in GENEXXO</b><span>Plans and kit lists arrive in your inbox.</span></div></div></div>
     ${others.length?`<div class="gac"><div style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.5;margin-bottom:4px">More pros in ${esc(gw.name)}</div>
       ${others.map(p=>`<div class="gac-row" style="cursor:pointer" onclick="openPro('${p.key}')"><i style="width:26px;height:26px;border-radius:8px;background:${p.color};font-size:9.5px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center">${proIni(p.name)}</i><div><b>${p.name}</b><span>${p.role} · ★ ${p.rating}</span></div></div>`).join('')}</div>`:''}`;
@@ -5387,7 +5434,7 @@ function paintAppPanels(gw, L, R){
   R.innerHTML = `<div class="gwa-h"><b style="color:${acc}">⚡ Connected</b><span>in ${esc(gw.name)}</span></div>
     <div class="gac"><div class="gac-row"><i>📣</i><div><b>Shares land in the ${esc(gw.name)} feed</b><span>Your sends show up alongside the community, tagged with the app.</span></div></div>
       <div class="gac-row"><i>👤</i><div><b>One identity</b><span>Signed in with GENEXXO. The same you in every gateway, with no new account.</span></div></div>
-      <div class="gac-row"><i>★</i><div><b>Favourites</b><span>Star it once and it's in your ★ panel and Profile › My Apps, everywhere.</span></div></div></div>
+      <div class="gac-row"><i>★</i><div><b>Favourites</b><span>Star it once and it's in your ★ panel, everywhere.</span></div></div></div>
     ${others.length?`<div class="gac"><div style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.5;margin-bottom:4px">Also in ${esc(gw.name)}</div>
       ${others.map(a=>`<div class="gac-row"><i style="width:22px;height:22px;border-radius:7px;background:${a.color};font-size:9px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center">${a.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</i><div><b>${a.name}</b><span>${a.desc||''}${a.url?'':' · coming soon'}</span></div></div>`).join('')}</div>`:''}
     <div class="gwa-foot"><span>Apps run in the gateway canvas</span><b style="color:${acc}">Build on ${esc(gw.name)} ›</b></div>`;
@@ -6273,7 +6320,7 @@ function renderBizZone(z, gw, head){
     const mine = state.enquiries.filter(e=>e.biz===z.key), sent = state._bizSent===z.key;
     const W = ['ASAP','1–3 months','3–6 months','Exploring'];
     body = (sent ? `<div class="bz-card solo" style="text-align:center;border-color:#86EFAC"><div style="font-size:30px">✓</div><b style="font-size:16px">Enquiry sent to ${z.name}</b>
-          <div style="font-size:12.5px;color:var(--muted);margin-top:4px">${z.contact.person} · ${z.contact.response.toLowerCase()}. It's in Profile › Plans.</div></div>` : '')
+          <div style="font-size:12.5px;color:var(--muted);margin-top:4px">${z.contact.person} · ${z.contact.response.toLowerCase()}. It's in Profile › Orders, under Quotes.</div></div>` : '')
       + `<div class="bz-form"><b style="font-size:16px">Request a quote</b><div style="font-size:12px;color:var(--muted);margin:2px 0 6px">${z.contact.person} · ${z.contact.response}</div>
         <label>What do you need?</label><textarea id="bzNeed" rows="3" placeholder="e.g. A competition-grade sole compound for a new shoe line"></textarea>
         <label>Quantity</label><input id="bzQty" placeholder="e.g. ${z.specs.moq}">
@@ -7026,6 +7073,9 @@ const AI_TASK_ORDER = ['table','flight','trip','ride'];
 function aiWeekSeed(){ return [
   {d:nextDow(2), time:'07:00', icon:'🚴', title:'Whirl group ride', src:'CycleXX'},
   {d:nextDow(0), time:'09:00', icon:'🌊', title:'Reef Cleanup paddle-out', src:'SurfXX'},
+  /* -55: the Verbier day Discover talks about is a real booking now: Profile › Orders can change or cancel it */
+  {d:plusDays(nextDow(6),21), time:'08:30', icon:'⛷️', title:'Off-piste day · Verbier', src:'SkiXX', prov:'Verbier Freeride Guides', pro:'verbier-freeride',
+   grad:'linear-gradient(135deg,#6D28D9,#A78BFA)', booked:true, status:null, id:'bk-verbier'},
 ];}
 function aiWeek(){ return state.aiWeek || (state.aiWeek = aiWeekSeed()); }
 /* Which flow can CHANGE a booking, by the agent that made it. Hotel and ClimbXX lines from a trip
@@ -7054,8 +7104,8 @@ function aiChangeBooking(id){
   state.aiReplacing = id;
   aiStartTask(k, w);
 }
-function aiBookingsHtml(){
-  const list = aiWeek().filter(w=>w.booked).sort((a,b)=>(a.status?1:0)-(b.status?1:0) || a.d-b.d);
+function aiBookingsHtml(only){
+  const list = aiWeek().filter(w=>w.booked && (!only || only(w))).sort((a,b)=>(a.status?1:0)-(b.status?1:0) || a.d-b.d);
   const head = `<div class="sect"><div class="sect-h"><div class="t">My bookings</div><div class="a">${list.filter(w=>!w.status).length}</div></div></div>`;
   if(!list.length) return head + `<div class="empty">Tables, flights, rides and trips your AI agents book, and sessions with pros —<br>every one lands here to change or cancel.
       <div style="margin-top:10px"><span class="bkbtn" onclick="setTab('ai')">Ask your AI to book something ›</span></div></div>`;
@@ -7670,6 +7720,157 @@ function shareProfile(){
   try{ navigator.clipboard && navigator.clipboard.writeText('https://'+url); }catch(_){}
   toast('Profile link copied · '+url);
 }
+/* ═════════ PROFILE v2 (-55, 2026-10-17) ═════════
+   What Profile means: me, my record and my account (agreed with Sean; mock: _lab/profile-v2). Posts are public;
+   Calendar, Orders and Saved are "only you". Real data first: Your week's bookings and RSVPs, purchases, quotes,
+   Recent. A little fictional history (a shipped order, a delivered one, a session to review, a quote, collections)
+   keeps a fresh demo from opening empty. Library has moved out: places live in ★. One job each:
+   ★ = places · Discover = what's next · Events = what's on · AI = do it for me · Profile = me. */
+const PF_PEOPLE = [
+  {n:'Maya Chen', ini:'MC', s:'The Arch · climber', g:'linear-gradient(135deg,#0D9488,#2DD4BF)', mut:3, back:false},
+  {n:'Sam Rivera', ini:'SR', s:'Newquay · surfer', g:'linear-gradient(135deg,#0066CC,#00AAFF)', mut:12, back:true},
+  {n:'Jonas Weber', ini:'JW', s:'Verbier · freerider', g:'linear-gradient(135deg,#6D28D9,#A78BFA)', mut:1, back:true},
+  {n:'Priya Nair', ini:'PN', s:'London · cyclist', g:'linear-gradient(135deg,#C9A100,#F5C400)', mut:5, back:false},
+  {n:'Tom Ashby', ini:'TA', s:'Peak District · trad climber', g:'linear-gradient(135deg,#E85D3A,#FF8C42)', mut:8, back:true},
+  {n:'Lena Fischer', ini:'LF', s:'Chamonix · alpinist', g:'linear-gradient(135deg,#1B3A6B,#C9A84C)', mut:2, back:true},
+];
+const PF_PAST = [   // fictional history, so Orders never opens empty in a fresh demo
+  {kind:'purchase', brand:'bullheart', title:'Bullheart One', sub:'The climbing wearable · £249 · paid to Bullheart', status:'Shipped', step:2, acts:['Track parcel','Message Bullheart']},
+  {kind:'booking', pro:'beta-coaching', title:'1:1 coaching session', sub:'Beta Coaching · last Tuesday · paid to the coach', status:'Completed', review:'Rate your session', acts:['Book again']},
+  {kind:'purchase', brand:'lithos-sport', title:'Resole × 2 pairs', sub:'£58 · paid to Lithos Sport', status:'Delivered', step:3, review:'Rate your resole', acts:['Receipt','Start a return']},
+  {kind:'quote', biz:'foamcore-blanks', title:'Custom 6’2 board blank', sub:'Quote received · £180 · reply by Friday', status:'Quote', acts:['Accept quote','Message','Decline']},
+];
+const PF_SAVED = [
+  ['Verbier trip','3 saved',['photo-1551524559-8af4e6624178','photo-1486870591958-9b9d0d1dda99','photo-1517299321609-52687d1bc55a']],
+  ['Gift ideas for Sam','3 saved',['photo-1508685096489-7aacd43bd3b1','photo-1502680390469-be75c86b636f','photo-1464822759023-fed622ff2c3b']],
+  ['Technique','5 posts',['photo-1564769662533-4f00a87b4056','photo-1522163182402-834f871fd851','photo-1601224748193-d24f166b5c77']],
+  ['Wishlist','4 products',['photo-1551698618-1dfe5d97d256','photo-1483721310020-03333e577078','photo-1455264745730-cb3b76250ae8']],
+];
+const PF_KIND = {book:['Booking','k-book','#4A6CF7'], rsvp:['RSVP','k-rsvp','#8B5CF6'], rem:['Reminder','k-rem','#F5B800'], plan:['Plan','k-plan','#111116']};
+function pfPriv(t){ return `<div class="pf-priv">🔒 ${t}</div>`; }
+
+/* One calendar: everything on Your week (bookings, RSVPs, plans) plus reminders, wherever it was made. */
+function pfCalItems(){
+  const items = aiLive().map(w=>{
+    const kind = w.comm ? 'rsvp' : w.booked ? 'book' : 'plan';
+    return { d:new Date(w.d), time:w.time, icon:w.icon, title:w.title, kind,
+      sub: w.comm ? `${escHtml(w.prov)} · ${w.src}` : w.pro ? `with ${escHtml(w.prov)} · ${w.src}` : w.booked ? `via ${w.src}${w.prov?' · '+escHtml(w.prov):''}` : w.src,
+      go: w.comm ? `openComm('${w.comm}')` : w.pro ? `openPro('${w.pro}')` : `setTab('ai')` };
+  });
+  if(state.settings.dxDates !== false) items.push({ d:plusDays(new Date(),9), time:'', icon:'🎂', title:'Sam’s birthday', kind:'rem', sub:'3 gift ideas in Saved', go:`setProfileTab('saved')` });
+  return items.sort((a,b)=>a.d-b.d || String(a.time).localeCompare(String(b.time)));
+}
+function pfCalView(v){ state.pfCal = v; state.pfCalSel = null; render(); }
+function pfCalPick(t){ state.pfCalSel = (state.pfCalSel===t) ? null : t; render(); }
+function pfCalHtml(){
+  const view = state.pfCal || 'agenda', all = pfCalItems(), dkey = d => new Date(d).toDateString();
+  const today0 = new Date().setHours(0,0,0,0);
+  let list = all.filter(e=>+new Date(e.d) >= today0), month = '';   // upcoming: today onwards
+  if(view==='month'){
+    const t = new Date(); t.setHours(0,0,0,0);
+    const first = new Date(t.getFullYear(), t.getMonth(), 1), start = plusDays(first, -((first.getDay()+6)%7));
+    const cells = Array.from({length:42}, (_,i)=>{ const d = plusDays(start,i), evs = all.filter(e=>dkey(e.d)===dkey(d));
+      return `<div class="d${d.getMonth()!==t.getMonth()?' mute':''}${+d===+t?' today':''}${evs.length?' has':''}${state.pfCalSel===+d?' sel':''}" style="--c:${evs[0]?PF_KIND[evs[0].kind][2]:''}" onclick="pfCalPick(${+d})">${d.getDate()}</div>`; }).join('');
+    month = `<div class="cal-mo">${t.toLocaleDateString('en-GB',{month:'long',year:'numeric'})}</div><div class="cal-grid">${['M','T','W','T','F','S','S'].map(x=>`<div class="dh">${x}</div>`).join('')}${cells}</div>`;
+    list = state.pfCalSel ? all.filter(e=>dkey(e.d)===dkey(state.pfCalSel)) : all.filter(e=>new Date(e.d).getMonth()===t.getMonth() && +new Date(e.d)>=+t);
+  }
+  const days = {}; list.forEach(e=>{ (days[dkey(e.d)] = days[dkey(e.d)] || []).push(e); });
+  const body = Object.keys(days).map(k=>`<div class="cal-day">${dayLabel(new Date(k))}</div>` + days[k].map(e=>{ const K=PF_KIND[e.kind], hasT=/\d\d:\d\d/.test(e.time||'');
+    return `<div class="cal-ev" onclick="${e.go}"><div class="bar" style="background:${K[2]}"></div><div class="tm">${hasT?e.time:`<small>${e.kind==='rem'?'Reminder':'All day'}</small>`}</div>
+      <div style="flex:1;min-width:0"><b>${e.icon} ${escHtml(e.title)}</b><span class="s">${e.sub}</span><br><span class="pf-kind ${K[1]}">${K[0]}</span></div></div>`; }).join('')).join('');
+  return `<div class="pf-seg">${[['agenda','Agenda'],['month','Month']].map(([k,l])=>`<span class="${view===k?'on':''}" onclick="pfCalView('${k}')">${l}</span>`).join('')}<span onclick="pfExportIcs()">⤓ Add to phone calendar</span></div>
+    ${pfPriv('Only you see this. One calendar for bookings, RSVPs, plans and reminders, wherever you made them.')}
+    ${month}${body || `<div class="empty">${state.pfCalSel?'Nothing on this day.':'Nothing planned yet. Book with a pro, RSVP to an event, or ask your AI to plan something.'}</div>`}<div style="height:14px"></div>`;
+}
+/* "Add to phone calendar": a real .ics of every plan, which any phone calendar imports. */
+function pfExportIcs(){
+  const pad = n => String(n).padStart(2,'0'), ymd = d => `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}`;
+  const txt = v => String(v||'').replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/[\\,;]/g, m=>'\\'+m).replace(/\n/g,'\\n');
+  const now = new Date(), stamp = ymd(now)+'T'+pad(now.getHours())+pad(now.getMinutes())+'00';
+  const ev = pfCalItems().map((e,i)=>{ const d = new Date(e.d), m = /(\d\d):(\d\d)/.exec(e.time||'');
+    let when;
+    if(m){ const a = new Date(d); a.setHours(+m[1], +m[2], 0, 0); const b = new Date(+a + 36e5);
+      when = `DTSTART:${ymd(a)}T${pad(a.getHours())}${pad(a.getMinutes())}00\r\nDTEND:${ymd(b)}T${pad(b.getHours())}${pad(b.getMinutes())}00`; }
+    else when = `DTSTART;VALUE=DATE:${ymd(d)}\r\nDTEND;VALUE=DATE:${ymd(plusDays(d,1))}`;
+    return `BEGIN:VEVENT\r\nUID:gx-${ymd(d)}-${i}@genexxo\r\nDTSTAMP:${stamp}\r\n${when}\r\nSUMMARY:${txt(e.title)}\r\nDESCRIPTION:${txt(PF_KIND[e.kind][0]+' · '+e.sub)}\r\nEND:VEVENT`; }).join('\r\n');
+  const ics = `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//GENEXXO//Plans//EN\r\nCALSCALE:GREGORIAN\r\n${ev}\r\nEND:VCALENDAR\r\n`;
+  try{ const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([ics], {type:'text/calendar'})); a.download = 'genexxo-plans.ics'; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 800); toast('Calendar file ready · open it to add your plans'); }
+  catch(e){ toast('Couldn’t make the calendar file'); }
+}
+
+/* Orders: purchases, bookings, quotes and tickets. You pay each brand, pro or business directly. */
+function pfOrdersSeg(k){ state.pfOrders = k; render(); }
+function pfRate(key){ state.pfRated = Object.assign({}, state.pfRated, {[key]:true}); render(); toast('Thanks · your review is on their Reviews'); }
+function pfQR(seed){ let s='', x = 0; for(const c of String(seed)) x = (x*31 + c.charCodeAt(0)) % 2147483647; const rnd = () => (x = (x*16807) % 2147483647) / 2147483647;
+  const fin = (a,b) => `<rect x="${a}" y="${b}" width="7" height="7"/><rect x="${a+1}" y="${b+1}" width="5" height="5" fill="#fff"/><rect x="${a+2}" y="${b+2}" width="3" height="3"/>`;
+  for(let j=0;j<21;j++) for(let i=0;i<21;i++){ if((i<8&&j<8)||(i>12&&j<8)||(i<8&&j>12)) continue; if(rnd()>.52) s += `<rect x="${i}" y="${j}" width="1" height="1"/>`; }
+  return `<svg class="ord-qr" viewBox="0 0 21 21" shape-rendering="crispEdges" fill="#111116">${s}${fin(0,0)}${fin(14,0)}${fin(0,14)}</svg>`; }
+function pfPastCard(o){
+  const z = o.brand ? ZONES[o.brand] : o.biz ? ZONES[o.biz] : null, p = o.pro ? proByKey(o.pro) : null;
+  const name = z ? z.name : p ? p.pro.name : '', grad = z ? (z.gradient||z.color) : p ? p.pro.color : '#111116';
+  const go = o.brand ? `openZoneFav('${o.brand}')` : o.biz ? `openZoneFav('${o.biz}','contact')` : `openPro('${o.pro}')`;
+  const key = o.brand || o.biz || o.pro, rated = state.pfRated && state.pfRated[key];
+  const st = o.status==='Shipped' ? 'k-book' : o.status==='Quote' ? 'k-rem' : o.status==='Completed' ? 'k-plan' : '';
+  return `<div class="ord-card"><div class="hd" onclick="${go}" style="cursor:pointer"><div class="lg" style="background:${grad}">${zoneInitials(name)}</div>
+      <div style="flex:1;min-width:0"><b>${o.title}</b><div class="s">${o.sub}</div></div><span class="bkst ${st?'':''}" style="${st==='k-book'?'background:rgba(74,108,247,.1);color:#3550d4':st==='k-rem'?'background:rgba(245,184,0,.16);color:#8a6d00':st==='k-plan'?'background:rgba(17,17,22,.06);color:var(--muted)':''}">${o.status}</span></div>
+    ${o.step?`<div class="ord-steps">${[1,2,3].map(i=>`<i class="${i<=o.step?'on':''}"></i>`).join('')}</div><div class="ord-stepl"><span>Ordered</span><span>Shipped</span><span>Delivered</span></div>`:''}
+    ${o.review?(rated?`<div class="ord-rate"><span class="st">★★★★★</span><span>You rated this · thank you</span></div>`
+      :`<div class="ord-rate"><span class="st" onclick="pfRate('${key}')">★★★★★</span><span style="flex:1">${o.review}</span><span class="bkbtn" onclick="pfRate('${key}')">Rate</span></div>`):''}
+    <div class="ord-acts">${o.acts.map(a=>`<span class="bkbtn" onclick="toast('${a.replace(/'/g,"\\'")}')">${a}</span>`).join('')}</div></div>`;
+}
+function pfTicketCard(w){
+  const hit = commByKey(w.comm), c = hit ? hit.comm : {name:w.prov, color:'#111116'};
+  return `<div class="ord-card"><div class="hd" onclick="openComm('${w.comm}')" style="cursor:pointer"><div class="lg" style="background:${w.grad||c.color}">👥</div>
+      <div style="flex:1;min-width:0"><b>${escHtml(w.title)}</b><div class="s">${escHtml(c.name)} · ${dayLabel(w.d)}${w.time&&w.time!=='—'?' · '+w.time:''}</div></div><span class="bkst">Ticket</span></div>
+    ${pfQR(w.title+w.comm)}<div style="text-align:center;font-size:10.5px;color:var(--muted);font-weight:700">Show this at the door</div>
+    <div class="ord-acts" style="justify-content:center"><span class="bkbtn" onclick="toast('Added to your Wallet')">Add to Wallet</span><span class="bkbtn" onclick="openComm('${w.comm}')">Event details</span></div></div>`;
+}
+function pfOrdersHtml(){
+  const seg = state.pfOrders || 'all', show = k => seg==='all' || seg===k;
+  const head = (t, n) => seg==='all' ? `<div class="sect"><div class="sect-h"><div class="t">${t}</div><div class="a">${n}</div></div></div>` : '<div style="height:10px"></div>';
+  const tickets = aiLive().filter(w=>w.comm), pastP = PF_PAST.filter(o=>o.kind==='purchase'), pastB = PF_PAST.filter(o=>o.kind==='booking'), pastQ = PF_PAST.filter(o=>o.kind==='quote');
+  const live = aiWeek().filter(w=>w.booked && !w.comm);
+  let out = '';
+  if(show('bookings')) out += (live.length ? aiBookingsHtml(w=>!w.comm).replace(/<div class="sect">[\s\S]*?<\/div><\/div><\/div>/, head('Bookings', live.filter(w=>!w.status).length)) : head('Bookings','')) + pastB.map(pfPastCard).join('');
+  if(show('purchases')) out += head('Purchases', state.purchases.length + pastP.length) + state.purchases.map(o=>purchaseCard(o)).join('') + pastP.map(pfPastCard).join('');
+  if(show('quotes')) out += (state.enquiries.filter(e=>ZONES[e.biz]).length ? enquiriesHtml().replace(/<div class="sect">[\s\S]*?<\/div><\/div><\/div>/, head('Quotes', state.enquiries.length + pastQ.length)) : head('Quotes', pastQ.length)) + pastQ.map(pfPastCard).join('');
+  if(show('tickets')) out += head('Tickets', tickets.length) + (tickets.length ? tickets.map(pfTicketCard).join('') : `<div class="empty">RSVP to a community event and your ticket appears here.</div>`);
+  return `<div class="pf-seg">${[['all','All'],['bookings','Bookings'],['purchases','Purchases'],['quotes','Quotes'],['tickets','Tickets']].map(([k,l])=>`<span class="${seg===k?'on':''}" onclick="pfOrdersSeg('${k}')">${l}</span>`).join('')}</div>
+    ${pfPriv('Only you. You pay each brand, pro or business directly, and <b>GENEXXO never holds your money</b>. Status, receipts and tickets are filed here.')}
+    ${out}<div style="height:14px"></div>`;
+}
+
+/* Saved is CONTENT (posts, products, articles) in collections. Places you go back to are ★ Favourites. */
+function pfSavedHtml(){
+  const rec = (state.recent||[]).slice(0,5).map(x=>{
+    if(x.t==='brand'){ const z=ZONES[x.k]; return z && {n:z.name, s:'Brand zone', g:z.gradient||z.color, i:zoneInitials(z.name), go:`openZoneFav('${x.k}')`}; }
+    if(x.t==='gateway'){ const g=gwMetaFromKey(x.k); return g && {n:g.name, s:'Gateway', g:g.gradient, i:g.emoji, go:`openGateway('${g.name}','${gwSecOf(g)}')`}; }
+    if(x.t==='sector'){ const c=sectorOf(x.k); return c && {n:c.name, s:'Sector', g:c.g, i:c.icon, go:`openSector('${x.k}')`}; }
+  }).filter(Boolean);
+  return `${pfPriv('Only you. <b>Saved is content</b> (posts, products, articles) in collections. <b>Places</b> you go back to are your ★ Favourites.')}
+    <div class="sv-grid">${PF_SAVED.map(([t,n,im])=>`<div class="sv-c" onclick="toast('${t.replace(/'/g,"\\'")} · ${n}')"><div class="im">${im.map(u=>`<div style="background-image:url('${FY_IMG(u)}')"></div>`).join('')}</div><div class="cap"><b>${t}</b><span>${n}</span></div></div>`).join('')}
+      <div class="sv-c sv-new" onclick="toast('New collection: tap ⊕ on any post or product to save it')">+ New collection</div></div>
+    <div class="sect"><div class="sect-h"><div class="t">Recently viewed</div><div class="a">${rec.length}</div></div></div>
+    ${rec.length ? rec.map(x=>`<div class="bkrow" style="cursor:pointer;align-items:center" onclick="${x.go}"><div class="ic" style="background:${x.g};color:#fff;font-size:12px;font-weight:800">${x.i}</div><div style="flex:1;min-width:0"><div class="h"><b>${escHtml(x.n)}</b></div><div class="s">${x.s}</div></div></div>`).join('')
+      : `<div class="empty">Brands, gateways and sectors you visit appear here.</div>`}<div style="height:14px"></div>`;
+}
+
+/* Followers / Following: tappable lists. Following is social (their posts in your feed); ★ is navigation. */
+function openPeople(which){ state.pfPeople = which; render(); }
+function closePeople(){ state.pfPeople = null; render(); }
+function pfFollowBack(i){ state.pfBack = Object.assign({}, state.pfBack, {[i]: !(state.pfBack||{})[i]}); render(); }
+function peopleSheetHtml(){
+  const w = state.pfPeople; if(!w) return '';
+  const fol = w==='followers', back = state.pfBack || {};
+  return `<div class="gxscrim" onclick="closePeople()"></div><div class="gxsheet">
+    <div style="width:38px;height:4px;border-radius:99px;background:rgba(17,17,22,.14);margin:0 auto 12px"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:16px;font-weight:800">${fol?'Followers':'Following'}</div><div onclick="closePeople()" style="font-size:13px;font-weight:800;color:var(--muted);cursor:pointer;padding:4px 6px">✕</div></div>
+    <div class="pf-seg" style="padding:10px 0 4px">${(fol?[`All ${USER.followers}`,'Mutuals','Requests · 2']:[`People · ${USER.following}`,'Pros · 6','Brands · 4']).map((x,i)=>`<span class="${i?'':'on'}">${x}</span>`).join('')}</div>
+    ${PF_PEOPLE.map((p,i)=>{ const following = fol ? (p.back !== !!back[i]) : !back[i];
+      return `<div class="pp-row"><div class="av" style="background:${p.g}">${p.ini}</div><div style="flex:1;min-width:0"><b>${p.n}</b><span class="s">${p.s} · ${p.mut} mutual</span></div>
+        <span class="bkbtn" style="${following?'':'background:#111116;color:#fff;border-color:#111116'}" onclick="pfFollowBack(${i})">${following?'Following':fol?'Follow back':'Follow'}</span></div>`; }).join('')}
+    <div style="font-size:11px;color:var(--muted);font-weight:600;line-height:1.5;margin-top:12px">${fol?'Requests appear when your account is private (Settings › Privacy).':'Following is social: their posts in your feed. ★ Favourites is navigation: a shortcut back to a place.'}</div></div>`;
+}
 function pfPostsHtml(){
   const gws = state.favs.slice(0,5).map(k=>gwMetaFromKey(k)).filter(Boolean);
   const compose = `<div class="pf-compose"><textarea id="pfText" maxlength="400" placeholder="Share something with your followers…"></textarea>
@@ -7683,44 +7884,9 @@ function pfPostsHtml(){
       <div class="eng"><span>♡ ${(p.text.length*7)%240}</span><span>💬 ${(p.text.length*3)%40}</span><span>↗ ${(p.text.length)%18}</span></div></div></div>`).join('');
   return compose + (list || `<div class="empty">Your posts — written here, shared from apps, or started in communities — appear here.</div>`);
 }
-function pfPlansHtml(){
-  const done = state.purchases.length;
-  return `${aiWeekHtml()}${aiBookingsHtml()}${enquiriesHtml()}
-    <div class="sect"><div class="sect-h"><div class="t">Purchases</div><div class="a">${done}</div></div></div>
-    ${done ? state.purchases.map(o=>purchaseCard(o)).join('') : `<div class="empty">Orders you place with brands across GENEXXO —<br>bought direct, receipts filed here.</div>`}
-    <div style="height:14px"></div>`;
-}
-function pfLibraryHtml(){
-  const apps = state.wallet.length ? state.wallet.map(w=>`
-    <div class="wapp"><div class="lg" style="background:${w.color}">${w.name.split(' ').map(x=>x[0]).join('').slice(0,2)}</div>
-      <div style="flex:1"><div style="font-size:13px;font-weight:800">${w.name}</div><div style="font-size:10.5px;color:var(--muted);font-weight:600">${w.gw}</div></div>
-      ${(appByName(w.name)||{app:{}}).app.url?`<button class="btn" style="background:#111116;color:#fff;margin-right:6px" onclick="openApp('${appByName(w.name).app.key}',true)">Open</button>`:''}
-      <button class="btn" style="background:rgba(17,17,22,.05);color:var(--muted)" onclick="toggleApp('${esc(w.name)}')" title="Remove from favourites">Remove</button>
-    </div>`).join('') : `<div class="empty">Tap ☆ on any app to keep it here —<br>your apps follow you across every gateway.</div>`;
-  const pros = state.proFavs.map(k=>proByKey(k)).filter(Boolean);
-  const brands = state.brandFavs.filter(k=>ZONES[k]);
-  return `<div class="sect"><div class="sect-h"><div class="t">My Apps</div><div class="a">${state.wallet.length}</div></div></div>${apps}
-    ${myCommunitiesHtml()}
-    <div class="sect"><div class="sect-h"><div class="t">Pros</div><div class="a">${pros.length}</div></div></div>
-    ${pros.length ? pros.map(({pro:x, gw})=>`<div class="wapp" style="cursor:pointer" onclick="openPro('${x.key}')"><div class="lg" style="background:${x.color}">${proIni(x.name)}</div>
-      <div style="flex:1"><div style="font-size:13px;font-weight:800">${x.name}</div><div style="font-size:10.5px;color:var(--muted);font-weight:600">${x.role} · ${gw.name}</div></div>
-      <button class="btn" style="background:#111116;color:#fff" onclick="event.stopPropagation();openPro('${x.key}','book')">Book</button></div>`).join('')
-      : `<div class="empty">Tap ☆ on a Pro Zone to keep your guides and coaches here.</div>`}
-    <div class="sect"><div class="sect-h"><div class="t">Businesses</div><div class="a">${state.bizFavs.length}</div></div></div>
-    ${state.bizFavs.filter(k=>ZONES[k]).length ? state.bizFavs.filter(k=>ZONES[k]).map(k=>{ const b=ZONES[k]; return `<div class="wapp" style="cursor:pointer" onclick="openZoneFav('${k}')"><div class="lg" style="background:${b.gradient}">${zoneInitials(b.name)}</div>
-      <div style="flex:1"><div style="font-size:13px;font-weight:800">${b.name}</div><div style="font-size:10.5px;color:var(--muted);font-weight:600">${b.category} · ${bizTierLabel(b.tier)}</div></div>
-      <button class="btn" style="background:#111116;color:#fff" onclick="event.stopPropagation();openZoneFav('${k}','contact')">Quote</button></div>`; }).join('')
-      : `<div class="empty">Tap ☆ in a Business Zone to keep suppliers and partners here.</div>`}
-    <div class="sect"><div class="sect-h"><div class="t">Brands</div><div class="a">${brands.length}</div></div></div>
-    ${brands.length ? brands.map(k=>{ const z=ZONES[k]; return `<div class="wapp" style="cursor:pointer" onclick="openZoneFav('${k}')"><div class="lg" style="background:${z.gradient||z.color}">${proIni(z.name)}</div>
-      <div style="flex:1"><div style="font-size:13px;font-weight:800">${z.name}</div><div style="font-size:10.5px;color:var(--muted);font-weight:600">${z.tagline||''}</div></div></div>`; }).join('')
-      : `<div class="empty">Tap ☆ in a brand zone to follow it here.</div>`}
-    <div class="sect"><div class="sect-h"><div class="t">Saved</div></div></div>
-    <div class="empty">Bookmark anything across GENEXXO —<br>posts, products, brands — it collects here.</div><div style="height:14px"></div>`;
-}
 function profileBody(){
-  const tab = state.profileTab || 'posts';
-  const gws = state.favs.slice(0,6).map(k=>gwMetaFromKey(k)).filter(Boolean);
+  const tab = ['posts','cal','orders','saved'].includes(state.profileTab) ? state.profileTab : 'posts';
+  const comms = state.commFavs.map(k=>commByKey(k)).filter(Boolean);
   return `<div class="pf-cover" style="background-image:url('${USER.cover}');position:relative">${utilX('on-photo')}</div>
     <div class="pf-head">
       <div class="pf-acts"><button class="pf-btn" onclick="openSettings('account')">Edit profile</button><button class="pf-btn" onclick="shareProfile()">Share</button>
@@ -7730,11 +7896,11 @@ function profileBody(){
       <div class="pf-handle">${USER.handle}</div>
       <div class="pf-bio">${USER.bio}</div>
       <div class="pf-meta">📍 ${USER.location} · Joined ${USER.joined}</div>
-      ${gws.length?`<div class="pf-chips">${gws.map(g=>`<span class="pf-chip" onclick="openGateway('${g.name}','${gwSecOf(g)}')"><i style="background:${g.gradient}">${g.emoji}</i>${g.name}</span>`).join('')}</div>`:''}
-      <div class="pf-stats"><span><b>${state.myPosts.length}</b> Posts</span><span><b>${USER.followers}</b> Followers</span><span><b>${USER.following}</b> Following</span><span><b>${state.commFavs.length}</b> Communities</span></div>
+      <div class="pf-stats"><span class="tap" onclick="setProfileTab('posts')"><b>${state.myPosts.length}</b> Posts</span><span class="tap" onclick="openPeople('followers')"><b>${USER.followers}</b> Followers</span><span class="tap" onclick="openPeople('following')"><b>${USER.following}</b> Following</span></div>
+      ${comms.length?`<div class="pf-chips">${comms.map(({comm:c})=>`<span class="pf-chip" onclick="openComm('${c.key}')"><i style="background:${c.color};color:#fff;font-weight:800;font-size:9px">${proIni(c.name)}</i>${escHtml(c.name)}</span>`).join('')}</div>`:''}
     </div>
-    <div class="pf-tabs">${[['posts','Posts'],['plans','Plans'],['library','Library']].map(([k,l])=>`<div class="${tab===k?'on':''}" onclick="setProfileTab('${k}')">${l}</div>`).join('')}</div>
-    ${tab==='posts'?pfPostsHtml():tab==='plans'?pfPlansHtml():pfLibraryHtml()}
+    <div class="pf-tabs">${[['posts','Posts','Public'],['cal','Calendar','Only you'],['orders','Orders','Only you'],['saved','Saved','Only you']].map(([k,l,sb])=>`<div class="${tab===k?'on':''}" onclick="setProfileTab('${k}')">${l}<small>${sb}</small></div>`).join('')}</div>
+    ${tab==='posts'?pfPostsHtml():tab==='cal'?pfCalHtml():tab==='orders'?pfOrdersHtml():pfSavedHtml()}
     <div onclick="vdbgTap()" style="text-align:center;padding:22px 16px 4px;font-size:10.5px;letter-spacing:.06em;color:var(--muted);opacity:.7;font-weight:700">GENEXXO · build ${BUILD}</div>
     <div style="height:16px"></div>`;
 }
@@ -7811,7 +7977,7 @@ function settingsHtml(){
   } else if(pg==='payments'){
     body = `<div class="ps-grp">${row('🤝','GENEXXO never holds your money', 'You pay brands and pros directly. GENEXXO arranges, they charge. No stored cards, no wallet balance.', '', '')}</div>
       <div class="ps-h">Providers you've paid · ${providers.length}</div>
-      <div class="ps-grp">${providers.length ? providers.map(n=>row('🏷️', escHtml(n), 'Paid directly · receipts in Profile › Plans', '', '')).join('') : row('🧾','Nobody yet','Book a pro or buy from a brand and they appear here', '', '')}</div>`;
+      <div class="ps-grp">${providers.length ? providers.map(n=>row('🏷️', escHtml(n), 'Paid directly · receipts in Profile › Orders', '', '')).join('') : row('🧾','Nobody yet','Book a pro or buy from a brand and they appear here', '', '')}</div>`;
   } else if(pg==='data'){
     body = `<div class="ps-grp">${row('⬇️','Download your data', 'Posts, favourites, bookings and connections, as a file', "toast('We’ll email you a download link within a few minutes')")}
       ${row('🗑️','Delete account', 'Removes your GENEXXO ID and signs you out of every app and community', "toast('Demo: nothing has been deleted')", '<button class="ps-act red">Delete</button>')}</div>
@@ -7834,6 +8000,7 @@ function renderProfile(){
   ${infoPanelHtml()}
   <div class="push">${profileBody()}</div>
   ${receiptSheetHtml()}
+  ${peopleSheetHtml()}
   ${settingsHtml()}`;
 }
 
