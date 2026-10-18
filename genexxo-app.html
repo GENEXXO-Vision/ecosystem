@@ -422,6 +422,20 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   #ibx .bub.typing{color:var(--muted);font-style:italic}
   #ibx .icomp{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:#fff;flex-shrink:0}
   #ibx .icomp input{flex:1;border:1px solid var(--line);border-radius:99px;padding:10px 14px;font:inherit;font-size:16px;outline:none;background:var(--bg)}
+  #ibx .irow.note{cursor:default}
+  #ibx .irow .ichev{color:var(--muted);font-size:20px;line-height:1;flex-shrink:0;padding-left:2px}
+  #ibx .irate{display:flex;align-items:center;gap:2px;margin-top:5px}
+  #ibx .irate i{font-style:normal;font-size:19px;line-height:1;color:#D9D6CF;cursor:pointer;padding:0 1px}
+  #ibx .irate i:hover,#ibx .irate i:hover ~ i{color:#D9D6CF}
+  #ibx .irate:hover i{color:#F5B800}
+  #ibx .irate.done{font-size:11.5px;font-weight:700;color:var(--muted);gap:6px}
+  #ibx .irate.done b{color:#F5B800;font-size:14px;letter-spacing:1px}
+  /* -61: a notification lands on its exact item, briefly ringed, with a way back to Activity */
+  /* sits at the end of the page but sticks to the bottom while you read, since the page scrolls to the item */
+  .ibx-back-wrap{position:sticky;bottom:14px;z-index:5;display:flex;justify-content:center;pointer-events:none;margin-top:10px}
+  .ibx-back{pointer-events:auto;display:inline-flex;align-items:center;gap:7px;padding:10px 18px 10px 14px;border-radius:99px;background:#111116;color:#fff;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 10px 26px -8px rgba(0,0,0,.45)}
+  .ibx-hit{animation:ibxhit 2s ease-out}
+  @keyframes ibxhit{0%,45%{box-shadow:0 0 0 2.5px #F5B800,0 8px 24px -10px rgba(245,184,0,.6)}100%{box-shadow:0 0 0 0 rgba(245,184,0,0)}}
   #ibx .inote{margin:12px 16px;font-size:11.5px;line-height:1.5;color:var(--muted);font-weight:600}
   .pf-post .eng{font-size:11.5px;color:var(--muted);font-weight:700;margin-top:8px;display:flex;gap:16px}
   #pfSet{position:fixed;left:50%;transform:translateX(-50%);top:var(--top-h,53px);bottom:var(--tb-h,64px);width:100%;max-width:430px;z-index:70;background:var(--bg);display:flex;flex-direction:column}
@@ -627,6 +641,11 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
      header that was always black and the tap still feels dead. One beat, then it stays put. */
   #drawerHead.ask,#drawerRHead.ask{animation:askIn .34s cubic-bezier(.2,.75,.2,1)}
   @keyframes askIn{from{opacity:.25;letter-spacing:.06em}to{opacity:1;letter-spacing:.14em}}
+  /* -61 (Sean): the network-home header is already dark, so turning black no longer shows. The prompt BLINKS instead:
+     white with dark type, back to dark, twice. Animated values beat the inline colours syncGwChrome() sets, and
+     restartAskBeat() replays it on every tap. Left header only; the right one never asks for a sector. */
+  #drawerHead.ask{animation:askIn .34s cubic-bezier(.2,.75,.2,1),askBlink .9s ease-in-out}
+  @keyframes askBlink{0%,45%,100%{background:#111116;color:#fff}20%,70%{background:#fff;color:#111116}}
   /* "Choose a Gateway" is the same beat, but it EXPIRES — the gateways are already listed
      under it, so a prompt that stayed would nag about something you have done. It fades out,
      the real header is rebuilt underneath while invisible, then fades back: a swap you can
@@ -664,6 +683,9 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   #drawer.zone-mode #drawerHead{color:rgba(255,255,255,.5);border-bottom-color:rgba(255,255,255,.10)}
   /* The ✕ inverts with the surface — its default ink wash disappears on this near-black. */
   #drawer.zone-mode .drawer-x{background:rgba(255,255,255,.12);color:rgba(255,255,255,.78)}
+  /* Network home (-61): the header is the network bar's dark, so the ✕ inverts the same way */
+  #drawer.net-head .drawer-x{background:rgba(255,255,255,.14);color:rgba(255,255,255,.85)}
+  #drawer.net-head #drawerHead{border-bottom-color:transparent}
   #drawer.zone-mode .drawer-x:hover{background:rgba(255,255,255,.2);color:#fff}
   #drawer.zone-mode .drawer-x:active{background:rgba(255,255,255,.28)}
   #drawer.zone-mode .drawer-search{border-bottom-color:rgba(255,255,255,.10)}
@@ -1651,7 +1673,7 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-60"></script>
+<script src="genexxo-data.js?v=2026.08.26-61"></script>
 <script src="genexxo-core.js?v=2026.08.26-4"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
@@ -2551,7 +2573,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-60';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-61';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2640,6 +2662,7 @@ function navRestore(b){
   if (window.__syncChrome) window.__syncChrome();   // bars stay visible until you scroll again
 }
 function openGateway(name, sectorKey){
+  state.ibxBack = false;
   const fromTab = tabOrigin();   // -60: Back from this gateway, before you move on, returns to the tab
   pushHist();
   // Following a link OUT of a floating utility tab — the screen stays 'gateway', so the
@@ -2670,7 +2693,7 @@ function openSector(key){
   logVisit('sector', key);
   render(); $('screen').scrollTo(0,0);
 }
-function goHub(){ state._gwOrigin=null; state._before=null; state._hist=[]; state.eventsMemo=null; state.discoverMemo=null; state.screen='root'; state.gateway=null; state._gwObj=null; state.showFavs=false; state.returnGw=null; state.zone=null; state.zoneProduct=null; state._zoneIn=false; state.tab='home'; render(); }
+function goHub(){ state.ibxBack=false; state._gwOrigin=null; state._before=null; state._hist=[]; state.eventsMemo=null; state.discoverMemo=null; state.screen='root'; state.gateway=null; state._gwObj=null; state.showFavs=false; state.returnGw=null; state.zone=null; state.zoneProduct=null; state._zoneIn=false; state.tab='home'; render(); }
 
 /* Home always takes you home. The other four are toggles: first tap opens the tab
    (remembering where you were), a second tap closes it and puts you straight back —
@@ -2682,6 +2705,7 @@ const UTIL_TABS = ['discover','ai','events','profile','search'];   // 'search' o
 function utilClose(){ const t = state.utilOver || state.tab; if(UTIL_TABS.includes(t)) setTab(t); }
 const utilX = cls => `<div class="utilx${cls?' '+cls:''}" onclick="event.stopPropagation();utilClose()" title="Close" aria-label="Close"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></div>`;
 function setTab(t){
+  state.ibxBack = false;   // -61: the ‹ Activity way back is only for the item a notification just opened
   if(state.setPage){   // Account sits like a tab now (-57): another tab closes it; Profile's own tab just closes Account
     state.setPage = null;
     if(t==='profile' && (state.utilOver||state.tab)==='profile'){ render(); return; }
@@ -3570,15 +3594,18 @@ function syncGwChrome(){
        1. asking  — black, "Choose a Sector". Set by tapping the Sectors tab with none chosen.
        2. sector  — washed in that sector's colour, matching the gateways header opposite, so
                     the two columns read as one lit context rather than one tinted and one plain.
-       3. neutral — everything else, including any commercial layer, where the zone-mode
-                    stylesheet owns the colours and an inline tint would fight it. */
+       3. network — no sector yet (the network home): the network bar's own dark (#26262b), white type, so the
+                    drawer reads as part of the bar it opened from, the way a sector's header takes its colour (Sean, -61).
+       4. neutral — any commercial layer, where the zone-mode stylesheet owns the colours and an inline tint would fight it. */
     const sk  = (!layer && activeSectorKey()) ? activeSectorKey() : null;
     const ask = !layer && !sk && state.askSector;
     head.textContent = layer ? ZONE_LAYERS[layer].label : (ask ? 'Choose a Sector' : 'Sectors');
     head.classList.toggle('ask', !!ask);
     const w = sk ? washFor(sectorOf(sk).g) : null;
-    head.style.background = ask ? '#111116' : (w ? w.wash   : '');
-    head.style.color      = ask ? '#fff'    : (w ? w.accent : '');
+    const net = !layer && !sk && !ask;
+    head.style.background = ask ? '#111116' : (w ? w.wash   : net ? '#26262b' : '');
+    head.style.color      = ask ? '#fff'    : (w ? w.accent : net ? '#fff' : '');
+    $('drawer').classList.toggle('net-head', net || !!ask);
   }
   $('drawer').classList.toggle('zone-mode', !!layer);   // dark surface + white cards
   // Sibling gateways are redundant inside a commercial layer — drop the handle and the panel.
@@ -3990,13 +4017,14 @@ function buildDrawerRLive(){
   /* Neutral header, deliberately. The tint means "you are in this sector" — with none chosen
      there is nothing to signal, and colouring it anyway would say the same thing as a real
      selection. The green stays on the tile and the live dots, where it means "built out". */
+  /* -61 (Sean): on the network home both panel headers take the network bar's dark, as a sector's take its colour */
   setDrawerRHead(
-    `<span class="dic-sm" style="background:linear-gradient(135deg,#16A34A,#22C55E)">◉</span>Live Gateways · ${Object.keys(GATEWAYS).length}`);
+    `Demo Gateways · ${Object.keys(GATEWAYS).length}`, '#26262b', '#fff');   // "Demo", not "Live" (Sean, -61)
   $('drawerRList').innerHTML = keys.length
-    ? (pinned.length ? `<div class="gwsec">📌 DEMO GATEWAYS · ${pinned.length}</div>` + pinned.map(row).join('') : '')
-      + `<div class="gwsec">${pinned.length?'ALSO LIVE':'BUILT & LIVE'} · ${rest.length}</div>`
+    ? (pinned.length ? `<div class="gwsec">📌 PINNED · ${pinned.length}</div>` + pinned.map(row).join('') : '')
+      + `<div class="gwsec">${pinned.length?'ALSO IN THE DEMO':'IN THE DEMO'} · ${rest.length}</div>`
       + rest.map(row).join('')
-    : `<div class="empty">No live gateways match “${escHtml(state.gwQuery)}”.</div>`;
+    : `<div class="empty">No demo gateways match “${escHtml(state.gwQuery)}”.</div>`;
   updateGwJump(null, q);                       // ungrouped list → no Jump ▾
 }
 /* On the phone the drawers reset themselves when you OPEN them — openDrawer()/openDrawerR()
@@ -5098,6 +5126,7 @@ function closeApp(instant){
   const el = $('appCanvas'); const was = state.app; state.app = null;
   if(el){ if(instant) el.remove(); else { el.classList.add('out'); setTimeout(()=>el.remove(), 200); } }
   if(!was) return;
+  if(!instant) ibxBackAfterClose();
   if(LAB_CANVAS){ try{ tabBar(); }catch(_){} cvSyncDrawer(); }
   if($('frame').classList.contains('panels-float')) try{ buildGwPanels(); }catch(_){}
   // A post made from inside the app should be visible the moment you are back on the feed.
@@ -6374,7 +6403,7 @@ function enquiriesHtml(){
   const list = state.enquiries.filter(e=>ZONES[e.biz]);
   if(!list.length) return '';
   return `<div class="sect"><div class="sect-h"><div class="t">Enquiries</div><div class="a">${list.length}</div></div></div>`
-    + list.map(e=>{ const z=ZONES[e.biz]; return `<div class="bkrow" style="cursor:pointer" onclick="openZoneFav('${e.biz}','contact')">
+    + list.map(e=>{ const z=ZONES[e.biz]; return `<div class="bkrow" data-focus="q${e.ts}" style="cursor:pointer" onclick="openZoneFav('${e.biz}','contact')">
       <div class="ic" style="background:${z.gradient};font-size:12px;font-weight:900;color:#fff">${zoneInitials(z.name)}</div>
       <div style="flex:1;min-width:0"><div class="h"><b>${z.name}</b><span class="bkst">${e.status}</span></div>
         <div class="s">${e.need.slice(0,70)}${e.need.length>70?'…':''}</div>
@@ -6629,7 +6658,7 @@ function checkoutSheetHtml(){
 /* A filed order in My Purchases — tap opens the receipt sheet. */
 function purchaseCard(o){
   const line=o.items.map(i=>i.name).join(', ');
-  return `<div class="porder" onclick="openReceipt('${esc(o.ref)}')">
+  return `<div class="porder" data-focus="ord-${esc(o.ref)}" onclick="openReceipt('${esc(o.ref)}')">
     <div style="display:flex;align-items:center;gap:11px">
       <div style="width:40px;height:40px;border-radius:11px;background:${o.gradient};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0">${zoneInitials(o.brandName)}</div>
       <div style="flex:1;min-width:0">
@@ -7218,7 +7247,7 @@ function aiBookingsHtml(only){
       : asking ? `<div class="bkacts"><span class="q">Cancel this booking?</span><span class="bkbtn" onclick="aiAskCancel('${w.id}')">Keep it</span><span class="bkbtn red" onclick="aiCancelBooking('${w.id}')">Yes, cancel</span></div>`
       : `<div class="bkacts">${w.pro?`<span class="bkbtn" onclick="proChangeBooking('${w.id}')">Change</span>`:AI_CHANGE_FLOW[w.src]?`<span class="bkbtn" onclick="aiChangeBooking('${w.id}')">Change</span>`:''}<span class="bkbtn" onclick="aiAskCancel('${w.id}')">Cancel</span></div>`;
     const a = w.grad ? {grad:w.grad} : taskAgent(Object.keys(TASK_AGENTS).find(k=>TASK_AGENTS[k].name===w.src) || (w.src==='ClimbXX'?'climb':'holiday'));
-    return `<div class="bkrow${w.status?' off':''}">
+    return `<div class="bkrow${w.status?' off':''}" data-focus="${w.id}">
       <div class="ic" style="background:${a.grad}">${w.icon}</div>
       <div style="flex:1;min-width:0">
         <div class="h"><b>${escHtml(w.title)}</b>${status}</div>
@@ -7805,7 +7834,7 @@ function renderEvents(){
 // Profile inside a brand zone shows the SAME identity without swapping the bottom bar).
 function addMyPost(p){ state.myPosts.unshift({ts:Date.now(), ...p}); saveJSON('gx_myPosts', state.myPosts); }
 const _since = ts => { const m=Math.round((Date.now()-ts)/6e4); return m<1?'now':m<60?m+'m':m<1440?Math.round(m/60)+'h':Math.round(m/1440)+'d'; };
-function setProfileTab(t){ state.profileTab=t; render(); }
+function setProfileTab(t){ state.profileTab=t; state.ibxBack=false; render(); }
 function pfComposeGw(g){ state._pfGw=g; const el=document.getElementById('pfText'); const v=el?el.value:''; render(); const n=document.getElementById('pfText'); if(n){ n.value=v; n.focus(); } }
 function pfPost(){
   const el=document.getElementById('pfText'), t=(el&&el.value||'').trim(); if(!t){ el&&el.focus(); return; }
@@ -7911,7 +7940,7 @@ function pfPastCard(o){
   const go = o.brand ? `openZoneFav('${o.brand}')` : o.biz ? `openZoneFav('${o.biz}','contact')` : `openPro('${o.pro}')`;
   const key = o.brand || o.biz || o.pro, rated = state.pfRated && state.pfRated[key];
   const st = o.status==='Shipped' ? 'k-book' : o.status==='Quote' ? 'k-rem' : o.status==='Completed' ? 'k-plan' : '';
-  return `<div class="ord-card"><div class="hd" onclick="${go}" style="cursor:pointer"><div class="lg" style="background:${grad}">${zoneInitials(name)}</div>
+  return `<div class="ord-card" data-focus="${key}"><div class="hd" onclick="${go}" style="cursor:pointer"><div class="lg" style="background:${grad}">${zoneInitials(name)}</div>
       <div style="flex:1;min-width:0"><b>${o.title}</b><div class="s">${o.sub}</div></div><span class="bkst ${st?'':''}" style="${st==='k-book'?'background:rgba(74,108,247,.1);color:#3550d4':st==='k-rem'?'background:rgba(245,184,0,.16);color:#8a6d00':st==='k-plan'?'background:rgba(17,17,22,.06);color:var(--muted)':''}">${o.status}</span></div>
     ${o.step?`<div class="ord-steps">${[1,2,3].map(i=>`<i class="${i<=o.step?'on':''}"></i>`).join('')}</div><div class="ord-stepl"><span>Ordered</span><span>Shipped</span><span>Delivered</span></div>`:''}
     ${o.review?(rated?`<div class="ord-rate"><span class="st">★★★★★</span><span>You rated this · thank you</span></div>`
@@ -7957,7 +7986,7 @@ function pfSavedHtml(){
 
 /* Followers / Following: tappable lists. Following is social (their posts in your feed); ★ is navigation. */
 function openPeople(which){ state.pfPeople = which; render(); }
-function closePeople(){ state.pfPeople = null; render(); }
+function closePeople(){ state.pfPeople = null; render(); ibxBackAfterClose(); }
 function pfFollowBack(i){ state.pfBack = Object.assign({}, state.pfBack, {[i]: !(state.pfBack||{})[i]}); render(); }
 function peopleSheetHtml(){
   const w = state.pfPeople; if(!w) return '';
@@ -7967,7 +7996,7 @@ function peopleSheetHtml(){
     <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:16px;font-weight:800">${fol?'Followers':'Following'}</div><div onclick="closePeople()" style="font-size:13px;font-weight:800;color:var(--muted);cursor:pointer;padding:4px 6px">✕</div></div>
     <div class="pf-seg" style="padding:10px 0 4px">${(fol?[`All ${USER.followers}`,'Mutuals','Requests · 2']:[`People · ${USER.following}`,'Pros · 6','Brands · 4']).map((x,i)=>`<span class="${i?'':'on'}">${x}</span>`).join('')}</div>
     ${PF_PEOPLE.map((p,i)=>{ const following = fol ? (p.back !== !!back[i]) : !back[i];
-      return `<div class="pp-row"><div class="av" style="background:${p.g}">${p.ini}</div><div style="flex:1;min-width:0"><b>${p.n}</b><span class="s">${p.s} · ${p.mut} mutual</span></div>
+      return `<div class="pp-row" data-focus="pp-${i}"><div class="av" style="background:${p.g}">${p.ini}</div><div style="flex:1;min-width:0"><b>${p.n}</b><span class="s">${p.s} · ${p.mut} mutual</span></div>
         <span class="bkbtn" style="${following?'':'background:#111116;color:#fff;border-color:#111116'}" onclick="pfFollowBack(${i})">${following?'Following':fol?'Follow back':'Follow'}</span></div>`; }).join('')}
     <div style="font-size:11px;color:var(--muted);font-weight:600;line-height:1.5;margin-top:12px">${fol?'Requests appear when your account is private (Settings › Privacy).':'Following is social: their posts in your feed. ★ Favourites is navigation: a shortcut back to a place.'}</div></div>`;
 }
@@ -7977,13 +8006,14 @@ function peopleSheetHtml(){
    #appCanvas and painted by ibxPaint(), never by render(), so opening it inside a gateway keeps its videos and scroll.
    Real events first (bookings, orders, quote requests), then fictional demo activity; replies get a short canned answer. */
 const IBX_SEED = [
-  {id:'a-verbier', g:'Today', ic:'✓', bg:'linear-gradient(135deg,#6D28D9,#A78BFA)', t:'<b>Verbier Freeride Guides</b> confirmed your off-piste day', s:'Booking · in Profile › Orders', go:"setTab('profile');setProfileTab('orders')"},
-  {id:'a-ship', g:'Today', ic:'📦', bg:'linear-gradient(135deg,#2B2B33,#0C0C10)', t:'Your <b>Bullheart One</b> has shipped', s:'Arrives Thursday · tracked', go:"setTab('profile');setProfileTab('orders')"},
-  {id:'a-maya', g:'Today', ic:'MC', bg:'linear-gradient(135deg,#0D9488,#2DD4BF)', t:'<b>Maya Chen</b> started following you', s:'Climbs at The Arch · 3 mutual', follow:true},
-  {id:'a-likes', g:'Today', ic:'♡', bg:'linear-gradient(135deg,#E84D3A,#F472B6)', t:'<b>212 people</b> liked your Fistral post', s:'Including Sam Rivera and 11 you follow', go:"setTab('profile');setProfileTab('posts')"},
-  {id:'a-rate', g:'This week', ic:'★', bg:'linear-gradient(135deg,#F5B800,#E0A53A)', t:'How was your session with <b>Beta Coaching</b>?', s:'Your review helps other climbers', go:"setTab('profile');setProfileTab('orders')"},
+  {id:'a-verbier', g:'Today', ic:'✓', bg:'linear-gradient(135deg,#6D28D9,#A78BFA)', t:'<b>Verbier Freeride Guides</b> confirmed your off-piste day', s:'Booking · in Profile › Orders', go:"pfOpen('orders','bk-verbier')"},
+  {id:'a-ship', g:'Today', ic:'📦', bg:'linear-gradient(135deg,#2B2B33,#0C0C10)', t:'Your <b>Bullheart One</b> has shipped', s:'Arrives Thursday · tracked', go:"pfOpen('orders','bullheart')"},
+  {id:'a-maya', g:'Today', ic:'MC', bg:'linear-gradient(135deg,#0D9488,#2DD4BF)', t:'<b>Maya Chen</b> started following you', s:'Climbs at The Arch · 3 mutual', follow:0, go:"ibxPerson(0)"},
+  {id:'a-likes', g:'Today', ic:'♡', bg:'linear-gradient(135deg,#E84D3A,#F472B6)', t:'<b>212 people</b> liked your Fistral post', s:'Including Sam Rivera and 11 you follow', go:"pfOpen('posts','post:Fistral')"},
+  {id:'a-rate', g:'This week', ic:'★', bg:'linear-gradient(135deg,#F5B800,#E0A53A)', t:'How was your session with <b>Beta Coaching</b>?', s:'Your review helps other climbers', rate:'beta-coaching', go:"pfOpen('orders','beta-coaching')"},
   {id:'a-quote', g:'This week', ic:'💬', bg:'linear-gradient(135deg,#92400E,#F59E0B)', t:'<b>Foamcore Blanks</b> sent you a quote', s:'£180 · reply by Friday', thread:'foamcore'},
   {id:'a-lbc', g:'This week', ic:'LB', bg:'linear-gradient(135deg,#E85D3A,#7C3AED)', t:'<b>London Bouldering Collective:</b> new problems set', s:'14 new in the cave', go:"openComm('london-bouldering')"},
+  {id:'a-lbc-time', g:'This week', ic:'🕖', bg:'linear-gradient(135deg,#E85D3A,#7C3AED)', t:'<b>London Bouldering Collective:</b> Thursday social moved to 19:00', s:'Same place, new time', notice:true},
 ];
 const IBX_THREADS = [
   {k:'verbier', who:'Verbier Freeride Guides', ini:'VF', bg:'linear-gradient(135deg,#6D28D9,#A78BFA)', kind:'Pros & brands', ago:'1h', unread:1,
@@ -8008,9 +8038,9 @@ const IBX_ICON = {
 function ibxActivity(){
   const real = [];
   aiWeek().filter(w=>w.booked && !w.status && w.id!=='bk-verbier').slice(-3).reverse().forEach(w=>real.push({id:'r-'+w.id, g:'Today', ic:w.icon, bg:w.grad||'#111116',
-    t:`<b>${escHtml(w.prov||w.src)}</b> confirmed ${escHtml(w.title)}`, s:`${dayLabel(w.d)}${w.time&&w.time!=='—'?' · '+w.time:''} · in Profile › Calendar`, go:"setTab('profile');setProfileTab('cal')"}));
-  state.purchases.slice(0,3).forEach(o=>real.push({id:'r-'+o.ref, g:'Today', ic:'🧾', bg:o.gradient, t:`<b>${o.brandName}</b> confirmed order #${o.ref}`, s:`${o.total} · receipt in Profile › Orders`, go:"setTab('profile');setProfileTab('orders')"}));
-  state.enquiries.filter(e=>ZONES[e.biz]).slice(0,2).forEach(e=>real.push({id:'r-q'+e.ts, g:'Today', ic:'📨', bg:ZONES[e.biz].gradient, t:`Quote request sent to <b>${ZONES[e.biz].name}</b>`, s:`${ZONES[e.biz].contact.response}`, go:"setTab('profile');setProfileTab('orders')"}));
+    t:`<b>${escHtml(w.prov||w.src)}</b> confirmed ${escHtml(w.title)}`, s:`${dayLabel(w.d)}${w.time&&w.time!=='—'?' · '+w.time:''} · in Profile › Orders`, go:`pfOpen('orders','${w.id}')`}));
+  state.purchases.slice(0,3).forEach(o=>real.push({id:'r-'+o.ref, g:'Today', ic:'🧾', bg:o.gradient, t:`<b>${o.brandName}</b> confirmed order #${o.ref}`, s:`${o.total} · receipt in Profile › Orders`, go:`pfOpen('orders','ord-${o.ref}')`}));
+  state.enquiries.filter(e=>ZONES[e.biz]).slice(0,2).forEach(e=>real.push({id:'r-q'+e.ts, g:'Today', ic:'📨', bg:ZONES[e.biz].gradient, t:`Quote request sent to <b>${ZONES[e.biz].name}</b>`, s:`${ZONES[e.biz].contact.response}`, go:`pfOpen('orders','q${e.ts}')`}));
   return real.concat(IBX_SEED);
 }
 const ibxSeen = () => state.ibxSeen || (state.ibxSeen = {});
@@ -8028,12 +8058,36 @@ function ibxSyncDots(){
   const a = ibxUnreadA(), m = ibxUnreadM(), n = {a, m, all:a+m};
   document.querySelectorAll('.ibx-dot').forEach(d=>{ const v = n[d.dataset.ibx]; d.textContent = v; d.classList.toggle('off', !v); });
 }
-function openInbox(tab){ state.ibx = {tab: tab||'activity', thread:null}; if(state.showFavs) commitFavPending(); ibxPaint(); }
+function openInbox(tab){ state.ibxBack = false; state.ibx = {tab: tab||'activity', thread:null}; if(state.showFavs) commitFavPending(); ibxPaint(); }
 function closeInbox(){ state.ibx = null; ibxPaint(); }
 function ibxTab(t){ state.ibx.tab = t; state.ibx.thread = null; ibxPaint(); }
-function ibxGo(js){ closeInbox(); setTimeout(()=>{ try{ (new Function(js))(); }catch(e){} }, 30); }
+/* -61 (Sean): a notification is one of three kinds. Tap-through (›) lands on the EXACT item and rings it; act-in-place
+   (Follow back, rate) works without leaving; a notice only informs, so it has no › and does nothing. Whatever a tap
+   opened, closing it comes back to Activity (the -60 rule). ibxGo used to run setTab('profile') first, but Activity
+   lives INSIDE Profile, so that was a second tap on the open tab, which closes it: every tap landed on the home page. */
+function ibxGo(js){ closeInbox(); setTimeout(()=>{ try{ (new Function(js))(); }catch(e){} state.ibxBack = true; ibxBackPaint(); }, 30); }
+const pfIsOpen = () => state.utilOver==='profile' || (state.tab==='profile' && state.screen==='root' && !state.utilOver);
+function pfOpen(tab, focus){
+  if(!pfIsOpen()) setTab('profile');
+  state.profileTab = tab; state.acct = null;
+  if(focus && focus.startsWith('post:')){ const p = state.myPosts.find(x=>x.text.includes(focus.slice(5))); focus = p ? 'post-'+p.ts : null; }
+  if(tab==='orders') state.pfOrders = 'all';
+  render(); pfFocusNow(focus);
+}
+function ibxPerson(i){ if(!pfIsOpen()) setTab('profile'); state.acct = null; openPeople('followers'); pfFocusNow('pp-'+i); }
+function pfFocusNow(k){
+  if(!k) return;
+  setTimeout(()=>{ const el = document.querySelector(`[data-focus="${k}"]`); if(!el) return;
+    el.scrollIntoView({block:'center', behavior:'smooth'}); el.classList.remove('ibx-hit'); void el.offsetWidth; el.classList.add('ibx-hit'); }, 60);
+}
+function ibxBackPaint(){ if(!state.ibxBack) return; if(pfIsOpen() && !document.querySelector('.ibx-back') && !state.app && !state.pfPeople) render(); }
+function ibxReturn(){ state.ibxBack = false; render(); openInbox('activity'); }
+function ibxBackAfterClose(){ if(!state.ibxBack) return; state.ibxBack = false; setTimeout(()=>{ if(pfIsOpen()){ render(); openInbox('activity'); } }, 220); }
+function ibxRate(key){ state.pfRated = Object.assign({}, state.pfRated, {[key]:true}); ibxPaint(); toast('Thanks · your review is on their Reviews'); }
 function ibxOpenThread(k){ const t = IBX_THREADS.find(x=>x.k===k); if(!t) return; t.unread = 0; state.ibx = {tab:'messages', thread:k}; ibxPaint(); }
-function ibxFollow(id){ ibxSeen()[id+':f'] = !ibxSeen()[id+':f']; ibxPaint(); toast(ibxSeen()[id+':f'] ? 'Following Maya Chen' : 'Unfollowed'); }
+/* Follow back here and in Followers is ONE state (state.pfBack), so the two never disagree */
+const ibxFollowing = i => PF_PEOPLE[i].back !== !!(state.pfBack||{})[i];
+function ibxFollow(i){ state.pfBack = Object.assign({}, state.pfBack, {[i]: !(state.pfBack||{})[i]}); ibxPaint(); toast(ibxFollowing(i) ? 'Following '+PF_PEOPLE[i].n : 'Unfollowed'); }
 function ibxSend(k){
   const inp = document.getElementById('ibxIn'), v = inp && inp.value.trim(); if(!v) return;
   const t = IBX_THREADS.find(x=>x.k===k); t.msgs.push(['me', escHtml(v)]); t.ago = 'Now'; t.typing = true; ibxPaint();
@@ -8057,9 +8111,15 @@ function ibxPaint(){
     if(S.tab==='activity'){
       const list = ibxActivity(), wasNew = {}; list.forEach((x,i)=>{ wasNew[x.id] = !ibxSeen()[x.id] && (x.id.startsWith('r-') || i < 6); });
       const groups = [...new Set(list.map(x=>x.g))];
-      body = groups.map(g=>`<div class="igrp">${g}</div>` + list.filter(x=>x.g===g).map(x=>{ const fol = ibxSeen()[x.id+':f'];
-        return `<div class="irow ${wasNew[x.id]?'new':''}" onclick="${x.thread?`ibxOpenThread('${x.thread}')`:x.go?`ibxGo(&quot;${x.go}&quot;)`:''}"><div class="av" style="background:${x.bg}">${x.ic}</div>
-          <div class="tx">${x.t}<div class="sb">${x.s}</div></div>${x.follow?`<span class="bkbtn" style="${fol?'':'background:#111116;color:#fff;border-color:#111116'}" onclick="event.stopPropagation();ibxFollow('${x.id}')">${fol?'Following':'Follow back'}</span>`:''}</div>`; }).join('')).join('')
+      body = groups.map(g=>`<div class="igrp">${g}</div>` + list.filter(x=>x.g===g).map(x=>{
+        const fol = x.follow!=null && ibxFollowing(x.follow), tap = x.thread ? `ibxOpenThread('${x.thread}')` : x.go ? `ibxGo(&quot;${x.go}&quot;)` : '';
+        const rated = x.rate && state.pfRated && state.pfRated[x.rate];
+        const rate = !x.rate ? '' : rated ? `<div class="irate done"><b>★★★★★</b>You rated this · thank you</div>`
+          : `<div class="irate" onclick="event.stopPropagation()">${[1,2,3,4,5].map(()=>`<i onclick="ibxRate('${x.rate}')">★</i>`).join('')}</div>`;
+        const end = x.follow!=null ? `<span class="bkbtn" style="${fol?'':'background:#111116;color:#fff;border-color:#111116'}" onclick="event.stopPropagation();ibxFollow(${x.follow})">${fol?'Following':'Follow back'}</span>`
+          : tap ? `<span class="ichev">›</span>` : '';
+        return `<div class="irow ${wasNew[x.id]?'new':''} ${tap?'':'note'}" ${tap?`onclick="${tap}"`:''}><div class="av" style="background:${x.bg}">${x.ic}</div>
+          <div class="tx">${x.t}<div class="sb">${x.s}</div>${rate}</div>${end}</div>`; }).join('')).join('')
         + `<div class="inote">Everything that happens to you, in one place: follows, likes and replies, bookings, orders, quotes and review requests.</div>`;
       list.forEach(x=>{ ibxSeen()[x.id] = true; });   // seen once shown: the badge clears, the highlight stays for this look
     } else {
@@ -8134,7 +8194,7 @@ function pfPostsHtml(){
     <div class="row"><span style="font-size:11px;font-weight:700;color:var(--muted)">Also post to</span>
       ${gws.map(g=>`<span class="pf-gw ${state._pfGw===g.name?'on':''}" onclick="pfComposeGw(${state._pfGw===g.name?'null':`'${g.name}'`})">${g.emoji} ${g.name}</span>`).join('')}
       <button class="pf-post-btn" onclick="pfPost()">Post</button></div></div>`;
-  const list = state.myPosts.map(p=>`<div class="pf-post"><div class="av" style="background:${USER.grad}">${USER.ini}</div><div style="flex:1;min-width:0">
+  const list = state.myPosts.map(p=>`<div class="pf-post" data-focus="post-${p.ts}"><div class="av" style="background:${USER.grad}">${USER.ini}</div><div style="flex:1;min-width:0">
       <div class="h">${USER.name} <span>${USER.handle} · ${_since(p.ts)}</span></div>
       <div class="tx">${p.text}</div>
       ${p.gw||p.via?`<div class="ctx">${p.gw?`${(gwMetaFromKey(gwKeyFromName(p.gw))||{}).emoji||''} ${p.gw}`:''}${p.via?` · via ${p.via}`:''}</div>`:''}
@@ -8159,6 +8219,7 @@ function profileBody(){
     </div>
     <div class="pf-tabs">${[['posts','Posts','Public'],['cal','Calendar','Only you'],['orders','Orders','Only you'],['saved','Saved','Only you']].map(([k,l,sb])=>`<div class="${tab===k?'on':''}" onclick="setProfileTab('${k}')">${l}<small>${sb}</small></div>`).join('')}</div>
     ${tab==='posts'?pfPostsHtml():tab==='cal'?pfCalHtml():tab==='orders'?pfOrdersHtml():pfSavedHtml()}
+    ${state.ibxBack?`<div class="ibx-back-wrap"><div class="ibx-back" onclick="ibxReturn()"><span style="font-size:16px;line-height:1">‹</span> Back to Activity</div></div>`:''}
     <div onclick="vdbgTap()" style="text-align:center;padding:22px 16px 4px;font-size:10.5px;letter-spacing:.06em;color:var(--muted);opacity:.7;font-weight:700">GENEXXO · build ${BUILD}</div>
     <div style="height:16px"></div>`;
 }
