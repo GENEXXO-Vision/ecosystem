@@ -83,6 +83,7 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   /* ── APP CANVAS (2026-10-08) — a third-party app running instantly, sandboxed. Full screen on the
      phone; on desktop the overlay rule below narrows it to the centre measure under the masthead. It
      lives OUTSIDE render() (appended to #frame by openApp), so no re-render can reload the app. ── */
+  #appCanvas.under-util{display:none!important}   /* -63: kept alive under Profile on desktop, see cvToProfile() */
   #appCanvas{position:fixed;left:50%;transform:translateX(-50%);top:0;bottom:0;width:100%;max-width:430px;z-index:90;
     display:flex;flex-direction:column;background:#0B0B0F;color:#fff;animation:acIn .28s cubic-bezier(.2,.75,.2,1)}
   #appCanvas.out{animation:acOut .2s ease forwards}
@@ -1673,8 +1674,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-62"></script>
-<script src="genexxo-core.js?v=2026.08.26-62"></script>
+<script src="genexxo-data.js?v=2026.08.26-63"></script>
+<script src="genexxo-core.js?v=2026.08.26-63"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -2573,7 +2574,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-62';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-63';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -2662,7 +2663,7 @@ function navRestore(b){
   if (window.__syncChrome) window.__syncChrome();   // bars stay visible until you scroll again
 }
 function openGateway(name, sectorKey){
-  state.ibxBack = false;
+  state.ibxBack = false; cvDropHidden();
   const fromTab = tabOrigin();   // -60: Back from this gateway, before you move on, returns to the tab
   pushHist();
   // Following a link OUT of a floating utility tab — the screen stays 'gateway', so the
@@ -2682,6 +2683,7 @@ function openGateway(name, sectorKey){
   render(); $('screen').scrollTo(0,0);
 }
 function openSector(key){
+  cvDropHidden();
   state._gwOrigin = null;   // moved on (-60)
   pushHist();
   // leaving a gateway for its own sector = a glimpse; remember the way back
@@ -2693,7 +2695,7 @@ function openSector(key){
   logVisit('sector', key);
   render(); $('screen').scrollTo(0,0);
 }
-function goHub(){ state.ibxBack=false; state._gwOrigin=null; state._before=null; state._hist=[]; state.eventsMemo=null; state.discoverMemo=null; state.screen='root'; state.gateway=null; state._gwObj=null; state.showFavs=false; state.returnGw=null; state.zone=null; state.zoneProduct=null; state._zoneIn=false; state.tab='home'; render(); }
+function goHub(){ state.ibxBack=false; cvDropHidden(); state._gwOrigin=null; state._before=null; state._hist=[]; state.eventsMemo=null; state.discoverMemo=null; state.screen='root'; state.gateway=null; state._gwObj=null; state.showFavs=false; state.returnGw=null; state.zone=null; state.zoneProduct=null; state._zoneIn=false; state.tab='home'; render(); }
 
 /* Home always takes you home. The other four are toggles: first tap opens the tab
    (remembering where you were), a second tap closes it and puts you straight back —
@@ -2702,6 +2704,39 @@ const UTIL_TABS = ['discover','ai','events','profile','search'];   // 'search' o
 /* A small ✕ at the top right of each bottom-tab window (Sean, 2026-10-15): the same as tapping the tab again. Each
    window makes room by moving things LEFT (a shorter search box, a shorter scope switch) rather than down; Events
    moves its "Live" count onto the subtitle line. */
+/* -63 (Sean): Profile opened from INSIDE a canvas is a layer over it, not a way out. "Open your full profile" used to close the
+   canvas first, so closing Profile landed in the gateway underneath (Whirl → CycleXX). A brand/business canvas is a screen, so
+   setTab's saved place already brings it back. A pro, community or app canvas is #appCanvas, which render() drops when the screen
+   changes, so it is remembered here and reopened, on the same tab, when Profile closes. Going somewhere else forgets it. */
+function cvToProfile(pfTab){
+  cvSheetClose(true);
+  const a = state.app;
+  /* Desktop, over a gateway: Profile floats over the centre (utilOver) and the screen underneath never changes, so the app is
+     kept, only hidden, and the side panels stay on it (Sean: closing the app made them fall back to the gateway home). */
+  if(a && DESKTOP() && (state.screen==='gateway' || state.screen==='zone') && $('appCanvas')){
+    state._cvHidden = true; $('appCanvas').classList.add('under-util');
+    setTab('profile'); if(pfTab){ state.profileTab = pfTab; render(); }
+    return;
+  }
+  if(a){ state._cvReopen = {kind:a.kind, key:a.key, tab:a.tab}; closeApp(true); }
+  setTab('profile');
+  if(pfTab){ state.profileTab = pfTab; render(); }
+}
+function cvReveal(){
+  if(!state._cvHidden) return; state._cvHidden = false;
+  const el = $('appCanvas'); if(el) el.classList.remove('under-util');
+  try{ tabBar(); }catch(_){}
+}
+/* Leaving for somewhere else while the app is hidden under Profile: the app goes too. */
+function cvDropHidden(){ if(state._cvHidden){ state._cvHidden = false; if(state.app) closeApp(true); } state._cvReopen = null; }
+function cvReopen(){
+  const r = state._cvReopen; state._cvReopen = null; if(!r) return;
+  setTimeout(()=>{ try{
+    if(r.kind==='pro'){ openPro(r.key); if(r.tab && state.app && state.app.tab!==r.tab){ state.app.tab = r.tab; paintProPage(true); } }
+    else if(r.kind==='community') openComm(r.key);
+    else { openApp(r.key); if(r.tab && state.app && state.app.tab!==r.tab){ state.app.tab = r.tab; paintAppPage(true); } }
+  }catch(_){} }, 0);
+}
 function utilClose(){ const t = state.utilOver || state.tab; if(UTIL_TABS.includes(t)) setTab(t); }
 const utilX = cls => `<div class="utilx${cls?' '+cls:''}" onclick="event.stopPropagation();utilClose()" title="Close" aria-label="Close"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></div>`;
 function setTab(t){
@@ -2716,6 +2751,7 @@ function setTab(t){
      screen change, because there is no place to save and restore. See syncUtilOverlay(). */
   if (DESKTOP() && UTIL_TABS.includes(t) && (state.screen==='gateway' || state.screen==='zone')){
     state.utilOver = (state.utilOver===t) ? null : t;
+    if(!state.utilOver) setTimeout(()=>{ cvReveal(); cvReopen(); }, 0);   // -63: Profile closed over a gateway → the pro/community/app it was opened from
     if (state.utilOver==='search'){            // fresh cards each open, unless a memo says otherwise
       const m = state.discoverMemo;
       state.discoverSector = m ? m.sector : null;
@@ -2755,6 +2791,7 @@ function setTab(t){
       state._zoneIn=!!b.zone;   // canvas reappears in place — no re-animation on restore
       render(); $('screen').scrollTo(0, b.scroll||0);
       if (window.__syncChrome) window.__syncChrome();   // bars stay visible until you scroll again
+      cvReopen();
       return;
     }
     t='home'; goHub(); $('screen').scrollTo(0,0); return;   // nothing saved → home
@@ -4188,7 +4225,7 @@ function tabBar(){
   const tabs = [['back','Back'],['discover','Discover'],['ai','AI'],['events','Events'],['profile','Profile']];
   // LAB canvas mode: the SAME bar, with a strip of the zone's colour on top; Back retraces the canvas, and at the
   // canvas's first page it reads Close.
-  const cvApp = LAB_CANVAS && state.app && !(!state.app.kind && state.app.running) && $('appCanvas');   // app home page, pro, community (a running APP hides the bar)
+  const cvApp = LAB_CANVAS && state.app && !state._cvHidden && !(!state.app.kind && state.app.running) && $('appCanvas');   // app home page, pro, community (a running APP hides the bar)
   const inCanvas = cvApp || (LAB_CANVAS && state.screen==='zone' && ZONES[state.zone] && !state.utilOver && !UTIL_TABS.includes(state.tab));
   const cvGrad = !inCanvas ? '' : cvApp ? (()=>{ const a=state.app, h = a.kind==='pro'?proByKey(a.key):a.kind==='community'?commByKey(a.key):appByKey(a.key);
       const c = h ? (a.kind==='pro'?h.pro.color:a.kind==='community'?h.comm.color:h.app.color) : '#111116'; return `linear-gradient(90deg,${c},#111116)`; })() : ZONES[state.zone].gradient;
@@ -5046,7 +5083,7 @@ function cvSheetPaint(){
     h = `<div style="display:flex;align-items:center;gap:12px"><div style="width:52px;height:52px;border-radius:50%;background:${USER.grad};color:#fff;font-weight:900;font-size:17px;display:flex;align-items:center;justify-content:center">${USER.ini}</div>
         <div><h3>${USER.name} <span style="font-size:9px;font-weight:800;padding:2px 7px;border-radius:99px;background:#111116;color:#fff;vertical-align:3px">✓ GENEXXO ID</span></h3><div class="sub">${USER.handle} · the same profile everywhere</div></div></div>
       ${cvYou(c)}
-      <div class="cvr" onclick="cvSheetClose(true);${state.app?'closeApp(true);':'canvasClose();'}setTab('profile')"><div style="flex:1"><b>Open your full profile</b><span>Posts · Plans · Library · Settings</span></div><span style="color:var(--muted);font-weight:800">›</span></div>`;
+      <div class="cvr" onclick="cvToProfile()"><div style="flex:1"><b>Open your full profile</b><span>Posts · Plans · Library · Settings</span></div><span style="color:var(--muted);font-weight:800">›</span></div>`;
   }
   let sh=$('cvSheet');
   if(!sh){ $('frame').insertAdjacentHTML('beforeend', `<div id="cvScrim" onclick="cvSheetClose()"></div><div id="cvSheet"></div>`); sh=$('cvSheet'); }
@@ -5295,7 +5332,7 @@ function paintProBook(){
       <p><b>${svc.name}</b> with ${x.name}<br>${d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})} · ${b.time}</p>
       <p style="font-size:12px">It's in Profile › Calendar and Orders, and in Events. ${x.name.split(' ')[0]} will message you before the day.</p></div>
       <button class="ac-allow" onclick="state.app.book=null;paintProPage()">Done</button>
-      <button class="ac-cancel" onclick="closeApp(true);setTab('profile')">View my bookings</button>`;
+      <button class="ac-cancel" onclick="cvToProfile('orders')">View my bookings</button>`;
   }
   $('acBody').innerHTML = `<div class="ap"><div class="bk-steps">${[1,2,3].map(i=>`<i class="${i<=n?'on':''}"></i>`).join('')}</div>${body}</div>`;
 }
@@ -8017,10 +8054,10 @@ const IBX_SEED = [
 ];
 const IBX_THREADS = [
   {k:'verbier', who:'Verbier Freeride Guides', ini:'VF', bg:'linear-gradient(135deg,#6D28D9,#A78BFA)', kind:'Pros & brands', ago:'1h', unread:1,
-   ctx:['⛷️','Off-piste day · Verbier','Booking · confirmed', "setTab('profile');setProfileTab('orders')"], reply:'Perfect. We’ll bring a spare probe just in case. See you at Médran.',
+   ctx:['⛷️','Off-piste day · Verbier','Booking · confirmed', "pfOpen('orders','bk-verbier')"], reply:'Perfect. We’ll bring a spare probe just in case. See you at Médran.',
    msgs:[['them','Hi Alex, you’re confirmed for the off-piste day. Have you done an avalanche course yet?'],['me','Booked Snowcraft for the weekend before. Anything else I should bring?'],['them','Transceiver, probe, shovel. We can lend you a pack. See you at the Médran lift, 08:30.']]},
   {k:'bullheart', who:'Bullheart', ini:'BH', bg:'linear-gradient(135deg,#2B2B33,#0C0C10)', kind:'Pros & brands', ago:'3h', unread:0,
-   ctx:['⌚','Bullheart One · £249','Order · shipped', "setTab('profile');setProfileTab('orders')"], reply:'You’re welcome! Any problems pairing, just message us here.',
+   ctx:['⌚','Bullheart One · £249','Order · shipped', "pfOpen('orders','bullheart')"], reply:'You’re welcome! Any problems pairing, just message us here.',
    msgs:[['me','Does the One work with Route Logger?'],['them','It does. Pair it in Route Logger › Devices and your attempts log automatically.'],['them','Tracking: arrives Thursday.']]},
   {k:'sam', who:'Sam Rivera', ini:'SR', bg:'linear-gradient(135deg,#0066CC,#00AAFF)', kind:'People', ago:'Yesterday', unread:0, reply:'🤙 See you in the car park at 6.',
    msgs:[['them','Saw the Fistral post 🔥'],['me','Dawn patrol again Sunday if you’re around'],['them','Fistral Sunday? I’m in.']]},
