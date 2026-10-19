@@ -1674,8 +1674,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-63"></script>
-<script src="genexxo-core.js?v=2026.08.26-63"></script>
+<script src="genexxo-data.js?v=2026.08.26-64"></script>
+<script src="genexxo-core.js?v=2026.08.26-64"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -2574,7 +2574,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-63';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-64';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -3504,6 +3504,13 @@ const INK_DARK = '#111116';
 function inkAt(g, t){ return _relLum(gradAt(g,t)) > 0.33 ? 'dark' : 'light'; }
 function inkAvg(g){ const st=_gradStops(g); if(!st.length) return 'light'; return st.reduce((a,c)=>a+_relLum(c),0)/st.length > 0.33 ? 'dark' : 'light'; }
 /* Per-label style for a bar label at fraction t: text colour, and the active pill to match. */
+/* -64 (Sean): the selected tab on the white framed bar is a solid pill in the gateway's accent, so you know at once where you
+   are. White type where it reads (contrast ≥ 3), the dark ink where the accent is too light (Cycle's yellow, Stocks' green). */
+function accentPill(hex){
+  const ok = /^#[0-9a-f]{6}$/i.test(hex||''); if(!ok) return 'background:#111116;color:#fff;';
+  const l = c => { const v = [1,3,5].map(i=>parseInt(c.substr(i,2),16)/255).map(x=>x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4)); return .2126*v[0]+.7152*v[1]+.0722*v[2]; };
+  return `background:${hex};color:${1.05/(l(hex)+.05) >= 3 ? '#fff' : '#111116'};`;
+}
 function tabInk(g, t, on){
   if(inkAt(g,t)==='light') return '';                    // the default CSS (white) already fits
   return `color:${on?INK_DARK:'rgba(17,17,22,.62)'};${on?'background:rgba(17,17,22,.12);':''}`;
@@ -4840,7 +4847,7 @@ function cvTabsPaint(){
   const h = kind==='pro'?proByKey(a.key):appByKey(a.key); if(!h) return;
   const c = kind==='pro'?h.pro.color:h.app.color, grad = `linear-gradient(90deg,${c},#111116)`;
   const html = `<div class="cvtabs netbar framed" style="background:linear-gradient(#fff,#fff) padding-box, ${grad} border-box">${CV_APP_TABS[kind].map(([k,lb])=> a.tab===k
-      ? `<div class="ntab on" style="pointer-events:none">${lb}</div>` : `<div class="ntab" onclick="${kind==='pro'?'setProTab':'setAppTab'}('${k}')">${lb}</div>`).join('')}</div>`;
+      ? `<div class="ntab on" style="pointer-events:none;${accentPill(c)}">${lb}</div>` : `<div class="ntab" onclick="${kind==='pro'?'setProTab':'setAppTab'}('${k}')">${lb}</div>`).join('')}</div>`;
   if(old) old.outerHTML=html; else $('acBody').insertAdjacentHTML('beforebegin', html);
   setTimeout(()=>{ try{ tabBar(); }catch(_){} }, 0);   // Back ⇄ Close follows the tab trail
 }
@@ -5700,7 +5707,7 @@ function renderGateway(){
   const framed = GW_BAR_FRAMED==='all' || GW_BAR_FRAMED.includes(gwSecOf(gw) || gw.sector);
   // Otherwise each label's ink follows the gradient behind it (tabInk). Labels sit at roughly even fractions of
   // the bar; the › arrow sits at the far right.
-  const labInk = (i,n,on) => framed ? '' : tabInk(barBg,(i+.5)/(n+.4),on);
+  const labInk = (i,n,on) => framed ? (on ? accentPill(t.accent) : '') : tabInk(barBg,(i+.5)/(n+.4),on);
   const pgTabs = list => list.map(([k,lb],i)=>`<div class="ntab ${gwTabOn(k)?'on':''}" style="${labInk(i,list.length,gwTabOn(k))}" onclick="tapGwZone('${k}')">${lb}</div>`).join('');
   bar = `<div class="substick netbar${framed?' framed':''}" style="${framed?`background:linear-gradient(#fff,#fff) padding-box, ${barBg} border-box`:`background:${barBg}`}">
     <div class="ntab gwbar-arr" style="flex:0 0 26px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px;${onMore?'':'visibility:hidden;pointer-events:none;'}${framed?'':tabInk(barBg,.03,true).replace(/background:[^;]*;/,'')}" onclick="tapGwBarPage(-1)" title="Back to Feed · Brands · Apps">‹</div>
@@ -6387,9 +6394,14 @@ function renderZonePage(){
       ? `<div class="ntab on" style="pointer-events:none;${tabInk(zBarBg,zt(k),true)}">${lb}</div>`
       : `<div class="ntab" style="${tabInk(zBarBg,zt(k),false)}" onclick="setZoneTab('${k}')">${lb}</div>`;
   const zFramed = LAB_CANVAS;   // LAB: the zone's tabs wear the framed white bar, framed by the zone's own gradient
+  /* -64: on the framed bar the live tab is a solid pill in the brand's colour (Shop stays tappable: it toggles its overlay) */
+  const cTabF = (k,lb) => k==='shop'
+    ? `<div class="ntab${state.zoneTab==='shop'?' on':''}" style="${state.zoneTab==='shop'?accentPill(z.color):''}" onclick="tapShop()">${lb}</div>`
+    : state.zoneTab===k ? `<div class="ntab on" style="pointer-events:none;${accentPill(z.color)}">${lb}</div>`
+    : `<div class="ntab" onclick="setZoneTab('${k}')">${lb}</div>`;
   const bar = `<div class="substick netbar${zFramed?' framed':''}" style="${zFramed?`background:linear-gradient(#fff,#fff) padding-box, ${z.gradient} border-box`:`background:${zBarBg}`}">
       <div class="ntab" style="flex:0 0 26px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px;${onMore?'':'visibility:hidden;pointer-events:none;'}${zFramed?'':tabInk(zBarBg,.03,true).replace(/background:[^;]*;/,'')}" onclick="tapZoneBarPage()" title="Back to Feed · Shop · Bag">‹</div>
-      ${zTabs.map(([k,lb])=>zFramed ? cTab(k,lb).replace(/ style="[^"]*"/,(m)=>m.includes('pointer-events')?' style="pointer-events:none"':'') : cTab(k,lb)).join('')}
+      ${zTabs.map(([k,lb])=>zFramed ? cTabF(k,lb) : cTab(k,lb)).join('')}
       <div class="ntab" style="flex:0 0 26px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px;${zFramed?'':tabInk(zBarBg,.97,true).replace(/background:[^;]*;/,'')}" onclick="tapZoneBarPage()" title="${onMore?'Round to Feed · Shop · Bag':'More — Media · About · Events'}">›</div>
     </div>`;
 
@@ -6452,7 +6464,7 @@ function renderBizZone(z, gw, head){
   const at = i => (i+.5)/T.length;
   const bar = LAB_CANVAS
     ? `<div class="substick netbar framed" style="background:linear-gradient(#fff,#fff) padding-box, ${z.gradient} border-box">${T.map(([k,lb])=> tab===k
-        ? `<div class="ntab on" style="pointer-events:none">${lb}</div>` : `<div class="ntab" onclick="setZoneTab('${k}')">${lb}</div>`).join('')}</div>`
+        ? `<div class="ntab on" style="pointer-events:none;${accentPill(z.color)}">${lb}</div>` : `<div class="ntab" onclick="setZoneTab('${k}')">${lb}</div>`).join('')}</div>`
     : `<div class="substick netbar" style="background:${z.gradient}">${T.map(([k,lb],i)=> tab===k
       ? `<div class="ntab on" style="pointer-events:none;${tabInk(z.gradient,at(i),true)}">${lb}</div>`
       : `<div class="ntab" style="${tabInk(z.gradient,at(i),false)}" onclick="setZoneTab('${k}')">${lb}</div>`).join('')}</div>`;
