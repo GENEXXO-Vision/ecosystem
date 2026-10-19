@@ -24,10 +24,10 @@
   .rule{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;font-weight:700;font-size:15px}
   .rule i{font-style:normal;font-family:var(--cond);font-weight:700;font-size:15px;width:34px;height:34px;border-radius:10px;background:#111116;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:.02em}
 
-  /* authority: 43 of 45 */
+  /* authority: 70+ sectors, one square each */
   .auth{display:grid;grid-template-columns:auto 1fr;gap:clamp(24px,5vw,56px);align-items:center}
   @media (max-width:640px){ .auth{grid-template-columns:1fr} }
-  .cells{display:grid;grid-template-columns:repeat(9,22px);gap:6px}
+  .cells{display:grid;grid-template-columns:repeat(10,22px);gap:6px}
   .cells i{width:22px;height:22px;border-radius:6px;background:#111116}
   .cells i.off{background:transparent;border:1.5px dashed rgba(17,17,22,.25)}
   .auth .big b{display:block;font-family:var(--cond);font-weight:700;font-size:clamp(56px,7vw,84px);line-height:.95}
@@ -90,8 +90,8 @@
       </div>
       <div class="vis stats4 rv">
         <div class="st"><b>10,000+</b><span>Domains</span></div>
-        <div class="st"><b>45</b><span>Categories</span></div>
-        <div class="st"><b>400+</b><span>Sub-categories</span></div>
+        <div class="st"><b>70+</b><span>Sectors</span></div>
+        <div class="st"><b>~470</b><span>Sub-sectors</span></div>
         <div class="st"><b>15 yrs</b><span>Assembled</span></div>
       </div>
     </div>
@@ -117,11 +117,11 @@
     <div class="main">
       <div class="rv">
         <h2>Not just presence. <span class="soft">Market authority.</span></h2>
-        <div class="prose"><p>From core business sectors to consumer markets, professional fields to cultural categories — comprehensive coverage across B2B and B2C.</p></div>
+        <div class="prose"><p>From core business sectors to consumer markets, professional fields to cultural categories.</p></div>
       </div>
       <div class="vis auth rv">
-        <div class="cells" id="cells" aria-label="43 of 45 categories"></div>
-        <div class="big"><b>90%+</b><span>of the most essential terms, in <strong style="color:var(--ink)">43 out of 45</strong> carefully researched categories.</span></div>
+        <div class="cells" id="cells" aria-label="70+ sectors"></div>
+        <div class="big"><b>90%+</b><span>of the most essential terms — across <strong style="color:var(--ink)">70+ sectors</strong>, B2B and B2C.</span></div>
       </div>
     </div>
   </div>
@@ -211,7 +211,7 @@
 $('rules').innerHTML=['Exclusive .com focus','Single-word purity','English language primacy','Trademark safety','Generic term focus','Complete word integrity','Clean format','Regional spelling coverage','Categorical clarity','B2B & B2C balance','Future-proofing','Strategic plurals','Global market awareness','Functional categorization']
   .map((r,i)=>`<div class="rule"><i>${String(i+1).padStart(2,'0')}</i>${r.replace('&','&amp;')}</div>`).join('');
 
-$('cells').innerHTML=Array.from({length:45},(_,i)=>`<i${i>=43?' class="off"':''}></i>`).join('');
+$('cells').innerHTML=Array.from({length:70},()=>'<i></i>').join('');   // one square per sector (70+; Sean, 2026-10-19)
 
 /* depth: bars in the matching sector's colour from the app */
 (function(){
