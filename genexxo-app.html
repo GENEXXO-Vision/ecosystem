@@ -1610,6 +1610,32 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   #infoFeed .scard.grad .step{ background:rgba(255,255,255,.17); color:#fff; }
   #infoFeed .scard.grad .step:last-child{ background:#fff; color:var(--ink); }
   #infoFeed .scard.grad .sarr{ color:rgba(255,255,255,.7); }
+  /* ── -66 (Sean): the run-through in the current brand. GENEXXO is monochrome: highlight slides are black with a thin gold
+     rule and the XX as a faint watermark; every slide signs with the real XX mark; headlines in the site's heavy sans, the
+     lead as the softer second half. Colour appears only where it means something: an XX name wears its gateway/sector colour. */
+  #infoFeed{ --xx:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='193 0 74 57.2'%3E%3Cpath d='M230.1,1.8h0c0,.1,0,0,0,0h.1ZM203.7,1.8h-8.9l15.3,23.1,4.6-6.5-11-16.6ZM245.5,38.8l10.9,16.5h8.9l-15.3-23.1-4.5,6.7ZM247.6,28.5l-4.5,6.7h0l-8.7,13.2-4.4,6.7-4.4-6.7-8.7-13.2-13.2,20h-8.9l16.7-25.3h0s.9-1.4.9-1.4h0l4.4-6.7,8.7-13.2,4.4-6.7,4.4,6.7,8.7,13.2,13.2-20h8.9l-17.6,26.7ZM238.7,28.5l-8.7-13.2-8.7,13.2,8.7,13.2,8.7-13.2ZM211.6,29.9h0s0,0,0,0ZM212.5,28.5h0l-.9,1.3.9-1.3Z'/%3E%3C/svg%3E"); }
+  #infoFeed .scard .bar{ display:none; }
+  #infoFeed .pav{ background:#111116!important; }
+  #infoFeed .pav .gx-mono{ width:22px; height:22px; color:#fff; }
+  #infoFeed .stitle{ font-family:var(--font); font-weight:800; font-size:25px; line-height:1.12; letter-spacing:-.025em; }
+  #infoFeed .slead{ font-size:18px; letter-spacing:-.015em; color:rgba(17,17,22,.5); margin-top:8px; }
+  #infoFeed .scard.grad{ background:#0c0c10!important; border-top:0; }
+  #infoFeed .scard.grad::before{ content:""; position:absolute; left:0; right:0; top:0; height:2px; background:linear-gradient(90deg,#8a5a12,#f7c95a 35%,#fff1c4 55%,#e0a53a 80%,#9c6a1a); z-index:2; }
+  #infoFeed .scard.grad::after{ right:-34px; top:auto; bottom:-30px; width:210px; height:163px; border-radius:0; background:rgba(255,255,255,.05);
+    -webkit-mask:var(--xx) center/contain no-repeat; mask:var(--xx) center/contain no-repeat; }
+  #infoFeed .scard.grad .pav{ background:#fff!important; }
+  #infoFeed .scard.grad .pav .gx-mono{ color:#111116; }
+  #infoFeed .scard.grad .stitle{ font-size:25px; }
+  #infoFeed .scard.grad .slead{ font-family:var(--font); font-weight:800; font-size:24px; line-height:1.15; letter-spacing:-.025em; color:rgba(255,255,255,.55); margin-top:6px; }
+  #infoFeed .scard.grad .psub, #infoFeed .scard.grad .pnum{ color:rgba(255,255,255,.55); }
+  #infoFeed .scard.grad .duocard{ background:rgba(255,255,255,.06); border:1px solid rgba(245,184,0,.35); }
+  #infoFeed .scard.grad .snote{ border-top-color:rgba(255,255,255,.14); }
+  #infoFeed .xxi{ display:inline-block; width:16px; height:16px; border-radius:5px; vertical-align:-3px; margin-right:6px; position:relative; }
+  #infoFeed .xxi::after{ content:""; position:absolute; inset:3px; background:#fff; -webkit-mask:var(--xx) center/contain no-repeat; mask:var(--xx) center/contain no-repeat; }
+  #infoFeed .pill .pt{ font-family:var(--font); font-weight:800; font-size:16px; letter-spacing:-.01em; }
+  #infoFeed .pname .v{ color:var(--ink); }
+  #infoFeed .scard.grad .pname .v{ color:#fff; }
+  #infoFeed .schip.xx, #infoFeed .step.xx{ background:#fff!important; color:var(--ink)!important; border:1px solid var(--line); padding-left:8px; }
   #infoFeed .foot-note{ text-align:center; font-size:10.5px; color:var(--faint); font-weight:600; padding:6px 20px 4px; line-height:1.6; }
 </style>
 </head>
@@ -1672,8 +1698,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-65"></script>
-<script src="genexxo-core.js?v=2026.08.26-65"></script>
+<script src="genexxo-data.js?v=2026.08.26-66"></script>
+<script src="genexxo-core.js?v=2026.08.26-66"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -1771,7 +1797,8 @@ NETWORK_FEED.push({ videoOnly:true, video:'genexxo-videos/supernova-app.mp4', _s
   NETWORK_FEED.splice(spa < 0 ? NETWORK_FEED.length : spa, 0, clip);
 })();
 
-/* Neighbourhood display order (Sean, 2026-10-12): Sport & Play leads — it is the Adventure showcase's home.
+/* Neighbourhood display order (Sean, 2026-10-12): Sport & Adventure (was Sport & Play; renamed by Sam 2026-10-19) leads — it is
+   the Adventure showcase's home. Since Sam's 2026-10-19 order the data itself starts with it; this stays as the guard.
    SECTOR_GROUPS is a GENERATED block in genexxo-data.js (apply-handoff.py), so the order is set here at boot,
    not in the data, or the next taxonomy rebuild would silently undo it. Every consumer — the Sectors drawer,
    its Jump menu, Discover's chips and sections — iterates SECTOR_GROUPS, so one move covers them all.
@@ -2572,7 +2599,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-65';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-66';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -3230,10 +3257,14 @@ const IF_GRADS = [
   'linear-gradient(135deg,#6366F1,#4338CA)', 'linear-gradient(135deg,#A855F7,#7E22CE)',
   'linear-gradient(145deg,#E84D3A 0%,#8B5CF6 50%,#4A6CF7 100%)'
 ];
-const ifChips   = a => `<div class="schips">${a.map(c=>`<span class="schip">${c}</span>`).join('')}</div>`;
+/* An XX name in a slide wears its own colour: a demo gateway's gradient, else its sector's (TechXX, BeautyXX). */
+const ifXXCol = n => { if(!/^[A-Z][a-z]+XX$/.test(n)) return null; const k = gwKeyFromName(n), m = gwMetaFromKey(k);
+  return (m && m.gradient) || (sectorOf(k) && sectorOf(k).g) || null; };
+const ifXXTag = n => { const c = ifXXCol(n); return c ? `<i class="xxi" style="background:${c}"></i>${n}` : n; };
+const ifChips   = a => `<div class="schips">${a.map(c=>`<span class="schip${ifXXCol(c)?' xx':''}">${ifXXTag(c)}</span>`).join('')}</div>`;
 const ifPillars = a => `<div class="pillgrid">${a.map((p,i)=>`<div class="pill"><span class="pn">0${i+1}</span><span class="pt">${p}</span></div>`).join('')}</div>`;
 const ifStats   = a => `<div class="statrow">${a.map(([n,l])=>`<div class="stat"><div class="sn">${n}</div><div class="sl">${l}</div></div>`).join('')}</div>`;
-const ifSteps   = a => `<div class="steps">${a.map((s,i)=>`${i?'<span class="sarr">→</span>':''}<span class="step">${s}</span>`).join('')}</div>`;
+const ifSteps   = a => `<div class="steps">${a.map((s,i)=>`${i?'<span class="sarr">→</span>':''}<span class="step${ifXXCol(s)?' xx':''}">${ifXXTag(s)}</span>`).join('')}</div>`;
 const ifDuo     = a => `<div class="duo">${a.map(d=>`<div class="duocard">${d}</div>`).join('')}</div>`;
 
 function ifSlide(s, i, total){
@@ -3253,7 +3284,7 @@ function ifSlide(s, i, total){
     ${isG?'':`<div class="bar" style="background:${s.grad}"></div>`}
     <div class="in">
       <div class="prow">
-        <div class="pav"${isG?'':` style="background:${s.grad}"`}>GX</div>
+        <div class="pav"><span class="gx-mono"></span></div>
         <div class="pmeta">
           <div class="pname">GENEXXO <span class="v" title="Verified">✔</span></div>
           <div class="psub">${s.sub} · genexxovision.com</div>
@@ -3287,7 +3318,7 @@ const IF_INTRO = [
   { type:'white', grad:IF_GRADS[6], sub:'The Foundation', title:'The Foundation',
     body:'10,000+ premium single-word .com domains — all ending in XX.',
     bullets:['TechXX','BeautyXX','TennisXX','DubaiXX','+ thousands more'],
-    stats:[['70','Sectors'],['400+','Sub-Sectors'],['15 yrs','Assembled']], note:'Now complete and locked.' },
+    stats:[['70+','Sectors'],['~470','Sub-Sectors'],['15 yrs','Assembled']], note:'Now complete and locked.' },
   { type:'grad', grad:IF_GRADS[2], sub:'The Advantage', title:'The XX Advantage',
     lead:'The most powerful unifier on the internet.',
     body:'Instant recognition, connection and branding across thousands of domains.', note:'A linguistic moat that cannot be copied.' },
