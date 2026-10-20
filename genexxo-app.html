@@ -1698,8 +1698,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-66"></script>
-<script src="genexxo-core.js?v=2026.08.26-66"></script>
+<script src="genexxo-data.js?v=2026.08.26-67"></script>
+<script src="genexxo-core.js?v=2026.08.26-67"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -2599,7 +2599,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-66';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-67';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -3701,6 +3701,10 @@ function settleListScroll(list, top){
   const apply = () => { list.style.overflowY='hidden'; void list.offsetHeight; list.scrollTop = Math.max(0, top); list.style.overflowY=''; };
   apply(); requestAnimationFrame(apply);
 }
+/* -67 (Sean, 2026-10-20): park the sector's NEIGHBOURHOOD heading at the top (tap Media → "ARTS & ENTERTAINMENT" leads the
+   panel), so the whole family of sectors stays in view, not just the one you chose. The heading is sticky, so its position
+   is read from the plain .gwanchor just before it. If the family is too tall for the panel to show the chosen row, fall
+   back to the old resting place: the row directly under its heading. */
 function revealActiveSector(){
   const dl=$('drawerList'); if(!dl) return;
   const act=$('drawerActiveRow');
@@ -3708,7 +3712,17 @@ function revealActiveSector(){
   const sec = dl.querySelector('.gwsec');          // any divider: they are all the same height
   const pad = sec ? sec.getBoundingClientRect().height : 0;
   const dr=dl.getBoundingClientRect(), ar=act.getBoundingClientRect();
-  settleListScroll(dl, dl.scrollTop + (ar.top - dr.top) - pad);
+  let anchor = act.previousElementSibling;         // walk up to this neighbourhood's anchor
+  while(anchor && !anchor.classList.contains('gwanchor')) anchor = anchor.previousElementSibling;
+  const rowTop = dl.scrollTop + (ar.top - dr.top);
+  const headTop = anchor ? dl.scrollTop + (anchor.getBoundingClientRect().top - dr.top) : rowTop - pad;
+  const fits = (rowTop + ar.height) - headTop <= dl.clientHeight;
+  const want = fits ? headTop : rowTop - pad;
+  /* The last neighbourhoods can't scroll their heading to the top (the list ends first), so add just enough room at the
+     end. buildDrawer() rewrites the list, so the spacer never outlives the position it was made for. */
+  const room = want + dl.clientHeight - dl.scrollHeight;
+  if(room > 0) dl.insertAdjacentHTML('beforeend', `<div class="drawer-room" style="height:${Math.ceil(room)}px"></div>`);
+  settleListScroll(dl, want);
 }
 function buildDrawer(){
   const layer = zoneLayer();
@@ -5196,7 +5210,7 @@ function backToAppPage(){
 function closeApp(instant){
   clearTimeout(_appReadyTimer);
   if(LAB_CANVAS) cvSheetClose(true);
-  const el = $('appCanvas'); const was = state.app; state.app = null;
+  const el = $('appCanvas'); const was = state.app; state.app = null; state._cvHidden = false;
   if(el){ if(instant) el.remove(); else { el.classList.add('out'); setTimeout(()=>el.remove(), 200); } }
   if(!was) return;
   if(!instant) ibxBackAfterClose();
@@ -5217,11 +5231,19 @@ function closeApp(instant){
    control that toggles an already-open panel (★ with Favourites open, ⓘ with Info open) is left to close it
    itself, rather than being closed and then reopened. If the tapped control doesn't re-render (some return
    early), we render once ourselves so the closed layers actually leave the screen. */
+/* -67 (Sean, 2026-10-20): the bar's QUICK LOOKS (★ Favourites, 🔍 Search, ⓘ About, ✎ Apply) are layers, not a way out — the
+   rule set for Profile in -63. Over an app/pro/community the canvas is hidden, not closed, and comes back when the look closes
+   (render() reveals it once nothing is floating over it); over a brand/business canvas the zone simply stays. Picking a
+   destination inside a look (a favourite, a search result) navigates, which drops the hidden canvas as before. The bar's
+   NAVIGATION (the gateway's name, the GENEXXO mark, "Back to…") still means "take me there". */
+const TOP_QUICK = /toggleFavPanel|toggleInfo|toggleApply|setTab\('search'\)/;
 document.addEventListener('click', e => {
   if(!e.target.closest) return;
   if(!e.target.closest('#frame .top') || e.target.closest('#topBack') || e.target.closest('#appCanvas')) return;
-  if(state.app) closeApp(true);
-  if(LAB_CANVAS && state.screen==='zone'){   // canvas: the gateway bar leaves a zone canvas, then does what you tapped (both layouts)
+  const quick = (typeof DESKTOP==='function' && DESKTOP()) && TOP_QUICK.test((e.target.closest('[onclick]') || {getAttribute:()=>''}).getAttribute('onclick') || '');
+  if(quick && state.app && $('appCanvas')){ cvSheetClose(true); state._cvHidden = true; $('appCanvas').classList.add('under-util'); try{ tabBar(); }catch(_){} }
+  else if(state.app) closeApp(true);
+  if(LAB_CANVAS && state.screen==='zone' && !quick){   // canvas: the gateway bar leaves a zone canvas, then does what you tapped (both layouts)
     const f = state.cvFrom || {}; state.zone=null; state.zoneProduct=null; state.shopMenu=false; state.screen='gateway'; state.cvHist=[];
     state.gwZones=!!f.gwZones; state.gwZoneTab=f.gwZoneTab||'brands';
     const n0 = render._n || 0; setTimeout(()=>{ if((render._n||0)===n0) render(); }, 0);
@@ -8479,6 +8501,7 @@ function renderProfile(){
 /* ═════════ RENDER ═════════ */
 function render(){
   render._n = (render._n||0) + 1;
+  if(state._cvHidden && !state.showFavs && !state.showInfo && !state.showApply && !state.utilOver && !state.setPage) setTimeout(cvReveal, 0);
   if(state.ibx){ state.ibx = null; const h = $('ibxHost'); if(h) h.innerHTML = ''; }   // navigating away closes the Inbox (-56)   // lets the masthead rule tell whether a click already re-rendered
   $('frame').classList.toggle('lab-canvas', LAB_CANVAS);
   // Leaving the screen an app was opened over (the masthead stays live on desktop) closes the app.
