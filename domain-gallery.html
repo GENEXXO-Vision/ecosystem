@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#070708">
 <title>Domain Gallery — GENEXXO</title>
-<meta name="description" content="10,000+ XX-branded domains across 70+ sectors. Each one a gateway. Each one a micro-brand waiting to come alive.">
+<meta name="description" content="10,000+ XX-branded domains across 70+ sectors. Each one a micro-brand waiting to come alive.">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,6 +50,9 @@
   .empty{display:none;text-align:center;padding:60px 20px;color:var(--muted);font-size:15px}
   .dom.hit{border-color:#111116;box-shadow:0 0 0 1px #111116}
   #grid{scroll-margin-top:150px}
+  .nbhd{grid-column:1/-1;display:flex;align-items:baseline;gap:12px;margin:22px 2px 2px;font-family:var(--cond);font-weight:700;font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
+  .nbhd:first-child{margin-top:0}
+  .nbhd em{font-style:normal;font-family:var(--font);font-size:12px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--muted)}
   .count{font-size:12.5px;color:var(--muted);white-space:nowrap}
 
   .finale{text-align:center}
@@ -71,7 +74,7 @@
     <div class="gold"></div>
     <div class="eyebrow up">GENEXXO Collection</div>
     <h1 class="up d1">The Domain <span class="soft">Gallery</span></h1>
-    <p class="lede up d2">10,000+ XX-branded domains across 70+ sectors. Each one a gateway. Each one a micro-brand waiting to come alive.</p>
+    <p class="lede up d2">10,000+ XX-branded domains across 70+ sectors. Each one a micro-brand waiting to come alive.</p>
   </div>
 </header>
 
@@ -84,7 +87,7 @@
 
 <main class="wrap">
   <div class="grid" id="grid"></div>
-  <div class="empty" id="empty">No sample domains match. These are 6 samples per category from a collection of 10,000+.</div>
+  <div class="empty" id="empty">No sample domains match. Each sector shows six of its gateways, from a collection of 10,000+ domains.</div>
 </main>
 
 <section>
@@ -99,30 +102,31 @@
 <script src="site-data.js"></script>
 <script src="site.js"></script>
 <script>
-/* the gallery as on the live page: categories with 6 sample domains each, photos in between */
-/* each category opens with a photo from its sector’s own feed in the demo (gallery-sectors/), tinted in the sector’s colours */
-const HEADS={"Adventure": ["Adventure", "adventure", "Climb"], "Fashion": ["Fashion", "fashion", "Handbag"], "Wellness": ["Wellness", "wellness", "Sleep"], "Finance": ["Finance", "finance", "Stocks"], "Education": ["Education", "education", "Science"], "Career": ["Careers", "career", "Doctor"], "Health": ["Health", "health", "Drug"], "Hobby": ["Hobbies", "hobby", "Bake"], "Destinations": ["Places", "destinations", "Beach"], "Sports": ["Sports", "sports", "Tennis"], "Beauty": ["Beauty", "beauty", "Skin"], "Gift": ["Celebrations", "gift", "Wedding"], "Food & Beverage": ["Food", "food", "Coffee"], "Home & Garden": ["Home", "home", "Interiors"], "Parenting": ["Parenting", "parenting", "Baby"], "Pets & Animals": ["Pets", "pets", "Dogs"], "Leisure & Hospitality": ["Leisure", "leisure", "Festival"], "Travel & Tourism": ["Travel", "travel", "Safari"], "Life & Culture": ["Cultures", "culture", "Nordic"], "Media": ["Media", "media", "Podcast"], "Gaming & Gambling": ["Gaming", "gaming", "Esports"], "Real Estate": ["Real Estate", "realestate", "Apartment"], "Consumer Engagement": ["Marketing", "consumer", "Sell"], "Business": ["Business", "business", "Startup"], "Technology": ["Tech", "technology", "Tech"], "Legal & Law": ["Law", "legal", "Legal"], "Religion & Spirituality": ["Religion", "religion", "Church"], "Environment": ["Environment", "environment", "Conservation"], "Global Issues": ["Society", "global", "Equality"], "Nonprofit": ["Nonprofit", "nonprofit", "Charity"], "Automotive": ["Cars", "automotive", "Electric"], "Transportation & Logistics": ["Logistics", "transport", "Shipping"], "Aerospace & Defense": ["Defense", "aerospace", "Satellite"], "Construction": ["Construction", "construction", "Building"], "Energy & Power": ["Energy", "energy", "Solar"], "Agriculture": ["Agriculture", "agriculture", "Farming"], "Industrial Equipment": ["Manufacturing", "industrial", "Semiconductor"], "Materials": ["Materials", "materials", "Steel"], "Chemical": ["Chemical", "chemical", "Dye"]};
-const GALLERY=[["Sports & Adventure", "Adventure", ["ClimbXX", "SkiXX", "SurfXX", "CycleXX", "SailXX", "SwimXX"]], ["Style & Editorial", "Fashion", ["GothXX", "DenimXX", "HandbagXX", "SneakerXX", "DressXX", "LingerieXX"]], ["Mind & Body", "Wellness", ["DietXX", "SleepXX", "SpaXX", "StressXX", "TherapyXX", "VitaminXX"]], ["Markets & Intelligence", "Finance", ["StocksXX", "CurrencyXX", "CryptoXX", "MortgageXX", "PensionXX", "LoanXX"]], ["Learning & Development", "Education", ["EnglishXX", "HistoryXX", "MathXX", "MedicineXX", "RoboticsXX", "ScienceXX"]], ["Professional & Growth", "Career", ["AccountantXX", "ChefXX", "DoctorXX", "JournalistXX", "LawyerXX", "PlumberXX"]], ["Conditions & Science", "Health", ["ArthritisXX", "BloodXX", "CholesterolXX", "DiabetesXX", "DrugXX", "HealthXX"]], ["Passions & Pastimes", "Hobby", ["BakeXX", "ChessXX", "CraftXX", "DanceXX", "HobbyXX", "MusicXX"]], ["Destinations & Adventure", "Destinations", ["BeachXX", "CruiseXX", "FlightXX", "HoneymoonXX", "HotelXX", "TravelXX"]], ["Team Sports & Fans", "Sports", ["BaseballXX", "BasketballXX", "FootballXX", "GolfXX", "SoccerXX", "TennisXX"]], ["Skincare & Cosmetics", "Beauty", ["BeautyXX", "SkinXX", "ShaveXX", "CosmeticsXX", "NailsXX", "PerfumeXX"]], ["Giving & Celebration", "Gift", ["GiftXX", "ArtXX", "FlowersXX", "WeddingXX", "BirthdayXX", "HamperXX"]], ["Cuisine & Culture", "Food & Beverage", ["FoodXX", "CoffeeXX", "BeerXX", "VeganXX", "RecipeXX", "ChocolateXX"]], ["Home & Interiors", "Home & Garden", ["GardenXX", "KitchenXX", "BathroomXX", "FurnitureXX", "InteriorsXX", "ApplianceXX"]], ["Family & Childcare", "Parenting", ["BabyXX", "FamilyXX", "MaternityXX", "NurseryXX", "PregnancyXX", "ParentXX"]], ["Animals & Care", "Pets & Animals", ["PetXX", "DogsXX", "CatXX", "HorseXX", "ElephantXX", "RabbitXX"]], ["Social & Entertainment", "Leisure & Hospitality", ["BarXX", "FestivalXX", "GalleryXX", "LeisureXX", "RestaurantXX", "TheaterXX"]], ["Holidays & Getaways", "Travel & Tourism", ["TravelXX", "FlightXX", "HotelXX", "SafariXX", "CruiseXX", "WanderlustXX"]], ["Identity & Heritage", "Life & Culture", ["CultureXX", "AfricanXX", "IgboXX", "NordicXX", "GreekXX", "PortugueseXX"]], ["Content & Broadcast", "Media", ["BlogXX", "FilmXX", "MediaXX", "StreamXX", "JournalismXX", "PodcastXX"]], ["Play & Strategy", "Gaming & Gambling", ["GamingXX", "CasinoXX", "EsportsXX", "BettingXX", "LotteryXX", "SlotXX"]], ["Property & Development", "Real Estate", ["RealestateXX", "PropertyXX", "ApartmentXX", "HousingXX", "OfficeXX", "TimeshareXX"]], ["Shopping & Deals", "Consumer Engagement", ["ClaimXX", "CouponXX", "DiscountXX", "RentXX", "SearchXX", "SellXX"]], ["Enterprise & Strategy", "Business", ["BusinessXX", "StartupXX", "EntrepreneurXX", "ResearchXX", "FranchiseXX", "ConsultingXX"]], ["Innovation & AI", "Technology", ["TechXX", "SoftwareXX", "BlockchainXX", "DataXX", "EmailXX", "NFTXX"]], ["Legal & Justice", "Legal & Law", ["LegalXX", "LawyerXX", "CopyrightXX", "PatentXX", "PolicyXX", "TrademarkXX"]], ["Faith & Consciousness", "Religion & Spirituality", ["ReligionXX", "ChurchXX", "MosqueXX", "MeditationXX", "BibleXX", "PrayerXX"]], ["Planet & Sustainability", "Environment", ["EnvironmentXX", "ClimateXX", "RecyclingXX", "ConservationXX", "PollutionXX", "SustainabilityXX"]], ["Society & Policy", "Global Issues", ["CrimeXX", "DiseaseXX", "EconomyXX", "EmploymentXX", "EqualityXX", "LiteracyXX"]], ["Charity & Giving", "Nonprofit", ["NonprofitXX", "CauseXX", "CharityXX", "CrowdfundXX", "DonateXX", "PhilanthropyXX"]], ["Vehicles & Motorsport", "Automotive", ["AutoXX", "ElectricXX", "HybridXX", "ScooterXX", "TireXX", "TruckXX"]], ["Freight & Supply Chain", "Transportation & Logistics", ["TransportationXX", "LogisticsXX", "ShippingXX", "FreightXX", "SupplyChainXX", "DeliveryXX"]], ["Space & Military", "Aerospace & Defense", ["AerospaceXX", "DefenseXX", "MilitaryXX", "SatelliteXX", "DroneXX", "JetXX"]], ["Building & Infrastructure", "Construction", ["ConstructionXX", "AggregatesXX", "BuildingXX", "CementXX", "RoadXX", "TunnelXX"]], ["Power & Sustainability", "Energy & Power", ["EnergyXX", "CarbonXX", "GasXX", "NuclearXX", "SolarXX", "BatteryXX"]], ["Farming & Production", "Agriculture", ["AgricultureXX", "CottonXX", "FarmingXX", "LivestockXX", "HarvestXX", "AquacultureXX"]], ["Manufacturing & Machinery", "Industrial Equipment", ["AutomationXX", "EngineXX", "FactoryXX", "GeneratorXX", "MachineryXX", "SemiconductorXX"]], ["Metals & Resources", "Materials", ["MaterialXX", "SteelXX", "AluminumXX", "CopperXX", "CompositeXX", "TextileXX"]], ["Compounds & Processing", "Chemical", ["AdditiveXX", "ChemicalXX", "DyeXX", "FertilizerXX", "PharmaceuticalXX", "PlasticXX"]]];
-const CATS=GALLERY;
+/* The Domain Gallery mirrors the app (2026-10-21, Sam): one card per app sector, under the app's neighbourhoods, in the app's
+   order. Everything comes from SITE_DATA.gallery, built by website/make-data.js from the app's own data, so the two can't drift.
+   Six sample gateways per card, all of that sector, so the pills wear the card's colour. Photos: gallery-68/<sector>.jpg. */
+const G=SITE_DATA.gallery, GROUPS=SITE_DATA.groups;
+const esc=t=>String(t).replace(/&/g,'&amp;');
 let cat='all';
-
+const pill=(w,g,hit)=>`<span class="dom${hit?' hit':''}"><i style="background:${g}">${MONO}</i>${w}XX<em>.com</em></span>`;
 function render(){
   const q=$('q').value.trim().toLowerCase().replace(/xx(\.com)?$/,'').replace(/\.com$/,'');
-  let shown=0;
-  $('grid').innerHTML=GALLERY.map(x=>{
-    const [k,t,ds]=x;
-    if(cat!=='all'&&cat!==t) return '';
-    const words=ds.map(d=>d.replace(/XX$/,''));
-    const match=q?words.filter(w=>w.toLowerCase().includes(q)):[];
-    if(q&&!match.length&&!t.toLowerCase().includes(q)) return '';
-    shown++;
-    const [sec,img,f]=HEADS[t], g=((SITE_DATA.sectors.find(z=>z.n===sec)||{}).g)||'#111116';
-    return `<div class="cat hdr rv"><div class="hd"><img class="ph" src="gallery-sectors/${img}.jpg" alt="" loading="lazy"><div class="tint" style="background:${g}"></div><span class="xxm"></span><b>${f}XX<em>.com</em></b></div><div class="bd"><div class="k">${k.replace('&','&amp;')}</div><h3>${t.replace('&','&amp;')}<small>6 samples</small></h3><div class="pills">${words.map(w=>match.includes(w)?dChip(w).replace('class="dom"','class="dom hit"'):dChip(w)).join('')}</div></div></div>`;
-  }).join('');
+  let shown=0, html='';
+  for(const grp of GROUPS){
+    if(cat!=='all'&&cat!==grp.key) continue;
+    const cards=G.filter(c=>c.grp===grp.key).map(c=>{
+      const match=q?c.d.filter(w=>w.toLowerCase().includes(q)):[];
+      if(q&&!match.length&&!c.n.toLowerCase().includes(q)&&!grp.label.toLowerCase().includes(q)) return '';
+      shown++;
+      return `<div class="cat hdr rv" style="--c:${c.g}"><div class="hd"><img class="ph" src="gallery-68/${c.k}.jpg" alt="" loading="lazy"><div class="tint" style="background:${c.g}"></div><span class="xxm"></span><b>${c.d[0]}XX<em>.com</em></b></div><div class="bd"><div class="k">${esc(c.tag)}</div><h3>${esc(c.n)}<small>${c.count.toLocaleString()} gateways</small></h3><div class="pills">${c.d.map(w=>pill(w,c.g,match.includes(w))).join('')}</div></div></div>`;
+    }).join('');
+    if(cards) html+=`<div class="nbhd rv"><span>${esc(grp.label)}</span><em>${G.filter(c=>c.grp===grp.key).length} sectors</em></div>`+cards;
+  }
+  $('grid').innerHTML=html;
   $('empty').style.display=shown?'none':'block';
   reveal();
 }
-$('chips').innerHTML=[['all','All']].concat(CATS.map(c=>[c[1],c[1]])).map(([v,l])=>`<button data-v="${v}" class="${v==='all'?'on':''}">${l.replace('&','&amp;')}</button>`).join('');
+$('chips').innerHTML=[['all','All']].concat(GROUPS.map(g=>[g.key,g.label])).map(([v,l])=>`<button data-v="${v}" class="${v==='all'?'on':''}">${esc(l)}</button>`).join('');
 $('chips').onclick=e=>{const b=e.target.closest('button');if(!b)return;cat=b.dataset.v;[...$('chips').children].forEach(x=>x.classList.toggle('on',x===b));render();$('grid').scrollIntoView({block:'start'});};
 $('q').oninput=render;
 render();
