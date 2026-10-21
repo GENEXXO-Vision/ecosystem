@@ -1744,8 +1744,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-71"></script>
-<script src="genexxo-core.js?v=2026.08.26-71"></script>
+<script src="genexxo-data.js?v=2026.08.26-72"></script>
+<script src="genexxo-core.js?v=2026.08.26-72"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -2645,7 +2645,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-71';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-72';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -3146,7 +3146,7 @@ function favPanelHtml(){
     const gwKey = state.gateway || (state._gwObj && state._gwObj.name && gwKeyFromName(state._gwObj.name));
     if(state.screen==='gateway' && gwKey) return gwCard(gwKey);
     if(state.screen==='sector' && state.sector){ const sc=sectorOf(state.sector); if(!sc) return '';
-      return here('Sector', sc.name, gwCount(state.sector)+' gateways', tile(sc.g,sc.icon), state.sectorFavs.includes(state.sector), 'toggleSectorFav', state.sector); }
+      return here('Sector', sc.name, fmtN(gwCount(state.sector))+' gateways', tile(sc.g,sc.icon), state.sectorFavs.includes(state.sector), 'toggleSectorFav', state.sector); }
     return '';
   })();
 
@@ -3611,83 +3611,85 @@ function onSecSearch(v){ state.secQuery=v; buildDrawer(); const l=$('drawerList'
    Kept apart from the generated data on purpose, so it is one switch to compare and one block to delete:
      ?desc=on / ?desc=off   — remembered on this device (localStorage gx_desc). ON by default from -71 (Sean, 2026-10-21:
      switched on to review live; to drop it, set DESC_DEFAULT to false in a new bump).
-   Source: Archive/sectors-lists/GENEXXO-Tile-Descriptors.csv, joined on the tile name. Counts stay live (gwCount). */
+   Source: Archive/sectors-lists/GENEXXO-Tile-Descriptors.csv (v2 from 2026-10-21: tighter wording, US spelling), joined on the tile
+   name. Counts stay live (gwCount) and read 1,245 not 1245 (fmtN). */
+const fmtN = n => Number(n).toLocaleString('en-GB');
 const TILE_DESC = {
   "Adventure": "Surf, ski, climb & cycle",
-  "Sports": "Team, ball & competition",
-  "Hobbies": "Pastimes, collecting & fandom",
-  "Health": "Conditions, care & medicine",
-  "Mind": "Mental health & psychology",
-  "Wellness": "Self-care, spa & holistic",
-  "Fitness": "Training, gym & endurance",
-  "Nutrition": "Diets, nutrients & supplements",
+  "Sports": "Football, tennis, golf & more",
+  "Hobbies": "Collecting, toys & fandom",
+  "Health": "Conditions, treatments & care",
+  "Mind": "Mental health, sleep & therapy",
+  "Wellness": "Spa, self-care & longevity",
+  "Fitness": "Gym, running & strength",
+  "Nutrition": "Diets, vitamins & supplements",
   "Beauty": "Makeup, skin, hair & scent",
-  "Fashion": "Clothing, footwear & style",
+  "Fashion": "Clothes, shoes & style",
   "Jewelry": "Rings, watches & gems",
-  "Accessories": "Bags, hats & finishing touches",
+  "Accessories": "Bags, hats, belts & scarves",
   "Identity": "Gender, sexuality & pride",
   "Home": "Interiors, kitchen & DIY",
-  "Garden": "Plants, flowers & outdoors",
-  "Food": "Cuisine, cooking & dining out",
+  "Garden": "Gardening, flowers & patios",
+  "Food": "Recipes, cuisines & dining out",
   "Drinks": "Coffee, wine, beer & spirits",
   "Pets": "Dogs, cats & pet care",
   "Family & Relationships": "Dating, family & life stages",
   "Parenting": "Pregnancy, babies & kids",
   "Celebrations": "Holidays, weddings & parties",
-  "Music": "Genres, instruments & live",
+  "Music": "Genres, instruments & gigs",
   "Books": "Reading, writing & comics",
-  "Performing Arts": "Dance, theatre & comedy",
-  "Art": "Artists, crafts & design",
+  "Performing Arts": "Dance, theater & comedy",
+  "Art": "Painting, crafts & design",
   "Photography": "Cameras & image-making",
-  "Media": "Film, broadcast & creators",
+  "Media": "Film, TV & creators",
   "Genre": "Sci-fi, horror, romance & more",
   "Games": "Board, card & puzzle",
   "Gaming": "Video games & esports",
   "Gambling": "Casino, betting & lottery",
-  "Travel": "Trips, stays & getaways",
+  "Travel": "Trips, hotels & getaways",
   "Places": "Countries, cities & regions",
   "Leisure": "Attractions, nightlife & venues",
   "Cars": "EVs, motorbikes & motoring",
-  "Transit": "Rail, buses & ride-hailing",
+  "Transit": "Trains, buses & taxis",
   "Aviation": "Aircraft, airlines & drones",
   "Boating": "Boats, marinas & seamanship",
   "Logistics": "Freight, shipping & delivery",
   "Finance": "Banking, investing & insurance",
   "Crypto": "Coins, blockchain & Web3",
   "Business": "Startups, strategy & commerce",
-  "Marketing": "Advertising, brand & growth",
+  "Marketing": "Ads, branding & PR",
   "Careers": "Jobs & every profession",
-  "Real Estate": "Buying, renting & property",
-  "Tech": "Devices, software & the web",
+  "Real Estate": "Buying, selling & renting",
+  "Tech": "Gadgets, software & the web",
   "AI": "Models, agents & data",
   "Security": "Cybersecurity & privacy",
   "Science": "Physics, chemistry & biology",
-  "Space": "Astronomy & exploration",
+  "Space": "Stars, planets & spaceflight",
   "Education": "Schools, study & every subject",
   "Languages": "World languages & learning",
   "Cultures": "Peoples, heritage & history",
-  "Religion": "World faiths & practice",
+  "Religion": "World faiths & traditions",
   "Spirituality": "Astrology, crystals & energy",
-  "Society": "Community & social issues",
+  "Society": "Community, rights & equality",
   "Government": "Politics, elections & policy",
   "Nonprofit": "Charity, giving & volunteering",
-  "Law": "Legal, justice & crime",
-  "Defense": "Military, arms & intelligence",
-  "Manufacturing": "Machinery & industrial parts",
-  "Chemical": "Chemicals, compounds & process",
+  "Law": "Legal rights, courts & crime",
+  "Defense": "Armed forces & intelligence",
+  "Manufacturing": "Factories, machinery & parts",
+  "Chemical": "Industrial & household chemicals",
   "Materials": "Metals, minerals & textiles",
-  "Energy": "Renewables, power & fuels",
+  "Energy": "Solar, nuclear, oil & gas",
   "Environment": "Climate, waste & sustainability",
   "Nature": "Wildlife, plants & landscapes",
-  "Agriculture": "Crops, livestock & farming",
+  "Agriculture": "Crops, livestock & forestry",
   "Construction": "Building, trades & architecture"
 };
 const DESC_DEFAULT = true;   // the trial's default for everyone; ?desc= overrides it per device
 const DESC_ON = (()=>{ try{ const q=(location.search.match(/[?&]desc=(on|off)\b/)||[])[1]; if(q) localStorage.setItem('gx_desc',q);
   const v=localStorage.getItem('gx_desc'); return v ? v==='on' : DESC_DEFAULT; }catch(_){ return DESC_DEFAULT; } })();
 // The count is glued to the last word (no-break spaces), so a wrapped line reads "…every / subject · 235", never a lone "235".
-const secLine = s => { const d = DESC_ON && TILE_DESC[s.name]; if(!d) return `${gwCount(s.key)} gateways`;
-  const i = d.lastIndexOf(' '); return `${d.slice(0,i+1)}${d.slice(i+1)}\u00a0·\u00a0${gwCount(s.key)}`; };
+const secLine = s => { const d = DESC_ON && TILE_DESC[s.name]; if(!d) return `${fmtN(gwCount(s.key))} gateways`;
+  const i = d.lastIndexOf(' '); return `${d.slice(0,i+1)}${d.slice(i+1)}\u00a0·\u00a0${fmtN(gwCount(s.key))}`; };
 function drawerSecRow(s, active){                 // one sector row in the left drawer
   const on = s.key===active;
   const {accent, wash} = washFor(s.g);
@@ -7043,7 +7045,7 @@ function renderDiscover(bodyOnly){
             return `<div class="seccard${live?' live':''}" style="--c:${accentOf(s)}" onclick="state.discoverSector='${s.key}';render();utilHost().scrollTo(0,0)">
               <div class="ic" style="background:${s.g}">${s.icon}</div>
               <div class="nm">${s.name}${live?'<i class="seclivedot"></i>':''}</div>
-              <div class="mt">${c} ${c===1?'gateway':'gateways'}</div>
+              <div class="mt">${fmtN(c)} ${c===1?'gateway':'gateways'}</div>
             </div>`;
           }).join('')
         + `</div>`;

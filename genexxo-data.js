@@ -32,9 +32,9 @@ const SECTOR_GROUPS = [
 
 const SECTORS = [
   // ── Sport & Adventure ─────────────────────────────────────────────
-  {key:'adventure',name:'Adventure',icon:'⚡',tag:'Sports & Adventure',g:'linear-gradient(135deg,#E85D3A,#FF8C42)',group:'sportplay'},
+  {key:'adventure',name:'Adventure',icon:'🧗',tag:'Sports & Adventure',g:'linear-gradient(135deg,#E85D3A,#FF8C42)',group:'sportplay'},
   {key:'sports',name:'Sports',icon:'⚽',tag:'Team Sports & Fans',g:'linear-gradient(135deg,#15803D,#22C55E)',group:'sportplay'},
-  {key:'hobby',name:'Hobbies',icon:'🎵',tag:'Passions & Pastimes',g:'linear-gradient(135deg,#B45309,#D97706)',group:'sportplay'},
+  {key:'hobby',name:'Hobbies',icon:'🧶',tag:'Passions & Pastimes',g:'linear-gradient(135deg,#B45309,#D97706)',group:'sportplay'},
   // ── Health, Mind & Body ───────────────────────────────────────────
   {key:'health',name:'Health',icon:'💊',tag:'Conditions & Science',g:'linear-gradient(135deg,#0891B2,#67E8F9)',group:'healthbody'},
   {key:'mind',name:'Mind',icon:'🧠',tag:'Psychology & Focus',g:'linear-gradient(135deg,#6D28D9,#A78BFA)',group:'healthbody'},
@@ -43,10 +43,10 @@ const SECTORS = [
   {key:'nutrition',name:'Nutrition',icon:'🥗',tag:'Diet & Fuel',g:'linear-gradient(135deg,#166534,#84CC16)',group:'healthbody'},
   {key:'beauty',name:'Beauty',icon:'💄',tag:'Skincare & Cosmetics',g:'linear-gradient(135deg,#DB2777,#F472B6)',group:'healthbody'},
   // ── Style & Self ──────────────────────────────────────────────────
-  {key:'fashion',name:'Fashion',icon:'✦',tag:'Style & Editorial',g:'linear-gradient(135deg,#1a1a2e,#333)',group:'styleself'},
+  {key:'fashion',name:'Fashion',icon:'👗',tag:'Style & Editorial',g:'linear-gradient(135deg,#1a1a2e,#333)',group:'styleself'},
   {key:'jewellery',name:'Jewelry',icon:'💎',tag:'Fine & Fashion',g:'linear-gradient(135deg,#831843,#DB2777)',group:'styleself'},
   {key:'accessories',name:'Accessories',icon:'👜',tag:'Bags & Extras',g:'linear-gradient(135deg,#7C2D12,#B45309)',group:'styleself'},
-  {key:'identity',name:'Identity',icon:'🪪',tag:'Self & Community',g:'linear-gradient(135deg,#7C3AED,#A78BFA)',group:'styleself'},
+  {key:'identity',name:'Identity',icon:'🏳️‍🌈',tag:'Self & Community',g:'linear-gradient(135deg,#7C3AED,#A78BFA)',group:'styleself'},
   // ── Home & Table ──────────────────────────────────────────────────
   {key:'living',name:'Home',icon:'🏡',tag:'Home & Interiors',g:'linear-gradient(135deg,#78716C,#A8A29E)',group:'hometable'},
   {key:'garden',name:'Garden',icon:'🌱',tag:'Plants & Outdoors',g:'linear-gradient(135deg,#15803D,#65A30D)',group:'hometable'},
@@ -64,7 +64,7 @@ const SECTORS = [
   {key:'art',name:'Art',icon:'🎨',tag:'Fine Art & Design',g:'linear-gradient(135deg,#9333EA,#F0ABFC)',group:'artsent'},
   {key:'photography',name:'Photography',icon:'📷',tag:'Photos & Cameras',g:'linear-gradient(135deg,#334155,#94A3B8)',group:'artsent'},
   {key:'media',name:'Media',icon:'🎥',tag:'Screen, Content & Broadcast',g:'linear-gradient(135deg,#7C3AED,#A78BFA)',group:'artsent'},
-  {key:'genre',name:'Genre',icon:'🏷️',tag:'Story & Style Classifications',g:'linear-gradient(135deg,#4C1D95,#A78BFA)',group:'artsent'},
+  {key:'genre',name:'Genre',icon:'🐉',tag:'Story & Style Classifications',g:'linear-gradient(135deg,#4C1D95,#A78BFA)',group:'artsent'},
   // ── Games & Play ──────────────────────────────────────────────────
   {key:'games',name:'Games',icon:'♟️',tag:'Board, Card & Puzzle',g:'linear-gradient(135deg,#B45309,#FBBF24)',group:'gamesplay'},
   {key:'gaming',name:'Gaming',icon:'🎮',tag:'Play & Strategy',g:'linear-gradient(135deg,#15803D,#14532D)',group:'gamesplay'},
@@ -74,7 +74,7 @@ const SECTORS = [
   {key:'places',name:'Places',icon:'📍',tag:'Countries & Cities',g:'linear-gradient(135deg,#0F766E,#5EEAD4)',group:'travelplaces'},
   {key:'leisure',name:'Leisure',icon:'🎡',tag:'Days Out & Nightlife',g:'linear-gradient(135deg,#7E22CE,#EC4899)',group:'travelplaces'},
   // ── Getting Around ────────────────────────────────────────────────
-  {key:'automotive',name:'Cars',icon:'🏎️',tag:'Vehicles & Motorsport',g:'linear-gradient(135deg,#DC2626,#991B1B)',group:'gettingaround'},
+  {key:'automotive',name:'Cars',icon:'🚗',tag:'Vehicles & Motorsport',g:'linear-gradient(135deg,#DC2626,#991B1B)',group:'gettingaround'},
   {key:'transit',name:'Transit',icon:'🚆',tag:'Transit & Mobility',g:'linear-gradient(135deg,#334155,#64748B)',group:'gettingaround'},
   {key:'aviation',name:'Aviation',icon:'🛩️',tag:'Flight & Aircraft',g:'linear-gradient(135deg,#1E3A8A,#60A5FA)',group:'gettingaround'},
   {key:'boating',name:'Boating',icon:'⛵',tag:'Sail & Marine',g:'linear-gradient(135deg,#0C4A6E,#0EA5E9)',group:'gettingaround'},
@@ -85,7 +85,7 @@ const SECTORS = [
   {key:'business',name:'Business',icon:'🏢',tag:'Enterprise & Strategy',g:'linear-gradient(135deg,#334155,#64748B)',group:'moneywork'},
   {key:'marketing',name:'Marketing',icon:'📣',tag:'Brand & Growth',g:'linear-gradient(135deg,#DB2777,#FB923C)',group:'moneywork'},
   {key:'career',name:'Careers',icon:'💼',tag:'Professional & Growth',g:'linear-gradient(135deg,#1E40AF,#3B82F6)',group:'moneywork'},
-  {key:'realestate',name:'Real Estate',icon:'🏠',tag:'Property & Development',g:'linear-gradient(135deg,#0D9488,#2DD4BF)',group:'moneywork'},
+  {key:'realestate',name:'Real Estate',icon:'🔑',tag:'Property & Development',g:'linear-gradient(135deg,#0D9488,#2DD4BF)',group:'moneywork'},
   // ── Tech & Frontier ───────────────────────────────────────────────
   {key:'tech',name:'Tech',icon:'💻',tag:'Innovation & AI',g:'linear-gradient(135deg,#7C3AED,#A78BFA)',group:'techfrontier'},
   {key:'ai',name:'AI',icon:'🤖',tag:'Machine Intelligence',g:'linear-gradient(135deg,#4338CA,#22D3EE)',group:'techfrontier'},
@@ -95,14 +95,14 @@ const SECTORS = [
   // ── People & Society ──────────────────────────────────────────────
   {key:'education',name:'Education',icon:'🎓',tag:'Learning & Development',g:'linear-gradient(135deg,#1D4ED8,#60A5FA)',group:'peoplesociety'},
   {key:'language',name:'Languages',icon:'🗣️',tag:'Global Languages',g:'linear-gradient(135deg,#3730A3,#A5B4FC)',group:'peoplesociety'},
-  {key:'culture',name:'Cultures',icon:'🌍',tag:'Identity & Heritage',g:'linear-gradient(135deg,#9333EA,#C084FC)',group:'peoplesociety'},
+  {key:'culture',name:'Cultures',icon:'🏺',tag:'Identity & Heritage',g:'linear-gradient(135deg,#9333EA,#C084FC)',group:'peoplesociety'},
   {key:'religion',name:'Religion',icon:'🕊️',tag:'Faith & Worship',g:'linear-gradient(135deg,#4338CA,#818CF8)',group:'peoplesociety'},
   {key:'spirituality',name:'Spirituality',icon:'✨',tag:'Faith & Consciousness',g:'linear-gradient(135deg,#6D28D9,#8B5CF6)',group:'peoplesociety'},
-  {key:'society',name:'Society',icon:'⚖️',tag:'Rights & Social Issues',g:'linear-gradient(135deg,#7C2D12,#EA580C)',group:'peoplesociety'},
+  {key:'society',name:'Society',icon:'👥',tag:'Rights & Social Issues',g:'linear-gradient(135deg,#7C2D12,#EA580C)',group:'peoplesociety'},
   {key:'government',name:'Government',icon:'🏛️',tag:'Public & Policy',g:'linear-gradient(135deg,#334155,#94A3B8)',group:'peoplesociety'},
   {key:'nonprofit',name:'Nonprofit',icon:'🤝',tag:'Charity & Impact',g:'linear-gradient(135deg,#047857,#34D399)',group:'peoplesociety'},
   {key:'law',name:'Law',icon:'⚖️',tag:'Legal & Justice',g:'linear-gradient(135deg,#1E3A5F,#334155)',group:'peoplesociety'},
-  {key:'aerospace',name:'Defense',icon:'🚀',tag:'Space & Military',g:'linear-gradient(135deg,#1E3A5F,#3B82F6)',group:'peoplesociety'},
+  {key:'aerospace',name:'Defense',icon:'🪖',tag:'Space & Military',g:'linear-gradient(135deg,#1E3A5F,#3B82F6)',group:'peoplesociety'},
   // ── Earth, Nature & Industry ──────────────────────────────────────
   {key:'industrial',name:'Manufacturing',icon:'🏭',tag:'Manufacturing & Machinery',g:'linear-gradient(135deg,#475569,#94A3B8)',group:'earthnatureind'},
   {key:'chemical',name:'Chemical',icon:'🧪',tag:'Compounds & Processing',g:'linear-gradient(135deg,#0891B2,#06B6D4)',group:'earthnatureind'},
