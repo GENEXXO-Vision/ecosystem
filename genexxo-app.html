@@ -1744,8 +1744,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-70"></script>
-<script src="genexxo-core.js?v=2026.08.26-70"></script>
+<script src="genexxo-data.js?v=2026.08.26-71"></script>
+<script src="genexxo-core.js?v=2026.08.26-71"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -2645,7 +2645,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-70';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-71';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -3609,7 +3609,8 @@ function onSecSearch(v){ state.secQuery=v; buildDrawer(); const l=$('drawerList'
 /* ═════════ TILE DESCRIPTORS — a TRIAL layer (Sam, 2026-10-21; Step 2 of Mock up/Request.md) ═════════
    "Option A": the grey line under a sector's name becomes "descriptor · count" (Games → "Board, card & puzzle · 20").
    Kept apart from the generated data on purpose, so it is one switch to compare and one block to delete:
-     ?desc=on / ?desc=off   — remembered on this device (localStorage gx_desc); OFF unless switched on.
+     ?desc=on / ?desc=off   — remembered on this device (localStorage gx_desc). ON by default from -71 (Sean, 2026-10-21:
+     switched on to review live; to drop it, set DESC_DEFAULT to false in a new bump).
    Source: Archive/sectors-lists/GENEXXO-Tile-Descriptors.csv, joined on the tile name. Counts stay live (gwCount). */
 const TILE_DESC = {
   "Adventure": "Surf, ski, climb & cycle",
@@ -3681,8 +3682,9 @@ const TILE_DESC = {
   "Agriculture": "Crops, livestock & farming",
   "Construction": "Building, trades & architecture"
 };
+const DESC_DEFAULT = true;   // the trial's default for everyone; ?desc= overrides it per device
 const DESC_ON = (()=>{ try{ const q=(location.search.match(/[?&]desc=(on|off)\b/)||[])[1]; if(q) localStorage.setItem('gx_desc',q);
-  return localStorage.getItem('gx_desc')==='on'; }catch(_){ return false; } })();
+  const v=localStorage.getItem('gx_desc'); return v ? v==='on' : DESC_DEFAULT; }catch(_){ return DESC_DEFAULT; } })();
 // The count is glued to the last word (no-break spaces), so a wrapped line reads "…every / subject · 235", never a lone "235".
 const secLine = s => { const d = DESC_ON && TILE_DESC[s.name]; if(!d) return `${gwCount(s.key)} gateways`;
   const i = d.lastIndexOf(' '); return `${d.slice(0,i+1)}${d.slice(i+1)}\u00a0·\u00a0${gwCount(s.key)}`; };
