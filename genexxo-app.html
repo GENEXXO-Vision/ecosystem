@@ -1744,8 +1744,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-72"></script>
-<script src="genexxo-core.js?v=2026.08.26-72"></script>
+<script src="genexxo-data.js?v=2026.08.26-73"></script>
+<script src="genexxo-core.js?v=2026.08.26-73"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -2645,7 +2645,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-72';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-73';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -6980,6 +6980,8 @@ function renderDiscover(bodyOnly){
       (SECTOR_GATEWAYS[sk]||[]).forEach(n=>{
         if(isGwHeader(n)) return;
         const k=gwKeyFromName(n); if(seen.has(k)) return;
+        /* A dual-use gateway is listed under its HOME sector (-73: OctopusXX is Nature, though Food comes first) */
+        const home=(typeof GW_HOME!=='undefined')&&GW_HOME[k]; if(home && home!==sk && (SECTOR_GATEWAYS[home]||[]).includes(n)) return;
         const r=gwRank(n,q); if(r<0) return;
         seen.add(k); hits.push({n,sk,r});
       });
