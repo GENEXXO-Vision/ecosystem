@@ -52,18 +52,14 @@
   #grid{scroll-margin-top:150px}
   .nbhd{grid-column:1/-1;display:flex;align-items:baseline;gap:12px;margin:22px 2px 2px;font-family:var(--cond);font-weight:700;font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
   .nbhd:first-child{margin-top:0}
+  .smp{font-family:var(--cond);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:-4px 0 10px}
   .nbhd em{font-style:normal;font-family:var(--font);font-size:12px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--muted)}
-  .cat.more{align-self:stretch;position:relative;overflow:hidden;background:#070708;color:#fff;border-color:#070708;padding:26px 24px;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;min-height:260px}
-  .cat.more .wm{position:absolute;right:-40px;top:-10px;width:300px;aspect-ratio:74/57.2;background:rgba(255,255,255,.05);-webkit-mask:var(--xx) center/contain no-repeat;mask:var(--xx) center/contain no-repeat}
-  .cat.more>*:not(.wm){position:relative}
-  .cat.more .k{color:rgba(255,255,255,.5)}
-  .cat.more .k::before{content:"";display:block;width:70px;height:2px;border-radius:2px;background:var(--gold-line);margin-bottom:12px}
-  .cat.more h3{margin:0;color:#fff;font-size:26px}
-  .cat.more .icons{display:flex;flex-wrap:wrap;gap:6px}
-  .cat.more .icons i{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:17px}
-  .cat.more p{font-size:14px;color:rgba(255,255,255,.66);line-height:1.5}
-  .cat.more .go{align-self:flex-start;margin-top:4px;font-size:13.5px;font-weight:700;background:#fff;color:#111116;border-radius:99px;padding:9px 16px}
-  @media (hover:hover) and (pointer:fine){ .cat.more{transition:transform .16s ease} .cat.more:hover{transform:translateY(-2px)} }
+  /* the odd one out spans both columns: photo left, domains right (two-column layouts only) */
+  @media (min-width:1001px){
+    .cat.wide{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:stretch}
+    .cat.wide .hd{aspect-ratio:auto;height:100%;min-height:260px}
+    .cat.wide .bd{display:flex;flex-direction:column;justify-content:center;padding:22px 26px}
+  }
   .count{font-size:12.5px;color:var(--muted);white-space:nowrap}
 
   .finale{text-align:center}
@@ -110,7 +106,7 @@
   </div>
 </section>
 
-<script src="site-data.js?v=c6e0a2b5"></script>
+<script src="site-data.js?v=516ec0e1"></script>
 <script src="site.js?v=d592aa9f"></script>
 <script>
 /* The Domain Gallery mirrors the app (2026-10-21, Sam): one card per app sector, under the app's neighbourhoods, in the app's
@@ -125,19 +121,17 @@ function render(){
   let shown=0, html='';
   for(const grp of GROUPS){
     if(cat!=='all'&&cat!==grp.key) continue;
-    const cards=G.filter(c=>c.grp===grp.key).map(c=>{
+    let cards=G.filter(c=>c.grp===grp.key).map(c=>{
       const match=q?c.d.filter(w=>w.toLowerCase().includes(q)):[];
       if(q&&!match.length&&!c.n.toLowerCase().includes(q)&&!grp.label.toLowerCase().includes(q)) return '';
       shown++;
-      return `<div class="cat hdr rv" style="--c:${c.g}"><div class="hd"><img class="ph" src="gallery-68/${c.k}.jpg" alt="" loading="lazy"><div class="tint" style="background:${c.g}"></div><span class="xxm"></span><b>${c.d[0]}XX<em>.com</em></b></div><div class="bd"><div class="k">${esc(c.tag)}</div><h3>${esc(c.n)}<small>${c.count.toLocaleString()} gateways</small></h3><div class="pills">${c.d.map(w=>pill(w,c.g,match.includes(w))).join('')}</div></div></div>`;
+      return `<div class="cat hdr rv" style="--c:${c.g}"><div class="hd"><img class="ph" src="gallery-68/${c.k}.jpg" alt="" loading="lazy"><div class="tint" style="background:${c.g}"></div><span class="xxm"></span><b>${c.d[0]}XX<em>.com</em></b></div><div class="bd"><div class="k">${esc(c.tag)}</div><h3>${esc(c.n)}</h3><div class="smp">A sample of ${c.count.toLocaleString()} gateways</div><div class="pills">${c.d.map(w=>pill(w,c.g,match.includes(w))).join('')}</div></div></div>`;
     }).join('');
-    /* Two cards to a row, always (Sean, 2026-10-21): a neighbourhood with an odd number of cards ends on a dark
-       "explore it in the demo" card instead of a lone card and a gap. */
+    /* Every row full, no filler cards (Sean, 2026-10-27): in a neighbourhood with an odd number of cards, the last one spans
+       the full width (photo left, domains right), so two-up rows never leave a gap. */
     const n=(cards.match(/class="cat hdr/g)||[]).length, all=G.filter(c=>c.grp===grp.key);
-    const more = n%2 ? `<a class="cat more rv" href="${DEMO}" target="_blank" rel="noopener"><span class="wm"></span><div class="k">Explore the neighbourhood</div><h3>${esc(grp.label)}</h3>
-      <div class="icons">${all.map(c=>`<i title="${esc(c.n)}" style="background:${c.g}">${(SITE_DATA.sectors.find(z=>z.n===c.n)||{}).i||''}</i>`).join('')}</div>
-      <p>${all.length} sectors · ${all.reduce((t,c)=>t+c.count,0).toLocaleString()} gateways to explore in the demo.</p><span class="go">Open the demo →</span></a>` : '';
-    if(cards) html+=`<div class="nbhd rv"><span>${esc(grp.label)}</span><em>${all.length} sectors</em></div>`+cards+more;
+    if(n%2){ const i=cards.lastIndexOf('class="cat hdr'); cards=cards.slice(0,i)+'class="cat wide hdr'+cards.slice(i+'class="cat hdr'.length); }
+    if(cards) html+=`<div class="nbhd rv"><span>${esc(grp.label)}</span><em>${all.length} sectors</em></div>`+cards;
   }
   $('grid').innerHTML=html;
   $('empty').style.display=shown?'none':'block';
