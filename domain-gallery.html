@@ -54,12 +54,6 @@
   .nbhd:first-child{margin-top:0}
   .smp{font-family:var(--cond);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:-4px 0 10px}
   .nbhd em{font-style:normal;font-family:var(--font);font-size:12px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--muted)}
-  /* the odd one out spans both columns: photo left, domains right (two-column layouts only) */
-  @media (min-width:1001px){
-    .cat.wide{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:stretch}
-    .cat.wide .hd{aspect-ratio:auto;height:100%;min-height:260px}
-    .cat.wide .bd{display:flex;flex-direction:column;justify-content:center;padding:22px 26px}
-  }
   .count{font-size:12.5px;color:var(--muted);white-space:nowrap}
 
   .finale{text-align:center}
@@ -127,10 +121,9 @@ function render(){
       shown++;
       return `<div class="cat hdr rv" style="--c:${c.g}"><div class="hd"><img class="ph" src="gallery-68/${c.k}.jpg" alt="" loading="lazy"><div class="tint" style="background:${c.g}"></div><span class="xxm"></span><b>${c.d[0]}XX<em>.com</em></b></div><div class="bd"><div class="k">${esc(c.tag)}</div><h3>${esc(c.n)}</h3><div class="smp">A sample of ${c.count.toLocaleString()} gateways</div><div class="pills">${c.d.map(w=>pill(w,c.g,match.includes(w))).join('')}</div></div></div>`;
     }).join('');
-    /* Every row full, no filler cards (Sean, 2026-10-27): in a neighbourhood with an odd number of cards, the last one spans
-       the full width (photo left, domains right), so two-up rows never leave a gap. */
-    const n=(cards.match(/class="cat hdr/g)||[]).length, all=G.filter(c=>c.grp===grp.key);
-    if(n%2){ const i=cards.lastIndexOf('class="cat hdr'); cards=cards.slice(0,i)+'class="cat wide hdr'+cards.slice(i+'class="cat hdr'.length); }
+    /* Every card the same shape, two to a row (Sean, 2026-10-29); a neighbourhood with an odd number ends on one card
+       on its own (was: the last card spanned the full width, photo left, domains right). */
+    const all=G.filter(c=>c.grp===grp.key);
     if(cards) html+=`<div class="nbhd rv"><span>${esc(grp.label)}</span><em>${all.length} sectors</em></div>`+cards;
   }
   $('grid').innerHTML=html;
