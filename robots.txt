@@ -1,0 +1,5 @@
+# genexxovision.com
+User-agent: *
+Allow: /
+
+Sitemap: https://www.genexxovision.com/sitemap.xml
