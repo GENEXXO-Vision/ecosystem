@@ -14,6 +14,15 @@
 <link rel="stylesheet" href="site.css?v=3dbae8c8">
 <style>
   .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:26px;position:relative}
+  /* previous / next at the top of a part (Sean, 2026-10-31: no scrolling to the bottom to move on) */
+  .toprow{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px;position:relative}
+  .toprow .crumbs{margin-bottom:0}
+  .step{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .step a,.step .off{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;line-height:1;padding-bottom:3px;border:1px solid rgba(255,255,255,.22);color:#fff;transition:background .2s,border-color .2s,color .2s}
+  .step a:hover{background:#fff;color:#111116;border-color:#fff}
+  .step .off{opacity:.25}
+  .step .of{font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.16em;color:rgba(255,255,255,.5);min-width:58px;text-align:center}
+  @media (max-width:560px){ .toprow .crumbs{font-size:11.5px} .step a,.step .off{width:36px;height:36px;font-size:22px} .step .of{min-width:46px;font-size:12px} }
   .meta span{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(255,255,255,.16);border-radius:99px;padding:6px 12px;color:rgba(255,255,255,.7)}
   /* the essay */
   .essay{padding-top:clamp(56px,8vw,96px)}
@@ -69,7 +78,14 @@
 <header class="phero">
   <div class="wm"></div>
   <div class="wrap">
-    <div class="crumbs up"><a href="index.html">Home</a> › <a href="genexxo-vision-series.html">The GENEXXO Vision Series</a> › Part VII</div>
+    <div class="toprow up">
+      <div class="crumbs"><a href="index.html">Home</a> › <a href="genexxo-vision-series.html">The GENEXXO Vision Series</a> › Part VII</div>
+      <nav class="step" aria-label="Previous and next part">
+        <a href="genexxo-vision-series/part-6-community.html" title="Part VI: Community" aria-label="Previous: Part VI">‹</a>
+        <span class="of">VII / XII</span>
+        <a href="genexxo-vision-series/part-8-ai-the-ecosystem.html" title="Part VIII: AI: The Ecosystem" aria-label="Next: Part VIII">›</a>
+      </nav>
+    </div>
     <div class="gold"></div>
     <div class="eyebrow up">Part VII of XII · The GENEXXO Vision Series</div>
     <h1 class="up d1">Commerce &amp; Brand Zones</h1>
@@ -81,7 +97,7 @@
 <section class="essay">
   <div class="wrap narrow">
     <div class="prose">
-<p class="intro">The GENEXXO Collection is an asset of over 10,000 single-word, XX branded .com domains spanning 70+ sectors — the foundation for a multi-dimensional organizing layer for the internet. The Supernova Application delivers it. The Facilitator Model makes the economics work. The Multi-Dimensional Network connects it all. Content fuels it. Community gives it life. Now we turn to the third pillar — the one that makes the ecosystem economically self-sustaining: Commerce.</p>
+<p class="intro">The GENEXXO Collection is an asset of over 10,000 single-word, XX-branded .com domains spanning 70+ sectors — the foundation for a multi-dimensional organizing layer for the internet. The Supernova Application delivers it. The Facilitator Model makes the economics work. The Multi-Dimensional Network connects it all. Content fuels it. Community gives it life. Now we turn to the third pillar — the one that makes the ecosystem economically self-sustaining: Commerce.</p>
 
 <hr>
 
@@ -118,6 +134,15 @@
 
 <hr>
 
+<h2>Pro Zones: Expertise You Can Book</h2>
+<p>Brands sell products. Professionals sell their time and their knowledge. The coach, the guide, the physio, the mechanic, the teacher: each is part of what makes a subject come alive, and each deserves a home where the people who need them already gather.</p>
+<p>A Pro Zone is that home: a professional's own canvas within the gateway, with their story, their services, their reviews and their calendar. A climber on CLIMBXX finds a certified guide for the weekend. A runner on RUNNINGXX books a session with a coach. Someone getting back to fitness after an injury on FITNESSXX finds a physio nearby. The booking goes straight to the professional, who sets their own prices, keeps the client relationship and is paid directly.</p>
+<p>Authority is earned and shown. Every professional's credentials are verified, and the basis of their authority is clear to see: a qualified professional, a certified guide, an industry expert. In the feed, their voice carries weight because it is verified, not because it is loud.</p>
+<p>Pros are often the first to bring a gateway to life. They post often, they answer questions, and their knowledge turns a destination into a place people trust. In the facilitator model, GENEXXO provides discovery, verification and the path to a booking; the professional does what they do best.</p>
+<blockquote>"Brand Zones bring the products. Pro Zones bring the people who know the subject best."</blockquote>
+
+<hr>
+
 <h2>One Identity, Seamless Checkout</h2>
 <p>While each Brand Zone operates as the brand's own space, the experience around it is unified across the entire constellation.</p>
 <p>A user moves from a Brand Zone on SNEAKERXX to one on DIETXX to one on CLIMBXX as one person, with one account and one identity. When the moment comes to buy or book, the step is short and trusted: the ecosystem carries the user from inspiration to the brand's own checkout, booking or ticket, without starting again on every domain.</p>
@@ -135,8 +160,8 @@
 <hr>
 
 <h2>What Comes Next</h2>
-<p>Content, Community, and Commerce form the three visible pillars of the GENEXXO ecosystem. But there is a fourth force operating across every domain and through every interaction — one that learns, adapts, and compounds in value with every piece of content created, every community interaction, and every commercial transaction.</p>
-<p>In Part VIII, we turn to AI — The Ecosystem. Not artificial intelligence as a feature bolted onto a platform, but AI as a native dimension of the organizing layer itself — learning from the richest, most contextual data environments on the internet. That is the subject of the next instalment.</p>
+<p>Content, Community, and Commerce form the three visible pillars of the GENEXXO ecosystem. But there is a fourth force operating across every domain and through every interaction — one that learns, adapts, and compounds in value with every piece of content created, every community interaction, and every commercial connection.</p>
+<p>In Part VIII, we turn to AI — The Ecosystem. Not artificial intelligence as a feature bolted onto a platform, but AI as a native dimension of the organizing layer itself — learning from the richest, most contextual knowledge environments on the internet. That is the subject of the next instalment.</p>
     </div>
     <nav class="pn" aria-label="Series">
       <a href="genexxo-vision-series/part-6-community.html"><span class="k">← Part VI</span><b>Community</b></a>

@@ -14,6 +14,15 @@
 <link rel="stylesheet" href="site.css?v=3dbae8c8">
 <style>
   .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:26px;position:relative}
+  /* previous / next at the top of a part (Sean, 2026-10-31: no scrolling to the bottom to move on) */
+  .toprow{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px;position:relative}
+  .toprow .crumbs{margin-bottom:0}
+  .step{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .step a,.step .off{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;line-height:1;padding-bottom:3px;border:1px solid rgba(255,255,255,.22);color:#fff;transition:background .2s,border-color .2s,color .2s}
+  .step a:hover{background:#fff;color:#111116;border-color:#fff}
+  .step .off{opacity:.25}
+  .step .of{font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.16em;color:rgba(255,255,255,.5);min-width:58px;text-align:center}
+  @media (max-width:560px){ .toprow .crumbs{font-size:11.5px} .step a,.step .off{width:36px;height:36px;font-size:22px} .step .of{min-width:46px;font-size:12px} }
   .meta span{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(255,255,255,.16);border-radius:99px;padding:6px 12px;color:rgba(255,255,255,.7)}
   /* the essay */
   .essay{padding-top:clamp(56px,8vw,96px)}
@@ -69,7 +78,14 @@
 <header class="phero">
   <div class="wm"></div>
   <div class="wrap">
-    <div class="crumbs up"><a href="index.html">Home</a> › <a href="genexxo-vision-series.html">The GENEXXO Vision Series</a> › Part V</div>
+    <div class="toprow up">
+      <div class="crumbs"><a href="index.html">Home</a> › <a href="genexxo-vision-series.html">The GENEXXO Vision Series</a> › Part V</div>
+      <nav class="step" aria-label="Previous and next part">
+        <a href="genexxo-vision-series/part-4-the-multi-dimensional-network.html" title="Part IV: The Multi-Dimensional Network" aria-label="Previous: Part IV">‹</a>
+        <span class="of">V / XII</span>
+        <a href="genexxo-vision-series/part-6-community.html" title="Part VI: Community" aria-label="Next: Part VI">›</a>
+      </nav>
+    </div>
     <div class="gold"></div>
     <div class="eyebrow up">Part V of XII · The GENEXXO Vision Series</div>
     <h1 class="up d1">Content</h1>
@@ -115,7 +131,7 @@
 
 <h2>Where Content Creates Value</h2>
 <p>On today's internet, content is largely extractive. Platforms extract value from creators. Creators extract value from audiences. Everyone is taking. The GENEXXO ecosystem inverts this. Content within the network is generative — every piece creates value that compounds.</p>
-<p>A practitioner publishing a clinical insight on CANCERXX creates content value — an article that serves patients and informs the community. That content attracts more practitioners and patients to the domain, creating community value. The growing community attracts healthcare brands to establish Brand Zones, creating commerce value. The commerce activity generates interaction patterns that AI learns from, creating intelligence value. The intelligence improves everything — content recommendations, community connections, commercial relevance — which attracts more practitioners, which produces more content.</p>
+<p>A practitioner publishing a clinical insight on CANCERXX creates content value — an article that serves patients and informs the community. That content attracts more practitioners and patients to the domain, creating community value. The growing community attracts healthcare brands to establish Brand Zones, creating commerce value. The activity around them shows the AI what the community values, creating intelligence value. The intelligence improves everything — content recommendations, community connections, commercial relevance — which attracts more practitioners, which produces more content.</p>
 <p>The cycle is self-reinforcing. And it operates simultaneously across every active domain in the constellation.</p>
 <blockquote>"The ecosystem doesn't find value. It generates value — within environments designed to produce the richest, most contextual content possible."</blockquote>
 
@@ -124,6 +140,7 @@
 <h2>Content Types Within Each Domain</h2>
 <p>The content architecture within each domain is not limited to articles and posts. Every gateway supports a full spectrum of content that serves its subject from multiple angles.</p>
 <p><strong>Expert content</strong> — long-form analysis, research summaries, clinical insights, professional commentary. The anchor content that establishes each domain's authority. A specialist discussing emerging treatment protocols on CANCERXX. An engineer analysing new alloy developments on STEELXX. A designer exploring next season's direction on FASHIONXX.</p>
+<p><strong>Daily briefings</strong> — a short, verified editorial pulse for each gateway. The day's news in the subject, written in GENEXXO's own words and approved by an editor, with the sources one tap away and a clear status showing what is confirmed and what is still emerging. Every gateway has a heartbeat from its first day, before the community and brands are posting in volume.</p>
 <p><strong>Community content</strong> — user-generated discussion, experience sharing, questions and answers, reviews. The living content that keeps each domain active and current. The community on SNEAKERXX discussing a new release. Patients on ARTHRITISXX sharing what works for them. Climbers on CLIMBXX posting route conditions.</p>
 <p><strong>Brand content</strong> — and this is where the content economy shifts fundamentally. Within the GENEXXO ecosystem, brands don't simply advertise. They produce. A heritage climbing brand creating a documentary for CLIMBXX isn't running a marketing campaign — it's programming a channel. A premium cookware company producing a masterclass series for COOKXX isn't buying placement — it's building authority within a community that cares deeply about the craft. The environment incentivises brands to become media companies within their categories — because that is how they build trust and connect with audiences authentically.</p>
 <p><strong>AI-curated content</strong> — the Supernova Host and domain-level intelligence surfacing connections across the ecosystem. A breakthrough in sports science appearing on ATHLETEXX even though it originated on SCIENCEXX. A materials innovation from STEELXX surfacing on ARCHITECTXX because the AI recognises the cross-domain relevance. Content discovery that no single-domain platform could achieve — intelligence flowing across the constellation, connecting insights that would otherwise remain siloed.</p>

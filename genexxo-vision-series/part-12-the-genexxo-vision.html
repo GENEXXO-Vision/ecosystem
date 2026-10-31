@@ -14,6 +14,15 @@
 <link rel="stylesheet" href="site.css?v=3dbae8c8">
 <style>
   .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:26px;position:relative}
+  /* previous / next at the top of a part (Sean, 2026-10-31: no scrolling to the bottom to move on) */
+  .toprow{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px;position:relative}
+  .toprow .crumbs{margin-bottom:0}
+  .step{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .step a,.step .off{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;line-height:1;padding-bottom:3px;border:1px solid rgba(255,255,255,.22);color:#fff;transition:background .2s,border-color .2s,color .2s}
+  .step a:hover{background:#fff;color:#111116;border-color:#fff}
+  .step .off{opacity:.25}
+  .step .of{font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.16em;color:rgba(255,255,255,.5);min-width:58px;text-align:center}
+  @media (max-width:560px){ .toprow .crumbs{font-size:11.5px} .step a,.step .off{width:36px;height:36px;font-size:22px} .step .of{min-width:46px;font-size:12px} }
   .meta span{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(255,255,255,.16);border-radius:99px;padding:6px 12px;color:rgba(255,255,255,.7)}
   /* the essay */
   .essay{padding-top:clamp(56px,8vw,96px)}
@@ -69,7 +78,14 @@
 <header class="phero">
   <div class="wm"></div>
   <div class="wrap">
-    <div class="crumbs up"><a href="index.html">Home</a> › <a href="genexxo-vision-series.html">The GENEXXO Vision Series</a> › Part XII</div>
+    <div class="toprow up">
+      <div class="crumbs"><a href="index.html">Home</a> › <a href="genexxo-vision-series.html">The GENEXXO Vision Series</a> › Part XII</div>
+      <nav class="step" aria-label="Previous and next part">
+        <a href="genexxo-vision-series/part-11-innovation.html" title="Part XI: Innovation" aria-label="Previous: Part XI">‹</a>
+        <span class="of">XII / XII</span>
+        <span class="off" aria-hidden="true">›</span>
+      </nav>
+    </div>
     <div class="gold"></div>
     <div class="eyebrow up">Part XII of XII · The GENEXXO Vision Series</div>
     <h1 class="up d1">The GENEXXO Vision</h1>
@@ -109,7 +125,7 @@
 
 <h2>The Architecture</h2>
 <p>The Multi-Dimensional Network connects everything into a navigable constellation.</p>
-<p>Every domain is a gateway — an entry point into the ecosystem. Every domain connects to related domains through natural cross-domain pathways. SNEAKERXX connects to FASHIONXX, STREETWEARXX, MUSICXX. DIABETESXX connects to NUTRITIONXX, FITNESSXX, PHARMAXX. The network is not hub-and-spoke. It is multi-dimensional — and users, brands, and AI agents navigate it with the same freedom.</p>
+<p>Every domain is a gateway — an entry point into the ecosystem. Every domain connects to related domains through natural cross-domain pathways. SNEAKERXX connects to FASHIONXX, STREETWEARXX, MUSICXX. DIABETESXX connects to NUTRITIONXX, FITNESSXX, PHARMACEUTICALXX. The network is not hub-and-spoke. It is multi-dimensional — and users, brands, and AI agents navigate it with the same freedom.</p>
 <p>The Hub sits at the centre — the user's home within the ecosystem, powered by a frontier AI model that synthesises intelligence from across the entire constellation. Everything a standalone AI portal can do, the Hub can do. But with an entire authenticated ecosystem behind it.</p>
 
 <hr>
@@ -118,16 +134,16 @@
 <p>Content, Community, Commerce, and AI flow through every domain and across the entire constellation.</p>
 <p>Content fuels the ecosystem — expert-led, community-validated, contextually rich. Not scraped from the open web, but produced within purpose-built environments designed for depth and authenticity. A dual-feed architecture delivers it: the Hub feed for the panoramic view, the domain feed for specialist depth. Same quality, different lens.</p>
 <p>Community gives the ecosystem life. Thousands of niche communities, each finding its natural home within a domain built for its subject. Climbers on CLIMBXX. Practitioners on THERAPISTXX. Engineers on STEELXX. Each community growing stronger with every member, every conversation, every connection.</p>
-<p>Commerce — through Brand Zones — makes the ecosystem economically self-sustaining. Brands earn their position through quality, innovation, and authentic community engagement. Brands own their sales; GENEXXO facilitates the connection. Commerce that rewards quality over volume and builds brands rather than discounting them.</p>
+<p>Commerce — through Brand Zones and Pro Zones — makes the ecosystem economically self-sustaining. Brands bring their products; verified professionals bring their expertise, booked directly. Brands earn their position through quality, innovation, and authentic community engagement. Brands own their sales; GENEXXO facilitates the connection. Commerce that rewards quality over volume and builds brands rather than discounting them.</p>
 <p>AI runs through the foundations — not as a feature bolted on, but as the native intelligence of the organizing layer itself. Four compounding layers of intelligence: specialist depth within each domain, categorical patterns across related domains, ecosystem-wide connections across the constellation, and personal synthesis through the Hub. A flywheel where the ecosystem makes the AI smarter and the smarter AI makes the ecosystem more valuable.</p>
-<p>And in the agentic era, the ecosystem becomes the natural home for autonomous agents — specialist intelligences developing domain expertise within authenticated environments, collaborating across the constellation in federated swarms, deployed through the App Store, orchestrated by the Hub.</p>
+<p>And in the agentic era, the ecosystem becomes the natural home for autonomous agents — specialist intelligences developing domain expertise within authenticated environments, collaborating across the constellation in federated swarms, deployed through the App Store, and coordinated by the Supernova Host, the one trusted signature that acts in the user's name.</p>
 
 <hr>
 
 <h2>The Compounding Dynamics</h2>
 <p>Network effects multiply every dimension simultaneously.</p>
 <p>Thousands of micro-brands, each a self-marketing gateway pulling its natural audience directly into the ecosystem. Every gateway a front door — and every user who enters through any one of them creates value across dozens of domains throughout their journey. All gateways lead to GENEXXO.</p>
-<p>Within every domain, content feeds community, community drives commerce, commerce generates data, AI learns from all of it. Across the constellation, patterns recognised in one domain inform another, trends emerging in one category surface across related domains. The multi-dimensional network allows every dimension of every domain to reinforce every other.</p>
+<p>Within every domain, content feeds community, community drives commerce, commerce shows what people value, AI learns from all of it. Across the constellation, patterns recognised in one domain inform another, trends emerging in one category surface across related domains. The multi-dimensional network allows every dimension of every domain to reinforce every other.</p>
 <p>Each domain evolves in lockstep with its sector — driven not by centralised planning but by the communities, brands, and intelligence that power it. The ecosystem evolves with the world.</p>
 <p>This is not additive growth. It is compounding growth — where the value of the whole exceeds the sum of its parts by an ever-widening margin.</p>
 

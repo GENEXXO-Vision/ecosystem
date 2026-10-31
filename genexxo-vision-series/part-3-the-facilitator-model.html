@@ -14,6 +14,15 @@
 <link rel="stylesheet" href="site.css?v=3dbae8c8">
 <style>
   .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:26px;position:relative}
+  /* previous / next at the top of a part (Sean, 2026-10-31: no scrolling to the bottom to move on) */
+  .toprow{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px;position:relative}
+  .toprow .crumbs{margin-bottom:0}
+  .step{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .step a,.step .off{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;line-height:1;padding-bottom:3px;border:1px solid rgba(255,255,255,.22);color:#fff;transition:background .2s,border-color .2s,color .2s}
+  .step a:hover{background:#fff;color:#111116;border-color:#fff}
+  .step .off{opacity:.25}
+  .step .of{font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.16em;color:rgba(255,255,255,.5);min-width:58px;text-align:center}
+  @media (max-width:560px){ .toprow .crumbs{font-size:11.5px} .step a,.step .off{width:36px;height:36px;font-size:22px} .step .of{min-width:46px;font-size:12px} }
   .meta span{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(255,255,255,.16);border-radius:99px;padding:6px 12px;color:rgba(255,255,255,.7)}
   /* the essay */
   .essay{padding-top:clamp(56px,8vw,96px)}
@@ -69,7 +78,14 @@
 <header class="phero">
   <div class="wm"></div>
   <div class="wrap">
-    <div class="crumbs up"><a href="index.html">Home</a> › <a href="genexxo-vision-series.html">The GENEXXO Vision Series</a> › Part III</div>
+    <div class="toprow up">
+      <div class="crumbs"><a href="index.html">Home</a> › <a href="genexxo-vision-series.html">The GENEXXO Vision Series</a> › Part III</div>
+      <nav class="step" aria-label="Previous and next part">
+        <a href="genexxo-vision-series/part-2-the-supernova-application.html" title="Part II: The Supernova Application" aria-label="Previous: Part II">‹</a>
+        <span class="of">III / XII</span>
+        <a href="genexxo-vision-series/part-4-the-multi-dimensional-network.html" title="Part IV: The Multi-Dimensional Network" aria-label="Next: Part IV">›</a>
+      </nav>
+    </div>
     <div class="gold"></div>
     <div class="eyebrow up">Part III of XII · The GENEXXO Vision Series</div>
     <h1 class="up d1">The Facilitator Model</h1>
@@ -119,6 +135,7 @@
 <p>This changes the economics of digital commerce fundamentally.</p>
 <p>Traditional platforms charge for attention — pay per click, pay per impression, pay for placement in a feed algorithm. Brands spend billions fighting for visibility among audiences who may or may not care about what they're selling. The GENEXXO model inverts this entirely. Brands gain access to audiences who are already gathered around the exact subject their products serve. The targeting is built into the architecture. The relevance is structural, not algorithmic.</p>
 <p>For brands, this means their direct-to-consumer model extends seamlessly into specialized communities without surrendering control. They maintain their pricing. They control their brand experience. They own their customer relationships. They handle their own fulfilment. And they reach audiences with a level of contextual precision that no horizontal platform can match — because the audience is self-selected by interest, not sorted by algorithm.</p>
+<p>Professionals take part in the same way through Pro Zones. The coach, the guide, the physio and the teacher each have a verified space within the gateway where their audience gathers. Clients book them directly, and they keep their prices, their calendars and their client relationships.</p>
 
 <hr>
 

@@ -14,6 +14,15 @@
 <link rel="stylesheet" href="site.css?v=3dbae8c8">
 <style>
   .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:26px;position:relative}
+  /* previous / next at the top of a part (Sean, 2026-10-31: no scrolling to the bottom to move on) */
+  .toprow{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px;position:relative}
+  .toprow .crumbs{margin-bottom:0}
+  .step{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .step a,.step .off{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;line-height:1;padding-bottom:3px;border:1px solid rgba(255,255,255,.22);color:#fff;transition:background .2s,border-color .2s,color .2s}
+  .step a:hover{background:#fff;color:#111116;border-color:#fff}
+  .step .off{opacity:.25}
+  .step .of{font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.16em;color:rgba(255,255,255,.5);min-width:58px;text-align:center}
+  @media (max-width:560px){ .toprow .crumbs{font-size:11.5px} .step a,.step .off{width:36px;height:36px;font-size:22px} .step .of{min-width:46px;font-size:12px} }
   .meta span{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(255,255,255,.16);border-radius:99px;padding:6px 12px;color:rgba(255,255,255,.7)}
   /* the essay */
   .essay{padding-top:clamp(56px,8vw,96px)}
@@ -69,7 +78,14 @@
 <header class="phero">
   <div class="wm"></div>
   <div class="wrap">
-    <div class="crumbs up"><a href="index.html">Home</a> › <a href="genexxo-vision-series.html">The GENEXXO Vision Series</a> › Part II</div>
+    <div class="toprow up">
+      <div class="crumbs"><a href="index.html">Home</a> › <a href="genexxo-vision-series.html">The GENEXXO Vision Series</a> › Part II</div>
+      <nav class="step" aria-label="Previous and next part">
+        <a href="genexxo-vision-series/part-1-the-collection.html" title="Part I: The Collection" aria-label="Previous: Part I">‹</a>
+        <span class="of">II / XII</span>
+        <a href="genexxo-vision-series/part-3-the-facilitator-model.html" title="Part III: The Facilitator Model" aria-label="Next: Part III">›</a>
+      </nav>
+    </div>
     <div class="gold"></div>
     <div class="eyebrow up">Part II of XII · The GENEXXO Vision Series</div>
     <h1 class="up d1">The Supernova Application</h1>
@@ -81,7 +97,7 @@
 <section class="essay">
   <div class="wrap narrow">
     <div class="prose">
-<p class="intro">In Part I, we introduced the GENEXXO Collection — the asset that makes everything in this series possible. Over 10,000 single-word, XX branded .com domains spanning 70+ sectors, assembled with systematic completeness across virtually every domain of human activity. The foundation is in place. Now the question becomes: what does it make possible?</p>
+<p class="intro">In Part I, we introduced the GENEXXO Collection — the asset that makes everything in this series possible. Over 10,000 single-word, XX-branded .com domains spanning 70+ sectors, assembled with systematic completeness across virtually every domain of human activity. The foundation is in place. Now the question becomes: what does it make possible?</p>
 <p class="intro">The answer is the organizing layer — the missing architecture that connects the entire technology stack to the people, communities, brands, builders, and AI agents that actually use the internet. A layer that will make sense of the coming tsunami of content, commerce, apps, and tools. A layer that gives everything a natural home — and where everyone has the potential to thrive.</p>
 
 <hr>
@@ -110,8 +126,8 @@
 <h2>The Supernova Hub: Where Everything Connects</h2>
 <p>At the centre of the ecosystem sits the Supernova Hub — the nexus of the entire constellation. This is where journeys begin and end. The user's home base, their personalized command centre, where the best of the network is always on display.</p>
 <p>One account. One identity. One home — connected across thousands of specialized destinations.</p>
-<p>A user doesn't create separate profiles for SNEAKERXX, YOGAXX, and TRAVELXX. They exist as one person across the entire ecosystem, with a personalized feed that draws from every domain they've engaged with. Their interests, their preferences, their purchase history, their community connections — all unified through the Hub, all portable across the network.</p>
-<p>The Hub also houses the Supernova Host — the AI co-pilot that orchestrates the user's journey across the constellation. Sometimes the Host acts autonomously, handling simple tasks like booking a restaurant the user has been discussing. Sometimes it surfaces deeper tools for complex trip planning, medical research, or comparing suppliers across industrial categories. The Host learns, adapts, and evolves with the user, becoming more valuable with every interaction across every domain.</p>
+<p>A user doesn't create separate profiles for SNEAKERXX, YOGAXX, and TRAVELXX. They exist as one person across the entire ecosystem, with a personalized feed that draws from every domain they've engaged with. Their interests, their plans, their community connections — held together in one place through the Hub, and always under their own control.</p>
+<p>The Hub also houses the Supernova Host — the AI co-pilot that orchestrates the user's journey across the constellation. Sometimes it takes care of simple tasks, like booking the restaurant the user has been discussing, always with their say-so. Sometimes it surfaces deeper tools for complex trip planning, medical research, or comparing suppliers across industrial categories. The Host learns, adapts, and evolves with the user, becoming more valuable with every interaction across every domain.</p>
 <p>The Hub is home. The constellation is the territory. And the user can navigate it from any point within it.</p>
 
 <hr>
@@ -129,17 +145,17 @@
 <p>A Progressive Web App delivers native-app performance directly through the web browser. No downloads. No app store approval. No installation friction. No storage concerns on the user's device. A user navigating to SNEAKERXX.COM doesn't need to find it in the App Store, read reviews, accept permissions, wait for a download, and then open it. They simply arrive — and the experience they encounter is indistinguishable from a native application.</p>
 <p>PWAs offer offline functionality, push notifications, full device integration, and seamless updates that deploy instantly without user action. They work identically across iOS, Android, and desktop. They load fast, they feel native, and they eliminate the single biggest friction point in digital adoption: the download decision.</p>
 <p>Each domain exists independently on the open web — accessible to anyone, anywhere, without barriers. But within the ecosystem, these are not isolated experiences loading from cold. The shared architectural framework — authentication, navigation, design system, the Supernova Host — is already running. Moving from FASHIONXX to SNEAKERXX to STREETWEARXX feels as seamless as moving between sections of a single application. The constellation behaves like one unified experience from the inside while remaining thousands of independent gateways from the outside.</p>
-<p>This is not speculative technology. PWAs already power experiences at Twitter, Pinterest, Starbucks, and across Google's own product suite. What's new is the architectural context — a purpose-built ecosystem of thousands of specialized domains, each delivering app-quality experiences individually and operating as one seamless network collectively.</p>
+<p>This is not speculative technology. PWAs already power experiences at X (formerly Twitter), Pinterest, Starbucks, and across Google's own product suite. What's new is the architectural context — a purpose-built ecosystem of thousands of specialized domains, each delivering app-quality experiences individually and operating as one seamless network collectively.</p>
 <p>For the GENEXXO Vision, PWA architecture isn't just a technical choice. It is a strategic imperative that reshapes the power dynamics of the entire ecosystem.</p>
 
 <hr>
 
 <h2>Bypassing the Gatekeepers</h2>
-<p>Consider what the current app store model demands. Any company building a digital experience must submit to Apple or Google's approval processes, revenue-sharing arrangements, and policy constraints. A thirty percent cut on every transaction. Platform-specific development for iOS and Android. Forced updates through store approval cycles. The constant risk of policy changes that can reshape your business overnight.</p>
+<p>Consider what the current app store model demands. Any company building a digital experience must submit to Apple or Google's approval processes, revenue-sharing arrangements, and policy constraints. A cut of up to thirty percent on every transaction. Platform-specific development for iOS and Android. Forced updates through store approval cycles. The constant risk of policy changes that can reshape your business overnight.</p>
 <p>The GENEXXO Vision bypasses all of this.</p>
 <p>Built entirely on PWA infrastructure, every domain in the ecosystem operates independently of traditional app store gatekeepers. No Apple tax. No Google intermediary. No fragmented development across competing platforms. No forced compliance with policies designed for someone else's business model.</p>
-<blockquote>"For a major corporation acquiring the GENEXXO Vision, this means total control. No 30% revenue share. Direct relationship with every user across every sector. Complete authority over deployment, monetisation, and evolution."</blockquote>
-<p>This is not a marginal efficiency gain. It is an architectural liberation. The acquiring corporation doesn't just own thousands of domains — it owns thousands of direct-to-consumer channels that operate outside the existing platform oligopoly. Every user interaction, every transaction, every data point flows through infrastructure the corporation controls entirely.</p>
+<blockquote>"For a major corporation acquiring the GENEXXO Vision, this means total control. No app-store revenue share. Direct relationship with every user across every sector. Complete authority over deployment, monetisation, and evolution."</blockquote>
+<p>This is not a marginal efficiency gain. It is an architectural liberation. The acquiring corporation doesn't just own thousands of domains — it owns thousands of direct-to-consumer channels that operate outside the existing platform oligopoly. Every interaction runs on infrastructure the corporation controls, with a direct relationship to every user.</p>
 <p>And the strategic implications extend further. A major technology company that commits to PWA-first architecture has a powerful incentive to advance the entire PWA ecosystem — investing in browser capabilities, development tools, performance optimisation, and platform standards. The GENEXXO Vision doesn't just use PWA technology. It creates a reason for a global corporation to become its champion.</p>
 <p>If the traditional gatekeepers are bypassed, the question of what replaces them — and how the ecosystem grows, distributes, and monetises its own applications — becomes central to the operating model. That question is answered in Part III.</p>
 
