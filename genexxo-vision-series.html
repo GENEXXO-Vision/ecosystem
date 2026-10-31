@@ -13,6 +13,15 @@
 <link rel="stylesheet" href="site.css?v=3dbae8c8">
 <style>
   .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:26px;position:relative}
+  /* previous / next at the top of a part (Sean, 2026-10-31: no scrolling to the bottom to move on) */
+  .toprow{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px;position:relative}
+  .toprow .crumbs{margin-bottom:0}
+  .step{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .step a,.step .off{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;line-height:1;padding-bottom:3px;border:1px solid rgba(255,255,255,.22);color:#fff;transition:background .2s,border-color .2s,color .2s}
+  .step a:hover{background:#fff;color:#111116;border-color:#fff}
+  .step .off{opacity:.25}
+  .step .of{font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.16em;color:rgba(255,255,255,.5);min-width:58px;text-align:center}
+  @media (max-width:560px){ .toprow .crumbs{font-size:11.5px} .step a,.step .off{width:36px;height:36px;font-size:22px} .step .of{min-width:46px;font-size:12px} }
   .meta span{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(255,255,255,.16);border-radius:99px;padding:6px 12px;color:rgba(255,255,255,.7)}
   /* the essay */
   .essay{padding-top:clamp(56px,8vw,96px)}
