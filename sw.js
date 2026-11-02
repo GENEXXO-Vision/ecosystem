@@ -34,12 +34,35 @@ const SHELL = 'genexxo-app.html';
 const DATA = 'genexxo-data.js';
 const isData = (p) => p.endsWith('/' + DATA) || p.endsWith(DATA);
 
+/* ▸ v6 RETIRE ON THE BARE DOMAIN (2026-11-02, build -76). Since 2026-11-01 Cloudflare 301s genexxovision.com/* to
+   www.genexxovision.com. A worker installed earlier on the bare domain then saw every page fetch come back as a
+   cross-origin redirect it may not follow, treated it as "offline" and served its cached shell instead: the bare
+   domain showed the OLD app for every page, the website included, and never updated. Cloudflare lets /sw.js
+   through un-redirected so such a worker can fetch this file; on the bare domain it now clears its caches,
+   unregisters, stops intercepting and reloads its pages, which then follow the redirect to www. On www and
+   github.io nothing here runs. */
+const RETIRED_HOST = self.location.hostname === 'genexxovision.com';
+if (RETIRED_HOST) {
+  self.addEventListener('install', () => self.skipWaiting());
+  self.addEventListener('activate', (e) => {
+    e.waitUntil((async () => {
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k => caches.delete(k)));
+      await self.registration.unregister();
+      const clients = await self.clients.matchAll({ type: 'window' });
+      clients.forEach(c => { try { c.navigate(c.url); } catch (_) {} });
+    })());
+  });
+}
+
 self.addEventListener('install', (e) => {
+  if (RETIRED_HOST) return;
   self.skipWaiting();                                            // new SW takes over asap
   e.waitUntil(caches.open(CACHE).then(c => c.addAll([SHELL, DATA])).catch(() => {}));
 });
 
 self.addEventListener('activate', (e) => {
+  if (RETIRED_HOST) return;
   e.waitUntil((async () => {
     const keys = await caches.keys();
     await Promise.all(keys.filter(k => k !== CACHE && k !== MEDIA).map(k => caches.delete(k)));   // drop old caches
@@ -150,6 +173,7 @@ async function serveMedia(e) {
 }
 
 self.addEventListener('fetch', (e) => {
+  if (RETIRED_HOST) return;                                      // bare domain: never intercept
   const req = e.request;
   if (req.method !== 'GET') return;
   let url;
