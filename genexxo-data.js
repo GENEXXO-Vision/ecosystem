@@ -1863,7 +1863,7 @@ const ZONES = {
     tier:'Founding Partner', verified:true,
     tagline:'Japanese heavyweight selvedge — 21oz and beyond since 2003',
     stats:{followers:'9.8K', content:'320', products:'56'},
-    event:{ zoneEvent:true, tag:'FADE CLINIC', title:'Iron Hall Fade Gallery — Raw Denim Clinic', when:'Nov 1 · Yokohama workshop', desc:'A live raw-denim clinic from the Yokohama workshop — first-soak timing, fade care, weight selection, and a Fade Gallery of customer 534S submissions. Bring your pair and your questions.', registered:560, capacity:900 },
+    event:{ zoneEvent:true, tag:'FADE CLINIC', title:'Iron Hall Fade Gallery — Raw Denim Clinic', when:'Nov 29 · Yokohama workshop', desc:'A live raw-denim clinic from the Yokohama workshop — first-soak timing, fade care, weight selection, and a Fade Gallery of customer 534S submissions. Bring your pair and your questions.', registered:560, capacity:900 },
     products:[
       {name:'534S 21oz Selvedge Straight', price:'£395', tag:'FLAGSHIP', emoji:'👖', rating:4.9, reviews:210, cat:'jeans', special:true,
        desc:'Unsanforized 21oz selvedge from the Nakamura Mill, hidden rivets, chain-stitch hem — the denim that started the heavyweight revolution.',
@@ -2548,7 +2548,7 @@ const EVENTS_FEED = [
   {gw:'denim', zone:'loomweave', type:'Event', icon:'📅', time:'Tomorrow 8am', title:'Loomweave Archive Masterclass — 1947 447XX', desc:'A live deep-dive into the archive behind the 1947 447XX — deconstructing an original pair, the Granite Mills selvedge and the arc stitch. RSVP inside the Loomweave Vintage zone.'},
   {gw:'handbag', zone:'rebloom', type:'Event', icon:'📅', time:'Wed 18:00', title:'Rebloom Authentication Masterclass', desc:'A live 100-point walkthrough of how luxury handbags are authenticated — hardware, stitching, date codes, leather grain — plus valuations Q&A. RSVP inside the Rebloom zone.'},
   {gw:'goth', zone:'roman-onyx', type:'Event', icon:'📅', time:'Feb 26', title:'Roman Onyx AW27 · PORTVM Runway', desc:'The AW27 PORTVM show, streamed from a concrete labyrinth in darkness — brutal silhouettes and raw leather. RSVP for the digital front row inside the Roman Onyx zone.'},
-  {gw:'denim', zone:'iron-hall', type:'Event', icon:'📅', time:'Nov 1', title:'Iron Hall Fade Gallery — Raw Denim Clinic', desc:'A live raw-denim clinic from the Yokohama workshop — first-soak timing, fade care and a gallery of 534S submissions. RSVP inside the Iron Hall zone.'},
+  {gw:'denim', zone:'iron-hall', type:'Event', icon:'📅', time:'Nov 29', title:'Iron Hall Fade Gallery — Raw Denim Clinic', desc:'A live raw-denim clinic from the Yokohama workshop — first-soak timing, fade care and a gallery of 534S submissions. RSVP inside the Iron Hall zone.'},
   {gw:'handbag', zone:'marbury', type:'Event', icon:'📅', time:'Nov 16', title:'Marbury Atelier Day — Somerset', desc:'A day inside the Somerset workshop — watch the Belgravia handcrafted through 78 steps and bring any Marbury bag to the Lifetime Service Centre. RSVP inside the Marbury zone.'},
   {gw:'ski', type:'Bookmark', icon:'🔖', time:'30 Nov', title:'Ski Season Opener — Val d’Isère', desc:'Your bookmarked reminder: first lifts of the season. SkiXX live coverage and snow reports.'},
   {gw:'bitcoin', zone:'coinhub', type:'Live', icon:'🔴', live:true, time:'Live Now', title:'Coinhub Live · ETF Flows Trading Desk', desc:'We break down today’s spot Bitcoin ETF flows the moment they hit the tape — issuer bids, float impact and desk positioning. Watch live inside the Coinhub zone.'},
