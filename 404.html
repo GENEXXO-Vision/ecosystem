@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#070708">
 <!-- The server's "page not found" page (ErrorDocument 404 in public_html/.htaccess). It can be served at any depth
-     (e.g. /genexxo-vision-series/missing.html), so every link resolves from the site root via <base>. Not indexed. -->
-<base href="/">
+     (e.g. /genexxo-vision-series/missing.html), so every link resolves from the site root via <base> (set by the script: "/" here, "/ecosystem/" on github.io). Not indexed. -->
+<script>/* the site root: "/" on genexxovision.com, "/ecosystem/" on the GitHub Pages copy */
+document.write('<base href="'+(location.hostname.endsWith('github.io')?'/ecosystem/':'/')+'">');</script>
 <title>Page not found — GENEXXO</title>
 <meta name="description" content="This page doesn't exist. Find your way back to GENEXXO, the organizing layer for the internet.">
 <meta name="robots" content="noindex">
