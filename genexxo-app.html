@@ -1744,8 +1744,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-76"></script>
-<script src="genexxo-core.js?v=2026.08.26-76"></script>
+<script src="genexxo-data.js?v=2026.08.26-77"></script>
+<script src="genexxo-core.js?v=2026.08.26-77"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -2645,7 +2645,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-76';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-77';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -8708,7 +8708,22 @@ function render(){
        than as "nothing selected". Fill it with the live gateways instead: on a first visit to
        the desktop home that is a better prompt than a blank column — it answers "what can I
        actually look at right now?". Desktop-only by construction: this whole branch is. */
-    try { buildRightList(); } catch(_){}
+    try {
+      buildRightList();
+      /* -77 (Sean): the pinned list keeps its scroll so clicking down a sector's gateways doesn't jump, but a DIFFERENT
+         sector's list used to open at the old position. On a change of sector it starts at the top, or centred on the
+         gateway you're in; within the same sector the scroll is kept as before. */
+      const lk = activeSectorKey() || '';
+      if (state._rListFor !== lk){
+        state._rListFor = lk;
+        const dlr=$('drawerRList'), actR=$('drawerRActiveRow');
+        if (dlr){
+          if (actR){ const dr=dlr.getBoundingClientRect(), ar=actR.getBoundingClientRect();
+            settleListScroll(dlr, dlr.scrollTop + (ar.top - dr.top) - (dlr.clientHeight - ar.height)/2); }
+          else settleListScroll(dlr, 0);
+        }
+      }
+    } catch(_){}
   }
   $('frame').classList.add('drawer-avail');
   syncGwChrome();                                // drawer head, placeholder + gw-avail
