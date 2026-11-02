@@ -4,7 +4,7 @@
   "short_name": "GENEXXO",
   "description": "The GENEXXO app — sectors, gateways and the case. One app, phone and desktop.",
   "start_url": "genexxo-app.html",
-  "scope": "./",
+  "scope": "genexxo-app.html",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#070708",
