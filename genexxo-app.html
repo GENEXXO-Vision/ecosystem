@@ -54,6 +54,31 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
 
   /* ── top chrome (neutral, persistent) ── */
   .top{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:10px;padding:14px 16px 12px;background:rgba(247,247,248,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);transition:transform .28s cubic-bezier(.4,0,.2,1);will-change:transform}
+  /* ── Seasonal dress (2026-11-04, Sean): a gateway whose theme has festive:true gets holly and berries framing its
+     domain, snow drifting through the top bar only (never over content), and a warm glow. ChristmasXX first.
+     Remove by deleting festive:true from the theme. Reduced motion: the flakes stay still. ── */
+  .top.festive{overflow:hidden;isolation:isolate}
+  .top.festive::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(ellipse 46% 140% at 50% 110%,rgba(233,196,106,.22),transparent 70%)}
+  .fest-snow{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+  .fest-snow i{position:absolute;top:-8px;border-radius:50%;background:#fff;opacity:.75;animation:festFall linear infinite}
+  @keyframes festFall{0%{transform:translate3d(0,-8px,0)}50%{transform:translate3d(6px,34px,0)}100%{transform:translate3d(-4px,76px,0);opacity:0}}
+  .fest-holly{display:inline-block;width:30px;height:22px;vertical-align:-4px;margin:0 6px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.35))}
+  .fest-holly.r{transform:scaleX(-1)}
+  @media (prefers-reduced-motion: reduce){ .fest-snow i{animation:none;top:auto} }
+  /* warmer (2026-11-04): garland of greenery and twinkling lights along the top bar's lower edge; holly clusters
+     crowning the desktop side panels; a cream tab bar; snow drifting down the page behind the panel cards (desktop). */
+  .fest-garland{position:absolute;left:0;right:0;bottom:-2px;height:14px;pointer-events:none;z-index:0;
+    background:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 84 14%22%3E%3Cpath d=%22M0 4 Q21 13 42 4 T84 4%22 fill=%22none%22 stroke=%22%231F6B3E%22 stroke-width=%223.4%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M0 4 Q21 13 42 4 T84 4%22 fill=%22none%22 stroke=%22%232E9A5B%22 stroke-width=%221.4%22 stroke-dasharray=%222 3%22 stroke-linecap=%22round%22/%3E%3Cg stroke=%22%23123D25%22 stroke-width=%22.8%22%3E%3Cline x1=%2214%22 y1=%228.6%22 x2=%2214%22 y2=%229.6%22/%3E%3Cline x1=%2242%22 y1=%224%22 x2=%2242%22 y2=%225%22/%3E%3Cline x1=%2270%22 y1=%228.6%22 x2=%2270%22 y2=%229.6%22/%3E%3C/g%3E%3Ccircle cx=%2214%22 cy=%2211.4%22 r=%222.2%22 fill=%22%23F2C14E%22/%3E%3Ccircle cx=%2242%22 cy=%226.8%22 r=%222.2%22 fill=%22%23E63946%22/%3E%3Ccircle cx=%2270%22 cy=%2211.4%22 r=%222.2%22 fill=%22%23FFF3D6%22/%3E%3C/svg%3E") repeat-x left bottom / 84px 14px}
+  .fest-garland::after{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 84 14%22%3E%3Ccircle cx=%2214%22 cy=%2211.4%22 r=%224%22 fill=%22%23F2C14E%22 opacity=%22.55%22/%3E%3Ccircle cx=%2242%22 cy=%226.8%22 r=%224%22 fill=%22%23E63946%22 opacity=%22.5%22/%3E%3Ccircle cx=%2270%22 cy=%2211.4%22 r=%224%22 fill=%22%23FFF3D6%22 opacity=%22.55%22/%3E%3C/svg%3E") repeat-x left bottom / 84px 14px;
+    filter:blur(1.5px);animation:festTwinkle 2.6s ease-in-out infinite alternate}
+  @keyframes festTwinkle{from{opacity:.25}to{opacity:1}}
+  #frame.festive.panels-float .gw-panel{padding-top:50px;background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMzIgMzgiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY2IDIyKSI+PHBhdGggZD0iTTAgMCBDLTkgLTMgLTE2IC0yIC0yOCAtOCBDLTI0IC0xMCAtMjQgLTE0IC0yNyAtMTcgQy0yMiAtMTUgLTE3IC0xNyAtMTUgLTIxIEMtMTIgLTE3IC03IC0xNSAtMyAtMTUgQy01IC0xMCAtMyAtNSAwIDBaIiBmaWxsPSIjMUY3QTQ1Ii8+PHBhdGggZD0iTTAgMCBDOSAtMyAxNiAtMiAyOCAtOCBDMjQgLTEwIDI0IC0xNCAyNyAtMTcgQzIyIC0xNSAxNyAtMTcgMTUgLTIxIEMxMiAtMTcgNyAtMTUgMyAtMTUgQzUgLTEwIDMgLTUgMCAwWiIgZmlsbD0iIzJFOUE1QiIvPjxwYXRoIGQ9Ik0wIDAgQy02IDQgLTEyIDYgLTIyIDEzIEMtMTggMTMgLTE2IDE2IC0xNyAxOSBDLTEzIDE2IC05IDE3IC02IDE5IEMtNiAxNSAtMyAxMiAwIDBaIiBmaWxsPSIjMjM4NjREIi8+PHBhdGggZD0iTTAgMCBDNiA0IDEyIDYgMjIgMTMgQzE4IDEzIDE2IDE2IDE3IDE5IEMxMyAxNiA5IDE3IDYgMTkgQzYgMTUgMyAxMiAwIDBaIiBmaWxsPSIjMUE2QjNDIi8+PGNpcmNsZSBjeD0iLTQiIGN5PSItMSIgcj0iNC4yIiBmaWxsPSIjRDcyNjNEIi8+PGNpcmNsZSBjeD0iNC40IiBjeT0iLS42IiByPSI0IiBmaWxsPSIjQzExMjFGIi8+PGNpcmNsZSBjeD0iMCIgY3k9IjUuNCIgcj0iNCIgZmlsbD0iI0U2Mzk0NiIvPjxjaXJjbGUgY3g9Ii01LjIiIGN5PSItMi40IiByPSIxLjIiIGZpbGw9IiNmZmYiIG9wYWNpdHk9Ii41NSIvPjxjaXJjbGUgY3g9IjMuMiIgY3k9Ii0yIiByPSIxLjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9Ii41Ii8+PC9nPjwvc3ZnPg==")!important;background-repeat:no-repeat!important;background-position:center 6px!important;background-size:132px 38px!important}   /* !important: buildGwPanels paints the panel colour inline */
+  #festSnow{display:none}
+  #frame.festive.panels-float #festSnow{display:block;position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+  #festSnow i{position:absolute;top:-12px;border-radius:50%;background:#fff;opacity:.5;animation:festDrift linear infinite}
+  @keyframes festDrift{0%{transform:translate3d(0,-12px,0)}50%{transform:translate3d(16px,50vh,0)}100%{transform:translate3d(-10px,104vh,0)}}
+  @media (prefers-reduced-motion: reduce){ .fest-garland::after{animation:none} #frame.festive.panels-float #festSnow{display:none} }
   .gx-mark{display:flex;align-items:center;gap:8px;cursor:pointer;flex-shrink:0}
   .gx-dot{width:26px;height:26px;border-radius:8px;background:#111116;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;letter-spacing:-.5px}
   /* The XX monogram as a vector mask (2026-09-27), taken from the brand's own logo file
@@ -1744,8 +1769,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-77"></script>
-<script src="genexxo-core.js?v=2026.08.26-77"></script>
+<script src="genexxo-data.js?v=2026.08.26-78"></script>
+<script src="genexxo-core.js?v=2026.08.26-78"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -1893,7 +1918,7 @@ function myPostsSeed(){ const h=36e5, now=Date.now(); return [
 const YOUR_GATEWAYS = ['climb','ski','surf','cycle','sail'];
 /* The five Adventure showcase gateways are PINNED (Sean, 2026-10-15): always favourites, always first, and their
    star can't be turned off. They lead the hub's right panel; every other live gateway lists below with its own ☆. */
-const PINNED_GWS = ['climb','ski','surf','cycle','sail'];
+const PINNED_GWS = ['climb','ski','surf','cycle','sail','christmas'];   // christmas: seasonal pin (2026-11-04, Sean), unpin in January
 const gwPinned = k => PINNED_GWS.includes(k);
 const pinFavs = list => [...PINNED_GWS, ...(list||[]).filter(k=>!gwPinned(k))];
 const pinnedToast = k => toast(`📌 ${((gwMetaFromKey(k)||{}).name)||'This gateway'} is a demo gateway · pinned to your favourites`);
@@ -2645,7 +2670,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-77';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-78';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -4302,6 +4327,16 @@ function domainMark(name){
   return `<span${L}>${stem}</span><span${R}>${xx}</span>`
        + `<span class="${C.trim()}" style="opacity:.5">.com</span>`;
 }
+/* Seasonal dress: holly sprig (two leaves, three berries) and a field of drifting flakes, drawn once. */
+const FEST_HOLLY = `<svg class="fest-holly" viewBox="0 0 30 22" aria-hidden="true"><path d="M15 12 C11 10 8 11 3 8 C5 7 5 5 4 3 C6 4 8 3 9 1 C10 3 12 4 14 4 C13 6 14 9 15 12Z" fill="#1F7A45"/><path d="M15 12 C17 8 20 6 26 5 C25 7 26 9 28 10 C26 11 25 13 26 15 C24 14 22 15 20 17 C20 15 18 13 15 12Z" fill="#2E9A5B"/><circle cx="14" cy="14" r="2.6" fill="#D7263D"/><circle cx="18.2" cy="15.4" r="2.4" fill="#C1121F"/><circle cx="15.2" cy="18.2" r="2.3" fill="#E63946"/><circle cx="13.3" cy="13.3" r=".8" fill="#fff" opacity=".55"/></svg>`;
+const FEST_FIELD = (()=>{ let h='', seed=29; const r=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  for(let i=0;i<46;i++){ const sz=(2+r()*3.4).toFixed(1), x=(r()*100).toFixed(1), d=(14+r()*16).toFixed(1), dl=(-r()*30).toFixed(1);
+    h+=`<i style="left:${x}%;width:${sz}px;height:${sz}px;animation-duration:${d}s;animation-delay:${dl}s"></i>`; }
+  return `<div id="festSnow" aria-hidden="true">${h}</div>`; })();
+const FEST_SNOW = (()=>{ let h='', seed=11; const r=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  for(let i=0;i<34;i++){ const sz=(1.6+r()*2.6).toFixed(1), x=(r()*100).toFixed(1), d=(6+r()*7).toFixed(1), dl=(-r()*12).toFixed(1), y=(r()*60).toFixed(0);
+    h+=`<i style="left:${x}%;width:${sz}px;height:${sz}px;animation-duration:${d}s;animation-delay:${dl}s;--y:${y}px"></i>`; }
+  return `<div class="fest-snow" aria-hidden="true">${h}</div>`; })();
 function topBar(gw){
   const inGw = !!gw;
   /* The gateway's colours carry the bar on BOTH layouts. Desktop briefly held a neutral
@@ -4320,14 +4355,15 @@ function topBar(gw){
   // tabs (2026-08-26). They were gated to tab==='home' with nothing gained by it: Discover, AI,
   // Events and Profile simply lost their favourites star for no reason. Sector screens still
   // withhold ⓘ/Apply because that slot carries the "back to <gateway>" pill.
-  return `<div class="top ${themed?'gw':''}" style="${style}">
+  const festive = themed && gw.theme && gw.theme.festive;
+  return `<div class="top ${themed?'gw':''}${festive?' festive':''}" style="${style}">${festive?FEST_SNOW+'<div class="fest-garland" aria-hidden="true"></div>':''}
     <div class="gx-mark" onclick="goHub()" title="Back to the GENEXXO hub">
       <div class="gx-dot" style="background:${dotBg};color:${dotFg}"><span class="gx-mono"></span></div>
       ${showWord?'<div class="gx-word">GENEXXO</div>':''}
     </div>
     ${inGw?`
     <div onclick="event.stopPropagation();gwHome()" title="${gw.name}.com home"
-      style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--cond);font-weight:700;font-size:19px;letter-spacing:.02em;cursor:pointer;padding:6px 10px;margin:-6px -10px">${domainMark(gw.name)}</div>
+      style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--cond);font-weight:700;font-size:19px;letter-spacing:.02em;cursor:pointer;padding:6px 10px;margin:-6px -10px;white-space:nowrap;z-index:1">${festive?FEST_HOLLY:''}${domainMark(gw.name)}${festive?FEST_HOLLY.replace('class="fest-holly"','class="fest-holly r"'):''}</div>
     <div class="topsearch" onclick="event.stopPropagation();setTab('search')" title="Search GENEXXO"
       style="margin-left:auto;color:${gw.theme.text};opacity:${searchOn?'1':'.55'};${searchOn?`background:${gw.theme.accent}22`:''}">${ICONS.search}</div>
     <div id="gwStar" class="favhit" onclick="event.stopPropagation();toggleFavPanel()" title="Favourite gateways"
@@ -5891,7 +5927,8 @@ function renderGateway(){
   // the bar; the › arrow sits at the far right.
   const labInk = (i,n,on) => framed ? (on ? accentPill(t.accent) : '') : tabInk(barBg,(i+.5)/(n+.4),on);
   const pgTabs = list => list.map(([k,lb],i)=>`<div class="ntab ${gwTabOn(k)?'on':''}" style="${labInk(i,list.length,gwTabOn(k))}" onclick="tapGwZone('${k}')">${lb}</div>`).join('');
-  bar = `<div class="substick netbar${framed?' framed':''}" style="${framed?`background:linear-gradient(#fff,#fff) padding-box, ${barBg} border-box`:`background:${barBg}`}">
+  const barFill = t.festive ? '#F6EEDC' : '#fff';   // festive: a warm cream bar
+  bar = `<div class="substick netbar${framed?' framed':''}" style="${framed?`background:linear-gradient(${barFill},${barFill}) padding-box, ${barBg} border-box`:`background:${barBg}`}">
     <div class="ntab gwbar-arr" style="flex:0 0 26px;font-size:17px;font-weight:800;opacity:.9;line-height:1;margin-top:-2px;${onMore?'':'visibility:hidden;pointer-events:none;'}${framed?'':tabInk(barBg,.03,true).replace(/background:[^;]*;/,'')}" onclick="tapGwBarPage(-1)" title="Back to Feed · Brands · Apps">‹</div>
     <div class="gwbar-vp"><div class="gwbar-track" style="transform:${GWBAR_POS(onMore?2:1)}">
       <div class="gwbar-pg" aria-hidden="true">${pgTabs(GW_PAGE2)}</div>
@@ -8729,6 +8766,9 @@ function render(){
   syncGwChrome();                                // drawer head, placeholder + gw-avail
   // dark gateway themes need light-tinted edge handles or they vanish into the background
   $('frame').classList.toggle('on-dark', state.screen==='gateway' && !!(state._gwObj && state._gwObj.theme.dark));
+  { const fest = (state.screen==='gateway'||state.screen==='zone') && !!(state._gwObj && state._gwObj.theme && state._gwObj.theme.festive);
+    $('frame').classList.toggle('festive', fest);
+    if(fest && !$('festSnow')) $('frame').insertAdjacentHTML('beforeend', FEST_FIELD); }
   syncZoneStep();                                // ▲▼ beside the pull-out, brand zones only
   $('frame').classList.remove('drawer-open','drawer-open-r'); state.drawerOpen=false;
   // first-run nudges: left half-moon pulses on the home feed, right one on a first sector visit
