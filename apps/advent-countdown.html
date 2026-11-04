@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Advent Countdown</title>
+<style>
+/* Advent Countdown, by "Snowglobe Studio" (fictional), 2026-11-04. A GENEXXO app for ChristmasXX.
+   Doors open from 1 December, one a day; before then it counts down and offers a "get ahead" list. */
+:root{--bg:#0E1712;--card:#16241B;--line:rgba(233,196,106,.16);--ink:#F3EBDD;--mut:rgba(243,235,221,.58);--red:#C62F3A;--gold:#E9C46A;--green:#2F7A4E}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--red),#7A1220);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--gold)}
+.big{background:linear-gradient(160deg,#1F3A2A,#0E1712);border:1px solid var(--line);border-radius:18px;padding:22px 18px;text-align:center}
+.big b{display:block;font-size:56px;font-weight:900;line-height:1;color:var(--gold)}.big span{font-size:13px;color:var(--mut);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.big p{margin-top:12px;font-size:14px}
+.door{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
+.door small{font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--gold);text-transform:uppercase}.door h3{font-size:17px;margin:4px 0 6px}.door p{color:var(--mut)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.d{aspect-ratio:1;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px;border:1px solid var(--line);background:var(--card);color:var(--mut);cursor:pointer;position:relative}
+.d.open{background:linear-gradient(135deg,var(--red),#7A1220);color:#fff;border-color:transparent}.d.today{outline:2px solid var(--gold)}
+.d.lock{opacity:.5;cursor:default}.d i{position:absolute;bottom:4px;font-style:normal;font-size:11px}
+.job{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin-bottom:7px;cursor:pointer}
+.job .c{width:22px;height:22px;border-radius:7px;border:2px solid var(--gold);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px}
+.job.on .c{background:var(--gold);color:#0E1712}.job.on b{text-decoration:line-through;color:var(--mut)}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--gold);color:#0E1712;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🗓️</div><div><h1>Advent Countdown</h1><p>Snowglobe Studio · in ChristmasXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="today" class="on">Today</button><button data-tab="doors">Doors</button><button data-tab="ahead">Get ahead</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const DOORS=[
+ ['Recipe','Spiced hot chocolate','Warm milk with a square of dark chocolate, cinnamon and a pinch of nutmeg. Top with a marshmallow.'],
+ ['Carol','Deck the Halls','Sing the fa-la-las loud enough for the neighbours to join in.'],
+ ['Little job','Write the card list','Ten minutes now saves an hour later. Who are you sending cards to this year?'],
+ ['Joy','Paper snowflakes','Fold, snip, unfold. Stick the best one in the window.'],
+ ['Recipe','Mince pie stars','Swap the pastry lids for stars: quicker, prettier, fewer burnt edges.'],
+ ['Carol','Silent Night','Turn the lights down and sing it quietly. It is better that way.'],
+ ['Little job','Order the turkey','Butchers fill up fast. Book your bird today.'],
+ ['Joy','Light walk','Wrap up warm and walk the street with the best lights.'],
+ ['Recipe','Gingerbread biscuits','Ginger, cinnamon, golden syrup. Cut, bake, ice.'],
+ ['Carol','Hark! The Herald Angels Sing','The one with the big notes. Go for it.'],
+ ['Little job','Last posting dates','Second class goes early. Post the far-away cards this week.'],
+ ['Joy','Christmas film night','Blankets, popcorn, and everyone gets one vote.'],
+ ['Recipe','Mulled apple juice','Apple juice, orange slices, cloves and cinnamon. Warm, never boil.'],
+ ['Carol','O Come, All Ye Faithful','Learn the descant. You have eleven days.'],
+ ['Little job','Wrap three presents','Just three. Tomorrow, three more.'],
+ ['Joy','Kindness day','Leave a treat on the doorstep for the delivery driver.'],
+ ['Recipe','Pigs in blankets','Make them today and freeze them. Future you says thank you.'],
+ ['Carol','The Holly and the Ivy','An old one. Find out what the verses actually mean.'],
+ ['Little job','Plan the dinner','Open Dinner Timer and set the time you want to eat.'],
+ ['Joy','Board-game evening','Phones in a basket. Winner picks tomorrow’s pudding.'],
+ ['Recipe','Brandy butter','Butter, icing sugar and a splash of brandy. Five minutes.'],
+ ['Carol','Ding Dong Merrily on High','Practise the gloooo-ria in one breath.'],
+ ['Little job','Peel the veg','Peel tonight, keep in cold water, sleep in tomorrow.'],
+ ['Joy','Christmas Eve','Stockings up, mince pie and carrot out. Sleep tight.']
+];
+const AHEAD=['Make the Christmas cake (Stir-up Sunday)','Order the turkey','Book the wreath workshop','Plan the card list','Buy stamps before the queues','Choose a family film for each weekend'];
+let C, S={tab:'today', shared:false};
+/* ?d=YYYY-MM-DD previews another day (used for the store screenshots) */
+const QD=new URLSearchParams(location.search).get('d');
+const now=()=>QD?new Date(QD+'T12:00:00'):GX.today(0);
+const xmas=()=>{const n=now();return new Date(n.getFullYear(),11,25,12)};
+const sleeps=()=>Math.max(0,Math.round((xmas()-now())/864e5));
+const dec=()=>{const n=now();return n.getMonth()===11?n.getDate():0};
+GX.init({gateway:'ChristmasXX',seed:()=>({opened:[],done:[]})}).then(c=>{C=c;C.data.opened=C.data.opened||[];C.data.done=C.data.done||[];paint();});
+function vToday(){ const d=dec(), s=sleeps();
+  const head=`<div class="big"><b>${s}</b><span>${s===1?'sleep':'sleeps'} to Christmas</span><p>${d? (d<=24?`Door ${d} is ready to open.`:'Merry Christmas! 🎄') : `The first door opens on 1 December.`}</p></div>`;
+  let body='';
+  if(d && d<=24){ const o=C.data.opened.includes(d); const D=DOORS[d-1];
+    body=o?`<div class="door"><small>Door ${d} · ${D[0]}</small><h3>${D[1]}</h3><p>${D[2]}</p></div>`:`<button class="go" id="open">Open door ${d}</button>`;
+    if(o && GX.can('feed')) body+=`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share door ${d} to ${C.gateway}`}</button>`;
+  } else body=`<div class="door"><small>Before December</small><h3>Get ahead while it’s quiet</h3><p>Tick off a few jobs now and December stays calm. See the Get ahead tab.</p></div>`;
+  return head+body; }
+function vDoors(){ const d=dec();
+  return `<div class="grid">${DOORS.map((_,i)=>{const n=i+1, o=C.data.opened.includes(n), lock=!d||n>d;
+    return `<div class="d ${o?'open':''} ${n===d?'today':''} ${lock?'lock':''}" data-n="${n}">${n}${o?'<i>✓</i>':lock?'<i>🔒</i>':''}</div>`}).join('')}</div>
+    <div class="legend">${d?'Tap any door up to today to open it.':'Doors unlock one a day from 1 December.'}</div>`; }
+function vAhead(){ return AHEAD.map((t,i)=>`<div class="job ${C.data.done.includes(i)?'on':''}" data-j="${i}"><div class="c">${C.data.done.includes(i)?'✓':''}</div><b>${t}</b></div>`).join('')
+  +`<div class="legend">${C.data.done.length} of ${AHEAD.length} done</div>`; }
+function openDoor(n){ if(!C.data.opened.includes(n)){C.data.opened.push(n);GX.save(C.data);} S.tab='today'; paint(); const D=DOORS[n-1]; if(n!==dec()) document.getElementById('v').insertAdjacentHTML('beforeend',`<div class="door"><small>Door ${n} · ${D[0]}</small><h3>${D[1]}</h3><p>${D[2]}</p></div>`); }
+function paint(){ document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'); v.innerHTML=S.tab==='today'?vToday():S.tab==='doors'?vDoors():vAhead();
+  const op=document.getElementById('open'); if(op) op.onclick=()=>openDoor(dec());
+  v.querySelectorAll('.d:not(.lock)').forEach(e=>e.onclick=()=>openDoor(+e.dataset.n));
+  v.querySelectorAll('[data-j]').forEach(e=>e.onclick=()=>{const j=+e.dataset.j,a=C.data.done,k=a.indexOf(j);k>=0?a.splice(k,1):a.push(j);GX.save(C.data);paint();});
+  const sh=document.getElementById('share'); if(sh) sh.onclick=()=>{const d=dec(),D=DOORS[d-1];
+    GX.post(`Advent door ${d}: <b>${D[1]}</b>. ${D[2]}`,'ADVENT').then(ok=>{if(ok){S.shared=true;paint();}});}; }
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

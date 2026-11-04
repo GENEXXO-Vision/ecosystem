@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dinner Timer</title>
+<style>
+/* Dinner Timer, by "Roast & Ready" (fictional), 2026-11-04. A GENEXXO app for ChristmasXX.
+   Works back from the time you want to eat. Timings are a home-cooking guide, not a food-safety tool:
+   the app says to check the turkey reaches 75°C. */
+:root{--bg:#0E1712;--card:#16241B;--line:rgba(233,196,106,.16);--ink:#F3EBDD;--mut:rgba(243,235,221,.58);--red:#C62F3A;--gold:#E9C46A;--green:#4ADE80}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#2F7A4E,#14532D);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--gold)}
+.row{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px}
+.row b{font-size:14.5px}.row small{display:block;color:var(--mut);font-size:12px}
+.step{display:flex;align-items:center;gap:8px}.step button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--ink);font-size:17px;font-weight:800;cursor:pointer}.step span{min-width:58px;text-align:center;font-weight:900;font-size:16px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:4px 0 8px}.chip{font-size:12.5px;font-weight:800;border:1px solid var(--line);border-radius:99px;padding:7px 12px;color:var(--mut);cursor:pointer}.chip.on{background:rgba(233,196,106,.16);color:var(--gold);border-color:transparent}
+.tl{position:relative;padding-left:76px}.tl:before{content:"";position:absolute;left:59px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.ev{position:relative;margin-bottom:10px}.ev time{position:absolute;left:-76px;top:1px;width:48px;text-align:right;font-weight:900;color:var(--gold);font-size:13.5px}
+ .ev:before{content:"";position:absolute;left:-21px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px var(--bg)}
+.ev.eat:before{background:var(--green)}.ev b{display:block}.ev small{color:var(--mut);font-size:12.5px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--gold);color:#0E1712;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">⏲️</div><div><h1>Dinner Timer</h1><p>Roast & Ready · in ChristmasXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="plan" class="on">Plan</button><button data-tab="sched">Schedule</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const ITEMS={turkey:'Turkey',potatoes:'Roast potatoes',parsnips:'Parsnips',pigs:'Pigs in blankets',stuffing:'Stuffing',sprouts:'Sprouts',carrots:'Carrots',gravy:'Gravy'};
+let C,S={tab:'plan',shared:false};
+GX.init({gateway:'ChristmasXX',seed:()=>({eat:15*60,kg:5,on:Object.keys(ITEMS)})}).then(c=>{C=c;paint();});
+const hm=m=>{m=((m%1440)+1440)%1440;return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');};
+const has=k=>C.data.on.includes(k);
+function plan(){ const T=C.data.eat, ev=[], kg=C.data.kg, cook=Math.round(20*kg+90), rest=45;
+  if(has('turkey')){ ev.push([T-rest-cook-60,'Turkey out of the fridge','An hour at room temperature cooks more evenly.']);
+    ev.push([T-rest-cook,`Turkey in · ${kg} kg`,`190°C (170°C fan) for about ${Math.floor(cook/60)} h ${cook%60} min. Baste every 45 minutes.`]);
+    ev.push([T-rest,'Turkey out to rest','Cover with foil and two tea towels. Check it has reached 75°C at the thickest part.']); }
+  if(has('potatoes')){ ev.push([T-75,'Parboil the potatoes','10 minutes, drain, rough up the edges in the pan.']); ev.push([T-60,'Potatoes into hot fat','220°C (200°C fan) once the turkey is out. Turn halfway.']); }
+  if(has('stuffing')) ev.push([T-35,'Stuffing in','Balls or a tray, 35 minutes.']);
+  if(has('parsnips')) ev.push([T-40,'Parsnips in','Honey and thyme, 40 minutes.']);
+  if(has('pigs')) ev.push([T-30,'Pigs in blankets in','30 minutes, turn once.']);
+  if(has('gravy')) ev.push([T-20,'Make the gravy','Use the turkey juices while it rests.']);
+  if(has('carrots')) ev.push([T-15,'Carrots on','Boil or steam, 15 minutes.']);
+  if(has('sprouts')) ev.push([T-12,'Sprouts on','Boil 6 minutes, then fry with bacon or chestnuts.']);
+  ev.push([T-10,'Warm the plates & carve','Everyone to the table in ten.']); ev.push([T,'Dinner is served 🎄','Pull the crackers.']);
+  return ev.sort((a,b)=>a[0]-b[0]); }
+function vPlan(){ return `<div class="row"><div><b>Eat at</b><small>When everyone sits down</small></div><div class="step"><button data-d="eat:-30">–</button><span>${hm(C.data.eat)}</span><button data-d="eat:30">+</button></div></div>
+  ${has('turkey')?`<div class="row"><div><b>Turkey size</b><small>Feeds about ${Math.round(C.data.kg*1.8)}</small></div><div class="step"><button data-d="kg:-0.5">–</button><span>${C.data.kg} kg</span><button data-d="kg:0.5">+</button></div></div>`:''}
+  <div class="legend" style="text-align:left;margin:12px 0 6px">On the table</div>
+  <div class="chips">${Object.entries(ITEMS).map(([k,l])=>`<span class="chip ${has(k)?'on':''}" data-k="${k}">${l}</span>`).join('')}</div>
+  <button class="go" id="mk">Build my schedule</button>`; }
+function vSched(){ const ev=plan(), first=ev[0];
+  return `<div class="legend" style="margin:0 0 12px">Start at <b style="color:var(--gold)">${hm(first[0])}</b> to eat at ${hm(C.data.eat)}.</div>
+  <div class="tl">${ev.map(e=>`<div class="ev ${e[0]===C.data.eat?'eat':''}"><time>${hm(e[0])}</time><b>${e[1]}</b><small>${e[2]}</small></div>`).join('')}</div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my plan to ${C.gateway}`}</button>`:''}
+  <div class="legend">A home-cooking guide. Always check the turkey reaches 75°C.</div>`; }
+function paint(){ document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'); v.innerHTML=S.tab==='plan'?vPlan():vSched();
+  v.querySelectorAll('[data-d]').forEach(e=>e.onclick=()=>{const [k,d]=e.dataset.d.split(':');let x=C.data[k]+(+d);
+    if(k==='kg')x=Math.min(9,Math.max(2,x)); if(k==='eat')x=Math.min(20*60,Math.max(11*60,x)); C.data[k]=x;GX.save(C.data);paint();});
+  v.querySelectorAll('[data-k]').forEach(e=>e.onclick=()=>{const a=C.data.on,k=e.dataset.k,i=a.indexOf(k);i>=0?a.splice(i,1):a.push(k);GX.save(C.data);paint();});
+  const mk=document.getElementById('mk'); if(mk) mk.onclick=()=>{S.tab='sched';paint();};
+  const sh=document.getElementById('share'); if(sh) sh.onclick=()=>{const ev=plan();
+    GX.post(`Christmas dinner at <b>${hm(C.data.eat)}</b>. Turkey in at ${hm(ev.find(e=>e[1].startsWith('Turkey in'))?.[0]??ev[0][0])}, and the whole plan is in Dinner Timer. Wish me luck 🦃`,'DINNER TIMER').then(ok=>{if(ok){S.shared=true;paint();}});}; }
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

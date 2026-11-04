@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Gift Planner</title>
+<style>
+/* Gift Planner, by "Ribbon & Co" (fictional), 2026-11-04. A GENEXXO app for ChristmasXX.
+   One list: who, the idea, the budget, bought, wrapped. A running total against the overall budget. */
+:root{--bg:#0E1712;--card:#16241B;--line:rgba(233,196,106,.16);--ink:#F3EBDD;--mut:rgba(243,235,221,.58);--red:#C62F3A;--gold:#E9C46A;--green:#4ADE80}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--gold),#B7791F);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--gold)}
+.tot{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.tot div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px;text-align:center}.tot b{display:block;font-size:19px;font-weight:900}.tot span{font-size:10.5px;color:var(--mut);font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.bar{height:8px;border-radius:99px;background:var(--card);overflow:hidden;margin:-4px 0 14px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--red))}
+.p{display:flex;align-items:center;gap:11px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin-bottom:7px}
+.av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;background:linear-gradient(135deg,var(--red),#7A1220);flex-shrink:0}
+.p .m{flex:1;min-width:0}.p b{display:block}.p small{color:var(--mut);font-size:12px}
+.st{font-size:11px;font-weight:800;border-radius:99px;padding:5px 10px;border:1px solid var(--line);color:var(--mut);cursor:pointer;white-space:nowrap}
+.st.bought{background:rgba(233,196,106,.16);color:var(--gold);border-color:transparent}.st.wrapped{background:rgba(74,222,128,.14);color:var(--green);border-color:transparent}
+.add{display:grid;grid-template-columns:1fr 1fr 80px;gap:6px;margin-top:10px}
+.add input{font:inherit;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;color:var(--ink);min-width:0}
+.go{width:100%;margin-top:8px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--gold);color:#0E1712;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.idea{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:7px}.idea small{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--gold)}.idea b{display:block;margin:2px 0}.idea p{color:var(--mut);font-size:12.5px}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🎁</div><div><h1>Gift Planner</h1><p>Ribbon & Co · in ChristmasXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="list" class="on">My list</button><button data-tab="ideas">Ideas</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const SEED=()=>({budget:450,people:[
+  {n:'Mum',idea:'Kindle & Co Fireside candle',b:34,s:'bought'},
+  {n:'Dad',idea:'Fairisle & Frost cable scarf',b:39,s:'wrapped'},
+  {n:'Ellie',idea:'Gingerbread house workshop',b:65,s:'idea'},
+  {n:'Grandpa',idea:'Hollyhock Cheese & Port',b:65,s:'bought'},
+  {n:'Sam',idea:'Northpine Midnight Gold set',b:58,s:'idea'}]});
+const IDEAS=[['Under £25','Advent Candle','Kindle & Co · burn one day at a time to Christmas Eve.'],['Under £25','Mulled Wine Kit','Hollyhock Hampers · makes eight glasses.'],['Under £50','Nordic Mittens + Cable Scarf','Fairisle & Frost · the market-night pair.'],['Under £50','Hand-painted Robin + Paper chains','Northpine Ornaments · for the tree and the kids.'],['Experience','Wreath-making evening','Holly & Hazel Wreaths · mulled wine included.'],['Experience','The Christmas Cake class','Clementine Bake School · take the cake home.']];
+const NEXT={idea:'bought',bought:'wrapped',wrapped:'idea'}, LABEL={idea:'Idea',bought:'Bought ✓',wrapped:'Wrapped 🎀'};
+let C,S={tab:'list',shared:false};
+GX.init({gateway:'ChristmasXX',seed:SEED}).then(c=>{C=c;paint();});
+const sum=f=>C.data.people.filter(f).reduce((a,p)=>a+(+p.b||0),0);
+function vList(){ const P=C.data.people, spent=sum(p=>p.s!=='idea'), plan=sum(()=>true), wrapped=P.filter(p=>p.s==='wrapped').length;
+  return `<div class="tot"><div><b>£${spent}</b><span>Bought</span></div><div><b>£${plan}</b><span>Planned</span></div><div><b>£${C.data.budget}</b><span>Budget</span></div></div>
+  <div class="bar"><i style="width:${Math.min(100,Math.round(plan/C.data.budget*100))}%"></i></div>
+  ${P.map((p,i)=>`<div class="p"><div class="av">${GX.esc(p.n.slice(0,2).toUpperCase())}</div><div class="m"><b>${GX.esc(p.n)}</b><small>${GX.esc(p.idea)} · £${+p.b||0}</small></div><span class="st ${p.s}" data-i="${i}">${LABEL[p.s]}</span></div>`).join('')}
+  <div class="add"><input id="an" placeholder="Who"><input id="ai" placeholder="Gift idea"><input id="ab" placeholder="£" inputmode="numeric"></div>
+  <button class="go" id="addb">Add to my list</button>
+  ${GX.can('feed')&&wrapped===P.length&&P.length?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Tell ${C.gateway}: all wrapped! 🎀`}</button>`:''}
+  <div class="legend">Tap a status to move it on: idea → bought → wrapped.</div>`; }
+function vIdeas(){ return IDEAS.map(i=>`<div class="idea"><small>${i[0].toUpperCase()}</small><b>${i[1]}</b><p>${i[2]}</p></div>`).join('')+`<div class="legend">From the ChristmasXX Gift Guide.</div>`; }
+function paint(){ document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'); v.innerHTML=S.tab==='list'?vList():vIdeas();
+  v.querySelectorAll('[data-i]').forEach(e=>e.onclick=()=>{const p=C.data.people[+e.dataset.i];p.s=NEXT[p.s];GX.save(C.data);paint();});
+  const ab=document.getElementById('addb'); if(ab) ab.onclick=()=>{const n=document.getElementById('an').value.trim(); if(!n) return;
+    C.data.people.push({n,idea:document.getElementById('ai').value.trim()||'Idea to come',b:+document.getElementById('ab').value||0,s:'idea'});GX.save(C.data);paint();};
+  const sh=document.getElementById('share'); if(sh) sh.onclick=()=>GX.post(`Every present bought and wrapped for ${C.data.people.length} people 🎀 Feet up until Christmas.`,'GIFT PLANNER').then(ok=>{if(ok){S.shared=true;paint();}}); }
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
