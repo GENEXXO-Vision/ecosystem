@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#070708">
+<title>The Host — GENEXXO</title>
+<meta name="description" content="How an AI company keeps the seat it holds today and gains a complete ecosystem directly behind it.">
+<!-- seo -->
+<link rel="canonical" href="https://www.genexxovision.com/the-host.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GENEXXO">
+<meta property="og:title" content="The Host — GENEXXO">
+<meta property="og:description" content="How an AI company keeps the seat it holds today and gains a complete ecosystem directly behind it.">
+<meta property="og:url" content="https://www.genexxovision.com/the-host.html">
+<meta property="og:image" content="https://www.genexxovision.com/img/og-genexxo.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<!-- /seo -->
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css?v=3dbae8c8">
+<style>
+/* The Host (added 2026-11-12): this page's own pieces. Everything shared (tokens, top bar, buttons, hero, chapters,
+   dark close, Next, footer) comes from site.css / site.js. */
+.k{font-family:var(--cond);font-weight:700;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.ch-inner{margin-top:40px}
+.note{margin:40px auto 0;font-size:12.5px;line-height:1.7;color:rgba(255,255,255,.4);max-width:720px}
+/* 01 today / with GENEXXO */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:820px){.pair{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:24px 22px}
+.alt .panel,.alt .card,.alt .handoff{background:var(--bg)}
+.panel h3{font-size:21px;font-weight:800;letter-spacing:-.02em;margin:4px 0 20px}
+.mini{display:flex;flex-direction:column;align-items:center}
+.node{padding:9px 16px;border-radius:99px;border:1px solid var(--line);background:#fff;font-size:13.5px;font-weight:700;text-align:center}
+.node.host{background:var(--ink);color:#fff;border-color:var(--ink)}
+.stem{width:2px;height:22px;background:repeating-linear-gradient(180deg,rgba(17,17,22,.25) 0 6px,transparent 6px 12px)}
+.row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.row.out .node{border-style:dashed;border-color:rgba(17,17,22,.25);color:var(--muted);background:transparent;font-weight:600}
+.cap{font-size:14.5px;line-height:1.55;color:var(--soft);margin-top:20px}
+.panel.lit{background:#111116!important;border-color:#111116;color:#fff}
+.panel.lit .k{color:rgba(255,255,255,.5)}
+.panel.lit .cap{color:rgba(255,255,255,.66)}
+.panel.lit .node{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:#fff}
+.panel.lit .node.host{background:#fff;color:var(--ink);border-color:#fff}
+.panel.lit .stem{background:repeating-linear-gradient(180deg,rgba(255,255,255,.4) 0 6px,transparent 6px 12px)}
+.gw{display:inline-flex;align-items:center;padding:7px 13px;border-radius:99px;color:#fff;font-weight:800;font-size:13px;background:var(--g)}
+/* 03 the stack */
+.stage{background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 40px 80px -50px rgba(17,17,22,.35)}
+.stage-top{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:99px;padding:3px;background:var(--bg)}
+.seg button{border:0;background:transparent;color:var(--muted);font:700 13px var(--font);padding:8px 16px;border-radius:99px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.hostpick{display:flex;align-items:center;gap:10px;font-family:var(--cond);font-weight:700;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.hostpick select{background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:8px 14px;font:700 13px var(--font);letter-spacing:0;text-transform:none}
+.asks{display:flex;flex-wrap:wrap;gap:8px;padding:14px 20px;border-bottom:1px solid var(--line);background:var(--bg)}
+.ask{border:1px solid var(--line);background:#fff;color:var(--ink);font:700 13.5px var(--font);padding:9px 15px;border-radius:99px;cursor:pointer;text-align:left}
+.ask:hover{border-color:rgba(17,17,22,.2)}
+.ask[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.stage-main{display:grid;grid-template-columns:1.25fr 1fr}
+@media (max-width:900px){.stage-main{grid-template-columns:1fr}}
+.tiers{padding:8px 20px;display:flex;flex-direction:column;border-right:1px solid var(--line)}
+@media (max-width:900px){.tiers{border-right:0;border-bottom:1px solid var(--line)}}
+.tier{display:grid;grid-template-columns:116px 1fr;gap:16px;align-items:center;padding:16px 0;transition:opacity .25s}
+.tier + .tier{border-top:1px dashed rgba(17,17,22,.14)}
+@media (max-width:480px){.tier{grid-template-columns:1fr;gap:8px}}
+.tier-label{font-family:var(--cond);font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);line-height:1.35}
+.tier-label b{display:block;color:var(--ink);font-weight:700;font-size:13.5px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:99px;border:1px solid var(--line);background:var(--bg);font-size:13px;font-weight:700;color:var(--muted);transition:all .25s}
+.chip.on{color:#fff;border-color:transparent;background:var(--g,#111116);box-shadow:0 8px 18px -10px rgba(17,17,22,.5)}
+.chip.hostchip{background:#111116;color:#fff;border-color:#111116;font-weight:800;font-size:14.5px;padding:9px 18px 9px 12px}
+.chip.hostchip .gx-mono{width:18px;height:18px}
+.chip.say{background:#fff;color:var(--ink);font-weight:600;font-style:italic}
+.chip.ext{border-style:dashed;border-color:rgba(17,17,22,.2);background:transparent;font-weight:600}
+.chip.ext.on{color:var(--ink);border-color:var(--ink);background:transparent;box-shadow:none}
+.tier.off{opacity:.25}
+.trail{padding:22px 20px}
+.trail h3{font-size:21px;font-weight:800;letter-spacing:-.02em;margin-top:4px}
+.trail ol{list-style:none;margin-top:18px;display:flex;flex-direction:column;gap:13px;counter-reset:s}
+.trail li{counter-increment:s;display:grid;grid-template-columns:28px 1fr;gap:12px;font-size:14.5px;color:var(--soft);line-height:1.5}
+.trail li::before{content:counter(s);font-family:var(--cond);font-weight:700;font-size:13px;color:#fff;background:#111116;border-radius:50%;width:24px;height:24px;display:grid;place-items:center;margin-top:1px}
+.trail.today li::before{background:transparent;color:var(--muted);border:1px dashed rgba(17,17,22,.3)}
+.trail li b{color:var(--ink);font-weight:800}
+.verdict{margin-top:20px;padding:14px 16px;border-radius:16px;font-size:14.5px;font-weight:700;background:#111116;color:#fff}
+.trail.today .verdict{background:var(--bg);color:var(--ink);border:1px dashed rgba(17,17,22,.3)}
+/* cards */
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+@media (max-width:900px){.grid4,.grid5{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.grid4,.grid5{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:24px 22px}
+.card h3{font-size:21px;font-weight:800;letter-spacing:-.02em;margin-top:4px}
+.card p{font-size:14.5px;line-height:1.55;color:var(--soft);margin-top:8px}
+.card.lit{background:#111116!important;border-color:#111116;color:#fff}
+.card.lit .k{color:rgba(255,255,255,.5)}
+.card.lit p{color:rgba(255,255,255,.66)}
+.handoff{margin-top:12px;padding:18px 22px;background:var(--card);border:1px solid var(--line);border-radius:20px;color:var(--soft);font-size:15.5px;line-height:1.6}
+.handoff strong{color:var(--ink);font-weight:800}
+/* 06 the economics */
+.econ{display:grid;grid-template-columns:1fr 1.25fr;gap:12px}
+@media (max-width:820px){.econ{grid-template-columns:1fr}}
+.lane{background:var(--bg);border:1px solid var(--line);border-radius:22px;padding:24px 22px}
+.lane h3{font-size:21px;font-weight:800;letter-spacing:-.02em;margin-top:4px}
+.lane ul{list-style:none;margin-top:16px;display:flex;flex-direction:column}
+.lane li{padding:12px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:170px 1fr;gap:14px;font-size:14.5px;line-height:1.5}
+@media (max-width:520px){.lane li{grid-template-columns:1fr;gap:2px}}
+.lane li b{font-weight:800}
+.lane li span{color:var(--soft)}
+.lane.lit{background:#111116;border-color:#111116;color:#fff}
+.lane.lit .k{color:rgba(255,255,255,.5)}
+.lane.lit li{border-top-color:rgba(255,255,255,.12)}
+.lane.lit li span,.lane.lit .cap{color:rgba(255,255,255,.66)}
+.grid3e{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+@media (max-width:820px){.grid3e{grid-template-columns:1fr}}
+.ch-inner.grid3e{margin-top:40px}
+.calc{margin-top:40px;background:var(--bg);border:1px solid var(--line);border-radius:24px;overflow:hidden}
+.calc-head{display:flex;flex-wrap:wrap;gap:12px 40px;align-items:flex-end;justify-content:space-between;padding:22px;border-bottom:1px solid var(--line)}
+.calc-head h3{font-size:21px;font-weight:800;letter-spacing:-.02em;margin-top:4px}
+.calc-head p{font-size:14px;line-height:1.55;color:var(--soft);max-width:430px}
+.presets{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:14px 22px;border-bottom:1px solid var(--line);background:#fff}
+.presets .k{margin-right:6px}
+.gmv{margin-top:10px;padding:14px 16px;border-radius:16px;border:1px solid var(--line);font-size:14.5px;font-weight:600;line-height:1.5;color:var(--soft)}
+.gmv b{color:var(--ink);font-weight:800}
+.calc-main{display:grid;grid-template-columns:1fr 1fr}
+@media (max-width:860px){.calc-main{grid-template-columns:1fr}}
+.ctrls{padding:22px;display:flex;flex-direction:column;border-right:1px solid var(--line)}
+@media (max-width:860px){.ctrls{border-right:0;border-bottom:1px solid var(--line)}}
+.ctrls label{display:flex;justify-content:space-between;gap:12px;font-size:14px;font-weight:600;color:var(--soft);margin-top:14px}
+.ctrls label:first-child{margin-top:0}
+.ctrls output{font-family:var(--cond);font-weight:700;font-size:17px;letter-spacing:.02em;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ctrls input[type=range]{width:100%;margin-top:8px;accent-color:#111116;height:22px}
+.res{padding:22px;background:#fff}
+.total{font-family:var(--cond);font-weight:700;font-size:clamp(54px,7vw,84px);line-height:1;letter-spacing:.01em;margin-top:6px;font-variant-numeric:tabular-nums}
+.bars{margin-top:22px;display:flex;flex-direction:column;gap:14px}
+.bar-row{display:grid;grid-template-columns:1fr auto;gap:4px 12px;font-size:14px;font-weight:700}
+.bar-row span:nth-child(2){font-family:var(--cond);font-size:17px;font-variant-numeric:tabular-nums}
+.bar-track{grid-column:1/-1;height:10px;border-radius:99px;background:rgba(17,17,22,.07);overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;background:#111116;transition:width .25s}
+.ref{margin-top:22px;padding:14px 16px;border-radius:16px;background:#111116;color:#fff;font-size:14.5px;font-weight:700;line-height:1.5}
+.calc-note{padding:16px 22px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.7;color:var(--muted)}
+/* 08 maturity */
+.mature{margin-top:12px;background:var(--bg);border:1px solid var(--line);border-radius:22px;padding:24px 22px}
+.stages{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:16px}
+@media (max-width:760px){.stages{grid-template-columns:1fr}}
+.stg b{font-size:21px;font-weight:800;letter-spacing:-.02em}
+.stg p{font-size:14.5px;line-height:1.55;color:var(--soft);margin-top:10px}
+.mix{height:12px;border-radius:99px;margin-top:10px;overflow:hidden;background:repeating-linear-gradient(135deg,rgba(17,17,22,.16) 0 4px,rgba(17,17,22,.05) 4px 8px)}
+.mix i{display:block;height:100%;background:#111116;border-radius:99px}
+.mix-key{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:20px;font-size:12.5px;color:var(--muted)}
+.mix-key span{display:flex;align-items:center;gap:7px}
+.mix-key i{width:18px;height:10px;border-radius:99px}
+.mix-key .in{background:#111116}
+.mix-key .out{background:repeating-linear-gradient(135deg,rgba(17,17,22,.16) 0 4px,rgba(17,17,22,.05) 4px 8px)}
+/* both worlds */
+.faces{display:flex;align-items:center;justify-content:center;margin-top:40px}
+.face{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px 20px;text-align:center;min-width:210px;display:flex;flex-direction:column;gap:2px}
+.face b{font-size:16px;font-weight:800;letter-spacing:-.01em}
+.face span{font-size:13px;color:var(--muted)}
+.face.mid{background:#111116;border-color:#111116;color:#fff;align-items:center;gap:6px}
+.face.mid .gx-dot{background:#fff;color:#111116}
+.face.mid span:last-child{color:rgba(255,255,255,.55)}
+.wire{flex:1;height:2px;min-width:24px;max-width:110px;background:repeating-linear-gradient(90deg,rgba(17,17,22,.25) 0 6px,transparent 6px 12px)}
+@media (max-width:760px){.faces{flex-direction:column}.wire{width:2px;height:24px;flex:none;min-width:0;background:repeating-linear-gradient(180deg,rgba(17,17,22,.25) 0 6px,transparent 6px 12px)}}
+.econ.even{grid-template-columns:1fr 1fr;margin-top:12px}
+@media (max-width:820px){.econ.even{grid-template-columns:1fr}}
+section:not(.alt) .lane:not(.lit){background:#fff}
+/* table */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:22px;background:#fff}
+table{border-collapse:collapse;width:100%;min-width:660px;font-size:15px}
+th,td{text-align:left;padding:16px 20px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5}
+tr:last-child th,tr:last-child td{border-bottom:0}
+thead th{font-family:var(--cond);font-weight:700;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+thead th:last-child{color:var(--ink)}
+tbody th{font-weight:800;width:20%}
+tbody td{color:var(--muted)}
+tbody td:last-child{color:var(--ink);font-weight:600;background:rgba(17,17,22,.025)}
+</style>
+</head>
+<body data-page="host">
+
+<header class="phero">
+  <div class="wm"></div>
+  <div class="wrap">
+    <div class="gold"></div>
+    <div class="eyebrow up">The Acquirer</div>
+    <h1 class="up d1">The Host <span class="soft">With a World Behind It</span></h1>
+    <p class="lede up d2">Thousands of brands need one assistant in front of them. An AI company already holds that seat: the place people go to ask. GENEXXO puts a complete ecosystem directly behind it.</p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="ch rv">
+      <div class="side"><div class="num">01</div><div class="lab">The Seat</div></div>
+      <div class="main">
+        <h2>A front door <span class="soft">with nothing behind it.</span></h2>
+        <div class="prose">
+          <p>Claude, ChatGPT, Gemini and their peers have won the first move. People bring them the question. What happens next is the weak point: the model answers, then hands the person to somebody else's search results, somebody else's marketplace, somebody else's app.</p>
+          <p><strong>The Host starts every journey and owns none of the destinations.</strong></p>
+        </div>
+      </div>
+    </div>
+    <div class="rv ch-inner pair">
+      <div class="panel">
+        <div class="k">Today</div>
+        <h3>The Host points outward</h3>
+        <div class="mini">
+          <div class="node">Person asks</div><div class="stem"></div>
+          <div class="node host">AI Host</div><div class="stem"></div>
+          <div class="row out">
+            <div class="node">Search results</div><div class="node">A marketplace</div><div class="node">An app store</div><div class="node">A social feed</div>
+          </div>
+        </div>
+        <p class="cap">The person leaves. The relationship, the transaction and the learning all happen on platforms the Host does not own.</p>
+      </div>
+      <div class="panel lit">
+        <div class="k">With GENEXXO behind it</div>
+        <h3>The Host leads inward</h3>
+        <div class="mini">
+          <div class="node">Person asks</div><div class="stem"></div>
+          <div class="node host">AI Host</div><div class="stem"></div>
+          <div class="node">GENEXXO Hub</div><div class="stem"></div>
+          <div class="row">
+            <span class="gw" style="--g:linear-gradient(135deg,#6D28D9,#8B5CF6,#A78BFA)">SkiXX</span><span class="gw" style="--g:linear-gradient(135deg,#E85D3A,#FF8C42,#FFB347)">ClimbXX</span><span class="gw" style="--g:linear-gradient(135deg,#0A1628,#0066CC,#00AAFF)">SurfXX</span><span class="gw" style="--g:linear-gradient(135deg,#0F0F0F,#F5C400,#FFD700)">CycleXX</span><span class="gw" style="--g:linear-gradient(135deg,#0A1628,#1B3A6B,#C9A84C)">SailXX</span><span class="node">+ thousands</span>
+          </div>
+        </div>
+        <p class="cap">Same question, same Host. The answer now leads to a branded home for that interest, inside one connected network.</p>
+      </div>
+    </div>
+    <p class="handoff rv"><strong>The seat stays.</strong> The Host keeps its own product, its own name and its own relationship with the user, and still reaches the whole open web. In the GENEXXO design it sits at the centre of the Supernova Hub as <strong>the Supernova Host</strong>, each person's own assistant. The company in the seat can bring its own model or partner with a frontier model provider.</p>
+  </div>
+</section>
+
+<section class="alt" id="stack">
+  <div class="wrap">
+    <div class="ch rv">
+      <div class="side"><div class="num">02</div><div class="lab">The Ecosystem</div></div>
+      <div class="main">
+        <h2>Watch one request <span class="soft">travel.</span></h2>
+        <div class="prose">
+          <p>Pick a request. Switch between today and the Host model to see where the person ends up.</p>
+        </div>
+      </div>
+    </div>
+    <div class="ch-inner rv">
+      <div class="stage">
+        <div class="stage-top">
+          <div class="seg" role="group" aria-label="Mode">
+            <button type="button" id="mode-eco" aria-pressed="true">With the ecosystem</button>
+            <button type="button" id="mode-today" aria-pressed="false">Today</button>
+          </div>
+          <label class="hostpick" for="hostsel">Host seat taken by
+            <select id="hostsel">
+              <option>A frontier AI lab</option>
+              <option>A big tech company</option>
+            </select>
+          </label>
+        </div>
+        <div class="asks" id="asks" role="group" aria-label="Example requests"></div>
+        <div class="stage-main">
+          <div class="tiers" id="tiers"></div>
+          <div class="trail" id="trail" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="ch rv">
+      <div class="side"><div class="num">03</div><div class="lab">The Intelligence</div></div>
+      <div class="main">
+        <h2>One Host. <span class="soft">Specialists at every door.</span></h2>
+        <div class="prose">
+          <p>The Host does not need to be the expert on everything. Intelligence runs at four levels at once, and knowledge moves between them from what communities share openly.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rv ch-inner grid4">
+      <div class="card"><div class="k">Level 1</div><h3>Domain</h3><p>A specialist agent in every gateway. The SkiXX agent is narrow and deep, drawing on verified content from its own community.</p></div>
+      <div class="card"><div class="k">Level 2</div><h3>Category</h3><p>Patterns across related gateways, such as every domain in the health cluster or every mountain sport.</p></div>
+      <div class="card"><div class="k">Level 3</div><h3>Ecosystem</h3><p>Patterns that cross categories entirely. A shift in one sector informs another.</p></div>
+      <div class="card lit"><div class="k">Level 4</div><h3>Personal</h3><p>The Host combines all of it for one person. Users control what they share. Health and finance are private by default.</p></div>
+    </div>
+    <p class="handoff"><strong>Specialists advise. The Host commits.</strong> Specialist agents from different gateways can assemble as a federated swarm around one question, and brand agents answer inside their own zones. Their advice goes up to the Host, the only agent that acts in the person's name. It previews each action and asks before it commits.</p>
+    <p class="handoff"><strong>The flywheel.</strong> The ecosystem produces expert knowledge, the Host learns from it, and a better Host makes the ecosystem more valuable. A standalone model cannot start that loop, because it has no ecosystem of its own.</p>
+  </div>
+</section>
+
+<section class="alt" id="both-worlds">
+  <div class="wrap">
+    <div class="ch rv">
+      <div class="side"><div class="num">04</div><div class="lab">Both Worlds</div></div>
+      <div class="main">
+        <h2>Built for people. <span class="soft">And for agents.</span></h2>
+        <div class="prose">
+          <p>People will keep browsing, shopping, talking and following the news in the things they love. That is their hobby, and nobody hands a hobby to a machine. What they will hand over is the chore: the reorder, the rebooking, the price check, the sourcing.</p>
+          <p>Today's web was built for human eyes, and agents have to scrape their way through it. <strong>An infrastructure built from the ground up can serve both in the same place.</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faces rv" aria-label="One gateway with two faces">
+      <div class="face"><div class="k">For people</div><b>A place to be</b><span>Feed, community, Brand Zones, events</span></div>
+      <div class="wire"></div>
+      <div class="face mid"><span class="gx-dot"><span class="gx-mono"></span></span><b>SkiXX.com</b><span>One gateway, two faces</span></div>
+      <div class="wire"></div>
+      <div class="face"><div class="k">For agents</div><b>A place to act</b><span>Structured, verified, addressable</span></div>
+    </div>
+
+    <div class="econ even rv">
+      <div class="lane">
+        <div class="k">The human world</div>
+        <h3>What people keep for themselves</h3>
+        <ul>
+          <li><b>Feeds and news</b><span>What is happening in the things they care about</span></li>
+          <li><b>Communities</b><span>Clubs, forums and people who share the interest</span></li>
+          <li><b>Browsing and shopping</b><span>Looking around a Brand Zone because it is enjoyable</span></li>
+          <li><b>The real world</b><span>Events, venues, lessons and trips</span></li>
+        </ul>
+      </div>
+      <div class="lane lit">
+        <div class="k">The agentic world</div>
+        <h3>What the gateways give an agent</h3>
+        <ul>
+          <li><b>XX addressing</b><span>One word, one category, one address. A machine knows where skiing lives without searching for it</span></li>
+          <li><b>One structure</b><span>Every gateway is laid out the same way, so an agent that can read one can read ten thousand</span></li>
+          <li><b>Verified sellers</b><span>Authenticated brands, pros and businesses, at one public rate</span></li>
+          <li><b>An open door</b><span>Authenticated agents are welcome, including agents built on other models and agents run by brands</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid3e rv">
+      <div class="card"><div class="k">Delegated</div><h3>The chores</h3><p>Reorder, rebook, compare, source. An agent does it and reports back.</p></div>
+      <div class="card"><div class="k">Shared</div><h3>The plans</h3><p>The agent drafts the ski week. The person chooses the chalet.</p></div>
+      <div class="card"><div class="k">Kept</div><h3>The hobby</h3><p>Reading, watching, talking, wandering through the shop. People do this because they want to.</p></div>
+    </div>
+    <p class="handoff"><strong>Open to every agent. Personal to one Host.</strong> Any authenticated agent can read a gateway and bring a buyer to it. The profile, the wallet and the feed stay with the Supernova Host, the only agent that commits in the person's name.</p>
+    <p class="handoff"><strong>Two worlds, two kinds of revenue.</strong> People bring the attention that feed advertising depends on. People and agents both bring transactions, and every one of them pays the same commission.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="ch rv">
+      <div class="side"><div class="num">05</div><div class="lab">The Gain</div></div>
+      <div class="main">
+        <h2>What the Host <span class="soft">gains.</span></h2>
+      </div>
+    </div>
+    <div class="rv ch-inner tablewrap">
+      <table>
+        <thead><tr><th scope="col">&nbsp;</th><th scope="col">Host alone, today</th><th scope="col">Host with GENEXXO behind it</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Destination</th><td>Sends people to third-party sites and apps</td><td>Thousands of branded homes it can lead people into</td></tr>
+          <tr><th scope="row">Answers</th><td>Drawn from scattered, unverified web content</td><td>Drawn from authenticated communities, verified practitioners and validated brands, plus the open web</td></tr>
+          <tr><th scope="row">Identity</th><td>An account for one chat product</td><td>One profile and one wallet across every gateway</td></tr>
+          <tr><th scope="row">Commerce</th><td>Happens elsewhere, after the person leaves</td><td>Happens in Brand Zones on the network. GENEXXO facilitates and never handles products or shipping</td></tr>
+          <tr><th scope="row">Distribution</th><td>Depends on app stores and other platforms' rules</td><td>Progressive Web App on the open web, reachable by typing a word</td></tr>
+          <tr><th scope="row">Brand</th><td>One name, covering everything</td><td>One name in front, a micro-brand with category authority for every interest</td></tr>
+          <tr><th scope="row">Action</th><td>Advises, then stops at the link</td><td>The single trusted signatory: previews, confirms and completes</td></tr>
+          <tr><th scope="row">Learning</th><td>Static training data, and rarely the outcome</td><td>A flywheel of living expert knowledge across every sector</td></tr>
+          <tr><th scope="row">Defence</th><td>Model quality, which rivals can match</td><td>A namespace no rival can assemble again</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="economics">
+  <div class="wrap">
+    <div class="ch rv">
+      <div class="side"><div class="num">06</div><div class="lab">The Economics</div></div>
+      <div class="main">
+        <h2>A global commerce platform. <span class="soft">Revenue that costs almost nothing to serve.</span></h2>
+        <div class="prose">
+          <p>An organizing layer is designed for scale: every category, consumer and business, online and in the real world. A Host with a billion people already asking has the audience. The ecosystem gives that audience somewhere to gather, book and buy.</p>
+          <p>A standalone model earns from subscriptions and usage, and every answer it gives costs compute. Revenue and cost climb together.</p>
+          <p>An ecosystem adds a second kind of revenue. A feed, a community or a Brand Zone is ordinary web serving. <strong>People browse, join, book and buy without the Host spending a token</strong>, and free users become an asset.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rv ch-inner econ">
+      <div class="lane">
+        <div class="k">Host alone</div>
+        <h3>Earned from answers</h3>
+        <ul>
+          <li><b>Subscriptions</b><span>A flat fee, whatever the usage</span></li>
+          <li><b>API and enterprise seats</b><span>Metered against compute</span></li>
+          <li><b>Ads beside answers</b><span>A few slots, next to the thing people must trust</span></li>
+        </ul>
+        <p class="cap">Every line here rises with compute cost.</p>
+      </div>
+      <div class="lane lit">
+        <div class="k">Added by the ecosystem</div>
+        <h3>Earned from activity</h3>
+        <ul>
+          <li><b>Feed advertising</b><span>Feeds across thousands of gateways, each with declared intent. Ads sit in the feeds and the Host's answers stay clean</span></li>
+          <li><b>Zone subscriptions</b><span>Brands, pros and businesses pay for their place in every gateway</span></li>
+          <li><b>4% commission</b><span>One public rate on sales in Brand Zones. The same for every seller, so the Host gains nothing by favouring one</span></li>
+          <li><b>Real-world bookings</b><span>Lessons, guides, venues and events. Each gateway connects the places where its community meets in person</span></li>
+          <li><b>Business Zones</b><span>The B2B side of every category: makers, suppliers and quotes in one supply chain</span></li>
+          <li><b>Apps and tools</b><span>A share of an open-web marketplace, with no app-store cut paid away</span></li>
+        </ul>
+        <p class="cap">None of these lines needs an answer to be generated.</p>
+      </div>
+    </div>
+
+    <div class="grid3e rv">
+      <div class="card"><div class="k">Social feeds</div><h3>Know who you are</h3><p>Advertising priced on identity and attention.</p></div>
+      <div class="card"><div class="k">Search</div><h3>Knows what you want</h3><p>Advertising priced on intent, one query at a time.</p></div>
+      <div class="card lit"><div class="k">The Host and its ecosystem</div><h3>Knows both, and completes it</h3><p>Identity from one profile, intent from the gateway, and the booking or purchase finished inside the network.</p></div>
+    </div>
+    <p class="handoff"><strong>The intelligence dividend.</strong> Every specialised zone teaches the model something a general web crawl cannot: what verified practitioners say, what people choose, and how it turned out. That raises the value of the Host's core product as well.</p>
+
+    <div class="calc rv" id="calc">
+      <div class="calc-head">
+        <div><div class="k">Illustrative model</div><h3>Set your own assumptions</h3></div>
+        <p>This is arithmetic on the numbers you choose. It is a way to test the shape of the opportunity, and it forecasts nothing.</p>
+      </div>
+      <div class="presets" role="group" aria-label="Scenarios">
+        <span class="k">Start from</span>
+        <button type="button" class="ask" data-p="1,30,300,4,5,600">A foothold</button>
+        <button type="button" class="ask" data-p="3.5,40,400,4,15,1000">Meta's scale</button>
+        <button type="button" class="ask" data-p="3.5,70,800,4,40,1500">Global commerce</button>
+      </div>
+      <div class="calc-main">
+        <div class="ctrls">
+          <label for="c-users"><span>People using the ecosystem daily</span><output id="o-users"></output></label>
+          <input type="range" id="c-users" min="0.1" max="4" step="0.1" value="1">
+          <label for="c-ads"><span>Feed advertising per person, per year</span><output id="o-ads"></output></label>
+          <input type="range" id="c-ads" min="5" max="120" step="5" value="30">
+          <label for="c-spend"><span>Sales through Brand Zones per person, per year</span><output id="o-spend"></output></label>
+          <input type="range" id="c-spend" min="0" max="2000" step="50" value="300">
+          <label for="c-rate"><span>Commission rate</span><output id="o-rate"></output></label>
+          <input type="range" id="c-rate" min="1" max="10" step="0.5" value="4">
+          <label for="c-zones"><span>Paying zones: brands, pros and businesses</span><output id="o-zones"></output></label>
+          <input type="range" id="c-zones" min="0" max="50" step="1" value="5">
+          <label for="c-fee"><span>Average zone subscription, per year</span><output id="o-fee"></output></label>
+          <input type="range" id="c-fee" min="100" max="5000" step="100" value="600">
+        </div>
+        <div class="res" aria-live="polite">
+          <div class="k">Ecosystem revenue per year</div>
+          <div class="total" id="r-total"></div>
+          <div class="bars" id="r-bars"></div>
+          <div class="ref" id="r-ref"></div>
+          <div class="gmv" id="r-gmv"></div>
+        </div>
+      </div>
+      <p class="calc-note">Reference point: Meta reported revenue of $200.97 billion for 2025, almost all of it advertising, with 3.58 billion people using its apps daily. That is about $56 per person. Source: Meta fourth quarter and full year 2025 results. Global online retail is forecast at about $6.9 trillion for 2026 (EMARKETER), a figure that excludes travel, tickets, services and business-to-business trade. The three starting scenarios are examples to show the range. The model leaves out the Host's existing revenue, the cost of building the ecosystem, and any share paid to partners.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="ch rv">
+      <div class="side"><div class="num">07</div><div class="lab">The Frontier</div></div>
+      <div class="main">
+        <h2>A frontier model. <span class="soft">Its own global infrastructure.</span></h2>
+        <div class="prose">
+          <p>The Host seat is built for the companies at the frontier of AI: the labs and technology corporations that already run a leading model and already have the world asking it questions. They bring the intelligence and the audience. GENEXXO brings the canvas, the rails and the namespace.</p>
+          <p><strong>It works from day one, because the Host never gives up the open web.</strong> While the ecosystem is young the model answers as it does today. As gateways fill with communities, brands and experts, more of each journey happens inside the network, and more of the traffic stays there.</p>
+        </div>
+      </div>
+    </div>
+    <div class="rv ch-inner grid3e">
+      <div class="card"><div class="k">The model</div><h3>Already built</h3><p>A frontier model that can reason, research and act. Nothing about it needs to change to take the seat.</p></div>
+      <div class="card"><div class="k">The audience</div><h3>Already asking</h3><p>Hundreds of millions of people who open the assistant first. The ecosystem gives them somewhere to go next.</p></div>
+      <div class="card"><div class="k">The scale</div><h3>Already global</h3><p>Compute, capital and engineering at a level that can activate thousands of gateways across every sector.</p></div>
+    </div>
+    <p class="handoff rv"><strong>What no contender can bring is the namespace.</strong> Models, cloud, capital and talent are available to every serious company in this race. The XX collection exists once: single-word .com domains under one signature, assembled over fifteen years.</p>
+    <div class="mature rv">
+      <div class="k">How the balance shifts as the ecosystem matures</div>
+      <div class="stages">
+        <div class="stg"><b>Young</b><div class="mix"><i style="width:15%"></i></div><p>The Host answers from the whole web. The first gateways add depth in a few sectors.</p></div>
+        <div class="stg"><b>Growing</b><div class="mix"><i style="width:50%"></i></div><p>Communities and Brand Zones fill in. The Host reaches for a gateway whenever one knows more than the web.</p></div>
+        <div class="stg"><b>Mature</b><div class="mix"><i style="width:85%"></i></div><p>The ecosystem is the first place the Host looks. The open web fills the gaps, and most journeys finish inside the network.</p></div>
+      </div>
+      <p class="mix-key"><span><i class="in"></i>Journeys inside the ecosystem</span><span><i class="out"></i>Journeys on the open web</span><span>Proportions are illustrative</span></p>
+    </div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap narrow centre rv">
+    <div class="gold-rule" style="margin:0 auto 28px"></div>
+    <div class="eyebrow">The Host</div>
+    <h2>Same seat. <span class="soft">A world behind it.</span></h2>
+    <div class="prose" style="margin-top:22px"><p>There can only be one organizing layer, and it has room for <strong>one Host.</strong></p></div>
+    <a class="next" href="genexxo-vision-series.html" style="max-width:560px;margin:48px auto 0;text-align:left">
+      <div><div class="k">Next</div><h3>The Vision Series</h3></div>
+      <span class="arr">→</span>
+    </a>
+    <p class="note">Company and product names on this page are examples of the kind of frontier model that could take the Host seat. No partnership, endorsement or commercial relationship with any of them is implied.</p>
+  </div>
+</section>
+
+<script src="site-data.js?v=087991ec"></script>
+<script src="site.js?v=84cf4a30"></script>
+<script>
+(function(){
+  var XX='XX';
+  var TIERS=[
+    {id:'person',label:'Person',sub:'asks'},
+    {id:'host',label:'Supernova Host',sub:'in front'},
+    {id:'hub',label:'Supernova Hub',sub:'behind the Host',items:['Profile','Wallet','Personal feed','Discovery']},
+    {id:'gate',label:'Gateways',sub:'one per word',items:['Ski','Climb','Surf','Cycle','Sail','Flight','Hotel','Restaurant']},
+    {id:'zone',label:'Zones',sub:'inside each gateway',items:['Brand Zones','Pro Zones','Business Zones','Communities','Apps & Tools']}
+  ];
+  var GRAD={Ski:'135deg,#6D28D9,#8B5CF6,#A78BFA',Climb:'135deg,#E85D3A,#FF8C42,#FFB347',Surf:'135deg,#0A1628,#0066CC,#00AAFF',Cycle:'135deg,#0F0F0F,#D9A800,#F5C400',Sail:'135deg,#0A1628,#1B3A6B,#C9A84C',Flight:'135deg,#38BDF8,#2563EB',Hotel:'135deg,#A78BFA,#6D28D9',Restaurant:'135deg,#FB923C,#DC2626'};
+  var EXT=['Search results','A marketplace','An app store','A social feed','A booking site'];
+  var ASKS=[
+    {q:'Plan a ski week in Méribel for four',
+     hub:['Profile','Wallet'],gate:['Ski','Flight','Hotel'],zone:['Pro Zones','Brand Zones','Apps & Tools'],ext:['Search results','A booking site','A marketplace'],
+     eco:[['The Host','understands the trip: four people, one week, Méribel.'],['The Hub','loads the profile. Ability levels and saved card are already known.'],['Ski'+XX+', Flight'+XX+' and Hotel'+XX,'form a federated swarm. Three specialist agents, one trip.'],['Zones respond.','An instructor in a Pro Zone, ski hire in a Brand Zone, a trip mini-app that opens instantly.'],['Back to the Host.','It previews the bookings and asks before it commits. The person never left.']]},
+    {q:'I want to start bouldering. What do I need?',
+     hub:['Profile','Discovery'],gate:['Climb'],zone:['Brand Zones','Communities','Pro Zones'],ext:['Search results','A marketplace','A social feed'],
+     eco:[['The Host','answers the basics and recognises a new interest.'],['The Hub','adds climbing to the profile and the personal feed.'],['Climb'+XX,'takes the handoff with a beginner’s context.'],['Zones respond.','Shoes and chalk in Brand Zones, a local wall’s community, a coach in a Pro Zone.'],['Back to the Host.','A new climber now has a home for the sport, inside the network.']]},
+    {q:'A surf weekend with somewhere good to eat',
+     hub:['Profile','Personal feed'],gate:['Surf','Restaurant'],zone:['Pro Zones','Brand Zones','Communities'],ext:['Search results','A social feed','A booking site'],
+     eco:[['The Host','splits the request in two: the waves and the table.'],['The Hub','brings ability level and food preferences from the profile.'],['Surf'+XX+' and Restaurant'+XX,'work together. One request crosses two sectors.'],['Zones respond.','A surf coach in a Pro Zone, board hire in a Brand Zone, a local tip from the community.'],['Back to the Host.','It combines both answers and asks before it books.']]},
+    {q:'Source a frame builder for a 200-bike order',
+     hub:['Profile','Wallet'],gate:['Cycle'],zone:['Business Zones','Apps & Tools'],ext:['Search results','A marketplace'],
+     eco:[['The Host','recognises a business request, not a consumer one.'],['The Hub','loads the company profile.'],['Cycle'+XX,'takes the handoff on its business side.'],['Zones respond.','Manufacturers in Business Zones answer through their own agents, with tools guiding the order.'],['Back to the Host.','Supply chain and consumer sit in the same gateway.']]}
+  ];
+  var TODAY=[['The Host','gives a good answer in text.'],['It links out','to sites and apps it does not own.'],['The person leaves','and repeats their details on each one.'],['The purchase happens elsewhere.','The Host has no part in it.'],['Nothing comes back.','The Host never learns how the journey ended.']];
+
+  var state={ask:0,mode:'eco'};
+  var tiersEl=document.getElementById('tiers'),trailEl=document.getElementById('trail'),asksEl=document.getElementById('asks'),hostSel=document.getElementById('hostsel');
+
+  ASKS.forEach(function(a,i){
+    var b=document.createElement('button');b.type='button';b.className='ask';b.textContent=a.q;
+    b.addEventListener('click',function(){state.ask=i;render();});
+    asksEl.appendChild(b);
+  });
+
+  function chip(text,cls,g){return '<span class="chip '+(cls||'')+'"'+(g?' style="--g:linear-gradient('+g+')"':'')+'>'+text+'</span>';}
+
+  function render(){
+    var a=ASKS[state.ask],eco=state.mode==='eco',html='';
+    Array.prototype.forEach.call(asksEl.children,function(b,i){b.setAttribute('aria-pressed',i===state.ask?'true':'false');});
+    document.getElementById('mode-eco').setAttribute('aria-pressed',eco?'true':'false');
+    document.getElementById('mode-today').setAttribute('aria-pressed',eco?'false':'true');
+
+    TIERS.forEach(function(t){
+      var body='',off=false;
+      if(t.id==='person'){body=chip('“'+a.q+'”','say');}
+      else if(t.id==='host'){body=chip('<span class="gx-mono"></span>'+hostSel.value+(eco?' as Supernova Host':'\u2019s model, standalone'),'hostchip');}
+      else{
+        off=!eco;
+        body=t.items.map(function(it){
+          var on=eco&&a[t.id].indexOf(it)>-1;
+          return chip(t.id==='gate'?it+XX:it,on?'on':'',on&&t.id==='gate'?GRAD[it]:'');
+        }).join('');
+        if(t.id==='gate'){body+=chip('+ thousands more');}
+      }
+      html+='<div class="tier'+(off?' off':'')+'"><div class="tier-label"><b>'+t.label+'</b>'+t.sub+'</div><div class="chips">'+body+'</div></div>';
+      if(t.id==='host'&&!eco){
+        html+='<div class="tier"><div class="tier-label"><b>Elsewhere</b>not the Host’s</div><div class="chips">'+EXT.map(function(e){return chip(e,'ext'+(a.ext.indexOf(e)>-1?' on':''));}).join('')+'</div></div>';
+      }
+    });
+    tiersEl.innerHTML=html;
+
+    var steps=eco?a.eco:TODAY;
+    trailEl.className='trail'+(eco?'':' today');
+    trailEl.innerHTML='<div class="k">'+(eco?'With the ecosystem':'Today')+'</div><h3 style="margin-top:8px">'+(eco?'The route inward':'The route outward')+'</h3><ol>'+
+      steps.map(function(s){return '<li><span><b>'+s[0]+'</b> '+s[1]+'</span></li>';}).join('')+'</ol>'+
+      '<div class="verdict">'+(eco?'The person stays inside one network, with the Host beside them throughout.':'The Host started the journey and lost it at the first link.')+'</div>';
+  }
+
+  document.getElementById('mode-eco').addEventListener('click',function(){state.mode='eco';render();});
+  document.getElementById('mode-today').addEventListener('click',function(){state.mode='today';render();});
+  hostSel.addEventListener('change',render);
+  render();
+})();
+
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  var META=200.97;
+  function money(b){return b>=100?'$'+Math.round(b)+'B':b>=1?'$'+b.toFixed(1)+'B':'$'+Math.round(b*1000)+'M';}
+  function calc(){
+    var u=+$('c-users').value,a=+$('c-ads').value,sp=+$('c-spend').value,r=+$('c-rate').value,z=+$('c-zones').value,f=+$('c-fee').value;
+    $('o-users').textContent=u.toFixed(1)+' billion';
+    $('o-ads').textContent='$'+a;
+    $('o-spend').textContent='$'+sp.toLocaleString('en-US');
+    $('o-rate').textContent=r+'%';
+    $('o-zones').textContent=z+' million';
+    $('o-fee').textContent='$'+f.toLocaleString('en-US');
+    var rows=[['Feed advertising',u*a],['Commission on sales',u*sp*r/100],['Zone subscriptions',z*f/1000]];
+    var tot=rows[0][1]+rows[1][1]+rows[2][1],mx=Math.max(rows[0][1],rows[1][1],rows[2][1],0.001);
+    $('r-total').textContent=money(tot);
+    $('r-bars').innerHTML=rows.map(function(x){return '<div class="bar-row"><span>'+x[0]+'</span><span>'+money(x[1])+'</span><div class="bar-track"><div class="bar-fill" style="width:'+(x[1]/mx*100).toFixed(1)+'%"></div></div></div>';}).join('');
+    var pct=tot/META*100;
+    var gmv=u*sp/1000;
+    $('r-gmv').innerHTML='Sales through the network: <b>$'+(gmv>=1?gmv.toFixed(1)+' trillion':Math.round(gmv*1000)+' billion')+'</b>, or '+(gmv/6.9*100<1?'under 1':Math.round(gmv/6.9*100))+'% of global online retail.';
+    var key=[u,a,sp,r,z,f].join(',');
+    Array.prototype.forEach.call(document.querySelectorAll('.presets .ask'),function(b){b.setAttribute('aria-pressed',b.getAttribute('data-p')===key?'true':'false');});
+    $('r-ref').textContent=pct>=100?'On these assumptions: '+(pct/100).toFixed(1)+' times Meta\u2019s 2025 revenue.':'On these assumptions: '+Math.round(pct)+'% of Meta\u2019s 2025 revenue.';
+  }
+  ['c-users','c-ads','c-spend','c-rate','c-zones','c-fee'].forEach(function(i){$(i).addEventListener('input',calc);});
+  Array.prototype.forEach.call(document.querySelectorAll('.presets .ask'),function(b){b.addEventListener('click',function(){
+    var v=b.getAttribute('data-p').split(',');['c-users','c-ads','c-spend','c-rate','c-zones','c-fee'].forEach(function(id,i){$(id).value=v[i];});calc();});});
+  calc();
+})();
+</script>
+</body>
+</html>
