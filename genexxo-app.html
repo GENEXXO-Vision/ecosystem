@@ -6,7 +6,20 @@
 <meta name="theme-color" content="#ffffff" id="metaTheme">
 <script>/* home-screen launch (-54): mark it before the first paint and keep the status bar on the launch black */
 if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true){document.documentElement.classList.add('launch');document.getElementById('metaTheme').content='#070708';}</script>
-<title>GENEXXO</title>
+<title>GENEXXO — The Supernova Demo</title>
+<meta name="description" content="Explore the live demo: thousands of XX gateways, one Hub, one Host.">
+<!-- seo -->
+<link rel="canonical" href="https://www.genexxovision.com/genexxo-app.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GENEXXO">
+<meta property="og:title" content="GENEXXO — The Supernova Demo">
+<meta property="og:description" content="Explore the live demo: thousands of XX gateways, one Hub, one Host.">
+<meta property="og:url" content="https://www.genexxovision.com/genexxo-app.html">
+<meta property="og:image" content="https://www.genexxovision.com/img/og-genexxo.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<!-- /seo -->
 <!-- ── PWA · add-to-home-screen launches full-screen (standalone). Icons + manifest.json live at the deploy root. ── -->
 <!-- genexxo.webmanifest (2026-10-17, -52): a NEW file with an "id", so Chrome/Android install a fresh app identity and cannot reuse
      the old icon they remember for the old one. manifest.json stays (same content, no id) for anything that still points at it. -->
@@ -1769,8 +1782,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-78"></script>
-<script src="genexxo-core.js?v=2026.08.26-78"></script>
+<script src="genexxo-data.js?v=2026.08.26-79"></script>
+<script src="genexxo-core.js?v=2026.08.26-79"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -2670,7 +2683,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-78';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-79';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -8681,7 +8694,7 @@ function render(){
   else if (state.screen==='zone') html = renderZonePage();
   else if (state.screen==='sector') html = renderSector();
   else {
-    document.title = 'GENEXXO'; $('metaTheme').content = '#ffffff';
+    document.title = 'GENEXXO — The Supernova Demo'; $('metaTheme').content = '#ffffff';
     html = {home:renderHome, discover:renderForYou, search:renderDiscover, ai:renderAI, events:renderEvents, profile:renderProfile}[state.tab]();
   }
   // Kill the OUTGOING page's in-flight video downloads BEFORE replacing it (2026-08-04).
