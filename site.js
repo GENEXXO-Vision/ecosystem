@@ -17,7 +17,8 @@ const PAGES=[
   ['collection','collection.html','The Collection','The Collection'],
   ['gallery','domain-gallery.html','Domain Gallery','Gallery'],
   ['layer','ultimate-asset.html','One Organizing Layer','One Layer'],
-  ['edge','the-edge.html','The Winning Edge','The Edge'],
+  ['edge','the-edge.html','The Edge That Wins','The Edge'],
+  ['host','the-host.html','The Host','The Host'],
   ['series','genexxo-vision-series.html','Vision Series','Vision Series'],
   ['about','about.html','About Us','About'],
 ];
