@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Match Finder</title>
+<style>
+/* Match Finder, by "Cuarto Labs" (fictional), 2026-11-14. A GENEXXO app for PadelXX.
+   Open games near you, matched to your level (1.0 to 7.0). Games are generated per day from a seeded PRNG,
+   so the list changes daily but holds steady within a day. Clubs are fictional; areas are real. */
+:root{--bg:#08162E;--card:#0F2347;--line:rgba(198,244,50,.15);--ink:#EEF3FF;--mut:rgba(238,243,255,.58);--lime:#C6F432;--blue:#2F8CFF;--teal:#14B8A6}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#C6F432,#6E9A0C);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--lime)}
+.me{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(47,140,255,.22),rgba(198,244,50,.10));border:1px solid var(--line);border-radius:14px;padding:11px 13px;margin-bottom:10px}
+.me b{font-size:20px;font-weight:900;color:var(--lime)}.me small{color:var(--mut);font-size:12px;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 10px}.chip{font-size:12.5px;font-weight:800;border:1px solid var(--line);border-radius:99px;padding:7px 12px;color:var(--mut);cursor:pointer}.chip.on{background:rgba(198,244,50,.15);color:var(--lime);border-color:transparent}
+.gm{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:9px}
+.gm .t{display:flex;justify-content:space-between;align-items:baseline}.gm .t b{font-size:16px}.gm .t span{font-weight:900;color:var(--lime);font-size:13px}
+.gm .w{color:var(--mut);font-size:12.5px;font-weight:600;margin-top:2px}
+.gm .b{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+.pl{display:flex;gap:5px}.pl i{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:11px;font-weight:900;background:rgba(47,140,255,.25);color:#BFD8FF}
+.pl i.e{background:none;border:1.5px dashed var(--mut);color:var(--mut)}.pl i.y{background:var(--lime);color:#08162E}
+.tag{font-size:10.5px;font-weight:900;border-radius:99px;padding:3px 8px;margin-left:6px;vertical-align:2px}.tag.fit{background:rgba(198,244,50,.15);color:var(--lime)}.tag.stretch{background:rgba(47,140,255,.18);color:#9CC6FF}
+.join{font:inherit;font-weight:900;font-size:13px;border:0;border-radius:99px;padding:9px 16px;background:var(--lime);color:#08162E;cursor:pointer}.join.in{background:rgba(198,244,50,.15);color:var(--lime)}
+.row{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin-bottom:8px}
+.row b{font-size:14.5px}.row small{display:block;color:var(--mut);font-size:12px}
+.step{display:flex;align-items:center;gap:8px}.step button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--ink);font-size:17px;font-weight:800;cursor:pointer}.step span{min-width:62px;text-align:center;font-weight:900;font-size:15px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--lime);color:#08162E;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.empty{text-align:center;color:var(--mut);padding:26px 10px;font-weight:600}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🎾</div><div><h1>Match Finder</h1><p>Cuarto Labs · in PadelXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="find" class="on">Find a game</button><button data-tab="post">Post a game</button><button data-tab="mine">My games</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const CLUBS=[['Glasshouse Canary Wharf','London E14'],['Trafford Padel Hub','Manchester'],['Ancoats Court Club','Manchester'],['Glasshouse Leeds','Leeds'],['Harbourside Padel','Bristol'],['Northern Glass Padel','Salford']];
+const NAMES=['JM','SR','AK','LT','PB','RD','CF','NW','EH','OG','MV','TS','KL','BA','HZ','DP'];
+const seed=()=>({level:3.4,mine:[],posted:[]});
+let C,S={tab:'find',filter:'fit',shared:{},p:{club:1,time:19*60,lo:3,hi:3.5}};
+GX.init({gateway:'PadelXX',seed}).then(c=>{C=c;paint();});
+const hm=m=>String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
+function games(){const r=GX.rng('match-finder-'+GX.iso()),out=[];
+  for(let i=0;i<9;i++){const day=Math.floor(i/3),lo=Math.round((1.5+r()*4)*2)/2,c=CLUBS[Math.floor(r()*CLUBS.length)],n=1+Math.floor(r()*3);
+    out.push({id:'g'+GX.iso()+i,day,time:(7+Math.floor(r()*15))*60+(r()>.5?30:0),club:c[0],area:c[1],lo,hi:lo+.5,type:['Mixed','Men’s','Women’s','Open'][Math.floor(r()*4)],price:[6,7,8,9,12][Math.floor(r()*5)],players:Array.from({length:n},(_,k)=>NAMES[(i*3+k)%NAMES.length])});}
+  return out.concat(C.data.posted).sort((a,b)=>a.day-b.day||a.time-b.time);}
+const fit=g=>{const L=C.data.level;return L>=g.lo-.25&&L<=g.hi+.25?'fit':L>=g.lo-.75&&L<=g.hi+.75?'stretch':'';};
+const joined=g=>C.data.mine.includes(g.id);
+const dayLbl=d=>d===0?'Today':d===1?'Tomorrow':GX.day(GX.today(d),{weekday:'long'});
+function card(g){const j=joined(g),f=fit(g),pl=g.players.concat(j?['YOU']:[]);
+  return `<div class="gm"><div class="t"><b>${dayLbl(g.day)} · ${hm(g.time)}</b><span>£${g.price} pp</span></div>
+  <div class="w">${GX.esc(g.club)} · ${GX.esc(g.area)}</div>
+  <div class="w">Level ${g.lo.toFixed(1)}–${g.hi.toFixed(1)} · ${g.type}${f?`<span class="tag ${f}">${f==='fit'?'Your level':'A stretch'}</span>`:''}</div>
+  <div class="b"><div class="pl">${[0,1,2,3].map(k=>pl[k]?`<i class="${pl[k]==='YOU'?'y':''}">${pl[k]==='YOU'?'You':pl[k]}</i>`:'<i class="e">+</i>').join('')}</div>
+  ${g.own?'<span class="tag fit">Your game</span>':pl.length>=4&&!j?'<span class="w">Full</span>':`<button class="join ${j?'in':''}" data-j="${g.id}">${j?'✓ You’re in':'Join'}</button>`}</div>
+  ${j&&GX.can('feed')?`<button class="go" style="margin-top:10px;padding:9px" data-s="${g.id}" ${S.shared[g.id]?'disabled':''}>${S.shared[g.id]?`✓ Shared to ${C.gateway}`:'Share this game'}</button>`:''}</div>`;}
+function vFind(){const gs=games().filter(g=>S.filter==='all'||(S.filter==='fit'?fit(g)==='fit':fit(g)));
+  return `<div class="me"><div><small>Your level</small><br><b>${C.data.level.toFixed(1)}</b></div><div class="step"><button data-l="-0.1">–</button><button data-l="0.1">+</button></div></div>
+  <div class="chips">${[['fit','My level'],['near','My level ± 0.5'],['all','All games']].map(([k,l])=>`<span class="chip ${S.filter===k?'on':''}" data-f="${k}">${l}</span>`).join('')}</div>
+  ${gs.length?gs.map(card).join(''):'<div class="empty">No open games at your level right now. Post one and let players find you.</div>'}`;}
+function vPost(){const p=S.p;return `<div class="row"><div><b>Club</b><small>${GX.esc(CLUBS[p.club][1])}</small></div><div class="step"><button data-pp="club:-1">‹</button><span style="min-width:150px;font-size:13px">${GX.esc(CLUBS[p.club][0])}</span><button data-pp="club:1">›</button></div></div>
+  <div class="row"><div><b>Time</b><small>Tomorrow</small></div><div class="step"><button data-pp="time:-30">–</button><span>${hm(p.time)}</span><button data-pp="time:30">+</button></div></div>
+  <div class="row"><div><b>Level</b><small>Who should join</small></div><div class="step"><button data-pp="lo:-0.5">–</button><span>${p.lo.toFixed(1)}–${p.hi.toFixed(1)}</span><button data-pp="lo:0.5">+</button></div></div>
+  <button class="go" id="post">Post game · looking for 3</button><div class="legend">Players at your level see it first.</div>`;}
+function vMine(){const gs=games().filter(g=>joined(g)||g.own);return gs.length?gs.map(card).join(''):'<div class="empty">No games yet. Join one from Find a game.</div>';}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='find'?vFind():S.tab==='post'?vPost():vMine();
+  v.querySelectorAll('[data-f]').forEach(e=>e.onclick=()=>{S.filter=e.dataset.f;paint();});
+  v.querySelectorAll('[data-l]').forEach(e=>e.onclick=()=>{C.data.level=Math.min(7,Math.max(1,Math.round((C.data.level+(+e.dataset.l))*10)/10));GX.save(C.data);paint();});
+  v.querySelectorAll('[data-j]').forEach(e=>e.onclick=()=>{const id=e.dataset.j,m=C.data.mine,i=m.indexOf(id);i>=0?m.splice(i,1):m.push(id);GX.save(C.data);paint();});
+  v.querySelectorAll('[data-pp]').forEach(e=>e.onclick=()=>{const [k,d]=e.dataset.pp.split(':'),p=S.p;
+    if(k==='club')p.club=(p.club+(+d)+CLUBS.length)%CLUBS.length; if(k==='time')p.time=Math.min(22*60,Math.max(7*60,p.time+(+d)));
+    if(k==='lo'){p.lo=Math.min(6.5,Math.max(1,p.lo+(+d)));p.hi=p.lo+.5;} paint();});
+  const po=document.getElementById('post');if(po)po.onclick=()=>{const p=S.p,c=CLUBS[p.club];C.data.posted.push({id:'p'+Date.now(),day:1,time:p.time,club:c[0],area:c[1],lo:p.lo,hi:p.hi,type:'Open',price:8,players:[],own:true});
+    GX.save(C.data);S.tab='mine';paint();};
+  v.querySelectorAll('[data-s]').forEach(e=>e.onclick=()=>{const g=games().find(x=>x.id===e.dataset.s);if(!g)return;
+    GX.post(`Playing padel ${dayLbl(g.day).toLowerCase()} at <b>${hm(g.time)}</b>, ${GX.esc(g.club)}. Level ${g.lo.toFixed(1)}–${g.hi.toFixed(1)}. Found my fourth on Match Finder 🎾`,'MATCH FINDER').then(ok=>{if(ok){S.shared[g.id]=true;paint();}});});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

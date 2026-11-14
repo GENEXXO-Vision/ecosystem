@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Padel Score</title>
+<style>
+/* Padel Score, by "Punto de Oro" (fictional), 2026-11-14. A GENEXXO app for PadelXX.
+   Padel scoring: 15-30-40, golden point (deciding point at deuce) or advantage, games to 6 by two,
+   a 7-point tie-break at 6-6, best of three sets. Serve alternates between the pairs each game. */
+:root{--bg:#08162E;--card:#0F2347;--line:rgba(198,244,50,.15);--ink:#EEF3FF;--mut:rgba(238,243,255,.58);--lime:#C6F432;--blue:#2F8CFF}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#2F6FED,#123A7A);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--blue)}
+.sb{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.tm{display:grid;grid-template-columns:1fr repeat(3,30px) 64px;align-items:center;gap:4px;padding:13px 14px}
+.tm+.tm{border-top:1px solid var(--line)}.tm b{font-size:15px}.tm .srv:after{content:" ●";color:var(--lime);font-size:10px;vertical-align:2px}
+.tm .s{text-align:center;font-weight:800;color:var(--mut);font-variant-numeric:tabular-nums}.tm .s.c{color:var(--ink)}
+.tm .pt{text-align:center;font-weight:900;font-size:24px;background:rgba(47,140,255,.18);border-radius:10px;padding:4px 0;font-variant-numeric:tabular-nums}
+.call{text-align:center;font-weight:900;color:var(--lime);font-size:13px;letter-spacing:.06em;padding:8px;background:rgba(198,244,50,.08);min-height:34px}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.btns button{font:inherit;font-weight:900;font-size:15px;border:0;border-radius:18px;padding:22px 8px;cursor:pointer;color:#08162E}
+.btns .a{background:var(--lime)}.btns .b{background:var(--blue);color:#fff}.btns button:active{transform:scale(.98)}
+.row2{display:flex;gap:8px;margin-top:8px}.row2 button{flex:1;font:inherit;font-weight:800;font-size:13px;border:1px solid var(--line);border-radius:99px;padding:10px;background:none;color:var(--ink);cursor:pointer}.row2 button:disabled{opacity:.4}
+.row{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px}
+.row b{font-size:14.5px}.row small{display:block;color:var(--mut);font-size:12px}
+.tog{display:flex;border:1px solid var(--line);border-radius:99px;overflow:hidden}.tog span{font-size:12.5px;font-weight:800;padding:7px 12px;color:var(--mut);cursor:pointer}.tog span.on{background:rgba(198,244,50,.15);color:var(--lime)}
+input{font:inherit;font-weight:800;background:transparent;border:0;border-bottom:1px solid var(--line);color:var(--ink);padding:4px 0;width:150px;text-align:right}
+.final{text-align:center;padding:20px 12px}.final .tag{display:inline-block;font-size:11px;font-weight:900;letter-spacing:.08em;color:var(--lime);border:1px solid var(--line);border-radius:99px;padding:4px 10px}
+.final h2{font-size:22px;margin:12px 0 4px}.final p{color:var(--mut);font-size:13px}.final .sets{font-size:26px;font-weight:900;margin-top:8px;letter-spacing:.04em}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--lime);color:#08162E;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🏆</div><div><h1>Padel Score</h1><p>Punto de Oro · in PadelXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="match" class="on">Match</button><button data-tab="setup">Setup</button><button data-tab="final">Final</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const seed=()=>({names:['Bella & Gus','Kim & Pete'],golden:true,sets:[[6,4],[3,5]],cur:1,games:[3,5],pts:[2,1],tb:false,srv:0,over:false,win:null});
+let C,S={tab:'match',shared:false},hist=[];
+GX.init({gateway:'PadelXX',seed}).then(c=>{C=c;sync();paint();});
+const M=()=>C.data;
+function sync(){const m=M();if(!m.sets[m.cur])m.sets[m.cur]=[0,0];m.games=m.sets[m.cur];}
+const PT=['0','15','30','40'];
+function ptLabel(t){const m=M(),a=m.pts[t],b=m.pts[1-t];if(m.tb)return String(a);if(a>=3&&b>=3){if(m.golden)return '40';return a>b?'AD':a<b?'':'40';}return PT[Math.min(a,3)];}
+function call(){const m=M();if(m.over)return 'GAME, SET AND MATCH';if(m.tb)return 'TIE-BREAK';const [a,b]=m.pts;
+  if(a>=3&&b>=3&&a===b)return m.golden?'GOLDEN POINT · RECEIVERS CHOOSE SIDE':'DEUCE';
+  if(!m.golden&&a>=3&&b>=3)return 'ADVANTAGE '+M().names[a>b?0:1].toUpperCase();return '';}
+const setsWon=t=>M().sets.filter((s,i)=>(i<M().cur||M().over)&&s[t]>s[1-t]).length;
+function winGame(t){const m=M(),g=m.sets[m.cur];g[t]++;m.pts=[0,0];m.srv=1-m.srv;
+  const [a,b]=[g[t],g[1-t]];
+  if(m.tb||(a>=6&&a-b>=2)){m.tb=false;if(setsWon(t)+1>=2||(m.cur>=2)){m.over=true;m.win=t;return;}m.cur++;sync();return;}
+  if(g[0]===6&&g[1]===6)m.tb=true;}
+function point(t){const m=M();if(m.over)return;hist.push(JSON.stringify(m));if(hist.length>60)hist.shift();m.pts[t]++;
+  const [a,b]=[m.pts[t],m.pts[1-t]];
+  if(m.tb){if(a>=7&&a-b>=2)winGame(t);else if((a+b)%2===1)m.srv=1-m.srv;}
+  else if(m.golden?(a>=4):(a>=4&&a-b>=2))winGame(t);
+  GX.save(m);paint();}
+function vMatch(){const m=M(),n=Math.max(m.cur+1,1);
+  const row=t=>`<div class="tm"><b class="${!m.over&&m.srv===t?'srv':''}">${GX.esc(m.names[t])}</b>${[0,1,2].map(i=>`<div class="s ${i===m.cur&&!m.over?'c':''}">${i<n&&m.sets[i]?m.sets[i][t]:''}</div>`).join('')}<div class="pt">${m.over?(m.win===t?'🏆':''):ptLabel(t)}</div></div>`;
+  return `<div class="sb">${row(0)}${row(1)}<div class="call">${call()}</div></div>
+  ${m.over?`<button class="go" id="seefinal">See the final</button>`:`<div class="btns"><button class="a" data-pt="0">Point<br>${GX.esc(m.names[0])}</button><button class="b" data-pt="1">Point<br>${GX.esc(m.names[1])}</button></div>`}
+  <div class="row2"><button id="undo" ${hist.length?'':'disabled'}>↶ Undo point</button><button id="new">New match</button></div>
+  <div class="legend">● shows the serving pair · ${m.golden?'golden point at deuce':'advantage scoring'}</div>`;}
+function vSetup(){const m=M();return `<div class="row"><div><b>Pair 1</b></div><input id="n0" value="${GX.esc(m.names[0])}" maxlength="22"></div>
+  <div class="row"><div><b>Pair 2</b></div><input id="n1" value="${GX.esc(m.names[1])}" maxlength="22"></div>
+  <div class="row"><div><b>At deuce</b><small>Golden point is the pro-tour rule</small></div><div class="tog"><span data-g="1" class="${m.golden?'on':''}">Golden point</span><span data-g="0" class="${m.golden?'':'on'}">Advantage</span></div></div>
+  <div class="row"><div><b>Format</b><small>Best of three sets, tie-break at 6–6</small></div></div>`;}
+function vFinal(){const m=M();if(!m.over)return `<div class="sb final"><span class="tag">IN PLAY</span><h2>Set ${m.cur+1}</h2><p>The final appears here when the last point is won.</p></div>`;
+  const sc=m.sets.slice(0,m.cur+1).map(s=>`${s[m.win]}–${s[1-m.win]}`).join('  ');
+  return `<div class="sb final"><span class="tag">MATCH</span><h2>${GX.esc(m.names[m.win])} win</h2><div class="sets">${sc}</div><p>against ${GX.esc(m.names[1-m.win])}</p></div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share the result to ${C.gateway}`}</button>`:''}`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='match'?vMatch():S.tab==='setup'?vSetup():vFinal();
+  v.querySelectorAll('[data-pt]').forEach(e=>e.onclick=()=>point(+e.dataset.pt));
+  const u=document.getElementById('undo');if(u)u.onclick=()=>{if(!hist.length)return;C.data=JSON.parse(hist.pop());sync();GX.save(C.data);paint();};
+  const n=document.getElementById('new');if(n)n.onclick=()=>{hist.push(JSON.stringify(M()));C.data={names:M().names,golden:M().golden,sets:[[0,0]],cur:0,games:[0,0],pts:[0,0],tb:false,srv:0,over:false,win:null};sync();S.shared=false;GX.save(C.data);paint();};
+  const sf=document.getElementById('seefinal');if(sf)sf.onclick=()=>{S.tab='final';paint();};
+  [0,1].forEach(i=>{const e=document.getElementById('n'+i);if(e)e.onchange=()=>{M().names[i]=e.value.trim()||('Pair '+(i+1));GX.save(M());};});
+  v.querySelectorAll('[data-g]').forEach(e=>e.onclick=()=>{M().golden=e.dataset.g==='1';GX.save(M());paint();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const m=M(),sc=m.sets.slice(0,m.cur+1).map(s=>`${s[m.win]}–${s[1-m.win]}`).join(', ');
+    GX.post(`<b>${GX.esc(m.names[m.win])}</b> win ${sc} against ${GX.esc(m.names[1-m.win])}. Every point in Padel Score 🎾`,'PADEL SCORE').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
