@@ -2834,3 +2834,715 @@ EVENTS_FEED.push(
 );
 })();
 /* ═════════ /CHRISTMASXX ═════════ */
+/* ═════════ BASEBALLXX — a Sports demo gateway (2026-11-14, Sean) ═════════
+   Built like ClimbXX and ChristmasXX: theme, feed, 4 Brand Zones, 2 Business Zones, 3 Pros, 2 communities, 3 apps, events.
+   Palette: night-game navy, stitch red, infield clay, chalk. Pinned in PINNED_GWS with PadelXX and GolfXX.
+   Brands, pros and communities are fictional; places are real. Source of truth: _lab/sports/baseballxx-block.js. */
+(function(){
+const U = (id, w, h) => `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&q=75`;
+const NAVY = 'linear-gradient(135deg,#1C3A6B,#0B1424)', RED = 'linear-gradient(135deg,#D62839,#7E1420)', CLAY = 'linear-gradient(135deg,#E0A458,#A8642A)', GRASS = 'linear-gradient(135deg,#2E8B57,#145A32)';
+
+GATEWAYS.baseball = {
+  name: 'BaseballXX', domain: 'baseballxx.com', emoji: '⚾', sector: 'sports', live: true,
+  tagline: 'The Baseball Universe',
+  theme: {
+    bg: '#0B1424', text: '#F2EEE6', cardBg: 'rgba(255,255,255,.045)', cardBorder: 'rgba(224,164,88,.14)',
+    headerBg: 'linear-gradient(180deg,#1C3A6B,#0B1424)', accent: '#D62839', accentAlt: '#E0A458', dark: true
+  },
+  gradient: 'linear-gradient(135deg,#1C3A6B,#2E8B57,#D62839)',
+  stats: { members: '3.4M', brands: '1,900+', agents: '72' },
+  spaces: ['All Feed', 'Scores & Stats', 'Gear', 'Coaching', 'Ballparks', 'Cards & Collecting'],
+  trending: ['#HotStove', '#WinterBall', '#BallparkRoadTrip'],
+  brandZones: [
+    { key: 'ironwood-bat-co', name: 'Ironwood Bat Co', color: '#7A4A22', tier: 'Founding Partner', tag: 'Hand-turned maple and ash bats' },
+    { key: 'rawhide-lace', name: 'Rawhide & Lace', color: '#B5562B', tier: 'Brand Zone', tag: 'Hand-laced leather gloves, broken in for you' },
+    { key: 'seventh-inning-supply', name: 'Seventh Inning Supply', color: '#1C3A6B', tier: 'Brand Zone', tag: 'Caps, jackets and ballpark-day kit' },
+    { key: 'bullpen-lab', name: 'Bullpen Lab', color: '#2E8B57', tier: 'Brand Zone', tag: 'Smart balls, sensors and training tech' }
+  ],
+  apps: [
+    { name: 'Scorebook', color: '#D62839', desc: 'Keep score, inning by inning', key: 'scorebook', url: 'apps/scorebook.html',
+      dev: 'Dugout Digital', rating: '4.9', users: '212K', perms: ['profile', 'feed'],
+      tagline: 'The scorebook in your pocket, for every game you watch or play.',
+      about: 'Scorebook keeps the score the way fans always have, without the pencil. Tap in the count, the outs and the runs, and it builds the line score inning by inning. Use it at the ballpark, in the stands at Little League, or on the sofa. When the last out is made, share the final to the BaseballXX feed in one tap.',
+      features: ['Balls, strikes and outs in one tap each', 'The line score built inning by inning', 'Extra innings handled for you', 'One-tap share of the final to BaseballXX'],
+      shots: ['apps/scorebook/shot-1.jpg', 'apps/scorebook/shot-2.jpg', 'apps/scorebook/shot-3.jpg'],
+      version: '5.2', size: '10 KB',
+      updates: [ { v: '5.2', ago: 6, notes: 'Walk-off finals now say so when you share them.' }, { v: '5.0', ago: 120, notes: 'New line-score view with hits and errors.' }, { v: '4.8', ago: 210, notes: 'Signed in with GENEXXO. Your games follow you between devices.' } ],
+      reviews: [ { who: '@bleacher_bea', stars: 5, ago: 2, text: 'My grandad taught me to keep score with a pencil. This is the first app that feels like that.' }, { who: '@littleleague_luis', stars: 5, ago: 9, text: 'Every parent on our team uses it now. No more arguing about the count.' }, { who: '@stat_nerd_sam', stars: 4, ago: 14, text: 'Love it. Pitch-by-pitch mode next, please!' } ] },
+    { name: 'Pitch Count', color: '#E0A458', desc: 'Pitches thrown and rest days owed', key: 'pitch-count', url: 'apps/pitch-count.html',
+      dev: 'Arm Care Labs', rating: '4.8', users: '96.4K', perms: ['profile', 'feed'],
+      tagline: 'Count every pitch. Know how much rest they need.',
+      about: 'Pitch Count is for coaches and parents of young pitchers. Count the pitches in the game, and it shows how close each pitcher is to the limit for their age and how many days of rest they need before they throw again. A guide based on widely used youth pitch-count guidelines: always follow your own league’s rules.',
+      features: ['A big tap button for every pitch', 'Daily limits by age group', 'Rest days worked out for you', 'The whole staff on one screen'],
+      shots: ['apps/pitch-count/shot-1.jpg', 'apps/pitch-count/shot-2.jpg', 'apps/pitch-count/shot-3.jpg'],
+      version: '3.4', size: '9 KB',
+      updates: [ { v: '3.4', ago: 11, notes: 'Next-available date shown under every pitcher.' }, { v: '3.2', ago: 95, notes: 'Age groups up to 18.' }, { v: '3.0', ago: 240, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@coach_dee', stars: 5, ago: 3, text: 'This should be mandatory for every youth coach. Simple, clear, keeps arms safe.' }, { who: '@dugout_dad', stars: 5, ago: 8, text: 'I finally know when my son can pitch again without asking three people.' }, { who: '@pony_league_pat', stars: 4, ago: 20, text: 'Would love a printout for the umpire.' } ] },
+    { name: 'Swing Stats', color: '#4ADE80', desc: 'Your batting line, game by game', key: 'swing-stats', url: 'apps/swing-stats.html',
+      dev: 'Diamond Data Co', rating: '4.7', users: '58.9K', perms: ['profile', 'feed'],
+      tagline: 'Log your at-bats. See your slash line grow.',
+      about: 'Swing Stats turns your games into a proper batting line. Log each game’s at-bats, hits, walks and extra-base hits, and it works out your average, on-base and slugging the way the pros do, with a trend across the season. Made for rec leagues, high school and anyone who wants to see the numbers move.',
+      features: ['Log a game in under ten seconds', 'AVG, OBP, SLG and OPS worked out for you', 'Season trend at a glance', 'Share your line to BaseballXX'],
+      shots: ['apps/swing-stats/shot-1.jpg', 'apps/swing-stats/shot-2.jpg', 'apps/swing-stats/shot-3.jpg'],
+      version: '2.6', size: '9 KB',
+      updates: [ { v: '2.6', ago: 5, notes: 'OPS added, and a season-best badge.' }, { v: '2.4', ago: 150, notes: 'Doubles, triples and home runs tracked separately.' }, { v: '2.2', ago: 260, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@sunday_slugger', stars: 5, ago: 4, text: 'Seeing my OBP climb all summer kept me going to the cages.' }, { who: '@rec_league_rita', stars: 5, ago: 10, text: 'Our whole team shares their lines after games now. Healthy competition.' }, { who: '@benchwarmer_ben', stars: 4, ago: 18, text: 'Brutally honest app. Five stars when I hit .300.' } ] }
+  ],
+  pros: [
+    { key: 'ray-alvarez-hitting', name: 'Ray Alvarez Hitting', color: '#D62839', tag: 'Hitting coach · swing building, video analysis', role: 'Hitting coach',
+      img: U('1654094706120-be054b9ef237', 800, 800), base: 'Phoenix, Arizona', langs: 'English, Spanish', years: 16, rating: '4.9', reviewsN: 612, cur: '$',
+      creds: ['Former minor-league outfielder (8 seasons)', 'ABCA member coach', 'SafeSport trained'],
+      about: 'Ray played eight seasons of minor-league ball and has spent sixteen years since teaching hitters from eight to college age. His sessions start with video, end with a plan, and stay simple: a short, repeatable swing that holds up against good pitching.',
+      services: [ { id: 'lesson', name: 'One-on-one hitting lesson', dur: '1 hour', price: 85, desc: 'Cage work, high-speed video and a written plan to take home.' },
+                  { id: 'video', name: 'Remote swing review', dur: '48-hour turnaround', price: 45, desc: 'Send two angles of your swing and get a voice-over breakdown and three drills.' },
+                  { id: 'camp', name: 'Winter hitting camp (4 sessions)', dur: '4 × 90 min', price: 290, desc: 'Small groups, December to February, ages 12 to 18.' } ],
+      avail: { days: [1, 2, 3, 4, 6], times: ['15:30', '17:00', '18:30'] },
+      reviews: [ { who: '@littleleague_luis', stars: 5, ago: 4, text: 'My daughter stopped dropping her hands after one session. Ray just sees it.' }, { who: '@juco_jay', stars: 5, ago: 12, text: 'The remote review was worth ten times the price.' }, { who: '@dugout_dad', stars: 5, ago: 25, text: 'Patient, clear and the kids love him.' } ],
+      posts: [ { ago: 1, text: 'Winter camp groups are filling. Two spots left in the Saturday 14–16 group.' }, { ago: 5, text: 'Off-season tip: 50 quality swings beat 300 tired ones. Film five of them.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'mara-lindqvist-pitching', name: 'Mara Lindqvist Pitching Lab', color: '#2E8B57', tag: 'Pitching coach · mechanics, velocity, arm care', role: 'Pitching coach',
+      img: U('1776184046370-1b38b855040c', 800, 800), base: 'Tampa, Florida', langs: 'English, Swedish', years: 12, rating: '4.9', reviewsN: 438, cur: '$',
+      creds: ['MSc Biomechanics', 'Certified pitching coordinator', 'Certified strength & conditioning specialist'],
+      about: 'Mara runs a small pitching lab in Tampa: motion capture, radar and a long-toss lawn. She builds velocity the slow way, with mechanics and arm care first, and every pitcher leaves with a throwing programme matched to their season.',
+      services: [ { id: 'assess', name: 'Pitching assessment', dur: '90 minutes', price: 140, desc: 'Motion capture, radar and a mobility screen, with a full report.' },
+                  { id: 'lesson', name: 'Bullpen lesson', dur: '1 hour', price: 90, desc: 'One bullpen, filmed and broken down, with a plan for the week.' },
+                  { id: 'program', name: '12-week throwing programme', dur: 'Online + 3 check-ins', price: 360, desc: 'An off-season plan built around your arm, with video check-ins.' } ],
+      avail: { days: [1, 2, 4, 5, 6], times: ['09:00', '14:00', '16:30'] },
+      reviews: [ { who: '@coach_dee', stars: 5, ago: 6, text: 'Our ace gained 4 mph and, more importantly, no sore elbow all season.' }, { who: '@lefty_lou', stars: 5, ago: 15, text: 'The assessment report alone changed how I train.' }, { who: '@pony_league_pat', stars: 4, ago: 30, text: 'Brilliant coach. Book early for the off-season.' } ],
+      posts: [ { ago: 2, text: 'November is for rest and mobility, not velocity. Throwing programmes start in December.' }, { ago: 9, text: 'New: the 12-week programme now includes a long-toss video library.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'seventh-heaven-tours', name: 'Seventh Heaven Ballpark Tours', color: '#E0A458', tag: 'Ballpark road trips · tickets, hotels, behind-the-scenes', role: 'Travel host',
+      img: U('1464701116432-f476204d6c45', 800, 800), base: 'Chicago, Illinois', langs: 'English', years: 10, rating: '4.8', reviewsN: 357, cur: '$',
+      creds: ['Licensed tour operator', 'Visited all 30 major-league ballparks (four times)', 'Bonded and insured'],
+      about: 'We plan the baseball trip you have always talked about: five ballparks in eight days, good seats, hotels near the park, and the stadium tours most fans never see. Small groups, a host who loves the game, and every detail sorted before you land.',
+      services: [ { id: 'midwest', name: 'Midwest Classic (5 parks, 8 days)', dur: '8 days', price: 2450, desc: 'Chicago, Milwaukee, Minneapolis, Kansas City and St. Louis. Tickets, hotels and coach travel.' },
+                  { id: 'spring', name: 'Spring Training week, Arizona', dur: '6 days', price: 1650, desc: 'Six Cactus League games, practice-field mornings, and a resort near Scottsdale.' },
+                  { id: 'custom', name: 'Plan my own trip', dur: '1-hour call + itinerary', price: 120, desc: 'Tell us your parks and dates; we build the route, tickets and hotels.' } ],
+      avail: { days: [1, 2, 3, 4, 5], times: ['10:00', '13:00', '16:00'] },
+      reviews: [ { who: '@bleacher_bea', stars: 5, ago: 8, text: 'Five parks, zero stress. Behind the scenes at Wrigley was the best morning of my life.' }, { who: '@uk_cubs_fan', stars: 5, ago: 22, text: 'Flew in from London and everything just worked.' }, { who: '@road_trip_rob', stars: 4, ago: 40, text: 'Long days but worth every mile.' } ],
+      posts: [ { ago: 1, text: 'Spring Training 2027 dates are live. The Arizona week sold out last year by Christmas.' }, { ago: 10, text: 'Ballpark food ranking from this season’s groups, coming Friday. Brace yourselves.' } ],
+      tier: 'Pro Zone', verified: true }
+  ],
+  communities: [
+    { key: 'wrigley-bleacher-crew', name: 'Wrigley Bleacher Crew', domain: 'bleachers.baseballxx.com', color: '#1C3A6B', img: U('1475440197469-e367ec8eeb19', 900, 500),
+      scope: 'Local', where: 'Chicago', members: 18400, online: 312, tagline: 'Sun on your face, ivy on the wall, friends on the bench.',
+      about: 'Fans who live for the bleachers at Wrigley Field. We share ticket tips, meet before games on Sheffield Avenue, and keep the old traditions going. In the off-season we talk trades, plan watch parties and count the days to Opening Day.',
+      rules: ['Be good to each other, even after a loss', 'No ticket touting, face value only', 'Throw it back (you know the one)'],
+      mods: ['@bleacher_bea', '@sheffield_sal'],
+      threads: [ { t: 'Hot stove: who are we signing this winter?', by: '@sheffield_sal', tag: 'HOT STOVE', replies: 214, ago: 0, votes: 388 }, { t: 'Opening Day 2027 ticket plan, who is in?', by: '@bleacher_bea', tag: 'TICKETS', replies: 96, ago: 1, votes: 241 }, { t: 'Best pre-game hot dog near the park', by: '@relish_rick', tag: 'FOOD', replies: 133, ago: 2, votes: 177 }, { t: 'Winter watch party for the Caribbean Series?', by: '@winter_ball_wes', tag: 'MEET', replies: 41, ago: 4, votes: 82 } ],
+      events: [ { title: 'Hot Stove night at the bar', day: 4, time: '19:00', where: 'Sheffield Ave, Chicago' }, { title: 'Bleacher Crew holiday toy drive', day: 6, time: '11:00', where: 'Wrigleyville, Chicago' } ] },
+    { key: 'london-baseball-social', name: 'London Baseball Social', domain: 'london.baseballxx.com', color: '#D62839', img: U('1582650448629-3c854f356544', 900, 500),
+      scope: 'Local', where: 'London', members: 2140, online: 64, tagline: 'Catch, hit and talk baseball, this side of the Atlantic.',
+      about: 'Americans abroad, curious Brits and lifelong fans who play catch on Sundays and stay up for the late games. Beginners welcome: we bring spare gloves. In winter we move to an indoor cage and the pub.',
+      rules: ['Everyone gets a turn at bat', 'Spare gloves for newcomers', 'Late-game spoilers in the spoiler thread only'],
+      mods: ['@uk_cubs_fan', '@regents_park_rae'],
+      threads: [ { t: 'Sunday catch in Regent’s Park, still on in November?', by: '@regents_park_rae', tag: 'MEET', replies: 38, ago: 0, votes: 71 }, { t: 'Indoor cage sessions from December', by: '@uk_cubs_fan', tag: 'TRAINING', replies: 22, ago: 1, votes: 54 }, { t: 'Which UK league should a beginner join?', by: '@new_to_ball', tag: 'Q&A', replies: 29, ago: 3, votes: 47 } ],
+      events: [ { title: 'Sunday catch & hitting', day: 0, time: '11:00', where: 'Regent’s Park, London' }, { title: 'Indoor cage night', day: 3, time: '19:30', where: 'Hackney Wick, London' } ] }
+  ],
+  feed: [
+    { av: 'BX', avBg: NAVY, author: 'BaseballXX Editorial', sub: 'Featured · Just now', badge: '★ FEATURED',
+      text: 'Hot stove season is here. Trades, winter ball, the best gear of the year and the coaches who will get you ready for spring. Baseball, all in one place.',
+      img: U('1475440197469-e367ec8eeb19', 800, 600), eng: '♡ 41.2K · 💬 5.8K · ↗ 3.9K' },
+    { av: 'BB', avBg: RED, author: '@bleacher_bea', sub: 'Ballparks · Just now', badge: 'COMMUNITY',
+      text: 'Already counting down to Opening Day. Who else keeps last season’s ticket stubs on the fridge until the new schedule comes out? ⚾',
+      img: U('1785018197523-86e437579323', 800, 600), eng: '♡ 8.7K · 💬 941 · ↗ 402' },
+    { av: 'IB', avBg: 'linear-gradient(135deg,#7A4A22,#3E220C)', author: 'Ironwood Bat Co', sub: 'Founding Partner · Brand Zone', badge: 'BRAND ZONE',
+      text: 'The <b>Heartwood Pro Maple</b> is back: hand-turned in our Pennsylvania shop from wood we split and dry ourselves. Built for the season ahead.',
+      img: U('1620740527696-4867da637855', 800, 600), eng: '♡ 12.4K · 💬 1.1K · ↗ 1.6K' },
+    { av: 'RL', avBg: CLAY, author: 'Rawhide & Lace', sub: 'Brand Zone · 1h ago', badge: 'BRAND ZONE',
+      text: 'Hate breaking in a new glove? Our <b>Game-Ready</b> service steams, shapes and pockets it by hand. It arrives ready for the first catch.',
+      img: U('1620740528428-59fb523a484a', 800, 600), eng: '♡ 5.3K · 💬 466 · ↗ 380' },
+    { av: 'LL', avBg: GRASS, author: '@littleleague_luis', sub: 'Coaching · 2h ago', badge: 'COMMUNITY',
+      text: 'End-of-season party for the Tigers. Eleven kids, one trophy each, and a coach who cried more than the parents 😂',
+      img: U('1578432014316-48b448d79d57', 800, 600), eng: '♡ 3.1K · 💬 228 · ↗ 96' },
+    { av: 'BL', avBg: GRASS, author: 'Bullpen Lab', sub: 'Brand Zone · 4h ago', badge: 'BRAND ZONE',
+      text: 'Meet the <b>SpinCore ball</b>: a regulation baseball with a sensor inside. Spin rate, axis and speed on your phone, pitch by pitch.',
+      img: U('1554591203-d6433caa8495', 800, 600), eng: '♡ 4.8K · 💬 512 · ↗ 610' },
+    { av: 'WB', avBg: NAVY, author: 'Wrigley Bleacher Crew', sub: 'Ballparks · 6h ago', badge: 'COMMUNITY',
+      text: 'Hot Stove night this Thursday on Sheffield Avenue. Bring your trade ideas and your worst takes. Toy drive collection on the door 🎁',
+      img: U('1563299796-b729d0af54a5', 800, 600), eng: '♡ 2.2K · 💬 187 · ↗ 154' }
+  ],
+  prompts: ['Plan a 5-ballpark road trip next June', 'How many rest days after 60 pitches at age 12?', 'Find a hitting coach near me for winter', 'Best glove for a 10-year-old infielder under $80'],
+  businesses: ['diamond-turf-works', 'stitchline-ball-co']
+};
+
+/* the four Brand Zones and two Business Zones */
+const brand = (o) => Object.assign({ kind: 'brand', gw: 'baseball', verified: true }, o);
+Object.assign(ZONES, {
+  'ironwood-bat-co': brand({ key: 'ironwood-bat-co', name: 'Ironwood Bat Co', color: '#7A4A22', gradient: 'linear-gradient(135deg,#7A4A22,#3E220C)', tier: 'Founding Partner',
+    tagline: 'Hand-turned in Pennsylvania since 1961', stats: { followers: '86.3K', content: '640', products: '72' },
+    ad: { badge: 'Featured', img: U('1620740527696-4867da637855', 760, 760), hl: 'The Heartwood Pro Maple.', sub: 'Split, dried and hand-turned in our shop. Ink-dot tested on every billet.', meta: 'From $119' },
+    products: [
+      { name: 'Heartwood Pro Maple', price: '$189', tag: 'FLAGSHIP', emoji: '🏏', rating: 4.9, reviews: 2860, cat: 'bats', special: true, desc: 'Our pro-grade maple: dense, hard, with a big barrel and a balanced feel.', features: ['Ink-dot tested maple', 'Hand-turned and hand-finished', '30 to 34 inches'], review: { who: 'Jay R.', text: 'Swung one in the cage and bought it on the spot. The sound is everything.' } },
+      { name: 'Classic Ash 271', price: '$119', tag: 'BESTSELLER', emoji: '🪵', rating: 4.8, reviews: 1940, cat: 'bats', desc: 'Flexible northern white ash in our most popular turning, the 271.', features: ['Northern white ash', 'Light and whippy', 'Natural finish'], review: { who: 'Rita M.', text: 'Light enough for a rec-leaguer like me, still feels like a real bat.' } },
+      { name: 'Youth Birch 28"', price: '$79', tag: 'YOUTH', emoji: '👦', rating: 4.8, reviews: 860, cat: 'bats', desc: 'A forgiving birch bat sized for young players moving to wood.', features: ['Birch, end-loaded light', '26 to 30 inches', 'Youth-league approved'], review: { who: 'Luis (coach)', text: 'Teaches kids to square the ball up. Our whole team has one now.' } },
+      { name: 'Personalised Engraved Bat', price: '$149', tag: 'PERSONALISED', emoji: '✍️', rating: 4.9, reviews: 1210, cat: 'personal', special: true, desc: 'Laser-engraved name, number and date on the barrel. A gift that hits.', features: ['Engraving up to 3 lines', 'Order by 10 December for Christmas', 'Display stand included'], review: { who: 'Hannah W.', text: 'Bought one for my dad’s 70th. He has not stopped showing people.' } },
+      { name: 'Fungo 35"', price: '$95', emoji: '🎯', rating: 4.7, reviews: 520, cat: 'bats', desc: 'A long, light fungo for coaches who hit a thousand ground balls a week.', features: ['Ash, 35 inches', 'Thin handle, light barrel'], review: { who: 'Coach Dee', text: 'Saves my shoulder at every practice.' } },
+      { name: 'Pine Tar & Grip Kit', price: '$24', emoji: '🧴', rating: 4.6, reviews: 740, cat: 'care', desc: 'Pine tar stick, grip spray and a cloth, in a tin that fits the bat bag.', features: ['Pine tar stick', 'Grip spray', 'Cleaning cloth'], review: { who: 'Ben K.', text: 'Exactly what I needed and nothing I didn’t.' } },
+      { name: 'Bat Bone & Re-finish', price: '$35', tag: 'SERVICE', emoji: '🔧', rating: 4.9, reviews: 310, cat: 'care', special: true, desc: 'Send your bat back for boning, a fresh finish and a hardness check.', features: ['Barrel boned by hand', 'New finish', 'Back in 10 days'], review: { who: 'Sam T.', text: 'My gamer came back better than new.' } }
+    ],
+    shopCats: [ { key: 'bats', label: 'Bats', icon: '🏏' }, { key: 'personal', label: 'Personalised', icon: '✍️' }, { key: 'care', label: 'Grip & care', icon: '🔧' } ],
+    feed: [
+      { type: 'post', sub: 'Brand post · 3h', text: 'The <b>Heartwood Pro Maple</b> is back, hand-turned in our Pennsylvania shop.', img: U('1620740527696-4867da637855', 800, 440), eng: '♡ 12.4K · 💬 1.1K · ↗ 1.6K', product: 0 },
+      { type: 'post', sub: 'In the shop · Yesterday', text: 'Every billet is ink-dot tested before it touches the lathe. About one in four does not make the cut.', img: U('1785437017448-46bfdee37f7d', 800, 440), eng: '♡ 6.2K · 💬 388' },
+      { type: 'community', who: 'Jay R.', whoBg: RED, sub: 'Community · 1d', text: 'Maple or ash for a high-school hitter moving to wood?', eng: '♡ 241 · 💬 63', reply: 'Great question, Jay. Most young hitters start with ash or birch: more forgiving off the end. Move to the Heartwood maple once you square the ball up regularly. 🏏' }
+    ],
+    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Open shop day: watch a bat being turned', when: 'Dec 5 · Williamsport, PA + livestream', desc: 'Watch a bat turned from a billet, then engrave your own at the shop.', registered: 640, capacity: 900 } ],
+    about: { founded: 'Williamsport, Pennsylvania · 1961', story: 'A family bat shop that started with one lathe in a barn. Three generations later we still split, dry and turn every billet ourselves. We joined GENEXXO as BaseballXX’s Founding Partner because this is where players who care about their bat come together.', milestones: [['1961', 'The first bat turned in a barn in Williamsport'], ['1994', 'Heartwood maple becomes our signature'], ['2026', 'Founding Partner on BaseballXX']], values: ['Hand-turned', 'Every billet tested', 'Repair, then replace'] } }),
+
+  'rawhide-lace': brand({ key: 'rawhide-lace', name: 'Rawhide & Lace', color: '#B5562B', gradient: CLAY, tier: 'Brand Zone',
+    tagline: 'Hand-laced in Texas. Broken in for you.', stats: { followers: '54.8K', content: '410', products: '58' },
+    ad: { badge: 'Featured', img: U('1620740528428-59fb523a484a', 760, 760), hl: 'Game-Ready, out of the box.', sub: 'Every glove steamed, shaped and pocketed by hand before it ships.', meta: 'From $89' },
+    products: [
+      { name: 'Infield Pro 11.5"', price: '$219', tag: 'BESTSELLER', emoji: '🧤', rating: 4.9, reviews: 2140, cat: 'gloves', special: true, desc: 'A shallow-pocket I-web for quick transfers at short and second.', features: ['Steer-hide leather', 'Hand-laced', 'Game-Ready break-in included'], review: { who: 'Marco D.', text: 'Played a doubleheader the day it arrived. Unreal.' } },
+      { name: 'Outfield Pro 12.75"', price: '$229', emoji: '🧤', rating: 4.8, reviews: 1380, cat: 'gloves', desc: 'A deep trap-web pocket that swallows fly balls.', features: ['Steer-hide leather', 'Trap web', 'Open back'], review: { who: 'Wes P.', text: 'Every fly ball sticks. Love it.' } },
+      { name: 'Catcher’s Mitt 33.5"', price: '$249', tag: 'CATCHER', emoji: '🥎', rating: 4.9, reviews: 760, cat: 'gloves', desc: 'A firm, deep catcher’s mitt with extra palm padding.', features: ['Double palm padding', 'Hand-laced', 'Break-in included'], review: { who: 'Pat G.', text: 'Saves my hand on every fastball.' } },
+      { name: 'Youth First Glove 10"', price: '$89', tag: 'YOUTH', emoji: '👧', rating: 4.8, reviews: 1620, cat: 'gloves', special: true, desc: 'Soft, light leather that closes easily for small hands.', features: ['Ages 5 to 9', 'Soft kip leather', 'Ready to play'], review: { who: 'Lucy (parent)', text: 'My daughter caught her first ball with it on day one.' } },
+      { name: 'Glove Oil & Conditioner', price: '$18', emoji: '🧴', rating: 4.7, reviews: 980, cat: 'care', desc: 'Our own lanolin conditioner. A little goes a long way.', features: ['4 oz tin', 'Lanolin based'], review: { who: 'Rick S.', text: 'My 15-year-old glove looks better than ever.' } },
+      { name: 'Relace & Restore', price: '$55', tag: 'SERVICE', emoji: '🪡', rating: 4.9, reviews: 540, cat: 'care', desc: 'New laces, cleaned and conditioned, pocket reshaped. Any brand.', features: ['Any brand of glove', '14-day turnaround'], review: { who: 'Ellie M.', text: 'My grandad’s glove from 1979, back in the game.' } }
+    ],
+    shopCats: [ { key: 'gloves', label: 'Gloves & mitts', icon: '🧤' }, { key: 'care', label: 'Care & relace', icon: '🪡' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Our <b>Game-Ready</b> service steams, shapes and pockets your glove by hand.', img: U('1620740528428-59fb523a484a', 800, 440), eng: '♡ 5.3K · 💬 466', product: 0 },
+            { type: 'post', sub: 'Workshop · 2d', text: 'One glove, 18 feet of lace, about four hours of hands.', img: U('1749559995884-a3731177edf7', 800, 440), eng: '♡ 2.4K · 💬 140' } ],
+    events: [ { zoneEvent: true, tag: 'WORKSHOP', title: 'Relace your own glove', when: 'Dec 7 · Austin, TX', desc: 'Bring any glove; we teach you to relace and recondition it in an afternoon.', registered: 38, capacity: 50 } ],
+    about: { founded: 'Austin, Texas · 2008', story: 'A former college catcher who got tired of month-long break-ins started hand-lacing gloves in his garage. Today every Rawhide & Lace glove ships ready to play.', milestones: [['2008', 'The first glove laced in a garage'], ['2017', 'Game-Ready break-in launches'], ['2026', 'Brand Zone on BaseballXX']], values: ['Hand-laced', 'Ready to play', 'Restore, do not replace'] } }),
+
+  'seventh-inning-supply': brand({ key: 'seventh-inning-supply', name: 'Seventh Inning Supply', color: '#1C3A6B', gradient: NAVY, tier: 'Brand Zone',
+    tagline: 'Ballpark-day kit, made to last more than one season', stats: { followers: '71.5K', content: '520', products: '96' },
+    ad: { badge: 'New', img: U('1617052145671-c6f7ff89f4e9', 760, 760), hl: 'The Night Game Jacket.', sub: 'Satin-shell bomber, quilted lining. For the cold innings in April and October.', meta: 'From $34' },
+    products: [
+      { name: 'Night Game Jacket', price: '$149', tag: 'NEW', emoji: '🧥', rating: 4.8, reviews: 860, cat: 'apparel', special: true, desc: 'A satin-shell bomber with a quilted lining and a hidden ticket pocket.', features: ['Water-resistant shell', 'Quilted lining', 'Ticket pocket'], review: { who: 'Bea L.', text: 'Wore it to a freezing October game. Didn’t feel a thing.' } },
+      { name: 'Wool Ballpark Cap', price: '$42', tag: 'BESTSELLER', emoji: '🧢', rating: 4.9, reviews: 3120, cat: 'caps', desc: 'Classic six-panel wool cap with a curved brim, made in the USA.', features: ['Wool blend', 'Fitted sizes', 'Made in the USA'], review: { who: 'Sal R.', text: 'Fits like the old caps did. Finally.' } },
+      { name: 'Scorer’s Notebook', price: '$18', emoji: '📓', rating: 4.7, reviews: 640, cat: 'gear', desc: 'A proper paper scorebook for 40 games, with a pencil that fits the spine.', features: ['40 games', 'Pencil included'], review: { who: 'Sam T.', text: 'Pairs with the Scorebook app when the battery dies.' } },
+      { name: 'Stadium Seat Cushion', price: '$34', emoji: '🪑', rating: 4.6, reviews: 520, cat: 'gear', desc: 'Folding cushion with back support for bleacher days.', features: ['Folds flat', 'Back support'], review: { who: 'Rick S.', text: 'Nine innings and my back is fine.' } },
+      { name: 'Retro Pennant Set', price: '$39', tag: 'GIFT', emoji: '🚩', rating: 4.8, reviews: 410, cat: 'gear', desc: 'Three felt pennants in vintage ballpark styles for the den.', features: ['Wool felt', 'Set of three'], review: { who: 'Hannah W.', text: 'The perfect gift for my brother’s man cave.' } }
+    ],
+    shopCats: [ { key: 'apparel', label: 'Jackets & tops', icon: '🧥' }, { key: 'caps', label: 'Caps', icon: '🧢' }, { key: 'gear', label: 'Ballpark gear', icon: '🎒' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 5h', text: 'The <b>Night Game Jacket</b> is here for the cold innings.', img: U('1617052145671-c6f7ff89f4e9', 800, 440), eng: '♡ 3.9K · 💬 310', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'DEADLINE', title: 'Last order for Christmas delivery', when: 'Dec 16 · 23:59', desc: 'Order by midnight on 16 December for delivery before Christmas.', registered: 1840, capacity: 5000 } ],
+    about: { founded: 'Chicago, Illinois · 2014', story: 'Two friends who met in the bleachers wanted ballpark kit that lasted longer than one season. Seventh Inning Supply makes it in small runs, mostly in the USA.', milestones: [['2014', 'First caps sold outside the ballpark'], ['2021', 'Night Game Jacket launches'], ['2026', 'Brand Zone on BaseballXX']], values: ['Made to last', 'Made in small runs', 'Fans first'] } }),
+
+  'bullpen-lab': brand({ key: 'bullpen-lab', name: 'Bullpen Lab', color: '#2E8B57', gradient: GRASS, tier: 'Brand Zone',
+    tagline: 'The numbers behind every pitch and swing', stats: { followers: '39.2K', content: '280', products: '24' },
+    ad: { badge: 'Featured', img: U('1554591203-d6433caa8495', 760, 760), hl: 'The SpinCore ball.', sub: 'A regulation baseball with a sensor inside: spin, axis and speed on your phone.', meta: 'From $59' },
+    products: [
+      { name: 'SpinCore Smart Ball', price: '$149', tag: 'FLAGSHIP', emoji: '⚾', rating: 4.8, reviews: 1460, cat: 'sensors', special: true, desc: 'Regulation weight and seams, with a sensor that reads spin rate, axis and speed.', features: ['Regulation 5 oz', 'Spin, axis, speed', 'App included'], review: { who: 'Lou K.', text: 'Finally know why my curveball hangs. Spin axis was way off.' } },
+      { name: 'SwingTag Bat Sensor', price: '$99', tag: 'BESTSELLER', emoji: '📡', rating: 4.7, reviews: 1980, cat: 'sensors', desc: 'Clips to the knob of any bat. Bat speed, attack angle and time to contact.', features: ['Fits any bat', 'Bat speed and attack angle', '20-hour battery'], review: { who: 'Ray A. (coach)', text: 'I use it with every hitter I coach.' } },
+      { name: 'Pocket Radar Gun', price: '$249', emoji: '📟', rating: 4.8, reviews: 720, cat: 'radar', desc: 'Pocket-sized radar for pitch and exit speed.', features: ['±1 mph', 'Fits in a pocket'], review: { who: 'Mara L.', text: 'Accurate and tiny. In every bag I own.' } },
+      { name: 'Net & Target Frame', price: '$179', emoji: '🥅', rating: 4.6, reviews: 430, cat: 'training', desc: 'A 7 × 7 ft net with a strike-zone target for backyard bullpens.', features: ['Sets up in 2 minutes', 'Adjustable strike zone'], review: { who: 'Dee P.', text: 'Backyard bullpen sorted.' } },
+      { name: 'Lab Membership', price: '$12/mo', tag: 'SUBSCRIPTION', emoji: '📈', rating: 4.8, reviews: 860, cat: 'training', special: true, desc: 'Training plans, video tools and your sensor history in one place.', features: ['Plans from pro coaches', 'Unlimited history', 'Cancel anytime'], review: { who: 'Jay R.', text: 'The plans are the real value.' } }
+    ],
+    shopCats: [ { key: 'sensors', label: 'Sensors', icon: '📡' }, { key: 'radar', label: 'Radar', icon: '📟' }, { key: 'training', label: 'Training', icon: '🥅' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'Meet the <b>SpinCore ball</b>: spin rate, axis and speed on your phone.', img: U('1554591203-d6433caa8495', 800, 440), eng: '♡ 4.8K · 💬 512', product: 0 },
+            { type: 'post', sub: 'Lab notes · 3d', text: 'What 40,000 tracked curveballs taught us about grip pressure.', img: U('1643225753232-ad7d041ed0f7', 800, 440), eng: '♡ 2.1K · 💬 166' } ],
+    events: [ { zoneEvent: true, tag: 'WEBINAR', title: 'Off-season pitching with data', when: 'Dec 2 · 19:00 ET · online', desc: 'Mara Lindqvist and the Bullpen Lab team on building velocity safely this winter.', registered: 1280, capacity: 3000 } ],
+    about: { founded: 'Boston, Massachusetts · 2019', story: 'Engineers and former college players building the tools they wished they had. Bullpen Lab puts pro-level numbers in reach of every player and coach.', milestones: [['2019', 'First SpinCore prototype'], ['2023', 'SwingTag bat sensor launches'], ['2026', 'Brand Zone on BaseballXX']], values: ['Data that helps, not overwhelms', 'Arm health first', 'Built with coaches'] } }),
+
+  'diamond-turf-works': { key: 'diamond-turf-works', kind: 'business', gw: 'baseball', name: 'Diamond Turf Works', color: '#2E8B57', gradient: GRASS, img: U('1464701116432-f476204d6c45', 900, 500),
+    tier: 'Verified', category: 'Fields & groundskeeping', tagline: 'Infield clay, mound bricks and field builds for every level.',
+    about: { founded: 'Atlanta, Georgia · 1988', story: 'We build and look after baseball fields: from Little League diamonds to college stadiums. Infield mixes, mound clay, turf and the groundskeeping know-how that keeps a field playing true all season.' },
+    stats: { years: 38, staff: 140, clients: '1,200+ fields' },
+    caps: [ { name: 'Infield & mound clay', detail: 'Graded infield mixes, packing clay and mound bricks, delivered by the pallet or the truckload.' }, { name: 'Field builds', detail: 'Design, laser grading, drainage and turf for new and renovated diamonds.' }, { name: 'Groundskeeping programmes', detail: 'Season-long maintenance plans and training for volunteer crews.' } ],
+    specs: { moq: '1 pallet (40 bags)', lead: '5–10 days; builds 8–14 weeks', regions: 'USA & Canada', certs: ['Sports Field Management Association member', 'Certified Sports Field Manager on staff', 'ISO 9001'] },
+    supplies: [ { kind: 'brand', key: 'bullpen-lab', what: 'Training-mound clay for the Bullpen Lab facility' } ],
+    cases: [ { title: 'Westside Little League, Phoenix', text: 'Four diamonds regraded and re-claid in the off-season, ready for Opening Day.' }, { title: 'Volunteer crew training', text: '300 volunteer groundskeepers trained across Georgia last year.' } ],
+    feed: [ { sub: 'Off-season · 3d', text: 'Off-season renovation slots for January and February are almost full. Book your field now.' }, { sub: 'Tips · 1w', text: 'Drag the infield in a spiral, not a circle. Your second baseman will thank you.' } ],
+    contact: { person: 'Marcus Reed, Field projects', response: 'Replies within 24 hours' } },
+
+  'stitchline-ball-co': { key: 'stitchline-ball-co', kind: 'business', gw: 'baseball', name: 'Stitchline Ball Co', color: '#D62839', gradient: RED, img: U('1578432014316-48b448d79d57', 900, 500),
+    tier: 'Verified', category: 'Equipment manufacturing', tagline: 'Game and practice baseballs for leagues, schools and clubs.',
+    about: { founded: 'St. Louis, Missouri · 1979', story: 'We make baseballs and softballs for leagues, high schools and colleges: cushioned cork centres, wool winding and 108 double stitches. Own-label available for leagues and clubs.' },
+    stats: { years: 47, staff: 210, clients: '3,500+ leagues & schools' },
+    caps: [ { name: 'Game balls', detail: 'NFHS and NCAA spec, raised or flat seams, by the dozen or the case.' }, { name: 'Practice & training balls', detail: 'Pitching-machine balls, weighted balls and soft-core youth balls.' }, { name: 'Own-label', detail: 'Your league’s logo stamped on game balls, from 50 dozen.' } ],
+    specs: { moq: '10 dozen (own-label 50 dozen)', lead: '2–3 weeks; own-label 6 weeks', regions: 'North America, UK & Europe', certs: ['NFHS approved', 'NOCSAE stamp', 'ISO 9001'] },
+    supplies: [ { kind: 'brand', key: 'bullpen-lab', what: 'The regulation shell around every SpinCore smart ball' } ],
+    cases: [ { title: 'Bullpen Lab SpinCore', text: 'A regulation ball built around a sensor: same weight, same seams, same feel.' } ],
+    feed: [ { sub: 'Production · 5d', text: 'Spring league orders open: order by 31 January for March delivery.' } ],
+    contact: { person: 'Dana Whitfield, League accounts', response: 'Replies within one working day' } }
+});
+
+/* events in the Events tab */
+EVENTS_FEED.push(
+  { gw: 'baseball', type: 'Event', icon: '🔥', time: 'Nov 19', title: 'Hot Stove night, Wrigleyville', desc: 'The Wrigley Bleacher Crew talks trades and signings on Sheffield Avenue. Toy drive collection on the door.' },
+  { gw: 'baseball', zone: 'bullpen-lab', type: 'Event', icon: '📈', time: 'Dec 2', title: 'Off-season pitching with data', desc: 'A free Bullpen Lab webinar with pitching coach Mara Lindqvist. RSVP inside the Bullpen Lab zone.' },
+  { gw: 'baseball', type: 'Event', icon: '🧤', time: 'Dec 3', title: 'Indoor cage nights start, London', desc: 'London Baseball Social moves indoors for winter. Spare gloves for newcomers.' },
+  { gw: 'baseball', zone: 'ironwood-bat-co', type: 'Event', icon: '🏏', time: 'Dec 5', title: 'Ironwood open shop day', desc: 'Watch a bat turned from a billet in Williamsport, PA, and engrave your own.' },
+  { gw: 'baseball', zone: 'rawhide-lace', type: 'Event', icon: '🪡', time: 'Dec 7', title: 'Relace your own glove, Austin', desc: 'A hands-on afternoon with Rawhide & Lace. Bring any glove.' },
+  { gw: 'baseball', type: 'Event', icon: '⚾', time: 'Dec 13', title: 'Winter hitting camp begins', desc: 'Ray Alvarez Hitting starts four-week winter camps in Phoenix for ages 12 to 18.' },
+  { gw: 'baseball', zone: 'seventh-inning-supply', type: 'Deadline', icon: '🎁', time: 'Dec 16', title: 'Last order for Christmas delivery', desc: 'Seventh Inning Supply: order by midnight for delivery before Christmas.' }
+);
+})();
+/* ═════════ /BASEBALLXX ═════════ */
+/* ═════════ PADELXX — a Sports demo gateway (2026-11-14, Sean) ═════════
+   Built like ClimbXX and ChristmasXX: theme, feed, 4 Brand Zones, 2 Business Zones, 3 Pros, 2 communities, 3 apps, events.
+   Palette: court blue, deep navy, ball lime. Pinned in PINNED_GWS with BaseballXX and GolfXX.
+   Brands, pros and communities are fictional; places are real. Source of truth: _lab/sports/padelxx-block.js. */
+(function(){
+const U = (id, w, h) => `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&q=75`;
+const BLUE = 'linear-gradient(135deg,#2F6FED,#123A7A)', LIME = 'linear-gradient(135deg,#C6F432,#6E9A0C)', TEAL = 'linear-gradient(135deg,#14B8A6,#0B6B63)', SUN = 'linear-gradient(135deg,#F5B935,#C2751A)';
+
+GATEWAYS.padel = {
+  name: 'PadelXX', domain: 'padelxx.com', emoji: '🎾', sector: 'sports', live: true,
+  tagline: 'The Padel Universe',
+  theme: {
+    bg: '#08162E', text: '#EEF3FF', cardBg: 'rgba(255,255,255,.045)', cardBorder: 'rgba(198,244,50,.13)',
+    headerBg: 'linear-gradient(180deg,#123A7A,#08162E)', accent: '#C6F432', accentAlt: '#2F8CFF', dark: true
+  },
+  gradient: 'linear-gradient(135deg,#123A7A,#2F8CFF,#C6F432)',
+  stats: { members: '2.1M', brands: '1,300+', agents: '58' },
+  spaces: ['All Feed', 'Find a Game', 'Clubs & Courts', 'Coaching', 'Gear', 'Pro Tour'],
+  trending: ['#FindAFourth', '#BandejaClinic', '#PadelHoliday'],
+  brandZones: [
+    { key: 'solera-padel', name: 'Solera Padel', color: '#2F6FED', tier: 'Founding Partner', tag: 'Carbon rackets, designed in Valencia' },
+    { key: 'pared-balls', name: 'Pared Balls', color: '#C2751A', tier: 'Brand Zone', tag: 'Tour-grade balls, delivered fresh every month' },
+    { key: 'lima-court-wear', name: 'Lima Court Wear', color: '#6E9A0C', tier: 'Brand Zone', tag: 'Padel shoes and kit, built for the glass' },
+    { key: 'glasshouse-padel', name: 'The Glasshouse Padel Clubs', color: '#14B8A6', tier: 'Brand Zone', tag: 'Indoor padel clubs, open 6am to 11pm' }
+  ],
+  apps: [
+    { name: 'Match Finder', color: '#C6F432', desc: 'Find a fourth at your level', key: 'match-finder', url: 'apps/match-finder.html',
+      dev: 'Cuarto Labs', rating: '4.9', users: '184K', perms: ['profile', 'feed'],
+      tagline: 'Three players looking for a fourth. That could be you.',
+      about: 'Match Finder fixes padel’s oldest problem: finding the fourth player. See open games near you at your level, join in one tap, or post your own and let the right players find you. Levels run from 1.0 for beginners to 7.0 for pros, so every game is a good game.',
+      features: ['Open games near you, filtered by level', 'Join in one tap', 'Post your own game in seconds', 'Share a game to the PadelXX feed'],
+      shots: ['apps/match-finder/shot-1.jpg', 'apps/match-finder/shot-2.jpg', 'apps/match-finder/shot-3.jpg'],
+      version: '6.1', size: '10 KB',
+      updates: [ { v: '6.1', ago: 3, notes: 'Mixed and women’s games now filter separately.' }, { v: '6.0', ago: 90, notes: 'Level matching: games show whether they are right for you.' }, { v: '5.6', ago: 200, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@bandeja_bella', stars: 5, ago: 1, text: 'Moved to Manchester knowing nobody. Played four times in my first week.' }, { who: '@golden_point_gus', stars: 5, ago: 7, text: 'Level filter is spot on. No more lopsided games.' }, { who: '@lefty_lola', stars: 4, ago: 13, text: 'Would love to see which side people play.' } ] },
+    { name: 'Padel Score', color: '#2F8CFF', desc: 'Keep score, golden point and all', key: 'padel-score', url: 'apps/padel-score.html',
+      dev: 'Punto de Oro', rating: '4.8', users: '92.7K', perms: ['profile', 'feed'],
+      tagline: 'Never argue about the score again.',
+      about: 'Padel Score keeps the score for you: points, games and sets, with golden point or advantage, and tie-breaks at six-all. Big buttons you can tap between points, and a clear call of who serves next. Share the final to PadelXX when you shake hands at the net.',
+      features: ['Points, games and sets in two big buttons', 'Golden point or advantage, your choice', 'Tie-break at six-all', 'Shows who serves next'],
+      shots: ['apps/padel-score/shot-1.jpg', 'apps/padel-score/shot-2.jpg', 'apps/padel-score/shot-3.jpg'],
+      version: '3.3', size: '10 KB',
+      updates: [ { v: '3.3', ago: 4, notes: 'Undo the last point with one tap.' }, { v: '3.1', ago: 110, notes: 'Golden point is now the default, like the tour.' }, { v: '3.0', ago: 230, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@golden_point_gus', stars: 5, ago: 2, text: 'Ended a two-year argument about the score in our Thursday game.' }, { who: '@por_tres_pete', stars: 5, ago: 9, text: 'Undo button saved a friendship.' }, { who: '@vibora_vic', stars: 4, ago: 16, text: 'Great. A watch version would be perfect.' } ] },
+    { name: 'Level Tracker', color: '#14B8A6', desc: 'Your padel level, match by match', key: 'level-tracker', url: 'apps/level-tracker.html',
+      dev: 'Nivel Analytics', rating: '4.7', users: '61.3K', perms: ['profile', 'feed'],
+      tagline: 'Log your matches. Watch your level climb.',
+      about: 'Level Tracker turns your results into a level from 1.0 to 7.0. Log who you played and the score, and your level moves up or down depending on how strong the other pair was. See your trend over the season and the matches that moved it most.',
+      features: ['Log a match in seconds', 'Your level on the 1.0–7.0 scale', 'Season trend chart', 'Share a new personal best to PadelXX'],
+      shots: ['apps/level-tracker/shot-1.jpg', 'apps/level-tracker/shot-2.jpg', 'apps/level-tracker/shot-3.jpg'],
+      version: '2.4', size: '10 KB',
+      updates: [ { v: '2.4', ago: 6, notes: 'Biggest wins highlighted in your history.' }, { v: '2.2', ago: 130, notes: 'Trend chart across the season.' }, { v: '2.0', ago: 250, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@bandeja_bella', stars: 5, ago: 3, text: 'From 2.8 to 3.6 since summer. Seeing it is so motivating.' }, { who: '@club_captain_kim', stars: 5, ago: 11, text: 'We use it to balance our club ladder.' }, { who: '@smash_sam', stars: 4, ago: 19, text: 'Honest. Sometimes too honest.' } ] }
+  ],
+  pros: [
+    { key: 'carla-ruiz-padel', name: 'Carla Ruiz Padel Academy', color: '#2F6FED', tag: 'Padel coaching holidays · beginners to advanced', role: 'Padel coach',
+      img: U('1646649852046-b758d2d573f3', 800, 800), base: 'Marbella, Spain', langs: 'Spanish, English', years: 13, rating: '4.9', reviewsN: 704, cur: '€',
+      creds: ['Former World Padel Tour qualifier', 'Spanish Padel Federation coach, Level 3', 'First-aid certified'],
+      about: 'Carla played the pro tour for six years and now runs coaching holidays on the Costa del Sol. Mornings on court, afternoons by the sea, and a level-up you can feel by Friday. Small groups, matched by level.',
+      services: [ { id: 'week', name: 'Padel holiday week', dur: '5 days, 15 hours on court', price: 495, desc: 'Daily coaching, match play and video review. Hotel packages available.' },
+                  { id: 'private', name: 'Private lesson', dur: '1 hour', price: 60, desc: 'One-to-one or bring your partner. Technique, tactics or both.' },
+                  { id: 'clinic', name: 'Bandeja & víbora clinic', dur: '2 hours', price: 45, desc: 'The overheads that win points, broken down and drilled.' } ],
+      avail: { days: [1, 2, 3, 4, 5, 6], times: ['09:00', '11:00', '18:00'] },
+      reviews: [ { who: '@bandeja_bella', stars: 5, ago: 5, text: 'Best holiday I’ve ever had. My bandeja is finally a weapon.' }, { who: '@uk_padel_dad', stars: 5, ago: 14, text: 'Took my teenage son. He came home a different player.' }, { who: '@lefty_lola', stars: 5, ago: 28, text: 'Carla explains everything simply. Worth every euro.' } ],
+      posts: [ { ago: 1, text: 'Winter sun weeks are open: 20 degrees and blue skies in Marbella through February.' }, { ago: 6, text: 'The bandeja is not a smash. Keep it low, keep it deep, keep the net.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'tom-hale-coaching', name: 'Tom Hale Padel Coaching', color: '#C6F432', tag: 'Padel coaching in London · first lesson to league', role: 'Padel coach',
+      img: U('1767128890439-1af9ca2ff1ac', 800, 800), base: 'London, UK', langs: 'English', years: 7, rating: '4.9', reviewsN: 389, cur: '£',
+      creds: ['LTA Padel coach accreditation', 'Former county tennis player', 'DBS checked'],
+      about: 'Tom switched from tennis to padel seven years ago and never looked back. He coaches beginners through to league players across London, with a gift for unlearning tennis habits: the walls are your friend.',
+      services: [ { id: 'intro', name: 'Padel for tennis players', dur: '1 hour', price: 55, desc: 'Grip, the walls and the serve. The fastest way to switch.' },
+                  { id: 'group', name: 'Group session (4 players)', dur: '90 minutes', price: 25, desc: 'Per person. Drills and coached match play, matched by level.' },
+                  { id: 'private', name: 'Private lesson', dur: '1 hour', price: 70, desc: 'One-to-one or with your partner.' } ],
+      avail: { days: [1, 2, 3, 4, 5, 6, 0], times: ['07:00', '12:30', '19:00'] },
+      reviews: [ { who: '@ex_tennis_ed', stars: 5, ago: 4, text: 'Thirty years of tennis undone in an hour. Brilliant.' }, { who: '@club_captain_kim', stars: 5, ago: 12, text: 'Our whole club books Tom’s group sessions.' }, { who: '@smash_sam', stars: 4, ago: 22, text: 'Great coach. 7am sessions are brutal.' } ],
+      posts: [ { ago: 2, text: 'Group sessions now at The Glasshouse in Canary Wharf, Tuesday and Thursday evenings.' }, { ago: 8, text: 'Let it come off the back glass. Patience wins more points than power.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'net-physio', name: 'Net Physio', color: '#14B8A6', tag: 'Sports physio for racket players · shoulder, elbow, calf', role: 'Sports physiotherapist',
+      img: U('1767128890609-227bdfdb7f5c', 800, 800), base: 'Manchester, UK', langs: 'English', years: 11, rating: '4.8', reviewsN: 276, cur: '£',
+      creds: ['HCPC registered physiotherapist', 'MSc Sports Physiotherapy', 'Member of the CSP'],
+      about: 'Padel elbow, calf strains and sore shoulders: we see them every week. Net Physio treats racket-sport injuries and gets you back on court with a plan to stop them coming back.',
+      services: [ { id: 'assess', name: 'Injury assessment & treatment', dur: '45 minutes', price: 65, desc: 'Diagnosis, hands-on treatment and a rehab plan.' },
+                  { id: 'follow', name: 'Follow-up session', dur: '30 minutes', price: 48, desc: 'Treatment and progressing your rehab.' },
+                  { id: 'screen', name: 'Padel movement screen', dur: '60 minutes', price: 75, desc: 'Find the weak links before they become injuries.' } ],
+      avail: { days: [1, 2, 3, 4, 5], times: ['08:00', '12:00', '17:30'] },
+      reviews: [ { who: '@golden_point_gus', stars: 5, ago: 6, text: 'Padel elbow sorted in four sessions. Back playing twice a week.' }, { who: '@vibora_vic', stars: 5, ago: 18, text: 'The movement screen found a hip issue nobody else spotted.' }, { who: '@smash_sam', stars: 4, ago: 35, text: 'Clear and practical.' } ],
+      posts: [ { ago: 3, text: 'Calf strains spike when it gets cold. Warm up for ten minutes before you play.' } ],
+      tier: 'Pro Zone', verified: true }
+  ],
+  communities: [
+    { key: 'manchester-fourth', name: 'Manchester Find-a-Fourth', domain: 'manchester.padelxx.com', color: '#C6F432', img: U('1767128890948-0e3f70016b8f', 900, 500),
+      scope: 'Local', where: 'Manchester', members: 6240, online: 188, tagline: 'Never short of a fourth again.',
+      about: 'Padel players across Greater Manchester who post games, fill gaps and meet new partners. Every level, every club, every day of the week. Started in 2021 with twelve people and one WhatsApp group.',
+      rules: ['Post your level honestly', 'If you join, turn up', 'Share the court cost fairly'],
+      mods: ['@bandeja_bella', '@club_captain_kim'],
+      threads: [ { t: 'Need a 3.0–3.5 for Thursday 7pm, Trafford', by: '@golden_point_gus', tag: 'GAME', replies: 12, ago: 0, votes: 28 }, { t: 'Winter league sign-ups are open', by: '@club_captain_kim', tag: 'LEAGUE', replies: 64, ago: 1, votes: 133 }, { t: 'Best indoor courts for cold nights?', by: '@new_padeller', tag: 'Q&A', replies: 41, ago: 2, votes: 59 }, { t: 'Social Americano this Saturday, 16 spots', by: '@bandeja_bella', tag: 'SOCIAL', replies: 33, ago: 3, votes: 87 } ],
+      events: [ { title: 'Saturday social Americano', day: 6, time: '10:00', where: 'Trafford, Manchester' }, { title: 'Winter league launch night', day: 3, time: '19:30', where: 'Ancoats, Manchester' } ] },
+    { key: 'liga-amateur-madrid', name: 'Liga Amateur Madrid', domain: 'madrid.padelxx.com', color: '#2F8CFF', img: U('1770230901556-4e1c0bacfb09', 900, 500),
+      scope: 'Local', where: 'Madrid', members: 14800, online: 402, tagline: 'La liga de todos. Five divisions, every level.',
+      about: 'Madrid’s biggest amateur padel league: five divisions, 600 pairs and a season that runs all year. Results, fixtures, banter and the occasional heated debate about whether that ball touched the wire.',
+      rules: ['Results posted within 24 hours', 'Respect the referee’s call (there isn’t one)', 'Cañas after the final'],
+      mods: ['@vibora_vic', '@por_tres_pete'],
+      threads: [ { t: 'Division 2 results, week 9', by: '@por_tres_pete', tag: 'RESULTS', replies: 88, ago: 0, votes: 156 }, { t: 'Did the ball touch the wire? Video inside', by: '@lefty_lola', tag: 'DEBATE', replies: 214, ago: 1, votes: 402 }, { t: 'Christmas tournament draw is out', by: '@vibora_vic', tag: 'TOURNAMENT', replies: 57, ago: 2, votes: 120 } ],
+      events: [ { title: 'Christmas tournament, finals day', day: 0, time: '10:00', where: 'Chamartín, Madrid' }, { title: 'Division 1 match night', day: 4, time: '20:00', where: 'Alcobendas, Madrid' } ] }
+  ],
+  feed: [
+    { av: 'PX', avBg: BLUE, author: 'PadelXX Editorial', sub: 'Featured · Just now', badge: '★ FEATURED',
+      text: 'The fastest-growing sport in the world, all in one place: find a fourth, book a court, level up with a coach and follow the pro tour.',
+      img: U('1770230901556-4e1c0bacfb09', 800, 600), eng: '♡ 33.8K · 💬 4.2K · ↗ 3.1K' },
+    { av: 'BB', avBg: LIME, author: '@bandeja_bella', sub: 'Find a Game · Just now', badge: 'COMMUNITY',
+      text: 'One year ago I didn’t know what a bandeja was. Today I won my first league match 🎾 Thank you to everyone who ever played as my fourth.',
+      img: U('1767128890583-b3f8dc30bdbc', 800, 600), eng: '♡ 7.9K · 💬 812 · ↗ 344' },
+    { av: 'SP', avBg: BLUE, author: 'Solera Padel', sub: 'Founding Partner · Brand Zone', badge: 'BRAND ZONE',
+      text: 'The new <b>Solera Diamante Carbon</b>: a diamond shape for power, an 18K carbon face for control, and a soft EVA core that saves your elbow.',
+      img: U('1787768647981-dab3d52f8f04', 800, 600), eng: '♡ 11.6K · 💬 1.2K · ↗ 1.4K' },
+    { av: 'PB', avBg: SUN, author: 'Pared Balls', sub: 'Brand Zone · 1h ago', badge: 'BRAND ZONE',
+      text: 'Flat balls ruin good games. <b>Pared Fresh</b> sends tour-grade balls to your door every month, so you always open a new tube.',
+      img: U('1646649853517-e2f75cde1908', 800, 600), eng: '♡ 3.6K · 💬 270 · ↗ 312' },
+    { av: 'CR', avBg: BLUE, author: 'Carla Ruiz Padel Academy', sub: 'Coaching · 2h ago', badge: 'PRO ZONE',
+      text: 'Winter sun padel weeks in Marbella: 20 degrees, blue skies and a coach on every court. Two spaces left in the January group.',
+      img: U('1646649851780-d9701b7c3c04', 800, 600), eng: '♡ 2.9K · 💬 205 · ↗ 188' },
+    { av: 'GH', avBg: TEAL, author: 'The Glasshouse Padel Clubs', sub: 'Brand Zone · 4h ago', badge: 'BRAND ZONE',
+      text: 'Our <b>Leeds</b> club opens on 6 December: eight panoramic indoor courts, a café and a coached session for every new member.',
+      img: U('1767128890954-20ce481be8f0', 800, 600), eng: '♡ 4.4K · 💬 380 · ↗ 520' },
+    { av: 'LM', avBg: 'linear-gradient(135deg,#2F8CFF,#123A7A)', author: 'Liga Amateur Madrid', sub: 'Pro Tour · 6h ago', badge: 'COMMUNITY',
+      text: 'The Christmas tournament draw is out: 128 pairs, five divisions, finals on Sunday 13 December. ¡Suerte a todos!',
+      img: U('1646651105426-e8c8ee9badde', 800, 600), eng: '♡ 2.4K · 💬 196 · ↗ 140' }
+  ],
+  prompts: ['Find me a 3.0–3.5 game near Manchester this week', 'Best padel racket for a tennis player switching over', 'Plan a padel holiday in Spain in February', 'How do I stop getting padel elbow?'],
+  businesses: ['panorama-court-systems', 'turfline-surfaces']
+};
+
+/* the four Brand Zones and two Business Zones */
+const brand = (o) => Object.assign({ kind: 'brand', gw: 'padel', verified: true }, o);
+Object.assign(ZONES, {
+  'solera-padel': brand({ key: 'solera-padel', name: 'Solera Padel', color: '#2F6FED', gradient: BLUE, tier: 'Founding Partner',
+    tagline: 'Carbon rackets, designed and tested in Valencia', stats: { followers: '92.4K', content: '580', products: '44' },
+    ad: { badge: 'New', img: U('1787768647981-dab3d52f8f04', 760, 760), hl: 'The Diamante Carbon.', sub: 'Diamond shape for power, 18K carbon for control, a soft core for your elbow.', meta: 'From £89' },
+    products: [
+      { name: 'Diamante Carbon 18K', price: '£229', tag: 'NEW', emoji: '💎', rating: 4.9, reviews: 1640, cat: 'rackets', special: true, desc: 'Our most powerful racket: diamond shape, high balance, 18K carbon face.', features: ['18K carbon face', 'Soft EVA core', '365 g, high balance'], review: { who: 'Vic M.', text: 'My víbora has never had this much bite.' } },
+      { name: 'Redonda Control', price: '£169', tag: 'BESTSELLER', emoji: '⭕', rating: 4.8, reviews: 2380, cat: 'rackets', desc: 'A round shape with a big sweet spot. Our most forgiving racket.', features: ['Round shape', 'Low balance', '355 g'], review: { who: 'Bella R.', text: 'Bought it as a beginner and I still love it two years on.' } },
+      { name: 'Lágrima Hybrid', price: '£189', emoji: '💧', rating: 4.8, reviews: 1120, cat: 'rackets', desc: 'A teardrop shape: the balance between power and control.', features: ['Teardrop shape', 'Mid balance', '360 g'], review: { who: 'Gus P.', text: 'Does everything well. My all-rounder.' } },
+      { name: 'Starter Racket & Balls', price: '£89', tag: 'BEGINNER', emoji: '🎾', rating: 4.7, reviews: 1860, cat: 'rackets', special: true, desc: 'A light, round racket with a tube of balls and a cover.', features: ['Round, 345 g', 'Tube of 3 balls', 'Cover included'], review: { who: 'Ed T.', text: 'Perfect first racket. Light and easy to hit.' } },
+      { name: 'Thermo Racket Bag', price: '£75', emoji: '🎒', rating: 4.8, reviews: 920, cat: 'bags', desc: 'Holds three rackets in a thermal pocket that protects carbon from the heat and cold.', features: ['Thermal racket pocket', 'Shoe compartment', 'Backpack straps'], review: { who: 'Kim L.', text: 'Every club bag I have seen this winter is one of these.' } },
+      { name: 'Racket Protector & Grip Pack', price: '£15', emoji: '🛡️', rating: 4.6, reviews: 1420, cat: 'care', desc: 'Frame protector tape and three overgrips.', features: ['Frame protector', '3 overgrips'], review: { who: 'Sam H.', text: 'Saved my racket from the glass more than once.' } },
+      { name: 'Trade-in Programme', price: 'Up to £60 off', tag: 'SERVICE', emoji: '♻️', rating: 4.9, reviews: 380, cat: 'care', desc: 'Trade in your old racket for credit. We refurbish them for junior clubs.', features: ['Any brand accepted', 'Rackets go to junior clubs'], review: { who: 'Lola F.', text: 'Love that my old racket went to a kids’ club.' } }
+    ],
+    shopCats: [ { key: 'rackets', label: 'Rackets', icon: '🎾' }, { key: 'bags', label: 'Bags', icon: '🎒' }, { key: 'care', label: 'Grips & trade-in', icon: '🛡️' } ],
+    feed: [
+      { type: 'post', sub: 'Brand post · 3h', text: 'The new <b>Diamante Carbon 18K</b>: power, control and an elbow-friendly core.', img: U('1787768647981-dab3d52f8f04', 800, 440), eng: '♡ 11.6K · 💬 1.2K · ↗ 1.4K', product: 0 },
+      { type: 'post', sub: 'Testing · Yesterday', text: 'Every new Solera face is tested by club players in Valencia before it goes into production.', img: U('1646649853703-7645147474ba', 800, 440), eng: '♡ 5.0K · 💬 312' },
+      { type: 'community', who: 'Ed T.', whoBg: LIME, sub: 'Community · 1d', text: 'I’m switching from tennis. Round, teardrop or diamond?', eng: '♡ 198 · 💬 74', reply: 'Welcome to padel, Ed! Start with a round racket like the Redonda Control: the big sweet spot forgives tennis timing. Move to a teardrop when you start attacking more. 🎾' }
+    ],
+    events: [ { zoneEvent: true, tag: 'DEMO DAY', title: 'Try the whole range', when: 'Dec 5 · The Glasshouse, Canary Wharf', desc: 'Every Solera racket on court to try, with Tom Hale running free mini-clinics.', registered: 210, capacity: 300 } ],
+    about: { founded: 'Valencia, Spain · 2011', story: 'Two club players and an engineer who thought rackets should be tested by the people who play with them. Every Solera racket is designed and tested in Valencia. We joined GENEXXO as PadelXX’s Founding Partner because this is where padel players gather.', milestones: [['2011', 'First racket built in a Valencia workshop'], ['2019', 'The Redonda Control becomes our bestseller'], ['2026', 'Founding Partner on PadelXX']], values: ['Tested by players', 'Elbow-friendly by design', 'Old rackets to junior clubs'] } }),
+
+  'pared-balls': brand({ key: 'pared-balls', name: 'Pared Balls', color: '#C2751A', gradient: SUN, tier: 'Brand Zone',
+    tagline: 'Always a fresh tube', stats: { followers: '28.7K', content: '190', products: '12' },
+    ad: { badge: 'Featured', img: U('1646649853517-e2f75cde1908', 760, 760), hl: 'Pared Fresh.', sub: 'Tour-grade balls delivered every month. Pause or cancel anytime.', meta: 'From £9/month' },
+    products: [
+      { name: 'Pared Tour (3 balls)', price: '£6', tag: 'BESTSELLER', emoji: '🎾', rating: 4.8, reviews: 4210, cat: 'balls', desc: 'Pressurised tour-grade balls with a lively, consistent bounce.', features: ['Tour grade', 'Pressurised tube', 'Box of 24 available'], review: { who: 'Gus P.', text: 'Bounce stays true for longer than anything I have tried.' } },
+      { name: 'Pared Fresh subscription', price: '£9/mo', tag: 'SUBSCRIPTION', emoji: '📦', rating: 4.9, reviews: 1830, cat: 'subscription', special: true, desc: 'Two tubes delivered every month to your door or your club.', features: ['2 tubes a month', 'Pause anytime', 'Free delivery'], review: { who: 'Kim L.', text: 'Never turn up with dead balls again.' } },
+      { name: 'Club Box (72 balls)', price: '£110', tag: 'CLUBS', emoji: '🏢', rating: 4.8, reviews: 540, cat: 'balls', desc: '24 tubes for clubs, academies and leagues.', features: ['24 tubes', 'Volume pricing'], review: { who: 'Carla R.', text: 'What we use at the academy.' } },
+      { name: 'Ball Pressuriser', price: '£25', emoji: '🔋', rating: 4.5, reviews: 620, cat: 'accessories', special: true, desc: 'Keeps open balls at pressure between games.', features: ['Holds 4 balls', 'Pump-action'], review: { who: 'Pete D.', text: 'Doubles the life of a tube.' } },
+      { name: 'Recycle Your Tubes', price: 'Free', tag: 'SERVICE', emoji: '♻️', rating: 4.9, reviews: 290, cat: 'accessories', desc: 'Send old balls and tubes back; we recycle them into court underlay.', features: ['Free returns bag', 'Any brand'], review: { who: 'Lola F.', text: 'Our club sends a bag every month.' } }
+    ],
+    shopCats: [ { key: 'balls', label: 'Balls', icon: '🎾' }, { key: 'subscription', label: 'Subscription', icon: '📦' }, { key: 'accessories', label: 'Accessories', icon: '🔋' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 1h', text: '<b>Pared Fresh</b>: tour-grade balls every month, so you always open a new tube.', img: U('1646649853517-e2f75cde1908', 800, 440), eng: '♡ 3.6K · 💬 270', product: 1 } ],
+    events: [ { zoneEvent: true, tag: 'OFFER', title: 'Clubs: first Club Box half price', when: 'Until Nov 30', desc: 'Clubs and academies get their first 72-ball Club Box at half price.', registered: 140, capacity: 400 } ],
+    about: { founded: 'Barcelona, Spain · 2018', story: 'Pared means wall: the thing that makes padel, padel. We make one ball and make it well, and we take the old ones back.', milestones: [['2018', 'First Pared Tour tubes'], ['2022', 'Pared Fresh subscription launches'], ['2026', 'Brand Zone on PadelXX']], values: ['One ball, made well', 'Fresh every month', 'Every tube recycled'] } }),
+
+  'lima-court-wear': brand({ key: 'lima-court-wear', name: 'Lima Court Wear', color: '#6E9A0C', gradient: LIME, tier: 'Brand Zone',
+    tagline: 'Grip on the grass, comfort at the glass', stats: { followers: '41.9K', content: '310', products: '68' },
+    ad: { badge: 'Featured', img: U('1613870930431-a09c7139eb33', 760, 760), hl: 'The Espiga Court Shoe.', sub: 'A herringbone sole made for sand-filled turf. Stop where you mean to.', meta: 'From £35' },
+    products: [
+      { name: 'Espiga Court Shoe', price: '£110', tag: 'BESTSELLER', emoji: '👟', rating: 4.9, reviews: 2620, cat: 'shoes', special: true, desc: 'Full herringbone outsole for sand-filled artificial grass, with a reinforced toe for drag shots.', features: ['Herringbone outsole', 'Reinforced toe', 'Cushioned heel'], review: { who: 'Bella R.', text: 'No more slipping on the sand. Game changer.' } },
+      { name: 'Espiga Lite', price: '£85', emoji: '👟', rating: 4.7, reviews: 1180, cat: 'shoes', desc: 'Lighter, for indoor courts and quick feet.', features: ['Lightweight mesh', 'Omni sole'], review: { who: 'Tom H.', text: 'What I wear for coaching all day.' } },
+      { name: 'Court Polo', price: '£35', emoji: '👕', rating: 4.7, reviews: 860, cat: 'apparel', desc: 'Quick-dry polo with a stretch back panel.', features: ['Recycled polyester', 'Stretch panel'], review: { who: 'Gus P.', text: 'Stays dry through a three-setter.' } },
+      { name: 'Skort with Ball Pocket', price: '£42', tag: 'NEW', emoji: '🩳', rating: 4.8, reviews: 640, cat: 'apparel', desc: 'Built-in shorts and a pocket that actually holds a padel ball.', features: ['Ball pocket', 'Built-in shorts'], review: { who: 'Lola F.', text: 'Finally a pocket that fits a ball!' } },
+      { name: 'Winter Court Layer', price: '£55', emoji: '🧥', rating: 4.8, reviews: 410, cat: 'apparel', special: true, desc: 'A light thermal half-zip for cold outdoor courts.', features: ['Thermal fleece back', 'Thumb loops'], review: { who: 'Kim L.', text: 'Outdoor winter league essential.' } }
+    ],
+    shopCats: [ { key: 'shoes', label: 'Shoes', icon: '👟' }, { key: 'apparel', label: 'Apparel', icon: '👕' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 5h', text: 'The <b>Espiga Court Shoe</b>: a herringbone sole made for padel turf.', img: U('1613870930431-a09c7139eb33', 800, 440), eng: '♡ 3.1K · 💬 240', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Shoe fitting night', when: 'Nov 27 · Manchester', desc: 'Try every Espiga on court with a gait check, at the Find-a-Fourth Thursday social.', registered: 72, capacity: 120 } ],
+    about: { founded: 'Lisbon, Portugal · 2016', story: 'A padel shoe company first. We started because tennis shoes do not grip sand-filled turf, and we still test every sole on real courts.', milestones: [['2016', 'The first Espiga sole'], ['2023', 'Apparel launches'], ['2026', 'Brand Zone on PadelXX']], values: ['Made for padel', 'Tested on court', 'Recycled materials'] } }),
+
+  'glasshouse-padel': brand({ key: 'glasshouse-padel', name: 'The Glasshouse Padel Clubs', color: '#14B8A6', gradient: TEAL, tier: 'Brand Zone',
+    tagline: 'Indoor padel, 6am to 11pm, all year', stats: { followers: '58.3K', content: '420', products: '10' },
+    ad: { badge: 'Opening', img: U('1767128890954-20ce481be8f0', 760, 760), hl: 'Leeds opens 6 December.', sub: 'Eight panoramic indoor courts, a café and a coached first session.', meta: 'Courts from £28' },
+    products: [
+      { name: 'Court booking, peak (90 min)', price: '£48', tag: 'BOOK', emoji: '🏟️', rating: 4.8, reviews: 3820, cat: 'courts', special: true, desc: 'A panoramic indoor court for four, 5pm to 10pm weekdays and weekends.', features: ['Panoramic glass court', 'Racket hire available', 'Split payment between four'], review: { who: 'Kim L.', text: 'Book, split, play. Never easier.' } },
+      { name: 'Court booking, off-peak (90 min)', price: '£28', emoji: '🌅', rating: 4.8, reviews: 2140, cat: 'courts', desc: 'Weekdays before 5pm.', features: ['Same courts, lower price', 'Split payment'], review: { who: 'Pete D.', text: 'Lunchtime padel is the best part of my week.' } },
+      { name: 'Membership', price: '£39/mo', tag: 'BESTSELLER', emoji: '🔑', rating: 4.9, reviews: 1560, cat: 'membership', special: true, desc: 'Book 14 days ahead, 20% off courts and free socials.', features: ['14-day booking window', '20% off courts', 'All Glasshouse clubs'], review: { who: 'Bella R.', text: 'Pays for itself in three bookings.' } },
+      { name: 'Beginner Course (4 weeks)', price: '£80', tag: 'BEGINNER', emoji: '🎓', rating: 4.9, reviews: 980, cat: 'coaching', desc: 'Four coached sessions, rackets included.', features: ['Small groups', 'Rackets and balls included'], review: { who: 'Ed T.', text: 'Went from zero to league in six months.' } },
+      { name: 'Friday Social Americano', price: '£15', emoji: '🍹', rating: 4.8, reviews: 740, cat: 'coaching', desc: 'Rotate partners every game, then drinks in the café.', features: ['16 players', 'All levels'], review: { who: 'Lola F.', text: 'Best way to meet new players.' } }
+    ],
+    shopCats: [ { key: 'courts', label: 'Courts', icon: '🏟️' }, { key: 'membership', label: 'Membership', icon: '🔑' }, { key: 'coaching', label: 'Courses & socials', icon: '🎓' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'Our <b>Leeds</b> club opens on 6 December: eight panoramic indoor courts.', img: U('1767128890954-20ce481be8f0', 800, 440), eng: '♡ 4.4K · 💬 380', product: 2 },
+            { type: 'post', sub: 'Club life · 2d', text: 'Friday Americano at Canary Wharf: 16 players, 7 rounds, one very loud café afterwards.', img: U('1767128890948-0e3f70016b8f', 800, 440), eng: '♡ 1.9K · 💬 133' } ],
+    events: [ { zoneEvent: true, tag: 'OPENING', title: 'Glasshouse Leeds opening day', when: 'Dec 6 · Leeds', desc: 'Free taster sessions every hour, exhibition match at 6pm.', registered: 520, capacity: 800 } ],
+    about: { founded: 'London · 2020', story: 'We opened our first four indoor courts in a Canary Wharf warehouse in 2020. Today the Glasshouse runs six clubs across the UK, all indoor, so the weather never cancels a game.', milestones: [['2020', 'Canary Wharf opens with four courts'], ['2024', 'Manchester and Bristol open'], ['2026', 'Brand Zone on PadelXX']], values: ['Indoor, all year', 'Every level welcome', 'Community first'] } }),
+
+  'panorama-court-systems': { key: 'panorama-court-systems', kind: 'business', gw: 'padel', name: 'Panorama Court Systems', color: '#2F6FED', gradient: BLUE, img: U('1689942963385-f5bd03f3b270', 900, 500),
+    tier: 'Verified', category: 'Court construction', tagline: 'Panoramic padel courts, designed, built and installed.',
+    about: { founded: 'Seville, Spain · 2007', story: 'We design and build padel courts: panoramic glass, steel frames, LED lighting and roofs for outdoor clubs. Over 4,000 courts installed in 30 countries, from hotel rooftops to 20-court clubs.' },
+    stats: { years: 19, staff: 260, clients: '4,000+ courts installed' },
+    caps: [ { name: 'Panoramic courts', detail: 'Frameless glass walls on every side, competition specification.' }, { name: 'Covered courts', detail: 'Steel canopies and full buildings so outdoor clubs play all year.' }, { name: 'Lighting & booking tech', detail: 'LED lighting and door access tied to the booking system.' } ],
+    specs: { moq: '1 court', lead: '8–12 weeks per court', regions: 'Europe, UK, Middle East', certs: ['FIP court specification', 'EN 12150 tempered glass', 'ISO 9001 & 14001'] },
+    supplies: [ { kind: 'brand', key: 'glasshouse-padel', what: 'All 48 courts across the six Glasshouse clubs' } ],
+    cases: [ { title: 'The Glasshouse, Leeds', text: 'Eight panoramic indoor courts installed in a former mill in nine weeks.' }, { title: 'Rooftop court, Dubai', text: 'A single panoramic court 40 floors up, lifted in by crane.' } ],
+    feed: [ { sub: 'Project · 2d', text: 'Leeds handed over: eight courts, nine weeks, ready for opening day.' }, { sub: 'News · 1w', text: 'Booking slots for spring 2027 installs are now open.' } ],
+    contact: { person: 'Javier Morales, Club projects', response: 'Replies within 24 hours' } },
+
+  'turfline-surfaces': { key: 'turfline-surfaces', kind: 'business', gw: 'padel', name: 'Turfline Surfaces', color: '#6E9A0C', gradient: LIME, img: U('1658491830143-72808ca237e3', 900, 500),
+    tier: 'Verified', category: 'Sports surfaces', tagline: 'Padel turf supplied, laid and resurfaced.',
+    about: { founded: 'Manchester, UK · 2012', story: 'We make and lay artificial grass for padel: texturised and monofilament turf, sand infill and a resurfacing service that brings a tired court back in a day.' },
+    stats: { years: 14, staff: 85, clients: '900+ courts surfaced' },
+    caps: [ { name: 'Padel turf', detail: 'Texturised and monofilament turf in blue, green and terracotta.' }, { name: 'Resurfacing', detail: 'Lift, replace and re-sand a court in one day.' }, { name: 'Maintenance', detail: 'Brushing, re-sanding and line repairs on a schedule.' } ],
+    specs: { moq: '1 court (200 m²)', lead: '2–3 weeks', regions: 'UK & Ireland', certs: ['FIP-tested turf', 'ISO 9001', 'SAPCA member'] },
+    supplies: [ { kind: 'brand', key: 'glasshouse-padel', what: 'Turf and monthly maintenance for every Glasshouse court' } ],
+    cases: [ { title: 'Glasshouse Canary Wharf', text: 'Four courts resurfaced overnight between Friday and Saturday sessions.' } ],
+    feed: [ { sub: 'Tips · 4d', text: 'Re-sand every six weeks. A dry, bare court is a slippery court.' } ],
+    contact: { person: 'Priya Shah, Club accounts', response: 'Replies within one working day' } }
+});
+
+/* events in the Events tab */
+EVENTS_FEED.push(
+  { gw: 'padel', zone: 'lima-court-wear', type: 'Event', icon: '👟', time: 'Nov 27', title: 'Shoe fitting night, Manchester', desc: 'Try every Lima Espiga on court with a gait check at the Find-a-Fourth social.' },
+  { gw: 'padel', zone: 'pared-balls', type: 'Offer', icon: '🎾', time: 'Nov 30', title: 'Club Box half price ends', desc: 'Clubs and academies: first 72-ball Pared Club Box at half price, until 30 November.' },
+  { gw: 'padel', type: 'Event', icon: '🏆', time: 'Dec 2', title: 'Manchester winter league launch', desc: 'Find-a-Fourth’s winter league starts. Five divisions, all levels.' },
+  { gw: 'padel', zone: 'solera-padel', type: 'Event', icon: '💎', time: 'Dec 5', title: 'Solera demo day, Canary Wharf', desc: 'Try the whole Solera range at The Glasshouse, with free mini-clinics from Tom Hale.' },
+  { gw: 'padel', zone: 'glasshouse-padel', type: 'Event', icon: '🏟️', time: 'Dec 6', title: 'Glasshouse Leeds opening day', desc: 'Eight new indoor courts. Free tasters every hour and an exhibition match at 6pm.' },
+  { gw: 'padel', type: 'Event', icon: '🎄', time: 'Dec 13', title: 'Liga Amateur Madrid Christmas finals', desc: '128 pairs, five divisions, finals day in Chamartín.' },
+  { gw: 'padel', type: 'Event', icon: '☀️', time: 'Jan 11', title: 'Winter sun padel week, Marbella', desc: 'Carla Ruiz Padel Academy’s January week: five days, fifteen hours on court.' }
+);
+})();
+/* ═════════ /PADELXX ═════════ */
+/* ═════════ GOLFXX — a Sports demo gateway (2026-11-14, Sean) ═════════
+   Built like ClimbXX and ChristmasXX: theme, feed, 4 Brand Zones, 2 Business Zones, 3 Pros, 2 communities, 3 apps, events.
+   Palette (light): clubhouse cream, fairway green, links gold, heather. Pinned in PINNED_GWS with BaseballXX and PadelXX.
+   Brands, pros and communities are fictional; places are real. Source of truth: _lab/sports/golfxx-block.js. */
+(function(){
+const U = (id, w, h) => `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&q=75`;
+const FAIRWAY = 'linear-gradient(135deg,#2E8B57,#0F3B26)', GOLD = 'linear-gradient(135deg,#D9B45A,#9C7A2A)', NAVY = 'linear-gradient(135deg,#2B4C7E,#132544)', HEATHER = 'linear-gradient(135deg,#8E6BB8,#4E3473)';
+
+GATEWAYS.golf = {
+  name: 'GolfXX', domain: 'golfxx.com', emoji: '⛳', sector: 'sports', live: true,
+  tagline: 'The Golf Universe',
+  theme: {
+    bg: '#F5F3EA', text: '#10261C', cardBg: '#FFFDF6', cardBorder: 'rgba(16,38,28,.08)',
+    headerBg: 'linear-gradient(180deg,#E1EADB,#F5F3EA)', accent: '#1F6B3F', accentAlt: '#B8912F', dark: false
+  },
+  gradient: 'linear-gradient(135deg,#0F3B26,#1F6B3F,#D9B45A)',
+  stats: { members: '4.6M', brands: '2,800+', agents: '81' },
+  spaces: ['All Feed', 'Courses & Tee Times', 'Coaching', 'Gear', 'Golf Travel', 'The Majors'],
+  trending: ['#WinterGolf', '#LinksLife', '#FirstBirdie'],
+  brandZones: [
+    { key: 'linksmith-clubs', name: 'Linksmith Clubs', color: '#2B4C7E', tier: 'Founding Partner', tag: 'Forged irons and custom fitting, from Fife' },
+    { key: 'heather-gorse', name: 'Heather & Gorse', color: '#6B4E9B', tier: 'Brand Zone', tag: 'Golf knitwear and waterproofs for four seasons in one round' },
+    { key: 'pinseeker-balls', name: 'Pinseeker Balls', color: '#B8912F', tier: 'Brand Zone', tag: 'Tour-quality balls, personalised' },
+    { key: 'caddieline', name: 'Caddieline', color: '#1F6B3F', tier: 'Brand Zone', tag: 'Electric trolleys and carry bags' }
+  ],
+  apps: [
+    { name: 'Scorecard', color: '#1F6B3F', desc: 'Stableford and stroke play, hole by hole', key: 'scorecard', url: 'apps/scorecard.html',
+      dev: 'Fairway Software', rating: '4.9', users: '326K', perms: ['profile', 'feed'],
+      tagline: 'Your scorecard, your points, worked out as you walk.',
+      about: 'Scorecard keeps your score hole by hole and works out Stableford points with your handicap strokes applied to the right holes. No pencil, no maths in the bar afterwards. When you finish, share your round to the GolfXX feed in one tap.',
+      features: ['Strokes and Stableford points hole by hole', 'Handicap strokes applied by stroke index', 'Front nine, back nine and totals', 'Share your round to GolfXX'],
+      shots: ['apps/scorecard/shot-1.jpg', 'apps/scorecard/shot-2.jpg', 'apps/scorecard/shot-3.jpg'],
+      version: '7.0', size: '11 KB',
+      updates: [ { v: '7.0', ago: 5, notes: 'New card layout with front and back nine side by side.' }, { v: '6.8', ago: 100, notes: 'Stableford points shown as you go.' }, { v: '6.5', ago: 220, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@sunday_hacker_steve', stars: 5, ago: 2, text: 'No more adding up in the clubhouse. 36 points and it told me before I did.' }, { who: '@fourball_fiona', stars: 5, ago: 6, text: 'Simple, quick, and big enough to read in the sun.' }, { who: '@bunker_bill', stars: 4, ago: 15, text: 'Would love a match-play mode.' } ] },
+    { name: 'Yardage', color: '#B8912F', desc: 'Distances to the green, and the club', key: 'yardage', url: 'apps/yardage.html',
+      dev: 'Linksmith Clubs', rating: '4.8', users: '148K', perms: ['profile', 'feed'],
+      tagline: 'Front, middle and back. And which club to hit.',
+      about: 'Yardage shows the distance to the front, middle and back of every green, with the hazards in between, and suggests a club from your own distances. Set up your bag once and it knows you hit a 7-iron 150. This demo carries a sample links course.',
+      features: ['Front, middle and back of the green', 'Hazards on every hole', 'Club suggestion from your own distances', 'Your bag, set up once'],
+      shots: ['apps/yardage/shot-1.jpg', 'apps/yardage/shot-2.jpg', 'apps/yardage/shot-3.jpg'],
+      version: '4.2', size: '10 KB',
+      updates: [ { v: '4.2', ago: 3, notes: 'Wind adjustment: plays a club more into the breeze.' }, { v: '4.0', ago: 140, notes: 'Your bag: set your own club distances.' }, { v: '3.6', ago: 260, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@links_lover_lachlan', stars: 5, ago: 3, text: 'The wind adjustment is spot on for links golf.' }, { who: '@fourball_fiona', stars: 5, ago: 10, text: 'Replaced my rangefinder for casual rounds.' }, { who: '@par3_paddy', stars: 4, ago: 21, text: 'Great. More courses please!' } ] },
+    { name: 'Handicap Tracker', color: '#2B4C7E', desc: 'Your handicap index, round by round', key: 'handicap-tracker', url: 'apps/handicap-tracker.html',
+      dev: 'Nineteenth Hole Labs', rating: '4.7', users: '89.5K', perms: ['profile', 'feed'],
+      tagline: 'Every round counts. See your handicap move.',
+      about: 'Handicap Tracker logs your rounds and works out a handicap index the way the World Handicap System does: the best 8 score differentials from your last 20 rounds. Add a round with the course rating and slope, and watch the number come down.',
+      features: ['Add a round in seconds', 'Score differentials worked out for you', 'Best 8 of your last 20', 'Share a new low to GolfXX'],
+      shots: ['apps/handicap-tracker/shot-1.jpg', 'apps/handicap-tracker/shot-2.jpg', 'apps/handicap-tracker/shot-3.jpg'],
+      version: '3.1', size: '9 KB',
+      updates: [ { v: '3.1', ago: 7, notes: 'Counting rounds highlighted in your history.' }, { v: '3.0', ago: 160, notes: 'Trend chart across your last 20 rounds.' }, { v: '2.7', ago: 280, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@sunday_hacker_steve', stars: 5, ago: 4, text: 'Watched myself go from 22.4 to 18.1 this year. Addictive.' }, { who: '@new_golfer_nadia', stars: 5, ago: 12, text: 'Explains what the numbers mean, which nobody at my club did.' }, { who: '@bunker_bill', stars: 4, ago: 25, text: 'Shows me exactly which bad rounds still count.' } ] }
+  ],
+  pros: [
+    { key: 'emma-blake-golf', name: 'Emma Blake Golf', color: '#1F6B3F', tag: 'PGA Professional · lessons, playing lessons, juniors', role: 'Golf coach',
+      img: U('1697448524689-8dfd3d11071e', 800, 800), base: 'Surrey, UK', langs: 'English', years: 15, rating: '4.9', reviewsN: 538, cur: '£',
+      creds: ['PGA Professional', 'TPI certified fitness instructor', 'England Golf safeguarding trained'],
+      about: 'Emma coaches golfers of every level from a heathland club in Surrey. Lessons use launch-monitor data and video, but the plan is always simple: one change at a time, practised until it holds on the course.',
+      services: [ { id: 'lesson', name: 'Full swing lesson', dur: '45 minutes', price: 65, desc: 'Video and launch monitor, a clear fix and the drills to make it stick.' },
+                  { id: 'playing', name: 'Nine-hole playing lesson', dur: '2 hours', price: 140, desc: 'Course management, club choice and the shots that cost you most.' },
+                  { id: 'short', name: 'Short-game package (3 lessons)', dur: '3 × 45 min', price: 170, desc: 'Chipping, pitching, bunkers and putting: where the shots really are.' } ],
+      avail: { days: [2, 3, 4, 5, 6, 0], times: ['08:30', '12:00', '15:30'] },
+      reviews: [ { who: '@new_golfer_nadia', stars: 5, ago: 3, text: 'Three lessons and I broke 100 for the first time.' }, { who: '@sunday_hacker_steve', stars: 5, ago: 11, text: 'The playing lesson saved me five shots a round.' }, { who: '@fourball_fiona', stars: 5, ago: 26, text: 'Patient, clear, and funny too.' } ],
+      posts: [ { ago: 1, text: 'Winter is when swings get built. Book a block of lessons now and play your best golf in April.' }, { ago: 7, text: 'Most amateurs leave putts short. Aim to finish 18 inches past the hole.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'callum-reid-fitting', name: 'Callum Reid Club Fitting', color: '#2B4C7E', tag: 'Custom club fitting · irons, driver, putter', role: 'Club fitter',
+      img: U('1530028828-25e8270793c5', 800, 800), base: 'St Andrews, Scotland', langs: 'English', years: 18, rating: '4.9', reviewsN: 402, cur: '£',
+      creds: ['Master club fitter', 'Former PGA assistant professional', 'Launch-monitor certified'],
+      about: 'Callum has fitted clubs in St Andrews for eighteen years. Every fitting is brand-neutral: you hit the heads and shafts that suit your swing, outdoors on a real range, and leave with the numbers to prove it.',
+      services: [ { id: 'irons', name: 'Iron fitting', dur: '90 minutes', price: 95, desc: 'Head, shaft, length and lie, fitted outdoors. Fee refunded against a set.' },
+                  { id: 'driver', name: 'Driver fitting', dur: '60 minutes', price: 75, desc: 'More carry, less spin, tighter dispersion.' },
+                  { id: 'bag', name: 'Full bag fitting', dur: '3 hours', price: 225, desc: 'Driver to putter, with gapping so every club has a job.' } ],
+      avail: { days: [1, 2, 3, 4, 5, 6], times: ['09:00', '11:30', '14:30'] },
+      reviews: [ { who: '@links_lover_lachlan', stars: 5, ago: 5, text: 'Gained 18 yards with the driver. Unreal.' }, { who: '@par3_paddy', stars: 5, ago: 14, text: 'Honest: told me to keep my old putter.' }, { who: '@bunker_bill', stars: 4, ago: 30, text: 'Worth the trip to St Andrews.' } ],
+      posts: [ { ago: 2, text: 'Winter fittings come with indoor launch-monitor bays. No excuses.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'fairway-escapes', name: 'Fairway Escapes', color: '#B8912F', tag: 'Hosted golf trips · Algarve, Scotland, Ireland', role: 'Golf travel host',
+      img: U('1646204221936-35451c74e3de', 800, 800), base: 'Algarve, Portugal', langs: 'English, Portuguese', years: 12, rating: '4.8', reviewsN: 316, cur: '£',
+      creds: ['ATOL protected', 'ABTA member', 'Hosted 900+ golf groups'],
+      about: 'We host small-group golf trips: the tee times, the transfers, the hotel near the first tee and a host who handles everything else. Winter sun in the Algarve, links weeks in Scotland and Ireland in the summer.',
+      services: [ { id: 'algarve', name: 'Algarve winter sun (4 rounds)', dur: '5 nights', price: 895, desc: 'Four rounds on Algarve courses, hotel, transfers and a hosted dinner.' },
+                  { id: 'links', name: 'Scottish links week (5 rounds)', dur: '7 nights', price: 1890, desc: 'Fife and East Lothian links, with a day for the St Andrews ballot.' },
+                  { id: 'society', name: 'Golf society trip planning', dur: 'Call + itinerary', price: 95, desc: 'A tailored trip for groups of 8 or more. Fee refunded when you book.' } ],
+      avail: { days: [1, 2, 3, 4, 5], times: ['10:00', '14:00'] },
+      reviews: [ { who: '@fourball_fiona', stars: 5, ago: 9, text: 'Algarve in February, 20 degrees, four rounds. Bliss.' }, { who: '@golf_society_gary', stars: 5, ago: 20, text: 'Planned our 16-man society trip perfectly.' }, { who: '@links_lover_lachlan', stars: 4, ago: 45, text: 'Links week was a dream. Bring waterproofs!' } ],
+      posts: [ { ago: 1, text: 'February Algarve weeks are filling. Escape the frost.' }, { ago: 8, text: 'Links week 2027 dates are live: June and September.' } ],
+      tier: 'Pro Zone', verified: true }
+  ],
+  communities: [
+    { key: 'old-course-ballot-club', name: 'The Old Course Ballot Club', domain: 'ballot.golfxx.com', color: '#B8912F', img: U('1672871582992-1b30b19878f5', 900, 500),
+      scope: 'Global', where: 'St Andrews and everywhere', members: 21600, online: 340, tagline: 'Everyone who has tried the ballot. Some of us got lucky.',
+      about: 'Golfers from all over the world who dream of the Old Course at St Andrews. We share ballot tips, celebrate the lucky ones, swap tee-time stories and organise meet-ups for anyone travelling to the Home of Golf.',
+      rules: ['Celebrate every ballot win', 'No tee-time reselling', 'Respect the Old Course'],
+      mods: ['@links_lover_lachlan', '@swilcan_sue'],
+      threads: [ { t: 'Got in! Old Course tomorrow at 8:40 🎉', by: '@par3_paddy', tag: 'BALLOT', replies: 186, ago: 0, votes: 512 }, { t: 'Best time of year to try the ballot?', by: '@first_timer_finn', tag: 'Q&A', replies: 74, ago: 1, votes: 133 }, { t: 'Winter links: the Old Course in November', by: '@swilcan_sue', tag: 'COURSES', replies: 48, ago: 2, votes: 97 }, { t: 'Meet-up at the Swilcan Bridge, December', by: '@links_lover_lachlan', tag: 'MEET', replies: 29, ago: 4, votes: 66 } ],
+      events: [ { title: 'Swilcan Bridge photo meet-up', day: 6, time: '10:00', where: 'St Andrews, Fife' }, { title: 'Online ballot tips session', day: 3, time: '19:00', where: 'Online' } ] },
+    { key: 'sunday-hackers-leeds', name: 'Sunday Hackers, Leeds', domain: 'leeds.golfxx.com', color: '#1F6B3F', img: U('1757874905852-ea4596dd221a', 900, 500),
+      scope: 'Local', where: 'Leeds', members: 1860, online: 46, tagline: 'High handicaps, low stress, good company.',
+      about: 'A friendly society for golfers who love the game more than it loves them. Sunday rounds at municipal and member courses around Leeds, a winter league, and a monthly prize for the best story from the course.',
+      rules: ['Every handicap welcome', 'Repair your pitch marks', 'The best story wins, not the best score'],
+      mods: ['@sunday_hacker_steve', '@new_golfer_nadia'],
+      threads: [ { t: 'Winter league draw: who is in group B?', by: '@sunday_hacker_steve', tag: 'LEAGUE', replies: 44, ago: 0, votes: 81 }, { t: 'Lost 9 balls on Sunday. Ask me anything.', by: '@bunker_bill', tag: 'STORIES', replies: 67, ago: 1, votes: 158 }, { t: 'Any courses with winter greens that are still decent?', by: '@new_golfer_nadia', tag: 'Q&A', replies: 31, ago: 3, votes: 52 } ],
+      events: [ { title: 'Sunday society round', day: 0, time: '09:30', where: 'Roundhay, Leeds' }, { title: 'Christmas Texas Scramble', day: 6, time: '10:00', where: 'Leeds' } ] }
+  ],
+  feed: [
+    { av: 'GX', avBg: FAIRWAY, author: 'GolfXX Editorial', sub: 'Featured · Just now', badge: '★ FEATURED',
+      text: 'Tee times, coaching, the clubs that suit your swing and the trips worth taking. From your first birdie to the Old Course ballot: golf, all in one place.',
+      img: U('1646204221936-35451c74e3de', 800, 600), eng: '♡ 52.7K · 💬 6.4K · ↗ 4.8K' },
+    { av: 'PP', avBg: GOLD, author: '@par3_paddy', sub: 'Courses & Tee Times · Just now', badge: 'COMMUNITY',
+      text: 'Fourteen years of entering the ballot. Tomorrow at 8:40, I play the Old Course. I might not sleep tonight ⛳',
+      img: U('1672871583062-7613925d0734', 800, 600), eng: '♡ 14.3K · 💬 1.9K · ↗ 820' },
+    { av: 'LS', avBg: NAVY, author: 'Linksmith Clubs', sub: 'Founding Partner · Brand Zone', badge: 'BRAND ZONE',
+      text: 'The <b>Kingdom Forged irons</b>: one-piece forged in carbon steel, ground by hand in Fife, fitted to your swing before they leave the workshop.',
+      img: U('1530028828-25e8270793c5', 800, 600), eng: '♡ 10.8K · 💬 960 · ↗ 1.3K' },
+    { av: 'HG', avBg: HEATHER, author: 'Heather & Gorse', sub: 'Brand Zone · 1h ago', badge: 'BRAND ZONE',
+      text: 'Four seasons in one round? Meet <b>The Haar</b>: a fully waterproof jacket quiet enough to swing in, light enough to forget you are wearing it.',
+      img: U('1592919505780-303950717480', 800, 600), eng: '♡ 4.6K · 💬 318 · ↗ 402' },
+    { av: 'NA', avBg: FAIRWAY, author: '@new_golfer_nadia', sub: 'Coaching · 2h ago', badge: 'COMMUNITY',
+      text: 'Broke 100 for the first time today! Three lessons with Emma Blake and a lot of practice on the putting green 🏌️‍♀️',
+      img: U('1587174486073-ae5e5cff23aa', 800, 600), eng: '♡ 5.2K · 💬 640 · ↗ 210' },
+    { av: 'CL', avBg: FAIRWAY, author: 'Caddieline', sub: 'Brand Zone · 4h ago', badge: 'BRAND ZONE',
+      text: 'The <b>Caddieline Follow</b> electric trolley walks the course with you, hands-free. 36 holes on one charge, and it folds into any boot.',
+      img: U('1593282153762-a41e3cceb06c', 800, 600), eng: '♡ 3.7K · 💬 290 · ↗ 380' },
+    { av: 'FE', avBg: GOLD, author: 'Fairway Escapes', sub: 'Golf Travel · 6h ago', badge: 'PRO ZONE',
+      text: 'February in the Algarve: blue skies, 19 degrees and four rounds on the coast. Two rooms left in our hosted week.',
+      img: U('1635328800844-0e68e80ab258', 800, 600), eng: '♡ 2.8K · 💬 176 · ↗ 245' }
+  ],
+  prompts: ['Book me a tee time near Leeds this Sunday morning', 'How do I enter the Old Course ballot at St Andrews?', 'Plan a 4-round golf trip to the Algarve in February', 'What handicap would I get from these three scores?'],
+  businesses: ['greenkeeper-supply-co', 'clubhouse-fleet']
+};
+
+/* the four Brand Zones and two Business Zones */
+const brand = (o) => Object.assign({ kind: 'brand', gw: 'golf', verified: true }, o);
+Object.assign(ZONES, {
+  'linksmith-clubs': brand({ key: 'linksmith-clubs', name: 'Linksmith Clubs', color: '#2B4C7E', gradient: NAVY, tier: 'Founding Partner',
+    tagline: 'Forged and fitted in Fife since 1898', stats: { followers: '104K', content: '720', products: '64' },
+    ad: { badge: 'Featured', img: U('1530028828-25e8270793c5', 760, 760), hl: 'The Kingdom Forged irons.', sub: 'One-piece forged, ground by hand, fitted to your swing.', meta: 'From £149' },
+    products: [
+      { name: 'Kingdom Forged Irons (4–PW)', price: '£1,095', tag: 'FLAGSHIP', emoji: '🏌️', rating: 4.9, reviews: 1480, cat: 'irons', special: true, desc: 'One-piece forged carbon-steel blades with a touch of cavity for forgiveness.', features: ['Forged 1025 carbon steel', 'Hand-ground soles', 'Custom fitting included'], review: { who: 'Lachlan M.', text: 'The feel off the face is like nothing I have hit. Worth every penny.' } },
+      { name: 'Kingdom Game-Improvement Irons', price: '£795', tag: 'BESTSELLER', emoji: '⛳', rating: 4.8, reviews: 2210, cat: 'irons', desc: 'Hollow-body irons that launch high and forgive the thin ones.', features: ['Hollow body', 'Wide sole', 'Fitted lie and length'], review: { who: 'Steve H.', text: 'My 7-iron finally gets off the ground.' } },
+      { name: 'East Neuk Driver', price: '£449', emoji: '🚀', rating: 4.7, reviews: 960, cat: 'woods', desc: 'Adjustable 460cc driver with low spin and a forgiving face.', features: ['460cc titanium head', 'Adjustable loft', 'Fitted shaft'], review: { who: 'Bill T.', text: 'Fifteen yards longer and in the fairway more.' } },
+      { name: 'Tom’s Wedge', price: '£149', emoji: '🪓', rating: 4.9, reviews: 1320, cat: 'wedges', special: true, desc: 'A forged wedge with a sole grind for tight links lies.', features: ['50° to 60°', 'Three sole grinds', 'Raw finish that rusts beautifully'], review: { who: 'Fiona K.', text: 'Bump-and-runs like a dream.' } },
+      { name: 'Swilcan Putter', price: '£295', tag: 'HANDMADE', emoji: '🎯', rating: 4.9, reviews: 680, cat: 'putters', desc: 'Milled from a single block of steel in our Fife workshop.', features: ['CNC milled', 'Fitted length and lie', 'Personalised stamping'], review: { who: 'Paddy O.', text: 'Holed everything from six feet for a month.' } },
+      { name: 'Regrip & Loft-Lie Check', price: '£45', tag: 'SERVICE', emoji: '🔧', rating: 4.9, reviews: 540, cat: 'service', desc: 'Every club regripped and bent back to spec. Any brand.', features: ['Up to 14 clubs', 'Back in 5 days'], review: { who: 'Nadia S.', text: 'My old set feels new.' } }
+    ],
+    shopCats: [ { key: 'irons', label: 'Irons', icon: '🏌️' }, { key: 'woods', label: 'Woods', icon: '🚀' }, { key: 'wedges', label: 'Wedges', icon: '🪓' }, { key: 'putters', label: 'Putters', icon: '🎯' }, { key: 'service', label: 'Service', icon: '🔧' } ],
+    feed: [
+      { type: 'post', sub: 'Brand post · 3h', text: 'The <b>Kingdom Forged irons</b>: forged, ground by hand, fitted to you.', img: U('1530028828-25e8270793c5', 800, 440), eng: '♡ 10.8K · 💬 960 · ↗ 1.3K', product: 0 },
+      { type: 'post', sub: 'Workshop · Yesterday', text: 'Every Swilcan putter is milled, then finished by hand by one of four people in our Fife workshop.', img: U('1765198955329-54f2ece22c52', 800, 440), eng: '♡ 5.6K · 💬 340' },
+      { type: 'community', who: 'Nadia S.', whoBg: FAIRWAY, sub: 'Community · 1d', text: 'I’m a 28 handicap. Are forged irons too much for me?', eng: '♡ 212 · 💬 58', reply: 'Good question, Nadia. At 28, our Kingdom Game-Improvement irons will help more: a hollow body that launches high and forgives off-centre hits. Come in for a fitting and we will show you the numbers. ⛳' }
+    ],
+    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Workshop open day: forge to fitting', when: 'Dec 5 · St Andrews + livestream', desc: 'See an iron ground by hand, then hit the range on a launch monitor.', registered: 480, capacity: 700 } ],
+    about: { founded: 'St Andrews, Fife · 1898', story: 'A clubmaker’s workshop a mile from the Old Course, making clubs by hand for more than a century. We joined GENEXXO as GolfXX’s Founding Partner because this is where golfers who care about their game gather.', milestones: [['1898', 'The first hickory clubs made in Fife'], ['1985', 'The Kingdom Forged line begins'], ['2026', 'Founding Partner on GolfXX']], values: ['Forged and fitted', 'Made by hand', 'Repair before replace'] } }),
+
+  'heather-gorse': brand({ key: 'heather-gorse', name: 'Heather & Gorse', color: '#6B4E9B', gradient: HEATHER, tier: 'Brand Zone',
+    tagline: 'Four seasons, one round', stats: { followers: '47.1K', content: '360', products: '82' },
+    ad: { badge: 'New', img: U('1592919505780-303950717480', 760, 760), hl: 'The Haar jacket.', sub: 'Fully waterproof, silent when you swing, light enough to forget.', meta: 'From £45' },
+    products: [
+      { name: 'The Haar Waterproof Jacket', price: '£189', tag: 'NEW', emoji: '🧥', rating: 4.9, reviews: 1120, cat: 'waterproofs', special: true, desc: 'A three-layer waterproof that does not rustle at the top of your swing.', features: ['20,000 mm waterproof', 'Silent stretch fabric', 'Packs into its pocket'], review: { who: 'Lachlan M.', text: 'Played Carnoustie in a gale and stayed dry.' } },
+      { name: 'Lambswool V-neck', price: '£95', tag: 'BESTSELLER', emoji: '🧶', rating: 4.8, reviews: 1860, cat: 'knitwear', desc: 'Scottish lambswool in heather, navy and bottle green.', features: ['Scottish lambswool', 'Knitted in the Borders'], review: { who: 'Fiona K.', text: 'Warm, smart, and lasts for years.' } },
+      { name: 'Thermal Base Layer', price: '£45', emoji: '🌡️', rating: 4.7, reviews: 940, cat: 'layers', desc: 'Merino base layer for frosty winter rounds.', features: ['Merino blend', 'Flat seams'], review: { who: 'Steve H.', text: 'Winter golf without the shivering.' } },
+      { name: 'Waterproof Trousers', price: '£110', emoji: '👖', rating: 4.8, reviews: 760, cat: 'waterproofs', desc: 'Stretch waterproof trousers with ankle zips over your shoes.', features: ['Full waterproof', 'Ankle zips'], review: { who: 'Bill T.', text: 'Comfortable enough to wear all round.' } },
+      { name: 'Winter Mitts (pair)', price: '£28', tag: 'WINTER', emoji: '🧤', rating: 4.7, reviews: 1320, cat: 'layers', special: true, desc: 'Fleece-lined cart mitts to keep your hands warm between shots.', features: ['Fleece lined', 'Slip on and off'], review: { who: 'Nadia S.', text: 'December golf essential.' } },
+      { name: 'Repair & Re-proof', price: '£25', tag: 'SERVICE', emoji: '🪡', rating: 4.9, reviews: 310, cat: 'service', desc: 'Seams re-taped and waterproofing renewed. Any brand.', features: ['Re-tape and re-proof', '10-day turnaround'], review: { who: 'Gary P.', text: 'My eight-year-old jacket is waterproof again.' } }
+    ],
+    shopCats: [ { key: 'waterproofs', label: 'Waterproofs', icon: '🧥' }, { key: 'knitwear', label: 'Knitwear', icon: '🧶' }, { key: 'layers', label: 'Layers & mitts', icon: '🌡️' }, { key: 'service', label: 'Repair', icon: '🪡' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Meet <b>The Haar</b>: fully waterproof and silent at the top of your swing.', img: U('1592919505780-303950717480', 800, 440), eng: '♡ 4.6K · 💬 318', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'DEADLINE', title: 'Last order for Christmas delivery', when: 'Dec 17 · 23:59', desc: 'Order by midnight on 17 December for delivery before Christmas.', registered: 1260, capacity: 4000 } ],
+    about: { founded: 'North Berwick, East Lothian · 2005', story: 'We started making golf clothes for the weather on the East Lothian links: wind, rain, sun and haar, sometimes in one round.', milestones: [['2005', 'First waterproofs sold in a North Berwick pro shop'], ['2018', 'Knitwear made in the Scottish Borders'], ['2026', 'Brand Zone on GolfXX']], values: ['Made for real weather', 'Knitted in Scotland', 'Repair and re-proof'] } }),
+
+  'pinseeker-balls': brand({ key: 'pinseeker-balls', name: 'Pinseeker Balls', color: '#B8912F', gradient: GOLD, tier: 'Brand Zone',
+    tagline: 'Tour quality, without the tour price', stats: { followers: '36.4K', content: '220', products: '18' },
+    ad: { badge: 'Featured', img: U('1562204320-31975a5e09ce', 760, 760), hl: 'Pinseeker Tour, personalised.', sub: 'A urethane tour ball with your name, initials or a message.', meta: 'From £24 a dozen' },
+    products: [
+      { name: 'Pinseeker Tour (dozen)', price: '£39', tag: 'BESTSELLER', emoji: '⚪', rating: 4.8, reviews: 3640, cat: 'balls', special: true, desc: 'Four-piece urethane ball with tour spin around the greens.', features: ['Urethane cover', 'Four-piece', 'White or yellow'], review: { who: 'Fiona K.', text: 'Same spin as the big brands at half the price.' } },
+      { name: 'Pinseeker Soft (dozen)', price: '£24', emoji: '🟡', rating: 4.7, reviews: 2120, cat: 'balls', desc: 'Low compression for slower swing speeds. Long and soft.', features: ['Low compression', 'Ionomer cover'], review: { who: 'Steve H.', text: 'Perfect for my swing speed.' } },
+      { name: 'Personalised Dozen', price: '£45', tag: 'PERSONALISED', emoji: '✍️', rating: 4.9, reviews: 1460, cat: 'gifts', special: true, desc: 'Up to three lines of text or a logo on every ball.', features: ['Up to 3 lines', 'Order by 12 December for Christmas'], review: { who: 'Gary P.', text: 'Our society balls look brilliant.' } },
+      { name: 'Hole-in-One Gift Box', price: '£29', tag: 'GIFT', emoji: '🎁', rating: 4.8, reviews: 620, cat: 'gifts', desc: 'A display box for that once-in-a-lifetime ball, engraved with the date and hole.', features: ['Oak display case', 'Engraved plaque'], review: { who: 'Paddy O.', text: 'Hole 7, 2026. Forever.' } },
+      { name: 'Ball Fitting', price: 'Free', tag: 'SERVICE', emoji: '🎯', rating: 4.9, reviews: 380, cat: 'service', desc: 'Answer six questions about your game and we match you to a ball.', features: ['Free online', 'Sample sleeve'], review: { who: 'Nadia S.', text: 'Didn’t know it mattered until I tried.' } }
+    ],
+    shopCats: [ { key: 'balls', label: 'Balls', icon: '⚪' }, { key: 'gifts', label: 'Personalised & gifts', icon: '🎁' }, { key: 'service', label: 'Ball fitting', icon: '🎯' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 6h', text: 'Christmas: order <b>personalised Pinseeker Tour</b> balls by 12 December.', img: U('1562204320-31975a5e09ce', 800, 440), eng: '♡ 2.8K · 💬 190', product: 2 } ],
+    events: [ { zoneEvent: true, tag: 'DEADLINE', title: 'Personalised orders for Christmas', when: 'Dec 12 · 23:59', desc: 'Personalised balls ordered by 12 December arrive before Christmas.', registered: 2040, capacity: 6000 } ],
+    about: { founded: 'Birmingham · 2015', story: 'Three golfers who thought a tour ball should not cost £60 a dozen. We sell direct, so you get tour quality for less.', milestones: [['2015', 'Pinseeker Tour launches online'], ['2021', 'Personalisation launches'], ['2026', 'Brand Zone on GolfXX']], values: ['Tour quality, fair price', 'Direct to golfers', 'Recycled packaging'] } }),
+
+  'caddieline': brand({ key: 'caddieline', name: 'Caddieline', color: '#1F6B3F', gradient: FAIRWAY, tier: 'Brand Zone',
+    tagline: 'Walk the course. Carry nothing.', stats: { followers: '29.8K', content: '180', products: '22' },
+    ad: { badge: 'Featured', img: U('1593282153762-a41e3cceb06c', 760, 760), hl: 'Caddieline Follow.', sub: 'An electric trolley that walks with you, hands-free, for 36 holes.', meta: 'From £159' },
+    products: [
+      { name: 'Caddieline Follow', price: '£1,295', tag: 'FLAGSHIP', emoji: '🛒', rating: 4.8, reviews: 860, cat: 'trolleys', special: true, desc: 'Follows you hands-free on the course, or use the remote.', features: ['Follow mode and remote', '36 holes per charge', 'Folds in one move'], review: { who: 'Gary P.', text: 'My back thanks me every Sunday.' } },
+      { name: 'Caddieline Classic Electric', price: '£549', tag: 'BESTSELLER', emoji: '🔋', rating: 4.8, reviews: 1940, cat: 'trolleys', desc: 'A simple, tough electric trolley with a lithium battery.', features: ['27 holes per charge', 'Distance timer'], review: { who: 'Bill T.', text: 'Bulletproof. Five years and counting.' } },
+      { name: 'Links Carry Bag', price: '£159', emoji: '🎒', rating: 4.7, reviews: 1120, cat: 'bags', desc: 'Light stand bag with a waterproof hood and dual straps.', features: ['1.9 kg', 'Waterproof', '14-way top'], review: { who: 'Lachlan M.', text: 'Perfect for links walking.' } },
+      { name: 'Winter Wheel Kit', price: '£49', tag: 'WINTER', emoji: '❄️', rating: 4.6, reviews: 410, cat: 'accessories', desc: 'Wide winter wheels that do not damage soft fairways.', features: ['Course-approved', 'Fits all Caddieline trolleys'], review: { who: 'Steve H.', text: 'Our club allows trolleys all winter with these.' } },
+      { name: 'Battery Health Check', price: '£20', tag: 'SERVICE', emoji: '🔧', rating: 4.9, reviews: 290, cat: 'accessories', desc: 'Send your battery in; we test, balance and return it in 5 days.', features: ['Any lithium golf battery', '5-day turnaround'], review: { who: 'Fiona K.', text: 'Like new for £20.' } }
+    ],
+    shopCats: [ { key: 'trolleys', label: 'Trolleys', icon: '🛒' }, { key: 'bags', label: 'Bags', icon: '🎒' }, { key: 'accessories', label: 'Winter & service', icon: '❄️' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'The <b>Caddieline Follow</b> walks the course with you, hands-free.', img: U('1593282153762-a41e3cceb06c', 800, 440), eng: '♡ 3.7K · 💬 290', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'DEMO DAY', title: 'Try the Follow on the course', when: 'Dec 6 · Roundhay, Leeds', desc: 'Walk nine holes with a Caddieline Follow at the Sunday Hackers’ round.', registered: 36, capacity: 60 } ],
+    about: { founded: 'Nottingham · 2012', story: 'Engineers who love walking golf courses. We build trolleys that last, and we repair them rather than sell you a new one.', milestones: [['2012', 'The first Classic Electric'], ['2025', 'The Follow launches'], ['2026', 'Brand Zone on GolfXX']], values: ['Built to last', 'Kind to the course', 'Repair first'] } }),
+
+  'greenkeeper-supply-co': { key: 'greenkeeper-supply-co', kind: 'business', gw: 'golf', name: 'Greenkeeper Supply Co', color: '#1F6B3F', gradient: FAIRWAY, img: U('1605144884374-ecbb643615f6', 900, 500),
+    tier: 'Verified', category: 'Turf & course maintenance', tagline: 'Seed, sand, feed and machinery for golf courses.',
+    about: { founded: 'York · 1974', story: 'We supply greenkeepers: fine fescue and bentgrass seed, top-dressing sand, feeds and the machines that keep greens rolling true. From nine-hole village courses to championship links.' },
+    stats: { years: 52, staff: 180, clients: '1,400+ golf courses' },
+    caps: [ { name: 'Seed & top-dressing', detail: 'Fescue, bentgrass and rye blends; top-dressing sands to spec.' }, { name: 'Feeds & turf health', detail: 'Seasonal programmes built with your course manager.' }, { name: 'Machinery', detail: 'Greens mowers, aerators and rollers, sold or leased with servicing.' } ],
+    specs: { moq: '1 pallet', lead: '3–5 days; machinery 2–6 weeks', regions: 'UK & Ireland', certs: ['BIGGA trade partner', 'Amenity Assured', 'ISO 14001'] },
+    supplies: [ { kind: 'brand', key: 'caddieline', what: 'Course-approved winter wheels tested on member courses' } ],
+    cases: [ { title: 'Links greens renovation, Fife', text: 'Eighteen greens overseeded with fine fescue in the autumn and rolling true by spring.' } ],
+    feed: [ { sub: 'Season · 3d', text: 'Autumn aeration season is in full swing. Book hollow-tining equipment now.' }, { sub: 'Tips · 1w', text: 'Frosty mornings: keep members off the greens until the frost lifts.' } ],
+    contact: { person: 'Helen Ward, Course accounts', response: 'Replies within 24 hours' } },
+
+  'clubhouse-fleet': { key: 'clubhouse-fleet', kind: 'business', gw: 'golf', name: 'Clubhouse Fleet', color: '#B8912F', gradient: GOLD, img: U('1758190153146-a1507e2e000d', 900, 500),
+    tier: 'Verified', category: 'Golf buggies & fleet', tagline: 'Electric golf buggies for clubs, leased and serviced.',
+    about: { founded: 'Coventry · 2003', story: 'We lease, service and manage electric buggy fleets for golf clubs and resorts, with GPS fleet tracking and geofencing to keep buggies off the greens.' },
+    stats: { years: 23, staff: 95, clients: '420 clubs & resorts' },
+    caps: [ { name: 'Fleet leasing', detail: 'Lithium electric buggies on 3- or 5-year leases, servicing included.' }, { name: 'GPS & geofencing', detail: 'Live fleet map, course-condition lockouts and pace-of-play reports.' }, { name: 'Servicing', detail: 'Mobile engineers and a 48-hour repair promise.' } ],
+    specs: { moq: '10 buggies', lead: '4–8 weeks', regions: 'UK, Ireland & Portugal', certs: ['ISO 9001', 'Lithium battery safety certified', 'Fleet emissions: zero at point of use'] },
+    supplies: [ { kind: 'brand', key: 'linksmith-clubs', what: 'Buggies for Linksmith’s on-course fitting days' } ],
+    cases: [ { title: 'Algarve resort fleet', text: '80 lithium buggies with GPS across two resort courses.' } ],
+    feed: [ { sub: 'News · 5d', text: 'Winter fleet checks: free battery health tests for every leased buggy in December.' } ],
+    contact: { person: 'Ollie Grant, Club partnerships', response: 'Replies within one working day' } }
+});
+
+/* events in the Events tab */
+EVENTS_FEED.push(
+  { gw: 'golf', type: 'Event', icon: '🌉', time: 'Nov 21', title: 'Swilcan Bridge meet-up, St Andrews', desc: 'The Old Course Ballot Club meets at the bridge for a photo and a coffee. Everyone welcome.' },
+  { gw: 'golf', zone: 'linksmith-clubs', type: 'Event', icon: '🏌️', time: 'Dec 5', title: 'Linksmith workshop open day', desc: 'See an iron ground by hand in St Andrews, then hit the range on a launch monitor.' },
+  { gw: 'golf', zone: 'caddieline', type: 'Event', icon: '🛒', time: 'Dec 6', title: 'Caddieline Follow demo, Leeds', desc: 'Walk nine holes with the hands-free trolley at the Sunday Hackers’ round.' },
+  { gw: 'golf', zone: 'pinseeker-balls', type: 'Deadline', icon: '⚪', time: 'Dec 12', title: 'Personalised balls for Christmas', desc: 'Order personalised Pinseeker balls by midnight to arrive before Christmas.' },
+  { gw: 'golf', type: 'Event', icon: '🎄', time: 'Dec 13', title: 'Christmas Texas Scramble, Leeds', desc: 'Sunday Hackers’ festive scramble: teams of four, fancy dress optional, mince pies at the turn.' },
+  { gw: 'golf', zone: 'heather-gorse', type: 'Deadline', icon: '🧥', time: 'Dec 17', title: 'Last order for Christmas delivery', desc: 'Heather & Gorse: order by midnight for delivery before Christmas.' },
+  { gw: 'golf', type: 'Event', icon: '☀️', time: 'Feb 8', title: 'Algarve winter sun week', desc: 'Fairway Escapes’ hosted February week: five nights and four rounds on the coast.' }
+);
+})();
+/* ═════════ /GOLFXX ═════════ */

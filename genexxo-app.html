@@ -1782,8 +1782,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-79"></script>
-<script src="genexxo-core.js?v=2026.08.26-79"></script>
+<script src="genexxo-data.js?v=2026.08.26-80"></script>
+<script src="genexxo-core.js?v=2026.08.26-80"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -1929,9 +1929,10 @@ function myPostsSeed(){ const h=36e5, now=Date.now(); return [
 ];}
 /* Your gateways (from desktop profile data) */
 const YOUR_GATEWAYS = ['climb','ski','surf','cycle','sail'];
-/* The five Adventure showcase gateways are PINNED (Sean, 2026-10-15): always favourites, always first, and their
-   star can't be turned off. They lead the hub's right panel; every other live gateway lists below with its own ☆. */
-const PINNED_GWS = ['climb','ski','surf','cycle','sail','christmas'];   // christmas: seasonal pin (2026-11-04, Sean), unpin in January
+/* The showcase gateways are PINNED (Sean, 2026-10-15): always favourites, always first, and their star can't be
+   turned off. They lead the hub's right panel; every other live gateway lists below with its own ☆.
+   2026-11-14 (Sean): the three Sports demos lead; Ski, Cycle and Sail unpinned (Adventure still has them). */
+const PINNED_GWS = ['baseball','padel','golf','climb','surf','christmas'];   // christmas: seasonal pin (2026-11-04, Sean), unpin in January
 const gwPinned = k => PINNED_GWS.includes(k);
 const pinFavs = list => [...PINNED_GWS, ...(list||[]).filter(k=>!gwPinned(k))];
 const pinnedToast = k => toast(`📌 ${((gwMetaFromKey(k)||{}).name)||'This gateway'} is a demo gateway · pinned to your favourites`);
@@ -2683,7 +2684,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-79';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-80';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -4191,7 +4192,10 @@ function buildDrawerR(){
      Set LIVE_FIRST = false to remove it entirely. */
   const liveBand = () => {
     if(!LIVE_FIRST) return '';
-    const localLive = names.filter(n=>!isGwHeader(n) && gwIsLive(n));
+    // Adventure's gateways lead only Adventure's band (Sean, 2026-11-14): SkiXX, SailXX and CycleXX also sit in the Sports
+    // taxonomy, so Sports' band showed them beside its own three. The full list below keeps them. Deliberately narrow: a
+    // general "home sector only" rule would empty Fitness, Beauty and Religion, whose only live gateway is homed elsewhere.
+    const localLive = names.filter(n=>!isGwHeader(n) && gwIsLive(n) && (sk==='adventure' || gwHomeSector(n, sk)!=='adventure'));
     if(localLive.length){
       // white dot, not LIVE_DOT — the standard green dot is invisible on a green pill
       return `<div class="gwsec gwsec-live"><span class="livepill"><i class="livedot"></i>Live Demo Gateways</span><span class="livect">${localLive.length}</span></div>`
@@ -4264,7 +4268,7 @@ function buildDrawerRLive(){
       <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${LIVE_DOT}${rowStar(k)}</div>
     </div>`;
   };
-  // Pinned = the showcase five, always, in their own order. Everything else stays put below; its ☆ marks a
+  // Pinned = the showcase gateways, always, in their own order. Everything else stays put below; its ☆ marks a
   // favourite (for the ★ panel) without moving the row.
   const pinned = PINNED_GWS.filter(k=>keys.includes(k));
   const rest   = keys.filter(k=>!gwPinned(k));
