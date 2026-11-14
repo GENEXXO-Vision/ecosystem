@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Scorecard</title>
+<style>
+/* Scorecard, by "Fairway Software" (fictional), 2026-11-14. A GENEXXO app for GolfXX.
+   Strokes and Stableford points hole by hole on a sample links course. Shots received on a hole =
+   floor(handicap/18) + 1 if the hole's stroke index ≤ handicap mod 18. Points = max(0, 2 + par + received − strokes). */
+:root{--bg:#F5F3EA;--card:#FFFDF6;--line:rgba(16,38,28,.1);--ink:#10261C;--mut:rgba(16,38,28,.55);--green:#1F6B3F;--gold:#B8912F;--red:#B23A2B}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#2E8B57,#0F3B26);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--green)}
+.hole{background:linear-gradient(160deg,#1F6B3F,#0F3B26);color:#F5F3EA;border-radius:18px;padding:16px;position:relative;overflow:hidden}
+.hole .no{font-size:13px;font-weight:800;opacity:.75;letter-spacing:.06em}.hole h2{font-size:40px;font-weight:900;line-height:1.05}
+.hole .meta{display:flex;gap:16px;margin-top:6px;font-size:13px;font-weight:800}.hole .meta span{opacity:.8}
+.hole .rx{position:absolute;right:14px;top:14px;background:rgba(245,243,234,.16);border-radius:99px;padding:4px 10px;font-size:11.5px;font-weight:900}
+.hole .flag{position:absolute;right:16px;bottom:-6px;font-size:58px;opacity:.18}
+.score{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:10px}
+.score .s{font-size:46px;font-weight:900;min-width:70px;text-align:center;font-variant-numeric:tabular-nums}
+.score button{width:54px;height:54px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:24px;font-weight:800;cursor:pointer}
+.res{text-align:center;font-weight:900;margin-top:8px;font-size:14px}.res .p{color:var(--green)}
+.nav{display:flex;gap:8px;margin-top:10px}.nav button{flex:1;font:inherit;font-weight:800;font-size:14px;border:1px solid var(--line);border-radius:99px;padding:12px;background:var(--card);color:var(--ink);cursor:pointer}.nav button.pri{background:var(--green);color:#fff;border-color:transparent}
+.run{display:flex;justify-content:space-around;margin-top:12px;font-size:12px;color:var(--mut);font-weight:700;text-align:center}.run b{display:block;font-size:18px;color:var(--ink)}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:12.5px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:10px}
+th,td{padding:7px 2px;text-align:center}th{color:var(--mut);font-size:10.5px;font-weight:800}td:first-child,th:first-child{text-align:left;padding-left:10px;font-weight:800}
+tr+tr td{border-top:1px solid var(--line)}tr.cur td{background:rgba(31,107,63,.08)}td.sum{font-weight:900}
+.sc{display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;font-weight:900}.sc.b{border:1.5px solid var(--green);border-radius:50%;color:var(--green)}.sc.e{border:1.5px solid var(--gold);border-radius:50%;color:var(--gold);box-shadow:0 0 0 2px var(--card),0 0 0 3.5px var(--gold)}.sc.bo{border:1.5px solid var(--mut)}.sc.d{border:1.5px solid var(--red);color:var(--red);box-shadow:0 0 0 2px var(--card),0 0 0 3.5px var(--red)}
+.sum2{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;text-align:center}
+.sum2 .pts{font-size:58px;font-weight:900;color:var(--green);line-height:1}.sum2 small{color:var(--mut);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.grid div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center}.grid b{display:block;font-size:20px}.grid small{color:var(--mut);font-size:11px;font-weight:800}
+.row{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin-top:10px}
+.row b{font-size:14px}.row small{display:block;color:var(--mut);font-size:12px}
+.step{display:flex;align-items:center;gap:8px}.step button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--ink);font-size:17px;font-weight:800;cursor:pointer}.step span{min-width:30px;text-align:center;font-weight:900;font-size:16px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--green);color:#fff;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">📋</div><div><h1>Scorecard</h1><p>Fairway Software · in GolfXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="hole" class="on">Hole</button><button data-tab="card">Card</button><button data-tab="sum">Summary</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+/* Eden Links, a sample course: par, stroke index, yards (white tees) */
+const H=[[4,9,402],[4,3,431],[3,17,168],[5,11,516],[4,1,452],[4,13,371],[3,15,155],[4,5,428],[4,7,410],[4,10,386],[5,14,532],[3,18,174],[4,2,446],[4,6,420],[3,16,182],[5,12,524],[4,4,458],[4,8,414]];
+const seed=()=>({hcp:18,cur:10,strokes:[5,6,3,6,5,5,4,5,6,5,0,0,0,0,0,0,0,0]});
+let C,S={tab:'hole',shared:false};
+GX.init({gateway:'GolfXX',seed}).then(c=>{C=c;paint();});
+const D=()=>C.data;
+const rec=i=>Math.floor(D().hcp/18)+(H[i][1]<=D().hcp%18?1:0);
+const pts=i=>{const s=D().strokes[i];return s?Math.max(0,2+H[i][0]+rec(i)-s):0;};
+const played=()=>D().strokes.map((s,i)=>s?i:-1).filter(i=>i>=0);
+const sumP=a=>a.reduce((x,i)=>x+pts(i),0), sumS=a=>a.reduce((x,i)=>x+D().strokes[i],0), sumPar=a=>a.reduce((x,i)=>x+H[i][0],0);
+function name(s,par){const d=s-par;return s===1?'Hole in one!':d<=-2?'Eagle':d===-1?'Birdie':d===0?'Par':d===1?'Bogey':d===2?'Double bogey':`+${d}`;}
+function vHole(){const i=D().cur,[par,si,yd]=H[i],s=D().strokes[i]||par,set=!!D().strokes[i],r=rec(i),pl=played();
+  return `<div class="hole"><div class="rx">${r?r+' shot'+(r>1?'s':'')+' received':'No shot received'}</div><div class="no">EDEN LINKS · HOLE</div><h2>${i+1}</h2><div class="meta"><div><span>Par</span> ${par}</div><div><span>SI</span> ${si}</div><div><span>Yds</span> ${yd}</div></div><div class="flag">⛳</div></div>
+  <div class="score"><button data-s="-1">–</button><div><div class="s" style="${set?'':'opacity:.35'}">${s}</div></div><button data-s="1">+</button></div>
+  <div class="res">${set?`${name(s,par)} · <span class="p">${pts(i)} point${pts(i)===1?'':'s'}</span>`:'Tap + or – to enter your score'}</div>
+  <div class="nav"><button id="prev" ${i?'':'disabled'}>‹ Hole ${i||1}</button><button class="pri" id="next">${i<17?`Hole ${i+2} ›`:'Finish ›'}</button></div>
+  <div class="run"><div><b>${pl.length}</b>played</div><div><b>${sumS(pl)}</b>strokes</div><div><b>${sumP(pl)}</b>points</div><div><b>${(sumS(pl)-sumPar(pl))>=0?'+':''}${sumS(pl)-sumPar(pl)}</b>to par</div></div>`;}
+function cls(s,par){const d=s-par;return !s?'':d<=-2?'e':d===-1?'b':d===1?'bo':d>=2?'d':'';}
+function nine(a,lbl){const ix=Array.from({length:9},(_,k)=>a+k);
+  return `<table><tr><th>${lbl}</th>${ix.map(i=>`<th>${i+1}</th>`).join('')}<th>Tot</th></tr>
+  <tr><td>Par</td>${ix.map(i=>`<td>${H[i][0]}</td>`).join('')}<td class="sum">${sumPar(ix)}</td></tr>
+  <tr class="cur"><td>You</td>${ix.map(i=>{const s=D().strokes[i];return `<td>${s?`<span class="sc ${cls(s,H[i][0])}">${s}</span>`:'·'}</td>`;}).join('')}<td class="sum">${sumS(ix.filter(i=>D().strokes[i]))||'–'}</td></tr>
+  <tr><td>Pts</td>${ix.map(i=>`<td>${D().strokes[i]?pts(i):''}</td>`).join('')}<td class="sum">${sumP(ix)}</td></tr></table>`;}
+function vCard(){return nine(0,'Out')+nine(9,'In')+`<div class="legend">○ birdie · ◎ eagle · □ bogey · double ring: double bogey or worse</div>`;}
+function vSum(){const pl=played(),p=sumP(pl),b=pl.filter(i=>D().strokes[i]<H[i][0]).length,pars=pl.filter(i=>D().strokes[i]===H[i][0]).length;
+  const proj=pl.length?Math.round(p/pl.length*18):0;
+  return `<div class="sum2"><div class="pts">${p}</div><small>Stableford points · ${pl.length} of 18 holes${pl.length<18?` · on course for ${proj}`:''}</small></div>
+  <div class="grid"><div><b>${sumS(pl)}</b><small>STROKES</small></div><div><b>${b}</b><small>BIRDIES+</small></div><div><b>${pars}</b><small>PARS</small></div></div>
+  <div class="row"><div><b>Playing handicap</b><small>Shots on the hardest holes first</small></div><div class="step"><button data-h="-1">–</button><span>${D().hcp}</span><button data-h="1">+</button></div></div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my round to ${C.gateway}`}</button>`:''}
+  <button class="go" style="background:var(--card);color:var(--ink);border:1px solid var(--line)" id="new">New round</button>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='hole'?vHole():S.tab==='card'?vCard():vSum();
+  v.querySelectorAll('[data-s]').forEach(e=>e.onclick=()=>{const i=D().cur,cur=D().strokes[i]||H[i][0];D().strokes[i]=Math.min(12,Math.max(1,cur+(+e.dataset.s)));GX.save(D());paint();});
+  const pv=document.getElementById('prev');if(pv)pv.onclick=()=>{D().cur=Math.max(0,D().cur-1);GX.save(D());paint();};
+  const nx=document.getElementById('next');if(nx)nx.onclick=()=>{const i=D().cur;if(!D().strokes[i])D().strokes[i]=H[i][0];if(i<17)D().cur++;else S.tab='sum';GX.save(D());paint();};
+  v.querySelectorAll('[data-h]').forEach(e=>e.onclick=()=>{D().hcp=Math.min(54,Math.max(0,D().hcp+(+e.dataset.h)));GX.save(D());paint();});
+  const n=document.getElementById('new');if(n)n.onclick=()=>{C.data={hcp:D().hcp,cur:0,strokes:Array(18).fill(0)};S.tab='hole';S.shared=false;GX.save(D());paint();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const pl=played();
+    GX.post(`<b>${sumP(pl)} Stableford points</b> at Eden Links${pl.length<18?` through ${pl.length}`:''}, ${sumS(pl)} strokes off a ${D().hcp} handicap. Kept in Scorecard ⛳`,'SCORECARD').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

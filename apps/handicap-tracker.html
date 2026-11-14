@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Handicap Tracker</title>
+<style>
+/* Handicap Tracker, by "Nineteenth Hole Labs" (fictional), 2026-11-14. A GENEXXO app for GolfXX.
+   World Handicap System arithmetic: score differential = (113 / slope) × (adjusted gross score − course rating),
+   index = the average of the lowest 8 of the last 20 differentials (fewer rounds use the WHS table, with its
+   adjustments). No playing-conditions calculation or caps: a personal tracker, not an official index. */
+:root{--bg:#F5F3EA;--card:#FFFDF6;--line:rgba(16,38,28,.1);--ink:#10261C;--mut:rgba(16,38,28,.55);--green:#1F6B3F;--gold:#B8912F;--navy:#2B4C7E}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#2B4C7E,#132544);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--navy)}
+.ix{background:linear-gradient(150deg,#2B4C7E,#132544);color:#F5F3EA;border-radius:18px;padding:18px;text-align:center}
+.ix small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.08em;opacity:.75}.ix .n{font-size:60px;font-weight:900;line-height:1.05;font-variant-numeric:tabular-nums}
+.ix .d{display:inline-block;margin-top:6px;font-weight:900;font-size:12.5px;background:rgba(245,243,234,.16);border-radius:99px;padding:4px 11px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.r{display:flex;align-items:center;gap:10px;padding:9px 0}.r+.r{border-top:1px solid var(--line)}
+.r .x{flex:1}.r .x b{font-size:14px}.r .x small{display:block;color:var(--mut);font-size:12px}
+.r .df{font-weight:900;font-variant-numeric:tabular-nums;min-width:46px;text-align:right}
+.r.cnt .df{color:var(--green)}.r.cnt .dot{background:var(--green)}.dot{width:8px;height:8px;border-radius:50%;background:rgba(16,38,28,.15);flex-shrink:0}
+.r.old{opacity:.45}
+.row{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin-bottom:8px}
+.row b{font-size:14.5px}.row small{display:block;color:var(--mut);font-size:12px}
+.step{display:flex;align-items:center;gap:8px}.step button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--ink);font-size:17px;font-weight:800;cursor:pointer}.step span{min-width:44px;text-align:center;font-weight:900;font-size:16px}
+input{font:inherit;font-weight:700;background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:11px 12px;width:100%;margin-bottom:8px}
+.prev{text-align:center;font-weight:800;margin-top:6px;color:var(--mut);font-size:13px}.prev b{color:var(--ink)}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--navy);color:#fff;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🎯</div><div><h1>Handicap Tracker</h1><p>Nineteenth Hole Labs · in GolfXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="index" class="on">Index</button><button data-tab="rounds">Rounds</button><button data-tab="add">Add a round</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const COURSES=[['Kirkstall Park',68.9,121],['Eden Links',71.8,129],['Wharfedale Heath',72.1,133],['Chevin Hill',71.2,127],['Aire Valley',69.4,118]];   /* sample courses, not real ratings */
+/* WHS table for fewer than 20 rounds: [how many lowest, adjustment] */
+const TBL={3:[1,-2],4:[1,-1],5:[1,0],6:[2,-1],7:[2,0],8:[2,0],9:[3,0],10:[3,0],11:[3,0],12:[4,0],13:[4,0],14:[4,0],15:[5,0],16:[5,0],17:[6,0],18:[6,0],19:[7,0]};
+const seed=()=>{const r=GX.rng('handicap-tracker'),out=[];for(let i=0;i<26;i++){const c=COURSES[i%COURSES.length],skill=24-i*.22;
+  out.push({off:-(26-i)*9,course:c[0],cr:c[1],slope:c[2],ags:Math.round(c[1]+skill*c[2]/113+(r()-.35)*7)});}return {rounds:out};};
+let C,S={tab:'index',shared:false,f:{c:1,ags:90}};
+GX.init({gateway:'GolfXX',seed}).then(c=>{C=c;paint();});
+const diff=r=>Math.round(113/r.slope*(r.ags-r.cr)*10)/10;
+function calc(rounds){const last=rounds.slice(-20),n=last.length;if(n<3)return {ix:null,counting:[]};
+  const [k,adj]=n>=20?[8,0]:TBL[n],sorted=last.map((r,i)=>({i:rounds.length-n+i,d:diff(r)})).sort((a,b)=>a.d-b.d).slice(0,k);
+  const ix=Math.min(54,Math.round((sorted.reduce((a,x)=>a+x.d,0)/k+adj)*10)/10);return {ix,counting:sorted.map(x=>x.i),k,n};}
+const fmt=x=>x==null?'—':(x<0?'+'+Math.abs(x).toFixed(1):x.toFixed(1));
+function trend(){const rs=C.data.rounds,pts=[];for(let i=3;i<=rs.length;i++)pts.push(calc(rs.slice(0,i)).ix);if(pts.length<2)return '';
+  const W=320,H=90,mn=Math.min(...pts)-.5,mx=Math.max(...pts)+.5,x=i=>i/(pts.length-1)*W,y=v=>(v-mn)/(mx-mn)*H;
+  const d=pts.map((v,i)=>`${i?'L':'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join('');
+  return `<svg viewBox="-4 -6 ${W+8} ${H+12}" width="100%" height="104"><path d="${d}" fill="none" stroke="#2B4C7E" stroke-width="2.5" stroke-linejoin="round"/><path d="${d}L${W},${H+6}L0,${H+6}Z" fill="rgba(43,76,126,.08)"/><circle cx="${x(pts.length-1)}" cy="${y(pts[pts.length-1])}" r="5" fill="#B8912F"/></svg><div class="legend" style="margin-top:2px">Lower is better: the line falls as you improve</div>`;}
+function vIndex(){const rs=C.data.rounds,now=calc(rs),before=calc(rs.slice(0,-5)),ch=now.ix!=null&&before.ix!=null?Math.round((now.ix-before.ix)*10)/10:null;
+  return `<div class="ix"><small>HANDICAP INDEX</small><div class="n">${fmt(now.ix)}</div>${ch!=null?`<div class="d">${ch<=0?'▼':'▲'} ${Math.abs(ch).toFixed(1)} over your last 5 rounds</div>`:''}</div>
+  <div class="card"><h3>Your index over time</h3>${trend()}</div>
+  <div class="legend">Average of your best ${now.k||0} of the last ${now.n||0} differentials</div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my index to ${C.gateway}`}</button>`:''}`;}
+function vRounds(){const rs=C.data.rounds,c=calc(rs),first=rs.length-Math.min(20,rs.length);
+  return `<div class="card"><h3>Last 20 · <span style="color:var(--green)">● counting</span></h3>${rs.map((r,i)=>({r,i})).reverse().map(({r,i})=>`<div class="r ${c.counting.includes(i)?'cnt':''} ${i<first?'old':''}"><i class="dot"></i><div class="x"><b>${r.ags} at ${GX.esc(r.course)}</b><small>${GX.day(GX.today(r.off))} · CR ${r.cr} · Slope ${r.slope}</small></div><div class="df">${fmt(diff(r))}</div></div>`).join('')}</div>`;}
+function vAdd(){const f=S.f,c=COURSES[f.c],r={ags:f.ags,cr:c[1],slope:c[2]},d=diff(r),after=calc(C.data.rounds.concat([r])).ix,now=calc(C.data.rounds).ix;
+  return `<div class="row"><div><b>Course</b><small>CR ${c[1]} · Slope ${c[2]}</small></div><div class="step"><button data-c="-1">‹</button><span style="min-width:120px;font-size:13px">${c[0]}</span><button data-c="1">›</button></div></div>
+  <div class="row"><div><b>Score</b><small>Adjusted gross (net double bogey max per hole)</small></div><div class="step"><button data-s="-1">–</button><span>${f.ags}</span><button data-s="1">+</button></div></div>
+  <div class="prev">Differential <b>${fmt(d)}</b> · index would be <b>${fmt(after)}</b>${after!=null&&now!=null&&after<now?' ▼':''}</div>
+  <button class="go" id="add">Add round</button><div class="legend">A personal tracker using WHS arithmetic, not an official handicap.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='index'?vIndex():S.tab==='rounds'?vRounds():vAdd();
+  v.querySelectorAll('[data-c]').forEach(e=>e.onclick=()=>{S.f.c=(S.f.c+(+e.dataset.c)+COURSES.length)%COURSES.length;paint();});
+  v.querySelectorAll('[data-s]').forEach(e=>e.onclick=()=>{S.f.ags=Math.min(150,Math.max(60,S.f.ags+(+e.dataset.s)));paint();});
+  const a=document.getElementById('add');if(a)a.onclick=()=>{const c=COURSES[S.f.c];C.data.rounds.push({off:0,course:c[0],cr:c[1],slope:c[2],ags:S.f.ags});GX.save(C.data);S.tab='index';S.shared=false;paint();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const c=calc(C.data.rounds);
+    GX.post(`Handicap index now <b>${fmt(c.ix)}</b>. Best ${c.k} of my last ${c.n} rounds, tracked in Handicap Tracker ⛳`,'HANDICAP TRACKER').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
