@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Scorebook</title>
+<style>
+/* Scorebook, by "Dugout Digital" (fictional), 2026-11-14. A GENEXXO app for BaseballXX.
+   Keeps the count, the outs and the line score. Walks, strikeouts, side changes and the end of the game
+   (including walk-offs and a skipped bottom of the ninth) are handled for you. */
+:root{--bg:#0B1424;--card:#13213A;--line:rgba(224,164,88,.16);--ink:#F2EEE6;--mut:rgba(242,238,230,.58);--red:#D62839;--clay:#E0A458;--green:#4ADE80}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#D62839,#7E1420);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--clay)}
+.board{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+.teams{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center}
+.teams b{font-size:16px}.teams .r{font-size:30px;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}
+.teams .bat:before{content:"▶ ";color:var(--clay);font-size:11px;vertical-align:2px}
+.inn{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-weight:800}
+.inn small{color:var(--mut);font-weight:700}
+.count{display:flex;gap:16px}.count div{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:var(--mut)}
+.dot{width:11px;height:11px;border-radius:50%;border:1.5px solid var(--mut)}.dot.b{background:var(--green);border-color:var(--green)}.dot.s{background:var(--clay);border-color:var(--clay)}.dot.o{background:var(--red);border-color:var(--red)}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.pad button{font:inherit;font-weight:800;font-size:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:15px 4px;cursor:pointer}
+.pad button.k{background:rgba(214,40,57,.18);border-color:transparent}.pad button.h{background:rgba(74,222,128,.14);border-color:transparent}.pad button.r{background:rgba(224,164,88,.18);border-color:transparent}
+.pad button:active{transform:scale(.97)}
+.note{font-size:12px;color:var(--mut);text-align:center;margin-top:10px;min-height:18px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:13px}
+th,td{padding:7px 3px;text-align:center}th{color:var(--mut);font-size:11px;font-weight:800}td:first-child,th:first-child{text-align:left;font-weight:800}
+tr+tr td{border-top:1px solid var(--line)}td.t{font-weight:900;color:var(--clay)}td.cur{background:rgba(224,164,88,.12);border-radius:6px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--clay);color:#0B1424;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.ghost{background:none;border:1px solid var(--line);color:var(--ink)}
+.final{text-align:center;padding:18px 10px}.final .tag{display:inline-block;font-size:11px;font-weight:900;letter-spacing:.08em;color:var(--clay);border:1px solid var(--line);border-radius:99px;padding:4px 10px}
+.final h2{font-size:22px;margin:12px 0 4px}.final p{color:var(--mut);font-size:13px}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">⚾</div><div><h1>Scorebook</h1><p>Dugout Digital · in BaseballXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="live" class="on">Live</button><button data-tab="line">Line score</button><button data-tab="final">Final</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const seed=()=>({teams:['Hawks','Tigers'],runs:[[0,1,0,0,2,0],[1,0,0,3,0,0]],hits:[6,7],errs:[1,0],inn:7,top:true,b:1,s:2,o:1,over:false,walkoff:false});
+let C,S={tab:'live',note:'',shared:false},hist=[];
+GX.init({gateway:'BaseballXX',seed}).then(c=>{C=c;paint();});
+const G=()=>C.data, sum=a=>a.reduce((x,y)=>x+y,0);
+const tot=t=>sum(G().runs[t]);
+function save(){GX.save(G());}
+function snap(){hist.push(JSON.stringify(G()));if(hist.length>40)hist.shift();}
+function ensure(){const g=G(),t=g.top?0:1;while(g.runs[t].length<g.inn)g.runs[t].push(0);}
+function endHalf(){const g=G();ensure();g.b=0;g.s=0;g.o=0;
+  if(g.top){ if(g.inn>=9&&tot(1)>tot(0)){g.over=true;S.note='Home team leads: no bottom of the inning needed.';return;} g.top=false; }
+  else{ if(g.inn>=9&&tot(0)!==tot(1)){g.over=true;return;} g.top=true;g.inn++; }
+  ensure(); S.note=`${g.top?'Top':'Bottom'} of the ${ord(g.inn)}. ${g.teams[g.top?0:1]} batting.`;}
+function out(why){const g=G();g.o++;g.b=0;g.s=0;S.note=why;if(g.o>=3)endHalf();}
+function run(){const g=G(),t=g.top?0:1;ensure();g.runs[t][g.inn-1]++;S.note=`Run scores for the ${g.teams[t]}.`;
+  if(!g.top&&g.inn>=9&&tot(1)>tot(0)){g.over=true;g.walkoff=true;}}
+function act(k){const g=G();if(g.over)return;snap();ensure();S.note='';
+  if(k==='ball'){g.b++;if(g.b>=4){g.b=0;g.s=0;S.note='Ball four. Batter walks.';}}
+  if(k==='strike'){g.s++;if(g.s>=3)out('Strike three. Batter out.');}
+  if(k==='foul'){if(g.s<2)g.s++;S.note='Foul ball.';}
+  if(k==='out')out('Batter out.');
+  if(k==='hit'){g.hits[g.top?0:1]++;g.b=0;g.s=0;S.note='Base hit!';}
+  if(k==='run')run();
+  save();paint();}
+const ord=n=>n+(['th','st','nd','rd'][(n%100-20)%10]||['th','st','nd','rd'][n%100]||'th');
+function vLive(){const g=G(),bt=g.top?0:1;
+  return `<div class="board"><div class="teams">
+    <b class="${!g.over&&bt===0?'bat':''}">${GX.esc(g.teams[0])}</b><div class="r">${tot(0)}</div>
+    <b class="${!g.over&&bt===1?'bat':''}">${GX.esc(g.teams[1])}</b><div class="r">${tot(1)}</div></div>
+    <div class="inn"><div>${g.over?'Final':(g.top?'▲ Top ':'▼ Bottom ')+ord(g.inn)}<br><small>${g.over?'Game over':GX.esc(g.teams[bt])+' batting'}</small></div>
+    <div class="count"><div>B ${[0,1,2].map(i=>`<i class="dot ${i<g.b?'b':''}"></i>`).join('')}</div><div>S ${[0,1].map(i=>`<i class="dot ${i<g.s?'s':''}"></i>`).join('')}</div><div>O ${[0,1].map(i=>`<i class="dot ${i<g.o?'o':''}"></i>`).join('')}</div></div></div></div>
+  ${g.over?`<button class="go" data-tab-go="final">See the final</button>`:`<div class="pad">
+    <button data-a="ball">Ball</button><button data-a="strike" class="k">Strike</button><button data-a="foul">Foul</button>
+    <button data-a="hit" class="h">Hit</button><button data-a="out" class="k">Out</button><button data-a="run" class="r">+ Run</button></div>`}
+  <div class="note">${S.note}</div>
+  <div style="display:flex;gap:8px"><button class="go ghost" id="undo" ${hist.length?'':'disabled'}>Undo</button><button class="go ghost" id="new">New game</button></div>`;}
+function vLine(){const g=G(),n=Math.max(9,g.runs[0].length,g.runs[1].length);
+  const row=t=>`<tr><td>${GX.esc(g.teams[t])}</td>${Array.from({length:n},(_,i)=>{const v=g.runs[t][i];const cur=!g.over&&i===g.inn-1&&(g.top?0:1)===t;return `<td class="${cur?'cur':''}">${v==null?(t===1&&g.over&&i===g.inn-1?'X':''):v}</td>`;}).join('')}<td class="t">${tot(t)}</td><td>${g.hits[t]}</td><td>${g.errs[t]}</td></tr>`;
+  return `<div class="board" style="overflow-x:auto"><table><tr><th></th>${Array.from({length:n},(_,i)=>`<th>${i+1}</th>`).join('')}<th>R</th><th>H</th><th>E</th></tr>${row(0)}${row(1)}</table></div>
+  <div class="legend">${g.over?'Final score':`${g.top?'Top':'Bottom'} of the ${ord(g.inn)} · ${g.o} out${g.o===1?'':'s'}`}</div>`;}
+function vFinal(){const g=G();
+  if(!g.over) return `<div class="board final"><span class="tag">IN PROGRESS</span><h2>${GX.esc(g.teams[0])} ${tot(0)} · ${GX.esc(g.teams[1])} ${tot(1)}</h2><p>${g.top?'Top':'Bottom'} of the ${ord(g.inn)}. Keep scoring on the Live tab; the final appears here when the last out is made.</p></div>`;
+  const w=tot(0)>tot(1)?0:1;
+  return `<div class="board final"><span class="tag">${g.walkoff?'WALK-OFF':'FINAL'}${g.runs[0].length>9?' · '+g.runs[0].length+' INNINGS':''}</span>
+    <h2>${GX.esc(g.teams[w])} win ${tot(w)}–${tot(1-w)}</h2><p>${g.hits[0]+g.hits[1]} hits between them. Kept in Scorebook.</p></div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share the final to ${C.gateway}`}</button>`:''}`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='live'?vLive():S.tab==='line'?vLine():vFinal();
+  v.querySelectorAll('[data-a]').forEach(e=>e.onclick=()=>act(e.dataset.a));
+  v.querySelectorAll('[data-tab-go]').forEach(e=>e.onclick=()=>{S.tab=e.dataset.tabGo;paint();});
+  const u=document.getElementById('undo');if(u)u.onclick=()=>{if(!hist.length)return;C.data=JSON.parse(hist.pop());S.note='Undone.';save();paint();};
+  const n=document.getElementById('new');if(n)n.onclick=()=>{snap();C.data={teams:G().teams,runs:[[],[]],hits:[0,0],errs:[0,0],inn:1,top:true,b:0,s:0,o:0,over:false,walkoff:false};ensure();S.note='Play ball!';S.shared=false;save();paint();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const g=G(),w=tot(0)>tot(1)?0:1;
+    GX.post(`${g.walkoff?'Walk-off! ':''}<b>${GX.esc(g.teams[w])} ${tot(w)}, ${GX.esc(g.teams[1-w])} ${tot(1-w)}</b>. Scored every pitch in Scorebook ⚾`,'SCOREBOOK').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

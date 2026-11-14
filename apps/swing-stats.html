@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Swing Stats</title>
+<style>
+/* Swing Stats, by "Diamond Data Co" (fictional), 2026-11-14. A GENEXXO app for BaseballXX.
+   A batting log: AVG = H/AB, OBP = (H+BB)/(AB+BB), SLG = total bases/AB, OPS = OBP+SLG
+   (no hit-by-pitch or sacrifice flies, to keep the log to one line per game). */
+:root{--bg:#0B1424;--card:#13213A;--line:rgba(224,164,88,.16);--ink:#F2EEE6;--mut:rgba(242,238,230,.58);--red:#D62839;--clay:#E0A458;--green:#4ADE80}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#2E8B57,#145A32);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--green)}
+.slash{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.slash div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 6px;text-align:center}
+.slash b{display:block;font-size:22px;font-weight:900;font-variant-numeric:tabular-nums}.slash small{color:var(--mut);font-size:11px;font-weight:800;letter-spacing:.06em}
+.slash .hi b{color:var(--green)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.tot{display:flex;justify-content:space-between;font-size:12.5px;color:var(--mut);font-weight:700;margin-top:10px}.tot b{color:var(--ink)}
+.row{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px}
+.row b{font-size:14.5px}.row small{display:block;color:var(--mut);font-size:12px}
+.step{display:flex;align-items:center;gap:8px}.step button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--ink);font-size:17px;font-weight:800;cursor:pointer}.step span{min-width:30px;text-align:center;font-weight:900;font-size:16px}
+.g{display:flex;align-items:center;gap:10px;padding:10px 0}.g+.g{border-top:1px solid var(--line)}
+.g .d{width:44px;text-align:center;font-size:11px;font-weight:800;color:var(--mut);line-height:1.2}.g .d b{display:block;font-size:16px;color:var(--ink)}
+.g .m{flex:1}.g .m b{font-size:14px}.g .m small{display:block;color:var(--mut);font-size:12px}.g .x{font-weight:900;font-variant-numeric:tabular-nums}
+.badge{display:inline-block;font-size:10px;font-weight:900;background:rgba(74,222,128,.16);color:var(--green);border-radius:99px;padding:2px 7px;margin-left:6px;vertical-align:2px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--green);color:#0B1424;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+input{font:inherit;font-weight:700;background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:11px 12px;width:100%;margin-bottom:8px}
+</style></head><body>
+<div class="hd"><div class="logo">📊</div><div><h1>Swing Stats</h1><p>Diamond Data Co · in BaseballXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="season" class="on">Season</button><button data-tab="log">Log a game</button><button data-tab="games">Games</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const seed=()=>{const r=GX.rng('swing-stats'),opps=['Hawks','Rays','Mudcats','Owls','Pirates','Comets','Bulldogs','Foxes'],g=[];
+  for(let i=0;i<16;i++){const ab=3+Math.floor(r()*2),h=Math.min(ab,Math.floor(r()*3.1)),hr=h&&r()>.86?1:0,d=h-hr>0&&r()>.6?1:0;g.push({off:-(16-i)*7,opp:opps[i%opps.length],ab,h,d,t:0,hr,bb:r()>.6?1:0});}
+  return {games:g};};
+let C,S={tab:'season',shared:false,f:{opp:'',ab:4,h:1,d:0,t:0,hr:0,bb:0}};
+GX.init({gateway:'BaseballXX',seed}).then(c=>{C=c;paint();});
+function line(gs){const t=gs.reduce((a,g)=>{for(const k of ['ab','h','d','t','hr','bb'])a[k]+=g[k];return a;},{ab:0,h:0,d:0,t:0,hr:0,bb:0});
+  const tb=t.h+t.d+2*t.t+3*t.hr,avg=t.ab?t.h/t.ab:0,obp=(t.ab+t.bb)?(t.h+t.bb)/(t.ab+t.bb):0,slg=t.ab?tb/t.ab:0;return Object.assign(t,{avg,obp,slg,ops:obp+slg});}
+const f3=x=>x>=1?x.toFixed(3):x.toFixed(3).replace(/^0/,'');
+function spark(){const gs=C.data.games,pts=gs.map((_,i)=>line(gs.slice(0,i+1)).avg);if(pts.length<2)return '';
+  const W=320,H=80,mn=Math.min(...pts)-.02,mx=Math.max(...pts)+.02,x=i=>i/(pts.length-1)*W,y=v=>H-(v-mn)/(mx-mn)*H;
+  const d=pts.map((v,i)=>`${i?'L':'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join('');
+  return `<svg viewBox="-4 -6 ${W+8} ${H+12}" width="100%" height="96"><path d="${d}" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linejoin="round"/><path d="${d}L${W},${H}L0,${H}Z" fill="rgba(74,222,128,.10)"/><circle cx="${x(pts.length-1)}" cy="${y(pts[pts.length-1])}" r="4" fill="#4ADE80"/></svg>`;}
+function vSeason(){const L=line(C.data.games),best=Math.max(...C.data.games.map((_,i)=>i>=4?line(C.data.games.slice(0,i+1)).ops:0));
+  return `<div class="slash"><div><b>${f3(L.avg)}</b><small>AVG</small></div><div><b>${f3(L.obp)}</b><small>OBP</small></div><div><b>${f3(L.slg)}</b><small>SLG</small></div><div class="${L.ops>=best-1e-9?'hi':''}"><b>${f3(L.ops)}</b><small>OPS</small></div></div>
+  <div class="card"><h3>Batting average, game by game</h3>${spark()}
+    <div class="tot"><span><b>${C.data.games.length}</b> games</span><span><b>${L.h}</b>-for-<b>${L.ab}</b></span><span><b>${L.hr}</b> HR</span><span><b>${L.bb}</b> BB</span></div></div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my line to ${C.gateway}`}</button>`:''}`;}
+function vLog(){const f=S.f,st=(k,l,s)=>`<div class="row"><div><b>${l}</b><small>${s}</small></div><div class="step"><button data-d="${k}:-1">–</button><span>${f[k]}</span><button data-d="${k}:1">+</button></div></div>`;
+  return `<input id="opp" placeholder="Opponent (optional)" value="${GX.esc(f.opp)}">${st('ab','At-bats','Not counting walks')}${st('h','Hits','All hits, including extra-base')}${st('d','Doubles','')}${st('t','Triples','')}${st('hr','Home runs','')}${st('bb','Walks','')}
+  <button class="go" id="add">Add game</button><div class="legend">Today, ${GX.day(GX.today())}</div>`;}
+function vGames(){const gs=C.data.games.map((g,i)=>({g,i})).reverse();
+  return `<div class="card">${gs.map(({g})=>{const d=GX.today(g.off),ex=[g.d?g.d+' 2B':'',g.t?g.t+' 3B':'',g.hr?g.hr+' HR':'',g.bb?g.bb+' BB':''].filter(Boolean).join(' · ');
+    return `<div class="g"><div class="d">${d.toLocaleDateString('en-GB',{month:'short'})}<b>${d.getDate()}</b></div><div class="m"><b>vs ${GX.esc(g.opp||'—')}${g.hr?'<span class="badge">HR</span>':''}</b><small>${ex||'—'}</small></div><div class="x">${g.h}-for-${g.ab}</div></div>`;}).join('')}</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='season'?vSeason():S.tab==='log'?vLog():vGames();
+  v.querySelectorAll('[data-d]').forEach(e=>e.onclick=()=>{const [k,d]=e.dataset.d.split(':'),f=S.f;f.opp=(document.getElementById('opp')||{}).value||f.opp;
+    f[k]=Math.max(0,Math.min(k==='ab'?7:6,f[k]+(+d)));f.h=Math.min(f.h,f.ab);const xb=()=>f.d+f.t+f.hr;while(xb()>f.h){if(f.hr)f.hr--;else if(f.t)f.t--;else f.d--;}paint();});
+  const a=document.getElementById('add');if(a)a.onclick=()=>{const f=S.f;C.data.games.push({off:0,opp:(document.getElementById('opp').value||'').slice(0,24),ab:f.ab,h:f.h,d:f.d,t:f.t,hr:f.hr,bb:f.bb});
+    GX.save(C.data);S.f={opp:'',ab:4,h:1,d:0,t:0,hr:0,bb:0};S.tab='season';S.shared=false;paint();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const L=line(C.data.games);
+    GX.post(`Season so far: <b>${f3(L.avg)} / ${f3(L.obp)} / ${f3(L.slg)}</b> over ${C.data.games.length} games, ${L.hr} home run${L.hr===1?'':'s'}. Tracked in Swing Stats ⚾`,'SWING STATS').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
