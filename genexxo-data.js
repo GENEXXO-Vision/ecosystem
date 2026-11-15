@@ -2824,6 +2824,7 @@ Object.assign(ZONES, {
 
 /* events in the Events tab */
 EVENTS_FEED.push(
+  { gw: 'christmas', zone: 'northpine-ornaments', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Northpine Live · Bauble Blowing, Kendal', desc: 'The Cumbrian workshop is blowing this year’s Heritage Crimson baubles live. Pull up a chair.' },
   { gw: 'christmas', type: 'Event', icon: '🎄', time: 'Nov 26', title: 'Bath Christmas Market opens', desc: 'Over 150 chalets around the Abbey for 18 days. The Bath Christmas Market Friends meet by the Abbey on Fridays.' },
   { gw: 'christmas', type: 'Event', icon: '✨', time: 'Nov 28', title: 'Fairy Light Street, the Nutcracker', desc: 'Twenty-three houses, one theme. Lights on at 6pm, everyone welcome. Posted by @fairylight_fran.' },
   { gw: 'christmas', zone: 'northpine-ornaments', type: 'Event', icon: '📅', time: 'Dec 4', title: 'Northpine workshop open evening', desc: 'Watch a bauble blown and painted live, then paint your own. RSVP inside the Northpine Ornaments zone.' },
@@ -3063,6 +3064,7 @@ Object.assign(ZONES, {
 
 /* events in the Events tab */
 EVENTS_FEED.push(
+  { gw: 'baseball', zone: 'bullpen-lab', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Bullpen Lab Live · Winter Velocity Clinic', desc: 'Pitching coach Mara Lindqvist breaks down three bullpens on SpinCore data, live from Tampa. Questions in the chat.' },
   { gw: 'baseball', type: 'Event', icon: '🔥', time: 'Nov 19', title: 'Hot Stove night, Wrigleyville', desc: 'The Wrigley Bleacher Crew talks trades and signings on Sheffield Avenue. Toy drive collection on the door.' },
   { gw: 'baseball', zone: 'bullpen-lab', type: 'Event', icon: '📈', time: 'Dec 2', title: 'Off-season pitching with data', desc: 'A free Bullpen Lab webinar with pitching coach Mara Lindqvist. RSVP inside the Bullpen Lab zone.' },
   { gw: 'baseball', type: 'Event', icon: '🧤', time: 'Dec 3', title: 'Indoor cage nights start, London', desc: 'London Baseball Social moves indoors for winter. Spare gloves for newcomers.' },
@@ -3300,6 +3302,7 @@ Object.assign(ZONES, {
 
 /* events in the Events tab */
 EVENTS_FEED.push(
+  { gw: 'padel', zone: 'glasshouse-padel', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Glasshouse Live · Canary Wharf Exhibition', desc: 'Exhibition doubles on Court 1 at The Glasshouse, Canary Wharf, with commentary from coach Tom Hale.' },
   { gw: 'padel', zone: 'lima-court-wear', type: 'Event', icon: '👟', time: 'Nov 27', title: 'Shoe fitting night, Manchester', desc: 'Try every Lima Espiga on court with a gait check at the Find-a-Fourth social.' },
   { gw: 'padel', zone: 'pared-balls', type: 'Offer', icon: '🎾', time: 'Nov 30', title: 'Club Box half price ends', desc: 'Clubs and academies: first 72-ball Pared Club Box at half price, until 30 November.' },
   { gw: 'padel', type: 'Event', icon: '🏆', time: 'Dec 2', title: 'Manchester winter league launch', desc: 'Find-a-Fourth’s winter league starts. Five divisions, all levels.' },
@@ -3536,6 +3539,7 @@ Object.assign(ZONES, {
 
 /* events in the Events tab */
 EVENTS_FEED.push(
+  { gw: 'golf', zone: 'linksmith-clubs', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Linksmith Live · Forge Cam, St Andrews', desc: 'Watch a Kingdom Forged iron ground by hand in the Fife workshop, and ask the fitter anything.' },
   { gw: 'golf', type: 'Event', icon: '🌉', time: 'Nov 21', title: 'Swilcan Bridge meet-up, St Andrews', desc: 'The Old Course Ballot Club meets at the bridge for a photo and a coffee. Everyone welcome.' },
   { gw: 'golf', zone: 'linksmith-clubs', type: 'Event', icon: '🏌️', time: 'Dec 5', title: 'Linksmith workshop open day', desc: 'See an iron ground by hand in St Andrews, then hit the range on a launch monitor.' },
   { gw: 'golf', zone: 'caddieline', type: 'Event', icon: '🛒', time: 'Dec 6', title: 'Caddieline Follow demo, Leeds', desc: 'Walk nine holes with the hands-free trolley at the Sunday Hackers’ round.' },

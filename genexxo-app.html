@@ -726,6 +726,67 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   /* Network home (-61): the header is the network bar's dark, so the ✕ inverts the same way */
   #drawer.net-head .drawer-x{background:rgba(255,255,255,.14);color:rgba(255,255,255,.85)}
   #drawer.net-head #drawerHead{border-bottom-color:transparent}
+  /* ═════════ PULSE — LAB (2026-11-15, Sean) ═════════ the sector's ads, events and ideas, as a second tab on the desktop
+     Sectors panel. Off unless ?pulse=on (see LAB_PULSE). To delete: remove this block, the PULSE JS block and its 3 hooks. */
+  .pulse-tog{margin-left:auto;display:inline-flex;align-items:center;gap:5px;border:0;border-radius:99px;padding:5px 10px;font:inherit;font-size:10.5px;font-weight:800;letter-spacing:.08em;cursor:pointer;background:rgba(17,17,22,.07);color:inherit}
+  .pulse-tog:hover{background:rgba(17,17,22,.13)}
+  #drawer.net-head .pulse-tog{background:rgba(255,255,255,.14)}
+  #drawer.net-head .pulse-tog:hover{background:rgba(255,255,255,.24)}
+  .pulse-back{border:0;background:none;font:inherit;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:inherit;opacity:.7;cursor:pointer;padding:0;white-space:nowrap}
+  .pulse-back:hover{opacity:1}
+  .pulse-ttl{margin-left:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #drawer.pulse-mode #secSearchRow,#drawer.pulse-mode #secJump{display:none}
+  .pls{padding:4px 14px 22px;color:var(--text,#111116)}
+  .pls-h{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:16px 2px 8px;display:flex;align-items:center;gap:6px}
+  .pls-h i{font-style:normal;margin-left:auto;letter-spacing:.06em;font-size:9.5px;opacity:.8}
+  .pls-ad{display:block;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff;cursor:pointer;margin-bottom:10px;transition:transform .15s}
+  .pls-ad:hover{transform:translateY(-1px)}
+  .pls-ad .im{height:128px;background-size:cover;background-position:center;position:relative}
+  .pls-ad .im video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}   /* video ads (Bullheart) */
+  .pls-ad .tag{z-index:1;position:absolute;left:10px;top:10px;font-size:9.5px;font-weight:900;letter-spacing:.1em;background:rgba(0,0,0,.55);color:#fff;border-radius:99px;padding:3px 8px}
+  .pls-ad .bd{padding:10px 12px 12px}.pls-ad b{display:block;font-size:14px}.pls-ad p{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.35}
+  .pls-ad .by{display:flex;align-items:center;gap:7px;margin-top:8px;font-size:11.5px;font-weight:800}.pls-ad .by s{text-decoration:none;margin-left:auto;font-weight:700;color:var(--muted)}
+  .pls-ad .dot{width:18px;height:18px;border-radius:6px;flex-shrink:0}
+  .pls-open{border:1px dashed var(--line);border-radius:16px;padding:14px;font-size:12.5px;color:var(--muted);line-height:1.45}
+  .pls-open b{color:var(--text,#111116);display:block;font-size:13px;margin-bottom:2px}
+  .pls-ev{display:flex;align-items:center;gap:10px;padding:8px 6px;border-radius:12px;cursor:pointer}
+  .pls-ev:hover{background:rgba(17,17,22,.04)}
+  .pls-ev .d{width:40px;flex-shrink:0;text-align:center;border-radius:10px;padding:4px 0;font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#fff;line-height:1.15}
+  .pls-ev .d b{display:block;font-size:16px;letter-spacing:0}
+  .pls-ev .t{flex:1;min-width:0}.pls-ev .t b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pls-ev .t span{font-size:11.5px;color:var(--muted)}
+  .pls-idea{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:9px 11px;margin-bottom:6px;font-size:12.5px;font-weight:700;cursor:pointer;background:#fff}
+  .pls-idea:hover{border-color:rgba(17,17,22,.25)}.pls-idea em{font-style:normal;margin-left:auto;color:var(--muted)}
+  .pls-post{display:flex;gap:10px;padding:8px 6px;border-radius:12px;cursor:pointer}
+  .pls-post:hover{background:rgba(17,17,22,.04)}
+  .pls-post .th{width:54px;height:54px;border-radius:10px;background-size:cover;background-position:center;flex-shrink:0;background-color:#e7e7ea}
+  .pls-post .t{min-width:0;font-size:12px;line-height:1.35}.pls-post .t b{display:block;font-size:12px}.pls-post .t p{color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .pls-now{display:flex;flex-direction:column;gap:8px}
+  .pls-deal{border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:#fff;cursor:pointer;transition:transform .15s}
+  .pls-deal:hover{transform:translateY(-1px);border-color:rgba(17,17,22,.22)}
+  .pls-deal .k{display:flex;align-items:center;font-size:9.5px;font-weight:900;letter-spacing:.1em}
+  .pls-deal .live{color:#E11D48}.pls-deal .live{animation:plsBlink 1.6s ease-in-out infinite}.pls-deal .drop{color:#D97706}.pls-deal .dod{color:#059669}
+  .pls-deal .clk{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--muted);letter-spacing:.02em;font-size:10.5px}
+  .pls-deal b{display:block;font-size:13px;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pls-deal .pr{display:flex;align-items:baseline;gap:6px;font-size:17px;font-weight:900;margin-top:2px;font-variant-numeric:tabular-nums}
+  .pls-deal .pr.sm{font-size:12.5px}.pls-deal .pr s{text-decoration:none;font-size:11px;font-weight:700;color:var(--muted)}
+  .pls-deal .pr s.was{text-decoration:line-through}.pls-deal .off{font-size:10.5px;font-weight:900;color:#fff;background:#059669;border-radius:99px;padding:2px 7px}
+  .pls-deal .bar{height:5px;border-radius:99px;background:rgba(17,17,22,.08);margin-top:7px;overflow:hidden}.pls-deal .bar i{display:block;height:100%;background:linear-gradient(90deg,#F59E0B,#D97706);border-radius:99px}
+  .pls-deal .by{display:flex;align-items:center;gap:7px;margin-top:7px;font-size:11.5px;font-weight:800}.pls-deal .by em{font-style:normal;margin-left:auto;color:var(--muted)}
+  .pls-deal .dot{width:16px;height:16px;border-radius:5px;flex-shrink:0}
+  @keyframes plsBlink{50%{opacity:.45}}
+  .pls-deal .hot{color:#EA580C}.pls-deal .onair{margin-left:auto;color:#E11D48;letter-spacing:.08em;animation:plsBlink 1.6s ease-in-out infinite}
+  .pls-deal .by .nm{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pls-deal .by em{flex-shrink:0}
+  .pls-hot{border-color:rgba(234,88,12,.35);background:linear-gradient(180deg,rgba(234,88,12,.06),#fff 60%)}
+  .pls-deal p{font-size:11.5px;color:var(--muted);line-height:1.35;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  @media (prefers-reduced-motion: reduce){ .pls-deal .onair{animation:none} }
+  @media (prefers-reduced-motion: reduce){ .pls-deal .live{animation:none} }
+  .pls-chip{display:flex;align-items:center;gap:10px;margin:0 12px 10px;padding:10px 14px;border-radius:16px;cursor:pointer;border:1px solid rgba(17,17,22,.06)}
+  .pls-chip .ic{width:30px;height:30px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.7);font-size:15px;flex-shrink:0}
+  .pls-chip .tx{flex:1;min-width:0;line-height:1.25}.pls-chip b{display:block;font-size:13.5px}.pls-chip .tx span{font-size:11.5px;font-weight:700;opacity:.8}
+  .pls-chip .go{font-size:20px;font-weight:800}
+  @media (max-width:1119px){ .pls-ad .im{height:108px} }
+  .pls-note{font-size:12.5px;color:var(--muted);background:rgba(17,17,22,.04);border-radius:12px;padding:11px 12px;margin-top:12px;line-height:1.45}
+  /* ═════════ /PULSE ═════════ */
   #drawer.zone-mode .drawer-x:hover{background:rgba(255,255,255,.2);color:#fff}
   #drawer.zone-mode .drawer-x:active{background:rgba(255,255,255,.28)}
   #drawer.zone-mode .drawer-search{border-bottom-color:rgba(255,255,255,.10)}
@@ -1782,8 +1843,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-80"></script>
-<script src="genexxo-core.js?v=2026.08.26-80"></script>
+<script src="genexxo-data.js?v=2026.08.26-81"></script>
+<script src="genexxo-core.js?v=2026.08.26-81"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -2684,7 +2745,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-80';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-81';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -3828,6 +3889,7 @@ function buildZoneDrawer(layer){
    Called from render() AND repaintGateway(), because tapping a zone tab repaints rather than
    re-rendering — without the second call the chrome would describe the layer you just left. */
 function syncGwChrome(){
+  pulseSync();                                         // PULSE hook (with pulseHead below)
   const layer = zoneLayer();
   const head = $('drawerHead'), si = $('secSearch');
   if(si) si.placeholder = layer ? ZONE_LAYERS[layer].ph : 'Search sectors…';
@@ -3848,6 +3910,7 @@ function syncGwChrome(){
     head.style.background = ask ? '#111116' : (w ? w.wash   : net ? '#26262b' : '');
     head.style.color      = ask ? '#fff'    : (w ? w.accent : net ? '#fff' : '');
     $('drawer').classList.toggle('net-head', net || !!ask);
+    pulseHead(head, layer, ask);                       // PULSE hook
   }
   $('drawer').classList.toggle('zone-mode', !!layer);   // dark surface + white cards
   // Sibling gateways are redundant inside a commercial layer — drop the handle and the panel.
@@ -3893,9 +3956,177 @@ function revealActiveSector(){
   if(room > 0) dl.insertAdjacentHTML('beforeend', `<div class="drawer-room" style="height:${Math.ceil(room)}px"></div>`);
   settleListScroll(dl, want);
 }
+/* ═════════ PULSE — LAB (2026-11-15, Sean) ═════════
+   A second tab on the desktop Sectors panel: the sector you are looking at, as a feed of Sponsored brand ads,
+   events coming up, AI ideas and curated posts. Sectors is always the default: on load, when you tap ‹ Sectors or the
+   Sectors tab in the bar, and when you go back to the network home. While it's open it follows you from sector to
+   sector (and keeps your sector while you visit a gateway; the floating drawer there stays Sectors).
+   On for everyone from -81; ?pulse=off hides it on a device (remembered), ?pulse=on brings it back.
+   PHONE (-81): the same tab in the slide-out Sectors drawer, which opens on Sectors every time, plus a "✦ <Sector> Pulse" chip at the
+   top of each sector's feed that opens the drawer straight into Pulse. On the phone it also works from inside a gateway.
+   To delete: remove this block, the PULSE CSS block and the three hooks
+   marked "PULSE hook" (buildDrawer, syncGwChrome, askSectorPrompt, openDrawer, renderSector). */
+const LAB_PULSE = (()=>{ try{          // ON for everyone from -81 (Sean, 2026-11-15); ?pulse=off hides it on this device, ?pulse=on restores
+  const q = new URLSearchParams(location.search).get('pulse');
+  if(q==='off') localStorage.setItem('gx_pulse','off');
+  if(q==='on') localStorage.removeItem('gx_pulse');
+  return localStorage.getItem('gx_pulse')!=='off';
+}catch(e){ return !/[?&]pulse=off\b/.test(location.search); } })();
+/* Pulse closes itself when you leave every sector for the network home (opened AT the home, it stays). Run at the start of
+   both buildDrawer() and syncGwChrome(), because render() draws the list before the head and they must agree. */
+function pulseSync(){
+  const sk = activeSectorKey();
+  if(state.pulse && state._pulseSk && !sk) state.pulse = false;
+  state._pulseSk = state.pulse ? sk : null;
+}
+const pulseAvail   = () => LAB_PULSE && !zoneLayer() && (PANELS_PINNED() || !DESKTOP());   // desktop: the docked panel only; phone: the drawer
+const pulseShowing = () => pulseAvail() && !!state.pulse;
+function pulseOpen(){ state.pulse = true; state.askSector = false; syncGwChrome(); buildDrawer(); settleListScroll($('drawerList'), 0); }
+function pulseBack(){ state.pulse = false; syncGwChrome(); buildDrawer(); revealActiveSector(); }
+/* "Nov 26" → a date: this year, or next year if it is already well past (the demo's dates roll forward with bump.py). */
+function pulseWhen(t){
+  const m = /^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+(\d{1,2})/.exec(t||''); if(!m) return null;
+  const now = new Date(); now.setHours(0,0,0,0);
+  const d = new Date(now.getFullYear(), 'JanFebMarAprMayJunJulAugSepOctNovDec'.indexOf(m[1])/3, +m[2]);
+  if(d < now - 45*864e5) d.setFullYear(d.getFullYear()+1);
+  return d;
+}
+function pulseHtml(sk){
+  const s = sk ? sectorOf(sk) : null, acc = s ? washFor(s.g).accent : '#26262b';
+  const homeGws = Object.keys(GATEWAYS).filter(k => sk ? gwSecOf(GATEWAYS[k])===sk : PINNED_GWS.includes(k));
+  const sec = (h, note) => `<div class="pls-h">${h}${note?`<i>${note}</i>`:''}</div>`;
+  /* Sponsored: the gateways' Brand Zones that carry an ad, Founding Partners first; two at most */
+  const brands = Object.values(ZONES).filter(z => z.kind==='brand' && z.ad && homeGws.includes(z.gw))
+    .sort((a,b)=>(b.tier==='Founding Partner')-(a.tier==='Founding Partner')).slice(0, 2);
+  let out = sec('Sponsored', sk ? '' : 'across the network');
+  out += brands.length ? brands.map(z => `<div class="pls-ad" onclick="openZoneFav('${z.key}')">
+      <div class="im" style="${z.ad.img ? `background-image:url('${z.ad.img}')` : 'background:#111116'}">${!z.ad.img && z.ad.video ? `<video autoplay loop muted playsinline preload="none" data-vsrc="${mediaUrl(z.ad.video)}"></video>` : ''}<span class="tag">${escHtml((z.tier==='Founding Partner'?'Founding Partner':(z.ad.badge||'Featured')).toUpperCase())}</span></div>
+      <div class="bd"><b>${escHtml(z.ad.hl)}</b><p>${escHtml(z.ad.sub)}</p>
+      <div class="by"><span class="dot" style="background:${z.gradient||z.color}"></span>${escHtml(z.name)}<s>${escHtml(z.ad.meta||'')} ›</s></div></div></div>`).join('')
+    : `<div class="pls-open"><b>Your brand here</b>Sponsored placements in ${escHtml(s.name)} open with its gateways at launch.</div>`;
+  out += pulseNow(homeGws, sk, sec);
+  /* Coming up: this sector's events (the network's, at the home), soonest first */
+  const ev = evAll().filter(e => !sk || evMeta(e).sector===sk)
+    .map(e => ({e, d:pulseWhen(e.time)})).filter(x => x.d && x.d >= new Date(new Date().setHours(0,0,0,0)))
+    .sort((a,b) => a.d-b.d)
+    .filter((x,i,arr) => arr.findIndex(y => +y.d===+x.d && (y.e.zone||y.e.gw)===(x.e.zone||x.e.gw))===i)   // one event listed twice (feed + its zone) shows once
+    .slice(0, sk ? 5 : 4);
+  out += sec('Coming up');
+  out += ev.length ? ev.map(({e,d}) => { const m = evMeta(e);
+      const go = e.go ? e.go : e.zone ? `openZoneFav('${e.zone}','events')` : `state._gwFrom='root';openGateway('${esc(m.name)}','${m.sector}')`;
+      return `<div class="pls-ev" onclick="${go}"><div class="d" style="background:${m.accent||acc};color:${pulseInk(m.accent||acc)}">${d.toLocaleDateString('en-GB',{month:'short'})}<b>${d.getDate()}</b></div>
+        <div class="t"><b>${escHtml(e.title)}</b><span>${escHtml(m.name)}${e.type&&e.type!=='Event'?' · '+escHtml(e.type):''}</span></div></div>`; }).join('')
+    : `<div class="pls-open">No events in ${escHtml(s?s.name:'the network')} yet. They appear here as its gateways come alive.</div>`;
+  /* Ideas: questions for the Host AI, from the sector's gateways (or written for the sector) */
+  const ideas = [...new Set(homeGws.flatMap(k => (GATEWAYS[k].prompts||[]).slice(0, 2)))].slice(0, 3);
+  const fallback = s ? [`What’s new in ${s.name} this week?`, `Find ${s.name.toLowerCase()} events near me`, `Best ${s.name.toLowerCase()} brands to follow`] : [];
+  const qs = ideas.length ? ideas : fallback;
+  pulseHtml._ideas = qs;   // tapped by index: a question can hold any quote mark, so it never goes inside an onclick
+  if(qs.length) out += sec('Ideas', 'ask the AI') + qs.map((q,i) => `<div class="pls-idea" onclick="pulseAsk(${i})">✦ ${escHtml(q)}<em>›</em></div>`).join('');
+  /* From the sector: three curated posts */
+  if(sk && (SECTOR_FEED[sk]||[]).length){
+    out += sec('From the sector') + SECTOR_FEED[sk].slice(0, 3).map(d => {
+      const g = GATEWAYS[d.gateway], img = d.img && d.img.url, av = d.avatar || {};
+      const go = g ? `state._gwFrom='root';openGateway('${esc(g.name)}','${sk}')` : '';
+      return `<div class="pls-post" ${go?`onclick="${go}"`:'style="cursor:default"'}><div class="th" style="${img?`background-image:url('${img}')`:`background:${av.bg||acc}`}"></div>
+        <div class="t"><b>${escHtml(d.author||'')}</b><p>${escHtml((d.text||'').replace(/<[^>]+>/g,''))}</p></div></div>`; }).join('');
+  }
+  if(!sk) out += `<div class="pls-note">Choose a sector and Pulse follows it: its sponsored brands, what’s coming up and ideas to ask the AI.</div>`;
+  return `<div class="pls">${out}</div>`;
+}
+/* Happening now (Sean, 2026-11-15): a Hot live event, a fast drop and the deal of the day. The live event is one of the
+   sector's "Live Now" events (the Events tab's own), opening where that tab opens it. The drop and the deal are drawn from the
+   products the sector's own brands sell, so each opens a real product page. Picks are seeded by the day (they change daily,
+   hold steady within it); the clocks are real: the drop sells down from 8am to midnight, the deal ends at midnight.
+   A sector with neither a live event nor demo brands shows no section rather than an empty one.
+   The first version had a live auction (40-minute rounds, a climbing bid); Sean swapped it for the live event the same day.
+   It is kept, switched off: set PULSE_AUCTION = true to bring it back. */
+const PULSE_AUCTION = false;
+function pulseNow(homeGws, sk, sec){
+  let h = 2166136261; for(const c of (new Date().toDateString()) + (sk||'net')) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
+  const rnd = () => { h ^= h << 13; h ^= h >>> 17; h ^= h << 5; return ((h >>> 0) % 100000) / 100000; };
+  const now = Date.now(), mid = new Date(); mid.setHours(24,0,0,0);
+  const cards = [];
+  /* 🔥 the live event: this sector's (the pinned gateways' at the network home) */
+  const lives = evAll().filter(e => (e.live || e.type==='Live') && (sk ? evMeta(e).sector===sk : PINNED_GWS.includes(e.gw)));
+  if(lives.length){ const e = lives[Math.floor(rnd()*lives.length)], m = evMeta(e), z = e.zone && ZONES[e.zone];
+    const go = e.go ? e.go : e.zone ? `openZoneFav('${e.zone}','events')` : `state._gwFrom='root';openGateway('${esc(m.name)}','${m.sector}')`;
+    const watching = (0.6 + rnd()*8.4).toFixed(1) + 'K';
+    cards.push(`<div class="pls-deal pls-hot" onclick="${go}"><div class="k"><span class="hot">🔥 HOT · LIVE EVENT</span><span class="onair">● LIVE · ${watching} watching</span></div>
+      <b>${escHtml(e.title)}</b><p>${escHtml(e.desc||'')}</p>
+      <div class="by"><span class="dot" style="background:${z ? (z.gradient||z.color) : (m.accent||'#E11D48')}"></span><span class="nm">${escHtml(z ? z.name : m.name)}</span><em>Watch ›</em></div></div>`); }
+  /* the products: drop and deal (and the auction, if it's back) */
+  const pool = [];
+  Object.values(ZONES).forEach(z => { if(z.kind!=='brand' || !homeGws.includes(z.gw)) return;
+    (z.products||[]).forEach((p,i) => { const m = /^([£$€])([\d,]+(?:\.\d+)?)$/.exec(p.price||''); if(m) pool.push({z, p, i, cur:m[1], v:+m[2].replace(/,/g,'')}); }); });
+  const want = PULSE_AUCTION ? 3 : 2;
+  if(pool.length >= want){
+    /* the auction and the drop come from the pricier half (worth rushing for); the deal can be anything. Different brands where possible. */
+    const top = pool.slice().sort((a,b)=>b.v-a.v).slice(0, Math.max(want, Math.ceil(pool.length/2)));
+    const picks = [], brands = new Set();
+    for(let n=0; n<90 && picks.length<want; n++){ const from = picks.length<want-1 ? top : pool, c = from[Math.floor(rnd()*from.length)];
+      if(picks.includes(c) || (brands.has(c.z.key) && n<60)) continue; picks.push(c); brands.add(c.z.key); }
+    if(picks.length === want){
+      const money = (cur, v) => cur + (v >= 100 ? Math.round(v).toLocaleString('en-GB') : v.toFixed(v % 1 ? 2 : 0));
+      const go = c => `openZoneFav('${c.z.key}');setZoneTab('shop');openProduct(${c.i})`;
+      const by = c => `<span class="dot" style="background:${c.z.gradient||c.z.color}"></span>${escHtml(c.z.name)}`;
+      if(PULSE_AUCTION){ /* 40-minute rounds; the bid climbs as the round runs */
+        const R = 40*60e3, start = Math.floor(now / R) * R, prog = (now - start) / R, a = picks.shift();
+        const bids = 3 + Math.floor(prog * 22 + rnd() * 4), bid = a.v * (0.55 + prog * 0.35);
+        cards.push(`<div class="pls-deal" onclick="${go(a)}"><div class="k"><span class="live">● LIVE AUCTION</span><span class="clk" data-pls-end="${start + R}"></span></div>
+          <b>${escHtml(a.p.name)}</b><div class="pr">${money(a.cur, bid)}<s>current bid · ${bids} bids</s></div><div class="by">${by(a)}<em>Bid ›</em></div></div>`); }
+      /* the drop: 50 made, released at 8am, selling down until midnight */
+      const d = picks[0], made = 50, eight = new Date(); eight.setHours(8,0,0,0);
+      const left = Math.max(3, made - Math.max(0, Math.floor((now - eight) / 60e3 / 20)) - Math.floor(rnd()*6));
+      cards.push(`<div class="pls-deal" onclick="${go(d)}"><div class="k"><span class="drop">⚡ FAST DROP</span><span class="clk" data-pls-end="${+mid}"></span></div>
+        <b>${escHtml(d.p.name)}</b><div class="bar"><i style="width:${left/made*100}%"></i></div><div class="pr sm">${left} of ${made} left<s>${money(d.cur, d.v)}</s></div><div class="by">${by(d)}<em>Grab ›</em></div></div>`);
+      /* the deal: 20–35% off until midnight */
+      const o = picks[1], off = 20 + Math.floor(rnd()*4) * 5;
+      cards.push(`<div class="pls-deal" onclick="${go(o)}"><div class="k"><span class="dod">🏷 DEAL OF THE DAY</span><span class="clk" data-pls-end="${+mid}"></span></div>
+        <b>${escHtml(o.p.name)}</b><div class="pr">${money(o.cur, o.v * (1 - off/100))}<s class="was">${money(o.cur, o.v)}</s><span class="off">−${off}%</span></div><div class="by">${by(o)}<em>Shop ›</em></div></div>`);
+    }
+  }
+  return cards.length ? sec('Happening now') + `<div class="pls-now">${cards.join('')}</div>` : '';
+}
+/* one ticking clock for every countdown on show; it stops itself when Pulse closes */
+function pulseTick(){
+  const els = document.querySelectorAll('[data-pls-end]');
+  if(!els.length){ clearInterval(pulseTick._t); pulseTick._t = null; return; }
+  const now = Date.now();
+  els.forEach(e => { let t = Math.max(0, Math.round((+e.dataset.plsEnd - now) / 1000));
+    if(t === 0 && e.closest('.pls-now')){ clearInterval(pulseTick._t); pulseTick._t = null; if(pulseShowing()) buildPulse(); return; }   // round over → the next one
+    const h = Math.floor(t/3600), m = Math.floor(t%3600/60), sx = t%60;
+    e.textContent = 'ends in ' + (h ? h + 'h ' + String(m).padStart(2,'0') + 'm' : m + ':' + String(sx).padStart(2,'0')); });
+}
+/* dark text on a light pill (PadelXX's lime), white on the rest */
+function pulseInk(c){ const m=/^#([0-9a-f]{6})$/i.exec(c||''); if(!m) return '#fff'; const n=parseInt(m[1],16);
+  return (0.299*(n>>16)+0.587*(n>>8&255)+0.114*(n&255)) > 170 ? '#111116' : '#fff'; }
+function pulseAsk(i){ const q=(pulseHtml._ideas||[])[i]; if(!q) return; setTab('ai'); setTimeout(()=>sendAI(q), 80); }
+function buildPulse(){ $('drawerList').innerHTML = pulseHtml(activeSectorKey()); updateSecJump('');
+  try{ lazyMedia(); }catch(_){}   // video ads load through the app's own lazy loader (Pulse redraws without a render)
+  pulseTick(); if(!pulseTick._t && document.querySelector('[data-pls-end]')) pulseTick._t = setInterval(pulseTick, 1000); }
+/* Phone: the drawer is hidden until pulled out, so each sector's feed carries a chip that opens it straight into Pulse */
+function pulseChip(s){
+  if(!LAB_PULSE || DESKTOP() || !s) return '';
+  const w = washFor(s.g), live = evAll().some(e => (e.live || e.type==='Live') && evMeta(e).sector===s.key);
+  return `<div class="pls-chip" onclick="pulseFromChip()" style="background:${w.wash};color:${w.accent}">
+    <span class="ic">✦</span><span class="tx"><b>${escHtml(s.name)} Pulse</b><span>${live ? '🔥 Live now · ' : ''}Deals, events and ideas</span></span><span class="go">›</span></div>`;
+}
+function pulseFromChip(){ openDrawer(); pulseOpen(); }
+/* the head, drawn after syncGwChrome() has set its label and colours */
+function pulseHead(head, layer, ask){
+  $('drawer').classList.toggle('pulse-mode', pulseShowing());
+  if(!pulseAvail() || layer || ask) return;
+  const sk = activeSectorKey(), name = sk ? sectorOf(sk).name : 'Network';
+  head.innerHTML = state.pulse
+    ? `<button class="pulse-back" onclick="pulseBack()" title="Back to Sectors">‹ Sectors</button><span class="pulse-ttl">✦ ${escHtml(name)} Pulse</span>`
+    : `<span>Sectors</span><button class="pulse-tog" onclick="pulseOpen()" title="${escHtml(name)} Pulse: ads, events and ideas">✦ Pulse</button>`;
+}
+/* ═════════ /PULSE ═════════ */
 function buildDrawer(){
   const layer = zoneLayer();
   if(layer) return buildZoneDrawer(layer);
+  pulseSync(); if(pulseShowing()) return buildPulse();   // PULSE hook
   const active = activeSectorKey();
   const q = (state.secQuery||'').trim().toLowerCase();
   if(q){                                          // search flattens the groups, live-first
@@ -4008,6 +4239,7 @@ function openDrawer(){
   // override it — and strand it there on the way back to a pinned screen.
   if(!DESKTOP()){ const off = drawerFlushTop();
     $('drawer').style.top = off+'px'; $('scrim').style.top = off+'px'; }
+  state.pulse = false;                           // PULSE hook: the drawer always opens on Sectors
   syncGwChrome();                                // head + list follow wherever you are (incl. an open canvas)
   state.secQuery=''; { const si=$('secSearch'); if(si) si.value=''; }   // fresh search each open
   { const p=$('secJump'); if(p) p.hidden=true; }                        // jump popover closed on open
@@ -4029,6 +4261,7 @@ function closeDrawer(){
    toast: it stays until you pick one, because it is an instruction, not a notification. */
 function askSectorPrompt(){
   pulseNetbarTab(1);
+  if(pulseShowing()){ pulseBack(); return; }   // PULSE hook: the Sectors tab brings the sector list back
   if(activeSectorKey()) return;              // already chosen — the flash alone is the answer
   state.askSector = true;
   syncGwChrome();
@@ -5876,6 +6109,7 @@ function renderSector(){
   <div class="push">
     ${bar}
     <div style="height:8px"></div>
+    ${pulseChip(s)}   <!-- PULSE hook -->
     ${body}
     <div style="height:14px"></div>
   </div>`;
