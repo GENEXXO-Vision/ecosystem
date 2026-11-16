@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Class Timer</title>
+<style>
+/* Class Timer, by "Inkwell & Co" (fictional), 2026-11-16. A GENEXXO app for TeacherXX.
+   Timer: presets and ±30s, a ring that drains, a soft two-note chime (Web Audio) at zero.
+   Picker: fair rotation. Nobody is picked twice until everyone present has had a turn; absent pupils are skipped.
+   Demo data is first names only. */
+:root{--bg:#FBF7EE;--card:#FFFDF8;--line:rgba(30,42,38,.1);--ink:#1E2A26;--mut:rgba(30,42,38,.55);--green:#2F5D50;--red:#D9433B;--yel:#E0A21B}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#E8574E,#A52A24);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--red)}
+.clock{position:relative;width:250px;height:250px;margin:6px auto 0}.clock svg{position:absolute;inset:0}
+.clock .t{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.clock .t b{font-size:58px;font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:-1px}.clock .t small{font-weight:800;color:var(--mut);font-size:12.5px}
+.clock.done .t b{color:var(--red)}
+.pre{display:flex;gap:6px;justify-content:center;margin-top:12px}.pre button{font:inherit;font-weight:900;font-size:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px 0;width:62px;cursor:pointer}.pre button.on{background:#FDE7E5;border-color:var(--red)}
+.ctl{display:flex;gap:8px;margin-top:12px}.ctl button{flex:1;font:inherit;font-weight:900;font-size:15px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:13px;cursor:pointer}.ctl .p{background:var(--red);border-color:var(--red);color:#fff}.ctl .sm{flex:0 0 64px}
+.cls{display:flex;gap:6px;margin-bottom:10px}.cls button{font:inherit;font-weight:800;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:7px 13px;cursor:pointer}.cls button.on{background:var(--green);border-color:var(--green);color:#fff}
+.pick{background:linear-gradient(160deg,#2F5D50,#1F4237);color:#FBF7EE;border-radius:20px;padding:22px 12px;text-align:center;box-shadow:inset 0 0 0 4px #8B6B3E}
+.pick small{font-size:11.5px;font-weight:900;letter-spacing:.1em;opacity:.7}.pick b{display:block;font-size:46px;font-weight:900;margin:6px 0 2px;font-family:"Chalkboard SE","Comic Sans MS",cursive}
+.pick span{font-size:12.5px;opacity:.75;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.names{display:flex;flex-wrap:wrap;gap:6px}.names button{font:inherit;font-weight:800;font-size:12.5px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:99px;padding:6px 11px;cursor:pointer}
+.names button.done{background:#E3EFE9;border-color:rgba(47,93,80,.35);color:var(--green)}.names button.abs{opacity:.35;text-decoration:line-through}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--green);color:#fff;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">⏱️</div><div><h1>Class Timer</h1><p>Inkwell & Co · in TeacherXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="timer" class="on">Timer</button><button data-tab="pick">Name picker</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const CLASS={'5R':'Amara Ben Chloe Dev Ella Finn Grace Hamza Isla Jay Kai Leah Mo Nia Oscar Priya Quinn Ruby Sam Tia Umar Vera Will Xin Yusuf Zara Alfie Bea'.split(' '),
+  '9X2':'Alfie Bea Cal Dina Eli Fern Grace Hamza Isla Jay Kai Leah Mo Nia Oscar Priya Quinn Ruby Sam Tia Umar Vera Will Xin Yusuf Zara'.split(' ')};
+const seed=()=>({cls:'5R',secs:300,picked:{'5R':['Amara','Ben','Grace','Mo','Priya','Tia','Xin','Ella','Kai','Quinn'],'9X2':[]},absent:{'5R':['Umar'],'9X2':[]},last:{'5R':'Amara','9X2':null},day:GX.iso(0)});
+let C,S={tab:'timer',left:300,run:false,end:0,spin:false,shared:false,tick:null,done:false};
+GX.init({gateway:'TeacherXX',seed}).then(c=>{C=c;if(C.data.day!==GX.iso(0)){C.data.picked={'5R':[],'9X2':[]};C.data.day=GX.iso(0);}S.left=C.data.secs;paint();});
+const mmss=x=>{const s=Math.ceil(x);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');};
+function chime(){try{const a=new (window.AudioContext||window.webkitAudioContext)();[523.25,783.99].forEach((f,i)=>{const o=a.createOscillator(),g=a.createGain();o.frequency.value=f;o.connect(g);g.connect(a.destination);
+  const t=a.currentTime+i*.35;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.25,t+.02);g.gain.exponentialRampToValueAtTime(.001,t+1.2);o.start(t);o.stop(t+1.3);});}catch(e){}}
+function start(){S.run=true;S.done=false;S.end=Date.now()+S.left*1000;clearInterval(S.tick);S.tick=setInterval(()=>{S.left=Math.max(0,(S.end-Date.now())/1000);
+  if(S.left<=0){clearInterval(S.tick);S.run=false;S.done=true;chime();}if(S.tab==='timer')paintClock();},200);}
+function stop(){S.run=false;clearInterval(S.tick);}
+function ring(){const r=108,c=2*Math.PI*r,p=S.left/C.data.secs;return `<svg viewBox="0 0 250 250"><circle cx="125" cy="125" r="${r}" fill="#FFFDF8" stroke="rgba(30,42,38,.08)" stroke-width="16"/><circle id="arc" cx="125" cy="125" r="${r}" fill="none" stroke="${p<.2?'#D9433B':'#2F5D50'}" stroke-width="16" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-p)}" transform="rotate(-90 125 125)"/></svg>`;}
+function paintClock(){const el=document.getElementById('clock');if(!el)return;el.className='clock'+(S.done?' done':'');el.innerHTML=ring()+`<div class="t"><b>${S.done?'Time!':mmss(S.left)}</b><small>${S.run?'counting down':S.done?'pens down':'ready'}</small></div>`;
+  const b=document.getElementById('go');if(b)b.textContent=S.run?'❚❚ Pause':S.left<C.data.secs&&!S.done?'▶ Resume':'▶ Start';}
+function vTimer(){return `<div class="clock" id="clock"></div>
+  <div class="pre">${[1,3,5,10].map(m=>`<button data-m="${m}" class="${C.data.secs===m*60?'on':''}">${m} min</button>`).join('')}</div>
+  <div class="ctl"><button class="sm" data-adj="-30">−30s</button><button class="p" id="go">▶ Start</button><button class="sm" data-adj="30">+30s</button></div>
+  <div class="ctl" style="margin-top:8px"><button id="reset">↺ Reset</button></div>
+  <div class="legend">A soft chime plays at zero. Put it on the board for tidy-ups and timed tasks.</div>`;}
+function pool(){const k=C.data.cls,here=CLASS[k].filter(n=>!C.data.absent[k].includes(n));const left=here.filter(n=>!C.data.picked[k].includes(n));return {here,left};}
+function vPick(){const k=C.data.cls,{here,left}=pool(),last=C.data.last[k];
+  return `<div class="cls">${Object.keys(CLASS).map(c=>`<button data-cls="${c}" class="${c===k?'on':''}">${c}</button>`).join('')}</div>
+  <div class="pick"><small>IT’S YOUR TURN</small><b id="nm">${last?GX.esc(last):'Ready?'}</b><span>${here.length-left.length} of ${here.length} have had a turn today</span></div>
+  <div class="ctl"><button class="p" id="spin">🎲 Pick a name</button></div>
+  <div class="card"><h3>${k} today · tap a name to mark absent</h3><div class="names">${CLASS[k].map(n=>`<button data-abs="${n}" class="${C.data.absent[k].includes(n)?'abs':C.data.picked[k].includes(n)?'done':''}">${C.data.picked[k].includes(n)?'✓ ':''}${n}</button>`).join('')}</div></div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared||left.length?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:left.length?`${left.length} still to go before you can share`:`Everyone had a turn: share to ${C.gateway}`}</button>`:''}`;}
+function spin(){const k=C.data.cls;let {here,left}=pool();if(!here.length||S.spin)return;if(!left.length){C.data.picked[k]=[];left=here.slice();}
+  S.spin=true;const rnd=GX.rng(Date.now()),win=left[Math.floor(rnd()*left.length)],el=document.getElementById('nm');let n=0;
+  const step=()=>{n++;if(el)el.textContent=here[Math.floor(rnd()*here.length)];if(n<14)setTimeout(step,50+n*12);else{C.data.picked[k].push(win);C.data.last[k]=win;GX.save(C.data);S.spin=false;S.shared=false;paint();}};step();}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='timer'?vTimer():vPick();paintClock();
+  v.querySelectorAll('[data-m]').forEach(e=>e.onclick=()=>{stop();C.data.secs=+e.dataset.m*60;S.left=C.data.secs;S.done=false;GX.save(C.data);paint();});
+  v.querySelectorAll('[data-adj]').forEach(e=>e.onclick=()=>{S.left=Math.max(10,Math.min(3600,S.left+(+e.dataset.adj)));if(S.left>C.data.secs)C.data.secs=Math.ceil(S.left);if(S.run){S.end=Date.now()+S.left*1000;}S.done=false;paintClock();});
+  const g=document.getElementById('go');if(g)g.onclick=()=>{if(S.run)stop();else{if(S.done)S.left=C.data.secs;start();}paintClock();};
+  const r=document.getElementById('reset');if(r)r.onclick=()=>{stop();S.left=C.data.secs;S.done=false;paintClock();};
+  v.querySelectorAll('[data-cls]').forEach(e=>e.onclick=()=>{C.data.cls=e.dataset.cls;GX.save(C.data);paint();});
+  v.querySelectorAll('[data-abs]').forEach(e=>e.onclick=()=>{const k=C.data.cls,n=e.dataset.abs,a=C.data.absent[k];C.data.absent[k]=a.includes(n)?a.filter(x=>x!==n):a.concat(n);GX.save(C.data);paint();});
+  const sp=document.getElementById('spin');if(sp)sp.onclick=spin;
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const k=C.data.cls;
+    GX.post(`Everyone in <b>${k}</b> had a turn to answer today. Fair picks with Class Timer ⏱️`,'CLASS TIMER').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Seating Plan</title>
+<style>
+/* Seating Plan, by "Staffroom Software" (fictional), 2026-11-16. A GENEXXO app for TeacherXX.
+   One plan per class: rows (6 across) or table groups (tables of 5). Tap one seat, then another, to swap; tap a pupil
+   on the Class tab to mark "near the front" (★). Shuffle keeps ★ pupils in the front row (rows) or the front tables
+   (groups) and mixes everyone else. Demo data is first names only, as the app advises for real classes. */
+:root{--bg:#FBF7EE;--card:#FFFDF8;--line:rgba(30,42,38,.1);--ink:#1E2A26;--mut:rgba(30,42,38,.55);--green:#2F5D50;--red:#D9433B;--yel:#E0A21B}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#3E7A69,#1F4237);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--green)}
+.cls{display:flex;gap:6px;margin-bottom:10px}.cls button{font:inherit;font-weight:800;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:7px 13px;cursor:pointer}.cls button.on{background:var(--green);border-color:var(--green);color:#fff}
+.board{background:linear-gradient(180deg,#2F5D50,#1F4237);color:#E6EFE9;text-align:center;font-weight:800;font-size:12px;letter-spacing:.12em;border-radius:10px;padding:7px;margin-bottom:10px;box-shadow:inset 0 0 0 3px #8B6B3E}
+.rows{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.groups{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tbl{background:#EFE6D2;border-radius:16px;padding:8px;display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.tbl .seat{font-size:11px;padding:9px 0}.tbl small{grid-column:1/-1;font-size:10.5px;font-weight:900;color:var(--mut);letter-spacing:.06em}
+.seat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 2px;text-align:center;font-weight:800;font-size:12px;cursor:pointer;min-height:40px;position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.seat.front{background:#FFF4D6;border-color:rgba(224,162,27,.5)}.seat.front::after{content:'★';position:absolute;top:1px;right:3px;font-size:9px;color:var(--yel)}
+.seat.sel{outline:3px solid var(--red);outline-offset:-1px}.seat.empty{background:none;border-style:dashed;color:var(--mut)}
+.seat.flash{animation:fl .5s}@keyframes fl{from{background:#DDEFE6}}
+.bar{display:flex;gap:8px;margin-top:12px}.bar button{flex:1;font:inherit;font-weight:800;font-size:13.5px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:11px;cursor:pointer}.bar button.p{background:var(--green);border-color:var(--green);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.names{display:flex;flex-wrap:wrap;gap:6px}.names button{font:inherit;font-weight:800;font-size:13px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:99px;padding:7px 12px;cursor:pointer}.names button.on{background:#FFF4D6;border-color:var(--yel)}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--red);color:#fff;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🪑</div><div><h1>Seating Plan</h1><p>Staffroom Software · in TeacherXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="plan" class="on">Plan</button><button data-tab="class">Class</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const NAMES='Amara Ben Chloe Dev Ella Finn Grace Hamza Isla Jay Kai Leah Mo Nia Oscar Priya Quinn Ruby Sam Tia Umar Vera Will Xin Yusuf Zara Alfie Bea Cal Dina Eli Fern'.split(' ');
+const mk=(name,n,off,layout,front)=>{const seats=Array.from({length:30},(_,i)=>i<n?NAMES[(i*7+off)%NAMES.length]:null);
+  front.forEach((p,j)=>{const at=seats.indexOf(p),to=j*2+1;[seats[at],seats[to]]=[seats[to],seats[at]];});return {name,layout,front,seats};};
+const seed=()=>({cur:0,classes:[mk('9X2',28,0,'rows',['Isla','Mo','Ben']),mk('7B',30,3,'groups',['Ruby','Kai']),mk('11S',24,5,'rows',['Leah'])]});
+let C,S={tab:'plan',sel:null,shared:false,flash:[]};
+GX.init({gateway:'TeacherXX',seed}).then(c=>{C=c;paint();});
+const K=()=>C.data.classes[C.data.cur];
+/* seats in the front: rows → first 6; groups → the first two tables (10 seats) */
+const frontIdx=k=>k.layout==='rows'?[0,1,2,3,4,5]:[0,1,2,3,4,5,6,7,8,9];
+function shuffle(){const k=K(),rnd=GX.rng(Date.now()+k.name),pupils=k.seats.filter(Boolean),front=pupils.filter(p=>k.front.includes(p)),rest=pupils.filter(p=>!k.front.includes(p));
+  for(let i=rest.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[rest[i],rest[j]]=[rest[j],rest[i]];}
+  const fi=frontIdx(k).slice(),out=Array(30).fill(null);
+  for(let i=fi.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[fi[i],fi[j]]=[fi[j],fi[i]];}
+  front.forEach((p,i)=>out[fi[i]]=p);let q=0;for(let i=0;i<30&&q<rest.length;i++)if(out[i]==null)out[i]=rest[q++];
+  k.seats=out;S.flash=out.map((_,i)=>i);}
+const seat=(k,i)=>{const p=k.seats[i];return `<div class="seat ${p?'':'empty'} ${p&&k.front.includes(p)?'front':''} ${S.sel===i?'sel':''} ${S.flash.includes(i)?'flash':''}" data-seat="${i}">${p?GX.esc(p):'·'}</div>`;};
+function vPlan(){const k=K(),n=k.seats.filter(Boolean).length;
+  const grid=k.layout==='rows'?`<div class="rows">${k.seats.map((_,i)=>seat(k,i)).join('')}</div>`
+    :`<div class="groups">${[0,1,2,3,4,5].map(t=>`<div class="tbl"><small>TABLE ${t+1}</small>${[0,1,2,3,4].map(j=>seat(k,t*5+j)).join('')}</div>`).join('')}</div>`;
+  return `<div class="cls">${C.data.classes.map((c,i)=>`<button data-cls="${i}" class="${i===C.data.cur?'on':''}">${c.name}</button>`).join('')}</div>
+  <div class="board">FRONT · BOARD</div>${grid}
+  <div class="legend">${S.sel!=null?`Now tap the seat to swap with <b>${GX.esc(k.seats[S.sel]||'the empty seat')}</b>`:`${n} pupils · tap two seats to swap · ★ sits near the front`}</div>
+  <div class="bar"><button id="layout">${k.layout==='rows'?'⊞ Table groups':'☰ Rows'}</button><button class="p" id="shuffle">🔀 Shuffle</button></div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share to ${C.gateway}`}</button>`:''}`;}
+function vClass(){const k=K(),ps=k.seats.filter(Boolean).sort();
+  return `<div class="cls">${C.data.classes.map((c,i)=>`<button data-cls="${i}" class="${i===C.data.cur?'on':''}">${c.name}</button>`).join('')}</div>
+  <div class="card"><h3>${k.name} · ${ps.length} pupils · tap to mark ★ near the front</h3><div class="names">${ps.map(p=>`<button data-front="${GX.esc(p)}" class="${k.front.includes(p)?'on':''}">${k.front.includes(p)?'★ ':''}${GX.esc(p)}</button>`).join('')}</div></div>
+  <div class="legend">Use first names only. Shuffle always keeps ★ pupils near the board.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),k=K();v.innerHTML=S.tab==='plan'?vPlan():vClass();S.flash=[];
+  v.querySelectorAll('[data-cls]').forEach(e=>e.onclick=()=>{C.data.cur=+e.dataset.cls;S.sel=null;S.shared=false;GX.save(C.data);paint();});
+  v.querySelectorAll('[data-seat]').forEach(e=>e.onclick=()=>{const i=+e.dataset.seat;
+    if(S.sel==null){if(k.seats[i]!=null)S.sel=i;}else{if(i!==S.sel){[k.seats[S.sel],k.seats[i]]=[k.seats[i],k.seats[S.sel]];S.flash=[S.sel,i];GX.save(C.data);S.shared=false;}S.sel=null;}paint();});
+  v.querySelectorAll('[data-front]').forEach(e=>e.onclick=()=>{const p=e.dataset.front;k.front=k.front.includes(p)?k.front.filter(x=>x!==p):k.front.concat(p);GX.save(C.data);paint();});
+  const lo=document.getElementById('layout');if(lo)lo.onclick=()=>{k.layout=k.layout==='rows'?'groups':'rows';shuffle();GX.save(C.data);S.shared=false;paint();};
+  const sf=document.getElementById('shuffle');if(sf)sf.onclick=()=>{shuffle();S.sel=null;GX.save(C.data);S.shared=false;paint();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{
+    GX.post(`New seating plan for <b>${GX.esc(k.name)}</b>: ${k.seats.filter(Boolean).length} pupils in ${k.layout==='rows'?'rows':'table groups'}, made in four minutes in Seating Plan 🪑`,'SEATING PLAN').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;S.sel=null;paint();};
+</script></body></html>
