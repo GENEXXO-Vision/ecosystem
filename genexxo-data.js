@@ -3550,3 +3550,711 @@ EVENTS_FEED.push(
 );
 })();
 /* ═════════ /GOLFXX ═════════ */
+/* ═════════ DOCTORXX — a Career demo gateway (2026-11-16, Sean) ═════════
+   Built like GolfXX and ChristmasXX: theme, feed, 4 Brand Zones, 2 Business Zones, 3 Pros, 2 communities, 3 apps, events.
+   Palette (dark): night-ward teal, scrub teal, heart coral. Home sector: Career (Healthcare Careers).
+   Brands, pros and communities are fictional; places are real. Source of truth: _lab/careers/doctorxx-block.js. */
+(function(){
+const U = (id, w, h) => `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&q=75`;
+const TEAL = 'linear-gradient(135deg,#19B3A6,#0B5E58)', CORAL = 'linear-gradient(135deg,#FF7B7B,#C23B4E)', INDIGO = 'linear-gradient(135deg,#7A6CF0,#3B2F99)', SLATE = 'linear-gradient(135deg,#4F7A8C,#1E3A47)';
+
+GATEWAYS.doctor = {
+  name: 'DoctorXX', domain: 'doctorxx.com', emoji: '🩺', sector: 'career', live: true,
+  tagline: 'The Doctor Universe',
+  theme: {
+    bg: '#071A1F', text: '#E8F3F1', cardBg: 'rgba(255,255,255,.045)', cardBorder: 'rgba(25,179,166,.16)',
+    headerBg: 'linear-gradient(180deg,#0E3B41,#071A1F)', accent: '#19B3A6', accentAlt: '#FF6B6B', dark: true
+  },
+  gradient: 'linear-gradient(135deg,#0E3B41,#19B3A6,#FF6B6B)',
+  stats: { members: '2.9M', brands: '1,600+', agents: '64' },
+  spaces: ['All Feed', 'Exams & Training', 'On Shift', 'Kit & Scrubs', 'Wellbeing', 'Careers & Jobs'],
+  trending: ['#NightShift', '#ExamSeason', '#DoctorsWellbeing'],
+  brandZones: [
+    { key: 'ward-weave', name: 'Ward & Weave', color: '#19B3A6', tier: 'Founding Partner', tag: 'Scrubs made for a thirteen-hour shift' },
+    { key: 'auscult', name: 'Auscult', color: '#E05A5A', tier: 'Brand Zone', tag: 'Stethoscopes, engraved and serviced for life' },
+    { key: 'ward-round-press', name: 'Ward Round Press', color: '#6C5CE7', tier: 'Brand Zone', tag: 'Question banks, handbooks and exam courses' },
+    { key: 'bleepwise', name: 'Bleepwise', color: '#4F7A8C', tier: 'Brand Zone', tag: 'Wipe-clean pocket kit for the ward' }
+  ],
+  apps: [
+    { name: 'Shift Rota', color: '#19B3A6', desc: 'Your rota, your hours and your rest', key: 'shift-rota', url: 'apps/shift-rota.html',
+      dev: 'Night Ward Software', rating: '4.8', users: '412K', perms: ['profile', 'feed'],
+      tagline: 'Know your week before it starts.',
+      about: 'Shift Rota lays out your next two weeks of long days, nights and days off, adds up your hours and flags any gap between shifts shorter than eleven hours. Tap a day to change it when you swap. When the week is done, share it to the DoctorXX feed.',
+      features: ['Two weeks of shifts at a glance', 'Hours this week and across the rota', 'Short rest gaps flagged', 'Tap a day to swap a shift'],
+      shots: ['apps/shift-rota/shot-1.jpg', 'apps/shift-rota/shot-2.jpg', 'apps/shift-rota/shot-3.jpg'],
+      version: '5.2', size: '10 KB',
+      updates: [ { v: '5.2', ago: 4, notes: 'Nights in a row counted on the week view.' }, { v: '5.0', ago: 90, notes: 'Rest-gap checks between shifts.' }, { v: '4.6', ago: 210, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@fy1_femi', stars: 5, ago: 2, text: 'Finally know how many hours I actually did this week.' }, { who: '@reg_rosa', stars: 5, ago: 7, text: 'The rest-gap warning caught a swap I should never have agreed to.' }, { who: '@gp_trainee_gus', stars: 4, ago: 18, text: 'Would love a calendar export.' } ] },
+    { name: 'CPD Log', color: '#FF6B6B', desc: 'Your CPD credits for appraisal', key: 'cpd-log', url: 'apps/cpd-log.html',
+      dev: 'Ward Round Press', rating: '4.7', users: '188K', perms: ['profile', 'feed'],
+      tagline: 'Fifty credits, logged as you go.',
+      about: 'CPD Log keeps your continuing professional development in one place: courses, teaching, reading and reflection, each with its credits. See how far you are towards a year’s target, split into clinical, non-clinical and personal, ready for your appraisal. Many UK colleges ask for 50 credits a year; check your own.',
+      features: ['Log an activity in seconds', 'Progress towards your yearly target', 'Clinical, non-clinical and personal', 'A short reflection with every entry'],
+      shots: ['apps/cpd-log/shot-1.jpg', 'apps/cpd-log/shot-2.jpg', 'apps/cpd-log/shot-3.jpg'],
+      version: '3.4', size: '9 KB',
+      updates: [ { v: '3.4', ago: 6, notes: 'Reflection prompts on every entry.' }, { v: '3.0', ago: 120, notes: 'Split by category for appraisal.' }, { v: '2.6', ago: 260, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@consultant_kemi', stars: 5, ago: 3, text: 'Appraisal prep went from a weekend to an hour.' }, { who: '@reg_rosa', stars: 5, ago: 11, text: 'Logging on the bus home actually works.' }, { who: '@locum_leo', stars: 4, ago: 24, text: 'Good. Would like certificate photos.' } ] },
+    { name: 'Exam Cards', color: '#7A6CF0', desc: 'Spaced-repetition revision cards', key: 'exam-cards', url: 'apps/exam-cards.html',
+      dev: 'Bleep Labs', rating: '4.8', users: '265K', perms: ['profile', 'feed'],
+      tagline: 'Ten minutes a day, between bleeps.',
+      about: 'Exam Cards is a revision deck that learns what you know. Cards you get right come back less often; cards you miss come back soon. This demo carries anatomy, physiology and biochemistry basics for finals and the early membership exams.',
+      features: ['Anatomy, physiology and biochemistry decks', 'Spaced repetition in three boxes', 'A daily streak', 'Share a mastered deck to DoctorXX'],
+      shots: ['apps/exam-cards/shot-1.jpg', 'apps/exam-cards/shot-2.jpg', 'apps/exam-cards/shot-3.jpg'],
+      version: '6.1', size: '10 KB',
+      updates: [ { v: '6.1', ago: 2, notes: 'Biochemistry deck added.' }, { v: '6.0', ago: 75, notes: 'Three-box spaced repetition.' }, { v: '5.4', ago: 230, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@mrcp_maya', stars: 5, ago: 1, text: 'Doing ten cards on every break. It adds up.' }, { who: '@med_student_sam', stars: 5, ago: 9, text: 'Finals revision that fits in a coffee queue.' }, { who: '@fy1_femi', stars: 4, ago: 20, text: 'More decks please, pharmacology next?' } ] }
+  ],
+  pros: [
+    { key: 'dr-priya-nair-tutoring', name: 'Dr Priya Nair Exam Tutoring', color: '#7A6CF0', tag: 'Membership exam tutor · MRCP Part 1, Part 2 and PACES', role: 'Exam tutor',
+      img: U('1758691462651-611d730c5272', 800, 800), base: 'London, UK', langs: 'English, Malayalam', years: 11, rating: '4.9', reviewsN: 612, cur: '£',
+      creds: ['Consultant physician', 'MRCP(UK)', 'Medical education fellowship'],
+      about: 'Priya is a consultant physician in London who has tutored doctors through the membership exams for eleven years. Small groups, past-paper technique and mock PACES stations with real feedback.',
+      services: [ { id: 'one', name: 'One-to-one exam session', dur: '60 minutes', price: 70, desc: 'A plan for your weak topics and the question technique to go with it.' },
+                  { id: 'group', name: 'Small-group course (4 weeks)', dur: '4 × 2 hours', price: 240, desc: 'Six doctors, weekly evening sessions, timed papers and review.' },
+                  { id: 'paces', name: 'Mock PACES carousel', dur: 'Half day', price: 180, desc: 'Five stations with examiners and written feedback on every one.' } ],
+      avail: { days: [1, 2, 3, 4, 6], times: ['18:30', '19:30', '10:00'] },
+      reviews: [ { who: '@mrcp_maya', stars: 5, ago: 4, text: 'Passed Part 1 at the second go after four weeks with Priya.' }, { who: '@reg_rosa', stars: 5, ago: 13, text: 'The mock PACES was harder than the real thing. Good.' }, { who: '@locum_leo', stars: 5, ago: 30, text: 'Clear, kind and very organised.' } ],
+      posts: [ { ago: 1, text: 'Spring sitting: start a timed paper a week from now and you will thank yourself in March.' }, { ago: 6, text: 'Read the last line of the question first. Then the stem.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'dr-tom-hale-careers', name: 'Dr Tom Hale Medical Careers', color: '#19B3A6', tag: 'Career coaching for doctors · specialty applications, interviews, portfolio', role: 'Careers coach',
+      img: U('1758691463582-11aea602cd4a', 800, 800), base: 'Manchester, UK', langs: 'English', years: 9, rating: '4.8', reviewsN: 344, cur: '£',
+      creds: ['GP and medical educator', 'Specialty interview panel experience', 'ICF-trained coach'],
+      about: 'Tom is a GP and coach who helps doctors choose a specialty, build a portfolio that scores, and walk into interviews ready. Also there for the bigger question: is this still the right path?',
+      services: [ { id: 'call', name: 'Career clarity call', dur: '45 minutes', price: 55, desc: 'Talk through your options and leave with a short written plan.' },
+                  { id: 'portfolio', name: 'Portfolio review', dur: '60 minutes', price: 85, desc: 'Scored against the self-assessment criteria, with what to do next.' },
+                  { id: 'mock', name: 'Mock specialty interview', dur: '75 minutes', price: 110, desc: 'Two stations, recorded, with detailed feedback.' } ],
+      avail: { days: [1, 3, 4, 5], times: ['17:30', '19:00', '20:00'] },
+      reviews: [ { who: '@fy1_femi', stars: 5, ago: 5, text: 'Helped me see why I kept circling back to anaesthetics.' }, { who: '@gp_trainee_gus', stars: 5, ago: 16, text: 'Mock interview was the reason I got my first choice.' }, { who: '@consultant_kemi', stars: 4, ago: 40, text: 'Sent two of my trainees. Both thrived.' } ],
+      posts: [ { ago: 2, text: 'Application season: your portfolio evidence should be ready before the window opens, not during it.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'kwame-mensah-surgical-skills', name: 'Mr Kwame Mensah Surgical Skills', color: '#FF6B6B', tag: 'Suturing and basic surgical skills courses · core surgical training prep', role: 'Surgical skills tutor',
+      img: U('1769072610024-5b8a50f05c73', 800, 800), base: 'Birmingham, UK', langs: 'English, Twi', years: 14, rating: '4.9', reviewsN: 428, cur: '£',
+      creds: ['Consultant general surgeon', 'FRCS', 'Simulation faculty'],
+      about: 'Kwame runs small-group skills days in Birmingham for students and junior doctors: knots, suturing and the basics of theatre, on simulation tissue, with a consultant at your elbow the whole time.',
+      services: [ { id: 'suture', name: 'Suturing workshop', dur: '3 hours', price: 95, desc: 'Instrument ties, interrupted and continuous sutures, on simulation skin.' },
+                  { id: 'skills', name: 'Basic surgical skills day', dur: 'Full day', price: 220, desc: 'Knots, suturing, theatre etiquette and a laparoscopic trainer.' },
+                  { id: 'cst', name: 'Core surgical training prep', dur: '90 minutes', price: 120, desc: 'Portfolio scoring and a mock interview with a consultant.' } ],
+      avail: { days: [6, 0, 3], times: ['09:00', '13:30', '18:00'] },
+      reviews: [ { who: '@med_student_sam', stars: 5, ago: 6, text: 'Left the suturing workshop actually confident.' }, { who: '@fy1_femi', stars: 5, ago: 19, text: 'The skills day is the best £220 I have spent in medicine.' }, { who: '@locum_leo', stars: 4, ago: 35, text: 'Brilliant. Bring a snack, it is a long day.' } ],
+      posts: [ { ago: 1, text: 'December skills day has four places left. Simulation tissue, real instruments, a consultant per three.' } ],
+      tier: 'Pro Zone', verified: true }
+  ],
+  communities: [
+    { key: 'night-shift-club', name: 'The Night Shift Club', domain: 'nights.doctorxx.com', color: '#19B3A6', img: U('1516574187841-cb9cc2ca948b', 900, 500),
+      scope: 'Global', where: 'Every ward, 3am', members: 48200, online: 1260, tagline: 'Awake when everyone else is asleep. Never alone.',
+      about: 'Doctors, nurses and everyone else working nights. We share tips for sleeping in the day, food that works at 4am, the moments that made a long shift worth it, and a quiet word when it did not.',
+      rules: ['Be kind, everyone here is tired', 'No patient details, ever', 'Signpost, do not diagnose'],
+      mods: ['@reg_rosa', '@night_nurse_nia'],
+      threads: [ { t: 'What do you eat at 4am that does not wreck you?', by: '@fy1_femi', tag: 'FOOD', replies: 312, ago: 0, votes: 640 }, { t: 'Blackout blinds that actually work', by: '@locum_leo', tag: 'SLEEP', replies: 148, ago: 1, votes: 286 }, { t: 'A patient said thank you at 5am and I nearly cried', by: '@night_nurse_nia', tag: 'STORIES', replies: 96, ago: 2, votes: 512 }, { t: 'Switching back to days: how long does it take you?', by: '@reg_rosa', tag: 'Q&A', replies: 74, ago: 4, votes: 130 } ],
+      events: [ { title: 'Midnight check-in (online)', day: 3, time: '00:00', where: 'Online' }, { title: 'Day-sleep masterclass', day: 6, time: '15:00', where: 'Online' } ] },
+    { key: 'med-students-manchester', name: 'Med Students Manchester', domain: 'manchester.doctorxx.com', color: '#7A6CF0', img: U('1571260899304-425eee4c7efc', 900, 500),
+      scope: 'Local', where: 'Manchester', members: 3420, online: 88, tagline: 'Placements, revision and a social life. Mostly revision.',
+      about: 'Medical students across Manchester: placement tips, shared revision sessions, OSCE practice in pairs and a monthly social when the exams allow it.',
+      rules: ['Share notes generously', 'No patient details', 'OSCE partners welcome every year'],
+      mods: ['@med_student_sam', '@osce_olu'],
+      threads: [ { t: 'OSCE practice partners for December?', by: '@osce_olu', tag: 'OSCE', replies: 58, ago: 0, votes: 92 }, { t: 'Best quiet library on Oxford Road after 6pm', by: '@med_student_sam', tag: 'REVISION', replies: 41, ago: 1, votes: 64 }, { t: 'Christmas social: vote for the venue', by: '@osce_olu', tag: 'SOCIAL', replies: 87, ago: 2, votes: 120 } ],
+      events: [ { title: 'OSCE practice night', day: 2, time: '18:30', where: 'Oxford Road, Manchester' }, { title: 'Winter social', day: 5, time: '19:30', where: 'Northern Quarter, Manchester' } ] }
+  ],
+  feed: [
+    { av: 'DX', avBg: TEAL, author: 'DoctorXX Editorial', sub: 'Featured · Just now', badge: '★ FEATURED',
+      text: 'Exams, rotas, kit, careers and the people who get you through a night shift. From your first day as a student to your last on-call: medicine, all in one place.',
+      img: U('1504813184591-01572f98c85f', 800, 600), eng: '♡ 38.4K · 💬 4.1K · ↗ 3.6K' },
+    { av: 'FF', avBg: CORAL, author: '@fy1_femi', sub: 'On Shift · Just now', badge: 'COMMUNITY',
+      text: 'First run of nights as an FY1: done. Four shifts, one very kind registrar, and a lot of toast. Going to sleep for a week 🌙',
+      img: U('1586773860418-d37222d8fce3', 800, 600), eng: '♡ 12.6K · 💬 1.8K · ↗ 540' },
+    { av: 'WW', avBg: TEAL, author: 'Ward & Weave', sub: 'Founding Partner · Brand Zone', badge: 'BRAND ZONE',
+      text: 'The <b>Long Day Scrub Set</b>: four-way stretch, eleven pockets, and fabric that still looks fresh at hour thirteen. Washes at 60°.',
+      img: U('1761234852472-85aeea9c3eac', 800, 600), eng: '♡ 9.4K · 💬 820 · ↗ 1.1K' },
+    { av: 'AU', avBg: CORAL, author: 'Auscult', sub: 'Brand Zone · 1h ago', badge: 'BRAND ZONE',
+      text: 'Engraved with your name and your graduation year: the <b>Auscult Classic</b> for the class of 2027. Serviced free for life.',
+      img: U('1532938911079-1b06ac7ceec7', 800, 600), eng: '♡ 5.1K · 💬 402 · ↗ 380' },
+    { av: 'MM', avBg: INDIGO, author: '@mrcp_maya', sub: 'Exams & Training · 2h ago', badge: 'COMMUNITY',
+      text: 'Passed MRCP Part 1! Four weeks of small-group sessions with Dr Priya Nair and ten Exam Cards on every break. Part 2, here I come 📚',
+      img: U('1758876201901-68f8f413bf4c', 800, 600), eng: '♡ 6.8K · 💬 910 · ↗ 260' },
+    { av: 'BW', avBg: SLATE, author: 'Bleepwise', sub: 'Brand Zone · 4h ago', badge: 'BRAND ZONE',
+      text: 'The <b>Wipe-Clean Ward Case</b> fits every common tablet and survives the cleaning wipes your ward uses. Drop-tested to 1.5 metres.',
+      img: U('1758691463203-cce9d415b2b5', 800, 600), eng: '♡ 2.9K · 💬 210 · ↗ 190' },
+    { av: 'PN', avBg: INDIGO, author: 'Dr Priya Nair Exam Tutoring', sub: 'Exams & Training · 6h ago', badge: 'PRO ZONE',
+      text: 'Spring sitting group starts 1 December: six doctors, four evenings, timed papers and honest feedback. Two places left.',
+      img: U('1758691461990-03b49d969495', 800, 600), eng: '♡ 2.2K · 💬 154 · ↗ 210' }
+  ],
+  prompts: ['Find me an MRCP Part 1 study group in London', 'How do I plan sleep around a run of four nights?', 'Which specialties suit someone who loves procedures?', 'Book a suturing workshop near Birmingham'],
+  businesses: ['meridian-medical-supplies', 'clearwater-locums']
+};
+
+/* the four Brand Zones and two Business Zones */
+const brand = (o) => Object.assign({ kind: 'brand', gw: 'doctor', verified: true }, o);
+Object.assign(ZONES, {
+  'ward-weave': brand({ key: 'ward-weave', name: 'Ward & Weave', color: '#19B3A6', gradient: TEAL, tier: 'Founding Partner',
+    tagline: 'Scrubs made for a thirteen-hour shift', stats: { followers: '186K', content: '940', products: '74' },
+    ad: { badge: 'Featured', img: U('1761234852472-85aeea9c3eac', 760, 760), hl: 'The Long Day Scrub Set.', sub: 'Four-way stretch, eleven pockets, fresh at hour thirteen.', meta: 'From £12' },
+    products: [
+      { name: 'Long Day Scrub Set', price: '£58', tag: 'FLAGSHIP', emoji: '🩺', rating: 4.9, reviews: 4820, cat: 'sets', special: true, desc: 'Top and trousers in four-way stretch fabric that keeps its shape all shift.', features: ['Four-way stretch', 'Eleven pockets', 'Washes at 60°'], review: { who: 'Femi A.', text: 'Wore them for four nights straight. Still comfortable at 7am.' } },
+      { name: 'V-Neck Scrub Top', price: '£32', tag: 'BESTSELLER', emoji: '👕', rating: 4.8, reviews: 3610, cat: 'tops', desc: 'A soft, breathable top with a pen pocket that actually fits a pen.', features: ['Nine colours', 'Sizes 4XS to 4XL'], review: { who: 'Rosa M.', text: 'The pen pocket alone is worth it.' } },
+      { name: 'Jogger Scrub Trousers', price: '£30', emoji: '👖', rating: 4.8, reviews: 2940, cat: 'trousers', desc: 'Jogger-cut trousers with a drawstring and deep cargo pockets.', features: ['Short, regular and tall', 'Phone-sized pockets'], review: { who: 'Leo K.', text: 'Finally trousers in a tall length.' } },
+      { name: 'Personalised Theatre Cap', price: '£12', tag: 'PERSONALISED', emoji: '🧢', rating: 4.9, reviews: 2210, cat: 'caps', special: true, desc: 'A cotton theatre cap with your name and role embroidered on the front.', features: ['Name and role', 'Thirty prints'], review: { who: 'Kemi O.', text: 'Nobody calls me “the anaesthetist” any more.' } },
+      { name: 'Compression Socks (3 pairs)', price: '£24', emoji: '🧦', rating: 4.7, reviews: 1870, cat: 'socks', desc: 'Graduated compression socks for long days on your feet.', features: ['Graduated compression', 'Cushioned sole'], review: { who: 'Nia B.', text: 'My legs at the end of a long day: transformed.' } },
+      { name: 'Name Embroidery', price: '£6', tag: 'SERVICE', emoji: '🪡', rating: 4.9, reviews: 1320, cat: 'service', desc: 'Your name and role stitched onto any Ward & Weave top.', features: ['Ready in 3 days'], review: { who: 'Sam T.', text: 'Looks properly professional.' } }
+    ],
+    shopCats: [ { key: 'sets', label: 'Scrub sets', icon: '🩺' }, { key: 'tops', label: 'Tops', icon: '👕' }, { key: 'trousers', label: 'Trousers', icon: '👖' }, { key: 'caps', label: 'Theatre caps', icon: '🧢' }, { key: 'socks', label: 'Socks', icon: '🧦' }, { key: 'service', label: 'Embroidery', icon: '🪡' } ],
+    feed: [
+      { type: 'post', sub: 'Brand post · 3h', text: 'The <b>Long Day Scrub Set</b>: fresh at hour thirteen.', img: U('1761234852472-85aeea9c3eac', 800, 440), eng: '♡ 9.4K · 💬 820 · ↗ 1.1K', product: 0 },
+      { type: 'post', sub: 'Behind the seams · Yesterday', text: 'Every scrub set is wear-tested by a doctor or nurse for a full run of nights before it goes on sale.', img: U('1624727828489-a1e03b79bba8', 800, 440), eng: '♡ 4.2K · 💬 290' },
+      { type: 'community', who: 'Sam T.', whoBg: INDIGO, sub: 'Community · 1d', text: 'Starting placements in January. Which set should I get as a student?', eng: '♡ 188 · 💬 46', reply: 'Welcome, Sam! The Long Day Scrub Set is the one most students start with, and our student discount takes 20% off with your university email. Add a Personalised Theatre Cap for theatre placements. 🩺' }
+    ],
+    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Scrubs fitting pop-up', when: 'Dec 3 · Manchester', desc: 'Try every cut and size, get your name embroidered while you wait.', registered: 620, capacity: 900 } ],
+    about: { founded: 'Leeds · 2016', story: 'Started by an A&E nurse and a pattern-cutter who were tired of scrubs that fell apart by spring. We joined GENEXXO as DoctorXX’s Founding Partner because this is where the people who wear our scrubs gather.', milestones: [['2016', 'The first Long Day set, sewn in Leeds'], ['2022', 'Wear-tested by 1,000 clinicians'], ['2026', 'Founding Partner on DoctorXX']], values: ['Wear-tested on real shifts', 'Made to last', 'Repair before replace'] } }),
+
+  'auscult': brand({ key: 'auscult', name: 'Auscult', color: '#E05A5A', gradient: CORAL, tier: 'Brand Zone',
+    tagline: 'Hear more. Engraved and serviced for life.', stats: { followers: '72.3K', content: '310', products: '26' },
+    ad: { badge: 'New', img: U('1532938911079-1b06ac7ceec7', 760, 760), hl: 'Auscult Classic, engraved.', sub: 'Your name and your year, serviced free for life.', meta: 'From £15' },
+    products: [
+      { name: 'Auscult Cardio Stethoscope', price: '£189', tag: 'FLAGSHIP', emoji: '🩺', rating: 4.9, reviews: 1460, cat: 'stethoscopes', special: true, desc: 'A dual-lumen stethoscope for cardiology, with a tunable diaphragm.', features: ['Dual-lumen tubing', 'Tunable diaphragm', 'Free engraving'], review: { who: 'Kemi O.', text: 'The best I have used in twenty years.' } },
+      { name: 'Auscult Classic', price: '£89', tag: 'BESTSELLER', emoji: '❤️', rating: 4.8, reviews: 5240, cat: 'stethoscopes', desc: 'The everyday stethoscope for wards and clinics, in twelve colours.', features: ['Single-lumen', 'Twelve colours', 'Free engraving'], review: { who: 'Femi A.', text: 'Clear, light, and mine has my name on it.' } },
+      { name: 'Auscult Student', price: '£59', emoji: '🎓', rating: 4.7, reviews: 3120, cat: 'stethoscopes', desc: 'A dependable first stethoscope for clinical years.', features: ['Lightweight', 'Spare earpieces'], review: { who: 'Sam T.', text: 'Perfect for OSCEs.' } },
+      { name: 'Engraving', price: '£15', tag: 'PERSONALISED', emoji: '✍️', rating: 4.9, reviews: 2040, cat: 'service', special: true, desc: 'Name and year laser-engraved on the chest piece of any Auscult.', features: ['Two lines', 'Ready in 2 days'], review: { who: 'Maya P.', text: 'A lovely graduation gift.' } },
+      { name: 'Spare Parts Kit', price: '£18', emoji: '🔩', rating: 4.8, reviews: 960, cat: 'parts', desc: 'Earpieces, diaphragm and rim for any Auscult model.', features: ['Fits every model'], review: { who: 'Leo K.', text: 'Like a new stethoscope for £18.' } },
+      { name: 'Service & Re-tube', price: '£25', tag: 'SERVICE', emoji: '🔧', rating: 4.9, reviews: 610, cat: 'service', desc: 'New tubing, new diaphragm, cleaned and tested. Free for life on the Cardio.', features: ['5-day turnaround'], review: { who: 'Rosa M.', text: 'Eight years old and sounds new.' } }
+    ],
+    shopCats: [ { key: 'stethoscopes', label: 'Stethoscopes', icon: '🩺' }, { key: 'parts', label: 'Parts', icon: '🔩' }, { key: 'service', label: 'Engraving & service', icon: '✍️' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'The <b>Auscult Classic</b>, engraved for the class of 2027.', img: U('1505751172876-fa1923c5c528', 800, 440), eng: '♡ 5.1K · 💬 402', product: 1 } ],
+    events: [ { zoneEvent: true, tag: 'MASTERCLASS', title: 'Heart sounds masterclass', when: 'Nov 27 · Online', desc: 'A cardiologist talks through murmurs with recorded heart sounds. Free.', registered: 2140, capacity: 5000 } ],
+    about: { founded: 'Sheffield · 2009', story: 'An engineer and a cardiologist who thought a good stethoscope should last a career. Every Auscult is serviced for life.', milestones: [['2009', 'The first Classic'], ['2019', 'The Cardio launches'], ['2026', 'Brand Zone on DoctorXX']], values: ['Built for a career', 'Serviced for life', 'Recycled packaging'] } }),
+
+  'ward-round-press': brand({ key: 'ward-round-press', name: 'Ward Round Press', color: '#6C5CE7', gradient: INDIGO, tier: 'Brand Zone',
+    tagline: 'Pass the exam. Then be the doctor.', stats: { followers: '94.6K', content: '1.2K', products: '40' },
+    ad: { badge: 'Featured', img: U('1758876201901-68f8f413bf4c', 760, 760), hl: 'Spring exam bundle.', sub: 'Question bank, mock papers and a revision plan that fits around shifts.', meta: 'From £19' },
+    products: [
+      { name: 'MRCP Part 1 Question Bank (6 months)', price: '£79', tag: 'FLAGSHIP', emoji: '📝', rating: 4.8, reviews: 3860, cat: 'qbank', special: true, desc: '3,000 questions written by consultants, with explanations and timed mocks.', features: ['3,000 questions', 'Timed mocks', 'Works offline'], review: { who: 'Maya P.', text: 'The explanations taught me more than the textbooks.' } },
+      { name: 'Finals Revision Bundle', price: '£49', tag: 'BESTSELLER', emoji: '🎓', rating: 4.8, reviews: 5120, cat: 'qbank', desc: 'Single best answer questions and OSCE checklists for medical finals.', features: ['2,000 questions', 'OSCE checklists'], review: { who: 'Sam T.', text: 'Did every question twice. Passed.' } },
+      { name: 'OSCE Station Cards', price: '£24', emoji: '🃏', rating: 4.7, reviews: 1980, cat: 'books', desc: '120 printed station cards for practising in pairs.', features: ['120 stations', 'Examiner mark sheets'], review: { who: 'Olu D.', text: 'Our whole year shares two sets.' } },
+      { name: 'Pocket Ward Handbook', price: '£19', tag: 'BESTSELLER', emoji: '📕', rating: 4.9, reviews: 6240, cat: 'books', special: true, desc: 'The pocket book for your first year on the wards: jobs, calls and handover.', features: ['Fits a scrub pocket', 'Updated every August'], review: { who: 'Femi A.', text: 'Lived in my pocket all of FY1.' } },
+      { name: 'Specialty Interview Course', price: '£120', emoji: '🎤', rating: 4.8, reviews: 840, cat: 'courses', desc: 'Online course and two recorded mock stations with feedback.', features: ['Six modules', 'Two mock stations'], review: { who: 'Gus R.', text: 'Walked in calm. Got the job.' } }
+    ],
+    shopCats: [ { key: 'qbank', label: 'Question banks', icon: '📝' }, { key: 'books', label: 'Books & cards', icon: '📕' }, { key: 'courses', label: 'Courses', icon: '🎤' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 5h', text: 'Spring sitting? Our <b>MRCP Part 1 Question Bank</b> has a 12-week plan that fits around nights.', img: U('1759852692971-a2abc6799cbd', 800, 440), eng: '♡ 3.6K · 💬 280', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'DEADLINE', title: 'Spring exam bundle early-bird', when: 'Dec 10 · 23:59', desc: 'Early-bird pricing on the spring bundle ends at midnight on 10 December.', registered: 3180, capacity: 8000 } ],
+    about: { founded: 'Edinburgh · 2011', story: 'Two registrars who wrote revision notes for their friends, and kept going. Every question is written and checked by practising doctors.', milestones: [['2011', 'The first finals question bank'], ['2018', 'The Pocket Ward Handbook'], ['2026', 'Brand Zone on DoctorXX']], values: ['Written by doctors', 'Explanations first', 'Fair prices for students'] } }),
+
+  'bleepwise': brand({ key: 'bleepwise', name: 'Bleepwise', color: '#4F7A8C', gradient: SLATE, tier: 'Brand Zone',
+    tagline: 'Pocket kit that survives the ward', stats: { followers: '31.2K', content: '170', products: '34' },
+    ad: { badge: 'Featured', img: U('1758691463203-cce9d415b2b5', 760, 760), hl: 'The Wipe-Clean Ward Case.', sub: 'Survives the wipes, survives the drop.', meta: 'From £8' },
+    products: [
+      { name: 'Wipe-Clean Ward Case', price: '£39', tag: 'FLAGSHIP', emoji: '📱', rating: 4.8, reviews: 1240, cat: 'cases', special: true, desc: 'A sealed tablet case that stands up to clinical cleaning wipes.', features: ['Sealed seams', 'Drop-tested to 1.5 m', 'Hand strap'], review: { who: 'Rosa M.', text: 'Our ward bought twelve.' } },
+      { name: 'Rugged Phone Case', price: '£29', tag: 'BESTSELLER', emoji: '🛡️', rating: 4.7, reviews: 2180, cat: 'cases', desc: 'A wipe-clean phone case with a lanyard loop.', features: ['Wipe-clean', 'Lanyard loop'], review: { who: 'Leo K.', text: 'Dropped it down a stairwell. Fine.' } },
+      { name: 'Pocket Penlight', price: '£12', emoji: '🔦', rating: 4.8, reviews: 3420, cat: 'pocket', special: true, desc: 'A warm-white penlight with a printed pupil gauge.', features: ['Pupil gauge', 'Pocket clip'], review: { who: 'Sam T.', text: 'Fits right next to my pens.' } },
+      { name: 'Scrub Pocket Organiser', price: '£16', emoji: '🗂️', rating: 4.7, reviews: 1560, cat: 'pocket', desc: 'Holds pens, penlight, tape and a notebook in one wipe-clean sleeve.', features: ['Wipe-clean', 'Fits any scrub pocket'], review: { who: 'Femi A.', text: 'No more lost pens.' } },
+      { name: 'Badge Reel & Lanyard', price: '£8', emoji: '🪪', rating: 4.6, reviews: 980, cat: 'pocket', desc: 'A breakaway lanyard with a retractable badge reel.', features: ['Breakaway clasp', 'Wipe-clean'], review: { who: 'Nia B.', text: 'Cheap and cheerful, and it lasts.' } }
+    ],
+    shopCats: [ { key: 'cases', label: 'Cases', icon: '📱' }, { key: 'pocket', label: 'Pocket kit', icon: '🔦' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'The <b>Wipe-Clean Ward Case</b>: drop-tested, wipe-tested, ward-tested.', img: U('1576091160550-2173dba999ef', 800, 440), eng: '♡ 2.9K · 💬 210', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'DEADLINE', title: 'Last order for Christmas delivery', when: 'Dec 18 · 23:59', desc: 'Order by midnight on 18 December for delivery before Christmas.', registered: 840, capacity: 3000 } ],
+    about: { founded: 'Bristol · 2019', story: 'A junior doctor and a product designer who got fed up with cracked phones and lost penlights. Everything we make is wipe-clean.', milestones: [['2019', 'The first Pocket Penlight'], ['2024', 'The Wipe-Clean Ward Case'], ['2026', 'Brand Zone on DoctorXX']], values: ['Wipe-clean everything', 'Tested on the ward', 'Fair repairs'] } }),
+
+  'meridian-medical-supplies': { key: 'meridian-medical-supplies', kind: 'business', gw: 'doctor', name: 'Meridian Medical Supplies', color: '#19B3A6', gradient: TEAL, img: U('1551601651-2a8555f1a136', 900, 500),
+    tier: 'Verified', category: 'Clinical consumables', tagline: 'Theatre and ward consumables for hospitals and clinics.',
+    about: { founded: 'Nottingham · 1988', story: 'We supply hospitals, clinics and practices with theatre packs, dressings, gloves and ward consumables, with next-day delivery and stock managed for you.' },
+    stats: { years: 38, staff: 420, clients: '900+ hospitals & clinics' },
+    caps: [ { name: 'Theatre packs', detail: 'Custom procedure packs built to each theatre’s list.' }, { name: 'Ward consumables', detail: 'Dressings, gloves and sundries with managed stock levels.' }, { name: 'Clinic supply', detail: 'Everything a GP practice or clinic orders, on one account.' } ],
+    specs: { moq: '1 case', lead: 'Next day; custom packs 3–4 weeks', regions: 'UK & Ireland', certs: ['ISO 13485', 'ISO 9001', 'Sustainable packaging programme'] },
+    supplies: [ { kind: 'brand', key: 'bleepwise', what: 'Wipe-clean cases bundled into ward starter kits' } ],
+    cases: [ { title: 'Day-surgery unit, Midlands', text: 'Custom theatre packs cut set-up time per list and halved packaging waste.' } ],
+    feed: [ { sub: 'Winter · 3d', text: 'Winter pressures: we are holding extra stock of the essentials for every account until March.' }, { sub: 'Sustainability · 1w', text: 'Theatre packs now ship in recyclable trays.' } ],
+    contact: { person: 'Joanna Price, Hospital accounts', response: 'Replies within 24 hours' } },
+
+  'clearwater-locums': { key: 'clearwater-locums', kind: 'business', gw: 'doctor', name: 'Clearwater Locum Partners', color: '#FF6B6B', gradient: CORAL, img: U('1519494026892-80bbd2d6fd0d', 900, 500),
+    tier: 'Verified', category: 'Medical staffing', tagline: 'Locum doctors for hospitals and practices, fairly placed.',
+    about: { founded: 'Manchester · 2007', story: 'We place locum doctors with hospitals and GP practices across the UK, with compliance checked once, clear rates and payment within a week.' },
+    stats: { years: 19, staff: 140, clients: '320 trusts & practices' },
+    caps: [ { name: 'Hospital locums', detail: 'Short- and long-term cover across most specialties.' }, { name: 'GP locums', detail: 'Sessions booked in minutes, paid weekly.' }, { name: 'Compliance', detail: 'Checks and training records held once, shared with consent.' } ],
+    specs: { moq: '1 session', lead: 'Same day to 4 weeks', regions: 'England, Scotland & Wales', certs: ['Framework-approved supplier', 'ISO 27001', 'Cyber Essentials Plus'] },
+    supplies: [ { kind: 'brand', key: 'ward-weave', what: 'Scrubs for locums starting on new wards' } ],
+    cases: [ { title: 'Winter cover, North West', text: 'Forty locum doctors placed across three trusts for the winter months.' } ],
+    feed: [ { sub: 'News · 5d', text: 'Winter rota gaps: register now for December and January sessions.' } ],
+    contact: { person: 'Amir Shah, Locum partnerships', response: 'Replies within one working day' } }
+});
+
+/* events in the Events tab */
+EVENTS_FEED.push(
+  { gw: 'doctor', zone: 'ward-round-press', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Ward Round Press Live · Exam Q&A', desc: 'Two consultants work through ten membership-exam questions live and take yours in the chat.' },
+  { gw: 'doctor', type: 'Event', icon: '🌙', time: 'Nov 20', title: 'Night Shift Club midnight check-in', desc: 'A quiet online catch-up for anyone on nights. Bring a cup of tea.' },
+  { gw: 'doctor', zone: 'auscult', type: 'Event', icon: '❤️', time: 'Nov 27', title: 'Heart sounds masterclass', desc: 'Auscult: a cardiologist talks through murmurs with recorded heart sounds. Online and free.' },
+  { gw: 'doctor', zone: 'ward-weave', type: 'Event', icon: '🩺', time: 'Dec 3', title: 'Scrubs fitting pop-up, Manchester', desc: 'Ward & Weave: try every cut and size, embroidery while you wait.' },
+  { gw: 'doctor', type: 'Event', icon: '🎄', time: 'Dec 5', title: 'Med Students Manchester winter social', desc: 'The end-of-term social in the Northern Quarter. Exams permitting.' },
+  { gw: 'doctor', zone: 'ward-round-press', type: 'Deadline', icon: '📝', time: 'Dec 10', title: 'Spring exam bundle early-bird ends', desc: 'Ward Round Press: early-bird pricing ends at midnight.' },
+  { gw: 'doctor', type: 'Event', icon: '🪡', time: 'Dec 12', title: 'Suturing workshop, Birmingham', desc: 'Mr Kwame Mensah: three hours of knots and sutures on simulation skin. Four places left.' },
+  { gw: 'doctor', zone: 'bleepwise', type: 'Deadline', icon: '📱', time: 'Dec 18', title: 'Last order for Christmas delivery', desc: 'Bleepwise: order by midnight for delivery before Christmas.' }
+);
+})();
+/* ═════════ /DOCTORXX ═════════ */
+/* ═════════ ENGINEERXX — a Career demo gateway (2026-11-16, Sean) ═════════
+   Built like GolfXX and ChristmasXX: theme, feed, 4 Brand Zones, 2 Business Zones, 3 Pros, 2 communities, 3 apps, events.
+   Palette (dark): blueprint navy, hi-vis amber, blueprint cyan. Home sector: Career (Engineering Careers).
+   Brands, pros and communities are fictional; places are real. Source of truth: _lab/careers/engineerxx-block.js. */
+(function(){
+const U = (id, w, h) => `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&q=75`;
+const AMBER = 'linear-gradient(135deg,#FFC23D,#C47F00)', CYAN = 'linear-gradient(135deg,#4FC3F7,#1565A8)', RED = 'linear-gradient(135deg,#F0646E,#A3263A)', ORANGE = 'linear-gradient(135deg,#FF9F43,#C4550A)', STEEL = 'linear-gradient(135deg,#6E86A8,#2C3E5C)';
+
+GATEWAYS.engineer = {
+  name: 'EngineerXX', domain: 'engineerxx.com', emoji: '⚙️', sector: 'career', live: true,
+  tagline: 'The Engineer Universe',
+  theme: {
+    bg: '#0A1630', text: '#EAF2FF', cardBg: 'rgba(255,255,255,.045)', cardBorder: 'rgba(79,195,247,.16)',
+    headerBg: 'linear-gradient(180deg,#14306A,#0A1630)', accent: '#FFB000', accentAlt: '#4FC3F7', dark: true
+  },
+  gradient: 'linear-gradient(135deg,#14306A,#4FC3F7,#FFB000)',
+  stats: { members: '5.2M', brands: '3,400+', agents: '92' },
+  spaces: ['All Feed', 'Projects', 'Chartership', 'Tools & Kit', 'Renewables', 'Jobs'],
+  trending: ['#BuiltIt', '#Chartership', '#OffshoreWind'],
+  brandZones: [
+    { key: 'torque-tally', name: 'Torque & Tally', color: '#FFB000', tier: 'Founding Partner', tag: 'Precision hand tools, calibrated and guaranteed' },
+    { key: 'sparkplane', name: 'Sparkplane Electronics', color: '#4FC3F7', tier: 'Brand Zone', tag: 'Dev boards, sensors and kits for builders' },
+    { key: 'layerline-3d', name: 'Layerline 3D', color: '#F0646E', tier: 'Brand Zone', tag: '3D printers and engineering filaments' },
+    { key: 'siteworthy', name: 'Siteworthy', color: '#FF8C1A', tier: 'Brand Zone', tag: 'PPE and workwear that fits, for every site' }
+  ],
+  apps: [
+    { name: 'Unit Convert', color: '#4FC3F7', desc: 'Engineering units, both ways', key: 'unit-convert', url: 'apps/unit-convert.html',
+      dev: 'Datum Software', rating: '4.9', users: '684K', perms: ['profile', 'feed'],
+      tagline: 'Newtons, psi, kilowatts, done.',
+      about: 'Unit Convert handles the conversions engineers actually do: length, force, pressure, torque, power, energy and temperature. Type in either box and the other follows. Keep your favourites at the top.',
+      features: ['Seven engineering quantities', 'Type in either direction', 'Significant figures you choose', 'Recent conversions saved'],
+      shots: ['apps/unit-convert/shot-1.jpg', 'apps/unit-convert/shot-2.jpg', 'apps/unit-convert/shot-3.jpg'],
+      version: '8.3', size: '9 KB',
+      updates: [ { v: '8.3', ago: 3, notes: 'Torque added: N·m, lbf·ft, kgf·m.' }, { v: '8.0', ago: 110, notes: 'Recent conversions remembered.' }, { v: '7.5', ago: 240, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@mech_maddie', stars: 5, ago: 2, text: 'Fastest psi to bar on my phone.' }, { who: '@civil_chloe', stars: 5, ago: 8, text: 'Clean, no ads, does what it says.' }, { who: '@sparky_sanjay', stars: 4, ago: 19, text: 'Would love electrical units too.' } ] },
+    { name: 'Resistor Code', color: '#FFB000', desc: 'Colour bands and Ohm’s law', key: 'resistor-code', url: 'apps/resistor-code.html',
+      dev: 'Sparkplane Electronics', rating: '4.8', users: '312K', perms: ['profile', 'feed'],
+      tagline: 'Brown, black, red: 1 kΩ. Every time.',
+      about: 'Resistor Code reads four- and five-band resistors: tap the colours and see the value and tolerance, or type a value and see its bands. A second tab works out Ohm’s law and power from any two values.',
+      features: ['Four- and five-band resistors', 'Value to colours and back', 'Ohm’s law and power', 'Nearest standard E12 value'],
+      shots: ['apps/resistor-code/shot-1.jpg', 'apps/resistor-code/shot-2.jpg', 'apps/resistor-code/shot-3.jpg'],
+      version: '4.6', size: '10 KB',
+      updates: [ { v: '4.6', ago: 5, notes: 'Nearest E12 value shown.' }, { v: '4.2', ago: 130, notes: 'Ohm’s law tab.' }, { v: '3.8', ago: 250, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@robot_rafi', stars: 5, ago: 1, text: 'Saves me squinting at bands under the bench light.' }, { who: '@student_eng_ella', stars: 5, ago: 12, text: 'Got me through first-year labs.' }, { who: '@sparky_sanjay', stars: 4, ago: 26, text: 'Great. Six-band support please.' } ] },
+    { name: 'Chartership Tracker', color: '#F0646E', desc: 'Your evidence towards chartered status', key: 'chartership', url: 'apps/chartership.html',
+      dev: 'Datum Software', rating: '4.7', users: '96.4K', perms: ['profile', 'feed'],
+      tagline: 'Five competences. One clear path to CEng.',
+      about: 'Chartership Tracker logs your evidence against the five UK-SPEC competence areas, A to E, and your CPD hours, so you can see which areas are ready for your review and which need more. Follow your own institution’s guidance on what counts.',
+      features: ['Evidence against A to E', 'Strength meter for each area', 'CPD hours this year', 'Share when you are ready to apply'],
+      shots: ['apps/chartership/shot-1.jpg', 'apps/chartership/shot-2.jpg', 'apps/chartership/shot-3.jpg'],
+      version: '2.4', size: '10 KB',
+      updates: [ { v: '2.4', ago: 6, notes: 'CPD hours alongside your evidence.' }, { v: '2.0', ago: 150, notes: 'Strength meter for each competence.' }, { v: '1.6', ago: 270, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@civil_chloe', stars: 5, ago: 4, text: 'Showed me I was weak on area D. Fixed it in three months.' }, { who: '@mech_maddie', stars: 5, ago: 14, text: 'My mentor and I go through it every month.' }, { who: '@offshore_owen', stars: 4, ago: 31, text: 'Very useful, would like an export.' } ] }
+  ],
+  pros: [
+    { key: 'dr-hannah-kerr-mentoring', name: 'Dr Hannah Kerr Chartership Mentoring', color: '#F0646E', tag: 'CEng mentor · competence reports, review interviews', role: 'Chartership mentor',
+      img: U('1581091226825-a6a2a5aee158', 800, 800), base: 'Glasgow, Scotland', langs: 'English', years: 16, rating: '4.9', reviewsN: 386, cur: '£',
+      creds: ['Chartered Engineer (CEng)', 'Professional review interviewer', 'PhD, mechanical engineering'],
+      about: 'Hannah is a chartered mechanical engineer who has mentored more than two hundred engineers to CEng and IEng. She helps you find the evidence you already have and write it so the reviewers can see it.',
+      services: [ { id: 'gap', name: 'Competence gap review', dur: '60 minutes', price: 80, desc: 'We go through A to E and plan the evidence you still need.' },
+                  { id: 'report', name: 'Competence report review', dur: 'Written feedback', price: 150, desc: 'Line-by-line comments on your draft report within a week.' },
+                  { id: 'mock', name: 'Mock review interview', dur: '90 minutes', price: 140, desc: 'A full mock with two interviewers and written feedback.' } ],
+      avail: { days: [1, 2, 4, 5], times: ['12:30', '17:30', '19:00'] },
+      reviews: [ { who: '@civil_chloe', stars: 5, ago: 6, text: 'Chartered in March. Hannah’s mock was the reason I was calm.' }, { who: '@mech_maddie', stars: 5, ago: 15, text: 'Her report feedback was gold.' }, { who: '@offshore_owen', stars: 5, ago: 29, text: 'Patient with a very busy offshore schedule.' } ],
+      posts: [ { ago: 1, text: 'Write “I”, not “we”. The reviewers need to see what you did.' }, { ago: 8, text: 'Spring review dates are out. Start your report in December.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'ravi-shah-structures', name: 'Ravi Shah Structural Engineering', color: '#FFB000', tag: 'Structural engineer · knock-throughs, loft conversions, surveys', role: 'Structural engineer',
+      img: U('1772442198624-4fc4d7281e89', 800, 800), base: 'Bristol, UK', langs: 'English, Gujarati', years: 19, rating: '4.9', reviewsN: 512, cur: '£',
+      creds: ['Chartered Structural Engineer', 'Professional indemnity insured', 'Party Wall surveyor'],
+      about: 'Ravi designs the steel and timber for home projects around Bristol: kitchen knock-throughs, loft conversions and extensions, with calculations and drawings ready for building control.',
+      services: [ { id: 'visit', name: 'Site visit and advice', dur: '60 minutes on site', price: 180, desc: 'A look at the walls, floors and roof, and a written note of what is needed.' },
+                  { id: 'calcs', name: 'Beam calculations and drawing', dur: 'Within 10 days', price: 420, desc: 'Steel or timber sized for building control, with a simple drawing.' },
+                  { id: 'loft', name: 'Loft conversion package', dur: 'Within 3 weeks', price: 950, desc: 'Floor, roof and steel design with full calculations.' } ],
+      avail: { days: [1, 2, 3, 4, 5], times: ['09:00', '11:30', '14:00'] },
+      reviews: [ { who: '@diy_dan', stars: 5, ago: 4, text: 'Clear advice and the calcs were approved first time.' }, { who: '@civil_chloe', stars: 5, ago: 18, text: 'Learned a lot shadowing Ravi on a loft job.' }, { who: '@home_hannah', stars: 4, ago: 32, text: 'Busy, but worth the wait.' } ],
+      posts: [ { ago: 2, text: 'Thinking of a knock-through in the new year? Book the site visit before the builder.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'make-it-real-prototyping', name: 'Make It Real Prototyping', color: '#4FC3F7', tag: 'Product design and prototyping studio · CAD, 3D printing, small runs', role: 'Prototyping studio',
+      img: U('1581092334651-ddf26d9a09d0', 800, 800), base: 'Sheffield, UK', langs: 'English', years: 8, rating: '4.8', reviewsN: 274, cur: '£',
+      creds: ['Chartered mechanical engineers', 'ISO 9001 workshop', 'Design for manufacture specialists'],
+      about: 'A small studio in Sheffield that takes an idea from a sketch to a working prototype: CAD, 3D printing, machining and electronics under one roof, then a small production run when you are ready.',
+      services: [ { id: 'idea', name: 'Idea session', dur: '90 minutes', price: 120, desc: 'Sketch to plan: what to build first and what it will cost.' },
+                  { id: 'cad', name: 'CAD and first print', dur: 'About 2 weeks', price: 650, desc: 'A full CAD model and a 3D-printed prototype in your hands.' },
+                  { id: 'run', name: 'Production run consultation', dur: '45 minutes + quote', price: 60, desc: 'Machined or moulded parts, 50 to 5,000 units. Fee refunded when you order.' } ],
+      avail: { days: [1, 2, 3, 4], times: ['10:00', '14:00'] },
+      reviews: [ { who: '@robot_rafi', stars: 5, ago: 7, text: 'Turned my napkin sketch into a working gripper.' }, { who: '@maker_mo', stars: 5, ago: 21, text: 'Honest about what would and would not work.' }, { who: '@diy_dan', stars: 4, ago: 44, text: 'Great results, book early.' } ],
+      posts: [ { ago: 1, text: 'January idea sessions are open. Bring the sketch you have been carrying around all year.' } ],
+      tier: 'Pro Zone', verified: true }
+  ],
+  communities: [
+    { key: 'offshore-wind-crew', name: 'Offshore Wind Crew', domain: 'offshore.engineerxx.com', color: '#4FC3F7', img: U('1788252172210-670016c2a273', 900, 500),
+      scope: 'Global', where: 'North Sea and beyond', members: 26400, online: 410, tagline: 'Two weeks on, two weeks off, and a lot of turbines.',
+      about: 'Technicians, engineers and everyone else who keeps offshore wind turning. Rotations, kit, training tips, life on the vessel and the view from the nacelle.',
+      rules: ['Safety first, always', 'No confidential project details', 'Help the new starters'],
+      mods: ['@offshore_owen', '@nacelle_nina'],
+      threads: [ { t: 'First rotation next week: what do I pack?', by: '@new_tech_toby', tag: 'Q&A', replies: 164, ago: 0, votes: 288 }, { t: 'Sunrise from 120 m up this morning', by: '@nacelle_nina', tag: 'PHOTOS', replies: 92, ago: 1, votes: 540 }, { t: 'Best boots for transfer days?', by: '@offshore_owen', tag: 'KIT', replies: 71, ago: 2, votes: 126 }, { t: 'Moving from oil and gas to wind: AMA', by: '@rig_to_wind_ray', tag: 'CAREERS', replies: 208, ago: 4, votes: 402 } ],
+      events: [ { title: 'Crew meet-up, Hull', day: 5, time: '18:30', where: 'Hull' }, { title: 'Careers in wind (online)', day: 2, time: '19:00', where: 'Online' } ] },
+    { key: 'bristol-robotics-meetup', name: 'Bristol Robotics Meetup', domain: 'bristol.engineerxx.com', color: '#FFB000', img: U('1581090121489-ff9b54bbee43', 900, 500),
+      scope: 'Local', where: 'Bristol', members: 1940, online: 52, tagline: 'Build it, break it, bring it on Thursday.',
+      about: 'Makers, students and professional engineers who build robots around Bristol. Monthly show-and-tell, build nights, and a battle-bot league that is mostly for fun.',
+      rules: ['Every level welcome', 'Lithium batteries in fire bags', 'Share your code'],
+      mods: ['@robot_rafi', '@maker_mo'],
+      threads: [ { t: 'Thursday show-and-tell: who is bringing what?', by: '@robot_rafi', tag: 'MEET', replies: 38, ago: 0, votes: 74 }, { t: 'Cheap servos that are not terrible', by: '@maker_mo', tag: 'PARTS', replies: 56, ago: 1, votes: 98 }, { t: 'Battle-bot league rules for 2027', by: '@robot_rafi', tag: 'LEAGUE', replies: 44, ago: 3, votes: 61 } ],
+      events: [ { title: 'Build night', day: 4, time: '18:30', where: 'Harbourside, Bristol' }, { title: 'Battle-bot friendlies', day: 6, time: '13:00', where: 'Bristol' } ] }
+  ],
+  feed: [
+    { av: 'EX', avBg: AMBER, author: 'EngineerXX Editorial', sub: 'Featured · Just now', badge: '★ FEATURED',
+      text: 'Bridges, robots, circuits, turbines and the tools that build them. From first-year labs to chartership and beyond: engineering, all in one place.',
+      img: U('1529926691761-20fb82067c71', 800, 600), eng: '♡ 44.2K · 💬 5.3K · ↗ 4.1K' },
+    { av: 'CC', avBg: CYAN, author: '@civil_chloe', sub: 'Projects · Just now', badge: 'COMMUNITY',
+      text: 'Three years of design work and this morning the final span went in, lifted by crane in one go. Watched it from the riverbank with my whole team 🌉',
+      img: U('1763113349178-05cded58108e', 800, 600), eng: '♡ 16.8K · 💬 2.2K · ↗ 1.4K' },
+    { av: 'TT', avBg: AMBER, author: 'Torque & Tally', sub: 'Founding Partner · Brand Zone', badge: 'BRAND ZONE',
+      text: 'The <b>Calibrated Socket Set</b>: 94 pieces, a click torque wrench certified to ±3%, and a recalibration every year for free.',
+      img: U('1672659605632-895c18f09563', 800, 600), eng: '♡ 8.6K · 💬 640 · ↗ 920' },
+    { av: 'SP', avBg: CYAN, author: 'Sparkplane Electronics', sub: 'Brand Zone · 1h ago', badge: 'BRAND ZONE',
+      text: 'Meet the <b>Sparkplane Nano</b>: Wi-Fi, Bluetooth and twenty pins on a board the size of a stick of gum. Hand-soldered prototypes welcome.',
+      img: U('1640955785023-1854685dae05', 800, 600), eng: '♡ 5.4K · 💬 380 · ↗ 510' },
+    { av: 'RR', avBg: RED, author: '@robot_rafi', sub: 'Projects · 2h ago', badge: 'COMMUNITY',
+      text: 'Spent the weekend at a factory open day watching a six-axis arm pick parts faster than I can blink. Bringing what I learned to the Bristol Robotics Meetup on Thursday 🤖',
+      img: U('1716191299980-a6e8827ba10b', 800, 600), eng: '♡ 4.9K · 💬 520 · ↗ 210' },
+    { av: 'SW', avBg: ORANGE, author: 'Siteworthy', sub: 'Brand Zone · 4h ago', badge: 'BRAND ZONE',
+      text: 'PPE that actually fits: the <b>Siteworthy Hi-Vis Jacket</b> comes in sizes cut for women and men, waterproof, and warm enough for a December site.',
+      img: U('1761227447538-f4e1ec0a9df6', 800, 600), eng: '♡ 3.2K · 💬 260 · ↗ 340' },
+    { av: 'HK', avBg: RED, author: 'Dr Hannah Kerr Chartership Mentoring', sub: 'Chartership · 6h ago', badge: 'PRO ZONE',
+      text: 'Spring professional reviews: if you start your competence report in December, you will submit it calmly in February. Three mentoring places left.',
+      img: U('1581092583537-20d51b4b4f1b', 800, 600), eng: '♡ 2.4K · 💬 188 · ↗ 230' }
+  ],
+  prompts: ['What do I need for chartered engineer status?', 'Find a structural engineer for a kitchen knock-through in Bristol', 'Which dev board should I use for a weather station?', 'How do I move from oil and gas into offshore wind?'],
+  businesses: ['northgate-steel', 'tideway-offshore']
+};
+
+/* the four Brand Zones and two Business Zones */
+const brand = (o) => Object.assign({ kind: 'brand', gw: 'engineer', verified: true }, o);
+Object.assign(ZONES, {
+  'torque-tally': brand({ key: 'torque-tally', name: 'Torque & Tally', color: '#FFB000', gradient: AMBER, tier: 'Founding Partner',
+    tagline: 'Measured, calibrated, guaranteed for life', stats: { followers: '142K', content: '860', products: '210' },
+    ad: { badge: 'Featured', img: U('1672659605632-895c18f09563', 760, 760), hl: 'The Calibrated Socket Set.', sub: '94 pieces, a certified torque wrench, free yearly recalibration.', meta: 'From £22' },
+    products: [
+      { name: 'Calibrated Socket Set (94 pc)', price: '£189', tag: 'FLAGSHIP', emoji: '🔧', rating: 4.9, reviews: 2140, cat: 'sets', special: true, desc: 'Metric and imperial sockets with a click torque wrench certified to ±3%.', features: ['94 pieces', 'Certified torque wrench', 'Free yearly recalibration'], review: { who: 'Maddie R.', text: 'The certificate in the lid is a lovely touch.' } },
+      { name: 'Digital Vernier Caliper (150 mm)', price: '£49', tag: 'BESTSELLER', emoji: '📏', rating: 4.8, reviews: 3860, cat: 'measuring', desc: 'Stainless caliper reading to 0.01 mm, metric and inch.', features: ['0.01 mm resolution', 'IP54'], review: { who: 'Mo K.', text: 'Repeatable and solid. Lives in my apron.' } },
+      { name: 'Combination Spanner Set (12 pc)', price: '£64', emoji: '🔩', rating: 4.8, reviews: 1920, cat: 'sets', desc: 'Chrome vanadium spanners, 8 to 19 mm, with a roll case.', features: ['8–19 mm', 'Lifetime guarantee'], review: { who: 'Dan W.', text: 'Will outlive me.' } },
+      { name: 'Torque Wrench 20–100 N·m', price: '£89', emoji: '🛠️', rating: 4.8, reviews: 1460, cat: 'torque', special: true, desc: 'A click torque wrench with a certificate of calibration.', features: ['±3% accuracy', 'Certificate included'], review: { who: 'Owen P.', text: 'Exactly what our site needed.' } },
+      { name: 'Engineer’s Square Set', price: '£22', emoji: '📐', rating: 4.7, reviews: 980, cat: 'measuring', desc: 'Three hardened steel squares, 75, 100 and 150 mm.', features: ['Hardened steel', 'Checked to DIN 875'], review: { who: 'Ella J.', text: 'Our workshop’s new standard.' } },
+      { name: 'Recalibration Service', price: '£25', tag: 'SERVICE', emoji: '🔬', rating: 4.9, reviews: 760, cat: 'service', desc: 'Torque wrenches and calipers recalibrated with a new certificate. Any brand.', features: ['UKAS-traceable', '5-day turnaround'], review: { who: 'Chloe M.', text: 'Saves us a fortune in audits.' } }
+    ],
+    shopCats: [ { key: 'sets', label: 'Sets', icon: '🔧' }, { key: 'torque', label: 'Torque', icon: '🛠️' }, { key: 'measuring', label: 'Measuring', icon: '📏' }, { key: 'service', label: 'Calibration', icon: '🔬' } ],
+    feed: [
+      { type: 'post', sub: 'Brand post · 3h', text: 'The <b>Calibrated Socket Set</b>: certified out of the box, and every year after.', img: U('1672659605632-895c18f09563', 800, 440), eng: '♡ 8.6K · 💬 640 · ↗ 920', product: 0 },
+      { type: 'post', sub: 'Workshop · Yesterday', text: 'Every spanner is drop-forged, heat-treated and checked by hand before it leaves Sheffield.', img: U('1613206484719-7e2e511ed117', 800, 440), eng: '♡ 4.1K · 💬 220' },
+      { type: 'community', who: 'Ella J.', whoBg: CYAN, sub: 'Community · 1d', text: 'First-year student. What do I actually need for workshop modules?', eng: '♡ 164 · 💬 38', reply: 'Good question, Ella. Start with the Digital Vernier Caliper and an Engineer’s Square Set; your university lends the rest. Our student discount takes 20% off with your university email. 📏' }
+    ],
+    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Free calibration day', when: 'Nov 26 · Sheffield', desc: 'Bring any torque wrench or caliper and we check it while you have a coffee.', registered: 340, capacity: 500 } ],
+    about: { founded: 'Sheffield · 1921', story: 'Toolmakers in Sheffield for a century, now making calibrated tools for engineers in every field. We joined GENEXXO as EngineerXX’s Founding Partner because this is where the people who use our tools gather.', milestones: [['1921', 'The first spanners forged in Sheffield'], ['1998', 'Calibration lab opens'], ['2026', 'Founding Partner on EngineerXX']], values: ['Measured, not guessed', 'Guaranteed for life', 'Repair and recalibrate'] } }),
+
+  'sparkplane': brand({ key: 'sparkplane', name: 'Sparkplane Electronics', color: '#4FC3F7', gradient: CYAN, tier: 'Brand Zone',
+    tagline: 'Boards and kits for people who build', stats: { followers: '88.4K', content: '540', products: '160' },
+    ad: { badge: 'New', img: U('1640955785023-1854685dae05', 760, 760), hl: 'Sparkplane Nano.', sub: 'Wi-Fi, Bluetooth and twenty pins on a board the size of a stick of gum.', meta: 'From £6' },
+    products: [
+      { name: 'Sparkplane Nano', price: '£14', tag: 'NEW', emoji: '📟', rating: 4.8, reviews: 2860, cat: 'boards', special: true, desc: 'A tiny Wi-Fi and Bluetooth board with twenty GPIO pins.', features: ['Wi-Fi and Bluetooth', '20 GPIO', 'USB-C'], review: { who: 'Rafi H.', text: 'Running three of them in my robot.' } },
+      { name: 'Weather Station Kit', price: '£39', tag: 'BESTSELLER', emoji: '🌦️', rating: 4.8, reviews: 1720, cat: 'kits', special: true, desc: 'Temperature, humidity, pressure and wind sensors with a step-by-step guide.', features: ['Four sensors', 'No soldering', 'Weekend build'], review: { who: 'Dan W.', text: 'My kids and I built it in an afternoon.' } },
+      { name: 'Sensor Pack (12)', price: '£24', emoji: '🧲', rating: 4.7, reviews: 2140, cat: 'parts', desc: 'Twelve common sensors on breakout boards.', features: ['Light, sound, motion and more'], review: { who: 'Mo K.', text: 'Everything I need for prototyping.' } },
+      { name: 'Soldering Station', price: '£69', emoji: '🔥', rating: 4.8, reviews: 980, cat: 'tools', desc: 'Temperature-controlled station with a fine tip set.', features: ['200–450 °C', 'Five tips'], review: { who: 'Sanjay P.', text: 'Heats in seconds.' } },
+      { name: 'Resistor Kit (600 pc)', price: '£6', emoji: '🎨', rating: 4.7, reviews: 3410, cat: 'parts', desc: 'Thirty common values from 10 Ω to 1 MΩ, labelled.', features: ['E12 values', '1% tolerance'], review: { who: 'Ella J.', text: 'Never short of a resistor again.' } }
+    ],
+    shopCats: [ { key: 'boards', label: 'Boards', icon: '📟' }, { key: 'kits', label: 'Kits', icon: '🌦️' }, { key: 'parts', label: 'Parts', icon: '🧲' }, { key: 'tools', label: 'Tools', icon: '🔥' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Meet the <b>Sparkplane Nano</b>: small enough for anything.', img: U('1562408590-e32931084e23', 800, 440), eng: '♡ 5.4K · 💬 380', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'LIVE BUILD', title: 'Build a weather station, live', when: 'Live now · Online', desc: 'Our engineers build the Weather Station Kit live. Build along at home.', registered: 4200, capacity: 10000 } ],
+    about: { founded: 'Cambridge · 2014', story: 'Two electronics engineers who wanted boards that were cheap, well documented and fun. Everything ships with open guides.', milestones: [['2014', 'The first Sparkplane board'], ['2023', 'The Nano'], ['2026', 'Brand Zone on EngineerXX']], values: ['Open guides', 'Fair prices', 'Built for learning'] } }),
+
+  'layerline-3d': brand({ key: 'layerline-3d', name: 'Layerline 3D', color: '#F0646E', gradient: RED, tier: 'Brand Zone',
+    tagline: 'Print parts that work', stats: { followers: '61.7K', content: '390', products: '88' },
+    ad: { badge: 'Featured', img: U('1761454165168-cfdf007c6a31', 760, 760), hl: 'Layerline Pro filaments.', sub: 'Carbon-fibre nylon, PETG and TPU, tuned for engineering parts.', meta: 'From £19' },
+    products: [
+      { name: 'Layerline Core 3D Printer', price: '£449', tag: 'FLAGSHIP', emoji: '🖨️', rating: 4.8, reviews: 1180, cat: 'printers', special: true, desc: 'A fast, enclosed printer for engineering filaments, ready in ten minutes.', features: ['Enclosed', 'Up to 300 °C nozzle', 'Auto bed levelling'], review: { who: 'Mo K.', text: 'Prints carbon nylon without a fuss.' } },
+      { name: 'Carbon-Fibre Nylon (1 kg)', price: '£42', tag: 'BESTSELLER', emoji: '🧵', rating: 4.8, reviews: 1640, cat: 'filament', desc: 'Stiff, strong and heat-resistant parts straight off the bed.', features: ['Dried and sealed', 'Hardened nozzle advised'], review: { who: 'Rafi H.', text: 'My gripper fingers are stiff as aluminium.' } },
+      { name: 'Engineering PETG (1 kg)', price: '£19', emoji: '🟦', rating: 4.7, reviews: 2860, cat: 'filament', desc: 'Tough, easy to print and chemical-resistant.', features: ['Twelve colours'], review: { who: 'Ella J.', text: 'Our lab’s go-to.' } },
+      { name: 'Flexible TPU (750 g)', price: '£26', emoji: '🟠', rating: 4.6, reviews: 980, cat: 'filament', special: true, desc: 'Shore 95A for seals, bumpers and grips.', features: ['Shore 95A'], review: { who: 'Dan W.', text: 'Printed new feet for my workbench.' } },
+      { name: 'Print Service (per part)', price: '£12', tag: 'SERVICE', emoji: '📦', rating: 4.9, reviews: 540, cat: 'service', desc: 'Send a file, get a part. Engineering filaments only.', features: ['Quote in an hour', 'Posted in 3 days'], review: { who: 'Chloe M.', text: 'Bracket prototype in my hands by Thursday.' } }
+    ],
+    shopCats: [ { key: 'printers', label: 'Printers', icon: '🖨️' }, { key: 'filament', label: 'Filament', icon: '🧵' }, { key: 'service', label: 'Print service', icon: '📦' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 5h', text: 'Engineering parts, straight off the bed: <b>the Layerline Core</b>.', img: U('1761454165168-cfdf007c6a31', 800, 440), eng: '♡ 3.4K · 💬 240', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Print farm open day', when: 'Dec 4 · Leeds', desc: 'See forty printers running, bring a file and print it on the day.', registered: 260, capacity: 400 } ],
+    about: { founded: 'Leeds · 2017', story: 'Mechanical engineers who wanted printed parts that held up in real machines. We test every filament batch on a tensile rig.', milestones: [['2017', 'First engineering filaments'], ['2024', 'The Layerline Core printer'], ['2026', 'Brand Zone on EngineerXX']], values: ['Tested, not guessed', 'Engineering-grade', 'Spools you can recycle'] } }),
+
+  'siteworthy': brand({ key: 'siteworthy', name: 'Siteworthy', color: '#FF8C1A', gradient: ORANGE, tier: 'Brand Zone',
+    tagline: 'PPE that fits the person wearing it', stats: { followers: '47.9K', content: '260', products: '120' },
+    ad: { badge: 'Featured', img: U('1621905251189-08b45d6a269e', 760, 760), hl: 'Siteworthy Hi-Vis Jacket.', sub: 'Cut for women and men. Waterproof, warm and certified.', meta: 'From £9' },
+    products: [
+      { name: 'Hi-Vis Waterproof Jacket', price: '£79', tag: 'FLAGSHIP', emoji: '🦺', rating: 4.8, reviews: 1980, cat: 'workwear', special: true, desc: 'A warm, waterproof hi-vis jacket in women’s and men’s cuts.', features: ['EN ISO 20471 Class 3', 'Women’s and men’s fits', 'Fleece lined'], review: { who: 'Chloe M.', text: 'First hi-vis that has ever actually fitted me.' } },
+      { name: 'Safety Boots', price: '£95', tag: 'BESTSELLER', emoji: '🥾', rating: 4.8, reviews: 2640, cat: 'boots', desc: 'Composite toe and midsole, waterproof, light enough for a twelve-hour day.', features: ['S3 rated', 'Composite toe', 'Sizes 3 to 14'], review: { who: 'Owen P.', text: 'Comfortable from day one.' } },
+      { name: 'Vented Hard Hat', price: '£24', emoji: '⛑️', rating: 4.7, reviews: 1540, cat: 'head', desc: 'A light, vented hard hat with a ratchet harness.', features: ['EN 397', 'Six colours'], review: { who: 'Sanjay P.', text: 'Cool in summer, which is rare.' } },
+      { name: 'Safety Glasses (3 pack)', price: '£9', emoji: '🥽', rating: 4.6, reviews: 3120, cat: 'head', special: true, desc: 'Anti-fog, scratch-resistant glasses that fit over most frames.', features: ['EN 166', 'Anti-fog'], review: { who: 'Ella J.', text: 'Actually do not fog. Amazing.' } },
+      { name: 'Team Kit Fitting', price: '£45', tag: 'SERVICE', emoji: '📋', rating: 4.9, reviews: 320, cat: 'service', desc: 'We visit your site, size your team and deliver everything labelled.', features: ['Teams of 10+', 'Fee refunded on order'], review: { who: 'Maddie R.', text: 'Every one of our 40 fitted properly.' } }
+    ],
+    shopCats: [ { key: 'workwear', label: 'Workwear', icon: '🦺' }, { key: 'boots', label: 'Boots', icon: '🥾' }, { key: 'head', label: 'Head & eyes', icon: '⛑️' }, { key: 'service', label: 'Team fitting', icon: '📋' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'Hi-vis that fits: the <b>Siteworthy Waterproof Jacket</b>.', img: U('1761227447538-f4e1ec0a9df6', 800, 440), eng: '♡ 3.2K · 💬 260', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'DEADLINE', title: 'Last order for Christmas delivery', when: 'Dec 15 · 23:59', desc: 'Order by midnight on 15 December for delivery before Christmas.', registered: 720, capacity: 3000 } ],
+    about: { founded: 'Newcastle · 2015', story: 'Started by a site engineer who was handed a men’s XL jacket on her first day. We make PPE in cuts and sizes that fit everyone on site.', milestones: [['2015', 'The first women’s-cut hi-vis'], ['2021', 'Safety boots from size 3'], ['2026', 'Brand Zone on EngineerXX']], values: ['Fit is safety', 'Certified, always', 'Recycle old PPE with us'] } }),
+
+  'northgate-steel': { key: 'northgate-steel', kind: 'business', gw: 'engineer', name: 'Northgate Steel Fabrication', color: '#6E86A8', gradient: STEEL, img: U('1785257272547-f8dd0b6aa3f5', 900, 500),
+    tier: 'Verified', category: 'Structural steel', tagline: 'Structural steel, fabricated and erected.',
+    about: { founded: 'Middlesbrough · 1979', story: 'We fabricate and erect structural steel for buildings, canopies and bridges: from a single beam for a house to a full steel frame.' },
+    stats: { years: 47, staff: 260, clients: '1,100+ projects' },
+    caps: [ { name: 'Fabrication', detail: 'Beams, columns and trusses cut, drilled and welded in our own works.' }, { name: 'Erection', detail: 'Our own crews and cranes on site.' }, { name: 'Coatings', detail: 'Shot-blasting, galvanising and intumescent paint.' } ],
+    specs: { moq: '1 beam', lead: '1–3 weeks; frames 6–12 weeks', regions: 'UK', certs: ['CE/UKCA Execution Class 3', 'ISO 9001', 'ISO 14001'] },
+    supplies: [ { kind: 'brand', key: 'siteworthy', what: 'PPE for every erection crew' } ],
+    cases: [ { title: 'Station canopy, North East', text: 'A curved steel canopy fabricated in sections and erected over four night possessions.' } ],
+    feed: [ { sub: 'Projects · 3d', text: 'Canopy steel for a new station in the North East leaves the works this week.' }, { sub: 'Careers · 1w', text: 'Apprentice welders wanted for January.' } ],
+    contact: { person: 'Gareth Lowe, Estimating', response: 'Replies within 24 hours' } },
+
+  'tideway-offshore': { key: 'tideway-offshore', kind: 'business', gw: 'engineer', name: 'Tideway Offshore Services', color: '#4FC3F7', gradient: CYAN, img: U('1783065894338-2b26b0ffecab', 900, 500),
+    tier: 'Verified', category: 'Wind turbine installation & maintenance', tagline: 'Installing and maintaining wind turbines, on and offshore.',
+    about: { founded: 'Hull · 2010', story: 'We install, inspect and maintain wind turbines on land and at sea: blade repairs, gearbox changes and annual service campaigns, with our own trained technicians.' },
+    stats: { years: 16, staff: 640, clients: '70+ wind farms' },
+    caps: [ { name: 'Installation', detail: 'Turbine assembly and commissioning on land and offshore.' }, { name: 'Blade repair', detail: 'Rope-access technicians for inspection and leading-edge repair.' }, { name: 'Service campaigns', detail: 'Annual services across whole wind farms.' } ],
+    specs: { moq: '1 turbine', lead: '2–8 weeks', regions: 'UK, Europe', certs: ['GWO training provider', 'ISO 45001', 'IRATA rope access'] },
+    supplies: [ { kind: 'brand', key: 'torque-tally', what: 'Calibrated torque tools for bolt tensioning' } ],
+    cases: [ { title: 'Blade repair campaign, North Sea', text: 'Leading-edge repairs on 86 turbines in one summer weather window.' } ],
+    feed: [ { sub: 'News · 4d', text: 'Recruiting wind turbine technicians for 2027. GWO training provided.' } ],
+    contact: { person: 'Kirsty Marsh, Wind partnerships', response: 'Replies within one working day' } }
+});
+
+/* events in the Events tab */
+EVENTS_FEED.push(
+  { gw: 'engineer', zone: 'sparkplane', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Sparkplane Live · Build a Weather Station', desc: 'Two Sparkplane engineers build the Weather Station Kit live. Build along at home and ask anything.' },
+  { gw: 'engineer', type: 'Event', icon: '🤖', time: 'Nov 20', title: 'Bristol Robotics show-and-tell', desc: 'Bring a robot, finished or not, and show it off. Every level welcome.' },
+  { gw: 'engineer', zone: 'torque-tally', type: 'Event', icon: '🔧', time: 'Nov 26', title: 'Free calibration day, Sheffield', desc: 'Torque & Tally: bring any torque wrench or caliper and have it checked while you wait.' },
+  { gw: 'engineer', type: 'Event', icon: '📋', time: 'Dec 2', title: 'Chartership report workshop (online)', desc: 'Dr Hannah Kerr: how to write a competence report reviewers can follow.' },
+  { gw: 'engineer', zone: 'layerline-3d', type: 'Event', icon: '🖨️', time: 'Dec 4', title: 'Layerline print farm open day, Leeds', desc: 'Forty printers running. Bring a file and print it on the day.' },
+  { gw: 'engineer', type: 'Event', icon: '🌬️', time: 'Dec 9', title: 'Offshore Wind Crew meet-up, Hull', desc: 'Crew between rotations meet on the waterfront. New starters very welcome.' },
+  { gw: 'engineer', zone: 'siteworthy', type: 'Deadline', icon: '🦺', time: 'Dec 15', title: 'Last order for Christmas delivery', desc: 'Siteworthy: order by midnight for delivery before Christmas.' },
+  { gw: 'engineer', type: 'Event', icon: '💡', time: 'Jan 14', title: 'Idea sessions open, Sheffield', desc: 'Make It Real Prototyping: bring a sketch, leave with a plan.' }
+);
+})();
+/* ═════════ /ENGINEERXX ═════════ */
+/* ═════════ TEACHERXX — a Career demo gateway (2026-11-16, Sean) ═════════
+   Built like GolfXX and ChristmasXX: theme, feed, 4 Brand Zones, 2 Business Zones, 3 Pros, 2 communities, 3 apps, events.
+   Palette (light): exercise-book paper, chalkboard green, apple red, pencil yellow. Home sector: Career (Education Careers).
+   Brands, pros and communities are fictional; places are real. Source of truth: _lab/careers/teacherxx-block.js. */
+(function(){
+const U = (id, w, h) => `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&q=75`;
+const CHALK = 'linear-gradient(135deg,#3E7A69,#1F4237)', APPLE = 'linear-gradient(135deg,#E8574E,#A52A24)', PENCIL = 'linear-gradient(135deg,#F7C548,#C98C0E)', PLUM = 'linear-gradient(135deg,#8E6BB8,#4E3473)', SKY = 'linear-gradient(135deg,#5A9BD5,#2C5F8F)';
+
+GATEWAYS.teacher = {
+  name: 'TeacherXX', domain: 'teacherxx.com', emoji: '🍎', sector: 'career', live: true,
+  tagline: 'The Teacher Universe',
+  theme: {
+    bg: '#FBF7EE', text: '#1E2A26', cardBg: '#FFFDF8', cardBorder: 'rgba(30,42,38,.08)',
+    headerBg: 'linear-gradient(180deg,#E6EFE9,#FBF7EE)', accent: '#2F5D50', accentAlt: '#D9433B', dark: false
+  },
+  gradient: 'linear-gradient(135deg,#1F4237,#2F5D50,#F2B632)',
+  stats: { members: '6.1M', brands: '4,100+', agents: '88' },
+  spaces: ['All Feed', 'Lesson Ideas', 'Classroom Kit', 'Marking & Planning', 'Wellbeing', 'Jobs & CPD'],
+  trending: ['#ECTyear', '#ChristmasConcert', '#MarkingMountain'],
+  brandZones: [
+    { key: 'inkwell-co', name: 'Inkwell & Co', color: '#D9433B', tier: 'Founding Partner', tag: 'Classroom stationery that lasts the year' },
+    { key: 'planwell', name: 'Planwell', color: '#2F5D50', tier: 'Brand Zone', tag: 'Teacher planners, made by teachers' },
+    { key: 'bright-sparks-science', name: 'Bright Sparks Science', color: '#E0A21B', tier: 'Brand Zone', tag: 'Science kits that make a lesson unforgettable' },
+    { key: 'story-corner', name: 'Story Corner Books', color: '#6B4E9B', tier: 'Brand Zone', tag: 'Class reading packs and library boxes' }
+  ],
+  apps: [
+    { name: 'Seating Plan', color: '#2F5D50', desc: 'Seating plans in seconds', key: 'seating-plan', url: 'apps/seating-plan.html',
+      dev: 'Staffroom Software', rating: '4.8', users: '538K', perms: ['profile', 'feed'],
+      tagline: 'Who sits where, sorted before the bell.',
+      about: 'Seating Plan lays out your classroom in rows or groups. Tap two pupils to swap them, shuffle the whole room, or mix by group for project work. Mark who needs to sit near the front and the shuffle keeps them there. The demo uses first names only.',
+      features: ['Rows or table groups', 'Tap two seats to swap', 'Shuffle that keeps front-row needs', 'One plan per class'],
+      shots: ['apps/seating-plan/shot-1.jpg', 'apps/seating-plan/shot-2.jpg', 'apps/seating-plan/shot-3.jpg'],
+      version: '6.4', size: '10 KB',
+      updates: [ { v: '6.4', ago: 3, notes: 'Front-row seats stay put when you shuffle.' }, { v: '6.0', ago: 100, notes: 'Table groups layout.' }, { v: '5.5', ago: 230, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@ect_ellie', stars: 5, ago: 2, text: 'Made my Year 9 plan in four minutes. On a Sunday night. Bliss.' }, { who: '@mr_okafor_maths', stars: 5, ago: 9, text: 'Shuffle with front-row needs is genius.' }, { who: '@ks2_kofi', stars: 4, ago: 22, text: 'Would love printing.' } ] },
+    { name: 'Class Timer', color: '#D9433B', desc: 'Countdown timer and name picker', key: 'class-timer', url: 'apps/class-timer.html',
+      dev: 'Inkwell & Co', rating: '4.9', users: '722K', perms: ['profile', 'feed'],
+      tagline: 'Five minutes on the clock. And it’s… Amara’s turn.',
+      about: 'Class Timer puts a big, clear countdown on your board for tasks and tidy-ups, and picks names at random so everyone gets a turn: nobody is picked twice until the whole class has had a go.',
+      features: ['Big countdown for the board', 'One-tap 1, 3, 5 and 10 minutes', 'Fair name picker, no repeats', 'Calm chime when time is up'],
+      shots: ['apps/class-timer/shot-1.jpg', 'apps/class-timer/shot-2.jpg', 'apps/class-timer/shot-3.jpg'],
+      version: '9.1', size: '9 KB',
+      updates: [ { v: '9.1', ago: 2, notes: 'Name picker skips anyone absent today.' }, { v: '9.0', ago: 80, notes: 'Fair picker: no repeats until all have had a turn.' }, { v: '8.2', ago: 200, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@ks2_kofi', stars: 5, ago: 1, text: 'My class cheer when the picker spins. Every time.' }, { who: '@head_of_year_hana', stars: 5, ago: 6, text: 'Simple, big, fair. Perfect.' }, { who: '@supply_sophie', stars: 5, ago: 15, text: 'First thing I open in a new classroom.' } ] },
+    { name: 'Marking Tracker', color: '#E0A21B', desc: 'Climb the marking mountain', key: 'marking-tracker', url: 'apps/marking-tracker.html',
+      dev: 'Planwell', rating: '4.7', users: '214K', perms: ['profile', 'feed'],
+      tagline: 'See the pile shrink. Plan the evenings you get back.',
+      about: 'Marking Tracker keeps every pile of books and assessments in one list, with a deadline and a count. Tick books off as you go and see how long is left at your own pace, so you can plan the week and protect your evenings.',
+      features: ['Every pile with its deadline', 'Tick off books one by one', 'Time left at your own pace', 'Share a cleared pile to TeacherXX'],
+      shots: ['apps/marking-tracker/shot-1.jpg', 'apps/marking-tracker/shot-2.jpg', 'apps/marking-tracker/shot-3.jpg'],
+      version: '3.2', size: '9 KB',
+      updates: [ { v: '3.2', ago: 4, notes: 'Your own minutes per book.' }, { v: '3.0', ago: 120, notes: 'Deadlines sorted soonest first.' }, { v: '2.5', ago: 250, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@mr_okafor_maths', stars: 5, ago: 3, text: 'Knowing it’s 2h 40m left makes it less scary.' }, { who: '@ect_ellie', stars: 5, ago: 10, text: 'Ticking books off is weirdly satisfying.' }, { who: '@english_dept_dee', stars: 4, ago: 27, text: 'Would love department sharing.' } ] }
+  ],
+  pros: [
+    { key: 'ruth-ellison-coaching', name: 'Ruth Ellison Teacher Coaching', color: '#2F5D50', tag: 'Coach for early-career teachers · planning, workload, observations', role: 'Teacher coach',
+      img: U('1580894732444-8ecded7900cd', 800, 800), base: 'Birmingham, UK', langs: 'English', years: 17, rating: '4.9', reviewsN: 466, cur: '£',
+      creds: ['Qualified teacher, 17 years', 'Former ECT induction lead', 'NPQ in Leading Teacher Development'],
+      about: 'Ruth taught English for twelve years and led early-career training in a large Birmingham trust. She coaches new teachers through the first two years: planning that does not eat your weekend, behaviour routines and feeling ready for observations.',
+      services: [ { id: 'call', name: 'One-to-one coaching', dur: '45 minutes', price: 45, desc: 'Online, after school. One thing to change, and how.' },
+                  { id: 'obs', name: 'Observation prep', dur: '60 minutes', price: 60, desc: 'Plan a lesson together and rehearse the tricky bits.' },
+                  { id: 'term', name: 'Termly coaching (6 sessions)', dur: '6 × 45 min', price: 240, desc: 'Fortnightly sessions through a whole term.' } ],
+      avail: { days: [1, 2, 3, 4, 0], times: ['16:30', '18:00', '19:30'] },
+      reviews: [ { who: '@ect_ellie', stars: 5, ago: 4, text: 'I nearly quit in October. Ruth is why I didn’t.' }, { who: '@supply_sophie', stars: 5, ago: 14, text: 'Practical, kind, and fast.' }, { who: '@mr_okafor_maths', stars: 5, ago: 33, text: 'My planning time halved.' } ],
+      posts: [ { ago: 1, text: 'December is the longest month in a school. Protect one evening a week, no matter what.' }, { ago: 7, text: 'Plan the questions you will ask, not just the slides you will show.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'dan-morley-behaviour', name: 'Dan Morley Behaviour Training', color: '#D9433B', tag: 'Behaviour and classroom routines · INSET days, coaching', role: 'Behaviour trainer',
+      img: U('1758270704021-361c165d68fd', 800, 800), base: 'Leeds, UK', langs: 'English', years: 21, rating: '4.8', reviewsN: 352, cur: '£',
+      creds: ['Former deputy head', 'Qualified teacher, 21 years', 'Trauma-informed practice trained'],
+      about: 'Dan was a deputy head in Leeds for ten years. He trains staff in calm, consistent routines that work for every child, and coaches teachers one-to-one when a class has gone off the rails.',
+      services: [ { id: 'one', name: 'One-to-one behaviour coaching', dur: '60 minutes', price: 55, desc: 'Talk through a class and leave with three routines to try tomorrow.' },
+                  { id: 'twilight', name: 'Twilight staff session', dur: '90 minutes', price: 450, desc: 'In your school, for the whole staff.' },
+                  { id: 'inset', name: 'INSET day', dur: 'Full day', price: 1200, desc: 'Routines, consistency and de-escalation for your whole school.' } ],
+      avail: { days: [1, 2, 3, 4, 5], times: ['16:00', '17:30'] },
+      reviews: [ { who: '@head_of_year_hana', stars: 5, ago: 6, text: 'Our INSET with Dan changed corridors overnight.' }, { who: '@ect_ellie', stars: 5, ago: 17, text: 'Three routines, used the next day, worked.' }, { who: '@supply_sophie', stars: 4, ago: 38, text: 'Wish I’d found Dan years ago.' } ],
+      posts: [ { ago: 2, text: 'Same words, same routine, every lesson. Consistency is kindness.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'science-show-workshops', name: 'Science Show Workshops', color: '#E0A21B', tag: 'Science shows and STEM days for schools · KS1 to KS4', role: 'School science shows',
+      img: U('1758685733987-54952cd1c8c6', 800, 800), base: 'Cambridge, UK', langs: 'English', years: 13, rating: '4.9', reviewsN: 618, cur: '£',
+      creds: ['Former secondary science teachers', 'Enhanced DBS checked', 'Fully risk-assessed shows'],
+      about: 'Two former science teachers who bring the bangs, fizzes and foam to your school hall. Shows match the National Curriculum, and every one comes with a lesson pack for the follow-up.',
+      services: [ { id: 'show', name: 'Science show (one hall)', dur: '50 minutes', price: 395, desc: 'Up to 200 pupils, any key stage, with a curriculum lesson pack.' },
+                  { id: 'stem', name: 'STEM day', dur: 'Full school day', price: 895, desc: 'Workshops class by class, ending in a whole-school show.' },
+                  { id: 'cpd', name: 'Practical science CPD for staff', dur: '90 minutes', price: 350, desc: 'Ten safe, cheap practicals any teacher can run.' } ],
+      avail: { days: [1, 2, 3, 4, 5], times: ['09:15', '13:15'] },
+      reviews: [ { who: '@ks2_kofi', stars: 5, ago: 5, text: 'Year 5 are still talking about the elephant toothpaste.' }, { who: '@head_of_year_hana', stars: 5, ago: 20, text: 'Best STEM day we have ever had.' }, { who: '@science_sam', stars: 5, ago: 41, text: 'The staff CPD paid for itself in a week.' } ],
+      posts: [ { ago: 1, text: 'Spring term STEM days are booking fast. Ask about British Science Week.' } ],
+      tier: 'Pro Zone', verified: true }
+  ],
+  communities: [
+    { key: 'the-staffroom', name: 'The Staffroom', domain: 'staffroom.teacherxx.com', color: '#2F5D50', img: U('1509062522246-3755977927d7', 900, 500),
+      scope: 'Global', where: 'Every school', members: 84600, online: 2140, tagline: 'The kettle’s on. Pull up a chair.',
+      about: 'Teachers, teaching assistants and school staff from everywhere. Lesson ideas, workload hacks, the funniest thing a child said today, and support on the hard days.',
+      rules: ['No pupil names or photos, ever', 'Be kind, it is a hard job', 'Share freely, credit generously'],
+      mods: ['@head_of_year_hana', '@ta_tess'],
+      threads: [ { t: 'What did a child say today that made you laugh?', by: '@ks2_kofi', tag: 'STORIES', replies: 486, ago: 0, votes: 1240 }, { t: 'Christmas concert survival guide', by: '@music_mrs_m', tag: 'TIPS', replies: 212, ago: 1, votes: 520 }, { t: 'Marking feedback that takes under a minute a book', by: '@english_dept_dee', tag: 'MARKING', replies: 168, ago: 2, votes: 410 }, { t: 'How do you switch off in the holidays?', by: '@ect_ellie', tag: 'WELLBEING', replies: 134, ago: 4, votes: 288 } ],
+      events: [ { title: 'Sunday night staffroom (online)', day: 0, time: '19:30', where: 'Online' }, { title: 'Christmas lesson swap', day: 4, time: '17:00', where: 'Online' } ] },
+    { key: 'primary-teachers-bristol', name: 'Primary Teachers, Bristol', domain: 'bristol.teacherxx.com', color: '#D9433B', img: U('1588075592446-265fd1e6e76f', 900, 500),
+      scope: 'Local', where: 'Bristol', members: 2280, online: 64, tagline: 'Glitter on everything. Coffee in everything.',
+      about: 'Primary teachers and TAs across Bristol: resource swaps, moderation buddies, a termly social and a WhatsApp-free zone for planning together.',
+      rules: ['No pupil names or photos', 'Resources shared freely', 'Supply teachers very welcome'],
+      mods: ['@ks2_kofi', '@reception_rhi'],
+      threads: [ { t: 'Year 6 writing moderation buddies?', by: '@ks2_kofi', tag: 'MODERATION', replies: 34, ago: 0, votes: 58 }, { t: 'Nativity costume swap: who has a donkey?', by: '@reception_rhi', tag: 'SWAP', replies: 61, ago: 1, votes: 112 }, { t: 'End-of-term social: date poll', by: '@ta_tess', tag: 'SOCIAL', replies: 49, ago: 2, votes: 70 } ],
+      events: [ { title: 'Resource swap', day: 3, time: '16:30', where: 'Bedminster, Bristol' }, { title: 'End-of-term social', day: 5, time: '18:00', where: 'Harbourside, Bristol' } ] }
+  ],
+  feed: [
+    { av: 'TX', avBg: CHALK, author: 'TeacherXX Editorial', sub: 'Featured · Just now', badge: '★ FEATURED',
+      text: 'Lesson ideas, classroom kit, marking, coaching and the people who get you to the end of term. From your first placement to headship: teaching, all in one place.',
+      img: U('1577896851231-70ef18881754', 800, 600), eng: '♡ 61.3K · 💬 7.8K · ↗ 6.2K' },
+    { av: 'EE', avBg: APPLE, author: '@ect_ellie', sub: 'Jobs & CPD · Just now', badge: 'COMMUNITY',
+      text: 'First formal observation as an ECT today and it went WELL. Ruth Ellison’s prep session, a seating plan that finally works, and a Year 9 class that rose to it 🍎',
+      img: U('1758270703928-6a8597669abc', 800, 600), eng: '♡ 14.9K · 💬 2.3K · ↗ 680' },
+    { av: 'IC', avBg: APPLE, author: 'Inkwell & Co', sub: 'Founding Partner · Brand Zone', badge: 'BRAND ZONE',
+      text: 'The <b>Classroom Pencil Pot</b>: 144 pencils that do not snap when sharpened, in a tin that survives Year 3. Free delivery to schools.',
+      img: U('1629652487043-fb2825838f8c', 800, 600), eng: '♡ 11.2K · 💬 940 · ↗ 1.4K' },
+    { av: 'PW', avBg: CHALK, author: 'Planwell', sub: 'Brand Zone · 1h ago', badge: 'BRAND ZONE',
+      text: 'Spring term inserts are here: the <b>Planwell Academic Planner</b> refills from January to July, with a marking tracker on every week.',
+      img: U('1632772998001-cc9bf6f7c852', 800, 600), eng: '♡ 6.4K · 💬 510 · ↗ 620' },
+    { av: 'KK', avBg: PENCIL, author: '@ks2_kofi', sub: 'Lesson Ideas · 2h ago', badge: 'COMMUNITY',
+      text: 'Microscopes out in Year 5 today: onion skin cells, and thirty gasps at once. Best lesson of the term 🔬',
+      img: U('1518152006812-edab29b069ac', 800, 600), eng: '♡ 7.1K · 💬 860 · ↗ 410' },
+    { av: 'BS', avBg: PENCIL, author: 'Bright Sparks Science', sub: 'Brand Zone · 4h ago', badge: 'BRAND ZONE',
+      text: 'The <b>Kitchen Chemistry Class Kit</b>: thirty safe experiments for a class of thirty, with goggles, a risk assessment and lesson plans in the box.',
+      img: U('1633828763399-e29f1cd3f4c1', 800, 600), eng: '♡ 4.8K · 💬 330 · ↗ 520' },
+    { av: 'SC', avBg: PLUM, author: 'Story Corner Books', sub: 'Brand Zone · 6h ago', badge: 'BRAND ZONE',
+      text: 'Our <b>Winter Reading Box</b> for KS2: twenty-five books chosen by teachers, ready for the last weeks of term and the holidays.',
+      img: U('1583468982228-19f19164aee2', 800, 600), eng: '♡ 3.9K · 💬 280 · ↗ 360' }
+  ],
+  prompts: ['Plan a 50-minute Year 8 lesson on the water cycle', 'How do I cut my marking time without cutting feedback?', 'Book a science show for a primary school in Cambridge', 'Ideas for the last day of the Christmas term'],
+  businesses: ['brightboard-classroom', 'ashgrove-furniture']
+};
+
+/* the four Brand Zones and two Business Zones */
+const brand = (o) => Object.assign({ kind: 'brand', gw: 'teacher', verified: true }, o);
+Object.assign(ZONES, {
+  'inkwell-co': brand({ key: 'inkwell-co', name: 'Inkwell & Co', color: '#D9433B', gradient: APPLE, tier: 'Founding Partner',
+    tagline: 'Classroom stationery that lasts the year', stats: { followers: '168K', content: '1.1K', products: '320' },
+    ad: { badge: 'Featured', img: U('1629652487043-fb2825838f8c', 760, 760), hl: 'The Classroom Pencil Pot.', sub: '144 pencils that do not snap, in a tin that survives Year 3.', meta: 'From £4' },
+    products: [
+      { name: 'Classroom Pencil Pot (144)', price: '£29', tag: 'FLAGSHIP', emoji: '✏️', rating: 4.9, reviews: 4120, cat: 'pencils', special: true, desc: 'HB pencils with bonded leads that do not snap when sharpened, in a sturdy tin.', features: ['Bonded leads', 'Pre-sharpened', 'Refills available'], review: { who: 'Kofi A.', text: 'Lasted the whole autumn term. Unheard of.' } },
+      { name: 'Colouring Pencils, Class Pack (288)', price: '£34', tag: 'BESTSELLER', emoji: '🖍️', rating: 4.8, reviews: 3260, cat: 'pencils', desc: 'Twenty-four colours, twelve of each, soft and bright.', features: ['24 colours', 'Sorting tray'], review: { who: 'Rhi P.', text: 'Bright colours, no waxy mess.' } },
+      { name: 'Whiteboard Pens (48)', price: '£22', emoji: '🖊️', rating: 4.7, reviews: 2840, cat: 'pens', special: true, desc: 'Low-odour pens that wipe clean and last.', features: ['Four colours', 'Low odour'], review: { who: 'Ellie W.', text: 'They actually last more than a week.' } },
+      { name: 'Exercise Books (50)', price: '£18', emoji: '📓', rating: 4.8, reviews: 1980, cat: 'books', desc: 'A4 exercise books, lined or squared, recycled paper.', features: ['Recycled paper', 'Name panel'], review: { who: 'Dee R.', text: 'Nice paper, no bleed-through.' } },
+      { name: 'Teacher’s Desk Kit', price: '£4', tag: 'GIFT', emoji: '🎁', rating: 4.6, reviews: 880, cat: 'pens', desc: 'Red pen, green pen, stickers and a stamp: the marking basics.', features: ['Stamp says “Well done!”'], review: { who: 'Sophie L.', text: 'Brilliant little gift for my TA.' } }
+    ],
+    shopCats: [ { key: 'pencils', label: 'Pencils', icon: '✏️' }, { key: 'pens', label: 'Pens & markers', icon: '🖊️' }, { key: 'books', label: 'Exercise books', icon: '📓' } ],
+    feed: [
+      { type: 'post', sub: 'Brand post · 3h', text: 'The <b>Classroom Pencil Pot</b>: 144 pencils that make it to July.', img: U('1629652487043-fb2825838f8c', 800, 440), eng: '♡ 11.2K · 💬 940 · ↗ 1.4K', product: 0 },
+      { type: 'post', sub: 'In the box · Yesterday', text: 'Every colouring class pack is sorted by colour, so tidy-up takes thirty seconds.', img: U('1501349800519-48093d60bde0', 800, 440), eng: '♡ 5.6K · 💬 310' },
+      { type: 'community', who: 'Ellie W.', whoBg: CHALK, sub: 'Community · 1d', text: 'ECT with a tiny budget. What should I buy first for my classroom?', eng: '♡ 204 · 💬 62', reply: 'Welcome, Ellie! Start with Whiteboard Pens and a Teacher’s Desk Kit; most schools supply the books and pencils. Our ECT discount takes 20% off your first order with your school email. ✏️' }
+    ],
+    events: [ { zoneEvent: true, tag: 'DEADLINE', title: 'Order for delivery before term ends', when: 'Dec 11 · 23:59', desc: 'School orders placed by 11 December arrive before the end of term.', registered: 2480, capacity: 6000 } ],
+    about: { founded: 'Keswick · 1932', story: 'Pencil-makers in the Lake District for nearly a century, now making stationery for classrooms. We joined GENEXXO as TeacherXX’s Founding Partner because this is where teachers gather.', milestones: [['1932', 'The first pencils made in Keswick'], ['2004', 'The Classroom Pencil Pot'], ['2026', 'Founding Partner on TeacherXX']], values: ['Made to last a school year', 'Recycled where we can', 'Free delivery to schools'] } }),
+
+  'planwell': brand({ key: 'planwell', name: 'Planwell', color: '#2F5D50', gradient: CHALK, tier: 'Brand Zone',
+    tagline: 'Planners made by teachers', stats: { followers: '94.2K', content: '480', products: '46' },
+    ad: { badge: 'New', img: U('1632772998001-cc9bf6f7c852', 760, 760), hl: 'Spring term inserts.', sub: 'January to July, with a marking tracker on every week.', meta: 'From £6' },
+    products: [
+      { name: 'Planwell Academic Planner', price: '£28', tag: 'FLAGSHIP', emoji: '📘', rating: 4.9, reviews: 3840, cat: 'planners', special: true, desc: 'A refillable September-to-July planner with timetable, seating and marking pages.', features: ['Refillable', 'Lesson, marking and seating pages', 'Lies flat'], review: { who: 'Hana Y.', text: 'Fourth year with Planwell. Can’t teach without it.' } },
+      { name: 'Spring Term Inserts', price: '£12', tag: 'NEW', emoji: '🗓️', rating: 4.8, reviews: 1260, cat: 'inserts', desc: 'January to July refill pages for the Academic Planner.', features: ['Ready for January'], review: { who: 'Ellie W.', text: 'Fresh start for spring.' } },
+      { name: 'Class Record Book', price: '£14', emoji: '📗', rating: 4.8, reviews: 1640, cat: 'planners', desc: 'Marks, attendance and notes for up to eight classes.', features: ['Eight classes', 'Tabbed sections'], review: { who: 'Dee R.', text: 'Everything for parents’ evening in one place.' } },
+      { name: 'Sticky Planning Notes', price: '£6', emoji: '🟨', rating: 4.7, reviews: 2210, cat: 'inserts', desc: 'Lesson-shaped sticky notes that fit every planner page.', features: ['Six designs'], review: { who: 'Sophie L.', text: 'Cover work notes, sorted.' } },
+      { name: 'Personalised Cover', price: '£8', tag: 'PERSONALISED', emoji: '✍️', rating: 4.9, reviews: 980, cat: 'planners', special: true, desc: 'Your name and subject on the cover, in gold foil.', features: ['Gold foil', 'Ready in 3 days'], review: { who: 'Kofi A.', text: 'Mr Asante, Year 5. Feels official.' } }
+    ],
+    shopCats: [ { key: 'planners', label: 'Planners', icon: '📘' }, { key: 'inserts', label: 'Inserts & notes', icon: '🗓️' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Spring term inserts are here: <b>January to July</b>, ready to clip in.', img: U('1506784983877-45594efa4cbe', 800, 440), eng: '♡ 6.4K · 💬 510', product: 1 } ],
+    events: [ { zoneEvent: true, tag: 'DEADLINE', title: 'Spring inserts before January', when: 'Dec 12 · 23:59', desc: 'Order spring term inserts by 12 December to have them for the first day back.', registered: 1860, capacity: 5000 } ],
+    about: { founded: 'York · 2013', story: 'A maths teacher who designed her own planner because none fitted the job. Every page is tested in real classrooms.', milestones: [['2013', 'The first Planwell, printed for one staffroom'], ['2020', 'Refillable inserts'], ['2026', 'Brand Zone on TeacherXX']], values: ['Designed by teachers', 'Refill, do not replace', 'Printed in the UK'] } }),
+
+  'bright-sparks-science': brand({ key: 'bright-sparks-science', name: 'Bright Sparks Science', color: '#E0A21B', gradient: PENCIL, tier: 'Brand Zone',
+    tagline: 'Lessons they will remember', stats: { followers: '58.3K', content: '340', products: '64' },
+    ad: { badge: 'Featured', img: U('1758685734030-a31d96462eec', 760, 760), hl: 'Kitchen Chemistry Class Kit.', sub: 'Thirty safe experiments for a class of thirty.', meta: 'From £9' },
+    products: [
+      { name: 'Kitchen Chemistry Class Kit', price: '£89', tag: 'FLAGSHIP', emoji: '🧪', rating: 4.9, reviews: 1460, cat: 'kits', special: true, desc: 'Thirty safe experiments with goggles, risk assessment and lesson plans.', features: ['For 30 pupils', 'Risk assessment included', 'KS2 and KS3'], review: { who: 'Kofi A.', text: 'Everything in one box. Year 5 loved it.' } },
+      { name: 'Classroom Microscope Set (6)', price: '£149', emoji: '🔬', rating: 4.8, reviews: 620, cat: 'kits', desc: 'Six sturdy LED microscopes with prepared slides.', features: ['LED light', '40× to 400×', '30 prepared slides'], review: { who: 'Sam B.', text: 'Robust enough for Year 4.' } },
+      { name: 'Elephant Toothpaste Demo Kit', price: '£24', tag: 'BESTSELLER', emoji: '🐘', rating: 4.9, reviews: 2380, cat: 'demos', special: true, desc: 'The foamy classic, with everything for five demos and a safety card.', features: ['Five demos', 'Teacher-only safety card'], review: { who: 'Hana Y.', text: 'The gasp is worth every penny.' } },
+      { name: 'Safety Goggles (30)', price: '£45', emoji: '🥽', rating: 4.7, reviews: 1140, cat: 'safety', desc: 'Child-size goggles with soft straps, anti-fog.', features: ['EN 166', 'Child size'], review: { who: 'Rhi P.', text: 'Fit the little ones properly.' } },
+      { name: 'Lesson Plan Pack (KS2)', price: '£9', emoji: '📄', rating: 4.8, reviews: 860, cat: 'demos', desc: 'Twelve practical science lessons matched to the curriculum.', features: ['Printable', 'Curriculum-mapped'], review: { who: 'Ellie W.', text: 'Saved me a weekend.' } }
+    ],
+    shopCats: [ { key: 'kits', label: 'Class kits', icon: '🧪' }, { key: 'demos', label: 'Demos & plans', icon: '🐘' }, { key: 'safety', label: 'Safety', icon: '🥽' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'Thirty experiments, one box: the <b>Kitchen Chemistry Class Kit</b>.', img: U('1633828763399-e29f1cd3f4c1', 800, 440), eng: '♡ 4.8K · 💬 330', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'LIVE LESSON', title: 'Elephant toothpaste, live to classrooms', when: 'Live now · Online', desc: 'A free live science lesson for KS2 classes, with a worksheet to follow.', registered: 1840, capacity: 5000 } ],
+    about: { founded: 'Cambridge · 2012', story: 'Two former science teachers who wanted every school to run real practicals, whatever the budget.', milestones: [['2012', 'The first Kitchen Chemistry kit'], ['2022', 'Live lessons for classrooms'], ['2026', 'Brand Zone on TeacherXX']], values: ['Safe and simple', 'Curriculum-matched', 'Refills, not replacements'] } }),
+
+  'story-corner': brand({ key: 'story-corner', name: 'Story Corner Books', color: '#6B4E9B', gradient: PLUM, tier: 'Brand Zone',
+    tagline: 'The right book for every reader', stats: { followers: '72.6K', content: '620', products: '140' },
+    ad: { badge: 'Featured', img: U('1583468982228-19f19164aee2', 760, 760), hl: 'The Winter Reading Box.', sub: 'Twenty-five books for KS2, chosen by teachers.', meta: 'From £5' },
+    products: [
+      { name: 'Winter Reading Box (KS2, 25 books)', price: '£119', tag: 'FLAGSHIP', emoji: '📚', rating: 4.9, reviews: 1180, cat: 'boxes', special: true, desc: 'Twenty-five books for 7 to 11 year olds, with discussion cards.', features: ['25 books', 'Discussion cards', 'Mixed reading levels'], review: { who: 'Kofi A.', text: 'Every child found something.' } },
+      { name: 'Class Reader Set (30 copies)', price: '£165', emoji: '📖', rating: 4.8, reviews: 640, cat: 'sets', desc: 'Thirty copies of one novel, with a teaching guide.', features: ['30 copies', 'Teaching guide'], review: { who: 'Dee R.', text: 'Saved hours of planning.' } },
+      { name: 'Early Readers Library Box', price: '£79', tag: 'BESTSELLER', emoji: '🧸', rating: 4.9, reviews: 1520, cat: 'boxes', special: true, desc: 'Forty picture and phonics books for Reception and KS1.', features: ['40 books', 'Phonics-matched'], review: { who: 'Rhi P.', text: 'My reading corner is transformed.' } },
+      { name: 'Reading Corner Cushions (4)', price: '£48', emoji: '🛋️', rating: 4.7, reviews: 560, cat: 'corner', desc: 'Washable floor cushions for the reading corner.', features: ['Washable covers'], review: { who: 'Tess B.', text: 'Comfiest corner in school.' } },
+      { name: 'Bookplates for Gifting (50)', price: '£5', emoji: '🏷️', rating: 4.8, reviews: 780, cat: 'corner', desc: '“This book belongs to…” bookplates for end-of-year gift books.', features: ['Fifty plates'], review: { who: 'Ellie W.', text: 'Gave every child a book with one.' } }
+    ],
+    shopCats: [ { key: 'boxes', label: 'Reading boxes', icon: '📚' }, { key: 'sets', label: 'Class sets', icon: '📖' }, { key: 'corner', label: 'Reading corner', icon: '🛋️' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 6h', text: 'The <b>Winter Reading Box</b>: twenty-five books, chosen by teachers.', img: U('1497633762265-9d179a990aa6', 800, 440), eng: '♡ 3.9K · 💬 280', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'LAUNCH', title: 'Christmas reading list launch', when: 'Dec 2 · Online', desc: 'Our teacher panel picks the twenty best books of the year for every key stage.', registered: 3120, capacity: 8000 } ],
+    about: { founded: 'Hay-on-Wye · 2008', story: 'A school librarian and a bookseller from the town of books. We choose every title with a panel of working teachers.', milestones: [['2008', 'The first school library box'], ['2019', 'The teacher panel begins'], ['2026', 'Brand Zone on TeacherXX']], values: ['Chosen by teachers', 'Every reader matters', 'Books for keeps'] } }),
+
+  'brightboard-classroom': { key: 'brightboard-classroom', kind: 'business', gw: 'teacher', name: 'Brightboard Classroom Tech', color: '#5A9BD5', gradient: SKY, img: U('1580582932707-520aed937b7b', 900, 500),
+    tier: 'Verified', category: 'Classroom technology', tagline: 'Interactive displays and classroom audio-visual for schools.',
+    about: { founded: 'Reading · 2006', story: 'We fit interactive displays, visualisers and classroom audio in schools and colleges, train the staff and look after it all for five years.' },
+    stats: { years: 20, staff: 210, clients: '2,600+ schools' },
+    caps: [ { name: 'Interactive displays', detail: 'Supplied, fitted and set up with your school’s accounts.' }, { name: 'Staff training', detail: 'Short twilight sessions so every teacher is confident on day one.' }, { name: 'Five-year care', detail: 'Repairs and swaps included, usually within 48 hours.' } ],
+    specs: { moq: '1 classroom', lead: '2–4 weeks; holiday installs booked early', regions: 'UK', certs: ['DfE framework supplier', 'ISO 9001', 'Cyber Essentials'] },
+    supplies: [ { kind: 'brand', key: 'bright-sparks-science', what: 'Visualisers for live science lessons' } ],
+    cases: [ { title: 'Primary trust, West Midlands', text: 'Eighty classrooms fitted over one summer holiday, with staff trained in September.' } ],
+    feed: [ { sub: 'Installs · 3d', text: 'Christmas holiday installs: three slots left for December.' }, { sub: 'Tips · 1w', text: 'A visualiser is the cheapest upgrade a classroom can get.' } ],
+    contact: { person: 'Priya Desai, School partnerships', response: 'Replies within 24 hours' } },
+
+  'ashgrove-furniture': { key: 'ashgrove-furniture', kind: 'business', gw: 'teacher', name: 'Ashgrove School Furniture', color: '#2F5D50', gradient: CHALK, img: U('1635424239131-32dc44986b56', 900, 500),
+    tier: 'Verified', category: 'School furniture', tagline: 'Classroom furniture, built to last a generation.',
+    about: { founded: 'High Wycombe · 1958', story: 'We make school tables, chairs and storage in the Chilterns, from FSC timber, and we repair and refurbish what schools already have.' },
+    stats: { years: 68, staff: 160, clients: '5,000+ schools' },
+    caps: [ { name: 'Classroom furniture', detail: 'Tables and chairs in every school size, made to order.' }, { name: 'Libraries and reading corners', detail: 'Shelving, kinderboxes and soft seating.' }, { name: 'Refurbishment', detail: 'Old furniture repaired and refinished instead of replaced.' } ],
+    specs: { moq: '1 classroom set', lead: '4–8 weeks', regions: 'UK', certs: ['FSC certified', 'BS EN 1729', 'ISO 14001'] },
+    supplies: [ { kind: 'brand', key: 'story-corner', what: 'Kinderboxes for Story Corner library boxes' } ],
+    cases: [ { title: 'Victorian school, Bristol', text: 'Two hundred chairs refurbished instead of replaced, saving the school £18,000.' } ],
+    feed: [ { sub: 'Workshop · 5d', text: 'Summer refurbishment slots for 2027 are open. Book early.' } ],
+    contact: { person: 'Martin Hale, Schools', response: 'Replies within one working day' } }
+});
+
+/* events in the Events tab */
+EVENTS_FEED.push(
+  { gw: 'teacher', zone: 'bright-sparks-science', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Bright Sparks Live · Elephant Toothpaste', desc: 'A free live science lesson streamed to KS2 classrooms, with a worksheet to follow along.' },
+  { gw: 'teacher', type: 'Event', icon: '☕', time: 'Nov 22', title: 'The Staffroom: Sunday night check-in', desc: 'An online cuppa before the week starts. Bring your planning, or don’t.' },
+  { gw: 'teacher', type: 'Event', icon: '🔬', time: 'Nov 28', title: 'Science show tour, Cambridge', desc: 'Science Show Workshops: open show for teachers thinking of booking a STEM day.' },
+  { gw: 'teacher', zone: 'story-corner', type: 'Event', icon: '📚', time: 'Dec 2', title: 'Christmas reading list launch', desc: 'Story Corner Books: the teacher panel’s twenty best books of the year. Online.' },
+  { gw: 'teacher', type: 'Event', icon: '🎒', time: 'Dec 3', title: 'Bristol primary resource swap', desc: 'Primary Teachers, Bristol: bring what you don’t need, take what you do.' },
+  { gw: 'teacher', zone: 'inkwell-co', type: 'Deadline', icon: '✏️', time: 'Dec 11', title: 'Order for delivery before term ends', desc: 'Inkwell & Co: school orders placed by midnight arrive before the holidays.' },
+  { gw: 'teacher', zone: 'planwell', type: 'Deadline', icon: '🗓️', time: 'Dec 12', title: 'Spring inserts before January', desc: 'Planwell: order by midnight to have them for the first day back.' },
+  { gw: 'teacher', type: 'Event', icon: '🧭', time: 'Jan 8', title: 'Behaviour CPD day, Leeds', desc: 'Dan Morley: calm, consistent routines for the new term. Open to all schools.' }
+);
+})();
+/* ═════════ /TEACHERXX ═════════ */
