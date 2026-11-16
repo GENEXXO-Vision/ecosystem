@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Exam Cards</title>
+<style>
+/* Exam Cards, by "Bleep Labs" (fictional), 2026-11-16. A GENEXXO app for DoctorXX.
+   Three-box spaced repetition (Leitner): right moves a card up a box, wrong sends it back to box 1. The study queue
+   serves box 1 first, then 2, then 3; a card in box 3 counts as mastered. Content is basic science facts only
+   (anatomy, physiology, biochemistry), nothing on doses or treatment. */
+:root{--bg:#071A1F;--card:rgba(255,255,255,.05);--line:rgba(232,243,241,.1);--ink:#E8F3F1;--mut:rgba(232,243,241,.55);--teal:#19B3A6;--coral:#FF6B6B;--ind:#7A6CF0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#7A6CF0,#3B2F99);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--ind)}
+.deckbar{display:flex;gap:6px;overflow-x:auto;margin-bottom:10px}.deckbar button{font:inherit;font-weight:800;font-size:12.5px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:7px 12px;cursor:pointer;white-space:nowrap}.deckbar button.on{border-color:var(--ind);background:rgba(122,108,240,.18)}
+.fc{background:linear-gradient(160deg,#1B1F4A,#11143A);border:1px solid rgba(122,108,240,.35);border-radius:20px;padding:22px 18px;min-height:250px;display:flex;flex-direction:column;justify-content:center;text-align:center}
+.fc small{font-size:11px;font-weight:900;letter-spacing:.08em;color:#B4AAFF}.fc .q{font-size:19px;font-weight:800;margin-top:10px;line-height:1.35}
+.fc .a{margin-top:16px;padding-top:14px;border-top:1px dashed rgba(180,170,255,.35);font-size:18px;font-weight:900;color:#5FE0D4}
+.btns{display:flex;gap:8px;margin-top:12px}.btns button{flex:1;font:inherit;font-weight:900;font-size:14px;border:0;border-radius:99px;padding:13px;cursor:pointer}
+.b-show{background:var(--ind);color:#fff}.b-no{background:rgba(255,107,107,.16);color:var(--coral)}.b-yes{background:var(--teal);color:#05211F}
+.prog{display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:var(--mut);margin-bottom:8px}
+.big{background:linear-gradient(150deg,#1B1F4A,#11143A);border:1px solid rgba(122,108,240,.3);border-radius:18px;padding:16px;display:flex;gap:10px}
+.big div{flex:1;text-align:center}.big b{display:block;font-size:30px;font-weight:900;line-height:1.1}.big small{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--mut)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.dk{padding:9px 0}.dk+.dk{border-top:1px solid var(--line)}.dk .l{display:flex;justify-content:space-between;font-weight:800;margin-bottom:5px}
+.boxes{display:flex;height:9px;border-radius:9px;overflow:hidden;background:rgba(232,243,241,.08)}.boxes i{display:block;height:100%}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--ind);color:#fff;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🧠</div><div><h1>Exam Cards</h1><p>Bleep Labs · in DoctorXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="study" class="on">Study</button><button data-tab="decks">Progress</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const DECKS={
+  anat:{name:'Anatomy',cards:[['Which cranial nerve supplies the muscles of facial expression?','The facial nerve (CN VII)'],['Which nerve is at risk in a fracture of the surgical neck of the humerus?','The axillary nerve'],['Which nerve passes through the carpal tunnel?','The median nerve'],['Which rotator cuff muscle inserts on the lesser tubercle of the humerus?','Subscapularis'],['How many bones are there in the adult human skeleton?','206']]},
+  phys:{name:'Physiology',cards:[['What is the normal range for arterial blood pH?','7.35 to 7.45'],['Where is most erythropoietin produced?','The kidneys'],['Influx of which ion causes phase 0 of the ventricular action potential?','Sodium (Na⁺)'],['Which posterior pituitary hormone increases water reabsorption in the collecting ducts?','Antidiuretic hormone (vasopressin)'],['What is the normal resting heart rate range for an adult?','60 to 100 beats per minute']]},
+  bioc:{name:'Biochemistry',cards:[['Deficiency of which vitamin causes scurvy?','Vitamin C'],['What is the rate-limiting enzyme of cholesterol synthesis?','HMG-CoA reductase'],['Where in the cell does the Krebs cycle take place?','The mitochondrial matrix'],['Deficiency of which vitamin causes Wernicke’s encephalopathy?','Thiamine (vitamin B1)'],['Which molecule carries amino acids to the ribosome?','Transfer RNA (tRNA)']]}};
+const seed=()=>({box:{anat:[3,3,2,1,3],phys:[2,1,1,2,3],bioc:[1,1,1,1,1]},streak:6,last:GX.iso(-1),deck:'phys'});
+let C,S={tab:'study',flip:false,idx:null,shared:false};
+GX.init({gateway:'DoctorXX',seed}).then(c=>{C=c;pick();paint();});
+const D=()=>C.data.deck;
+/* the next card: lowest box first; inside a box, the first card not just seen */
+function pick(){const b=C.data.box[D()];let best=null;b.forEach((v,i)=>{if(i===S.idx&&b.length>1)return;if(best==null||v<b[best])best=i;});S.idx=best;S.flip=false;}
+const mastered=k=>C.data.box[k].filter(v=>v>=3).length;
+const allM=()=>Object.keys(DECKS).reduce((a,k)=>a+mastered(k),0),allN=()=>Object.keys(DECKS).reduce((a,k)=>a+DECKS[k].cards.length,0);
+function vStudy(){const d=DECKS[D()],c=d.cards[S.idx],bx=C.data.box[D()][S.idx];
+  return `<div class="deckbar">${Object.keys(DECKS).map(k=>`<button data-deck="${k}" class="${k===D()?'on':''}">${DECKS[k].name} · ${mastered(k)}/${DECKS[k].cards.length}</button>`).join('')}</div>
+  <div class="prog"><span>Box ${bx} of 3</span><span>🔥 ${C.data.streak}-day streak</span></div>
+  <div class="fc"><small>${d.name.toUpperCase()}</small><div class="q">${c[0]}</div>${S.flip?`<div class="a">${c[1]}</div>`:''}</div>
+  <div class="btns">${S.flip?`<button class="b-no" id="no">✗ Again</button><button class="b-yes" id="yes">✓ Got it</button>`:`<button class="b-show" id="show">Show answer</button>`}</div>
+  <div class="legend">Right moves a card up a box; wrong sends it back to box 1.</div>`;}
+function vDecks(){const m=allM(),n=allN();
+  return `<div class="big"><div><b>${m}/${n}</b><small>MASTERED</small></div><div><b>🔥 ${C.data.streak}</b><small>DAY STREAK</small></div></div>
+  <div class="card"><h3>Decks</h3>${Object.keys(DECKS).map(k=>{const b=C.data.box[k],n=b.length,c=x=>b.filter(v=>v===x).length;
+    return `<div class="dk"><div class="l"><span>${DECKS[k].name}</span><span style="color:var(--mut)">${mastered(k)} mastered</span></div><div class="boxes"><i style="width:${c(3)/n*100}%;background:#19B3A6"></i><i style="width:${c(2)/n*100}%;background:#7A6CF0"></i><i style="width:${c(1)/n*100}%;background:rgba(255,107,107,.55)"></i></div></div>`;}).join('')}
+  <div class="legend" style="text-align:left">● <span style="color:#19B3A6">box 3, mastered</span> · <span style="color:#B4AAFF">box 2</span> · <span style="color:#FF8B8B">box 1, still learning</span></div></div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my progress to ${C.gateway}`}</button>`:''}`;}
+function answer(ok){const b=C.data.box[D()];b[S.idx]=ok?Math.min(3,b[S.idx]+1):1;
+  if(C.data.last!==GX.iso(0)){C.data.streak=C.data.last===GX.iso(-1)?C.data.streak+1:1;C.data.last=GX.iso(0);}
+  GX.save(C.data);S.shared=false;pick();paint();}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='study'?vStudy():vDecks();
+  v.querySelectorAll('[data-deck]').forEach(e=>e.onclick=()=>{C.data.deck=e.dataset.deck;S.idx=null;pick();GX.save(C.data);paint();});
+  const sw=document.getElementById('show');if(sw)sw.onclick=()=>{S.flip=true;paint();};
+  const y=document.getElementById('yes');if(y)y.onclick=()=>answer(true);
+  const n=document.getElementById('no');if(n)n.onclick=()=>answer(false);
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{
+    GX.post(`<b>${allM()} of ${allN()}</b> revision cards mastered, on a ${C.data.streak}-day streak. Ten cards a break in Exam Cards 🧠`,'EXAM CARDS').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

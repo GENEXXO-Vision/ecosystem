@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Shift Rota</title>
+<style>
+/* Shift Rota, by "Night Ward Software" (fictional), 2026-11-16. A GENEXXO app for DoctorXX.
+   Two weeks of shifts from today. Hours are paid hours (shift length minus a 30-minute break on shifts over 6 hours).
+   Rest checks use common UK guidance as a prompt, not a rule: 11 hours between shifts, 48-hour average week.
+   The doctor's own contract and rota rules come first; the app says so. */
+:root{--bg:#071A1F;--card:rgba(255,255,255,.05);--line:rgba(232,243,241,.1);--ink:#E8F3F1;--mut:rgba(232,243,241,.55);--teal:#19B3A6;--coral:#FF6B6B;--ind:#7A6CF0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#19B3A6,#0B5E58);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--teal)}
+.big{background:linear-gradient(150deg,#0E3B41,#0A2A30);border:1px solid rgba(25,179,166,.25);border-radius:18px;padding:16px;display:flex;gap:10px}
+.big div{flex:1;text-align:center}.big b{display:block;font-size:30px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1.1}.big small{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--mut)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.d{display:flex;align-items:center;gap:10px;padding:9px 0;cursor:pointer}.d+.d{border-top:1px solid var(--line)}
+.d .dt{width:46px;text-align:center}.d .dt b{display:block;font-size:17px;font-weight:900}.d .dt small{font-size:10.5px;font-weight:800;color:var(--mut);text-transform:uppercase}
+.d .x{flex:1}.d .x b{font-size:14px}.d .x small{display:block;color:var(--mut);font-size:12px}
+.chip{font-size:11.5px;font-weight:900;border-radius:99px;padding:4px 10px;white-space:nowrap}
+.c-L{background:rgba(25,179,166,.18);color:#5FE0D4}.c-N{background:rgba(122,108,240,.22);color:#B4AAFF}.c-S{background:rgba(255,194,61,.16);color:#FFD27A}.c-E{background:rgba(255,107,107,.16);color:#FF9C9C}.c-O{background:rgba(232,243,241,.08);color:var(--mut)}
+.d.today .dt b{color:var(--teal)}
+.warn{display:flex;gap:8px;align-items:flex-start;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);border-radius:12px;padding:10px 12px;margin-top:10px;font-size:13px}
+.warn b{color:var(--coral)}.ok{background:rgba(25,179,166,.1);border-color:rgba(25,179,166,.3)}.ok b{color:var(--teal)}
+.bars{display:flex;align-items:flex-end;gap:10px;height:120px;padding:6px 4px 0}.bars div{flex:1;text-align:center;font-size:11px;font-weight:800;color:var(--mut)}
+.bars i{display:block;border-radius:8px 8px 3px 3px;background:var(--teal);margin-bottom:5px}.bars i.hi{background:var(--coral)}
+.pick{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.pick button{font:inherit;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:12px 8px;cursor:pointer;text-align:left}
+.pick button small{display:block;font-weight:600;color:var(--mut);font-size:11.5px}.pick button.on{border-color:var(--teal);background:rgba(25,179,166,.14)}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--teal);color:#05211F;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🗓️</div><div><h1>Shift Rota</h1><p>Night Ward Software · in DoctorXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="week" class="on">Rota</button><button data-tab="hours">Hours</button><button data-tab="edit">Swap a shift</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+/* shift types: start hour, length in hours (start + length can pass midnight) */
+const T={L:{name:'Long day',s:8,len:12.5},E:{name:'Late',s:14,len:8.5},N:{name:'Night',s:20,len:12.5},S:{name:'Short day',s:8,len:9},O:{name:'Off',s:0,len:0}};
+const pad=h=>{const hh=Math.floor(h)%24,mm=Math.round((h%1)*60);return String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0');};
+const paid=k=>T[k].len>6?T[k].len-.5:T[k].len;
+const seed=()=>({days:'LLOOSONNNOOELO'.split('')});
+let C,S={tab:'week',sel:0,shared:false};
+GX.init({gateway:'DoctorXX',seed}).then(c=>{C=c;paint();});
+const dayAt=i=>GX.today(i);
+/* rest gaps: from the end of one shift to the start of the next working shift */
+function gaps(){const d=C.data.days,out=[];let last=null;
+  d.forEach((k,i)=>{if(k==='O')return;const start=i*24+T[k].s;if(last!=null){const g=start-last.end;out.push({i,g,from:last.i});}last={i,end:start+T[k].len};});return out;}
+const shortGaps=()=>gaps().filter(x=>x.g<11);
+const hours=(a,b)=>C.data.days.slice(a,b).reduce((s,k)=>s+paid(k),0);
+function nightsRun(){let best=0,run=0;C.data.days.forEach(k=>{run=k==='N'?run+1:0;best=Math.max(best,run);});return best;}
+function vWeek(){const d=C.data.days,sg=shortGaps();
+  return `<div class="big"><div><b>${hours(0,7)}</b><small>HOURS THIS WEEK</small></div><div><b>${d.slice(0,7).filter(k=>k==='N').length}</b><small>NIGHTS</small></div><div><b>${d.slice(0,7).filter(k=>k==='O').length}</b><small>DAYS OFF</small></div></div>
+  ${sg.length?`<div class="warn">⚠️<div><b>${sg.length} short rest gap${sg.length>1?'s':''}</b> under 11 hours between shifts. Check your contract’s rules before you agree to swaps.</div></div>`:`<div class="warn ok">✓<div><b>Rest gaps look fine.</b> Every gap between shifts is 11 hours or more.</div></div>`}
+  <div class="card"><h3>Next two weeks</h3>${d.map((k,i)=>{const t=T[k],dt=dayAt(i),g=sg.find(x=>x.i===i);
+    return `<div class="d ${i===0?'today':''}" data-day="${i}"><div class="dt"><small>${GX.day(dt,{weekday:'short'})}</small><b>${dt.getDate()}</b></div>
+    <div class="x"><b>${t.name}</b><small>${k==='O'?'Rest':pad(t.s)+'–'+pad(t.s+t.len)+' · '+paid(k)+' h paid'}${g?` · <span style="color:var(--coral)">${g.g<0?'overlaps the shift before':'only '+g.g+' h rest before'}</span>`:''}</small></div><span class="chip c-${k}">${k==='O'?'OFF':k==='N'?'🌙 NIGHT':k==='L'?'LONG':k==='E'?'LATE':'SHORT'}</span></div>`;}).join('')}</div>`;}
+function vHours(){const w1=hours(0,7),w2=hours(7,14),avg=(w1+w2)/2,mx=Math.max(w1,w2,48);
+  return `<div class="big"><div><b>${avg.toFixed(1)}</b><small>AVERAGE HOURS A WEEK</small></div><div><b>${nightsRun()}</b><small>NIGHTS IN A ROW</small></div></div>
+  <div class="card"><h3>Week by week</h3><div class="bars">${[w1,w2].map((h,i)=>`<div><i class="${h>48?'hi':''}" style="height:${h/mx*90}px"></i>${i?'Next week':'This week'} · ${h} h</div>`).join('')}<div><i style="height:${48/mx*90}px;background:rgba(232,243,241,.15)"></i>48 h guide</div></div></div>
+  <div class="card"><h3>This rota</h3>${Object.keys(T).filter(k=>k!=='O').map(k=>`<div class="d" style="cursor:default"><div class="x"><b>${T[k].name}s</b><small>${pad(T[k].s)}–${pad(T[k].s+T[k].len)}</small></div><b>${C.data.days.filter(x=>x===k).length}</b></div>`).join('')}</div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my week to ${C.gateway}`}</button>`:''}
+  <div class="legend">Paid hours exclude a 30-minute break on shifts over six hours. A guide, not your contract.</div>`;}
+function vEdit(){const i=S.sel,k=C.data.days[i];
+  return `<div class="card"><h3>Pick a day</h3><div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px">${C.data.days.map((x,j)=>{const dt=dayAt(j);return `<button data-sel="${j}" style="font:inherit;flex:0 0 auto;width:52px;border-radius:12px;padding:8px 0;cursor:pointer;border:1px solid ${j===i?'var(--teal)':'var(--line)'};background:${j===i?'rgba(25,179,166,.16)':'var(--card)'};color:var(--ink)"><small style="display:block;font-size:10.5px;font-weight:800;color:var(--mut)">${GX.day(dt,{weekday:'short'})}</small><b style="font-size:16px">${dt.getDate()}</b><small class="chip c-${x}" style="display:block;margin:4px 6px 0;padding:2px 0;font-size:10px">${x}</small></button>`;}).join('')}</div></div>
+  <div class="pick">${Object.keys(T).map(t=>`<button data-set="${t}" class="${t===k?'on':''}">${T[t].name}<small>${t==='O'?'Rest day':pad(T[t].s)+'–'+pad(T[t].s+T[t].len)}</small></button>`).join('')}</div>
+  <div class="legend">${GX.day(dayAt(i),{weekday:'long',day:'numeric',month:'long'})}: ${T[k].name}. Changes check your rest gaps straight away.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='week'?vWeek():S.tab==='hours'?vHours():vEdit();
+  v.querySelectorAll('[data-day]').forEach(e=>e.onclick=()=>{S.sel=+e.dataset.day;S.tab='edit';paint();});
+  v.querySelectorAll('[data-sel]').forEach(e=>e.onclick=()=>{S.sel=+e.dataset.sel;paint();});
+  v.querySelectorAll('[data-set]').forEach(e=>e.onclick=()=>{C.data.days[S.sel]=e.dataset.set;GX.save(C.data);S.shared=false;paint();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const d=C.data.days.slice(0,7);
+    GX.post(`This week: <b>${hours(0,7)} hours</b>, ${d.filter(k=>k==='N').length} nights and ${d.filter(k=>k==='O').length} days off. Planned in Shift Rota 🌙`,'SHIFT ROTA').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
