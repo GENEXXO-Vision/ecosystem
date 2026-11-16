@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Resistor Code</title>
+<style>
+/* Resistor Code, by "Sparkplane Electronics" (fictional), 2026-11-16. A GENEXXO app for EngineerXX.
+   IEC 60062 colour code: digits black 0 … white 9; multiplier 10^digit, gold ×0.1, silver ×0.01; tolerance brown 1%,
+   red 2%, green 0.5%, blue 0.25%, violet 0.1%, grey 0.05%, gold 5%, silver 10%. Four bands = 2 digits; five = 3.
+   Value → bands snaps to the nearest E12 value. Ohm’s law: give any two of V, I, R; P = V × I. */
+:root{--bg:#0A1630;--card:rgba(255,255,255,.05);--line:rgba(234,242,255,.1);--ink:#EAF2FF;--mut:rgba(234,242,255,.55);--amber:#FFB000;--cyan:#4FC3F7;--red:#F0646E}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#FFC23D,#C47F00);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--amber)}
+.val{text-align:center;background:linear-gradient(150deg,#14306A,#0F2148);border:1px solid rgba(255,176,0,.25);border-radius:18px;padding:14px 10px 8px}
+.val b{font-size:38px;font-weight:900;font-variant-numeric:tabular-nums}.val small{display:block;color:var(--mut);font-weight:800;font-size:12.5px}
+.seg{display:flex;gap:6px;margin:10px 0}.seg button{flex:1;font:inherit;font-weight:800;font-size:12.5px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:8px;cursor:pointer}.seg button.on{border-color:var(--amber);background:rgba(255,176,0,.14)}
+.pal{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px}
+.pal button{font:inherit;font-size:10.5px;font-weight:800;border:2px solid transparent;border-radius:10px;padding:10px 0 6px;cursor:pointer;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6)}.pal button.on{border-color:#fff;box-shadow:0 0 0 2px var(--amber)}
+.pal button:disabled{opacity:.18;cursor:default}
+.lbl{font-size:12px;color:var(--mut);font-weight:800;margin-top:12px;text-transform:uppercase;letter-spacing:.06em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.row{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:8px}
+.row b{font-size:14.5px}.row small{display:block;color:var(--mut);font-size:12px}
+.row input{width:120px;font:inherit;font-weight:900;font-size:17px;text-align:right;background:#0F2148;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:8px 10px}
+.row.out input{border-color:var(--amber);color:var(--amber)}
+.step{display:flex;align-items:center;gap:8px}.step button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--ink);font-size:17px;font-weight:800;cursor:pointer}.step span{min-width:70px;text-align:center;font-weight:900;font-size:16px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--amber);color:#0A1630;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🎨</div><div><h1>Resistor Code</h1><p>Sparkplane Electronics · in EngineerXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="bands" class="on">Colours</button><button data-tab="value">Value</button><button data-tab="ohm">Ohm’s law</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const COL=[['Black','#1b1b1b'],['Brown','#7a4a24'],['Red','#d32f2f'],['Orange','#f57c00'],['Yellow','#fbc02d'],['Green','#2e9d4b'],['Blue','#1e64d6'],['Violet','#8e44ad'],['Grey','#8a8f98'],['White','#f2f2f2'],['Gold','#c9a227'],['Silver','#b7bcc4']];
+const TOL={1:1,2:2,5:.5,6:.25,7:.1,8:.05,10:5,11:10};
+const E12=[10,12,15,18,22,27,33,39,47,56,68,82];
+const seed=()=>({n:4,b4:[4,7,2,10],b5:[1,0,0,1,1],ohm:{V:5,I:0.02,R:'',solve:'R'}});
+let C,S={tab:'bands',sel:0,shared:false,e:{i:7,dec:2}};
+GX.init({gateway:'EngineerXX',seed}).then(c=>{C=c;paint();});
+const bands=()=>C.data.n===4?C.data.b4:C.data.b5;
+function ohms(b){const n=b.length,dig=b.slice(0,n-2).reduce((a,d)=>a*10+d,0),m=b[n-2];return dig*(m===10?.1:m===11?.01:Math.pow(10,m));}
+function nice(r){const u=[[1e9,'GΩ'],[1e6,'MΩ'],[1e3,'kΩ'],[1,'Ω']].find(x=>r>=x[0])||[1,'Ω'];return (+(r/u[0]).toPrecision(4))+' '+u[1];}
+function nearestE12(r){if(r<=0)return null;const dec=Math.floor(Math.log10(r))-1;let best=null;
+  for(const d of [dec-1,dec,dec+1])for(const e of E12){const v=e*Math.pow(10,d);if(best==null||Math.abs(Math.log(v/r))<Math.abs(Math.log(best/r)))best=v;}return best;}
+function svg(b){const n=b.length,xs=n===4?[70,100,130,190]:[64,90,116,142,196];
+  return `<svg viewBox="0 0 260 70" width="100%" height="84"><line x1="0" y1="35" x2="260" y2="35" stroke="#b9c2cf" stroke-width="4"/>
+  <path d="M40 14 Q40 6 54 6 L84 8 Q130 14 176 8 L206 6 Q220 6 220 14 L220 56 Q220 64 206 64 L176 62 Q130 56 84 62 L54 64 Q40 64 40 56 Z" fill="#d9c49a" stroke="#a88f5f" stroke-width="1.5"/>
+  ${b.map((c,i)=>`<rect data-band="${i}" x="${xs[i]-7}" y="${i===n-1||i===0?8:11}" width="14" height="${i===n-1||i===0?54:48}" rx="2" fill="${COL[c][1]}" stroke="${i===S.sel?'#FFB000':'rgba(0,0,0,.25)'}" stroke-width="${i===S.sel?3:1}" style="cursor:pointer"/>`).join('')}</svg>`;}
+function allowed(i,n){if(i<n-2)return c=>c<=9&&!(i===0&&c===0);if(i===n-2)return c=>c<=11&&c!==9;return c=>TOL[c]!=null;}
+function vBands(){const b=bands(),n=b.length,r=ohms(b),ok=allowed(S.sel,n),e=nearestE12(r);
+  const role=S.sel<n-2?`Digit ${S.sel+1}`:S.sel===n-2?'Multiplier':'Tolerance';
+  return `<div class="seg"><button data-n="4" class="${n===4?'on':''}">4 bands</button><button data-n="5" class="${n===5?'on':''}">5 bands</button></div>
+  <div class="val">${svg(b)}<b>${nice(r)}</b><small>±${TOL[b[n-1]]}% · ${b.map(c=>COL[c][0]).join(', ')}</small></div>
+  <div class="lbl">Band ${S.sel+1}: ${role} · tap a band on the resistor to change it</div>
+  <div class="pal">${COL.map((c,i)=>`<button data-c="${i}" class="${b[S.sel]===i?'on':''}" style="background:${c[1]};${i===9||i===11?'color:#222;text-shadow:none':''}" ${ok(i)?'':'disabled'}>${c[0]}</button>`).join('')}</div>
+  ${e&&Math.abs(e-r)/r>.001?`<div class="legend">Not a standard E12 value. Nearest: <b>${nice(e)}</b></div>`:`<div class="legend">✓ A standard E12 value</div>`}
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share this resistor to ${C.gateway}`}</button>`:''}`;}
+function vValue(){const e=S.e,r=E12[e.i]*Math.pow(10,e.dec-1),d1=Math.floor(E12[e.i]/10),d2=E12[e.i]%10,m=e.dec-1,mc=m===-1?10:m===-2?11:m,b=[d1,d2,mc,10];
+  return `<div class="val">${svg(b).replace(/data-band="\d"/g,'')}<b>${nice(r)}</b><small>${b.map(c=>COL[c][0]).join(', ')} · ±5%</small></div>
+  <div class="row"><div><b>Value</b><small>E12 series</small></div><div class="step"><button data-ev="-1">–</button><span>${nice(r)}</span><button data-ev="1">+</button></div></div>
+  <div class="row"><div><b>Decade</b><small>× 10</small></div><div class="step"><button data-dec="-1">–</button><span>×${(+Math.pow(10,e.dec-1).toPrecision(3)).toLocaleString('en-GB')}</span><button data-dec="1">+</button></div></div>
+  <div class="legend">Four-band code with a gold 5% tolerance band.</div>`;}
+function solveOhm(){const o=C.data.ohm,V=+o.V,I=+o.I,R=+o.R;
+  if(o.solve==='R')return {V,I,R:V/I};if(o.solve==='I')return {V,R,I:V/R};return {I,R,V:I*R};}
+function vOhm(){const o=C.data.ohm,s=solveOhm(),P=s.V*s.I,f=x=>isFinite(x)?+x.toPrecision(4):'—';
+  const row=(k,lab,unit)=>`<div class="row ${o.solve===k?'out':''}"><div><b>${lab}</b><small>${unit}${o.solve===k?' · worked out':''}</small></div><input data-o="${k}" inputmode="decimal" value="${o.solve===k?f(s[k]):o[k]}" ${o.solve===k?'readonly':''}></div>`;
+  return `<div class="seg">${['V','I','R'].map(k=>`<button data-solve="${k}" class="${o.solve===k?'on':''}">Find ${k}</button>`).join('')}</div>
+  ${row('V','Voltage','volts')}${row('I','Current','amps')}${row('R','Resistance','ohms')}
+  <div class="val" style="margin-top:12px"><small>POWER</small><b>${isFinite(P)?(P<1?f(P*1000)+' mW':f(P)+' W'):'—'}</b><small>${isFinite(P)&&P>.25?'More than a ¼ W resistor can take: use a bigger one':'Fine for a standard ¼ W resistor'}</small></div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='bands'?vBands():S.tab==='value'?vValue():vOhm();
+  v.querySelectorAll('[data-n]').forEach(e=>e.onclick=()=>{d.n=+e.dataset.n;S.sel=0;GX.save(d);paint();});
+  v.querySelectorAll('[data-band]').forEach(e=>e.onclick=()=>{S.sel=+e.dataset.band;paint();});
+  v.querySelectorAll('[data-c]').forEach(e=>e.onclick=()=>{if(e.disabled)return;bands()[S.sel]=+e.dataset.c;if(S.sel<bands().length-1)S.sel++;S.shared=false;GX.save(d);paint();});
+  v.querySelectorAll('[data-ev]').forEach(e=>e.onclick=()=>{let i=S.e.i+(+e.dataset.ev);if(i<0){i=11;S.e.dec--;}if(i>11){i=0;S.e.dec++;}S.e.dec=Math.max(0,Math.min(7,S.e.dec));S.e.i=i;paint();});
+  v.querySelectorAll('[data-dec]').forEach(e=>e.onclick=()=>{S.e.dec=Math.max(0,Math.min(7,S.e.dec+(+e.dataset.dec)));paint();});
+  v.querySelectorAll('[data-solve]').forEach(e=>e.onclick=()=>{const s=solveOhm();Object.assign(d.ohm,{V:+(+s.V).toPrecision(4),I:+(+s.I).toPrecision(4),R:+(+s.R).toPrecision(4)});d.ohm.solve=e.dataset.solve;GX.save(d);paint();});
+  v.querySelectorAll('[data-o]').forEach(e=>e.onchange=()=>{d.ohm[e.dataset.o]=parseFloat(e.value)||0;GX.save(d);paint();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const b=bands();
+    GX.post(`${b.map(c=>COL[c][0]).join(', ')} = <b>${nice(ohms(b))}</b> ±${TOL[b[b.length-1]]}%. Decoded in Resistor Code 🎨`,'RESISTOR CODE').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
