@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Carb Counter</title>
+<style>
+/* Carb Counter, by Balance Bakery (fictional), 2026-11-17. A GENEXXO app for DiabetesXX.
+   Build a plate from everyday UK foods; each food carries typical grams of carbohydrate for a stated portion,
+   rounded from standard UK food-composition figures. Add a portion more than once for bigger helpings. Save a plate
+   to reuse it. The day's total adds up every plate eaten today. Figures are typical; packet labels win. */
+:root{--bg:#F4F8FD;--card:#fff;--line:rgba(20,33,61,.09);--ink:#14213D;--mut:rgba(20,33,61,.55);--blue:#1D6FD8;--or:#F28C28}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#FBA94C,#E2711D);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--or)}
+.plate{border-radius:18px;padding:16px;background:linear-gradient(150deg,#FFF3E4,#FFE2C2);border:1px solid rgba(242,140,40,.25);display:flex;align-items:center;gap:14px}
+.plate .g{font-size:46px;font-weight:900;line-height:1;color:#B85E0E}.plate .g small{font-size:15px;font-weight:800}.plate p{font-size:12.5px;color:rgba(20,33,61,.65);font-weight:600}
+.seg{display:flex;gap:6px;overflow-x:auto;margin-bottom:8px;scrollbar-width:none}.seg button{font:inherit;font-weight:800;font-size:12.5px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:7px 12px;cursor:pointer;white-space:nowrap}.seg button.on{background:var(--or);border-color:var(--or);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px 12px;margin-top:10px}
+.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin:9px 0 3px}
+.f{display:flex;align-items:center;gap:10px;padding:9px 0}.f+.f{border-top:1px solid var(--line)}.f .e{font-size:24px;width:32px;text-align:center}.f .x{flex:1}.f .x b{font-size:13.5px}.f .x small{display:block;color:var(--mut);font-size:12px}
+.f .c{font-weight:900;color:#B85E0E;font-size:14px;min-width:38px;text-align:right}
+.add{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-weight:900;font-size:16px;cursor:pointer;flex-shrink:0}.add.on{background:var(--or);color:#fff;border-color:var(--or)}
+.q{display:flex;align-items:center;gap:6px}.q b{min-width:14px;text-align:center}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--or);color:#fff;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:var(--card);color:var(--mut);border:1px solid var(--line)}
+.two{display:flex;gap:8px}.two .go{flex:1}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🍽️</div><div><h1>Carb Counter</h1><p>Balance Bakery · in DiabetesXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="plate" class="on">Plate</button><button data-tab="foods">Foods</button><button data-tab="saved">Saved</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+/* [id, emoji, name, portion, grams of carbohydrate] — typical values, rounded */
+const FOODS={
+ 'Breakfast':[['toast','🍞','White toast','1 medium slice (36 g)',15],['wmtoast','🍞','Wholemeal toast','1 medium slice (36 g)',14],['sour','🥖','Seeded sourdough (Balance)','1 slice (25 g)',9],['porr','🥣','Porridge oats','40 g dry',24],['flakes','🥣','Cornflakes','30 g',25],['wbix','🥣','Wheat biscuits','2 biscuits',26],['gyog','🥛','Greek yoghurt, plain','150 g pot',6]],
+ 'Fruit':[['banana','🍌','Banana','1 medium',23],['apple','🍎','Apple','1 medium',14],['berries','🫐','Mixed berries','80 g',7],['oj','🍊','Orange juice','150 ml glass',13],['grapes','🍇','Grapes','80 g (a handful)',13]],
+ 'Mains':[['jacket','🥔','Jacket potato','1 medium (180 g)',38],['rice','🍚','Boiled rice','150 g cooked',45],['pasta','🍝','Pasta','180 g cooked',50],['chips','🍟','Chips','150 g portion',45],['roasties','🥔','Roast potatoes','3 pieces (150 g)',39],['naan','🫓','Naan bread','half (80 g)',38],['chapati','🫓','Chapati','1 medium (40 g)',18],['pizza','🍕','Pizza','1 slice of a 12-inch',25],['beans','🫘','Baked beans','half a can (200 g)',25]],
+ 'Snacks & drinks':[['dig','🍪','Digestive biscuit','1 biscuit',9],['crisps','🥔','Crisps','25 g bag',13],['milk','🥛','Semi-skimmed milk','200 ml',10],['choc','🍫','Milk chocolate','4 squares (25 g)',14],['mince','🥧','Mince pie','1 (60 g)',33],['xpud','🎄','Christmas pudding','100 g portion',50]]};
+const ALL=Object.values(FOODS).flat(),get=id=>ALL.find(f=>f[0]===id);
+const seed=()=>({cat:'Breakfast',plate:{sour:2,gyog:1,berries:1},saved:[{n:'Weekday breakfast',items:{sour:2,gyog:1,berries:1}},{n:'Jacket and beans',items:{jacket:1,beans:1}},{n:'Curry night',items:{rice:1,naan:1}}],eaten:[{n:'Porridge and banana',g:47}]});
+let C,S={tab:'plate',shared:false,msg:''};
+GX.init({gateway:'DiabetesXX',seed}).then(c=>{C=c;paint();});
+const sum=p=>Object.entries(p).reduce((a,[k,q])=>a+get(k)[4]*q,0);
+const day=()=>C.data.eaten.reduce((a,x)=>a+x.g,0);
+function vPlate(){const p=Object.entries(C.data.plate),g=sum(C.data.plate);
+  return `<div class="plate"><div class="g">${g}<small> g</small></div><div><b>Carbs on this plate</b><p>${day()} g eaten today so far · ${C.data.eaten.length} meal${C.data.eaten.length===1?'':'s'}</p></div></div>
+  ${S.msg?`<div class="legend" style="color:#1E9E6A;font-weight:800">${S.msg}</div>`:''}
+  ${p.length?`<div class="card"><h3>On your plate</h3>${p.map(([k,q])=>{const f=get(k);return `<div class="f"><span class="e">${f[1]}</span><div class="x"><b>${f[2]}</b><small>${q} × ${f[3]}</small></div><div class="q"><button class="add" data-dec="${k}">−</button><b>${q}</b><button class="add" data-inc="${k}">+</button></div><span class="c">${f[4]*q} g</span></div>`;}).join('')}</div>
+  <div class="two"><button class="go alt" id="keep">☆ Save plate</button><button class="go" id="eat">I ate this</button></div>`:'<div class="legend" style="margin-top:20px">Your plate is empty. Add foods from the Foods tab.</div>'}
+  <div class="legend">Typical values. Use the packet label where you have one.</div>`;}
+function vFoods(){const c=C.data.cat;
+  return `<div class="seg">${Object.keys(FOODS).map(k=>`<button data-cat="${k}" class="${k===c?'on':''}">${k}</button>`).join('')}</div>
+  <div class="card">${FOODS[c].map(f=>{const q=C.data.plate[f[0]]||0;return `<div class="f"><span class="e">${f[1]}</span><div class="x"><b>${f[2]}</b><small>${f[3]}</small></div><span class="c">${f[4]} g</span><button class="add ${q?'on':''}" data-inc="${f[0]}">${q||'+'}</button></div>`;}).join('')}</div>`;}
+function vSaved(){return `<div class="card"><h3>Saved plates</h3>${C.data.saved.map((s,i)=>`<div class="f"><span class="e">⭐</span><div class="x"><b>${GX.esc(s.n)}</b><small>${Object.entries(s.items).map(([k,q])=>(q>1?q+' × ':'')+get(k)[2]).join(', ')}</small></div><span class="c">${sum(s.items)} g</span><button class="add" data-load="${i}">↺</button></div>`).join('')}</div>
+  <div class="card"><h3>Eaten today · ${day()} g</h3>${C.data.eaten.map(x=>`<div class="f"><span class="e">✓</span><div class="x"><b>${GX.esc(x.n)}</b></div><span class="c">${x.g} g</span></div>`).join('')}</div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share a saved plate to ${C.gateway}`}</button>`:''}`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='plate'?vPlate():S.tab==='foods'?vFoods():vSaved();S.msg='';
+  const sv=()=>{GX.save(C.data);paint();};
+  v.querySelectorAll('[data-cat]').forEach(e=>e.onclick=()=>{C.data.cat=e.dataset.cat;sv();});
+  v.querySelectorAll('[data-inc]').forEach(e=>e.onclick=()=>{const k=e.dataset.inc;C.data.plate[k]=(C.data.plate[k]||0)+1;sv();});
+  v.querySelectorAll('[data-dec]').forEach(e=>e.onclick=()=>{const k=e.dataset.dec;if(--C.data.plate[k]<=0)delete C.data.plate[k];sv();});
+  v.querySelectorAll('[data-load]').forEach(e=>e.onclick=()=>{C.data.plate=Object.assign({},C.data.saved[+e.dataset.load].items);S.tab='plate';sv();});
+  const k=document.getElementById('keep');if(k)k.onclick=()=>{const f=Object.keys(C.data.plate).map(x=>get(x)[2]);C.data.saved.unshift({n:f.slice(0,2).join(' and '),items:Object.assign({},C.data.plate)});S.msg='Saved to your plates.';sv();};
+  const ea=document.getElementById('eat');if(ea)ea.onclick=()=>{const f=Object.keys(C.data.plate).map(x=>get(x)[2]);C.data.eaten.push({n:f.slice(0,2).join(' and ')+(f.length>2?' and more':''),g:sum(C.data.plate)});C.data.plate={};S.msg='Added to today.';sv();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const s=C.data.saved[0];
+    GX.post(`My go-to plate: <b>${GX.esc(s.n)}</b>, about ${sum(s.items)} g of carbohydrate. Counted in Carb Counter 🍽️`,'CARB COUNTER').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

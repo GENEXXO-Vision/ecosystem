@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Hypo Helper</title>
+<style>
+/* Hypo Helper, by Quick Lift (fictional), 2026-11-17. A GENEXXO app for DiabetesXX.
+   The usual UK steps for a low (below 4 mmol/L): take 15–20 g of fast-acting carbohydrate (the person's own
+   treatment, from their care plan), wait 10–15 minutes with a timer, re-check; still below 4, treat again; back to 4
+   or above, have a longer-acting snack if the plan says so. After three rounds with no improvement it says to get
+   help (111, or 999 if drowsy, confused, unconscious or fitting). It never suggests insulin or medicine changes.
+   Each low is logged with the treatment and rounds, to talk through with the care team. */
+:root{--bg:#F7F4FB;--card:#fff;--line:rgba(36,20,61,.09);--ink:#24143D;--mut:rgba(36,20,61,.55);--berry:#7A2E9C;--lo:#D64545;--ok:#1E9E6A}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#C06BD8,#7A2E9C);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--berry)}
+.sp{display:flex;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-top:8px;opacity:.5}
+.sp.now{opacity:1;border-color:var(--berry);box-shadow:0 6px 18px rgba(122,46,156,.1)}.sp.done{opacity:1}
+.sp .n{width:30px;height:30px;border-radius:50%;background:rgba(122,46,156,.1);color:var(--berry);font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sp.done .n{background:var(--ok);color:#fff}.sp .x{flex:1}.sp .x b{font-size:14.5px}.sp .x p{font-size:13px;color:var(--mut);margin-top:2px}
+.val{display:flex;align-items:center;gap:8px;margin-top:10px}.val b{font-size:30px;font-weight:900;min-width:70px}.val small{color:var(--mut);font-weight:700}
+.sm{font:inherit;font-weight:900;font-size:13px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:7px 10px;cursor:pointer}
+.btn{font:inherit;font-weight:800;font-size:13.5px;border:0;border-radius:99px;padding:10px 16px;background:var(--berry);color:#fff;cursor:pointer;margin-top:10px}
+.timer{font:900 40px/1 ui-monospace,Menlo,monospace;color:var(--berry);margin-top:8px}
+.warn{background:#FFF1F1;border:1px solid rgba(214,69,69,.25);color:#8E2222;border-radius:14px;padding:12px;margin-top:10px;font-size:13px}.warn b{display:block;font-size:14px;margin-bottom:2px}
+.ok{background:#EAF8F1;border:1px solid rgba(30,158,106,.25);color:#145C3F;border-radius:14px;padding:12px;margin-top:10px;font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.lg{display:flex;gap:10px;padding:8px 0;align-items:center}.lg+.lg{border-top:1px solid var(--line)}.lg b{color:var(--lo);font-size:16px;width:40px}.lg .x{flex:1;font-size:13px}.lg .x small{display:block;color:var(--mut);font-size:11.5px}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:700;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px 12px;margin-bottom:6px;cursor:pointer}.opt.on{border-color:var(--berry);background:rgba(122,46,156,.07)}
+.opt small{display:block;color:var(--mut);font-weight:600;font-size:12px}
+.seg{display:flex;gap:6px}.seg button{flex:1;font:inherit;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px 0;cursor:pointer}.seg button.on{border-color:var(--berry);background:rgba(122,46,156,.07)}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--berry);color:#fff;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🍬</div><div><h1>Hypo Helper</h1><p>Quick Lift · in DiabetesXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="now" class="on">Treat a low</button><button data-tab="log">Log</button><button data-tab="plan">My plan</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const TREAT=[['tabs5','5 glucose tablets','20 g (4 g each)'],['tabs4','4 glucose tablets','16 g (4 g each)'],['juice','A small glass of fruit juice','150–200 ml'],['gel','Glucose gel','1–2 pouches (10 g each)'],['sweets','Jelly sweets','Check the pack for 15–20 g']];
+const seed=()=>({treat:'tabs5',wait:15,log:[{d:-1,t:'15:40',v:3.5,rounds:1,after:5.6,treat:'5 glucose tablets',note:'After a long walk'},{d:-5,t:'03:10',v:3.2,rounds:2,after:4.8,treat:'5 glucose tablets',note:'Night'},{d:-11,t:'11:20',v:3.7,rounds:1,after:5.1,treat:'Glucose gel',note:''}]});
+let C,S={tab:'now',step:0,v:3.4,round:1,end:0,after:5.2,shared:false},tick=null;
+GX.init({gateway:'DiabetesXX',seed}).then(c=>{C=c;paint();});
+const tr=()=>TREAT.find(t=>t[0]===C.data.treat);
+const left=()=>Math.max(0,Math.round((S.end-Date.now())/1000));
+const mmss=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+const step=(n,title,body,extra)=>`<div class="sp ${S.step===n?'now':S.step>n?'done':''}"><span class="n">${S.step>n?'✓':n+1}</span><div class="x"><b>${title}</b><p>${body}</p>${S.step===n?extra||'':''}</div></div>`;
+function vNow(){const t=tr(),low=S.v<4;
+  return `${step(0,'Check your glucose','A hypo is below 4 mmol/L. Enter the reading.',`<div class="val"><button class="sm" data-dv="-0.1">−</button><b style="color:${low?'var(--lo)':'var(--ok)'}">${S.v.toFixed(1)}</b><button class="sm" data-dv="0.1">+</button><small>mmol/L</small></div>${low?'<button class="btn" id="s0">It’s below 4: treat it</button>':'<div class="ok">That’s 4 or above, so it isn’t a hypo. If you feel unwell, follow your care plan.</div>'}`)}
+  ${step(1,`Take your fast-acting sugar${S.round>1?' again':''}`,`${t[1]} · ${t[2]}`,`<button class="btn" id="s1">Done, start the timer</button>`)}
+  ${step(2,`Wait ${C.data.wait} minutes`,'Sit down and rest. Don’t drive.',`<div class="timer">${mmss(left())}</div><button class="btn" id="s2">${left()?'Re-check now':'Time’s up: re-check'}</button>`)}
+  ${step(3,'Re-check your glucose',`Round ${S.round} of 3.`,`<div class="val"><button class="sm" data-da="-0.1">−</button><b style="color:${S.after<4?'var(--lo)':'var(--ok)'}">${S.after.toFixed(1)}</b><button class="sm" data-da="0.1">+</button><small>mmol/L</small></div><button class="btn" id="s3">Save re-check</button>`)}
+  ${S.step===4?`<div class="ok"><b>Back to ${S.after.toFixed(1)} mmol/L.</b> If your next meal is more than an hour away, have a snack with slower carbohydrate, such as a slice of toast, if your care plan says so. Saved to your log.</div>`:''}
+  ${S.step===5?`<div class="warn"><b>Still low after three treatments.</b>Follow your care plan and get help now: call 111. Call 999 if you or they become drowsy, confused or unconscious, or have a fit. Don’t give food or drink to someone who can’t swallow safely.</div>`:''}
+  ${S.step>=4?'<button class="go" id="reset">Start again</button>':''}
+  <div class="legend">General steps only: always follow your own diabetes care plan. In an emergency call 999.</div>`;}
+function vLog(){const L=C.data.log;
+  return `<div class="card"><h3>Recent lows · ${L.length}</h3>${L.map(x=>`<div class="lg"><b>${x.v.toFixed(1)}</b><div class="x">${GX.day(GX.today(x.d))} · ${x.t}<small>${x.treat} · ${x.rounds} round${x.rounds>1?'s':''} · back to ${x.after.toFixed(1)}${x.note?' · '+GX.esc(x.note):''}</small></div></div>`).join('')}</div>
+  <div class="legend">Bring this log to your diabetes review. Frequent lows are worth talking about.</div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share a tip to ${C.gateway}`}</button>`:''}`;}
+function vPlan(){return `<div class="card"><h3>My fast-acting treatment</h3>${TREAT.map(t=>`<button class="opt ${t[0]===C.data.treat?'on':''}" data-t="${t[0]}">${t[1]}<small>${t[2]}</small></button>`).join('')}</div>
+  <div class="card"><h3>Re-check after</h3><div class="seg">${[10,15].map(w=>`<button data-w="${w}" class="${w===C.data.wait?'on':''}">${w} minutes</button>`).join('')}</div></div>
+  <div class="legend">Set these to match the care plan from your diabetes team.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='now'?vNow():S.tab==='log'?vLog():vPlan();
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  v.querySelectorAll('[data-dv]').forEach(e=>e.onclick=()=>{S.v=Math.max(1,Math.round((S.v+ +e.dataset.dv)*10)/10);paint();});
+  v.querySelectorAll('[data-da]').forEach(e=>e.onclick=()=>{S.after=Math.max(1,Math.round((S.after+ +e.dataset.da)*10)/10);paint();});
+  on('s0',()=>{S.step=1;paint();});
+  on('s1',()=>{S.step=2;S.end=Date.now()+C.data.wait*60000;clearInterval(tick);tick=setInterval(()=>{if(S.tab==='now'&&S.step===2)paint();},1000);paint();});
+  on('s2',()=>{clearInterval(tick);S.step=3;paint();});
+  on('s3',()=>{if(S.after>=4){const n=new Date();C.data.log.unshift({d:0,t:String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0'),v:S.v,rounds:S.round,after:S.after,treat:tr()[1],note:''});GX.save(C.data);S.step=4;}
+    else if(S.round>=3)S.step=5;else{S.round++;S.step=1;}paint();});
+  on('reset',()=>{Object.assign(S,{step:0,v:3.4,round:1,after:5.2});paint();});
+  v.querySelectorAll('[data-t]').forEach(e=>e.onclick=()=>{C.data.treat=e.dataset.t;GX.save(C.data);paint();});
+  v.querySelectorAll('[data-w]').forEach(e=>e.onclick=()=>{C.data.wait=+e.dataset.w;GX.save(C.data);paint();});
+  on('share',()=>{GX.post(`My hypo tip: keep fast-acting sugar in every bag, coat and car, and set a timer before you re-check. Hypo Helper 🍬`,'HYPO HELPER').then(ok=>{if(ok){S.shared=true;paint();}});});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
