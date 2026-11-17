@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Inhaler Tracker</title>
+<style>
+/* Inhaler Tracker, by Puffin Packs (fictional), 2026-11-17. A GENEXXO app for AsthmaXX.
+   Doses left in each inhaler (count down as you take them), a preventer streak (days with every prescribed dose
+   taken), an order-by date from the current rate of use, and reliever uses this week. Three or more reliever uses
+   in a week is the point UK asthma guidance says to talk to your GP or asthma nurse; the app says exactly that,
+   and nothing about changing doses. Inhalers are generic: "Preventer" and "Reliever", no medicine names. */
+:root{--bg:#F5F3FF;--card:#fff;--line:rgba(35,22,80,.09);--ink:#231650;--mut:rgba(35,22,80,.55);--vio:#7C5CFC;--blue:#2F7BE5;--ok:#1E9E6A;--warn:#E39B12}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#9A7BFF,#5B3FD1);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--vio)}
+.streak{border-radius:18px;padding:16px;background:linear-gradient(150deg,#7C5CFC,#4B2FC0);color:#fff;display:flex;align-items:center;gap:14px}
+.streak .n{font-size:46px;font-weight:900;line-height:1}.streak p{font-size:12.5px;opacity:.85;font-weight:600}.streak b{font-size:16px}
+.dose{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-top:10px}
+.dose .ic{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.dose .x{flex:1}.dose .x b{font-size:14.5px}.dose .x small{display:block;color:var(--mut);font-size:12px}
+.tk{font:inherit;font-weight:800;font-size:13px;border:0;border-radius:99px;padding:9px 14px;background:var(--vio);color:#fff;cursor:pointer;white-space:nowrap}.tk.done{background:rgba(30,158,106,.12);color:var(--ok)}.tk.alt{background:rgba(47,123,229,.12);color:var(--blue)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.inh{padding:10px 0}.inh+.inh{border-top:1px solid var(--line)}.inh .l{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}.inh .l b{font-size:14.5px}.inh .l span{font-weight:900;font-size:18px}
+.meter{height:10px;border-radius:10px;background:rgba(35,22,80,.07);overflow:hidden}.meter i{display:block;height:100%;border-radius:10px}
+.inh small{display:block;color:var(--mut);font-size:12px;margin-top:5px}
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center}.wk div{background:var(--bg);border-radius:10px;padding:8px 0;font-size:11px;font-weight:800;color:var(--mut)}.wk b{display:block;font-size:17px;color:var(--ink)}.wk .hit b{color:var(--blue)}
+.note{border-radius:14px;padding:12px;margin-top:10px;font-size:13px}.note.ok{background:#EAF8F1;color:#145C3F}.note.warn{background:#FFF6E5;color:#7A4E00}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--vio);color:#fff;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">💨</div><div><h1>Inhaler Tracker</h1><p>Puffin Packs · in AsthmaXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="today" class="on">Today</button><button data-tab="inh">Inhalers</button><button data-tab="rel">Reliever</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const seed=()=>({streak:53,today:{am:true,pm:false},inh:[
+  {k:'prev',n:'Preventer inhaler',e:'🛡️',c:'#7C5CFC',total:120,left:38,puffs:2,per:'2 puffs, morning and evening (as prescribed)'},
+  {k:'rel',n:'Reliever inhaler',e:'🔵',c:'#2F7BE5',total:200,left:161,puffs:1,per:'As needed, as your plan says'}],
+  rel:[{d:-6,n:0},{d:-5,n:1},{d:-4,n:0},{d:-3,n:0},{d:-2,n:1},{d:-1,n:0},{d:0,n:0}]});
+let C,S={tab:'today',shared:false};
+GX.init({gateway:'AsthmaXX',seed}).then(c=>{C=c;paint();});
+const I=k=>C.data.inh.find(i=>i.k===k);
+const perDay=i=>i.k==='prev'?i.puffs*2:Math.max(.3,C.data.rel.reduce((a,x)=>a+x.n,0)/7);
+const daysLeft=i=>Math.floor(i.left/perDay(i));
+const relWeek=()=>C.data.rel.reduce((a,x)=>a+x.n,0);
+function take(k){const i=I(k);i.left=Math.max(0,i.left-i.puffs);}
+function vToday(){const p=I('prev'),t=C.data.today;
+  return `<div class="streak"><div class="n">${C.data.streak+(t.am&&t.pm?1:0)}</div><div><b>day preventer streak</b><p>Every prescribed dose, every day. ${t.am&&t.pm?'Today done ✓':'Keep it going today.'}</p></div></div>
+  <div class="dose"><span class="ic" style="background:#EFEAFF">☀️</span><div class="x"><b>Morning preventer</b><small>${p.per.split(',')[0]}</small></div><button class="tk ${t.am?'done':''}" data-dose="am">${t.am?'✓ Taken':'Take'}</button></div>
+  <div class="dose"><span class="ic" style="background:#EFEAFF">🌙</span><div class="x"><b>Evening preventer</b><small>${p.per.split(',')[0]}</small></div><button class="tk ${t.pm?'done':''}" data-dose="pm">${t.pm?'✓ Taken':'Take'}</button></div>
+  <div class="dose"><span class="ic" style="background:#E8F1FF">💨</span><div class="x"><b>Used my reliever</b><small>${relWeek()} time${relWeek()===1?'':'s'} this week</small></div><button class="tk alt" id="rel">+ Log</button></div>
+  <div class="legend">Take your inhalers exactly as prescribed. If your preventer contains a steroid, rinse your mouth after it.</div>`;}
+function vInh(){return `<div class="card">${C.data.inh.map(i=>{const dl=daysLeft(i),p=i.left/i.total,ob=GX.today(Math.max(0,dl-7));
+  return `<div class="inh"><div class="l"><b>${i.e} ${i.n}</b><span style="color:${p<.25?'var(--warn)':i.c}">${i.left}</span></div><div class="meter"><i style="width:${p*100}%;background:${p<.25?'var(--warn)':i.c}"></i></div>
+    <small>${i.left} of ${i.total} doses left · about ${dl} days at your current use</small><small><b style="color:var(--ink)">Order by ${GX.day(ob)}</b>${dl<=7?' · order now':''}</small></div>`;}).join('')}</div>
+  <button class="go" id="new">I’ve started a new preventer</button>
+  ${GX.can('feed')?`<button class="go" id="share" style="background:var(--card);color:var(--ink);border:1px solid var(--line)" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my streak to ${C.gateway}`}</button>`:''}
+  <div class="legend">Take used inhalers back to the pharmacy to be recycled.</div>`;}
+function vRel(){const n=relWeek();
+  return `<div class="card"><h3>Reliever uses · last 7 days · ${n}</h3><div class="wk">${C.data.rel.map(x=>`<div class="${x.n?'hit':''}">${GX.day(GX.today(x.d),{weekday:'narrow'})}<b>${x.n}</b></div>`).join('')}</div></div>
+  ${n>=3?`<div class="note warn"><b>${n} times this week.</b> Needing your reliever three or more times a week is a sign your asthma could be better controlled. Book a review with your GP or asthma nurse, and follow your action plan meanwhile.</div>`
+  :`<div class="note ok">${n} use${n===1?'':'s'} this week. If you find yourself needing your reliever three or more times a week, talk to your GP or asthma nurse.</div>`}
+  <div class="legend">If your reliever isn’t helping, or you’re struggling to breathe, follow your action plan and call 999.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='today'?vToday():S.tab==='inh'?vInh():vRel();
+  v.querySelectorAll('[data-dose]').forEach(e=>e.onclick=()=>{const k=e.dataset.dose;if(C.data.today[k])return;C.data.today[k]=true;take('prev');GX.save(C.data);paint();});
+  const r=document.getElementById('rel');if(r)r.onclick=()=>{C.data.rel[6].n++;take('rel');GX.save(C.data);paint();};
+  const nw=document.getElementById('new');if(nw)nw.onclick=()=>{I('prev').left=I('prev').total;GX.save(C.data);paint();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{
+    GX.post(`<b>${C.data.streak+(C.data.today.am&&C.data.today.pm?1:0)} days</b> of preventer, every dose. Never managed that before. Inhaler Tracker 💨`,'INHALER TRACKER').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Peak Flow Diary</title>
+<style>
+/* Peak Flow Diary, by "Airwave Software" (fictional), 2026-11-17. A GENEXXO app for AsthmaXX.
+   Morning and evening peak flow (litres per minute), each shown as a share of the person's best. Zones default to
+   the ones many UK asthma action plans use: 80% or more green, 50–79% amber, under 50% red; the person can set
+   the amber line to match their own plan (75% or 80%). The chart shows 14 days, AM and PM, against the zones.
+   Advice only ever says "follow your action plan". Seed: a fortnight with a cold-related dip in the middle. */
+:root{--bg:#F2FAF7;--card:#fff;--line:rgba(18,48,41,.09);--ink:#123029;--mut:rgba(18,48,41,.55);--teal:#0E9A86;--vio:#7C5CFC;--g:#1E9E6A;--a:#E39B12;--r:#D64545}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#2BB8A3,#0E7A6B);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--teal)}
+.entry{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;text-align:center;box-shadow:0 6px 18px rgba(14,154,134,.07)}
+.seg{display:flex;gap:6px;margin-bottom:6px}.seg button{flex:1;font:inherit;font-weight:800;font-size:13px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:99px;padding:8px 0;cursor:pointer}.seg button.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.val{font-size:54px;font-weight:900;line-height:1;margin:10px 0 2px}.val small{font-size:15px;color:var(--mut);font-weight:700}
+.pc{font-size:13px;font-weight:800;color:var(--mut)}
+.zone{display:inline-block;font-size:12px;font-weight:900;border-radius:99px;padding:4px 12px;margin-top:8px}.z-g{background:rgba(30,158,106,.12);color:var(--g)}.z-a{background:rgba(227,155,18,.15);color:#A26B05}.z-r{background:rgba(214,69,69,.12);color:var(--r)}
+.step{display:flex;gap:6px;justify-content:center;margin-top:12px}.step button{font:inherit;font-weight:900;font-size:14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:9px 0;width:60px;cursor:pointer}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.zl{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:13px}.zl+.zl{border-top:1px solid var(--line)}.zl i{width:12px;height:12px;border-radius:4px;display:block}.zl b{width:110px}
+.top{display:flex;gap:8px}.top div{flex:1;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 4px}.top b{display:block;font-size:23px;font-weight:900}.top small{font-size:10.5px;font-weight:800;color:var(--mut);letter-spacing:.05em}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--teal);color:#fff;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+svg text{font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+</style></head><body>
+<div class="hd"><div class="logo">🌬️</div><div><h1>Peak Flow Diary</h1><p>Airwave Software · in AsthmaXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="log" class="on">Today</button><button data-tab="chart">Chart</button><button data-tab="best">My plan</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+function seed(){const r=GX.rng('peak-flow-demo'),rd=[];
+  for(let d=-13;d<=0;d++){const dip=d>=-8&&d<=-5?[-90,-140,-150,-100][d+8]:0;
+    rd.push({d,s:'am',v:Math.round((430+dip+(r()-.5)*30)/10)*10});if(d<0)rd.push({d,s:'pm',v:Math.round((455+dip*.8+(r()-.5)*30)/10)*10});}
+  return {best:480,amber:80,readings:rd,draft:{s:'pm',v:450}};}
+let C,S={tab:'log',saved:false,shared:false};
+GX.init({gateway:'AsthmaXX',seed}).then(c=>{C=c;paint();});
+const pc=v=>Math.round(v/C.data.best*100);
+const zone=v=>{const p=pc(v);return p>=C.data.amber?'g':p>=50?'a':'r';};
+const ZN={g:'Green zone',a:'Amber zone',r:'Red zone'},ZC={g:'#1E9E6A',a:'#E39B12',r:'#D64545'};
+const ZT={g:'Your usual: keep taking your medicines as your plan says.',a:'Your asthma may be getting worse: follow the amber steps on your action plan.',r:'This is the red zone on most plans: follow your action plan’s emergency steps now. Call 999 if you are struggling to breathe.'};
+function vLog(){const d=C.data.draft,z=zone(d.v),done=C.data.readings.filter(x=>x.d===0);
+  return `<div class="entry"><div class="seg">${['am','pm'].map(s=>`<button data-s="${s}" class="${s===d.s?'on':''}">${s==='am'?'☀️ Morning':'🌙 Evening'}</button>`).join('')}</div>
+    <div class="val">${d.v}<small> L/min</small></div><div class="pc">${pc(d.v)}% of your best (${C.data.best})</div><span class="zone z-${z}">${ZN[z]}</span>
+    <div class="step">${[-50,-10,10,50].map(s=>`<button data-step="${s}">${s>0?'+':'−'}${Math.abs(s)}</button>`).join('')}</div></div>
+  <button class="go" id="save">${S.saved?'✓ Saved':'Save reading'}</button>
+  <div class="card" style="font-size:13px">${ZT[z]}</div>
+  <div class="legend">Best of three blows, standing up. ${done.length?`Today so far: ${done.map(x=>x.s.toUpperCase()+' '+x.v).join(', ')}.`:''}</div>`;}
+function chart(){const W=330,H=170,pad=26,days=[...Array(14)].map((_,i)=>i-13),b=C.data.best,max=Math.ceil(b*1.1/50)*50,y=v=>H-pad-(v/max)*(H-pad-10),x=i=>pad+8+i*((W-pad-16)/13);
+  const band=(lo,hi,c)=>`<rect x="${pad}" y="${y(hi)}" width="${W-pad}" height="${y(lo)-y(hi)}" fill="${c}" opacity=".09"/>`;
+  const line=s=>{const pts=days.map((d,i)=>{const r=C.data.readings.find(q=>q.d===d&&q.s===s);return r?[x(i),y(r.v),r.v]:null;}).filter(Boolean);
+    return `<polyline points="${pts.map(p=>p[0]+','+p[1]).join(' ')}" fill="none" stroke="${s==='am'?'#0E9A86':'#7C5CFC'}" stroke-width="2.2"/>${pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3.2" fill="${ZC[zone(p[2])]}" stroke="#fff" stroke-width="1.2"/>`).join('')}`;};
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%">${band(b*C.data.amber/100,max,'#1E9E6A')}${band(b*.5,b*C.data.amber/100,'#E39B12')}${band(0,b*.5,'#D64545')}
+    ${[100,200,300,400,500].filter(v=>v<=max).map(v=>`<text x="${pad-4}" y="${y(v)+4}" font-size="9" fill="rgba(18,48,41,.45)" text-anchor="end">${v}</text>`).join('')}
+    ${days.map((d,i)=>i%2?'':`<text x="${x(i)}" y="${H-8}" font-size="9" fill="rgba(18,48,41,.45)" text-anchor="middle">${GX.today(d).getDate()}</text>`).join('')}
+    <line x1="${pad}" x2="${W}" y1="${y(b)}" y2="${y(b)}" stroke="#123029" stroke-dasharray="3 3" opacity=".35"/>${line('am')}${line('pm')}</svg>`;}
+function vChart(){const rs=C.data.readings,c={g:0,a:0,r:0};rs.forEach(x=>c[zone(x.v)]++);const lo=rs.reduce((m,x)=>x.v<m.v?x:m,rs[0]);
+  return `<div class="top"><div><b style="color:var(--g)">${c.g}</b><small>GREEN</small></div><div><b style="color:#A26B05">${c.a}</b><small>AMBER</small></div><div><b style="color:var(--r)">${c.r}</b><small>RED</small></div></div>
+  <div class="card"><h3>Last 14 days · <span style="color:#0E9A86">● AM</span> <span style="color:#7C5CFC">● PM</span></h3>${chart()}</div>
+  <div class="card" style="font-size:13px">Lowest: <b>${lo.v} L/min</b> (${pc(lo.v)}%) on ${GX.day(GX.today(lo.d))} ${lo.s==='am'?'morning':'evening'}. A dip like this is worth showing at your next asthma review.</div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my fortnight to ${C.gateway}`}</button>`:''}`;}
+function vBest(){const b=C.data.best,a=C.data.amber;
+  return `<div class="entry"><div class="pc">MY BEST PEAK FLOW</div><div class="val">${b}<small> L/min</small></div>
+    <div class="step">${[-10,10].map(s=>`<button data-best="${s}">${s>0?'+':'−'}10</button>`).join('')}</div></div>
+  <div class="card"><h3>My zones</h3>
+    <div class="zl"><i style="background:var(--g)"></i><b>Green</b>${Math.round(b*a/100)}+ L/min (${a}%+)</div>
+    <div class="zl"><i style="background:var(--a)"></i><b>Amber</b>${Math.round(b*.5)}–${Math.round(b*a/100)-1} L/min</div>
+    <div class="zl"><i style="background:var(--r)"></i><b>Red</b>below ${Math.round(b*.5)} L/min (under 50%)</div>
+    <div class="seg" style="margin-top:10px">${[75,80].map(x=>`<button data-amber="${x}" class="${x===a?'on':''}">Amber below ${x}%</button>`).join('')}</div></div>
+  <div class="legend">Use the best and the zones written on your own asthma action plan.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='log'?vLog():S.tab==='chart'?vChart():vBest();
+  v.querySelectorAll('[data-s]').forEach(e=>e.onclick=()=>{C.data.draft.s=e.dataset.s;S.saved=false;paint();});
+  v.querySelectorAll('[data-step]').forEach(e=>e.onclick=()=>{const d=C.data.draft;d.v=Math.min(800,Math.max(60,d.v+ +e.dataset.step));S.saved=false;paint();});
+  v.querySelectorAll('[data-best]').forEach(e=>e.onclick=()=>{C.data.best=Math.min(800,Math.max(100,C.data.best+ +e.dataset.best));GX.save(C.data);paint();});
+  v.querySelectorAll('[data-amber]').forEach(e=>e.onclick=()=>{C.data.amber=+e.dataset.amber;GX.save(C.data);paint();});
+  const sv=document.getElementById('save');if(sv)sv.onclick=()=>{const d=C.data.draft;C.data.readings=C.data.readings.filter(x=>!(x.d===0&&x.s===d.s));C.data.readings.push({d:0,s:d.s,v:d.v});GX.save(C.data);S.saved=true;S.shared=false;paint();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const g=C.data.readings.filter(x=>zone(x.v)==='g').length;
+    GX.post(`Two weeks of peak flow logged: <b>${g} of ${C.data.readings.length}</b> readings in my green zone, and a winter-cold dip I can show at my review. Peak Flow Diary 🌬️`,'PEAK FLOW').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

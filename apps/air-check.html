@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Air Check</title>
+<style>
+/* Air Check, by Clearleaf Air (fictional), 2026-11-17. A GENEXXO app for AsthmaXX.
+   A SAMPLE forecast for Leeds, generated from the date so it holds steady within a day and changes daily; it is
+   labelled as a sample, not live data. Seasonal: tree pollen spring, grass early summer, weed late summer, mould
+   spores autumn, low pollen in winter. Air quality on the UK Daily Air Quality Index scale (1–3 low, 4–6 moderate,
+   7–9 high, 10 very high). Cold air flagged below 5°C. Cards that match the person's ticked triggers are highlighted.
+   The diary logs how your chest felt each day (Good / OK / Tight / Bad) over the last 14 days. */
+:root{--bg:#FBF8EE;--card:#fff;--line:rgba(54,42,10,.1);--ink:#2E2508;--mut:rgba(46,37,8,.55);--sun:#D99A12;--teal:#0E9A86;--hi:#D64545}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#F7C548,#D99A12);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:6px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--sun)}
+.where{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:800;color:var(--mut);margin-bottom:8px}.where span{background:rgba(217,154,18,.14);color:#8A6105;border-radius:99px;padding:3px 9px;font-size:10.5px;letter-spacing:.05em}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;position:relative}
+.tile.me{border:2px solid var(--sun);box-shadow:0 6px 18px rgba(217,154,18,.14)}.tile.me::after{content:'YOUR TRIGGER';position:absolute;top:9px;right:9px;font-size:9px;font-weight:900;color:#8A6105;letter-spacing:.05em}
+.tile .e{font-size:22px}.tile small{display:block;font-size:11px;font-weight:800;color:var(--mut);letter-spacing:.05em;margin-top:4px}.tile b{display:block;font-size:19px;font-weight:900;margin-top:1px}.tile p{font-size:12px;color:var(--mut)}
+.lv{display:inline-block;font-size:11px;font-weight:900;border-radius:99px;padding:2px 8px;margin-top:4px}.l1{background:rgba(30,158,106,.12);color:#1E9E6A}.l2{background:rgba(227,155,18,.16);color:#A26B05}.l3{background:rgba(214,69,69,.12);color:var(--hi)}
+.sum{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px;font-size:13.5px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.od{display:flex;align-items:center;gap:10px;padding:9px 0}.od+.od{border-top:1px solid var(--line)}.od b{width:72px;font-size:13.5px}.od .x{flex:1;display:flex;gap:5px;flex-wrap:wrap}
+.tr{display:flex;flex-wrap:wrap;gap:6px}.tr button{font:inherit;font-weight:700;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:8px 12px;cursor:pointer}.tr button.on{background:var(--sun);border-color:var(--sun);color:#fff}
+.feel{display:flex;gap:6px}.feel button{flex:1;font:inherit;font-weight:800;font-size:12.5px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px 0;cursor:pointer}.feel button.on{border-color:var(--sun);background:rgba(217,154,18,.12)}
+.dots{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center;font-size:10.5px;font-weight:800;color:var(--mut)}.dots i{display:block;width:26px;height:26px;border-radius:50%;margin:3px auto 0;font-style:normal;font-size:13px;line-height:26px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--sun);color:#fff;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🌤️</div><div><h1>Air Check</h1><p>Clearleaf Air · in AsthmaXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="today" class="on">Today</button><button data-tab="out">Outlook</button><button data-tab="trig">Triggers</button><button data-tab="diary">Diary</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const TRIG={pollen:'🌼 Pollen',cold:'❄️ Cold air',pollution:'🏭 Air pollution',mould:'🍄 Mould',colds:'🤧 Colds and flu',exercise:'🏃 Exercise',pets:'🐕 Pets',dust:'🛏️ Dust mites'};
+const FEEL=[['good','😀','Good','#1E9E6A'],['ok','🙂','OK','#7BBF5A'],['tight','😐','Tight','#E39B12'],['bad','😟','Bad','#D64545']];
+function forecast(off){const d=GX.today(off),m=d.getMonth(),r=GX.rng('air-leeds-'+GX.iso(off));
+  const pollen=m>=2&&m<=4?{t:'Tree',l:r()<.5?2:3}:m>=5&&m<=6?{t:'Grass',l:r()<.4?2:3}:m>=7&&m<=8?{t:'Weed',l:r()<.6?1:2}:{t:'',l:1};
+  const mould=m>=8&&m<=10?(r()<.5?2:3):m===11||m<=1?(r()<.6?1:2):1;
+  const base=[4,5,7,10,14,17,19,19,16,12,7,5][m],temp=Math.round(base-3+r()*6);
+  const daqi=Math.max(1,Math.min(10,Math.round(2+r()*4+(m===11||m<=1?1:0))));
+  return {d,pollen,mould,temp,feels:temp-Math.round(2+r()*3),daqi,wind:Math.round(6+r()*14)};}
+const lvl=n=>['','Low','Moderate','High'][n],daqiL=n=>n<=3?['Low',1]:n<=6?['Moderate',2]:n<=9?['High',3]:['Very high',3];
+const seed=()=>{const r=GX.rng('air-diary'),k=['good','good','ok','good','tight','ok','good','good','ok','tight','tight','ok','good'];return {trig:['cold','colds','exercise','dust'],diary:k.map((f,i)=>({d:i-13,f}))};};
+let C,S={tab:'today',shared:false};
+GX.init({gateway:'AsthmaXX',seed}).then(c=>{C=c;paint();});
+const has=t=>C.data.trig.includes(t);
+function tiles(f){const dq=daqiL(f.daqi);
+  return [
+   ['pollen','🌼','POLLEN',f.pollen.l===1?'Low':`${lvl(f.pollen.l)}`,f.pollen.t?f.pollen.t+' pollen':'Out of season',f.pollen.l],
+   ['pollution','🏭','AIR QUALITY',`${f.daqi} · ${dq[0]}`,'Daily Air Quality Index',dq[1]],
+   ['cold','❄️','TEMPERATURE',`${f.temp}°C`,`Feels like ${f.feels}°C · wind ${f.wind} mph`,f.feels<0?3:f.temp<5?2:1],
+   ['mould','🍄','MOULD SPORES',lvl(f.mould),'Outdoors, damp leaves',f.mould]];}
+const tile=([k,e,lab,b,p,l])=>`<div class="tile ${has(k)&&l>1?'me':''}"><span class="e">${e}</span><small>${lab}</small><b>${b}</b><p>${p}</p><span class="lv l${l}">${['','LOW','MODERATE','HIGH'][l]}</span></div>`;
+function vToday(){const f=forecast(0),t=tiles(f),hits=t.filter(x=>has(x[0])&&x[5]>1);
+  return `<div class="where">LEEDS · ${GX.day(f.d,{weekday:'long',day:'numeric',month:'long'}).toUpperCase()}<span>SAMPLE FORECAST</span></div>
+  <div class="grid">${t.map(tile).join('')}</div>
+  <div class="sum">${hits.length?`<b>Watch today:</b> ${hits.map(x=>x[2].toLowerCase()).join(' and ')}. ${has('cold')&&f.temp<5?'If you exercise outside, warm up for longer and cover your mouth and nose with a scarf or buff. ':''}Keep your reliever with you and follow your action plan.`:'Nothing on your trigger list is high today. A good day to get outside.'}</div>
+  <div class="legend">This demo shows a sample forecast, not live data.</div>`;}
+function vOut(){return `<div class="card"><h3>Next three days · Leeds</h3>${[1,2,3].map(o=>{const f=forecast(o),t=tiles(f);return `<div class="od"><b>${GX.day(f.d,{weekday:'short',day:'numeric'})}</b><div class="x">${t.map(x=>`<span class="lv l${x[5]}" style="${has(x[0])&&x[5]>1?'outline:2px solid var(--sun)':''}">${x[1]} ${x[0]==='cold'?x[3]:x[0]==='pollution'?'AQ '+f.daqi:['','Low','Mod','High'][x[5]]}</span>`).join('')}</div></div>`;}).join('')}</div>
+  <div class="legend">Outlined: one of your triggers is moderate or high. Sample data.</div>`;}
+function vTrig(){return `<div class="card"><h3>My triggers · tap to tick</h3><div class="tr">${Object.keys(TRIG).map(k=>`<button data-t="${k}" class="${has(k)?'on':''}">${TRIG[k]}</button>`).join('')}</div></div>
+  <div class="legend">Not sure what your triggers are? Keep the diary for a few weeks and talk it through with your asthma nurse.</div>`;}
+function vDiary(){const today=C.data.diary.find(x=>x.d===0),days=[...Array(14)].map((_,i)=>i-13);
+  return `<div class="card"><h3>How is your chest today?</h3><div class="feel">${FEEL.map(f=>`<button data-f="${f[0]}" class="${today&&today.f===f[0]?'on':''}">${f[1]}<br>${f[2]}</button>`).join('')}</div></div>
+  <div class="card"><h3>Last 14 days</h3><div class="dots">${days.map(d=>{const e=C.data.diary.find(x=>x.d===d),f=e&&FEEL.find(q=>q[0]===e.f);return `<div>${GX.day(GX.today(d),{weekday:'narrow'})}<i style="background:${f?f[3]+'26':'rgba(46,37,8,.06)'}">${f?f[1]:'·'}</i></div>`;}).join('')}</div></div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my fortnight to ${C.gateway}`}</button>`:''}`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='today'?vToday():S.tab==='out'?vOut():S.tab==='trig'?vTrig():vDiary();
+  v.querySelectorAll('[data-t]').forEach(e=>e.onclick=()=>{const k=e.dataset.t;C.data.trig=has(k)?C.data.trig.filter(x=>x!==k):C.data.trig.concat(k);GX.save(C.data);paint();});
+  v.querySelectorAll('[data-f]').forEach(e=>e.onclick=()=>{C.data.diary=C.data.diary.filter(x=>x.d!==0).concat({d:0,f:e.dataset.f});GX.save(C.data);S.shared=false;paint();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const g=C.data.diary.filter(x=>x.f==='good'||x.f==='ok').length;
+    GX.post(`<b>${g} good or OK days</b> out of the last ${C.data.diary.length}, and I can see my cold-air days coming now. Air Check 🌤️`,'AIR CHECK').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
