@@ -1740,7 +1740,7 @@ const ZONES = {
     tier:'Claimed & Verified', verified:true,
     tagline:'British luxury leather, handcrafted in Somerset since 1971',
     stats:{followers:'31.2K', content:'720', products:'160'},
-    event:{ zoneEvent:true, tag:'ATELIER DAY', title:'Marbury Atelier Day — Somerset', when:'Nov 16 · Somerset workshop', desc:'A day inside the Somerset workshop — watch the Belgravia handcrafted through its 78 construction steps, meet our artisans, and bring any Marbury bag to the Lifetime Service Centre for a refresh.', registered:420, capacity:600 },
+    event:{ zoneEvent:true, tag:'ATELIER DAY', title:'Marbury Atelier Day — Somerset', when:'Dec 14 · Somerset workshop', desc:'A day inside the Somerset workshop — watch the Belgravia handcrafted through its 78 construction steps, meet our artisans, and bring any Marbury bag to the Lifetime Service Centre for a refresh.', registered:420, capacity:600 },
     products:[
       {name:'Belgravia Bag', price:'£1,295', tag:'ICON', emoji:'👜', rating:4.9, reviews:540, cat:'icons', special:true,
        desc:'Natural grain leather, a postman’s lock cast in solid brass — 15 hours and 78 steps of Somerset craft that ages into your story.',
@@ -2549,7 +2549,7 @@ const EVENTS_FEED = [
   {gw:'handbag', zone:'rebloom', type:'Event', icon:'📅', time:'Wed 18:00', title:'Rebloom Authentication Masterclass', desc:'A live 100-point walkthrough of how luxury handbags are authenticated — hardware, stitching, date codes, leather grain — plus valuations Q&A. RSVP inside the Rebloom zone.'},
   {gw:'goth', zone:'roman-onyx', type:'Event', icon:'📅', time:'Feb 26', title:'Roman Onyx AW27 · PORTVM Runway', desc:'The AW27 PORTVM show, streamed from a concrete labyrinth in darkness — brutal silhouettes and raw leather. RSVP for the digital front row inside the Roman Onyx zone.'},
   {gw:'denim', zone:'iron-hall', type:'Event', icon:'📅', time:'Nov 29', title:'Iron Hall Fade Gallery — Raw Denim Clinic', desc:'A live raw-denim clinic from the Yokohama workshop — first-soak timing, fade care and a gallery of 534S submissions. RSVP inside the Iron Hall zone.'},
-  {gw:'handbag', zone:'marbury', type:'Event', icon:'📅', time:'Nov 16', title:'Marbury Atelier Day — Somerset', desc:'A day inside the Somerset workshop — watch the Belgravia handcrafted through 78 steps and bring any Marbury bag to the Lifetime Service Centre. RSVP inside the Marbury zone.'},
+  {gw:'handbag', zone:'marbury', type:'Event', icon:'📅', time:'Dec 14', title:'Marbury Atelier Day — Somerset', desc:'A day inside the Somerset workshop — watch the Belgravia handcrafted through 78 steps and bring any Marbury bag to the Lifetime Service Centre. RSVP inside the Marbury zone.'},
   {gw:'ski', type:'Bookmark', icon:'🔖', time:'30 Nov', title:'Ski Season Opener — Val d’Isère', desc:'Your bookmarked reminder: first lifts of the season. SkiXX live coverage and snow reports.'},
   {gw:'bitcoin', zone:'coinhub', type:'Live', icon:'🔴', live:true, time:'Live Now', title:'Coinhub Live · ETF Flows Trading Desk', desc:'We break down today’s spot Bitcoin ETF flows the moment they hit the tape — issuer bids, float impact and desk positioning. Watch live inside the Coinhub zone.'},
   {gw:'surf', type:'Drop', icon:'🔥', time:'Tomorrow 9am', title:'Firewire x Slater — Gamma 2.0', desc:'Kelly Slater’s new eco board drops exclusively on SurfXX. Recycled EPS core, bio-resin finish.'},
@@ -4258,3 +4258,939 @@ EVENTS_FEED.push(
 );
 })();
 /* ═════════ /TEACHERXX ═════════ */
+/* ═════════ HOTELXX — a Travel demo gateway (2026-11-17, Sean) ═════════
+   Built like DoctorXX and GolfXX: theme, feed, 4 Brand Zones, 2 Business Zones, 3 Pros, 2 communities, 3 apps, events.
+   Palette (dark): midnight plum, brass gold, soft lilac. Home sector: Travel (tourism).
+   Brands, pros and communities are fictional; places are real. Source of truth: _lab/travel/hotelxx-block.js. */
+(function(){
+const U = (id, w, h) => `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&q=75`;
+const PLUM = 'linear-gradient(135deg,#8E5BD9,#4A2582)', GOLD = 'linear-gradient(135deg,#E2B866,#A27A2E)', SAGE = 'linear-gradient(135deg,#7FA88E,#3E6650)', ROSE = 'linear-gradient(135deg,#D98BA5,#93415E)';
+
+GATEWAYS.hotel = {
+  name: 'HotelXX', domain: 'hotelxx.com', emoji: '🏨', sector: 'tourism', live: true,
+  tagline: 'The Hotel Universe',
+  theme: {
+    bg: '#140E1C', text: '#F3ECF7', cardBg: 'rgba(255,255,255,.045)', cardBorder: 'rgba(226,184,102,.16)',
+    headerBg: 'linear-gradient(180deg,#2B1B3D,#140E1C)', accent: '#E2B866', accentAlt: '#A78BFA', dark: true
+  },
+  gradient: 'linear-gradient(135deg,#2B1B3D,#8E5BD9,#E2B866)',
+  stats: { members: '6.4M', brands: '9,800+', agents: '112' },
+  spaces: ['All Feed', 'Weekends Away', 'City Stays', 'Spa & Wellness', 'Points & Perks', 'Working in Hotels'],
+  trending: ['#WeekendAway', '#HotelBreakfast', '#LateCheckout'],
+  brandZones: [
+    { key: 'linen-lantern', name: 'Linen & Lantern Hotels', color: '#E2B866', tier: 'Founding Partner', tag: 'Small hotels in big-hearted places' },
+    { key: 'pillowry', name: 'Pillowry', color: '#A78BFA', tier: 'Brand Zone', tag: 'The hotel bed, at home' },
+    { key: 'bramble-bath', name: 'Bramble & Bath', color: '#7FA88E', tier: 'Brand Zone', tag: 'Refillable bathroom goods, made in Somerset' },
+    { key: 'concierge-club', name: 'The Concierge Club', color: '#D98BA5', tier: 'Brand Zone', tag: 'Upgrades, late checkouts and a person who answers' }
+  ],
+  apps: [
+    { name: 'Stay Wallet', color: '#E2B866', desc: 'Every booking, check-in and code in one place', key: 'stay-wallet', url: 'apps/stay-wallet.html',
+      dev: 'Keyring Labs', rating: '4.8', users: '1.2M', perms: ['profile', 'feed'],
+      tagline: 'Your next stay, ready at the desk.',
+      about: 'Stay Wallet keeps every hotel booking in one place: dates, check-in and checkout times, the confirmation code and the address for the taxi. It counts down to your next trip, tells you how many nights you have stayed this year, and shares a stay to HotelXX when you are home.',
+      features: ['Every booking in one list', 'Countdown to your next check-in', 'Confirmation code ready to show', 'Nights stayed this year'],
+      shots: ['apps/stay-wallet/shot-1.jpg', 'apps/stay-wallet/shot-2.jpg', 'apps/stay-wallet/shot-3.jpg'],
+      version: '4.3', size: '9 KB',
+      updates: [ { v: '4.3', ago: 3, notes: 'Nights-this-year counter on the home view.' }, { v: '4.0', ago: 80, notes: 'Show the confirmation code full-screen at the desk.' }, { v: '3.5', ago: 220, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@weekender_wren', stars: 5, ago: 1, text: 'No more scrolling through email at reception.' }, { who: '@roadwarrior_raj', stars: 5, ago: 6, text: 'Forty-one nights this year and every one in here.' }, { who: '@cityhopper_cat', stars: 4, ago: 15, text: 'Would love a map view.' } ] },
+    { name: 'Room Service', color: '#A78BFA', desc: 'Order to your room from the hotel menu', key: 'room-service', url: 'apps/room-service.html',
+      dev: 'Linen & Lantern Hotels', rating: '4.7', users: '386K', perms: ['profile', 'feed'],
+      tagline: 'Breakfast in bed, two taps away.',
+      about: 'Room Service brings the in-room menu to your phone at any Linen & Lantern hotel. Choose breakfast, all-day dining or a nightcap, pick a time, and follow your order from the kitchen to your door. This demo runs on the menu at the Edinburgh hotel.',
+      features: ['Breakfast, all-day and late-night menus', 'Order now or for a time', 'Follow your order to the door', 'Dietary labels on every dish'],
+      shots: ['apps/room-service/shot-1.jpg', 'apps/room-service/shot-2.jpg', 'apps/room-service/shot-3.jpg'],
+      version: '2.6', size: '10 KB',
+      updates: [ { v: '2.6', ago: 5, notes: 'Order breakfast the night before.' }, { v: '2.2', ago: 100, notes: 'Live order tracking.' }, { v: '2.0', ago: 240, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@weekender_wren', stars: 5, ago: 2, text: 'Ordered breakfast for 8 the night before. It arrived at 8. Magic.' }, { who: '@foodie_finn', stars: 5, ago: 9, text: 'The dietary labels are a big help for a coeliac.' }, { who: '@roadwarrior_raj', stars: 4, ago: 21, text: 'Want it at every hotel I stay in.' } ] },
+    { name: 'Points Tracker', color: '#7FA88E', desc: 'Every hotel loyalty scheme in one view', key: 'points-tracker', url: 'apps/points-tracker.html',
+      dev: 'Perkline Software', rating: '4.6', users: '540K', perms: ['profile', 'feed'],
+      tagline: 'Know what your nights are worth.',
+      about: 'Points Tracker adds up your hotel loyalty points and status nights across schemes, shows how close you are to the next tier, and suggests what you could book with the points you have. Log a stay in seconds when you check out.',
+      features: ['All your schemes in one place', 'Nights to the next tier', 'What your points could book', 'Log a stay as you check out'],
+      shots: ['apps/points-tracker/shot-1.jpg', 'apps/points-tracker/shot-2.jpg', 'apps/points-tracker/shot-3.jpg'],
+      version: '3.1', size: '9 KB',
+      updates: [ { v: '3.1', ago: 4, notes: 'What-you-could-book suggestions.' }, { v: '3.0', ago: 70, notes: 'Tier progress for every scheme.' }, { v: '2.4', ago: 200, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@roadwarrior_raj', stars: 5, ago: 3, text: 'Found out I was two nights from Gold. Booked them.' }, { who: '@pointsnerd_pip', stars: 5, ago: 10, text: 'Clean, fast, no ads. Rare.' }, { who: '@cityhopper_cat', stars: 4, ago: 26, text: 'Expiry reminders next, please.' } ] }
+  ],
+  pros: [
+    { key: 'clara-lind-travel', name: 'Clara Lind Travel Planning', color: '#E2B866', tag: 'Hotel-led trip planning · honeymoons, city breaks, special birthdays', role: 'Travel planner',
+      img: U('1580489944761-15a19d654956', 800, 800), base: 'Edinburgh, UK', langs: 'English, Swedish', years: 12, rating: '4.9', reviewsN: 538, cur: '£',
+      creds: ['Former hotel guest-relations manager', 'Destination specialist: Scotland, Scandinavia, Italy', 'Member of a travel trade body'],
+      about: 'Clara spent ten years running guest relations at hotels in Stockholm and Edinburgh before planning trips for other people. She picks the right room, not just the right hotel, and knows who to call for the view.',
+      services: [ { id: 'call', name: 'Trip idea call', dur: '30 minutes', price: 35, desc: 'Tell Clara the occasion and budget; leave with three hotel ideas.' },
+                  { id: 'plan', name: 'Full trip plan', dur: 'Delivered in 5 days', price: 180, desc: 'Hotels, rooms, restaurants and a day-by-day plan, booked with you.' },
+                  { id: 'honeymoon', name: 'Honeymoon planning', dur: 'Delivered in 10 days', price: 340, desc: 'Every night planned and every hotel told it is your honeymoon.' } ],
+      avail: { days: [1, 2, 3, 4, 5], times: ['10:00', '13:00', '18:00'] },
+      reviews: [ { who: '@weekender_wren', stars: 5, ago: 4, text: 'She got us the turret room. We did not even know it existed.' }, { who: '@newlyweds_nat', stars: 5, ago: 14, text: 'Our honeymoon was perfect, every single night.' }, { who: '@cityhopper_cat', stars: 5, ago: 32, text: 'Worth every penny for a big birthday.' } ],
+      posts: [ { ago: 1, text: 'Ask for the room, not just the hotel. Corner rooms on a high floor are often the same price.' }, { ago: 7, text: 'Two places left for February honeymoon planning.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'james-okafor-hospitality', name: 'James Okafor Hospitality Coaching', color: '#A78BFA', tag: 'Coaching for hotel teams and owners · service, reviews, front desk', role: 'Hospitality coach',
+      img: U('1560250097-0b93528c311a', 800, 800), base: 'London, UK', langs: 'English, Yoruba', years: 16, rating: '4.8', reviewsN: 296, cur: '£',
+      creds: ['Former general manager, two London hotels', 'Hospitality degree, Oxford Brookes', 'Certified executive coach'],
+      about: 'James ran front desks and then whole hotels in London for sixteen years. Now he coaches small hotel teams to give the kind of welcome guests write about, and owners to read their reviews without wincing.',
+      services: [ { id: 'one', name: 'One-to-one coaching', dur: '60 minutes', price: 90, desc: 'For managers and owners: one problem, a clear plan.' },
+                  { id: 'team', name: 'Front-desk team workshop', dur: 'Half day', price: 450, desc: 'Arrivals, complaints and the first five minutes, on site.' },
+                  { id: 'reviews', name: 'Review audit', dur: 'Delivered in 7 days', price: 220, desc: 'A year of guest reviews read and turned into five actions.' } ],
+      avail: { days: [1, 2, 4, 5], times: ['09:00', '14:00', '17:00'] },
+      reviews: [ { who: '@innkeeper_iona', stars: 5, ago: 6, text: 'Our review score went from 8.4 to 9.1 in six months.' }, { who: '@frontdesk_femi', stars: 5, ago: 18, text: 'The workshop changed how our whole team does check-in.' }, { who: '@gm_georgia', stars: 4, ago: 45, text: 'Straight talking and practical.' } ],
+      posts: [ { ago: 2, text: 'The first ninety seconds at the desk decide the review. Look up, use the name, say what is good about their room.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'sofia-reyes-photography', name: 'Sofia Reyes Hotel Photography', color: '#D98BA5', tag: 'Interior and lifestyle photography for hotels, B&Bs and holiday lets', role: 'Photographer',
+      img: U('1573496359142-b8d87734a5a2', 800, 800), base: 'Bath, UK', langs: 'English, Spanish', years: 9, rating: '4.9', reviewsN: 214, cur: '£',
+      creds: ['Interiors photographer', 'Published in UK travel magazines', 'Drone-licensed (CAA)'],
+      about: 'Sofia photographs small hotels the way guests remember them: morning light on the bed, the view from the bath, breakfast on the terrace. Shoots across the South West and Wales.',
+      services: [ { id: 'room', name: 'Room shoot', dur: '2 hours', price: 280, desc: 'Up to four rooms, styled and shot, twenty edited images.' },
+                  { id: 'full', name: 'Full hotel shoot', dur: 'Full day', price: 950, desc: 'Rooms, public spaces, food and exteriors, sixty edited images.' },
+                  { id: 'drone', name: 'Drone and exterior add-on', dur: '1 hour', price: 180, desc: 'Aerial and golden-hour exterior images.' } ],
+      avail: { days: [2, 3, 4, 6], times: ['08:00', '13:00', '16:00'] },
+      reviews: [ { who: '@innkeeper_iona', stars: 5, ago: 9, text: 'Bookings went up the month the new photos went live.' }, { who: '@bnb_bramwell', stars: 5, ago: 22, text: 'Made our little B&B look like a magazine.' }, { who: '@gm_georgia', stars: 5, ago: 50, text: 'Calm, quick and brilliant with light.' } ],
+      posts: [ { ago: 3, text: 'Shoot rooms at 9am with the curtains open and every lamp on. Thank me later.' } ],
+      tier: 'Pro Zone', verified: true }
+  ],
+  communities: [
+    { key: 'hotel-hunters', name: 'Hotel Hunters', domain: 'hunters.hotelxx.com', color: '#E2B866', img: U('1551882547-ff40c63fe5fa', 900, 500),
+      scope: 'Global', where: 'Everywhere with a bed', members: 214000, online: 3820, tagline: 'Honest reviews from people who stay a lot.',
+      about: 'Frequent guests, weekenders and the plain curious, sharing honest reviews, the best room in the house, breakfast rankings and the small hotels nobody has found yet.',
+      rules: ['Say what you paid', 'Photos of your own stay only', 'Be fair to the staff'],
+      mods: ['@roadwarrior_raj', '@weekender_wren'],
+      threads: [ { t: 'Best hotel breakfast in the UK: final answers', by: '@foodie_finn', tag: 'BREAKFAST', replies: 864, ago: 0, votes: 1820 }, { t: 'Is a late checkout worth paying for?', by: '@pointsnerd_pip', tag: 'Q&A', replies: 312, ago: 1, votes: 540 }, { t: 'Small hotels in Lisbon under £150', by: '@cityhopper_cat', tag: 'FINDS', replies: 188, ago: 2, votes: 402 }, { t: 'The room with the best view I have ever had', by: '@weekender_wren', tag: 'STORIES', replies: 241, ago: 3, votes: 690 } ],
+      events: [ { title: 'Breakfast awards vote closes', day: 4, time: '20:00', where: 'Online' }, { title: 'Hotel Hunters winter meet-up', day: 9, time: '18:30', where: 'Covent Garden, London' } ] },
+    { key: 'london-hospitality', name: 'London Hospitality Network', domain: 'london.hotelxx.com', color: '#A78BFA', img: U('1660557989695-14fac79c086d', 900, 500),
+      scope: 'Local', where: 'London', members: 12800, online: 310, tagline: 'For people who make London’s hotels work.',
+      about: 'Front desk, housekeeping, concierge, kitchen and management across London’s hotels: jobs, training, shift swaps and a monthly night out when the rota allows.',
+      rules: ['No guest details, ever', 'Jobs posts must show the pay', 'Help the new starters'],
+      mods: ['@frontdesk_femi', '@gm_georgia'],
+      threads: [ { t: 'Concierge roles in Mayfair: who is hiring?', by: '@frontdesk_femi', tag: 'JOBS', replies: 64, ago: 0, votes: 118 }, { t: 'Night audit survival tips', by: '@nightaudit_noor', tag: 'TIPS', replies: 92, ago: 1, votes: 160 }, { t: 'December social: vote for the venue', by: '@gm_georgia', tag: 'SOCIAL', replies: 77, ago: 2, votes: 104 } ],
+      events: [ { title: 'Front-desk skills evening', day: 3, time: '18:00', where: 'Southwark, London' }, { title: 'Hospitality winter social', day: 8, time: '22:30', where: 'Soho, London' } ] }
+  ],
+  feed: [
+    { av: 'HX', avBg: GOLD, author: 'HotelXX Editorial', sub: 'Featured · Just now', badge: '★ FEATURED',
+      text: 'Weekends away, city stays, spas, points and the people who make hotels work. From the first look at a room to the last breakfast: hotels, all in one place.',
+      img: U('1783504560129-7bfaf7df227d', 800, 600), eng: '♡ 52.8K · 💬 4.6K · ↗ 5.2K' },
+    { av: 'WR', avBg: ROSE, author: '@weekender_wren', sub: 'Weekends Away · Just now', badge: 'COMMUNITY',
+      text: 'Asked for a room with a view and got the whole of Edinburgh Castle out of the window. Breakfast for two ordered for 9 the night before 🏰',
+      img: U('1761039265583-9489b4246454', 800, 600), eng: '♡ 18.2K · 💬 2.1K · ↗ 760' },
+    { av: 'LL', avBg: GOLD, author: 'Linen & Lantern Hotels', sub: 'Founding Partner · Brand Zone', badge: 'BRAND ZONE',
+      text: 'The <b>Winter Weekend</b> is back: two nights, breakfast both mornings, dinner on Saturday and a late checkout on Sunday, in Edinburgh, Bath or Grasmere.',
+      img: U('1611892440504-42a792e24d32', 800, 600), eng: '♡ 11.6K · 💬 940 · ↗ 1.4K' },
+    { av: 'PW', avBg: PLUM, author: 'Pillowry', sub: 'Brand Zone · 1h ago', badge: 'BRAND ZONE',
+      text: 'The pillow guests ask to take home. The <b>Hotel Pillow</b> is now in two firmnesses, and it ships in a box the size of a shoebox.',
+      img: U('1618773928121-c32242e63f39', 800, 600), eng: '♡ 6.2K · 💬 480 · ↗ 520' },
+    { av: 'FF', avBg: SAGE, author: '@foodie_finn', sub: 'City Stays · 2h ago', badge: 'COMMUNITY',
+      text: 'Hotel Hunters breakfast awards: my vote goes to the full Scottish with a tattie scone. Coeliac-safe too, and they did not make a fuss 🍳',
+      img: U('1786422982682-91af1a6c5d79', 800, 600), eng: '♡ 7.4K · 💬 1.2K · ↗ 310' },
+    { av: 'BB', avBg: SAGE, author: 'Bramble & Bath', sub: 'Brand Zone · 4h ago', badge: 'BRAND ZONE',
+      text: 'No more tiny bottles. Our <b>refillable bathroom range</b> is in 340 hotels now, and you can buy the same bottles for home.',
+      img: U('1750271336429-8b0a507785c0', 800, 600), eng: '♡ 3.8K · 💬 260 · ↗ 280' },
+    { av: 'CL', avBg: GOLD, author: 'Clara Lind Travel Planning', sub: 'Weekends Away · 6h ago', badge: 'PRO ZONE',
+      text: 'Booking a special weekend? Tell the hotel why you are coming when you book, not when you arrive. That is when the upgrades are decided.',
+      img: U('1759472659432-3232e42d04d2', 800, 600), eng: '♡ 2.6K · 💬 190 · ↗ 340' }
+  ],
+  prompts: ['Find me a hotel in Edinburgh with a castle view under £200', 'Is a late checkout worth paying for?', 'Which hotel loyalty scheme suits someone who travels twice a month?', 'Plan a spa weekend in Bath for two'],
+  businesses: ['harbourline-linen', 'lumen-hospitality']
+};
+
+/* the four Brand Zones and two Business Zones */
+const brand = (o) => Object.assign({ kind: 'brand', gw: 'hotel', verified: true }, o);
+Object.assign(ZONES, {
+  'linen-lantern': brand({ key: 'linen-lantern', name: 'Linen & Lantern Hotels', color: '#E2B866', gradient: GOLD, tier: 'Founding Partner',
+    tagline: 'Small hotels in big-hearted places', stats: { followers: '248K', content: '1.1K', products: '18' },
+    ad: { badge: 'Featured', img: U('1611892440504-42a792e24d32', 760, 760), hl: 'The Winter Weekend.', sub: 'Two nights, two breakfasts, dinner and a late checkout.', meta: 'From £45' },
+    products: [
+      { name: 'Winter Weekend for Two', price: '£420', tag: 'FLAGSHIP', emoji: '🏨', rating: 4.9, reviews: 3260, cat: 'stays', special: true, desc: 'Two nights, breakfast both mornings, dinner on Saturday and a late checkout on Sunday.', features: ['Edinburgh, Bath or Grasmere', 'Late checkout at 2pm', 'Free cancellation to 7 days'], review: { who: 'Wren H.', text: 'The best weekend we have had in years.' } },
+      { name: 'Midweek Escape (2 nights)', price: '£290', tag: 'BESTSELLER', emoji: '🌙', rating: 4.8, reviews: 2140, cat: 'stays', desc: 'Sunday to Thursday nights with breakfast, at the quiet end of the week.', features: ['Any of our nine hotels', 'Breakfast included'], review: { who: 'Cat L.', text: 'Half the price of a weekend, all of the calm.' } },
+      { name: 'Turret Room Upgrade', price: '£60', tag: 'SPECIAL', emoji: '🏰', rating: 4.9, reviews: 860, cat: 'extras', special: true, desc: 'The round room at the top of the Edinburgh hotel, with the castle in the window.', features: ['Edinburgh only', 'Subject to availability'], review: { who: 'Nat P.', text: 'Worth it just for the morning view.' } },
+      { name: 'Breakfast in Bed', price: '£18', emoji: '🥐', rating: 4.8, reviews: 1980, cat: 'extras', desc: 'Our full breakfast on a tray, at the time you choose.', features: ['Order in the Room Service app'], review: { who: 'Finn O.', text: 'Arrived hot, right on time.' } },
+      { name: 'Gift Voucher', price: '£45', emoji: '🎁', rating: 4.9, reviews: 1420, cat: 'gifts', desc: 'A voucher for any stay, dinner or extra, in a linen-wrapped card.', features: ['Valid 24 months', 'Any hotel'], review: { who: 'Pip D.', text: 'The present my parents still talk about.' } }
+    ],
+    shopCats: [ { key: 'stays', label: 'Stays', icon: '🏨' }, { key: 'extras', label: 'Extras', icon: '🥐' }, { key: 'gifts', label: 'Gift vouchers', icon: '🎁' } ],
+    feed: [
+      { type: 'post', sub: 'Brand post · 3h', text: 'The <b>Winter Weekend</b> is back at all nine hotels.', img: U('1759328257280-28bdb3050be3', 800, 440), eng: '♡ 11.6K · 💬 940 · ↗ 1.4K', product: 0 },
+      { type: 'post', sub: 'Behind the desk · Yesterday', text: 'Every new guest gets a handwritten note with three things to do within ten minutes’ walk.', img: U('1573052905904-34ad8c27f0cc', 800, 440), eng: '♡ 4.8K · 💬 320' },
+      { type: 'community', who: 'Nat P.', whoBg: ROSE, sub: 'Community · 1d', text: 'Proposing in Edinburgh in December. Can you help make the room special?', eng: '♡ 412 · 💬 88', reply: 'Congratulations, Nat! Book the Turret Room Upgrade and add a note when you book. Our Edinburgh team will have flowers, a bottle on ice and the curtains open on the castle at sunset. We will keep it secret. 🏰' }
+    ],
+    events: [ { zoneEvent: true, tag: 'OFFER', title: 'Winter Weekend early booking', when: 'Nov 30 · 23:59', desc: 'Book a January or February Winter Weekend by 30 November for a free dinner upgrade.', registered: 2840, capacity: 6000 } ],
+    about: { founded: 'Edinburgh · 2012', story: 'One townhouse hotel in Edinburgh that became nine small hotels in places we love. We joined GENEXXO as HotelXX’s Founding Partner because our guests already talk about us here.', milestones: [['2012', 'The first hotel opens in Edinburgh'], ['2020', 'Bath and Grasmere join'], ['2026', 'Founding Partner on HotelXX']], values: ['Small on purpose', 'Local staff, local food', 'No hidden charges'] } }),
+
+  'pillowry': brand({ key: 'pillowry', name: 'Pillowry', color: '#A78BFA', gradient: PLUM, tier: 'Brand Zone',
+    tagline: 'The hotel bed, at home', stats: { followers: '96.4K', content: '380', products: '32' },
+    ad: { badge: 'New', img: U('1618773928121-c32242e63f39', 760, 760), hl: 'The Hotel Pillow.', sub: 'Now in medium and firm, the one guests ask to take home.', meta: 'From £22' },
+    products: [
+      { name: 'The Hotel Pillow', price: '£55', tag: 'FLAGSHIP', emoji: '🛏️', rating: 4.8, reviews: 6120, cat: 'pillows', special: true, desc: 'The pillow on the beds of 600 hotels, in medium or firm.', features: ['Washable at 60°', 'Two firmnesses', '100-night trial'], review: { who: 'Raj M.', text: 'Finally sleep at home like I do away.' } },
+      { name: 'Percale Sheet Set', price: '£95', tag: 'BESTSELLER', emoji: '🧺', rating: 4.8, reviews: 3480, cat: 'linen', desc: 'Crisp 400-thread cotton percale: fitted sheet, duvet cover and two pillowcases.', features: ['Single to super king', 'Organic cotton'], review: { who: 'Wren H.', text: 'That cool hotel-sheet feeling.' } },
+      { name: 'Hotel Duvet (13.5 tog)', price: '£120', emoji: '☁️', rating: 4.7, reviews: 2210, cat: 'duvets', desc: 'Soft, heavy and warm, like the one you did not want to leave.', features: ['Recycled fill', 'Washable'], review: { who: 'Cat L.', text: 'Like sleeping under a cloud.' } },
+      { name: 'Mattress Topper', price: '£140', tag: 'SPECIAL', emoji: '🛌', rating: 4.8, reviews: 1640, cat: 'toppers', special: true, desc: 'A five-centimetre topper that turns a tired mattress into a hotel bed.', features: ['Five centimetres deep', 'Removable cover'], review: { who: 'Pip D.', text: 'Saved us buying a new mattress.' } },
+      { name: 'Pillow Spray', price: '£22', emoji: '🌿', rating: 4.6, reviews: 1180, cat: 'extras', desc: 'Lavender and cedar, the same scent as our hotel turndown.', features: ['100ml'], review: { who: 'Nat P.', text: 'Smells like a weekend away.' } }
+    ],
+    shopCats: [ { key: 'pillows', label: 'Pillows', icon: '🛏️' }, { key: 'linen', label: 'Bed linen', icon: '🧺' }, { key: 'duvets', label: 'Duvets', icon: '☁️' }, { key: 'toppers', label: 'Toppers', icon: '🛌' }, { key: 'extras', label: 'Extras', icon: '🌿' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'The <b>Hotel Pillow</b>, now in two firmnesses.', img: U('1631049307264-da0ec9d70304', 800, 440), eng: '♡ 6.2K · 💬 480', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday bedding sale', when: 'Nov 27 · All day', desc: 'A quarter off sheets, duvets and toppers for one day.', registered: 4120, capacity: 10000 } ],
+    about: { founded: 'Manchester · 2015', story: 'We made pillows for hotels for ten years before guests started asking where to buy them. Now we sell to both.', milestones: [['2015', 'The first hotel order'], ['2022', 'Selling to guests at home'], ['2026', 'Brand Zone on HotelXX']], values: ['Made to be washed', 'Recycled fills', '100-night trial'] } }),
+
+  'bramble-bath': brand({ key: 'bramble-bath', name: 'Bramble & Bath', color: '#7FA88E', gradient: SAGE, tier: 'Brand Zone',
+    tagline: 'Refillable bathroom goods, made in Somerset', stats: { followers: '58.1K', content: '240', products: '22' },
+    ad: { badge: 'Featured', img: U('1750271336429-8b0a507785c0', 760, 760), hl: 'No more tiny bottles.', sub: 'The refillable hotel bathroom, for home.', meta: 'From £9' },
+    products: [
+      { name: 'Hotel Bathroom Set', price: '£48', tag: 'FLAGSHIP', emoji: '🧴', rating: 4.8, reviews: 1820, cat: 'sets', special: true, desc: 'Shampoo, conditioner, body wash and hand lotion in four refillable bottles.', features: ['Refillable glass', 'Bramble and fig scent'], review: { who: 'Wren H.', text: 'Every shower smells like Bath.' } },
+      { name: 'Body Wash Refill (1L)', price: '£18', tag: 'BESTSELLER', emoji: '♻️', rating: 4.8, reviews: 2460, cat: 'refills', desc: 'One litre in a pouch that goes back to us to be refilled.', features: ['Free returns'], review: { who: 'Pip D.', text: 'Lasts months.' } },
+      { name: 'Bath Soak', price: '£16', emoji: '🛁', rating: 4.7, reviews: 1120, cat: 'bath', desc: 'Mineral salts with oat and lavender.', features: ['500g'], review: { who: 'Cat L.', text: 'The best soak after a long trip.' } },
+      { name: 'Travel Trio', price: '£14', tag: 'SPECIAL', emoji: '🧳', rating: 4.8, reviews: 980, cat: 'sets', special: true, desc: 'Three refillable 50ml bottles in a wash bag, fine for hand luggage.', features: ['Under 100ml each'], review: { who: 'Raj M.', text: 'Lives in my carry-on.' } },
+      { name: 'Hand Soap Refill (500ml)', price: '£9', emoji: '🫧', rating: 4.6, reviews: 760, cat: 'refills', desc: 'Our hand soap in a returnable pouch.', features: ['Free returns'], review: { who: 'Finn O.', text: 'Gentle and smells lovely.' } }
+    ],
+    shopCats: [ { key: 'sets', label: 'Sets', icon: '🧴' }, { key: 'refills', label: 'Refills', icon: '♻️' }, { key: 'bath', label: 'Bath', icon: '🛁' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'In 340 hotels and counting. Our <b>Hotel Bathroom Set</b> brings it home.', img: U('1648042497232-25de1ed8aaf2', 800, 440), eng: '♡ 3.8K · 💬 260', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'DEADLINE', title: 'Last order for Christmas delivery', when: 'Dec 18 · 23:59', desc: 'Order by midnight on 18 December for delivery before Christmas.', registered: 920, capacity: 3000 } ],
+    about: { founded: 'Frome · 2018', story: 'Two former hotel housekeepers who hated throwing away half-used tiny bottles. Everything we make is refillable.', milestones: [['2018', 'The first refill pouch'], ['2024', 'In 300 hotels'], ['2026', 'Brand Zone on HotelXX']], values: ['Refill, never landfill', 'Made in Somerset', 'Kind to skin'] } }),
+
+  'concierge-club': brand({ key: 'concierge-club', name: 'The Concierge Club', color: '#D98BA5', gradient: ROSE, tier: 'Brand Zone',
+    tagline: 'Upgrades, late checkouts and a person who answers', stats: { followers: '71.9K', content: '520', products: '6' },
+    ad: { badge: 'Featured', img: U('1782890790046-2aefb0b503cb', 760, 760), hl: 'A person who answers.', sub: 'Membership perks at 1,400 independent hotels.', meta: 'From £15' },
+    products: [
+      { name: 'Annual Membership', price: '£149', tag: 'FLAGSHIP', emoji: '🔑', rating: 4.7, reviews: 2840, cat: 'membership', special: true, desc: 'Room upgrades when available, late checkout, breakfast offers and a concierge on chat.', features: ['1,400 independent hotels', 'Concierge chat, 7am–11pm'], review: { who: 'Raj M.', text: 'Paid for itself by March.' } },
+      { name: 'Gift Membership', price: '£149', tag: 'GIFT', emoji: '🎁', rating: 4.8, reviews: 640, cat: 'membership', desc: 'A year of membership, wrapped and sent to someone who travels.', features: ['Digital or posted card'], review: { who: 'Wren H.', text: 'My dad uses it more than I do.' } },
+      { name: 'Weekend Pass', price: '£15', tag: 'BESTSELLER', emoji: '🗝️', rating: 4.6, reviews: 1980, cat: 'passes', special: true, desc: 'Every member perk for a single stay.', features: ['One stay', 'Use within 12 months'], review: { who: 'Cat L.', text: 'Got a suite for the price of a double.' } },
+      { name: 'Airport Lounge Day Pass', price: '£32', emoji: '✈️', rating: 4.5, reviews: 1260, cat: 'passes', desc: 'A lounge at eleven UK airports before your flight.', features: ['Three hours', 'Food and drinks'], review: { who: 'Pip D.', text: 'Calm before the chaos.' } }
+    ],
+    shopCats: [ { key: 'membership', label: 'Membership', icon: '🔑' }, { key: 'passes', label: 'Passes', icon: '🗝️' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 6h', text: 'Members: late checkout at 2pm is now standard at every partner hotel.', img: U('1621293954908-907159247fc8', 800, 440), eng: '♡ 2.4K · 💬 210', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'LIVE', title: 'Concierge Club Live · Winter hotel deals', when: 'Live now', desc: 'Our concierges pick the best winter stays and answer your questions live.', registered: 3420, capacity: 8000 } ],
+    about: { founded: 'London · 2017', story: 'A former hotel concierge who thought everyone should have one. We work only with independent hotels.', milestones: [['2017', 'The first 50 hotels'], ['2023', '1,000 partner hotels'], ['2026', 'Brand Zone on HotelXX']], values: ['Independent hotels only', 'A real person answers', 'No blackout dates'] } }),
+
+  'harbourline-linen': { key: 'harbourline-linen', kind: 'business', gw: 'hotel', name: 'Harbourline Linen Services', color: '#A78BFA', gradient: PLUM, img: U('1629140727571-9b5c6f6267b4', 900, 500),
+    tier: 'Verified', category: 'Hotel laundry', tagline: 'Hotel linen, washed, pressed and delivered daily.',
+    about: { founded: 'Bristol · 1994', story: 'We wash and supply bed and bath linen for hotels across the South West and South Wales, collected and delivered every day.' },
+    stats: { years: 32, staff: 380, clients: '640 hotels & B&Bs' },
+    caps: [ { name: 'Linen hire', detail: 'Sheets, towels and robes on a rental plan, replaced as they wear.' }, { name: 'Daily laundry', detail: 'Collected in the morning, back pressed by evening.' }, { name: 'Low-water washing', detail: 'Tunnel washers that use a third of the water.' } ],
+    specs: { moq: '1 delivery a week', lead: 'Start within 2 weeks', regions: 'South West England & South Wales', certs: ['ISO 14001', 'Textile services standard', 'Living Wage employer'] },
+    supplies: [ { kind: 'brand', key: 'linen-lantern', what: 'All bed and bath linen for the Bath hotel' } ],
+    cases: [ { title: 'Seaside hotel group, Cornwall', text: 'Moved four hotels to linen hire and cut laundry costs by a fifth.' } ],
+    feed: [ { sub: 'Sustainability · 3d', text: 'Our new Bristol plant uses a third of the water per kilo of linen.' }, { sub: 'News · 1w', text: 'Christmas collections: extra runs every day from 20 December.' } ],
+    contact: { person: 'Megan Rees, Hotel accounts', response: 'Replies within 24 hours' } },
+
+  'lumen-hospitality': { key: 'lumen-hospitality', kind: 'business', gw: 'hotel', name: 'Lumen Hospitality Systems', color: '#E2B866', gradient: GOLD, img: U('1758193783649-13371d7fb8dd', 900, 500),
+    tier: 'Verified', category: 'Hotel technology', tagline: 'Booking, check-in and room keys for small hotels.',
+    about: { founded: 'Leeds · 2011', story: 'We build the system small hotels run on: bookings, the front desk, phone keys and housekeeping lists, on one screen.' },
+    stats: { years: 15, staff: 160, clients: '2,100 hotels' },
+    caps: [ { name: 'Property system', detail: 'Bookings, rates and the front desk for hotels of 5 to 150 rooms.' }, { name: 'Phone keys', detail: 'Guests open their door with their phone.' }, { name: 'Housekeeping', detail: 'Live room status for the whole team.' } ],
+    specs: { moq: '5 rooms', lead: 'Live in 3 weeks', regions: 'UK, Ireland & Nordics', certs: ['ISO 27001', 'PCI DSS', 'Cyber Essentials Plus'] },
+    supplies: [ { kind: 'brand', key: 'concierge-club', what: 'Member perks shown at check-in' } ],
+    cases: [ { title: 'Nine-hotel group, Scotland and England', text: 'One system across nine hotels and check-in down to two minutes.' } ],
+    feed: [ { sub: 'Product · 5d', text: 'Phone keys now work on every major smartwatch.' } ],
+    contact: { person: 'Tariq Hussain, New hotels', response: 'Replies within one working day' } }
+});
+
+/* events in the Events tab */
+EVENTS_FEED.push(
+  { gw: 'hotel', zone: 'concierge-club', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Concierge Club Live · Winter hotel deals', desc: 'Two concierges pick the best winter stays and answer your questions in the chat.' },
+  { gw: 'hotel', type: 'Event', icon: '🍳', time: 'Nov 21', title: 'Hotel Hunters breakfast awards: vote closes', desc: 'The community’s vote for the best hotel breakfast in the UK closes at 8pm.' },
+  { gw: 'hotel', zone: 'pillowry', type: 'Sale', icon: '🛏️', time: 'Nov 27', title: 'Pillowry Black Friday bedding sale', desc: 'A quarter off sheets, duvets and toppers for one day.' },
+  { gw: 'hotel', zone: 'linen-lantern', type: 'Deadline', icon: '🏨', time: 'Nov 30', title: 'Winter Weekend early booking ends', desc: 'Linen & Lantern: book January or February by midnight for a free dinner upgrade.' },
+  { gw: 'hotel', type: 'Event', icon: '🛎️', time: 'Dec 2', title: 'Front-desk skills evening, London', desc: 'London Hospitality Network with James Okafor: arrivals, complaints and the first five minutes.' },
+  { gw: 'hotel', type: 'Event', icon: '🥂', time: 'Dec 6', title: 'Hotel Hunters winter meet-up', desc: 'Drinks in Covent Garden and the breakfast awards results.' },
+  { gw: 'hotel', type: 'Event', icon: '📷', time: 'Dec 11', title: 'Photograph your rooms: online masterclass', desc: 'Sofia Reyes on light, styling and phone settings for small hotels and B&Bs. Free.' },
+  { gw: 'hotel', zone: 'bramble-bath', type: 'Deadline', icon: '🧴', time: 'Dec 18', title: 'Last order for Christmas delivery', desc: 'Bramble & Bath: order by midnight for delivery before Christmas.' }
+);
+})();
+/* ═════════ /HOTELXX ═════════ */
+/* ═════════ CRUISEXX — a Travel demo gateway (2026-11-17, Sean) ═════════
+   Built like DoctorXX and GolfXX: theme, feed, 4 Brand Zones, 2 Business Zones, 3 Pros, 2 communities, 3 apps, events.
+   Palette (dark): deep-sea navy, lagoon turquoise, sunset coral. Home sector: Travel (tourism).
+   Brands, ships, pros and communities are fictional; ports and places are real. Source of truth: _lab/travel/cruisexx-block.js. */
+(function(){
+const U = (id, w, h) => `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&q=75`;
+const SEA = 'linear-gradient(135deg,#2EC4D6,#0E6F8C)', SUNSET = 'linear-gradient(135deg,#FF9F6B,#D9534F)', NAVY = 'linear-gradient(135deg,#3A6EA5,#14325A)', SAND = 'linear-gradient(135deg,#E9C98B,#B08A43)';
+
+GATEWAYS.cruise = {
+  name: 'CruiseXX', domain: 'cruisexx.com', emoji: '🛳️', sector: 'tourism', live: true,
+  tagline: 'The Cruise Universe',
+  theme: {
+    bg: '#06192B', text: '#E8F4FA', cardBg: 'rgba(255,255,255,.045)', cardBorder: 'rgba(46,196,214,.16)',
+    headerBg: 'linear-gradient(180deg,#0C3150,#06192B)', accent: '#2EC4D6', accentAlt: '#FF8A5B', dark: true
+  },
+  gradient: 'linear-gradient(135deg,#0C3150,#2EC4D6,#FF8A5B)',
+  stats: { members: '3.7M', brands: '2,400+', agents: '76' },
+  spaces: ['All Feed', 'First Cruise', 'Ports & Excursions', 'Life on Board', 'Fjords & Cold Water', 'Deals'],
+  trending: ['#FirstCruise', '#Fjords2027', '#SeaDay'],
+  brandZones: [
+    { key: 'azure-wake', name: 'Azure Wake Cruises', color: '#2EC4D6', tier: 'Founding Partner', tag: 'Mid-size ships, slow itineraries, long days in port' },
+    { key: 'port-starboard', name: 'Port & Starboard Excursions', color: '#FF8A5B', tier: 'Brand Zone', tag: 'Small-group shore days, back before all aboard' },
+    { key: 'deckhand-outfitters', name: 'Deckhand Outfitters', color: '#3A6EA5', tier: 'Brand Zone', tag: 'From deck shoes to formal night' },
+    { key: 'sealegs-travel', name: 'Sealegs Travel Goods', color: '#E9C98B', tier: 'Brand Zone', tag: 'The small things that make a cabin work' }
+  ],
+  apps: [
+    { name: 'Port Days', color: '#2EC4D6', desc: 'Your itinerary, port by port, with all-aboard times', key: 'port-days', url: 'apps/port-days.html',
+      dev: 'Wake Digital', rating: '4.8', users: '640K', perms: ['profile', 'feed'],
+      tagline: 'Never miss all aboard.',
+      about: 'Port Days lays out your cruise one day at a time: which port, when you arrive, when you sail and the all-aboard time to be back by. Sea days are marked, a countdown runs on port days, and you can note your plans for each stop. This demo carries a Norwegian fjords sailing from Southampton.',
+      features: ['Every port and sea day', 'All-aboard countdown on port days', 'Notes and plans for each stop', 'Share your trip to CruiseXX'],
+      shots: ['apps/port-days/shot-1.jpg', 'apps/port-days/shot-2.jpg', 'apps/port-days/shot-3.jpg'],
+      version: '3.6', size: '10 KB',
+      updates: [ { v: '3.6', ago: 2, notes: 'All-aboard countdown on port days.' }, { v: '3.2', ago: 90, notes: 'Notes for every stop.' }, { v: '3.0', ago: 210, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@firsttimer_flo', stars: 5, ago: 1, text: 'The all-aboard countdown saved us in Bergen.' }, { who: '@cruisedad_colin', stars: 5, ago: 8, text: 'Whole family has it on their phones.' }, { who: '@fjordfan_freya', stars: 4, ago: 19, text: 'Would love tender times too.' } ] },
+    { name: 'On Board Today', color: '#FF8A5B', desc: 'Build your day from the ship’s programme', key: 'onboard-day', url: 'apps/onboard-day.html',
+      dev: 'Azure Wake Cruises', rating: '4.7', users: '298K', perms: ['profile', 'feed'],
+      tagline: 'Tonight’s show, tomorrow’s talk, your table at eight.',
+      about: 'On Board Today puts the ship’s daily programme on your phone: talks, classes, shows, dining and the spa. Star what you want to do and it builds your day, warns you when two things clash, and reminds you of the dress code for dinner.',
+      features: ['The whole daily programme', 'Star events to build your day', 'Clash warnings', 'Dress code for every evening'],
+      shots: ['apps/onboard-day/shot-1.jpg', 'apps/onboard-day/shot-2.jpg', 'apps/onboard-day/shot-3.jpg'],
+      version: '2.4', size: '10 KB',
+      updates: [ { v: '2.4', ago: 4, notes: 'Clash warnings when two starred events overlap.' }, { v: '2.0', ago: 110, notes: 'Dress code on the evening view.' }, { v: '1.8', ago: 230, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@sea_day_sue', stars: 5, ago: 2, text: 'Better than the paper programme under the door.' }, { who: '@firsttimer_flo', stars: 5, ago: 11, text: 'Told me the comedy show clashed with dinner. Moved dinner.' }, { who: '@cruisedad_colin', stars: 4, ago: 25, text: 'Kids’ club times next please.' } ] },
+    { name: 'Cruise Packing', color: '#E9C98B', desc: 'A packing list that knows your itinerary', key: 'cruise-packing', url: 'apps/cruise-packing.html',
+      dev: 'Sealegs Travel Goods', rating: '4.6', users: '410K', perms: ['profile', 'feed'],
+      tagline: 'Formal night, fjord walks and a lanyard.',
+      about: 'Cruise Packing builds a list from your trip: how many nights, warm or cold, how many formal nights, and whether you are going ashore on foot. Tick items off as they go in the case and see what is left at a glance.',
+      features: ['Lists for warm and cold cruises', 'Formal nights counted', 'Tick as you pack', 'Progress at a glance'],
+      shots: ['apps/cruise-packing/shot-1.jpg', 'apps/cruise-packing/shot-2.jpg', 'apps/cruise-packing/shot-3.jpg'],
+      version: '2.1', size: '9 KB',
+      updates: [ { v: '2.1', ago: 6, notes: 'Cold-water list for fjords and Iceland.' }, { v: '2.0', ago: 60, notes: 'Formal-night counting.' }, { v: '1.5', ago: 190, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@fjordfan_freya', stars: 5, ago: 3, text: 'Reminded me about the waterproof trousers. Needed them.' }, { who: '@sea_day_sue', stars: 5, ago: 12, text: 'First time I have not overpacked.' }, { who: '@cruisedad_colin', stars: 4, ago: 30, text: 'Add a kids list and it is perfect.' } ] }
+  ],
+  pros: [
+    { key: 'helen-marsh-cruise', name: 'Helen Marsh Cruise Planning', color: '#2EC4D6', tag: 'Independent cruise specialist · first cruises, fjords, river and expedition', role: 'Cruise specialist',
+      img: U('1781888681811-332968760c2a', 800, 800), base: 'Southampton, UK', langs: 'English, French', years: 18, rating: '4.9', reviewsN: 702, cur: '£',
+      creds: ['Sailed on 64 ships', 'Former cruise line shore-excursions manager', 'Member of a travel trade body'],
+      about: 'Helen spent eight years at sea running shore excursions before coming ashore to plan cruises for other people. She finds the right ship and the right cabin, and she will tell you honestly if a cruise is not for you.',
+      services: [ { id: 'first', name: 'First cruise consultation', dur: '45 minutes', price: 40, desc: 'Which line, which ship, which cabin, and what it will really cost.' },
+                  { id: 'plan', name: 'Cruise plan and booking', dur: 'Delivered in 5 days', price: 120, desc: 'Ship, cabin, flights or trains to port, and excursions, booked with you.' },
+                  { id: 'cabin', name: 'Cabin check', dur: '20 minutes', price: 25, desc: 'Send your cabin number; Helen tells you about noise, motion and the view.' } ],
+      avail: { days: [1, 2, 3, 4, 5, 6], times: ['10:00', '14:00', '19:00'] },
+      reviews: [ { who: '@firsttimer_flo', stars: 5, ago: 3, text: 'Talked us out of the wrong ship and into the perfect one.' }, { who: '@sea_day_sue', stars: 5, ago: 16, text: 'Her cabin check moved us away from the theatre. Silent nights.' }, { who: '@cruisedad_colin', stars: 5, ago: 41, text: 'Planned a three-generation cruise without a single row.' } ],
+      posts: [ { ago: 1, text: 'Prone to seasickness? Book a mid-ship cabin on a low deck. It moves least.' }, { ago: 8, text: 'Fjords 2027 itineraries are out. The May sailings have the most waterfalls.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'lucia-romano-tours', name: 'Lucia Romano Private Tours', color: '#FF8A5B', tag: 'Licensed guide in Rome · private shore days from Civitavecchia', role: 'Tour guide',
+      img: U('1765005204227-bf58bcdd4449', 800, 800), base: 'Rome, Italy', langs: 'Italian, English, Spanish', years: 14, rating: '4.9', reviewsN: 1260, cur: '€',
+      creds: ['Licensed Rome tour guide', 'Art history degree, Sapienza', 'Ship-safe timing guarantee'],
+      about: 'Lucia meets you at the ship in Civitavecchia and has you in Rome in ninety minutes, then shows you the Colosseum, the Pantheon and the Trevi Fountain at a pace that leaves room for gelato. Back at the ship two hours before all aboard, every time.',
+      services: [ { id: 'rome', name: 'Rome in a day from the ship', dur: '9 hours', price: 520, desc: 'Private driver and guide for up to four people, door of the ship to door of the ship.' },
+                  { id: 'vatican', name: 'Vatican and St Peter’s', dur: '8 hours', price: 560, desc: 'Skip-the-line Vatican Museums, the Sistine Chapel and St Peter’s.' },
+                  { id: 'tarquinia', name: 'Tarquinia and wine lunch', dur: '6 hours', price: 380, desc: 'Etruscan tombs near the port and a long lunch at a family winery.' } ],
+      avail: { days: [0, 1, 2, 3, 4, 5, 6], times: ['07:30', '08:00'] },
+      reviews: [ { who: '@cruisedad_colin', stars: 5, ago: 5, text: 'Saw everything, ate well, back with hours to spare.' }, { who: '@sea_day_sue', stars: 5, ago: 20, text: 'Lucia made the Sistine Chapel make sense.' }, { who: '@firsttimer_flo', stars: 5, ago: 48, text: 'The best day of the whole cruise.' } ],
+      posts: [ { ago: 2, text: 'Rome from the ship in a day is possible. Leave the port by 8, skip the queues, and be back by 4.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'erik-solberg-fjords', name: 'Erik Solberg Fjord Guiding', color: '#3A6EA5', tag: 'Hiking and kayak days from Geiranger and Flåm cruise piers', role: 'Mountain and kayak guide',
+      img: U('1500648767791-00dcc994a43e', 800, 800), base: 'Geiranger, Norway', langs: 'Norwegian, English, German', years: 11, rating: '4.9', reviewsN: 488, cur: '€',
+      creds: ['Certified mountain leader (Norway)', 'Sea kayak instructor', 'Wilderness first aid'],
+      about: 'Erik grew up above the Geirangerfjord. He meets cruise guests at the pier for small-group kayak trips under the waterfalls, or a hike to the abandoned farms on the cliffs, and has you back long before the ship sails.',
+      services: [ { id: 'kayak', name: 'Kayak under the Seven Sisters', dur: '3 hours', price: 95, desc: 'Paddle to the foot of the waterfalls. No experience needed.' },
+                  { id: 'hike', name: 'Skageflå farm hike', dur: '5 hours', price: 120, desc: 'Boat across the fjord and a steep hike to the cliff-top farm.' },
+                  { id: 'private', name: 'Private fjord day', dur: '6 hours', price: 480, desc: 'Your group, your pace: kayak, hike or both.' } ],
+      avail: { days: [1, 2, 3, 4, 5, 6], times: ['09:00', '13:00'] },
+      reviews: [ { who: '@fjordfan_freya', stars: 5, ago: 4, text: 'Kayaking under the waterfalls was unreal.' }, { who: '@hikinghenry', stars: 5, ago: 17, text: 'The farm hike is steep and worth every step.' }, { who: '@sea_day_sue', stars: 4, ago: 38, text: 'Bring proper boots. Erik will check.' } ],
+      posts: [ { ago: 3, text: 'May and June: the waterfalls are at their fullest and the snow is still on the tops.' } ],
+      tier: 'Pro Zone', verified: true }
+  ],
+  communities: [
+    { key: 'first-cruise-club', name: 'First Cruise Club', domain: 'first.cruisexx.com', color: '#2EC4D6', img: U('1779315498403-e5c5a6d4a1cd', 900, 500),
+      scope: 'Global', where: 'Every ocean', members: 96400, online: 1840, tagline: 'Every question you were too shy to ask.',
+      about: 'For anyone booking their first cruise, or their first in years. Ask anything: tipping, formal nights, seasickness, which deck, what is actually included. Old hands answer, kindly.',
+      rules: ['No question is silly', 'Say which line and ship', 'No booking links for commission'],
+      mods: ['@sea_day_sue', '@cruisedad_colin'],
+      threads: [ { t: 'What does “all aboard” actually mean, and what if I miss it?', by: '@firsttimer_flo', tag: 'Q&A', replies: 412, ago: 0, votes: 980 }, { t: 'Inside cabin or balcony for a first cruise?', by: '@newbie_nadia', tag: 'CABINS', replies: 286, ago: 1, votes: 520 }, { t: 'How dressy is formal night really?', by: '@firsttimer_flo', tag: 'DRESS', replies: 198, ago: 2, votes: 340 }, { t: 'My first sunrise at sea', by: '@newbie_nadia', tag: 'STORIES', replies: 120, ago: 3, votes: 610 } ],
+      events: [ { title: 'First cruise Q&A (online)', day: 3, time: '19:00', where: 'Online' }, { title: 'Ship visit for first-timers', day: 12, time: '11:00', where: 'Ocean Terminal, Southampton' } ] },
+    { key: 'southampton-cruisers', name: 'Southampton Cruisers', domain: 'southampton.cruisexx.com', color: '#FF8A5B', img: U('1554254648-2d58a1bc3fd5', 900, 500),
+      scope: 'Local', where: 'Southampton', members: 8600, online: 220, tagline: 'Britain’s cruise port, from the people who live by it.',
+      about: 'Locals and regulars who sail from Southampton: parking and trains, hotels the night before, the best spot on Mayflower Park to watch the ships leave, and a sail-away drink when the big ones go.',
+      rules: ['Share port tips freely', 'Be kind to first-timers', 'No ticket touting'],
+      mods: ['@cruisedad_colin', '@solent_sam'],
+      threads: [ { t: 'Cheapest parking for the Ocean Terminal?', by: '@newbie_nadia', tag: 'PORT', replies: 88, ago: 0, votes: 130 }, { t: 'Watching the Christmas sail-aways from Mayflower Park', by: '@solent_sam', tag: 'MEET-UP', replies: 46, ago: 1, votes: 92 }, { t: 'Hotel the night before: which one?', by: '@firsttimer_flo', tag: 'HOTELS', replies: 64, ago: 2, votes: 101 } ],
+      events: [ { title: 'Sail-away watch, Mayflower Park', day: 5, time: '16:30', where: 'Mayflower Park, Southampton' }, { title: 'Cruisers’ Christmas lunch', day: 14, time: '12:30', where: 'Oxford Street, Southampton' } ] }
+  ],
+  feed: [
+    { av: 'CX', avBg: SEA, author: 'CruiseXX Editorial', sub: 'Featured · Just now', badge: '★ FEATURED',
+      text: 'Ships, cabins, ports, fjords and the people who sail them. From your first sail-away to your fiftieth sea day: cruising, all in one place.',
+      img: U('1780294560264-54fbaf3cd179', 800, 600), eng: '♡ 41.2K · 💬 3.8K · ↗ 4.4K' },
+    { av: 'FF', avBg: SUNSET, author: '@fjordfan_freya', sub: 'Fjords & Cold Water · Just now', badge: 'COMMUNITY',
+      text: 'Woke up in the Geirangerfjord with the Seven Sisters falls outside the balcony. Kayaked under them by lunch. Best morning of my life 🌊',
+      img: U('1705512604302-3dc9d171832c', 800, 600), eng: '♡ 16.4K · 💬 1.9K · ↗ 820' },
+    { av: 'AW', avBg: SEA, author: 'Azure Wake Cruises', sub: 'Founding Partner · Brand Zone', badge: 'BRAND ZONE',
+      text: '<b>Fjords 2027</b> is open: twelve nights from Southampton on the Azure Meridian, with overnight stays in Bergen and long days in Geiranger and Flåm.',
+      img: U('1761349319492-16ac128d7e13', 800, 600), eng: '♡ 12.8K · 💬 1.1K · ↗ 1.6K' },
+    { av: 'PS', avBg: SUNSET, author: 'Port & Starboard Excursions', sub: 'Brand Zone · 1h ago', badge: 'BRAND ZONE',
+      text: 'Rome from Civitavecchia in a small group of twelve, with the Trevi Fountain before the crowds. Back two hours before all aboard, guaranteed.',
+      img: U('1529154036614-a60975f5c760', 800, 600), eng: '♡ 5.6K · 💬 420 · ↗ 480' },
+    { av: 'FL', avBg: NAVY, author: '@firsttimer_flo', sub: 'First Cruise · 2h ago', badge: 'COMMUNITY',
+      text: 'First cruise booked! Helen Marsh talked us into a mid-ship balcony on deck 7 and I have already built my packing list. 63 days to go 🛳️',
+      img: U('1768270181731-b4234ef5c673', 800, 600), eng: '♡ 6.1K · 💬 840 · ↗ 210' },
+    { av: 'DO', avBg: NAVY, author: 'Deckhand Outfitters', sub: 'Brand Zone · 4h ago', badge: 'BRAND ZONE',
+      text: 'Formal night, sorted. The <b>Captain’s Table</b> dinner jacket packs into a cabin wardrobe without a crease.',
+      img: U('1766832255363-c9f060ade8b0', 800, 600), eng: '♡ 3.2K · 💬 240 · ↗ 190' },
+    { av: 'ES', avBg: NAVY, author: 'Erik Solberg Fjord Guiding', sub: 'Ports & Excursions · 6h ago', badge: 'PRO ZONE',
+      text: 'Booking a fjords cruise for 2027? May and June have the fullest waterfalls. My kayak dates for those sailings are open now.',
+      img: U('1779991830181-f3493f08be2f', 800, 600), eng: '♡ 2.4K · 💬 170 · ↗ 260' }
+  ],
+  prompts: ['Which cruise suits a first-timer who gets seasick?', 'Plan a day in Rome from Civitavecchia and back by all aboard', 'What should I pack for a Norwegian fjords cruise?', 'Inside cabin or balcony: is it worth the money?'],
+  businesses: ['solent-ship-supplies', 'bluewater-port-agency']
+};
+
+/* the four Brand Zones and two Business Zones */
+const brand = (o) => Object.assign({ kind: 'brand', gw: 'cruise', verified: true }, o);
+Object.assign(ZONES, {
+  'azure-wake': brand({ key: 'azure-wake', name: 'Azure Wake Cruises', color: '#2EC4D6', gradient: SEA, tier: 'Founding Partner',
+    tagline: 'Mid-size ships, slow itineraries, long days in port', stats: { followers: '312K', content: '1.4K', products: '12' },
+    ad: { badge: 'Featured', img: U('1761349319492-16ac128d7e13', 760, 760), hl: 'Fjords 2027.', sub: 'Twelve nights from Southampton, overnight in Bergen.', meta: 'From £35' },
+    products: [
+      { name: 'Fjords 2027 · 12 nights, balcony', price: '£2,890', tag: 'FLAGSHIP', emoji: '🛳️', rating: 4.9, reviews: 2140, cat: 'cruises', special: true, desc: 'Southampton to Bergen, Geiranger, Flåm and Stavanger and back, with an overnight in Bergen. Per person, two sharing.', features: ['Overnight in Bergen', 'All meals and drinks package', 'Balcony cabin'], review: { who: 'Freya N.', text: 'Every port better than the last.' } },
+      { name: 'Canary Islands Winter Sun · 14 nights', price: '£1,690', tag: 'BESTSELLER', emoji: '☀️', rating: 4.8, reviews: 3260, cat: 'cruises', desc: 'Southampton to Lisbon, Madeira, Tenerife, La Palma and Lanzarote. Per person, inside cabin.', features: ['Four islands', 'Departs January'], review: { who: 'Sue W.', text: 'Swapped January in Hull for Madeira. No regrets.' } },
+      { name: 'Mediterranean Highlights · 7 nights', price: '£1,240', emoji: '🏛️', rating: 4.8, reviews: 2580, cat: 'cruises', desc: 'Barcelona, Marseille, Civitavecchia for Rome, Naples and back. Per person, ocean-view cabin.', features: ['Fly-cruise from Barcelona'], review: { who: 'Colin B.', text: 'Rome, Pompeii and a sunset in Marseille.' } },
+      { name: 'Drinks Package (per day)', price: '£45', emoji: '🍹', rating: 4.5, reviews: 1840, cat: 'extras', desc: 'Wine, beer, cocktails, soft drinks and coffee all day.', features: ['Buy before you sail'], review: { who: 'Nadia K.', text: 'Worth it if you like a coffee and a cocktail.' } },
+      { name: 'Speciality Dining Night', price: '£35', tag: 'SPECIAL', emoji: '🍽️', rating: 4.9, reviews: 1260, cat: 'extras', special: true, desc: 'Seven courses in the Compass Room, with the chef’s table on request.', features: ['Book before you sail'], review: { who: 'Flo T.', text: 'Our anniversary dinner. Perfect.' } }
+    ],
+    shopCats: [ { key: 'cruises', label: 'Cruises', icon: '🛳️' }, { key: 'extras', label: 'On-board extras', icon: '🍹' } ],
+    feed: [
+      { type: 'post', sub: 'Brand post · 3h', text: '<b>Fjords 2027</b> is open, with an overnight in Bergen.', img: U('1544085311-11a028465b03', 800, 440), eng: '♡ 12.8K · 💬 1.1K · ↗ 1.6K', product: 0 },
+      { type: 'post', sub: 'Life on board · Yesterday', text: 'The pool deck on the Azure Meridian, between Madeira and Tenerife.', img: U('1700597312989-435871dce1fd', 800, 440), eng: '♡ 6.4K · 💬 380' },
+      { type: 'community', who: 'Nadia K.', whoBg: NAVY, sub: 'Community · 1d', text: 'First cruise and I get seasick on ferries. Is Fjords 2027 a good idea?', eng: '♡ 302 · 💬 74', reply: 'Good choice, Nadia! The fjords are some of the calmest water we sail: much of the route is sheltered. Pick a mid-ship cabin on a lower deck, and talk to your pharmacist about seasickness remedies before you go. 🌊' }
+    ],
+    events: [ { zoneEvent: true, tag: 'LIVE', title: 'Azure Wake Live · Fjords 2027 launch', when: 'Live now', desc: 'A walk round the ship and the itinerary, with the captain answering questions.', registered: 5260, capacity: 12000 } ],
+    about: { founded: 'Southampton · 2004', story: 'Three mid-size ships that stay longer in port and never carry more than 1,400 guests. We joined GENEXXO as CruiseXX’s Founding Partner because this is where cruisers plan.', milestones: [['2004', 'The first ship sails from Southampton'], ['2019', 'The Azure Meridian launches'], ['2026', 'Founding Partner on CruiseXX']], values: ['Longer in port', 'Smaller ships', 'Shore power where ports have it'] } }),
+
+  'port-starboard': brand({ key: 'port-starboard', name: 'Port & Starboard Excursions', color: '#FF8A5B', gradient: SUNSET, tier: 'Brand Zone',
+    tagline: 'Small-group shore days, back before all aboard', stats: { followers: '84.6K', content: '640', products: '210' },
+    ad: { badge: 'New', img: U('1529154036614-a60975f5c760', 760, 760), hl: 'Rome before the crowds.', sub: 'Small groups of twelve, back two hours before all aboard.', meta: 'From £49' },
+    products: [
+      { name: 'Rome Highlights from Civitavecchia', price: '£139', tag: 'FLAGSHIP', emoji: '🏛️', rating: 4.9, reviews: 4820, cat: 'med', special: true, desc: 'Colosseum, Pantheon and Trevi Fountain with a licensed guide, in a group of twelve.', features: ['Back-to-ship guarantee', 'Skip-the-line Colosseum'], review: { who: 'Colin B.', text: 'Saw it all and still had time for gelato.' } },
+      { name: 'Bergen Funicular and Fish Market', price: '£59', tag: 'BESTSELLER', emoji: '🐟', rating: 4.8, reviews: 2140, cat: 'north', desc: 'Up Mount Fløyen by funicular, down through Bryggen to the fish market.', features: ['Walks from the pier'], review: { who: 'Freya N.', text: 'The view from the top is worth the trip alone.' } },
+      { name: 'Madeira Toboggan and Gardens', price: '£69', emoji: '🌺', rating: 4.8, reviews: 1860, cat: 'atlantic', desc: 'Cable car to Monte, the wicker toboggan down, and the botanical gardens.', features: ['Half day'], review: { who: 'Sue W.', text: 'Laughed the whole way down.' } },
+      { name: 'Flåm Railway', price: '£99', tag: 'SPECIAL', emoji: '🚂', rating: 4.9, reviews: 1420, cat: 'north', special: true, desc: 'One of the steepest railways in the world, from the fjord to the mountains and back.', features: ['Reserved seats'], review: { who: 'Henry L.', text: 'Waterfalls out of both windows.' } },
+      { name: 'Pompeii from Naples', price: '£89', emoji: '🌋', rating: 4.8, reviews: 2380, cat: 'med', desc: 'An archaeologist guide through Pompeii, with Vesuvius behind.', features: ['Half day'], review: { who: 'Nadia K.', text: 'Our guide made it come alive.' } }
+    ],
+    shopCats: [ { key: 'med', label: 'Mediterranean', icon: '🏛️' }, { key: 'north', label: 'Norway & North', icon: '🐟' }, { key: 'atlantic', label: 'Atlantic islands', icon: '🌺' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Bryggen in the morning, before the second ship docks.', img: U('1544085311-11a028465b03', 800, 440), eng: '♡ 5.6K · 💬 420', product: 1 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: '2027 excursions early-booking sale', when: 'Nov 28 · All weekend', desc: 'A fifth off every 2027 excursion booked this weekend.', registered: 3260, capacity: 8000 } ],
+    about: { founded: 'Lisbon · 2013', story: 'Two former ship guides who thought shore days should be smaller, slower and never late back. We guarantee it: if a tour makes you miss the ship, we get you to the next port.', milestones: [['2013', 'The first tours in Lisbon'], ['2021', '120 ports'], ['2026', 'Brand Zone on CruiseXX']], values: ['Groups of twelve', 'Back-to-ship guarantee', 'Local licensed guides'] } }),
+
+  'deckhand-outfitters': brand({ key: 'deckhand-outfitters', name: 'Deckhand Outfitters', color: '#3A6EA5', gradient: NAVY, tier: 'Brand Zone',
+    tagline: 'From deck shoes to formal night', stats: { followers: '46.2K', content: '290', products: '88' },
+    ad: { badge: 'Featured', img: U('1676407118683-f0060c12b94f', 760, 760), hl: 'Formal night, sorted.', sub: 'Crease-free tailoring for a cabin wardrobe.', meta: 'From £24' },
+    products: [
+      { name: 'Captain’s Table Dinner Jacket', price: '£189', tag: 'FLAGSHIP', emoji: '🤵', rating: 4.8, reviews: 960, cat: 'formal', special: true, desc: 'A travel-weave dinner jacket that hangs out creases overnight.', features: ['Crease-resistant', 'Packs into its own bag'], review: { who: 'Colin B.', text: 'Out of the case and straight to dinner.' } },
+      { name: 'Formal Night Dress', price: '£129', tag: 'BESTSELLER', emoji: '👗', rating: 4.8, reviews: 1320, cat: 'formal', desc: 'A jersey maxi dress that rolls into a corner of the case.', features: ['Six colours', 'Sizes 6–24'], review: { who: 'Sue W.', text: 'Wore it twice and got compliments both times.' } },
+      { name: 'Non-Slip Deck Shoes', price: '£75', emoji: '👟', rating: 4.7, reviews: 1840, cat: 'deck', desc: 'Grippy soles for wet decks and cobbled ports.', features: ['Washable'], review: { who: 'Flo T.', text: 'Never slipped once.' } },
+      { name: 'Packable Rain Shell', price: '£65', tag: 'SPECIAL', emoji: '🧥', rating: 4.8, reviews: 1460, cat: 'deck', special: true, desc: 'Fully waterproof and folds into its own pocket. Made for fjord days.', features: ['Taped seams', 'Packs to fist size'], review: { who: 'Freya N.', text: 'Bergen rain: no match for it.' } },
+      { name: 'Sun Hat with Chin Strap', price: '£24', emoji: '👒', rating: 4.6, reviews: 880, cat: 'deck', desc: 'Stays on in a sea breeze.', features: ['UPF 50'], review: { who: 'Nadia K.', text: 'Did not lose it overboard. Win.' } }
+    ],
+    shopCats: [ { key: 'formal', label: 'Formal night', icon: '🤵' }, { key: 'deck', label: 'Deck & shore', icon: '👟' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'The <b>Captain’s Table</b> dinner jacket: out of the case and straight to dinner.', img: U('1774989423979-6a7bf5add3f0', 800, 440), eng: '♡ 3.2K · 💬 240', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Formal-night fitting day', when: 'Dec 4 · Southampton', desc: 'Try on the formal range and get it altered before you sail.', registered: 340, capacity: 600 } ],
+    about: { founded: 'Portsmouth · 2010', story: 'A naval tailor’s family business that started making clothes for cruise passengers when the ships came to Portsmouth.', milestones: [['2010', 'The first dinner jacket'], ['2020', 'The deck range'], ['2026', 'Brand Zone on CruiseXX']], values: ['Made to travel', 'Free alterations', 'Repairs for life'] } }),
+
+  'sealegs-travel': brand({ key: 'sealegs-travel', name: 'Sealegs Travel Goods', color: '#E9C98B', gradient: SAND, tier: 'Brand Zone',
+    tagline: 'The small things that make a cabin work', stats: { followers: '38.7K', content: '210', products: '46' },
+    ad: { badge: 'Featured', img: U('1761861339414-222fe69eb7c4', 760, 760), hl: 'Make the cabin work.', sub: 'Hooks, organisers, lanyards and a cabin night-light.', meta: 'From £8' },
+    products: [
+      { name: 'Cabin Kit', price: '£39', tag: 'FLAGSHIP', emoji: '🧰', rating: 4.8, reviews: 2260, cat: 'cabin', special: true, desc: 'Magnetic hooks, an over-door organiser and a night-light, the three things every cabin lacks.', features: ['Magnetic hooks for steel walls', 'Twelve-pocket organiser'], review: { who: 'Flo T.', text: 'Our tiny cabin felt twice the size.' } },
+      { name: 'Magnetic Hooks (8)', price: '£12', tag: 'BESTSELLER', emoji: '🧲', rating: 4.8, reviews: 3840, cat: 'cabin', desc: 'Strong hooks for the steel walls of most cabins.', features: ['Hold 5kg each'], review: { who: 'Sue W.', text: 'Every cruiser should have these.' } },
+      { name: 'Cruise Card Lanyard', price: '£8', emoji: '🪪', rating: 4.6, reviews: 1980, cat: 'shore', desc: 'A lanyard with a card holder that never needs a hole punched.', features: ['Four colours'], review: { who: 'Colin B.', text: 'The kids stopped losing their cards.' } },
+      { name: 'Acupressure Wristbands (2)', price: '£10', emoji: '🌊', rating: 4.3, reviews: 1460, cat: 'shore', desc: 'Drug-free wristbands that many travellers find help on rough days.', features: ['Washable'], review: { who: 'Nadia K.', text: 'I wore them all week and felt fine.' } },
+      { name: 'Dry Bag (10L)', price: '£18', tag: 'SPECIAL', emoji: '🎒', rating: 4.7, reviews: 1120, cat: 'shore', special: true, desc: 'For kayak days, tenders and beach stops.', features: ['Roll-top', 'Shoulder strap'], review: { who: 'Freya N.', text: 'Phone stayed dry under the waterfalls.' } }
+    ],
+    shopCats: [ { key: 'cabin', label: 'Cabin', icon: '🧰' }, { key: 'shore', label: 'Shore & deck', icon: '🎒' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 2h', text: 'The <b>Cabin Kit</b>: hooks, organiser and a night-light.', img: U('1579467299657-4f609d450684', 800, 440), eng: '♡ 2.1K · 💬 160', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'DEADLINE', title: 'Last order for Christmas delivery', when: 'Dec 18 · 23:59', desc: 'Order by midnight on 18 December for delivery before Christmas.', registered: 780, capacity: 3000 } ],
+    about: { founded: 'Southampton · 2016', story: 'A cruise-ship housekeeper who knew what passengers kept asking for. We make the small things.', milestones: [['2016', 'The first magnetic hooks'], ['2022', 'The Cabin Kit'], ['2026', 'Brand Zone on CruiseXX']], values: ['Small things, done well', 'Recycled packaging', 'Tested at sea'] } }),
+
+  'solent-ship-supplies': { key: 'solent-ship-supplies', kind: 'business', gw: 'cruise', name: 'Solent Ship Supplies', color: '#2EC4D6', gradient: SEA, img: U('1548574505-5e239809ee19', 900, 500),
+    tier: 'Verified', category: 'Ship chandler', tagline: 'Food, stores and spares to ships in Southampton.',
+    about: { founded: 'Southampton · 1979', story: 'We supply cruise ships calling at Southampton with fresh food, hotel stores and engineering spares, loaded overnight on turnaround day.' },
+    stats: { years: 47, staff: 260, clients: '38 ships a week in season' },
+    caps: [ { name: 'Provisioning', detail: 'Fresh, frozen and dry food for a full sailing, loaded on turnaround day.' }, { name: 'Hotel stores', detail: 'Linen, amenities and cleaning supplies by the pallet.' }, { name: 'Technical spares', detail: 'Engine and hotel spares sourced and delivered alongside.' } ],
+    specs: { moq: '1 pallet', lead: '48 hours; fresh food 24 hours', regions: 'Southampton, Portsmouth & Dover', certs: ['ISO 22000', 'Authorised Economic Operator', 'BRCGS Storage'] },
+    supplies: [ { kind: 'brand', key: 'azure-wake', what: 'Fresh food for every Southampton turnaround' } ],
+    cases: [ { title: 'Winter turnaround, Southampton', text: 'Three ships provisioned in one night with no delay to embarkation.' } ],
+    feed: [ { sub: 'Local sourcing · 4d', text: 'Every ship we supply now gets Hampshire watercress and Isle of Wight tomatoes in season.' }, { sub: 'News · 2w', text: 'New cold store at the Western Docks.' } ],
+    contact: { person: 'Paul Kerr, Ship accounts', response: 'Replies within 4 hours' } },
+
+  'bluewater-port-agency': { key: 'bluewater-port-agency', kind: 'business', gw: 'cruise', name: 'Bluewater Port Agency', color: '#FF8A5B', gradient: SUNSET, img: U('1685101260406-5c7ad28ca00b', 900, 500),
+    tier: 'Verified', category: 'Port agency', tagline: 'Port calls arranged for cruise ships in Norway and Scotland.',
+    about: { founded: 'Bergen · 1998', story: 'We arrange everything a cruise ship needs to call at a port: berths, pilots, tenders, buses for excursions, and the paperwork.' },
+    stats: { years: 28, staff: 90, clients: '1,100 port calls a year' },
+    caps: [ { name: 'Port calls', detail: 'Berths, pilots and harbour paperwork for every call.' }, { name: 'Tender operations', detail: 'Tenders and landing stages where ships anchor.' }, { name: 'Shore transport', detail: 'Coaches and guides for excursions, timed to the ship.' } ],
+    specs: { moq: '1 call', lead: 'Booked a season ahead', regions: 'Norway, Scotland & Iceland', certs: ['ISO 9001', 'ISO 14001', 'Green port partner'] },
+    supplies: [ { kind: 'brand', key: 'port-starboard', what: 'Coaches and timings for Bergen and Flåm excursions' } ],
+    cases: [ { title: 'Geiranger season', text: 'Four hundred tender trips a summer with no guest left ashore.' } ],
+    feed: [ { sub: 'Season · 1w', text: '2027 fjord bookings are already ahead of this year.' } ],
+    contact: { person: 'Ingrid Dahl, Cruise calls', response: 'Replies within one working day' } }
+});
+
+/* events in the Events tab */
+EVENTS_FEED.push(
+  { gw: 'cruise', zone: 'azure-wake', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Azure Wake Live · Fjords 2027 launch', desc: 'A walk round the Azure Meridian and the new itinerary, with the captain taking questions in the chat.' },
+  { gw: 'cruise', type: 'Event', icon: '❓', time: 'Nov 20', title: 'First Cruise Club Q&A', desc: 'Old hands answer first-timers’ questions live: tipping, cabins, formal nights and seasickness.' },
+  { gw: 'cruise', type: 'Event', icon: '⚓', time: 'Nov 22', title: 'Sail-away watch, Mayflower Park', desc: 'Southampton Cruisers: wave off the evening ships with a flask of something warm.' },
+  { gw: 'cruise', zone: 'port-starboard', type: 'Sale', icon: '🏛️', time: 'Nov 28', title: '2027 excursions early-booking sale', desc: 'Port & Starboard: a fifth off every 2027 shore day booked this weekend.' },
+  { gw: 'cruise', zone: 'deckhand-outfitters', type: 'Event', icon: '🤵', time: 'Dec 4', title: 'Formal-night fitting day, Southampton', desc: 'Deckhand Outfitters: try the formal range and get it altered before you sail.' },
+  { gw: 'cruise', type: 'Event', icon: '🛳️', time: 'Dec 9', title: 'Ship visit for first-timers', desc: 'First Cruise Club: a guided look round a ship at the Ocean Terminal, Southampton.' },
+  { gw: 'cruise', type: 'Event', icon: '🎄', time: 'Dec 13', title: 'Cruisers’ Christmas lunch', desc: 'Southampton Cruisers’ end-of-year lunch, with the 2027 plans swapped over pudding.' },
+  { gw: 'cruise', zone: 'sealegs-travel', type: 'Deadline', icon: '🧰', time: 'Dec 18', title: 'Last order for Christmas delivery', desc: 'Sealegs Travel Goods: order by midnight for delivery before Christmas.' }
+);
+})();
+/* ═════════ /CRUISEXX ═════════ */
+/* ═════════ DIABETESXX — a Health demo gateway (2026-11-17, Sean) ═════════
+   Built like DoctorXX and GolfXX: theme, feed, 4 Brand Zones, 2 Business Zones, 3 Pros, 2 communities, 3 apps, events.
+   Palette (light): clean white-blue, diabetes blue, warm orange. Home sector: Health.
+   Brands, pros and communities are fictional; places are real. Health text explains and signposts, never advises
+   on doses: every app and answer points back to the person’s own care team. Source of truth: _lab/health/diabetesxx-block.js. */
+(function(){
+const U = (id, w, h) => `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&q=75`;
+const BLUE = 'linear-gradient(135deg,#3B82F6,#1D4ED8)', ORANGE = 'linear-gradient(135deg,#FBA94C,#E2711D)', GREEN = 'linear-gradient(135deg,#34C38F,#16805A)', BERRY = 'linear-gradient(135deg,#C06BD8,#7A2E9C)';
+
+GATEWAYS.diabetes = {
+  name: 'DiabetesXX', domain: 'diabetesxx.com', emoji: '💙', sector: 'health', live: true,
+  tagline: 'The Diabetes Universe',
+  theme: {
+    bg: '#F4F8FD', text: '#14213D', cardBg: '#FFFFFF', cardBorder: 'rgba(29,78,216,.12)',
+    headerBg: 'linear-gradient(180deg,#E3EDFB,#F4F8FD)', accent: '#1D6FD8', accentAlt: '#F28C28', dark: false
+  },
+  gradient: 'linear-gradient(135deg,#1D4ED8,#3B82F6,#F28C28)',
+  stats: { members: '4.2M', brands: '1,900+', agents: '58' },
+  spaces: ['All Feed', 'Type 1', 'Type 2', 'Food & Carbs', 'Moving More', 'Tech & Kit'],
+  trending: ['#TimeInRange', '#WorldDiabetesDay', '#Type1Together'],
+  brandZones: [
+    { key: 'glucora', name: 'Glucora', color: '#1D6FD8', tier: 'Founding Partner', tag: 'Covers, cases and kit for life with a sensor' },
+    { key: 'balance-bakery', name: 'Balance Bakery', color: '#F28C28', tier: 'Brand Zone', tag: 'Real bread, with the carbs printed on the slice' },
+    { key: 'solewell', name: 'Solewell', color: '#16805A', tier: 'Brand Zone', tag: 'Socks and foot care for feet that matter' },
+    { key: 'quick-lift', name: 'Quick Lift', color: '#7A2E9C', tier: 'Brand Zone', tag: 'Glucose tablets and gels for a low' }
+  ],
+  apps: [
+    { name: 'Glucose Diary', color: '#1D6FD8', desc: 'Log readings and see your time in range', key: 'glucose-diary', url: 'apps/glucose-diary.html',
+      dev: 'Steady Software', rating: '4.8', users: '1.6M', perms: ['profile', 'feed'],
+      tagline: 'Your numbers, your patterns, your appointment ready.',
+      about: 'Glucose Diary keeps your blood glucose readings with a note of meals, activity and how you felt. It shows your time in range for the week against the range you and your care team set, and the times of day you tend to run high or low, so you have something useful to bring to your next review. It does not advise on doses.',
+      features: ['Log a reading with a note', 'Time in range for the week', 'Highs and lows by time of day', 'Your own target range'],
+      shots: ['apps/glucose-diary/shot-1.jpg', 'apps/glucose-diary/shot-2.jpg', 'apps/glucose-diary/shot-3.jpg'],
+      version: '5.4', size: '10 KB',
+      updates: [ { v: '5.4', ago: 3, notes: 'Time-of-day pattern view.' }, { v: '5.0', ago: 85, notes: 'Set your own target range.' }, { v: '4.6', ago: 210, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@t1_tasha', stars: 5, ago: 2, text: 'Took the pattern view to clinic. My nurse loved it.' }, { who: '@t2_trevor', stars: 5, ago: 9, text: 'Simple enough that I actually use it.' }, { who: '@pumpmum_priya', stars: 4, ago: 20, text: 'Would love to import from a meter.' } ] },
+    { name: 'Carb Counter', color: '#F28C28', desc: 'Count the carbs on your plate', key: 'carb-counter', url: 'apps/carb-counter.html',
+      dev: 'Balance Bakery', rating: '4.7', users: '920K', perms: ['profile', 'feed'],
+      tagline: 'Know the carbs before the first bite.',
+      about: 'Carb Counter adds up the carbohydrate in a meal from everyday UK foods and portion sizes: a slice of toast, a jacket potato, a bowl of porridge. Build a plate, see the total, and save meals you eat often. Figures are typical values; check packet labels where you have them.',
+      features: ['Everyday UK foods and portions', 'Typical UK portion sizes', 'Save meals you eat often', 'Daily carb total'],
+      shots: ['apps/carb-counter/shot-1.jpg', 'apps/carb-counter/shot-2.jpg', 'apps/carb-counter/shot-3.jpg'],
+      version: '3.2', size: '10 KB',
+      updates: [ { v: '3.2', ago: 5, notes: 'Saved meals.' }, { v: '3.0', ago: 70, notes: 'Portion sizes in grams and household measures.' }, { v: '2.5', ago: 230, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@t1_tasha', stars: 5, ago: 4, text: 'Lunch in thirty seconds.' }, { who: '@pumpmum_priya', stars: 5, ago: 12, text: 'My son counts his own school dinners now.' }, { who: '@t2_trevor', stars: 4, ago: 28, text: 'More takeaway foods, please.' } ] },
+    { name: 'Hypo Helper', color: '#7A2E9C', desc: 'The steps for a low, with a timer', key: 'hypo-helper', url: 'apps/hypo-helper.html',
+      dev: 'Quick Lift', rating: '4.9', users: '680K', perms: ['profile', 'feed'],
+      tagline: 'Treat, wait, check. Calmly.',
+      about: 'Hypo Helper walks you through the usual steps for treating a low blood glucose: fast-acting sugar, a fifteen-minute wait with a timer, a re-check, and a follow-up snack once you are back in range. It keeps a log of your lows to talk through with your care team. Always follow your own care plan; in an emergency call 999.',
+      features: ['Step-by-step low treatment', 'Fifteen-minute re-check timer', 'Log of recent lows', 'Your own treatment written in'],
+      shots: ['apps/hypo-helper/shot-1.jpg', 'apps/hypo-helper/shot-2.jpg', 'apps/hypo-helper/shot-3.jpg'],
+      version: '2.3', size: '9 KB',
+      updates: [ { v: '2.3', ago: 2, notes: 'Write in your own treatment from your care plan.' }, { v: '2.0', ago: 90, notes: 'Log of recent lows.' }, { v: '1.6', ago: 200, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@pumpmum_priya', stars: 5, ago: 1, text: 'My daughter’s teacher uses it. It keeps everyone calm.' }, { who: '@t1_tasha', stars: 5, ago: 7, text: 'Stops me over-treating, which I always did.' }, { who: '@runner_ravi', stars: 5, ago: 18, text: 'Used it mid-run. Clear and quick.' } ] }
+  ],
+  pros: [
+    { key: 'sarah-quinn-dietitian', name: 'Sarah Quinn Diabetes Dietitian', color: '#F28C28', tag: 'Registered dietitian · carb counting, type 2 remission support, family meals', role: 'Dietitian',
+      img: U('1573497019940-1c28c88b4f3e', 800, 800), base: 'Leeds, UK', langs: 'English', years: 13, rating: '4.9', reviewsN: 486, cur: '£',
+      creds: ['Registered dietitian (HCPC)', 'Ten years in an NHS diabetes team', 'Structured education trainer'],
+      about: 'Sarah worked in an NHS diabetes team for ten years before setting up her own practice. She teaches carb counting that fits real life, helps people with type 2 who want to work on their weight and glucose, and plans family meals that suit everyone at the table.',
+      services: [ { id: 'first', name: 'First consultation', dur: '60 minutes', price: 85, desc: 'Your food, your numbers and your goals, with a written plan.' },
+                  { id: 'carbs', name: 'Carb counting course', dur: '3 × 90 minutes', price: 160, desc: 'Small group, online: labels, portions and eating out.' },
+                  { id: 'review', name: 'Follow-up review', dur: '30 minutes', price: 45, desc: 'Check in on progress and adjust the plan.' } ],
+      avail: { days: [1, 2, 3, 4], times: ['09:30', '12:30', '18:00'] },
+      reviews: [ { who: '@t2_trevor', stars: 5, ago: 5, text: 'First time food advice has made sense to me.' }, { who: '@pumpmum_priya', stars: 5, ago: 17, text: 'The family meal plan stopped the dinner-time battles.' }, { who: '@t1_tasha', stars: 5, ago: 36, text: 'The carb course gave me my confidence back.' } ],
+      posts: [ { ago: 1, text: 'Eating out this Christmas? Look up the menu in advance and pick your dish before you arrive. Less guessing, more enjoying.' }, { ago: 9, text: 'New carb counting course starts in January. Six places.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'marcus-lee-fitness', name: 'Marcus Lee Diabetes Fitness', color: '#1D6FD8', tag: 'Personal trainer living with type 1 · exercise that works with your glucose', role: 'Personal trainer',
+      img: U('1507003211169-0a1dd7228f2d', 800, 800), base: 'Manchester, UK', langs: 'English, Cantonese', years: 8, rating: '4.8', reviewsN: 318, cur: '£',
+      creds: ['Level 3 personal trainer', 'Exercise referral qualification', 'Living with type 1 for 20 years'],
+      about: 'Marcus has had type 1 diabetes since he was twelve and has trained people with diabetes for eight years. He helps you build strength and fitness, and keeps a log of how sessions affect your glucose so you can talk it through with your care team.',
+      services: [ { id: 'pt', name: 'Personal training session', dur: '60 minutes', price: 50, desc: 'In the gym or the park in Manchester, or online.' },
+                  { id: 'plan', name: 'Twelve-week programme', dur: '12 weeks', price: 360, desc: 'A weekly plan, a check-in call each week, and a glucose and exercise log.' },
+                  { id: 'run', name: 'Couch to 5K group', dur: '9 weeks', price: 90, desc: 'A small group for people with diabetes, on Saturday mornings.' } ],
+      avail: { days: [1, 3, 5, 6], times: ['07:00', '12:00', '18:30'] },
+      reviews: [ { who: '@runner_ravi', stars: 5, ago: 3, text: 'Ran my first 10K this year. Marcus gets it because he lives it.' }, { who: '@t2_trevor', stars: 5, ago: 14, text: 'Stronger at 61 than I was at 40.' }, { who: '@t1_tasha', stars: 4, ago: 33, text: 'Tough but kind.' } ],
+      posts: [ { ago: 2, text: 'Keep a note of your glucose before, during and after a new kind of workout. Patterns beat guesses.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'anika-shah-podiatry', name: 'Anika Shah Podiatry', color: '#16805A', tag: 'Podiatrist · diabetes foot checks, nail care, footwear advice', role: 'Podiatrist',
+      img: U('1772987413078-e94f66e7047d', 800, 800), base: 'London, UK', langs: 'English, Gujarati, Hindi', years: 15, rating: '4.9', reviewsN: 402, cur: '£',
+      creds: ['Registered podiatrist (HCPC)', 'Former NHS diabetes foot clinic', 'Member of a podiatry professional body'],
+      about: 'Anika ran an NHS diabetes foot clinic for nine years. Her clinic in Harrow offers foot checks, nail and skin care and footwear advice, and she will always refer you on quickly if something needs your GP or foot team.',
+      services: [ { id: 'check', name: 'Diabetes foot check', dur: '30 minutes', price: 45, desc: 'Circulation, sensation and skin, with a written summary.' },
+                  { id: 'care', name: 'Nail and skin care', dur: '45 minutes', price: 55, desc: 'Nails cut, hard skin removed and advice on daily care.' },
+                  { id: 'shoes', name: 'Footwear assessment', dur: '40 minutes', price: 50, desc: 'Find shoes that fit and protect your feet.' } ],
+      avail: { days: [1, 2, 4, 5, 6], times: ['09:00', '13:00', '16:30'] },
+      reviews: [ { who: '@t2_trevor', stars: 5, ago: 6, text: 'Explained every test and why it mattered.' }, { who: '@grandad_gerald', stars: 5, ago: 21, text: 'Gentle and thorough. My feet have never felt better.' }, { who: '@t1_tasha', stars: 5, ago: 44, text: 'Spotted a problem early and got me seen fast.' } ],
+      posts: [ { ago: 4, text: 'Check your feet every day: tops, soles, between the toes. Use a mirror or ask someone to help.' } ],
+      tier: 'Pro Zone', verified: true }
+  ],
+  communities: [
+    { key: 'type1-together', name: 'Type 1 Together', domain: 'type1.diabetesxx.com', color: '#1D6FD8', img: U('1511632765486-a01980e01a18', 900, 500),
+      scope: 'Global', where: 'Everywhere, at 3am included', members: 162000, online: 2940, tagline: 'Nobody gets it like someone who lives it.',
+      about: 'People living with type 1, their parents and partners. Wins, hard days, tech tips, travel stories and the questions you forget to ask in clinic. We share experience here, not medical advice.',
+      rules: ['Share experience, not doses', 'Be kind about numbers', 'Signpost to your care team'],
+      mods: ['@t1_tasha', '@pumpmum_priya'],
+      threads: [ { t: 'Your best tip for Christmas dinner with type 1', by: '@t1_tasha', tag: 'FOOD', replies: 528, ago: 0, votes: 1240 }, { t: 'Starting secondary school with a pump: what helped?', by: '@pumpmum_priya', tag: 'PARENTS', replies: 214, ago: 1, votes: 460 }, { t: 'Twenty years with type 1 today', by: '@marcus_lifts', tag: 'STORIES', replies: 302, ago: 2, votes: 980 }, { t: 'Sensor fell off on day two again. Covers that last?', by: '@runner_ravi', tag: 'KIT', replies: 176, ago: 3, votes: 288 } ],
+      events: [ { title: 'Parents’ evening chat (online)', day: 2, time: '20:00', where: 'Online' }, { title: 'Type 1 tech show-and-tell', day: 10, time: '19:00', where: 'Online' } ] },
+    { key: 'diabetes-walkers-glasgow', name: 'Diabetes Walkers Glasgow', domain: 'glasgow.diabetesxx.com', color: '#16805A', img: U('1770563182367-1e1b5c094b02', 900, 500),
+      scope: 'Local', where: 'Glasgow', members: 1860, online: 46, tagline: 'Walk, talk, and a cuppa at the end.',
+      about: 'A friendly walking group for people with type 1 or type 2 diabetes and their families. Gentle walks in Glasgow’s parks every Saturday morning, a longer one once a month, and always a café at the end.',
+      rules: ['Walk at the pace of the slowest', 'Bring your hypo kit', 'Everyone welcome'],
+      mods: ['@glasgow_gail', '@grandad_gerald'],
+      threads: [ { t: 'Saturday: Kelvingrove Park loop, meet at the bandstand', by: '@glasgow_gail', tag: 'WALK', replies: 34, ago: 0, votes: 58 }, { t: 'Monthly longer walk: Pollok Country Park?', by: '@grandad_gerald', tag: 'PLANS', replies: 22, ago: 1, votes: 41 }, { t: 'Best café with a lower-carb option near the West End', by: '@glasgow_gail', tag: 'FOOD', replies: 29, ago: 2, votes: 37 } ],
+      events: [ { title: 'Kelvingrove Park walk', day: 4, time: '10:00', where: 'Kelvingrove Park, Glasgow' }, { title: 'Pollok Country Park long walk', day: 11, time: '10:00', where: 'Pollok Country Park, Glasgow' } ] }
+  ],
+  feed: [
+    { av: 'DX', avBg: BLUE, author: 'DiabetesXX Editorial', sub: 'Featured · Just now', badge: '★ FEATURED',
+      text: 'Food, tech, moving more, and people who get it. Type 1, type 2, newly diagnosed or decades in: living well with diabetes, all in one place.',
+      img: U('1767277672167-18105701959b', 800, 600), eng: '♡ 36.8K · 💬 3.4K · ↗ 3.9K' },
+    { av: 'TT', avBg: BLUE, author: '@t1_tasha', sub: 'Type 1 · Just now', badge: 'COMMUNITY',
+      text: 'Seventy-eight per cent time in range this week, my best since diagnosis. Took the Glucose Diary pattern view to clinic and we finally worked out my mornings 💙',
+      img: U('1684156486280-ff59f07fc5bb', 800, 600), eng: '♡ 14.2K · 💬 1.6K · ↗ 480' },
+    { av: 'GL', avBg: BLUE, author: 'Glucora', sub: 'Founding Partner · Brand Zone', badge: 'BRAND ZONE',
+      text: 'Sensor fell off at the gym again? The <b>Glucora Overpatch</b> holds for fourteen days through showers, swims and runs, in sixteen colours.',
+      img: U('1683727186226-910f31a9da45', 800, 600), eng: '♡ 8.6K · 💬 720 · ↗ 940' },
+    { av: 'BB', avBg: ORANGE, author: 'Balance Bakery', sub: 'Brand Zone · 1h ago', badge: 'BRAND ZONE',
+      text: 'A proper sourdough with <b>9 g of carbohydrate a slice</b>, printed on the bag. Made with seeds, rye and patience.',
+      img: U('1767065888377-e5ffb4e39645', 800, 600), eng: '♡ 5.4K · 💬 410 · ↗ 380' },
+    { av: 'GG', avBg: GREEN, author: '@glasgow_gail', sub: 'Moving More · 2h ago', badge: 'COMMUNITY',
+      text: 'Twenty-two of us round Kelvingrove this morning in the frost, then tea and scones. Newcomers always welcome, every Saturday at ten 🚶',
+      img: U('1786723221771-f880fa78a25f', 800, 600), eng: '♡ 4.1K · 💬 360 · ↗ 150' },
+    { av: 'SW', avBg: GREEN, author: 'Solewell', sub: 'Brand Zone · 4h ago', badge: 'BRAND ZONE',
+      text: 'Seam-free, non-binding and padded at the sole: the <b>Daily Diabetic Sock</b>, now in a five-pack.',
+      img: U('1585499583264-491df5142e83', 800, 600), eng: '♡ 2.6K · 💬 180 · ↗ 210' },
+    { av: 'SQ', avBg: ORANGE, author: 'Sarah Quinn Diabetes Dietitian', sub: 'Food & Carbs · 6h ago', badge: 'PRO ZONE',
+      text: 'Breakfast idea with a steady start: Greek yoghurt, berries and a handful of nuts. Around 15 g of carbohydrate, depending on the berries.',
+      img: U('1494390248081-4e521a5940db', 800, 600), eng: '♡ 3.2K · 💬 240 · ↗ 520' }
+  ],
+  prompts: ['What does time in range mean?', 'Lower-carb breakfast ideas for type 2', 'How do I count carbs when eating out?', 'Find a diabetes walking group near Glasgow'],
+  businesses: ['brightwell-pharmacy', 'carelink-education']
+};
+
+/* the four Brand Zones and two Business Zones */
+const brand = (o) => Object.assign({ kind: 'brand', gw: 'diabetes', verified: true }, o);
+Object.assign(ZONES, {
+  'glucora': brand({ key: 'glucora', name: 'Glucora', color: '#1D6FD8', gradient: BLUE, tier: 'Founding Partner',
+    tagline: 'Covers, cases and kit for life with a sensor', stats: { followers: '204K', content: '860', products: '64' },
+    ad: { badge: 'Featured', img: U('1683727186226-910f31a9da45', 760, 760), hl: 'Fourteen days. Showers included.', sub: 'The Glucora Overpatch, in sixteen colours.', meta: 'From £8' },
+    products: [
+      { name: 'Overpatch (14-pack)', price: '£16', tag: 'FLAGSHIP', emoji: '🩹', rating: 4.8, reviews: 8420, cat: 'patches', special: true, desc: 'Breathable, waterproof covers that hold a glucose sensor in place for its full wear.', features: ['Fits most common sensors', 'Sixteen colours', 'Gentle on skin'], review: { who: 'Ravi P.', text: 'Survived a half marathon and a swim.' } },
+      { name: 'Kit Case', price: '£28', tag: 'BESTSELLER', emoji: '👝', rating: 4.8, reviews: 4260, cat: 'cases', desc: 'Room for a meter, pen, strips, hypo treatment and a spare sensor.', features: ['Insulated pocket', 'Wipe-clean'], review: { who: 'Tasha M.', text: 'Everything in one place, finally.' } },
+      { name: 'Insulin Cooling Wallet', price: '£24', tag: 'SPECIAL', emoji: '❄️', rating: 4.7, reviews: 2180, cat: 'cases', special: true, desc: 'A water-activated cooling wallet that keeps insulin pens cool on holiday.', features: ['Reusable', 'No fridge needed'], review: { who: 'Priya S.', text: 'Two weeks in Spain, no problems.' } },
+      { name: 'Kids’ Sensor Armband', price: '£12', emoji: '🦖', rating: 4.8, reviews: 1640, cat: 'patches', desc: 'A soft armband that protects a sensor during play and PE.', features: ['Dinosaur, space and rainbow'], review: { who: 'Priya S.', text: 'My son actually wants to wear it.' } },
+      { name: 'Medical ID Bracelet', price: '£19', emoji: '📿', rating: 4.7, reviews: 1320, cat: 'id', desc: 'A silicone bracelet engraved with your condition and an emergency contact.', features: ['Engraving included'], review: { who: 'Gerald B.', text: 'Peace of mind for my wife.' } }
+    ],
+    shopCats: [ { key: 'patches', label: 'Patches & armbands', icon: '🩹' }, { key: 'cases', label: 'Cases & cooling', icon: '👝' }, { key: 'id', label: 'Medical ID', icon: '📿' } ],
+    feed: [
+      { type: 'post', sub: 'Brand post · 3h', text: 'The <b>Overpatch</b> holds for fourteen days, through everything.', img: U('1624454002429-40ed87a5ec04', 800, 440), eng: '♡ 8.6K · 💬 720 · ↗ 940', product: 0 },
+      { type: 'post', sub: 'Made by us · Yesterday', text: 'Every new colour is voted for by the Type 1 Together community. Next up: midnight blue.', img: U('1684156486280-ff59f07fc5bb', 800, 440), eng: '♡ 3.8K · 💬 410' },
+      { type: 'community', who: 'Priya S.', whoBg: BERRY, sub: 'Community · 1d', text: 'My son is six and pulls his sensor off at night. Anything that helps?', eng: '♡ 268 · 💬 92', reply: 'Hi Priya, that is so common at six! Lots of families use the Kids’ Sensor Armband at night with an Overpatch underneath. Have a word with your diabetes team about placement too: they will have seen it many times. 💙' }
+    ],
+    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Colour vote: 2027 Overpatch', when: 'Nov 26 · Online', desc: 'Pick the next three Overpatch colours with the community.', registered: 6200, capacity: 20000 } ],
+    about: { founded: 'Cambridge · 2017', story: 'Founded by a designer with type 1 who was tired of sensors falling off and kit bags that did not fit. We joined GENEXXO as DiabetesXX’s Founding Partner because this is where people with diabetes talk.', milestones: [['2017', 'The first Overpatch'], ['2023', 'One million patches a year'], ['2026', 'Founding Partner on DiabetesXX']], values: ['Designed by people who wear it', 'Skin-friendly materials', 'A colour for everyone'] } }),
+
+  'balance-bakery': brand({ key: 'balance-bakery', name: 'Balance Bakery', color: '#F28C28', gradient: ORANGE, tier: 'Brand Zone',
+    tagline: 'Real bread, with the carbs printed on the slice', stats: { followers: '88.4K', content: '420', products: '24' },
+    ad: { badge: 'New', img: U('1767065888377-e5ffb4e39645', 760, 760), hl: '9 g of carbs a slice.', sub: 'Seeded rye sourdough, carbs printed on the bag.', meta: 'From £3' },
+    products: [
+      { name: 'Seeded Rye Sourdough', price: '£4', tag: 'FLAGSHIP', emoji: '🍞', rating: 4.8, reviews: 5620, cat: 'bread', special: true, desc: 'A slow-proved sourdough with rye and seeds: about 9 g of carbohydrate per 25 g slice.', features: ['Carbs per slice on the bag', 'High fibre'], review: { who: 'Trevor H.', text: 'Toast is back on the menu.' } },
+      { name: 'Bread Subscription (weekly)', price: '£15', tag: 'BESTSELLER', emoji: '📦', rating: 4.8, reviews: 2140, cat: 'subs', special: true, desc: 'Three loaves a week, sliced and frozen-ready, delivered.', features: ['Pause any time', 'Free delivery'], review: { who: 'Gail R.', text: 'Never run out now.' } },
+      { name: 'Oat & Seed Crackers', price: '£3', emoji: '🥨', rating: 4.7, reviews: 1860, cat: 'snacks', desc: 'Crunchy crackers with about 3 g of carbohydrate each.', features: ['Carbs per cracker on the box'], review: { who: 'Tasha M.', text: 'My desk drawer is full of them.' } },
+      { name: 'Christmas Stollen Slices', price: '£6', tag: 'SEASONAL', emoji: '🎄', rating: 4.6, reviews: 940, cat: 'snacks', desc: 'Our stollen, cut into smaller slices, with the carbs for each one printed on the wrapper.', features: ['Eight slices'], review: { who: 'Gerald B.', text: 'A Christmas treat I can plan for.' } },
+      { name: 'Baking Class (online)', price: '£25', emoji: '👩‍🍳', rating: 4.9, reviews: 620, cat: 'classes', desc: 'Bake our seeded sourdough at home, with the head baker.', features: ['Two hours, live'], review: { who: 'Priya S.', text: 'My first loaf actually rose.' } }
+    ],
+    shopCats: [ { key: 'bread', label: 'Bread', icon: '🍞' }, { key: 'subs', label: 'Subscriptions', icon: '📦' }, { key: 'snacks', label: 'Snacks & seasonal', icon: '🥨' }, { key: 'classes', label: 'Classes', icon: '👩‍🍳' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Fresh from the oven in Bradford: the <b>Seeded Rye Sourdough</b>.', img: U('1763297014734-e2ac58a6f3c0', 800, 440), eng: '♡ 5.4K · 💬 410', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'LIVE', title: 'Balance Bakery Live · Christmas baking', when: 'Live now', desc: 'Our head baker makes stollen and mince pies live, with the carbs worked out as she goes.', registered: 4860, capacity: 10000 } ],
+    about: { founded: 'Bradford · 2014', story: 'A baker whose dad was diagnosed with type 2 and missed his toast. Every loaf has the carbs per slice on the bag.', milestones: [['2014', 'The first seeded loaf'], ['2021', 'Nationwide delivery'], ['2026', 'Brand Zone on DiabetesXX']], values: ['Real ingredients', 'Carbs on every label', 'Baked in Yorkshire'] } }),
+
+  'solewell': brand({ key: 'solewell', name: 'Solewell', color: '#16805A', gradient: GREEN, tier: 'Brand Zone',
+    tagline: 'Socks and foot care for feet that matter', stats: { followers: '41.6K', content: '230', products: '38' },
+    ad: { badge: 'Featured', img: U('1585499583264-491df5142e83', 760, 760), hl: 'No seams. No marks.', sub: 'The Daily Diabetic Sock, now in a five-pack.', meta: 'From £9' },
+    products: [
+      { name: 'Daily Diabetic Socks (5 pairs)', price: '£25', tag: 'FLAGSHIP', emoji: '🧦', rating: 4.8, reviews: 4120, cat: 'socks', special: true, desc: 'Seam-free toes, a non-binding top and a padded sole.', features: ['Seam-free', 'Non-binding', 'Pale soles to spot marks'], review: { who: 'Gerald B.', text: 'No more red rings round my ankles.' } },
+      { name: 'Foot Cream (urea 10%)', price: '£9', tag: 'BESTSELLER', emoji: '🧴', rating: 4.7, reviews: 2860, cat: 'care', desc: 'A rich cream for dry skin on the feet. Not between the toes.', features: ['150ml', 'Fragrance-free'], review: { who: 'Trevor H.', text: 'Heels smooth in a week.' } },
+      { name: 'Inspection Mirror', price: '£12', emoji: '🪞', rating: 4.6, reviews: 980, cat: 'care', desc: 'A long-handled mirror for checking the soles of your feet.', features: ['Folds flat'], review: { who: 'Gail R.', text: 'Makes the daily check easy.' } },
+      { name: 'Wide-Fit Walking Shoes', price: '£79', tag: 'SPECIAL', emoji: '👟', rating: 4.8, reviews: 1460, cat: 'shoes', special: true, desc: 'Deep, wide, seam-free inside, with a rocker sole.', features: ['Widths E to 6E', 'Removable insole'], review: { who: 'Gerald B.', text: 'Walked round Pollok Park in comfort.' } }
+    ],
+    shopCats: [ { key: 'socks', label: 'Socks', icon: '🧦' }, { key: 'care', label: 'Foot care', icon: '🧴' }, { key: 'shoes', label: 'Shoes', icon: '👟' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'Pale soles so you can see a mark. The <b>Daily Diabetic Sock</b>.', img: U('1773837463640-e615246f7fa4', 800, 440), eng: '♡ 2.6K · 💬 180', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Winter sock sale', when: 'Nov 28 · All weekend', desc: 'Buy two five-packs, get a third free, this weekend only.', registered: 1840, capacity: 5000 } ],
+    about: { founded: 'Leicester · 2011', story: 'A third-generation sock mill that started making diabetic socks when a podiatrist asked. Still knitted in Leicester.', milestones: [['2011', 'The first diabetic sock'], ['2019', 'Wide-fit shoes'], ['2026', 'Brand Zone on DiabetesXX']], values: ['Knitted in Leicester', 'Designed with podiatrists', 'Built to last'] } }),
+
+  'quick-lift': brand({ key: 'quick-lift', name: 'Quick Lift', color: '#7A2E9C', gradient: BERRY, tier: 'Brand Zone',
+    tagline: 'Glucose tablets and gels for a low', stats: { followers: '36.2K', content: '180', products: '20' },
+    ad: { badge: 'Featured', img: U('1685485276223-0bb0226dcca8', 760, 760), hl: 'Ready when you are low.', sub: 'Glucose tablets in a tube that fits any pocket.', meta: 'From £2' },
+    products: [
+      { name: 'Glucose Tablets (tube of 10)', price: '£2', tag: 'FLAGSHIP', emoji: '🍬', rating: 4.8, reviews: 6420, cat: 'tablets', special: true, desc: 'Fast-acting glucose tablets with 4 g of glucose each.', features: ['4 g glucose per tablet', 'Five flavours'], review: { who: 'Tasha M.', text: 'One in every bag I own.' } },
+      { name: 'Glucose Gel (6 pouches)', price: '£9', tag: 'BESTSELLER', emoji: '💧', rating: 4.7, reviews: 3120, cat: 'gels', desc: 'Liquid glucose for when chewing is hard.', features: ['10 g glucose per pouch'], review: { who: 'Ravi P.', text: 'Easy to take mid-run.' } },
+      { name: 'Hypo Kit Pouch', price: '£14', tag: 'SPECIAL', emoji: '👛', rating: 4.8, reviews: 1860, cat: 'kits', special: true, desc: 'A bright pouch with tablets, gel and a card that says what to do, for school bags and handbags.', features: ['Instructions card', 'Clip-on'], review: { who: 'Priya S.', text: 'The school keeps one in every classroom.' } },
+      { name: 'Multipack (5 tubes)', price: '£8', emoji: '📦', rating: 4.8, reviews: 2420, cat: 'tablets', desc: 'Five tubes, mixed flavours.', features: ['Mixed flavours'], review: { who: 'Gail R.', text: 'Car, coat, bag, desk, bedside.' } }
+    ],
+    shopCats: [ { key: 'tablets', label: 'Tablets', icon: '🍬' }, { key: 'gels', label: 'Gels', icon: '💧' }, { key: 'kits', label: 'Hypo kits', icon: '👛' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 2h', text: 'A <b>Hypo Kit Pouch</b> for every classroom: tablets, gel and the steps on a card.', img: U('1543362906-acfc16c67564', 800, 440), eng: '♡ 1.9K · 💬 140', product: 2 } ],
+    events: [ { zoneEvent: true, tag: 'DEADLINE', title: 'Schools pack orders for January', when: 'Dec 12 · 23:59', desc: 'Order hypo kit pouches for the new term by 12 December.', registered: 620, capacity: 2000 } ],
+    about: { founded: 'Nottingham · 2008', story: 'Made by a pharmacist who wanted glucose tablets that tasted nice and fitted a pocket.', milestones: [['2008', 'The first tube'], ['2020', 'The Hypo Kit Pouch'], ['2026', 'Brand Zone on DiabetesXX']], values: ['Clear labels', 'Tastes good', 'Fits a pocket'] } }),
+
+  'brightwell-pharmacy': { key: 'brightwell-pharmacy', kind: 'business', gw: 'diabetes', name: 'Brightwell Pharmacy Group', color: '#1D6FD8', gradient: BLUE, img: U('1624454002429-40ed87a5ec04', 900, 500),
+    tier: 'Verified', category: 'Community pharmacy', tagline: 'Prescriptions, delivered, and a pharmacist who knows your name.',
+    about: { founded: 'Sheffield · 1986', story: 'Ninety community pharmacies across Yorkshire and the Midlands, with free prescription delivery and diabetes checks in every branch.' },
+    stats: { years: 40, staff: 1100, clients: '90 pharmacies' },
+    caps: [ { name: 'Repeat prescriptions', detail: 'Ordered for you and delivered free.' }, { name: 'Diabetes checks', detail: 'Blood pressure, weight and medicine reviews in a private room.' }, { name: 'Sharps disposal', detail: 'Bins supplied and collected.' } ],
+    specs: { moq: 'n/a', lead: 'Same or next day', regions: 'Yorkshire & the Midlands', certs: ['GPhC-registered pharmacies', 'ISO 9001', 'Healthy Living Pharmacy'] },
+    supplies: [ { kind: 'brand', key: 'quick-lift', what: 'Glucose tablets and hypo kits in every branch' } ],
+    cases: [ { title: 'Sheffield delivery', text: 'Twelve thousand prescriptions a month delivered to people’s doors.' } ],
+    feed: [ { sub: 'Service · 2d', text: 'Christmas opening hours are up. Order repeat prescriptions by 16 December.' }, { sub: 'News · 1w', text: 'Diabetes check clinics now in every branch.' } ],
+    contact: { person: 'Helen Ward, Partnerships', response: 'Replies within one working day' } },
+
+  'carelink-education': { key: 'carelink-education', kind: 'business', gw: 'diabetes', name: 'Carelink Diabetes Education', color: '#F28C28', gradient: ORANGE, img: U('1660314002642-77bbfe3e9b48', 900, 500),
+    tier: 'Verified', category: 'Health education', tagline: 'Diabetes education courses for employers and community groups.',
+    about: { founded: 'Birmingham · 2009', story: 'We run diabetes awareness and self-management courses for employers, schools and community groups, in English and seven other languages.' },
+    stats: { years: 17, staff: 48, clients: '600 employers & schools' },
+    caps: [ { name: 'Workplace awareness', detail: 'What colleagues and managers need to know, in an hour.' }, { name: 'School training', detail: 'Hypo awareness for teachers and support staff.' }, { name: 'Community courses', detail: 'Type 2 self-management, in eight languages.' } ],
+    specs: { moq: '1 session', lead: '2–4 weeks', regions: 'UK-wide, online or on site', certs: ['Quality-assured curriculum', 'ISO 9001', 'Safeguarding trained'] },
+    supplies: [ { kind: 'brand', key: 'quick-lift', what: 'Hypo kit pouches for every school we train' } ],
+    cases: [ { title: 'Midlands primary schools', text: 'Hypo awareness training for staff in 140 schools.' } ],
+    feed: [ { sub: 'Courses · 6d', text: 'January dates for school hypo training are open.' } ],
+    contact: { person: 'Imran Patel, Courses', response: 'Replies within two working days' } }
+});
+
+/* events in the Events tab */
+EVENTS_FEED.push(
+  { gw: 'diabetes', zone: 'balance-bakery', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Balance Bakery Live · Christmas baking', desc: 'Stollen and mince pies baked live, with the carbs per portion worked out on screen.' },
+  { gw: 'diabetes', type: 'Event', icon: '💬', time: 'Nov 19', title: 'Type 1 Together parents’ evening chat', desc: 'An online chat for parents of children with type 1. School, sleep and sensors.' },
+  { gw: 'diabetes', type: 'Event', icon: '🚶', time: 'Nov 21', title: 'Kelvingrove Park walk, Glasgow', desc: 'Diabetes Walkers Glasgow: an easy loop from the bandstand, then tea.' },
+  { gw: 'diabetes', zone: 'glucora', type: 'Event', icon: '🎨', time: 'Nov 26', title: 'Glucora colour vote', desc: 'Pick the next three Overpatch colours with the community.' },
+  { gw: 'diabetes', zone: 'solewell', type: 'Sale', icon: '🧦', time: 'Nov 28', title: 'Solewell winter sock sale', desc: 'Buy two five-packs, get a third free, all weekend.' },
+  { gw: 'diabetes', type: 'Event', icon: '🍽️', time: 'Dec 3', title: 'Eating out at Christmas: online talk', desc: 'Sarah Quinn on menus, carbs and enjoying the party. Free.' },
+  { gw: 'diabetes', type: 'Event', icon: '🌳', time: 'Dec 5', title: 'Pollok Country Park long walk', desc: 'Diabetes Walkers Glasgow’s monthly longer walk. Bring your hypo kit.' },
+  { gw: 'diabetes', zone: 'quick-lift', type: 'Deadline', icon: '👛', time: 'Dec 12', title: 'Schools pack orders for January', desc: 'Quick Lift: order hypo kit pouches for the new term.' }
+);
+})();
+/* ═════════ /DIABETESXX ═════════ */
+/* ═════════ ASTHMAXX — a Health demo gateway (2026-11-17, Sean) ═════════
+   Built like DoctorXX and GolfXX: theme, feed, 4 Brand Zones, 2 Business Zones, 3 Pros, 2 communities, 3 apps, events.
+   Palette (light): fresh-air mint, clear teal, soft violet. Home sector: Health.
+   Brands, pros and communities are fictional; places are real. Health text explains and signposts, never advises
+   on medicines: every app points back to the person’s own asthma action plan. Source of truth: _lab/health/asthmaxx-block.js. */
+(function(){
+const U = (id, w, h) => `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&q=75`;
+const TEAL = 'linear-gradient(135deg,#2BB8A3,#0E7A6B)', VIOLET = 'linear-gradient(135deg,#9A7BFF,#5B3FD1)', SKY = 'linear-gradient(135deg,#5BB6F0,#2370B8)', SUN = 'linear-gradient(135deg,#F7C548,#D99A12)';
+
+GATEWAYS.asthma = {
+  name: 'AsthmaXX', domain: 'asthmaxx.com', emoji: '🌬️', sector: 'health', live: true,
+  tagline: 'The Asthma Universe',
+  theme: {
+    bg: '#F2FAF7', text: '#123029', cardBg: '#FFFFFF', cardBorder: 'rgba(14,122,107,.13)',
+    headerBg: 'linear-gradient(180deg,#DDF3EC,#F2FAF7)', accent: '#0E9A86', accentAlt: '#7C5CFC', dark: false
+  },
+  gradient: 'linear-gradient(135deg,#0E7A6B,#2BB8A3,#7C5CFC)',
+  stats: { members: '3.1M', brands: '1,200+', agents: '46' },
+  spaces: ['All Feed', 'Kids & Parents', 'Triggers & Seasons', 'Running & Sport', 'Home & Air', 'Inhaler Tips'],
+  trending: ['#AsthmaActionPlan', '#ColdAirRunning', '#PollenSeason'],
+  brandZones: [
+    { key: 'clearleaf-air', name: 'Clearleaf Air', color: '#0E9A86', tier: 'Founding Partner', tag: 'Quiet air purifiers for bedrooms and classrooms' },
+    { key: 'puffin-packs', name: 'Puffin Packs', color: '#7C5CFC', tier: 'Brand Zone', tag: 'Inhaler cases and spacer bags kids want to carry' },
+    { key: 'dustproof-home', name: 'Dustproof Home', color: '#2370B8', tier: 'Brand Zone', tag: 'Allergy-proof bedding covers that feel like bedding' },
+    { key: 'stride-air', name: 'Stride Air', color: '#D99A12', tier: 'Brand Zone', tag: 'Winter running kit that warms the air you breathe' }
+  ],
+  apps: [
+    { name: 'Peak Flow Diary', color: '#0E9A86', desc: 'Morning and evening readings against your best', key: 'peak-flow', url: 'apps/peak-flow.html',
+      dev: 'Airwave Software', rating: '4.8', users: '780K', perms: ['profile', 'feed'],
+      tagline: 'See the dip before the bad day.',
+      about: 'Peak Flow Diary logs your morning and evening peak flow and shows each reading as a share of your personal best, in the green, amber and red zones you agreed with your nurse or doctor. Two weeks on one chart, ready for your next asthma review. Always follow your own asthma action plan.',
+      features: ['Morning and evening readings', 'Each reading against your personal best', 'Zones from your action plan', 'Two-week chart for your review'],
+      shots: ['apps/peak-flow/shot-1.jpg', 'apps/peak-flow/shot-2.jpg', 'apps/peak-flow/shot-3.jpg'],
+      version: '4.1', size: '10 KB',
+      updates: [ { v: '4.1', ago: 3, notes: 'Two-week chart with your zones.' }, { v: '4.0', ago: 75, notes: 'Set your personal best.' }, { v: '3.5', ago: 220, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@wheezy_will', stars: 5, ago: 2, text: 'Showed the chart at my review and my plan got changed for the better.' }, { who: '@asthmamum_ama', stars: 5, ago: 10, text: 'Doing my daughter’s readings is a game now.' }, { who: '@runner_rhi', stars: 4, ago: 22, text: 'Would love a reminder at 8am.' } ] },
+    { name: 'Inhaler Tracker', color: '#7C5CFC', desc: 'Doses left, preventer streak, renewal reminder', key: 'inhaler-tracker', url: 'apps/inhaler-tracker.html',
+      dev: 'Puffin Packs', rating: '4.7', users: '540K', perms: ['profile', 'feed'],
+      tagline: 'Never find an empty inhaler at 2am.',
+      about: 'Inhaler Tracker counts the doses left in each inhaler as you use it, keeps a streak for taking your preventer as prescribed, and tells you when to order the next one. It also notes how often you reach for your reliever, which is worth telling your nurse about. Doses are the ones on your prescription; the app never suggests changing them.',
+      features: ['Doses left in every inhaler', 'Preventer streak', 'Reorder reminder', 'Reliever use this week'],
+      shots: ['apps/inhaler-tracker/shot-1.jpg', 'apps/inhaler-tracker/shot-2.jpg', 'apps/inhaler-tracker/shot-3.jpg'],
+      version: '3.3', size: '10 KB',
+      updates: [ { v: '3.3', ago: 4, notes: 'Reliever use this week, with a nudge to talk to your nurse.' }, { v: '3.0', ago: 95, notes: 'Preventer streak.' }, { v: '2.6', ago: 240, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@asthmamum_ama', stars: 5, ago: 1, text: 'No more shaking inhalers to guess if they are empty.' }, { who: '@wheezy_will', stars: 5, ago: 8, text: 'Fifty-day preventer streak. Never managed that before.' }, { who: '@coach_jas', stars: 4, ago: 26, text: 'I get my runners to use it.' } ] },
+    { name: 'Air Check', color: '#D99A12', desc: 'Pollen, air quality and cold air, with your triggers', key: 'air-check', url: 'apps/air-check.html',
+      dev: 'Clearleaf Air', rating: '4.6', users: '460K', perms: ['profile', 'feed'],
+      tagline: 'Know what the air is doing today.',
+      about: 'Air Check shows the day’s pollen, air quality and temperature for your town, and highlights the ones that match the triggers you have ticked. Log how your chest feels each day, and over time you will see which days are your hard days. This demo shows a sample forecast for Leeds.',
+      features: ['Pollen, air quality and cold air', 'Highlights your own triggers', 'Three-day outlook', 'Daily symptom log'],
+      shots: ['apps/air-check/shot-1.jpg', 'apps/air-check/shot-2.jpg', 'apps/air-check/shot-3.jpg'],
+      version: '2.2', size: '9 KB',
+      updates: [ { v: '2.2', ago: 5, notes: 'Cold-air warning for runners.' }, { v: '2.0', ago: 80, notes: 'Trigger matching.' }, { v: '1.7', ago: 210, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@runner_rhi', stars: 5, ago: 3, text: 'The cold-air warning is spot on for my morning runs.' }, { who: '@hayfever_hal', stars: 5, ago: 12, text: 'Grass pollen days, sorted.' }, { who: '@wheezy_will', stars: 4, ago: 29, text: 'More towns please.' } ] }
+  ],
+  pros: [
+    { key: 'emma-clarke-asthma-nurse', name: 'Emma Clarke Asthma Nurse', color: '#0E9A86', tag: 'Respiratory nurse specialist · inhaler technique and action plan reviews', role: 'Asthma nurse',
+      img: U('1494790108377-be9c29b29330', 800, 800), base: 'Nottingham, UK', langs: 'English', years: 17, rating: '4.9', reviewsN: 532, cur: '£',
+      creds: ['Registered nurse (NMC)', 'Respiratory nurse specialist', 'Fifteen years in NHS asthma clinics'],
+      about: 'Emma ran asthma clinics in the NHS for fifteen years. She checks inhaler technique on video, talks through your asthma action plan and helps you prepare the right questions for your GP or asthma nurse. She never changes prescriptions: that stays with your own team.',
+      services: [ { id: 'tech', name: 'Inhaler technique check', dur: '30 minutes', price: 35, desc: 'On video: every inhaler you use, checked and coached.' },
+                  { id: 'plan', name: 'Action plan walkthrough', dur: '45 minutes', price: 50, desc: 'Understand your plan, and what to ask at your next review.' },
+                  { id: 'parents', name: 'Parents’ asthma session', dur: '60 minutes', price: 60, desc: 'For parents of a child with asthma: spacers, triggers, school.' } ],
+      avail: { days: [1, 2, 3, 4, 5], times: ['09:00', '12:30', '19:00'] },
+      reviews: [ { who: '@asthmamum_ama', stars: 5, ago: 3, text: 'Turns out we had been using the spacer wrong for two years.' }, { who: '@wheezy_will', stars: 5, ago: 15, text: 'Went to my review with good questions for the first time.' }, { who: '@grandma_glenda', stars: 5, ago: 39, text: 'Patient and clear.' } ],
+      posts: [ { ago: 1, text: 'Most people make at least one mistake with their inhaler. Ask for a technique check at every review.' }, { ago: 6, text: 'Your asthma action plan should be on the fridge, not in a drawer.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'tom-price-breathing', name: 'Tom Price Breathing Coach', color: '#7C5CFC', tag: 'Breathing retraining for people with asthma · alongside your usual treatment', role: 'Breathing coach',
+      img: U('1568602471122-7832951cc4c5', 800, 800), base: 'Bristol, UK', langs: 'English', years: 10, rating: '4.8', reviewsN: 264, cur: '£',
+      creds: ['Respiratory physiotherapist (HCPC)', 'Breathing pattern specialist', 'Yoga teacher'],
+      about: 'Tom is a respiratory physiotherapist who teaches breathing exercises that many people with asthma find help them feel more in control. They work alongside your inhalers and action plan, never instead of them.',
+      services: [ { id: 'one', name: 'Breathing assessment', dur: '60 minutes', price: 70, desc: 'How you breathe now, and three exercises to start with.' },
+                  { id: 'course', name: 'Four-week course', dur: '4 × 45 minutes', price: 220, desc: 'Weekly online sessions and a daily ten-minute practice.' },
+                  { id: 'group', name: 'Group class', dur: '60 minutes', price: 15, desc: 'Online, every Wednesday evening.' } ],
+      avail: { days: [1, 3, 4, 6], times: ['08:00', '13:00', '19:30'] },
+      reviews: [ { who: '@wheezy_will', stars: 5, ago: 6, text: 'I feel calmer when my chest is tight now.' }, { who: '@runner_rhi', stars: 5, ago: 19, text: 'Breathing through my nose on easy runs changed everything.' }, { who: '@grandma_glenda', stars: 4, ago: 42, text: 'Gentle and kind.' } ],
+      posts: [ { ago: 2, text: 'Breathing exercises are a partner to your inhalers, not a replacement. Keep taking your preventer.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'jas-singh-running', name: 'Jas Singh Running Coach', color: '#D99A12', tag: 'Run coach for people with asthma · couch to 5K, half marathon', role: 'Running coach',
+      img: U('1521119989659-a83eee488004', 800, 800), base: 'Leeds, UK', langs: 'English, Punjabi', years: 9, rating: '4.9', reviewsN: 341, cur: '£',
+      creds: ['UK Athletics run leader', 'Coach in Running Fitness', 'Lives with asthma'],
+      about: 'Jas has had asthma since childhood and has run eleven marathons. He coaches runners with asthma in Leeds and online: warm-ups, pacing, cold-air days and how to plan training around your action plan.',
+      services: [ { id: 'c25k', name: 'Couch to 5K for asthma', dur: '9 weeks', price: 80, desc: 'A Saturday group along the Leeds Liverpool Canal.' },
+                  { id: 'plan', name: 'Personal training plan', dur: '12 weeks', price: 140, desc: 'Built round your races, your asthma and your week.' },
+                  { id: 'session', name: 'One-to-one run session', dur: '60 minutes', price: 40, desc: 'Form, pacing and warm-ups in Roundhay Park.' } ],
+      avail: { days: [2, 4, 6, 0], times: ['07:00', '09:00', '18:00'] },
+      reviews: [ { who: '@runner_rhi', stars: 5, ago: 4, text: 'From wheezing at 2K to a sub-30 5K.' }, { who: '@wheezy_will', stars: 5, ago: 18, text: 'The long warm-up is the secret.' }, { who: '@hayfever_hal', stars: 5, ago: 37, text: 'Planned my spring half round the pollen. Smart.' } ],
+      posts: [ { ago: 1, text: 'Cold morning? Warm up for fifteen minutes, cover your mouth with a buff, and keep your reliever in your pocket.' } ],
+      tier: 'Pro Zone', verified: true }
+  ],
+  communities: [
+    { key: 'asthma-parents', name: 'Asthma Parents', domain: 'parents.asthmaxx.com', color: '#7C5CFC', img: U('1705750764097-41d9662ae865', 900, 500),
+      scope: 'Global', where: 'Every school run', members: 74200, online: 1380, tagline: 'Spacers, school trips and sleepless nights, shared.',
+      about: 'Parents and carers of children with asthma. Getting a five-year-old to use a spacer, talking to school, coping with winter colds, and the moment your child’s breathing finally settles. Experience here; medical advice from your own team.',
+      rules: ['Share experience, not medical advice', 'Be kind, everyone is tired', 'Emergencies: call 999, not the forum'],
+      mods: ['@asthmamum_ama', '@dad_of_three_dev'],
+      threads: [ { t: 'How did you get your toddler to use a spacer?', by: '@asthmamum_ama', tag: 'SPACERS', replies: 386, ago: 0, votes: 840 }, { t: 'School asthma plans: what to put in', by: '@dad_of_three_dev', tag: 'SCHOOL', replies: 142, ago: 1, votes: 310 }, { t: 'Winter colds: how do you get through November?', by: '@asthmamum_ama', tag: 'WINTER', replies: 228, ago: 2, votes: 412 }, { t: 'She ran the whole school cross-country', by: '@dad_of_three_dev', tag: 'STORIES', replies: 96, ago: 3, votes: 690 } ],
+      events: [ { title: 'Back-to-school asthma chat', day: 3, time: '20:00', where: 'Online' }, { title: 'Spacer tips with an asthma nurse', day: 9, time: '19:30', where: 'Online' } ] },
+    { key: 'run-easy-leeds', name: 'Run Easy Leeds', domain: 'leeds.asthmaxx.com', color: '#D99A12', img: U('1739368732843-800f36a9b7d0', 900, 500),
+      scope: 'Local', where: 'Leeds', members: 1240, online: 38, tagline: 'Runners with asthma. Nobody gets left behind.',
+      about: 'A running group in Leeds for people with asthma. Easy-paced runs along the canal and round Roundhay Park, a long warm-up every time, and a group that waits.',
+      rules: ['Reliever in your pocket', 'No one runs alone', 'Warm up properly'],
+      mods: ['@coach_jas', '@runner_rhi'],
+      threads: [ { t: 'Sunday: Roundhay Park 5K, meet at the Mansion', by: '@coach_jas', tag: 'RUN', replies: 28, ago: 0, votes: 46 }, { t: 'Best buff for frosty mornings?', by: '@runner_rhi', tag: 'KIT', replies: 34, ago: 1, votes: 52 }, { t: 'Leeds Half 2027: who is in?', by: '@coach_jas', tag: 'RACES', replies: 41, ago: 2, votes: 68 } ],
+      events: [ { title: 'Roundhay Park easy 5K', day: 5, time: '09:00', where: 'Roundhay Park, Leeds' }, { title: 'Canal towpath run', day: 8, time: '18:30', where: 'Granary Wharf, Leeds' } ] }
+  ],
+  feed: [
+    { av: 'AX', avBg: TEAL, author: 'AsthmaXX Editorial', sub: 'Featured · Just now', badge: '★ FEATURED',
+      text: 'Triggers, inhalers, kids, running and clean air at home. From a new diagnosis to your first marathon: living well with asthma, all in one place.',
+      img: U('1760389003439-c69220f03e1b', 800, 600), eng: '♡ 31.4K · 💬 2.9K · ↗ 3.2K' },
+    { av: 'RR', avBg: SUN, author: '@runner_rhi', sub: 'Running & Sport · Just now', badge: 'COMMUNITY',
+      text: 'Minus two in Roundhay Park this morning. Fifteen-minute warm-up, buff over my mouth, and my first 10K without stopping. Thanks Run Easy Leeds 🏃‍♀️',
+      img: U('1576751691889-568b63882cd5', 800, 600), eng: '♡ 11.8K · 💬 1.4K · ↗ 420' },
+    { av: 'CA', avBg: TEAL, author: 'Clearleaf Air', sub: 'Founding Partner · Brand Zone', badge: 'BRAND ZONE',
+      text: 'The <b>Clearleaf Sleep</b> purifier runs at 22 decibels, quieter than a whisper, and cleans a bedroom’s air five times an hour.',
+      img: U('1730299789489-b55bf96b22bf', 800, 600), eng: '♡ 7.6K · 💬 640 · ↗ 820' },
+    { av: 'PP', avBg: VIOLET, author: 'Puffin Packs', sub: 'Brand Zone · 1h ago', badge: 'BRAND ZONE',
+      text: 'A spacer bag shaped like a puffin. Kids carry it. Teachers can find it. Parents stop worrying. The <b>Puffin Spacer Bag</b> is back in stock.',
+      img: U('1788201640829-5981e7ed4adf', 800, 600), eng: '♡ 4.8K · 💬 380 · ↗ 440' },
+    { av: 'AA', avBg: VIOLET, author: '@asthmamum_ama', sub: 'Kids & Parents · 2h ago', badge: 'COMMUNITY',
+      text: 'Six weeks of peak flow readings made into a game, one sticker a day. Her nurse said it was the best diary she had seen all year 🌟',
+      img: U('1774579892207-ec624f1f03a8', 800, 600), eng: '♡ 6.2K · 💬 720 · ↗ 260' },
+    { av: 'DH', avBg: SKY, author: 'Dustproof Home', sub: 'Brand Zone · 4h ago', badge: 'BRAND ZONE',
+      text: 'Allergy-proof covers that do not crinkle. The <b>Soft Barrier</b> mattress and pillow covers feel like ordinary cotton.',
+      img: U('1711059985570-4c32ed12a12c', 800, 600), eng: '♡ 2.4K · 💬 170 · ↗ 190' },
+    { av: 'EC', avBg: TEAL, author: 'Emma Clarke Asthma Nurse', sub: 'Inhaler Tips · 6h ago', badge: 'PRO ZONE',
+      text: 'Winter tip: keep your action plan where you will see it, and book your review before the colds arrive, not after.',
+      img: U('1558912720-8f34899318cb', 800, 600), eng: '♡ 2.8K · 💬 210 · ↗ 380' }
+  ],
+  prompts: ['What is a peak flow reading and why does it matter?', 'How do I run in cold air with asthma?', 'Tips to help a child use a spacer', 'Find an asthma-friendly running group in Leeds'],
+  businesses: ['greenline-clean-air', 'second-breath-recycling']
+};
+
+/* the four Brand Zones and two Business Zones */
+const brand = (o) => Object.assign({ kind: 'brand', gw: 'asthma', verified: true }, o);
+Object.assign(ZONES, {
+  'clearleaf-air': brand({ key: 'clearleaf-air', name: 'Clearleaf Air', color: '#0E9A86', gradient: TEAL, tier: 'Founding Partner',
+    tagline: 'Quiet air purifiers for bedrooms and classrooms', stats: { followers: '168K', content: '640', products: '22' },
+    ad: { badge: 'Featured', img: U('1730299789489-b55bf96b22bf', 760, 760), hl: 'Quieter than a whisper.', sub: 'The Clearleaf Sleep purifier, for the bedroom.', meta: 'From £19' },
+    products: [
+      { name: 'Clearleaf Sleep Purifier', price: '£189', tag: 'FLAGSHIP', emoji: '🌬️', rating: 4.8, reviews: 3640, cat: 'purifiers', special: true, desc: 'A true HEPA purifier for bedrooms up to 25 m², at 22 decibels on its night setting.', features: ['HEPA H13 filter', '22 dB night mode', 'Air quality light'], review: { who: 'Will T.', text: 'The room feels fresher and it is silent.' } },
+      { name: 'Clearleaf Home Purifier', price: '£289', tag: 'BESTSELLER', emoji: '🏠', rating: 4.8, reviews: 2180, cat: 'purifiers', desc: 'For living rooms and open-plan spaces up to 50 m².', features: ['HEPA H13 + carbon', 'App control'], review: { who: 'Ama O.', text: 'Fewer sneezes in the lounge.' } },
+      { name: 'Classroom Purifier', price: '£449', tag: 'SPECIAL', emoji: '🏫', rating: 4.9, reviews: 640, cat: 'purifiers', special: true, desc: 'Built for a classroom of thirty, with a CO₂ display for when to open a window.', features: ['CO₂ display', 'Tamper-proof'], review: { who: 'Dev K.', text: 'Our PTA bought one for every class.' } },
+      { name: 'Replacement Filter', price: '£39', emoji: '🔁', rating: 4.7, reviews: 2960, cat: 'filters', desc: 'A new HEPA and carbon filter, every six to twelve months.', features: ['Fits Sleep and Home'], review: { who: 'Glenda P.', text: 'Easy to change.' } },
+      { name: 'Filter Subscription', price: '£19', emoji: '📦', rating: 4.8, reviews: 1220, cat: 'filters', desc: 'A filter sent to you every six months, a little cheaper.', features: ['Cancel any time'], review: { who: 'Hal B.', text: 'Never forget again.' } }
+    ],
+    shopCats: [ { key: 'purifiers', label: 'Purifiers', icon: '🌬️' }, { key: 'filters', label: 'Filters', icon: '🔁' } ],
+    feed: [
+      { type: 'post', sub: 'Brand post · 3h', text: 'The <b>Clearleaf Sleep</b>: 22 decibels, five air changes an hour.', img: U('1761330440311-16e160cad236', 800, 440), eng: '♡ 7.6K · 💬 640 · ↗ 820', product: 0 },
+      { type: 'post', sub: 'For schools · Yesterday', text: 'Three hundred classrooms in Yorkshire now have a Clearleaf, and a CO₂ display that tells teachers when to open a window.', img: U('1766243062910-bda898a2470c', 800, 440), eng: '♡ 3.4K · 💬 260' },
+      { type: 'community', who: 'Ama O.', whoBg: VIOLET, sub: 'Community · 1d', text: 'Will a purifier help my daughter’s asthma at night?', eng: '♡ 214 · 💬 66', reply: 'Hi Ama, a purifier can cut dust, pet dander and pollen in the bedroom air, which helps some people with those triggers. It is not a treatment, so keep to her action plan, and ask her asthma nurse which of her triggers matter most. If dust mites are one, our Sleep model and Dustproof Home covers are a good pair. 🌬️' }
+    ],
+    events: [ { zoneEvent: true, tag: 'LIVE', title: 'Clearleaf Air Live · Winter air at home', when: 'Live now', desc: 'An air-quality scientist answers your questions about damp, mould and clean air indoors.', registered: 3860, capacity: 9000 } ],
+    about: { founded: 'Leeds · 2016', story: 'Two engineers, one with asthma, who wanted a purifier quiet enough to sleep next to. We joined GENEXXO as AsthmaXX’s Founding Partner because this is where people who care about the air they breathe gather.', milestones: [['2016', 'The first Sleep purifier'], ['2023', 'The Classroom purifier'], ['2026', 'Founding Partner on AsthmaXX']], values: ['Quiet by design', 'Honest about what purifiers can do', 'Filters recycled'] } }),
+
+  'puffin-packs': brand({ key: 'puffin-packs', name: 'Puffin Packs', color: '#7C5CFC', gradient: VIOLET, tier: 'Brand Zone',
+    tagline: 'Inhaler cases and spacer bags kids want to carry', stats: { followers: '52.4K', content: '280', products: '36' },
+    ad: { badge: 'New', img: U('1788201640829-5981e7ed4adf', 760, 760), hl: 'The Puffin Spacer Bag.', sub: 'Kids carry it. Teachers find it.', meta: 'From £8' },
+    products: [
+      { name: 'Puffin Spacer Bag', price: '£22', tag: 'FLAGSHIP', emoji: '🐧', rating: 4.9, reviews: 3220, cat: 'bags', special: true, desc: 'A padded bag for a spacer, inhalers and the action plan, with a name tag and a bright puffin face.', features: ['Fits most spacers', 'Clear plan pocket', 'Clips to a school bag'], review: { who: 'Ama O.', text: 'She shows it off to her friends.' } },
+      { name: 'Inhaler Case', price: '£12', tag: 'BESTSELLER', emoji: '🎒', rating: 4.8, reviews: 4180, cat: 'cases', desc: 'A hard case that clips to a belt or bag, with a carabiner.', features: ['Fits most inhalers', 'Six colours'], review: { who: 'Rhi J.', text: 'Clipped to my running belt.' } },
+      { name: 'Spacer Mask Stickers', price: '£8', emoji: '⭐', rating: 4.7, reviews: 1460, cat: 'kids', desc: 'Sticker sheets to decorate a spacer, and a reward chart.', features: ['Wipe-clean'], review: { who: 'Dev K.', text: 'Turned spacer time into fun.' } },
+      { name: 'School Asthma Kit', price: '£28', tag: 'SPECIAL', emoji: '🏫', rating: 4.9, reviews: 860, cat: 'bags', special: true, desc: 'A spacer bag, a spare inhaler case and a printed school plan template.', features: ['Name labels included'], review: { who: 'Glenda P.', text: 'Ready for the new term in one box.' } }
+    ],
+    shopCats: [ { key: 'bags', label: 'Spacer bags', icon: '🐧' }, { key: 'cases', label: 'Inhaler cases', icon: '🎒' }, { key: 'kids', label: 'Stickers & charts', icon: '⭐' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Back in stock: the <b>Puffin Spacer Bag</b>.', img: U('1778076498997-0bc0fd11397e', 800, 440), eng: '♡ 4.8K · 💬 380', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'DEADLINE', title: 'Last order for Christmas delivery', when: 'Dec 18 · 23:59', desc: 'Order by midnight on 18 December for delivery before Christmas.', registered: 1120, capacity: 4000 } ],
+    about: { founded: 'Aberdeen · 2019', story: 'A mum whose son kept losing his spacer at school, and a toy designer. The puffin is from the cliffs near our studio.', milestones: [['2019', 'The first spacer bag'], ['2024', 'School kits in 2,000 schools'], ['2026', 'Brand Zone on AsthmaXX']], values: ['Made for kids to love', 'Easy for teachers to find', 'Recycled fabrics'] } }),
+
+  'dustproof-home': brand({ key: 'dustproof-home', name: 'Dustproof Home', color: '#2370B8', gradient: SKY, tier: 'Brand Zone',
+    tagline: 'Allergy-proof bedding covers that feel like bedding', stats: { followers: '33.8K', content: '190', products: '28' },
+    ad: { badge: 'Featured', img: U('1711059985570-4c32ed12a12c', 760, 760), hl: 'Covers that do not crinkle.', sub: 'Soft Barrier mattress and pillow covers.', meta: 'From £14' },
+    products: [
+      { name: 'Soft Barrier Mattress Cover', price: '£69', tag: 'FLAGSHIP', emoji: '🛏️', rating: 4.8, reviews: 1980, cat: 'covers', special: true, desc: 'A tightly woven cotton cover that keeps dust mites in the mattress and away from you.', features: ['Zipped on all sides', 'Washable at 60°', 'Silent: no plastic'], review: { who: 'Will T.', text: 'Mornings are so much better.' } },
+      { name: 'Pillow Covers (2)', price: '£24', tag: 'BESTSELLER', emoji: '🛌', rating: 4.8, reviews: 2640, cat: 'covers', desc: 'The same barrier fabric, for pillows.', features: ['Zipped', 'Washable at 60°'], review: { who: 'Hal B.', text: 'Soft and quiet.' } },
+      { name: 'Duvet Cover (barrier)', price: '£59', emoji: '☁️', rating: 4.7, reviews: 920, cat: 'covers', desc: 'Covers the duvet itself, under your normal duvet cover.', features: ['Single to king'], review: { who: 'Ama O.', text: 'Easy to fit.' } },
+      { name: 'Hot-Wash Laundry Bag', price: '£14', emoji: '🧺', rating: 4.6, reviews: 740, cat: 'care', desc: 'For soft toys that need a 60° wash.', features: ['Two sizes'], review: { who: 'Dev K.', text: 'Teddy survived.' } }
+    ],
+    shopCats: [ { key: 'covers', label: 'Covers', icon: '🛏️' }, { key: 'care', label: 'Laundry', icon: '🧺' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'The <b>Soft Barrier</b> mattress cover feels like ordinary cotton.', img: U('1631049552057-403cdb8f0658', 800, 440), eng: '♡ 2.4K · 💬 170', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday bedding sale', when: 'Nov 27 · All day', desc: 'A third off every cover for one day.', registered: 1460, capacity: 5000 } ],
+    about: { founded: 'Kendal · 2013', story: 'A family textile business that started weaving barrier fabric when a granddaughter was diagnosed with a dust mite allergy.', milestones: [['2013', 'The first barrier cover'], ['2021', 'The Soft Barrier range'], ['2026', 'Brand Zone on AsthmaXX']], values: ['No plastic membranes', 'Woven in Cumbria', 'Washable at 60°'] } }),
+
+  'stride-air': brand({ key: 'stride-air', name: 'Stride Air', color: '#D99A12', gradient: SUN, tier: 'Brand Zone',
+    tagline: 'Winter running kit that warms the air you breathe', stats: { followers: '29.6K', content: '160', products: '30' },
+    ad: { badge: 'Featured', img: U('1576751691889-568b63882cd5', 760, 760), hl: 'Warmer air, every breath.', sub: 'The Thermal Run Buff, for frosty mornings.', meta: 'From £6' },
+    products: [
+      { name: 'Thermal Run Buff', price: '£22', tag: 'FLAGSHIP', emoji: '🧣', rating: 4.8, reviews: 2860, cat: 'buffs', special: true, desc: 'A merino buff with a breathable mesh panel over the mouth that warms the air you breathe.', features: ['Merino', 'Mesh breathing panel'], review: { who: 'Rhi J.', text: 'Frosty runs without the cough.' } },
+      { name: 'Running Belt with Inhaler Pocket', price: '£26', tag: 'BESTSELLER', emoji: '🏃', rating: 4.8, reviews: 1740, cat: 'belts', desc: 'A bounce-free belt with a quick-grab pocket sized for an inhaler.', features: ['Reflective', 'Phone pocket'], review: { who: 'Jas S.', text: 'I recommend it to every runner I coach.' } },
+      { name: 'Thermal Running Top', price: '£45', emoji: '👕', rating: 4.7, reviews: 1120, cat: 'tops', desc: 'Brushed inside, light outside, reflective for dark mornings.', features: ['Thumb loops'], review: { who: 'Will T.', text: 'Warm and not sweaty.' } },
+      { name: 'Clip-On Light', price: '£12', emoji: '🔦', rating: 4.6, reviews: 960, cat: 'belts', desc: 'A small rechargeable light for winter runs.', features: ['USB-C'], review: { who: 'Hal B.', text: 'Bright and light.' } }
+    ],
+    shopCats: [ { key: 'buffs', label: 'Buffs', icon: '🧣' }, { key: 'belts', label: 'Belts & lights', icon: '🏃' }, { key: 'tops', label: 'Tops', icon: '👕' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 2h', text: 'The <b>Thermal Run Buff</b>: made for minus two in Roundhay Park.', img: U('1559166515-3452b9ed1e05', 800, 440), eng: '♡ 1.8K · 💬 130', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Winter run and kit test, Leeds', when: 'Dec 7 · Roundhay Park', desc: 'Try the winter range on an easy 5K with Run Easy Leeds.', registered: 180, capacity: 300 } ],
+    about: { founded: 'Sheffield · 2018', story: 'A fell runner with exercise-induced asthma who sewed a mesh panel into a buff, and kept going.', milestones: [['2018', 'The first Thermal Run Buff'], ['2023', 'The inhaler-pocket belt'], ['2026', 'Brand Zone on AsthmaXX']], values: ['Made for real winters', 'Tested in the Peak District', 'Repairs for life'] } }),
+
+  'greenline-clean-air': { key: 'greenline-clean-air', kind: 'business', gw: 'asthma', name: 'Greenline Clean Air Services', color: '#0E9A86', gradient: TEAL, img: U('1768471569643-717e823b5f9a', 900, 500),
+    tier: 'Verified', category: 'Indoor air quality', tagline: 'Ventilation and air-quality surveys for schools and offices.',
+    about: { founded: 'Manchester · 2008', story: 'We measure and improve the air inside schools, offices and homes: ventilation, damp and mould, and filtration.' },
+    stats: { years: 18, staff: 120, clients: '1,400 schools & offices' },
+    caps: [ { name: 'Air-quality surveys', detail: 'CO₂, particulates and humidity measured room by room.' }, { name: 'Ventilation upgrades', detail: 'Fans and heat-recovery ventilation, fitted in the holidays.' }, { name: 'Damp and mould', detail: 'Causes found and fixed in rented and social homes.' } ],
+    specs: { moq: '1 building', lead: '2–6 weeks', regions: 'North of England', certs: ['ISO 9001', 'ISO 14001', 'Ventilation installer accreditation'] },
+    supplies: [ { kind: 'brand', key: 'clearleaf-air', what: 'Classroom purifiers fitted with every school survey' } ],
+    cases: [ { title: 'Primary schools, Greater Manchester', text: 'CO₂ monitors and ventilation fixes in 60 schools.' } ],
+    feed: [ { sub: 'Homes · 3d', text: 'Winter is damp season. Free mould checks for social landlords until March.' }, { sub: 'Schools · 1w', text: 'Holiday installation slots for February half-term are open.' } ],
+    contact: { person: 'Laura Okoye, Schools', response: 'Replies within one working day' } },
+
+  'second-breath-recycling': { key: 'second-breath-recycling', kind: 'business', gw: 'asthma', name: 'Second Breath Inhaler Recycling', color: '#7C5CFC', gradient: VIOLET, img: U('1733751681919-510acfe890dc', 900, 500),
+    tier: 'Verified', category: 'Medical recycling', tagline: 'Used inhalers collected from pharmacies and recycled.',
+    about: { founded: 'Glasgow · 2015', story: 'We collect used inhalers from pharmacies, safely recover the leftover propellant gas, and recycle the plastic and aluminium.' },
+    stats: { years: 11, staff: 64, clients: '3,200 pharmacies' },
+    caps: [ { name: 'Pharmacy collection', detail: 'Return bins in every partner pharmacy, emptied monthly.' }, { name: 'Gas recovery', detail: 'Leftover propellant captured, not released.' }, { name: 'Material recycling', detail: 'Aluminium and plastic sorted and recycled.' } ],
+    specs: { moq: '1 pharmacy', lead: 'Bins within 2 weeks', regions: 'UK-wide', certs: ['Waste carrier licence', 'ISO 14001', 'Carbon-reporting partner'] },
+    supplies: [ { kind: 'brand', key: 'puffin-packs', what: 'Return envelopes in every School Asthma Kit' } ],
+    cases: [ { title: 'Scotland pilot', text: 'Half a million inhalers recycled in two years.' } ],
+    feed: [ { sub: 'Impact · 1w', text: 'Take your used inhalers back to the pharmacy: never in the household bin.' } ],
+    contact: { person: 'Callum Reid, Pharmacy partners', response: 'Replies within two working days' } }
+});
+
+/* events in the Events tab */
+EVENTS_FEED.push(
+  { gw: 'asthma', zone: 'clearleaf-air', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Clearleaf Air Live · Winter air at home', desc: 'An air-quality scientist answers questions about damp, mould and clean air indoors.' },
+  { gw: 'asthma', type: 'Event', icon: '🎒', time: 'Nov 20', title: 'Asthma Parents: school asthma chat', desc: 'An online chat on school plans, spare inhalers and PE.' },
+  { gw: 'asthma', type: 'Event', icon: '🏃', time: 'Nov 22', title: 'Run Easy Leeds: Roundhay Park 5K', desc: 'An easy-paced 5K with a long warm-up. Reliever in your pocket.' },
+  { gw: 'asthma', zone: 'dustproof-home', type: 'Sale', icon: '🛏️', time: 'Nov 27', title: 'Dustproof Home Black Friday sale', desc: 'A third off every barrier cover for one day.' },
+  { gw: 'asthma', type: 'Event', icon: '🫁', time: 'Dec 2', title: 'Breathing class with Tom Price', desc: 'An online group class: breathing exercises alongside your usual treatment.' },
+  { gw: 'asthma', type: 'Event', icon: '⭐', time: 'Dec 4', title: 'Spacer tips with an asthma nurse', desc: 'Asthma Parents with Emma Clarke: getting little ones to use a spacer. Online.' },
+  { gw: 'asthma', zone: 'stride-air', type: 'Event', icon: '🧣', time: 'Dec 7', title: 'Winter run and kit test, Leeds', desc: 'Stride Air: try the winter range on an easy 5K in Roundhay Park.' },
+  { gw: 'asthma', zone: 'puffin-packs', type: 'Deadline', icon: '🐧', time: 'Dec 18', title: 'Last order for Christmas delivery', desc: 'Puffin Packs: order by midnight for delivery before Christmas.' }
+);
+})();
+/* ═════════ /ASTHMAXX ═════════ */
