@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Stay Wallet</title>
+<style>
+/* Stay Wallet, by "Keyring Labs" (fictional), 2026-11-17. A GENEXXO app for HotelXX.
+   Every booking in one list: dates, check-in and checkout times, confirmation code, address. Countdown to the next
+   check-in; "Show at desk" puts the code full-width; Past counts nights this year. Dates are relative to today,
+   so the demo never goes stale. Hotels are fictional (Linen & Lantern is HotelXX's Founding Partner); towns are real. */
+:root{--bg:#140E1C;--card:rgba(255,255,255,.05);--line:rgba(243,236,247,.1);--ink:#F3ECF7;--mut:rgba(243,236,247,.55);--gold:#E2B866;--lil:#A78BFA}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#E2B866,#A27A2E);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--gold)}
+.hero{border-radius:18px;padding:16px;background:linear-gradient(150deg,#3A2552,#1E1430);border:1px solid rgba(226,184,102,.25)}
+.hero small{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--gold)}.hero h2{font-size:21px;font-weight:900;margin:4px 0 2px}.hero p{color:var(--mut);font-size:13px}
+.cd{display:flex;gap:8px;margin-top:12px}.cd div{flex:1;background:rgba(255,255,255,.06);border-radius:12px;padding:8px;text-align:center}.cd b{display:block;font-size:22px;font-weight:900}.cd span{font-size:10.5px;font-weight:800;color:var(--mut);letter-spacing:.06em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.st{display:flex;gap:11px;align-items:center;padding:10px 0;cursor:pointer}.st+.st{border-top:1px solid var(--line)}
+.st .d{width:46px;text-align:center;background:rgba(226,184,102,.12);border-radius:10px;padding:5px 0;flex-shrink:0}.st .d b{display:block;font-size:17px;font-weight:900;color:var(--gold)}.st .d span{font-size:10px;font-weight:800;color:var(--mut)}
+.st .x{flex:1}.st .x b{font-size:14px}.st .x small{display:block;color:var(--mut);font-size:12px}.st .n{font-size:12px;font-weight:800;color:var(--lil)}
+.row{display:flex;justify-content:space-between;padding:8px 0;font-size:13.5px}.row+.row{border-top:1px solid var(--line)}.row span{color:var(--mut)}.row b{text-align:right}
+.code{font:900 30px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-align:center;padding:18px 0;color:var(--gold)}
+.code.big{font-size:44px;padding:34px 0;background:#fff;color:#140E1C;border-radius:14px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--gold);color:#1E1430;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:var(--card);color:var(--mut)}
+.top{display:flex;gap:10px}.top div{flex:1;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 4px}.top b{display:block;font-size:26px;font-weight:900;color:var(--gold)}.top small{font-size:10.5px;font-weight:800;color:var(--mut);letter-spacing:.06em}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🔑</div><div><h1>Stay Wallet</h1><p>Keyring Labs · in HotelXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="up" class="on">Upcoming</button><button data-tab="stay">Stay</button><button data-tab="past">Past</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const seed=()=>({sel:0,stays:[
+  {h:'Linen & Lantern Edinburgh',town:'Edinburgh',addr:'14 Ramsay Garden, Edinburgh EH1',off:3,n:2,in:'15:00',out:'14:00',code:'LL-48Q7K',room:'Turret Room',extra:'Breakfast both mornings · late checkout'},
+  {h:'The Quayside Hotel',town:'Bristol',addr:'Narrow Quay, Bristol BS1',off:19,n:1,in:'14:00',out:'11:00',code:'QH-20931',room:'Harbour Double',extra:'Room only'},
+  {h:'Linen & Lantern Grasmere',town:'Grasmere',addr:'Red Bank Road, Grasmere LA22',off:41,n:3,in:'16:00',out:'11:00',code:'LL-77B2M',room:'Fell View King',extra:'Winter Weekend · dinner Saturday'},
+  {h:'Hotel Norra Kajen',town:'Stockholm',addr:'Skeppsbron, Gamla Stan, Stockholm',off:-12,n:3,in:'15:00',out:'12:00',code:'NK-5521',room:'Waterfront Double',extra:''},
+  {h:'Linen & Lantern Bath',town:'Bath',addr:'Great Pulteney Street, Bath BA2',off:-40,n:2,in:'15:00',out:'11:00',code:'LL-31C9D',room:'Garden Room',extra:''},
+  {h:'The Albion Rooms',town:'Brighton',addr:'Marine Parade, Brighton BN2',off:-95,n:1,in:'15:00',out:'11:00',code:'AR-88213',room:'Sea View',extra:''}],before:33,beforeHotels:12,beforeTowns:9});
+let C,S={tab:'up',big:false,shared:false};
+GX.init({gateway:'HotelXX',seed}).then(c=>{C=c;paint();});
+const up=()=>C.data.stays.map((s,i)=>Object.assign({i},s)).filter(s=>s.off>=0).sort((a,b)=>a.off-b.off);
+const past=()=>C.data.stays.filter(s=>s.off<0).sort((a,b)=>b.off-a.off);
+const dateBox=s=>{const d=GX.today(s.off);return `<div class="d"><b>${d.getDate()}</b><span>${GX.day(d,{month:'short'}).toUpperCase()}</span></div>`;};
+const nights=n=>n+(n===1?' night':' nights');
+function vUp(){const u=up(),nx=u[0];if(!nx)return '<div class="legend">No upcoming stays.</div>';
+  const h=new Date().getHours(),[ih]=nx.in.split(':').map(Number),hrs=nx.off*24+(ih-h);const d=Math.floor(hrs/24),hh=Math.max(0,hrs%24);
+  return `<div class="hero"><small>NEXT CHECK-IN</small><h2>${GX.esc(nx.h)}</h2><p>${GX.day(GX.today(nx.off))} · ${nights(nx.n)} · from ${nx.in}</p>
+    <div class="cd"><div><b>${d}</b><span>DAYS</span></div><div><b>${hh}</b><span>HOURS</span></div><div><b>${nx.n}</b><span>NIGHTS</span></div></div></div>
+  <div class="card"><h3>Upcoming · ${u.length} stays</h3>${u.map(s=>`<div class="st" data-sel="${s.i}">${dateBox(s)}<div class="x"><b>${GX.esc(s.h)}</b><small>${GX.esc(s.room)} · ${nights(s.n)}</small></div><span class="n">${s.off===0?'Today':'in '+s.off+'d'}</span></div>`).join('')}</div>
+  <div class="legend">Tap a stay for the code and times.</div>`;}
+function vStay(){const s=C.data.stays[C.data.sel]||up()[0],ci=GX.today(s.off),co=GX.today(s.off+s.n);
+  return `<div class="card"><h3>${GX.esc(s.town)}</h3><div style="font-size:18px;font-weight:900">${GX.esc(s.h)}</div><div style="color:var(--mut);font-size:12.5px;margin-top:2px">${GX.esc(s.addr)}</div>
+    <div class="code ${S.big?'big':''}">${s.code}</div>
+    <div class="row"><span>Check in</span><b>${GX.day(ci)} · from ${s.in}</b></div><div class="row"><span>Check out</span><b>${GX.day(co)} · by ${s.out}</b></div>
+    <div class="row"><span>Room</span><b>${GX.esc(s.room)}</b></div>${s.extra?`<div class="row"><span>Includes</span><b>${GX.esc(s.extra)}</b></div>`:''}</div>
+  <button class="go" id="big">${S.big?'Done':'Show at the desk'}</button>
+  <div class="legend">Show the code at reception. Check-in times are the hotel’s.</div>`;}
+function vPast(){const p=past(),yr=new Date().getFullYear(),n=C.data.before+p.filter(s=>GX.today(s.off).getFullYear()===yr).reduce((a,s)=>a+s.n,0);
+  return `<div class="top"><div><b>${n}</b><small>NIGHTS THIS YEAR</small></div><div><b>${C.data.beforeHotels+p.length}</b><small>HOTELS</small></div><div><b>${C.data.beforeTowns+new Set(p.map(s=>s.town)).size}</b><small>TOWNS</small></div></div>
+  <div class="card"><h3>Recent stays</h3>${p.map(s=>`<div class="st" style="cursor:default">${dateBox(s)}<div class="x"><b>${GX.esc(s.h)}</b><small>${GX.esc(s.town)} · ${nights(s.n)}</small></div></div>`).join('')}</div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my year to ${C.gateway}`}</button>`:''}`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='up'?vUp():S.tab==='stay'?vStay():vPast();
+  v.querySelectorAll('[data-sel]').forEach(e=>e.onclick=()=>{C.data.sel=+e.dataset.sel;GX.save(C.data);S.tab='stay';S.big=false;paint();});
+  const b=document.getElementById('big');if(b)b.onclick=()=>{S.big=!S.big;paint();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const t=v.querySelector('.top b').textContent;
+    GX.post(`<b>${t} nights</b> in hotels this year, and the next one is in ${up()[0]?up()[0].town:'the diary'}. Kept in Stay Wallet 🔑`,'STAY WALLET').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;S.big=false;paint();};
+</script></body></html>

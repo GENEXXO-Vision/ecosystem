@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Room Service</title>
+<style>
+/* Room Service, by Linen & Lantern Hotels (fictional), 2026-11-17. A GENEXXO app for HotelXX.
+   The in-room menu at the Edinburgh hotel: breakfast, all day and late night, with dietary labels. Add dishes,
+   pick "as soon as possible" or a time, place the order, and follow it: received → kitchen → on its way → at your door.
+   Nothing is charged: the bill goes to the room at checkout, as in a real hotel. */
+:root{--bg:#140E1C;--card:rgba(255,255,255,.05);--line:rgba(243,236,247,.1);--ink:#F3ECF7;--mut:rgba(243,236,247,.55);--gold:#E2B866;--lil:#A78BFA;--ok:#7FD1A4}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#A78BFA,#5B3A99);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--lil)}.tabs i{font-style:normal;background:var(--gold);color:#1E1430;border-radius:99px;padding:0 6px;font-size:11px;margin-left:4px}
+.seg{display:flex;gap:6px;margin-bottom:10px}.seg button{flex:1;font:inherit;font-weight:800;font-size:12.5px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:8px 0;cursor:pointer}.seg button.on{background:var(--lil);border-color:var(--lil);color:#1E1430}
+.it{display:flex;gap:10px;align-items:center;padding:10px 0}.it+.it{border-top:1px solid var(--line)}
+.it .e{font-size:26px;width:36px;text-align:center}.it .x{flex:1}.it .x b{font-size:14px}.it .x small{display:block;color:var(--mut);font-size:12px}
+.lab{display:inline-block;font-size:10px;font-weight:900;border-radius:5px;padding:1px 5px;margin-right:4px;background:rgba(127,209,164,.15);color:var(--ok)}
+.pr{font-weight:800;color:var(--gold);margin-right:6px}
+.add{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:900;font-size:17px;cursor:pointer}.add.on{background:var(--gold);color:#1E1430;border-color:var(--gold)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.q{display:flex;align-items:center;gap:8px}.q b{min-width:16px;text-align:center}
+.tot{display:flex;justify-content:space-between;padding:6px 0;font-size:13.5px}.tot.b{font-weight:900;font-size:16px;border-top:1px solid var(--line);padding-top:10px;margin-top:4px}
+.times{display:flex;flex-wrap:wrap;gap:6px}.times button{font:inherit;font-weight:800;font-size:12.5px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:7px 11px;cursor:pointer}.times button.on{background:var(--lil);color:#1E1430;border-color:var(--lil)}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--gold);color:#1E1430;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.trk{position:relative;padding-left:26px;margin-top:6px}.trk div{position:relative;padding:8px 0 14px;font-weight:700;color:var(--mut)}.trk div::before{content:'';position:absolute;left:-21px;top:11px;width:12px;height:12px;border-radius:50%;border:2px solid var(--line);background:var(--bg)}
+.trk div::after{content:'';position:absolute;left:-15px;top:26px;width:2px;height:calc(100% - 18px);background:var(--line)}.trk div:last-child::after{display:none}
+.trk div.done{color:var(--ink)}.trk div.done::before{background:var(--ok);border-color:var(--ok)}.trk div.now{color:var(--gold)}.trk div.now::before{border-color:var(--gold);box-shadow:0 0 0 4px rgba(226,184,102,.2)}
+.trk small{display:block;font-weight:600;font-size:12px;color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🛎️</div><div><h1>Room Service</h1><p>Linen & Lantern Edinburgh · Room 41</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="menu" class="on">Menu</button><button data-tab="tray">Your tray</button><button data-tab="order">Order</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const MENU={breakfast:[
+  {id:'scot',e:'🍳',n:'Full Scottish',d:'Eggs, bacon, Lorne sausage, black pudding, tattie scone, beans',p:18,l:[]},
+  {id:'kipper',e:'🐟',n:'Arbroath smokie and poached egg',d:'On sourdough toast',p:16,l:[]},
+  {id:'porr',e:'🥣',n:'Porridge with honey and berries',d:'Scottish oats, made with milk or oat milk',p:9,l:['V','GF on request']},
+  {id:'avo',e:'🥑',n:'Smashed avocado on rye',d:'Chilli, lime and seeds',p:12,l:['VG']},
+  {id:'pastry',e:'🥐',n:'Pastry basket',d:'Croissant, pain au chocolat, butter and jam',p:8,l:['V']},
+  {id:'oj',e:'🍊',n:'Fresh orange juice',d:'A large glass',p:5,l:['VG','GF']}],
+ allday:[
+  {id:'club',e:'🥪',n:'Club sandwich',d:'Chicken, bacon, egg and fries',p:17,l:[]},
+  {id:'soup',e:'🍲',n:'Cullen skink',d:'Smoked haddock soup with bread',p:11,l:['GF on request']},
+  {id:'burger',e:'🍔',n:'Highland beef burger',d:'Cheddar, pickles and fries',p:19,l:[]},
+  {id:'salad',e:'🥗',n:'Roast squash salad',d:'Feta, pumpkin seeds and leaves',p:14,l:['V','GF']}],
+ late:[
+  {id:'toastie',e:'🧀',n:'Cheese toastie',d:'Mature cheddar and chutney',p:9,l:['V']},
+  {id:'choc',e:'☕',n:'Hot chocolate and shortbread',d:'Made with whole milk',p:7,l:['V']},
+  {id:'dram',e:'🥃',n:'A dram of single malt',d:'Ask for tonight’s pour',p:12,l:['VG','GF']}]};
+const ALL=Object.values(MENU).flat(),CAT={breakfast:'Breakfast',allday:'All day',late:'Late night'};
+const TIMES=['As soon as possible','07:30','08:00','08:30','09:00','09:30'];
+const STEPS=[['Order received','The kitchen has your order'],['In the kitchen','Being cooked now'],['On its way','Leaving the kitchen'],['At your door','Enjoy. A knock, then we leave it on the tray table']];
+const seed=()=>({cat:'breakfast',tray:{scot:1,oj:2},when:'08:30',orders:[]});
+let C,S={tab:'menu',step:-1,shared:false},timer=null;
+GX.init({gateway:'HotelXX',seed}).then(c=>{C=c;paint();});
+const count=()=>Object.values(C.data.tray).reduce((a,b)=>a+b,0);
+const sub=()=>Object.entries(C.data.tray).reduce((a,[k,q])=>a+ALL.find(x=>x.id===k).p*q,0);
+const labs=l=>l.map(x=>`<span class="lab">${x}</span>`).join('');
+function vMenu(){const c=C.data.cat;
+  return `<div class="seg">${Object.keys(MENU).map(k=>`<button data-cat="${k}" class="${k===c?'on':''}">${CAT[k]}</button>`).join('')}</div>
+  <div class="card">${MENU[c].map(i=>{const q=C.data.tray[i.id]||0;return `<div class="it"><span class="e">${i.e}</span><div class="x"><b>${i.n}</b><small>${i.d}</small>${labs(i.l)}</div><span class="pr">£${i.p}</span><button class="add ${q?'on':''}" data-add="${i.id}">${q?q:'+'}</button></div>`;}).join('')}</div>
+  <div class="legend">${c==='breakfast'?'Breakfast 06:30–10:30 · order tonight for the morning':c==='late'?'Late night 22:00–02:00':'All day 11:00–22:00'} · V vegetarian · VG vegan · GF gluten-free</div>`;}
+function vTray(){const t=Object.entries(C.data.tray);if(!t.length)return `<div class="legend" style="margin-top:30px">Your tray is empty. Add something from the menu.</div>`;
+  const s=sub(),fee=3.5;
+  return `<div class="card"><h3>Your tray</h3>${t.map(([k,q])=>{const i=ALL.find(x=>x.id===k);return `<div class="it"><span class="e">${i.e}</span><div class="x"><b>${i.n}</b><small>£${i.p} each</small></div><div class="q"><button class="add" data-dec="${k}">−</button><b>${q}</b><button class="add" data-inc="${k}">+</button></div></div>`;}).join('')}</div>
+  <div class="card"><h3>When</h3><div class="times">${TIMES.map(x=>`<button data-when="${x}" class="${x===C.data.when?'on':''}">${x}</button>`).join('')}</div></div>
+  <div class="card"><div class="tot"><span>Food and drink</span><b>£${s.toFixed(2)}</b></div><div class="tot"><span>Tray charge</span><b>£${fee.toFixed(2)}</b></div><div class="tot b"><span>To your room bill</span><span>£${(s+fee).toFixed(2)}</span></div></div>
+  <button class="go" id="place">Place order · ${count()} item${count()===1?'':'s'}</button>`;}
+function vOrder(){const o=C.data.orders[0];if(!o)return `<div class="legend" style="margin-top:30px">No orders yet tonight.</div>`;
+  const st=S.step<0?STEPS.length-1:S.step;
+  return `<div class="card"><h3>Order ${o.no} · ${o.when==='As soon as possible'?'about 25 minutes':'for '+o.when}</h3><div style="font-size:13px;color:var(--mut)">${o.items}</div>
+    <div class="trk">${STEPS.map((x,i)=>`<div class="${i<st?'done':i===st?'now':''}">${x[0]}<small>${x[1]}</small></div>`).join('')}</div></div>
+  ${GX.can('feed')&&st===STEPS.length-1?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share breakfast to ${C.gateway}`}</button>`:''}
+  <div class="legend">Charged to Room 41 at checkout. Nothing is paid in the app.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>{b.classList.toggle('on',b.dataset.tab===S.tab);if(b.dataset.tab==='tray')b.innerHTML='Your tray'+(count()?`<i>${count()}</i>`:'');});
+  const v=document.getElementById('v');v.innerHTML=S.tab==='menu'?vMenu():S.tab==='tray'?vTray():vOrder();
+  const sv=()=>{GX.save(C.data);paint();};
+  v.querySelectorAll('[data-cat]').forEach(e=>e.onclick=()=>{C.data.cat=e.dataset.cat;sv();});
+  v.querySelectorAll('[data-add]').forEach(e=>e.onclick=()=>{const k=e.dataset.add;C.data.tray[k]=(C.data.tray[k]||0)+1;sv();});
+  v.querySelectorAll('[data-inc]').forEach(e=>e.onclick=()=>{C.data.tray[e.dataset.inc]++;sv();});
+  v.querySelectorAll('[data-dec]').forEach(e=>e.onclick=()=>{const k=e.dataset.dec;if(--C.data.tray[k]<=0)delete C.data.tray[k];sv();});
+  v.querySelectorAll('[data-when]').forEach(e=>e.onclick=()=>{C.data.when=e.dataset.when;sv();});
+  const p=document.getElementById('place');if(p)p.onclick=()=>{
+    const items=Object.entries(C.data.tray).map(([k,q])=>(q>1?q+' × ':'')+ALL.find(x=>x.id===k).n).join(', ');
+    C.data.orders.unshift({no:'#'+(4100+Math.floor(GX.rng(Date.now())()*800)),items,when:C.data.when});C.data.tray={};GX.save(C.data);
+    S.tab='order';S.step=0;S.shared=false;clearInterval(timer);timer=setInterval(()=>{S.step++;if(S.step>=STEPS.length-1){S.step=STEPS.length-1;clearInterval(timer);}if(S.tab==='order')paint();},1600);paint();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{
+    GX.post(`Breakfast in bed at <b>Linen & Lantern Edinburgh</b>: ordered last night, at the door right on time. Room Service 🛎️`,'ROOM SERVICE').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

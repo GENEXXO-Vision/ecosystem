@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Points Tracker</title>
+<style>
+/* Points Tracker, by "Perkline Software" (fictional), 2026-11-17. A GENEXXO app for HotelXX.
+   Hotel loyalty points and status nights across schemes, all fictional. Each scheme has tiers by nights a year;
+   the app shows nights to the next tier, the total value of your points at the scheme's rough redemption rate,
+   and rewards you could book now. Log a stay: pick the scheme and nights, points are added at its earn rate. */
+:root{--bg:#140E1C;--card:rgba(255,255,255,.05);--line:rgba(243,236,247,.1);--ink:#F3ECF7;--mut:rgba(243,236,247,.55);--gold:#E2B866;--sage:#7FA88E;--lil:#A78BFA}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#7FA88E,#3E6650);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--sage)}
+.top{display:flex;gap:10px;background:linear-gradient(150deg,#2A3B33,#1A1F24);border:1px solid rgba(127,168,142,.3);border-radius:18px;padding:16px}
+.top div{flex:1;text-align:center}.top b{display:block;font-size:26px;font-weight:900;line-height:1.1}.top small{font-size:10.5px;font-weight:800;letter-spacing:.06em;color:var(--mut)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.sc{padding:10px 0}.sc+.sc{border-top:1px solid var(--line)}.sc .l{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.dot{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.sc .l b{flex:1;font-size:14px}.sc .l small{display:block;font-weight:600;color:var(--mut);font-size:12px}.tier{font-size:11px;font-weight:900;border-radius:99px;padding:3px 9px;background:rgba(226,184,102,.15);color:var(--gold)}
+.meter{height:8px;border-radius:8px;background:rgba(243,236,247,.08);overflow:hidden}.meter i{display:block;height:100%;border-radius:8px}
+.note{font-size:12px;color:var(--mut);margin-top:5px}.note b{color:var(--ink)}
+.rw{display:flex;align-items:center;gap:10px;padding:9px 0}.rw+.rw{border-top:1px solid var(--line)}.rw .x{flex:1}.rw .x b{font-size:13.5px}.rw .x small{display:block;color:var(--mut);font-size:12px}.rw .ok{font-size:11px;font-weight:900;color:#7FD1A4}.rw .no{font-size:11px;font-weight:800;color:var(--mut)}
+.seg{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}.seg button{flex:1;min-width:30%;font:inherit;font-weight:800;font-size:12.5px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px 4px;cursor:pointer}.seg button.on{border-color:var(--sage);background:rgba(127,168,142,.18)}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--sage);color:#0E1A14;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">💎</div><div><h1>Points Tracker</h1><p>Perkline Software · in HotelXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="over" class="on">Overview</button><button data-tab="sch">Schemes</button><button data-tab="log">Log a stay</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+/* tiers: [name, nights a year]; earn: points per night; val: pence per point when redeemed */
+const SCHEMES={
+  ll:{n:'Linen & Lantern Circle',e:'🏮',c:'#E2B866',earn:500,val:0.5,tiers:[['Member',0],['Silver',10],['Gold',25],['Lantern',50]]},
+  hh:{n:'Harbour Hotels Rewards',e:'⚓',c:'#5BB6F0',earn:800,val:0.35,tiers:[['Blue',0],['Silver',15],['Gold',30],['Platinum',60]]},
+  nl:{n:'Nordlys Stays',e:'🌌',c:'#A78BFA',earn:1000,val:0.25,tiers:[['Base',0],['Aurora',20],['Polar',40]]}};
+const REWARDS=[['ll','A night at any Linen & Lantern',12000],['ll','Breakfast for two',2500],['hh','Free night, city hotels',16000],['hh','Room upgrade',6000],['nl','Weekend night in Stockholm',30000],['nl','Spa evening',9000]];
+const seed=()=>({acc:{ll:{pts:11400,nights:23},hh:{pts:9200,nights:9},nl:{pts:4100,nights:4}},f:{s:'ll',n:2}});
+let C,S={tab:'over',shared:false,flash:''};
+GX.init({gateway:'HotelXX',seed}).then(c=>{C=c;paint();});
+const tierOf=k=>{const t=SCHEMES[k].tiers,n=C.data.acc[k].nights;let i=0;t.forEach((x,j)=>{if(n>=x[1])i=j;});return {cur:t[i],next:t[i+1]};};
+const val=k=>C.data.acc[k].pts*SCHEMES[k].val/100;
+const fmt=n=>n.toLocaleString('en-GB');
+function vOver(){const ks=Object.keys(SCHEMES),pts=ks.reduce((a,k)=>a+C.data.acc[k].pts,0),v=ks.reduce((a,k)=>a+val(k),0),nt=ks.reduce((a,k)=>a+C.data.acc[k].nights,0);
+  const close=ks.map(k=>({k,t:tierOf(k)})).filter(x=>x.t.next).sort((a,b)=>(a.t.next[1]-C.data.acc[a.k].nights)-(b.t.next[1]-C.data.acc[b.k].nights))[0];
+  return `<div class="top"><div><b>${fmt(pts)}</b><small>POINTS</small></div><div><b>£${Math.round(v)}</b><small>ROUGH VALUE</small></div><div><b>${nt}</b><small>NIGHTS THIS YEAR</small></div></div>
+  ${S.flash?`<div class="legend" style="color:#7FD1A4;font-weight:800">${S.flash}</div>`:''}
+  ${close?`<div class="card"><h3>Closest to the next tier</h3><div class="sc" style="padding:0"><div class="l"><span class="dot" style="background:${SCHEMES[close.k].c}22">${SCHEMES[close.k].e}</span><b>${SCHEMES[close.k].n}<small>${close.t.next[1]-C.data.acc[close.k].nights} nights to ${close.t.next[0]}</small></b><span class="tier">${close.t.cur[0]}</span></div></div></div>`:''}
+  <div class="card"><h3>You could book now</h3>${REWARDS.map(([k,n,c])=>{const ok=C.data.acc[k].pts>=c;return `<div class="rw"><span class="dot" style="background:${SCHEMES[k].c}22">${SCHEMES[k].e}</span><div class="x"><b>${n}</b><small>${fmt(c)} points · ${SCHEMES[k].n}</small></div>${ok?'<span class="ok">✓ ENOUGH</span>':`<span class="no">${fmt(c-C.data.acc[k].pts)} short</span>`}</div>`;}).join('')}</div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my status to ${C.gateway}`}</button>`:''}`;}
+function vSch(){return `<div class="card">${Object.keys(SCHEMES).map(k=>{const s=SCHEMES[k],a=C.data.acc[k],t=tierOf(k),from=t.cur[1],to=t.next?t.next[1]:from,pc=t.next?(a.nights-from)/(to-from):1;
+  return `<div class="sc"><div class="l"><span class="dot" style="background:${s.c}22">${s.e}</span><b>${s.n}<small>${fmt(a.pts)} points · ${a.nights} nights this year</small></b><span class="tier">${t.cur[0]}</span></div>
+    <div class="meter"><i style="width:${Math.round(pc*100)}%;background:${s.c}"></i></div>
+    <div class="note">${t.next?`<b>${to-a.nights} nights</b> to ${t.next[0]} (${to} a year)`:'Top tier. Enjoy it.'}</div></div>`;}).join('')}</div>
+  <div class="legend">Tiers and values are each scheme’s published guide; check the scheme’s own terms.</div>`;}
+function vLog(){const f=C.data.f,s=SCHEMES[f.s];
+  return `<div class="card"><h3>Which scheme?</h3><div class="seg">${Object.keys(SCHEMES).map(k=>`<button data-s="${k}" class="${k===f.s?'on':''}">${SCHEMES[k].e} ${SCHEMES[k].n.split(' ')[0]}</button>`).join('')}</div>
+  <h3 style="margin-top:8px">How many nights?</h3><div class="seg">${[1,2,3,4,5].map(n=>`<button data-n="${n}" class="${n===f.n?'on':''}">${n}</button>`).join('')}</div>
+  <div class="note">Earns <b>${fmt(s.earn*f.n)} points</b> and ${f.n} status night${f.n>1?'s':''} with ${s.n}.</div></div>
+  <button class="go" id="add">Log this stay</button>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='over'?vOver():S.tab==='sch'?vSch():vLog();
+  v.querySelectorAll('[data-s]').forEach(e=>e.onclick=()=>{C.data.f.s=e.dataset.s;paint();});
+  v.querySelectorAll('[data-n]').forEach(e=>e.onclick=()=>{C.data.f.n=+e.dataset.n;paint();});
+  const a=document.getElementById('add');if(a)a.onclick=()=>{const f=C.data.f,s=SCHEMES[f.s],acc=C.data.acc[f.s],before=tierOf(f.s).cur[0];
+    acc.pts+=s.earn*f.n;acc.nights+=f.n;const after=tierOf(f.s).cur[0];
+    S.flash=after!==before?`🎉 You reached ${after} with ${s.n}!`:`+${fmt(s.earn*f.n)} points with ${s.n}`;GX.save(C.data);S.tab='over';S.shared=false;paint();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const g=tierOf('ll');
+    GX.post(`<b>${g.cur[0]}</b> with Linen & Lantern Circle${g.next?`, ${g.next[1]-C.data.acc.ll.nights} nights from ${g.next[0]}`:''}. Tracked in Points Tracker 💎`,'POINTS TRACKER').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;S.flash='';paint();};
+</script></body></html>
