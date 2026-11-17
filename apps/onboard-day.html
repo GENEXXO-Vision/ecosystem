@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>On Board Today</title>
+<style>
+/* On Board Today, by Azure Wake Cruises (fictional), 2026-11-17. A GENEXXO app for CruiseXX.
+   The ship's daily programme for two days of a fjords sailing: a sea day and the Geiranger port day. Star events
+   to build "My day"; two starred events that overlap are flagged as a clash. "Tonight" shows dinner, the show
+   and the dress code. All venues and acts are fictional. */
+:root{--bg:#06192B;--card:rgba(255,255,255,.05);--line:rgba(232,244,250,.1);--ink:#E8F4FA;--mut:rgba(232,244,250,.55);--tq:#2EC4D6;--cor:#FF8A5B}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#FF9F6B,#D9534F);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--cor)}.tabs i{font-style:normal;background:var(--cor);color:#06192B;border-radius:99px;padding:0 6px;font-size:11px;margin-left:4px}
+.seg{display:flex;gap:6px;margin-bottom:10px}.seg button{flex:1;font:inherit;font-weight:800;font-size:12.5px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:8px 0;cursor:pointer}.seg button.on{background:var(--cor);border-color:var(--cor);color:#06192B}
+.fil{display:flex;gap:6px;overflow-x:auto;margin-bottom:8px;scrollbar-width:none}.fil button{font:inherit;font-weight:700;font-size:12px;border:1px solid var(--line);background:none;color:var(--mut);border-radius:99px;padding:5px 10px;cursor:pointer;white-space:nowrap}.fil button.on{color:var(--ink);border-color:var(--tq)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px 12px;margin-top:8px}
+.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin:8px 0 2px}
+.ev{display:flex;gap:10px;align-items:center;padding:10px 0}.ev+.ev{border-top:1px solid var(--line)}
+.ev .t{width:48px;font-weight:900;font-size:13px;color:var(--tq);flex-shrink:0}.ev .t small{display:block;font-size:10.5px;color:var(--mut);font-weight:700}
+.ev .x{flex:1;min-width:0}.ev .x b{font-size:13.5px}.ev .x small{display:block;color:var(--mut);font-size:12px}
+.star{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--mut);font-size:17px;cursor:pointer;flex-shrink:0}.star.on{background:rgba(255,138,91,.18);border-color:var(--cor);color:var(--cor)}
+.clash{font-size:11px;font-weight:900;color:#FFB4A0;background:rgba(255,138,91,.14);border-radius:6px;padding:2px 6px;display:inline-block;margin-top:3px}
+.tn{border-radius:18px;padding:16px;background:linear-gradient(150deg,#3A2A4E,#14243C);border:1px solid rgba(255,138,91,.25)}
+.tn small{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--cor)}.tn h2{font-size:22px;font-weight:900;margin:3px 0}.tn p{color:var(--mut);font-size:13px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--cor);color:#06192B;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🗓️</div><div><h1>On Board Today</h1><p>Azure Wake Cruises · in CruiseXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="prog" class="on">Programme</button><button data-tab="mine">My day</button><button data-tab="night">Tonight</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+/* [id, start, minutes, title, venue, kind] */
+const PROG={
+ sea:{label:'Day 2 · At sea',dress:'Formal',dinner:['19:30','Compass Room'],show:['Northern Voices','Meridian Theatre','21:30'],ev:[
+  ['s1','07:30',45,'Sunrise stretch','Lido Deck','Fitness'],['s2','09:30',60,'Talk: The Vikings at sea','Meridian Theatre','Talks'],
+  ['s3','10:00',60,'Napkin-folding class','Atrium','Classes'],['s4','11:00',45,'Galley tour','Main Galley','Tours'],
+  ['s5','12:30',90,'Norwegian lunch buffet','Fjord Café','Dining'],['s6','14:00',60,'Spa taster: hot stones','Aurora Spa','Spa'],
+  ['s7','14:30',60,'Art auction','Gallery','Shopping'],['s8','16:00',45,'Afternoon tea with a string trio','Lounge','Dining'],
+  ['s9','18:30',45,'Captain’s welcome drinks','Atrium','Evening'],['s10','21:30',60,'Northern Voices (show)','Meridian Theatre','Evening']]},
+ port:{label:'Day 4 · Geiranger',dress:'Smart casual',dinner:['20:00','Fjord Café'],show:['Comedy at the Wake','Lounge','21:45'],ev:[
+  ['p1','07:00',30,'Scenic cruising: the Seven Sisters','Observation Deck','Talks'],['p2','08:30',30,'Tender tickets','Atrium','Tours'],
+  ['p3','09:00',180,'Kayak under the falls (excursion)','Pier','Tours'],['p4','13:00',60,'Waffles and brown cheese','Fjord Café','Dining'],
+  ['p5','15:00',45,'Spa: fjord view sauna','Aurora Spa','Spa'],['p6','17:00',60,'Sail-away commentary','Lido Deck','Talks'],
+  ['p7','19:00',60,'Quiz night','Lounge','Evening'],['p8','21:45',60,'Comedy at the Wake','Lounge','Evening']]}};
+const seed=()=>({day:'sea',stars:['s2','s3','s6','s9','s10']});
+let C,S={tab:'prog',f:'All',shared:false};
+GX.init({gateway:'CruiseXX',seed}).then(c=>{C=c;paint();});
+const mins=t=>{const [h,m]=t.split(':').map(Number);return h*60+m;};
+const end=e=>{const m=mins(e[1])+e[2];return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');};
+const P=()=>PROG[C.data.day];
+const mine=()=>P().ev.filter(e=>C.data.stars.includes(e[0]));
+const clashes=()=>{const m=mine(),c=new Set();m.forEach(a=>m.forEach(b=>{if(a!==b&&mins(a[1])<mins(b[1])+b[2]&&mins(b[1])<mins(a[1])+a[2]){c.add(a[0]);c.add(b[0]);}}));return c;};
+const row=(e,cl)=>`<div class="ev"><div class="t">${e[1]}<small>${e[2]} min</small></div><div class="x"><b>${e[3]}</b><small>${e[4]} · ${e[5]}</small>${cl&&cl.has(e[0])?'<span class="clash">CLASHES</span>':''}</div><button class="star ${C.data.stars.includes(e[0])?'on':''}" data-star="${e[0]}">${C.data.stars.includes(e[0])?'★':'☆'}</button></div>`;
+const days=()=>`<div class="seg">${Object.keys(PROG).map(k=>`<button data-day="${k}" class="${k===C.data.day?'on':''}">${PROG[k].label}</button>`).join('')}</div>`;
+function vProg(){const kinds=['All',...new Set(P().ev.map(e=>e[5]))],ev=P().ev.filter(e=>S.f==='All'||e[5]===S.f);
+  return `${days()}<div class="fil">${kinds.map(k=>`<button data-f="${k}" class="${k===S.f?'on':''}">${k}</button>`).join('')}</div>
+  <div class="card">${ev.map(e=>row(e)).join('')}</div>`;}
+function vMine(){const m=mine().sort((a,b)=>mins(a[1])-mins(b[1])),cl=clashes();
+  return `${days()}${m.length?`<div class="card">${m.map(e=>row(e,cl)).join('')}</div>`:'<div class="legend">Star events on the Programme to build your day.</div>'}
+  ${cl.size?`<div class="legend" style="color:#FFB4A0">Two of your events overlap. Unstar one, or catch the end of it.</div>`:m.length?'<div class="legend">No clashes. A good day.</div>':''}
+  ${GX.can('feed')&&m.length?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my day to ${C.gateway}`}</button>`:''}`;}
+function vNight(){const p=P();
+  return `${days()}<div class="tn"><small>TONIGHT · ${p.label.toUpperCase()}</small><h2>Dress code: ${p.dress}</h2><p>${p.dress==='Formal'?'Dinner jackets or dark suits; evening dresses or cocktail wear.':'Collared shirts and smart trousers; dresses or smart separates. No shorts in the restaurants.'}</p></div>
+  <div class="card"><div class="ev"><div class="t">${p.dinner[0]}</div><div class="x"><b>Dinner</b><small>${p.dinner[1]} · your table for two</small></div></div>
+  <div class="ev"><div class="t">${p.show[2]}</div><div class="x"><b>${p.show[0]}</b><small>${p.show[1]}</small></div></div></div>
+  <div class="legend">Times are ship’s time. Clocks go forward one hour tonight.</div>`;}
+function paint(){const n=mine().length;document.querySelectorAll('#tabs button').forEach(b=>{b.classList.toggle('on',b.dataset.tab===S.tab);if(b.dataset.tab==='mine')b.innerHTML='My day'+(n?`<i>${n}</i>`:'');});
+  const v=document.getElementById('v');v.innerHTML=S.tab==='prog'?vProg():S.tab==='mine'?vMine():vNight();
+  v.querySelectorAll('[data-day]').forEach(e=>e.onclick=()=>{C.data.day=e.dataset.day;S.f='All';GX.save(C.data);paint();});
+  v.querySelectorAll('[data-f]').forEach(e=>e.onclick=()=>{S.f=e.dataset.f;paint();});
+  v.querySelectorAll('[data-star]').forEach(e=>e.onclick=()=>{const k=e.dataset.star;C.data.stars=C.data.stars.includes(k)?C.data.stars.filter(x=>x!==k):C.data.stars.concat(k);GX.save(C.data);S.shared=false;paint();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const m=mine();
+    GX.post(`${P().label}: ${m.length} things planned, from <b>${m[0][3]}</b> to <b>${m[m.length-1][3]}</b>. On Board Today 🗓️`,'ON BOARD').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

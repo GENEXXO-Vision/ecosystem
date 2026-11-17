@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cruise Packing</title>
+<style>
+/* Cruise Packing, by Sealegs Travel Goods (fictional), 2026-11-17. A GENEXXO app for CruiseXX.
+   A packing list built from the trip: nights (7, 12 or 14), warm or cold, formal nights (0–3), and shore days on
+   foot or by kayak. Quantities scale with nights (laundry assumed half-way on long trips). Tick items as they go
+   in the case; progress shows by section. Changing the trip keeps ticks on items that are still on the list. */
+:root{--bg:#06192B;--card:rgba(255,255,255,.05);--line:rgba(232,244,250,.1);--ink:#E8F4FA;--mut:rgba(232,244,250,.55);--sand:#E9C98B;--tq:#2EC4D6}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#E9C98B,#B08A43);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--sand)}
+.prog{display:flex;align-items:center;gap:14px;border-radius:18px;padding:14px 16px;background:linear-gradient(150deg,#3B3320,#14243C);border:1px solid rgba(233,201,139,.25)}
+.ring{width:66px;height:66px;flex-shrink:0}.prog b{font-size:20px;font-weight:900;display:block}.prog p{color:var(--mut);font-size:12.5px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 12px;margin-top:10px}
+.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin:8px 0 2px;display:flex;justify-content:space-between}
+.it{display:flex;align-items:center;gap:10px;padding:9px 0;cursor:pointer}.it+.it{border-top:1px solid var(--line)}
+.bx{width:22px;height:22px;border-radius:7px;border:2px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#06192B}
+.it.on .bx{background:var(--sand);border-color:var(--sand)}.it.on .x{color:var(--mut);text-decoration:line-through}
+.it .x{flex:1;font-size:13.5px;font-weight:600}.it .q{font-size:12px;font-weight:800;color:var(--sand)}
+.opt h4{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin:12px 0 6px}
+.seg{display:flex;gap:6px}.seg button{flex:1;font:inherit;font-weight:800;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px 0;cursor:pointer}.seg button.on{border-color:var(--sand);background:rgba(233,201,139,.16)}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--sand);color:#06192B;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🧳</div><div><h1>Cruise Packing</h1><p>Sealegs Travel Goods · in CruiseXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="list" class="on">List</button><button data-tab="trip">Trip</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+function build(t){const n=t.nights,d=Math.ceil(Math.min(n,8)),cold=t.climate==='cold',L=[];
+  const add=(sec,name,q)=>L.push({sec,name,q:q||''});
+  add('Documents','Passport');add('Documents','Cruise tickets and luggage tags');add('Documents','Travel insurance details');add('Documents','Cash for ports (a little)');
+  add('Clothes','Underwear',d+' pairs');add('Clothes','Socks',d+' pairs');add('Clothes','Day tops',Math.ceil(d*.8));add('Clothes','Trousers or skirts',Math.ceil(d/3)+1);
+  add('Clothes','Smart-casual evening outfits',Math.max(1,Math.ceil((n-t.formal)/3)));if(t.formal)add('Clothes','Formal outfits',t.formal);add('Clothes','Swimwear',cold?1:2);add('Clothes','Pyjamas',1);
+  if(cold){add('Clothes','Warm fleece or jumper',2);add('Clothes','Waterproof jacket');add('Clothes','Waterproof trousers');add('Clothes','Hat and gloves');}
+  else{add('Clothes','Shorts',Math.ceil(d/2));add('Clothes','Sun hat with a strap');add('Clothes','Light cover-up for evenings');}
+  add('Shoes','Deck shoes or trainers');add('Shoes','Evening shoes');if(t.shore==='hike'||cold)add('Shoes','Walking boots');if(!cold)add('Shoes','Sandals');
+  add('Cabin','Magnetic hooks');add('Cabin','Over-door organiser');add('Cabin','Night-light');add('Cabin','Extension lead without surge protection');add('Cabin','Lanyard for your cruise card');
+  add('Health','Any prescription medicines, in hand luggage');add('Health','Seasickness remedy you know works for you');add('Health',cold?'Lip balm':'Sun cream (SPF 30+)');add('Health','Hand gel');
+  add('Shore days','Day bag');add('Shore days','Refillable water bottle');if(t.shore==='kayak')add('Shore days','Dry bag');if(cold)add('Shore days','Binoculars');else add('Shore days','Beach bag');
+  return L;}
+const seed=()=>({trip:{nights:12,climate:'cold',formal:2,shore:'kayak'},done:['Passport','Cruise tickets and luggage tags','Underwear','Socks','Magnetic hooks','Waterproof jacket','Formal outfits','Walking boots','Lanyard for your cruise card']});
+let C,S={tab:'list',shared:false};
+GX.init({gateway:'CruiseXX',seed}).then(c=>{C=c;paint();});
+const ring=p=>{const r=28,c=2*Math.PI*r;return `<svg class="ring" viewBox="0 0 66 66"><circle cx="33" cy="33" r="${r}" fill="none" stroke="rgba(232,244,250,.1)" stroke-width="7"/><circle cx="33" cy="33" r="${r}" fill="none" stroke="#E9C98B" stroke-width="7" stroke-linecap="round" stroke-dasharray="${c*p} ${c}" transform="rotate(-90 33 33)"/><text x="33" y="38" text-anchor="middle" fill="#E8F4FA" font-size="15" font-weight="900" font-family="-apple-system,sans-serif">${Math.round(p*100)}%</text></svg>`;};
+function vList(){const L=build(C.data.trip),done=L.filter(i=>C.data.done.includes(i.name)).length,secs=[...new Set(L.map(i=>i.sec))],t=C.data.trip;
+  return `<div class="prog">${ring(done/L.length)}<div><b>${done} of ${L.length} packed</b><p>${t.nights} nights · ${t.climate==='cold'?'cold water':'warm water'} · ${t.formal} formal night${t.formal===1?'':'s'}</p></div></div>
+  ${secs.map(s=>{const it=L.filter(i=>i.sec===s),dn=it.filter(i=>C.data.done.includes(i.name)).length;return `<div class="card"><h3>${s}<span>${dn}/${it.length}</span></h3>${it.map(i=>{const on=C.data.done.includes(i.name);return `<div class="it ${on?'on':''}" data-i="${GX.esc(i.name)}"><span class="bx">${on?'✓':''}</span><span class="x">${i.name}</span><span class="q">${i.q}</span></div>`;}).join('')}</div>`;}).join('')}
+  ${GX.can('feed')&&done===L.length?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share: all packed! to ${C.gateway}`}</button>`:''}
+  <div class="legend">Most ships do not allow surge-protected adaptors. Check your line’s list.</div>`;}
+function vTrip(){const t=C.data.trip,seg=(k,opts,lab)=>`<div class="seg">${opts.map((o,i)=>`<button data-k="${k}" data-val="${o}" class="${String(t[k])===String(o)?'on':''}">${lab?lab[i]:o}</button>`).join('')}</div>`;
+  return `<div class="opt"><h4>Nights</h4>${seg('nights',[7,12,14])}<h4>Water</h4>${seg('climate',['cold','warm'],['❄️ Cold','☀️ Warm'])}
+  <h4>Formal nights</h4>${seg('formal',[0,1,2,3])}<h4>Shore days</h4>${seg('shore',['walk','hike','kayak'],['🚶 Walking','🥾 Hiking','🛶 Kayak'])}</div>
+  <div class="legend">Your list updates as you change the trip. Ticks stay on anything still on it.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='list'?vList():vTrip();
+  v.querySelectorAll('[data-i]').forEach(e=>e.onclick=()=>{const n=e.dataset.i;C.data.done=C.data.done.includes(n)?C.data.done.filter(x=>x!==n):C.data.done.concat(n);GX.save(C.data);S.shared=false;paint();});
+  v.querySelectorAll('[data-k]').forEach(e=>e.onclick=()=>{const k=e.dataset.k,x=e.dataset.val;C.data.trip[k]=isNaN(+x)?x:+x;GX.save(C.data);paint();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const t=C.data.trip;
+    GX.post(`All packed for <b>${t.nights} nights</b> of ${t.climate==='cold'?'fjords and cold water':'sunshine'}, ${t.formal} formal nights included. Cruise Packing 🧳`,'CRUISE PACKING').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
