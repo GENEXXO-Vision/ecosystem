@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pride Planner</title>
+<style>
+/* Pride Planner, by "Rainbow Row Labs" (fictional), 2026-11-19. A GENEXXO app for PrideXX.
+   Events by city with sober / family / step-free filters, save the ones you're going to, countdown to the next,
+   share your plans. Dates are relative to today, so the demo never goes stale. Venues are fictional; cities are real. */
+:root{--bg:#120E18;--card:rgba(255,255,255,.05);--line:rgba(246,240,250,.1);--ink:#F6F0FA;--mut:rgba(246,240,250,.55);--pink:#FF5DA2;--sky:#7DD3FC}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#E40303,#FF8C00,#FFED00,#008026,#004DFF,#750787);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--pink)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.chip{font:inherit;font-size:12px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:6px 11px;cursor:pointer}
+.chip.on{background:var(--pink);border-color:var(--pink);color:#1A0A14}.chip.f.on{background:var(--sky);border-color:var(--sky)}
+.ev{display:flex;gap:11px;align-items:flex-start;padding:11px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:8px}
+.ev .d{width:46px;text-align:center;background:rgba(255,93,162,.13);border-radius:10px;padding:5px 0;flex-shrink:0}.ev .d b{display:block;font-size:17px;font-weight:900;color:var(--pink)}.ev .d span{font-size:10px;font-weight:800;color:var(--mut)}
+.ev .x{flex:1;min-width:0}.ev .x b{font-size:14px;display:block}.ev .x small{display:block;color:var(--mut);font-size:12px}
+.tags{margin-top:5px;display:flex;gap:4px;flex-wrap:wrap}.tags i{font-style:normal;font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:99px;background:rgba(125,211,252,.13);color:var(--sky)}
+.sv{font:inherit;font-size:18px;background:none;border:0;cursor:pointer;color:var(--mut);padding:2px 4px}.sv.on{color:var(--pink)}
+.hero{border-radius:18px;padding:16px;background:linear-gradient(150deg,#3A1A4A,#1C1028);border:1px solid rgba(255,93,162,.3)}
+.hero small{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--pink)}.hero h2{font-size:20px;font-weight:900;margin:4px 0 2px}.hero p{color:var(--mut);font-size:13px}
+.cd{display:flex;gap:8px;margin-top:12px}.cd div{flex:1;background:rgba(255,255,255,.06);border-radius:12px;padding:8px;text-align:center}.cd b{display:block;font-size:22px;font-weight:900}.cd span{font-size:10.5px;font-weight:800;color:var(--mut);letter-spacing:.06em}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--pink);color:#1A0A14;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+.empty{padding:30px 10px;text-align:center;color:var(--mut)}
+</style></head><body>
+<div class="hd"><div class="logo">🏳️‍🌈</div><div><h1>Pride Planner</h1><p>Rainbow Row Labs · in PrideXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="ev" class="on">Events</button><button data-tab="mine">My plans</button><button data-tab="next">Next up</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const seed=()=>({saved:[1,4,7],evs:[
+  {t:'Trans Day of Remembrance vigil',city:'Manchester',where:'Sackville Gardens',off:1,time:'18:00',em:'🕯️',tags:['sober','family','stepfree']},
+  {t:'Sober board games night',city:'Manchester',where:'The Hexagon Café, Northern Quarter',off:3,time:'18:30',em:'🎲',tags:['sober','stepfree']},
+  {t:'Queer book club',city:'Brighton',where:'Spectrum Books, Kemptown',off:4,time:'19:30',em:'📚',tags:['sober','stepfree']},
+  {t:'Winter Pride social',city:'Leeds',where:'Corn Exchange café',off:6,time:'14:00',em:'☕',tags:['family','sober']},
+  {t:'Rainbow family skate',city:'London',where:'Somerset House ice rink',off:8,time:'10:00',em:'⛸️',tags:['family']},
+  {t:'Queer choir carols',city:'London',where:'St Pancras crypt',off:10,time:'19:00',em:'🎶',tags:['sober','family']},
+  {t:'Winter walk and hot chocolate',city:'Manchester',where:'Heaton Park gates',off:9,time:'11:00',em:'🧣',tags:['sober','family']},
+  {t:'Christmas drag brunch',city:'Brighton',where:'The Pier Rooms',off:23,time:'11:30',em:'🥞',tags:['stepfree']},
+  {t:'LGBTQ+ youth group Christmas party',city:'Leeds',where:'Youth hub, city centre',off:21,time:'17:00',em:'🎄',tags:['sober','under18','stepfree']},
+  {t:'New Year’s Eve at the Village',city:'Manchester',where:'Canal Street',off:42,time:'21:00',em:'🎆',tags:[]}]});
+const CITIES=['All','Manchester','London','Brighton','Leeds'],FL={sober:'Sober-friendly',family:'Family',stepfree:'Step-free'};
+let C,S={tab:'ev',city:'All',f:{},shared:false};
+GX.init({gateway:'PrideXX',seed}).then(c=>{C=c;paint();});
+const evs=()=>C.data.evs.map((e,i)=>Object.assign({i},e)).sort((a,b)=>a.off-b.off);
+const box=e=>{const d=GX.today(e.off);return `<div class="d"><b>${d.getDate()}</b><span>${GX.day(d,{month:'short'}).toUpperCase()}</span></div>`;};
+const tagsOf=e=>e.tags.map(t=>`<i>${t==='under18'?'Under-18s':FL[t]}</i>`).join('');
+const row=e=>`<div class="ev">${box(e)}<div class="x"><b>${e.em} ${GX.esc(e.t)}</b><small>${GX.esc(e.city)} · ${GX.esc(e.where)} · ${e.time}</small><div class="tags">${tagsOf(e)}</div></div><button class="sv ${C.data.saved.includes(e.i)?'on':''}" data-save="${e.i}" aria-label="Save">${C.data.saved.includes(e.i)?'♥':'♡'}</button></div>`;
+function vEv(){const list=evs().filter(e=>(S.city==='All'||e.city===S.city)&&Object.keys(S.f).every(k=>!S.f[k]||e.tags.includes(k)));
+  return `<div class="chips">${CITIES.map(c=>`<button class="chip ${S.city===c?'on':''}" data-city="${c}">${c}</button>`).join('')}</div>
+  <div class="chips">${Object.keys(FL).map(k=>`<button class="chip f ${S.f[k]?'on':''}" data-f="${k}">${FL[k]}</button>`).join('')}</div>
+  ${list.length?list.map(row).join(''):'<div class="empty">Nothing matches yet. Try another city or fewer filters.</div>'}
+  <div class="legend">Tap ♡ to add an event to your plans.</div>`;}
+function vMine(){const m=evs().filter(e=>C.data.saved.includes(e.i));
+  return m.length?m.map(row).join('')+(GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my plans to ${C.gateway}`}</button>`:''):'<div class="empty">No plans yet. Save events from the Events tab.</div>';}
+function vNext(){const n=evs().filter(e=>C.data.saved.includes(e.i))[0];if(!n)return '<div class="empty">Save an event to start the countdown.</div>';
+  const [hh,mm]=n.time.split(':').map(Number),t=GX.today(n.off);t.setHours(hh,mm,0,0);const ms=Math.max(0,t-new Date()),d=Math.floor(ms/864e5),h=Math.floor(ms/36e5)%24,mi=Math.floor(ms/6e4)%60;
+  return `<div class="hero"><small>YOUR NEXT EVENT</small><h2>${n.em} ${GX.esc(n.t)}</h2><p>${GX.day(t,{weekday:'long',day:'numeric',month:'long'})} · ${n.time}<br>${GX.esc(n.where)}, ${GX.esc(n.city)}</p>
+  <div class="cd"><div><b>${d}</b><span>DAYS</span></div><div><b>${h}</b><span>HOURS</span></div><div><b>${mi}</b><span>MINS</span></div></div><div class="tags" style="margin-top:12px">${tagsOf(n)}</div></div>
+  <div class="legend">${C.data.saved.length} events in your plans. Look after each other out there 🌈</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='ev'?vEv():S.tab==='mine'?vMine():vNext();
+  v.querySelectorAll('[data-city]').forEach(b=>b.onclick=()=>{S.city=b.dataset.city;paint();});
+  v.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{S.f[b.dataset.f]=!S.f[b.dataset.f];paint();});
+  v.querySelectorAll('[data-save]').forEach(b=>b.onclick=()=>{const i=+b.dataset.save,s=C.data.saved;const k=s.indexOf(i);k<0?s.push(i):s.splice(k,1);GX.save(C.data);paint();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const m=evs().filter(e=>C.data.saved.includes(e.i));
+    GX.post(`My winter Pride plans: <b>${m.length} events</b>, starting with ${GX.esc(m[0].t)} in ${GX.esc(m[0].city)}. Planned in Pride Planner 🏳️‍🌈`,'PRIDE PLANNER').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
