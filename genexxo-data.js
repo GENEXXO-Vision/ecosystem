@@ -5194,3 +5194,935 @@ EVENTS_FEED.push(
 );
 })();
 /* ═════════ /ASTHMAXX ═════════ */
+/* ═════════ PRIDEXX — an Identity demo gateway (2026-11-19, Sean) ═════════
+   Built like HotelXX: theme, feed, 4 Brand Zones, 2 Business Zones, 3 Pros, 2 communities, 3 apps, events.
+   Palette (dark): deep violet night, hot pink, sky blue, with the rainbow kept for the tile. Home sector: Identity.
+   Brands, pros and communities are fictional; places are real. Tone: warm, proud, safe. Nobody is ever outed;
+   the counsellor is not a crisis service and says so (999, Samaritans 116 123). Source of truth: _lab/home85/pridexx-block.js. */
+(function(){
+const U = (id, w, h) => `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&q=75`;
+const PINK = 'linear-gradient(135deg,#FF5DA2,#B0246A)', SKY = 'linear-gradient(135deg,#7DD3FC,#2563EB)', SUN = 'linear-gradient(135deg,#FFC94D,#E8590C)', VIO = 'linear-gradient(135deg,#A78BFA,#5B21B6)';
+
+GATEWAYS.pride = {
+  name: 'PrideXX', domain: 'pridexx.com', emoji: '🏳️‍🌈', sector: 'identity', live: true,
+  tagline: 'The Pride Universe',
+  theme: {
+    bg: '#120E18', text: '#F6F0FA', cardBg: 'rgba(255,255,255,.045)', cardBorder: 'rgba(255,93,162,.16)',
+    headerBg: 'linear-gradient(180deg,#2A1640,#120E18)', accent: '#FF5DA2', accentAlt: '#7DD3FC', dark: true
+  },
+  gradient: 'linear-gradient(135deg,#E40303,#FF8C00,#FFED00,#008026,#004DFF,#750787)',
+  stats: { members: '8.9M', brands: '7,400+', agents: '96' },
+  spaces: ['All Feed', 'Pride Events', 'Community', 'Love & Weddings', 'Travel', 'Work & Allies'],
+  trending: ['#ProudAllYear', '#ChosenFamily', '#WinterPride'],
+  brandZones: [
+    { key: 'proud-threads', name: 'Proud Threads', color: '#FF5DA2', tier: 'Founding Partner', tag: 'LGBTQ+-owned clothing, made in Glasgow' },
+    { key: 'spectrum-books', name: 'Spectrum Books', color: '#7DD3FC', tier: 'Brand Zone', tag: 'The queer bookshop, in Brighton and by post' },
+    { key: 'out-and-away', name: 'Out & Away Travel', color: '#FFC94D', tier: 'Brand Zone', tag: 'Holidays planned by people who get it' },
+    { key: 'kin-cards', name: 'Kin & Co. Cards', color: '#A78BFA', tier: 'Brand Zone', tag: 'Cards for every kind of family' }
+  ],
+  apps: [
+    { name: 'Pride Planner', color: '#FF5DA2', desc: 'Every Pride, march and party near you, in one diary', key: 'pride-planner', url: 'apps/pride-planner.html',
+      dev: 'Rainbow Row Labs', rating: '4.8', users: '1.6M', perms: ['profile', 'feed'],
+      tagline: 'Never miss your Pride again.',
+      about: 'Pride Planner gathers the events you care about: marches, winter Prides, club nights, book clubs, sober socials and vigils. Save the ones you are going to, see a countdown to the next, and pick the kind of night you want with filters for sober-friendly, family-friendly and step-free.',
+      features: ['Events by city and by week', 'Sober, family and step-free filters', 'Countdown to your next event', 'Share your plans to PrideXX'],
+      shots: ['apps/pride-planner/shot-1.jpg', 'apps/pride-planner/shot-2.jpg', 'apps/pride-planner/shot-3.jpg'],
+      version: '5.2', size: '10 KB',
+      updates: [ { v: '5.2', ago: 3, notes: 'Step-free filter for every venue.' }, { v: '5.0', ago: 60, notes: 'Winter events, not just summer Prides.' }, { v: '4.1', ago: 210, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@glitter_gabe', stars: 5, ago: 1, text: 'Found a sober Pride social in my own town. Life changing, honestly.' }, { who: '@two_mums_mo', stars: 5, ago: 7, text: 'The family filter means we can actually plan as a family.' }, { who: '@quietqueer_q', stars: 4, ago: 18, text: 'Would love quieter events marked too.' } ] },
+    { name: 'Pronoun Card', color: '#7DD3FC', desc: 'A small card that says your name and pronouns for you', key: 'pronoun-card', url: 'apps/pronoun-card.html',
+      dev: 'Spectrum Books', rating: '4.9', users: '820K', perms: ['profile', 'feed'],
+      tagline: 'Say it once. Show it anywhere.',
+      about: 'Pronoun Card makes a clear, friendly card with your name and pronouns to show at a desk, on a video call or at a new job. It also has a short guide for friends and colleagues: how to use pronouns, and what to do if you get them wrong (say sorry, correct yourself, move on).',
+      features: ['Your name and pronouns, beautifully set', 'Five card styles', 'Big mode to show across a room', 'A kind guide for friends and allies'],
+      shots: ['apps/pronoun-card/shot-1.jpg', 'apps/pronoun-card/shot-2.jpg', 'apps/pronoun-card/shot-3.jpg'],
+      version: '2.4', size: '8 KB',
+      updates: [ { v: '2.4', ago: 5, notes: 'Big mode for across-the-room.' }, { v: '2.0', ago: 90, notes: 'The ally guide.' }, { v: '1.6', ago: 230, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@river_they', stars: 5, ago: 2, text: 'Showed it on my first day. Nobody got it wrong.' }, { who: '@ally_alex', stars: 5, ago: 9, text: 'The guide is so simple. Sent it to my whole team.' }, { who: '@glitter_gabe', stars: 4, ago: 22, text: 'More colours please!' } ] },
+    { name: 'Out Map', color: '#FFC94D', desc: 'Welcoming cafés, bars, bookshops and spaces near you', key: 'out-map', url: 'apps/out-map.html',
+      dev: 'Out & Away Travel', rating: '4.7', users: '1.1M', perms: ['profile', 'feed'],
+      tagline: 'Find your people, wherever you are.',
+      about: 'Out Map lists LGBTQ+-owned and LGBTQ+-welcoming places, checked by the community: cafés, bars, bookshops, sober spaces and youth groups. Filter by what you want, save the ones you love, and tell the community when somewhere has changed.',
+      features: ['Places checked by the community', 'Sober, step-free and under-18 filters', 'Save your favourites', 'Report a change in one tap'],
+      shots: ['apps/out-map/shot-1.jpg', 'apps/out-map/shot-2.jpg', 'apps/out-map/shot-3.jpg'],
+      version: '3.3', size: '10 KB',
+      updates: [ { v: '3.3', ago: 4, notes: 'Under-18 spaces filter.' }, { v: '3.0', ago: 75, notes: 'Report a change.' }, { v: '2.5', ago: 190, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@newtotown_nia', stars: 5, ago: 3, text: 'Moved to Leeds alone. Out Map found me a book club in a week.' }, { who: '@sober_sol', stars: 5, ago: 11, text: 'The sober filter is everything.' }, { who: '@roam_rafa', stars: 4, ago: 25, text: 'Used it in Lisbon too. More cities please.' } ] }
+  ],
+  pros: [
+    { key: 'sam-rivers-counselling', name: 'Sam Rivers Affirming Counselling', color: '#FF5DA2', tag: 'Counselling for LGBTQ+ people and couples · coming out, identity, relationships', role: 'Counsellor',
+      img: U('1611695434369-a8f5d76ceb7b', 800, 800), base: 'Manchester, UK · and online', langs: 'English', years: 11, rating: '4.9', reviewsN: 412, cur: '£',
+      creds: ['Diploma in therapeutic counselling', 'Specialist training in gender and sexuality diversity', 'Registered with a UK professional counselling body'],
+      about: 'Sam (they/them) offers a calm, affirming room to talk: coming out at any age, questioning, family, faith, relationships and the weight of the news. Sam is not a crisis service: if you are in danger call 999, or Samaritans free on 116 123, any time.',
+      services: [ { id: 'intro', name: 'Introductory call', dur: '20 minutes', price: 0, desc: 'Free. See if it feels right before you book.' },
+                  { id: 'one', name: 'Counselling session', dur: '50 minutes', price: 60, desc: 'One-to-one, in Manchester or online.' },
+                  { id: 'couple', name: 'Couples session', dur: '75 minutes', price: 85, desc: 'For couples and polycules, together.' } ],
+      avail: { days: [1, 2, 3, 4], times: ['10:00', '14:00', '18:30'] },
+      reviews: [ { who: '@quietqueer_q', stars: 5, ago: 5, text: 'Came out to my parents at 52. Sam helped me find the words.' }, { who: '@river_they', stars: 5, ago: 16, text: 'I never had to explain myself. That alone was healing.' }, { who: '@two_mums_mo', stars: 5, ago: 40, text: 'Helped us through a really hard year.' } ],
+      posts: [ { ago: 1, text: 'Coming out is not one conversation. It is many, and you get to choose the order.' }, { ago: 6, text: 'Two evening spaces free from January.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'theo-marsh-celebrant', name: 'Theo Marsh Celebrant', color: '#7DD3FC', tag: 'Weddings, vow renewals and commitment ceremonies · written around you', role: 'Celebrant',
+      img: U('1519085360753-af0119f7cbe7', 800, 800), base: 'London, UK', langs: 'English, Portuguese', years: 8, rating: '4.9', reviewsN: 268, cur: '£',
+      creds: ['Trained independent celebrant', 'Over 300 ceremonies led', 'Member of a UK celebrant network'],
+      about: 'Theo writes ceremonies that sound like you: your story, your vows, your people, anywhere you like. In England and Wales the legal part happens at the register office, so many couples do that quietly and celebrate with Theo the way they want.',
+      services: [ { id: 'chat', name: 'Ceremony chat', dur: '30 minutes', price: 0, desc: 'Free. Tell Theo about you two.' },
+                  { id: 'wedding', name: 'Wedding ceremony', dur: 'Written with you, led on the day', price: 650, desc: 'Two planning meetings, a rehearsal and the ceremony itself.' },
+                  { id: 'vows', name: 'Vow renewal', dur: 'Led on the day', price: 380, desc: 'For anniversaries, or the wedding you could not have back then.' } ],
+      avail: { days: [2, 3, 4, 6], times: ['11:00', '15:00', '19:00'] },
+      reviews: [ { who: '@two_mums_mo', stars: 5, ago: 8, text: 'Our vow renewal after 30 years. Not a dry eye in the pub.' }, { who: '@grooms_jay', stars: 5, ago: 20, text: 'He made our families laugh and cry in the same minute.' }, { who: '@ally_alex', stars: 5, ago: 48, text: 'Led my brother’s wedding beautifully.' } ],
+      posts: [ { ago: 2, text: 'Winter weddings are the best kept secret. Candles, coats and a lot less competition for venues.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'ruby-lux-makeup', name: 'Ruby Lux Makeup & Drag', color: '#FFC94D', tag: 'Makeup lessons, drag looks and hosting · first-timers welcome', role: 'Makeup artist & host',
+      img: U('1780387477222-730504564368', 800, 800), base: 'Brighton, UK', langs: 'English', years: 13, rating: '4.8', reviewsN: 344, cur: '£',
+      creds: ['Professional makeup artist', 'Host of a Brighton drag brunch', 'Makeup for stage and screen'],
+      about: 'Ruby has painted faces for theatre, television and the best drag brunch on the south coast. Lessons are patient, private and fun, whether it is your first lipstick or your first time on stage.',
+      services: [ { id: 'lesson', name: 'One-to-one makeup lesson', dur: '90 minutes', price: 70, desc: 'Your face, your kit, your look. No judgement.' },
+                  { id: 'drag', name: 'First drag look', dur: '3 hours', price: 140, desc: 'Full transformation, photos included.' },
+                  { id: 'host', name: 'Event hosting', dur: 'Up to 3 hours', price: 450, desc: 'Brunches, parties and office Pride events.' } ],
+      avail: { days: [3, 4, 5, 6], times: ['11:00', '14:00', '17:00'] },
+      reviews: [ { who: '@glitter_gabe', stars: 5, ago: 4, text: 'My first drag look and I cried happy tears.' }, { who: '@river_they', stars: 5, ago: 13, text: 'Taught me makeup that feels like me.' }, { who: '@hr_hannah', stars: 4, ago: 35, text: 'Hosted our office Pride lunch. People still talk about it.' } ],
+      posts: [ { ago: 3, text: 'Winter skin: moisturise, wait five minutes, then foundation. Every time.' } ],
+      tier: 'Pro Zone', verified: true }
+  ],
+  communities: [
+    { key: 'out-and-about', name: 'Out & About', domain: 'outandabout.pridexx.com', color: '#FF5DA2', img: U('1566835770430-27dde2eb4367', 900, 500),
+      scope: 'Global', where: 'Everywhere', members: 486000, online: 7240, tagline: 'Pride is every day. So is the group chat.',
+      about: 'LGBTQ+ people and allies everywhere: coming-out stories, advice, books, travel tips, love and the small wins. Kind first, always.',
+      rules: ['Never out anyone', 'Use people’s names and pronouns', 'Report, don’t pile on'],
+      mods: ['@glitter_gabe', '@river_they'],
+      threads: [ { t: 'Came out at work this week. Here is how it went', by: '@quietqueer_q', tag: 'STORIES', replies: 1240, ago: 0, votes: 3820 }, { t: 'Best queer books of 2026: your list', by: '@spectrum_sara', tag: 'BOOKS', replies: 642, ago: 1, votes: 1180 }, { t: 'Winter Pride events this year?', by: '@roam_rafa', tag: 'EVENTS', replies: 286, ago: 2, votes: 520 }, { t: 'Chosen family Christmas: who is hosting?', by: '@two_mums_mo', tag: 'COMMUNITY', replies: 418, ago: 3, votes: 960 } ],
+      events: [ { title: 'Queer book club online', day: 4, time: '19:30', where: 'Online' }, { title: 'Chosen family Christmas dinner sign-up', day: 10, time: '18:00', where: 'Online' } ] },
+    { key: 'manchester-queer-social', name: 'Manchester Queer Social', domain: 'manchester.pridexx.com', color: '#7DD3FC', img: U('1773659922558-2bf5da1f5d74', 900, 500),
+      scope: 'Local', where: 'Manchester', members: 18400, online: 420, tagline: 'More than Canal Street. Sober nights too.',
+      about: 'Walks, board games, choirs, sober socials and the odd big night on Canal Street. New to the city or new to being out? Come and say hello.',
+      rules: ['Never out anyone', 'Sober events stay sober', 'Under-18s only at youth-group events'],
+      mods: ['@sober_sol', '@newtotown_nia'],
+      threads: [ { t: 'Sober Saturday board games: who is in?', by: '@sober_sol', tag: 'SOCIAL', replies: 84, ago: 0, votes: 196 }, { t: 'Trans Day of Remembrance vigil details', by: '@river_they', tag: 'EVENT', replies: 112, ago: 1, votes: 340 }, { t: 'Queer choirs taking new voices?', by: '@newtotown_nia', tag: 'Q&A', replies: 46, ago: 2, votes: 88 } ],
+      events: [ { title: 'Sober board games night', day: 3, time: '18:30', where: 'Northern Quarter, Manchester' }, { title: 'Winter walk and hot chocolate', day: 9, time: '11:00', where: 'Heaton Park, Manchester' } ] }
+  ],
+  feed: [
+    { av: 'PX', avBg: PINK, author: 'PrideXX Editorial', sub: 'Featured · Just now', badge: '★ FEATURED',
+      text: 'Pride is not a weekend in June. Events, community, love, travel, work and the people who make every day a bit braver. All of it, all year, in one place.',
+      img: U('1770223951390-5b55dc1b8804', 800, 600), eng: '♡ 94.2K · 💬 8.8K · ↗ 12.4K' },
+    { av: 'GG', avBg: SUN, author: '@glitter_gabe', sub: 'Community · Just now', badge: 'COMMUNITY',
+      text: 'First Pride with my girlfriend this year. She cried at the parade, and then I cried at her crying 🌈',
+      img: U('1561982479-c36896dad276', 800, 600), eng: '♡ 38.6K · 💬 4.1K · ↗ 2.2K' },
+    { av: 'PT', avBg: PINK, author: 'Proud Threads', sub: 'Founding Partner · Brand Zone', badge: 'BRAND ZONE',
+      text: 'The <b>Winter Pride</b> collection is here: heavy knits and rainbow-cuff beanies, made in Glasgow. A tenth of every sale goes to LGBTQ+ youth charities.',
+      img: U('1782581719965-4d88091ba6ce', 800, 600), eng: '♡ 16.4K · 💬 1.2K · ↗ 2.1K' },
+    { av: 'BB', avBg: VIO, author: '@bi_and_bright', sub: 'Community · 1h ago', badge: 'COMMUNITY',
+      text: 'Told my best friends I’m bi on our weekend away. They screamed, hugged me, then asked why I hadn’t told them sooner 💜',
+      img: U('1679470628375-7eda1736e52e', 800, 600), eng: '♡ 24.8K · 💬 3.6K · ↗ 1.4K' },
+    { av: 'OA', avBg: SUN, author: 'Out & Away Travel', sub: 'Brand Zone · 2h ago', badge: 'BRAND ZONE',
+      text: 'Summer 2027 is open. <b>Pride trips to Madrid, Amsterdam and Sitges</b>, with hotels that put the flag up because they mean it.',
+      img: U('1785682608192-300a8cbeda20', 800, 600), eng: '♡ 9.2K · 💬 640 · ↗ 1.1K' },
+    { av: 'SR', avBg: PINK, author: 'Sam Rivers Affirming Counselling', sub: 'Community · 4h ago', badge: 'PRO ZONE',
+      text: 'Christmas can be hard when family is complicated. Plan a way out, plan a call with a friend, and know that chosen family counts as family.',
+      img: U('1573225063823-21ec7ba08e64', 800, 600), eng: '♡ 6.8K · 💬 520 · ↗ 1.6K' },
+    { av: 'RL', avBg: SUN, author: 'Ruby Lux Makeup & Drag', sub: 'Pride Events · 6h ago', badge: 'PRO ZONE',
+      text: 'Christmas drag brunch in Brighton on 12 December. Bottomless pancakes, carols with a twist and absolutely no dress code.',
+      img: U('1779906923896-ee20b705fa70', 800, 600), eng: '♡ 5.4K · 💬 380 · ↗ 460' }
+  ],
+  prompts: ['What is on for LGBTQ+ people in Manchester this weekend?', 'How do I support a friend who has just come out?', 'Plan a Pride trip to Madrid next summer', 'Find a sober queer social near me'],
+  businesses: ['carnival-works', 'open-door-inclusion']
+};
+
+/* the four Brand Zones and two Business Zones */
+const brand = (o) => Object.assign({ kind: 'brand', gw: 'pride', verified: true }, o);
+Object.assign(ZONES, {
+  'proud-threads': brand({ key: 'proud-threads', name: 'Proud Threads', color: '#FF5DA2', gradient: PINK, tier: 'Founding Partner',
+    tagline: 'LGBTQ+-owned clothing, made in Glasgow', stats: { followers: '312K', content: '1.4K', products: '46' },
+    ad: { badge: 'Featured', img: U('1782581719965-4d88091ba6ce', 760, 760), hl: 'Winter Pride.', sub: 'Heavy knits, rainbow cuffs, made in Glasgow.', meta: 'From £18' },
+    products: [
+      { name: 'Winter Pride Knit', price: '£68', tag: 'FLAGSHIP', emoji: '🧶', rating: 4.9, reviews: 4120, cat: 'knits', special: true, desc: 'A heavy lambswool jumper with a rainbow stripe at the cuff, knitted in Glasgow.', features: ['Sizes XS to 4XL', 'Lambswool', '10% to LGBTQ+ youth charities'], review: { who: 'Gabe R.', text: 'Warmest, proudest thing I own.' } },
+      { name: 'Rainbow Cuff Beanie', price: '£18', tag: 'BESTSELLER', emoji: '🧢', rating: 4.8, reviews: 6380, cat: 'accessories', desc: 'A ribbed beanie with a six-colour cuff.', features: ['One size', 'Recycled yarn'], review: { who: 'Nia O.', text: 'Bought three. Gave two away.' } },
+      { name: 'Progress Scarf', price: '£32', tag: 'SPECIAL', emoji: '🧣', rating: 4.9, reviews: 1840, cat: 'accessories', special: true, desc: 'A long scarf in the Progress Pride colours.', features: ['180cm', 'Lambswool'], review: { who: 'River T.', text: 'Felt seen in a scarf. Who knew.' } },
+      { name: 'Proud Since Tee', price: '£26', emoji: '👕', rating: 4.7, reviews: 2960, cat: 'tees', desc: 'Organic cotton tee. Add the year you came out, or not.', features: ['Personalised', 'Organic cotton'], review: { who: 'Q.', text: 'Mine says 2026. Feels good.' } },
+      { name: 'Gift Card', price: '£25', emoji: '🎁', rating: 4.9, reviews: 1020, cat: 'gifts', desc: 'For anyone who should be dressed with pride.', features: ['Never expires'], review: { who: 'Mo A.', text: 'Perfect for my nephew.' } }
+    ],
+    shopCats: [ { key: 'knits', label: 'Knits', icon: '🧶' }, { key: 'accessories', label: 'Accessories', icon: '🧣' }, { key: 'tees', label: 'Tees', icon: '👕' }, { key: 'gifts', label: 'Gift cards', icon: '🎁' } ],
+    feed: [
+      { type: 'post', sub: 'Brand post · 2h', text: 'The <b>Winter Pride Knit</b> is back, in eight sizes.', img: U('1762372473479-3036448f35c5', 800, 440), eng: '♡ 16.4K · 💬 1.2K · ↗ 2.1K', product: 0 },
+      { type: 'post', sub: 'Giving back · Yesterday', text: 'This year’s Pride collection raised £148,000 for LGBTQ+ youth charities. Thank you.', img: U('1637631531662-cea0fb4b1d97', 800, 440), eng: '♡ 9.8K · 💬 640' },
+      { type: 'community', who: 'Nia O.', whoBg: SKY, sub: 'Community · 1d', text: 'Do you make the knit in bigger sizes? I am a 5XL.', eng: '♡ 380 · 💬 64', reply: 'Hi Nia! Yes: the Winter Pride Knit is made to order up to 6XL. Pick “Made to measure” on the product page and we will knit it for you in about two weeks. 🧶' }
+    ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Proud Friday', when: 'Nov 27 · All day', desc: 'A fifth off everything, and the youth-charity donation doubled for the day.', registered: 6240, capacity: 15000 } ],
+    about: { founded: 'Glasgow · 2016', story: 'Two friends with one knitting machine and a stall at Glasgow Pride. Now we knit for the whole country, and a tenth of every Pride piece goes to LGBTQ+ youth charities. Founding Partner on PrideXX because this is where our people are.', milestones: [['2016', 'A stall at Glasgow Pride'], ['2021', 'Our own knitting mill in the East End'], ['2026', 'Founding Partner on PrideXX']], values: ['LGBTQ+-owned, LGBTQ+-staffed', 'Made in Scotland', 'Giving back, every sale'] } }),
+
+  'spectrum-books': brand({ key: 'spectrum-books', name: 'Spectrum Books', color: '#7DD3FC', gradient: SKY, tier: 'Brand Zone',
+    tagline: 'The queer bookshop, in Brighton and by post', stats: { followers: '124K', content: '860', products: '2.1K' },
+    ad: { badge: 'New', img: U('1603912699214-92627f304eb6', 760, 760), hl: 'Read with pride.', sub: 'The Book Box: two queer books a month.', meta: 'From £12' },
+    products: [
+      { name: 'The Book Box (monthly)', price: '£24', tag: 'FLAGSHIP', emoji: '📚', rating: 4.9, reviews: 3820, cat: 'subscription', special: true, desc: 'Two new LGBTQ+ books a month, chosen by our booksellers, with a note on why.', features: ['Fiction, non-fiction or both', 'Skip any month'], review: { who: 'Sara M.', text: 'Every month is a little gift to myself.' } },
+      { name: 'Coming Out Reading Pack', price: '£36', tag: 'BESTSELLER', emoji: '📖', rating: 4.9, reviews: 1460, cat: 'packs', desc: 'Three books for anyone coming out, or anyone loving someone who is.', features: ['Teen and adult editions'], review: { who: 'Mo A.', text: 'Gave it to my mum. It helped her more than I could.' } },
+      { name: 'Queer History Tote', price: '£15', emoji: '👜', rating: 4.7, reviews: 2210, cat: 'gifts', desc: 'A heavy canvas tote printed with 50 years of Pride dates.', features: ['Organic cotton'], review: { who: 'Rafa D.', text: 'Strangers stop me to read it.' } },
+      { name: 'Signed Book Club Pick', price: '£12', tag: 'SPECIAL', emoji: '✍️', rating: 4.8, reviews: 880, cat: 'packs', special: true, desc: 'This month’s book club pick, signed by the author.', features: ['While stocks last'], review: { who: 'River T.', text: 'My first signed book.' } }
+    ],
+    shopCats: [ { key: 'subscription', label: 'Book Box', icon: '📚' }, { key: 'packs', label: 'Reading packs', icon: '📖' }, { key: 'gifts', label: 'Gifts', icon: '👜' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 5h', text: 'December’s <b>Book Box</b> is packed: a winter romance and a history of queer Brighton.', img: U('1545231097-cbd796f1d95f', 800, 440), eng: '♡ 4.6K · 💬 320', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Queer book club online', when: 'Nov 28 · 19:30', desc: 'This month’s pick, with the author joining for the last half hour.', registered: 1840, capacity: 3000 } ],
+    about: { founded: 'Brighton · 2009', story: 'A tiny shop off St James’s Street that grew into the UK’s busiest LGBTQ+ bookshop, and a book box that goes to 40,000 doors.', milestones: [['2009', 'The shop opens in Kemptown'], ['2019', 'The Book Box begins'], ['2026', 'Brand Zone on PrideXX']], values: ['Every story deserves a shelf', 'Booksellers, not algorithms', 'Free books for youth groups'] } }),
+
+  'out-and-away': brand({ key: 'out-and-away', name: 'Out & Away Travel', color: '#FFC94D', gradient: SUN, tier: 'Brand Zone',
+    tagline: 'Holidays planned by people who get it', stats: { followers: '88.2K', content: '540', products: '64' },
+    ad: { badge: 'Featured', img: U('1785682608192-300a8cbeda20', 760, 760), hl: 'Pride trips, summer 2027.', sub: 'Madrid, Amsterdam and Sitges, now open.', meta: 'From £390' },
+    products: [
+      { name: 'Madrid Pride Long Weekend', price: '£590', tag: 'FLAGSHIP', emoji: '🇪🇸', rating: 4.8, reviews: 1240, cat: 'pride', special: true, desc: 'Four nights in Chueca with flights, a welcome dinner and a spot on the parade route.', features: ['Early July 2027', 'Hotels checked by our team', 'Free changes to March'], review: { who: 'Rafa D.', text: 'Best weekend of my life, no exaggeration.' } },
+      { name: 'Amsterdam Canal Pride Trip', price: '£520', tag: 'BESTSELLER', emoji: '🚤', rating: 4.8, reviews: 980, cat: 'pride', desc: 'Three nights by the canals with a boat for the Canal Parade.', features: ['Early August 2027'], review: { who: 'Jay K.', text: 'Watching from a boat. Unreal.' } },
+      { name: 'Sitges Winter Sun', price: '£390', emoji: '☀️', rating: 4.7, reviews: 620, cat: 'breaks', desc: 'Five quiet nights by the sea, out of season.', features: ['January to March'], review: { who: 'Q.', text: 'Exactly the calm I needed.' } },
+      { name: 'Honeymoon Planning', price: '£95', tag: 'SPECIAL', emoji: '💍', rating: 4.9, reviews: 410, cat: 'breaks', special: true, desc: 'A planner finds places where you can hold hands without thinking about it.', features: ['Fee taken off your booking'], review: { who: 'Mo A.', text: 'Every hotel knew and every hotel was lovely.' } }
+    ],
+    shopCats: [ { key: 'pride', label: 'Pride trips', icon: '🏳️‍🌈' }, { key: 'breaks', label: 'Breaks', icon: '☀️' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 2h', text: 'Summer 2027 Pride trips are open. Madrid sells out first, every year.', img: U('1785682575189-1ff35c032e5c', 800, 440), eng: '♡ 9.2K · 💬 640', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'LIVE', title: 'Out & Away Live · Pride trips 2027', when: 'Live now', desc: 'Our planners walk through Madrid, Amsterdam and Sitges and answer your questions live.', registered: 4280, capacity: 9000 } ],
+    about: { founded: 'London · 2014', story: 'Started by two travel agents who were tired of asking hotels “is that a problem?”. Every place we sell, we have stayed in.', milestones: [['2014', 'The first Pride trip, to Madrid'], ['2022', '20,000 travellers a year'], ['2026', 'Brand Zone on PrideXX']], values: ['We stay before we sell', 'Safety advice that is honest', 'Couples, families and solo, all welcome'] } }),
+
+  'kin-cards': brand({ key: 'kin-cards', name: 'Kin & Co. Cards', color: '#A78BFA', gradient: VIO, tier: 'Brand Zone',
+    tagline: 'Cards for every kind of family', stats: { followers: '61.4K', content: '320', products: '280' },
+    ad: { badge: 'Christmas', img: U('1719780660401-32ea0de49649', 760, 760), hl: 'Merry Christmas, Dads.', sub: 'Cards for every kind of family, in time for Christmas.', meta: 'From £3.50' },
+    products: [
+      { name: 'Christmas Cards (pack of 10)', price: '£14', tag: 'FLAGSHIP', emoji: '🎄', rating: 4.9, reviews: 2860, cat: 'christmas', special: true, desc: 'Ten cards for two dads, two mums, chosen family and everyone between.', features: ['Recycled card', 'Mix or match designs'], review: { who: 'Mo A.', text: 'Finally a card with our family on it.' } },
+      { name: 'Coming Out Congrats Card', price: '£3.50', tag: 'BESTSELLER', emoji: '💌', rating: 4.9, reviews: 3120, cat: 'cards', desc: '“So proud of you. Nothing changes, except I love you louder.”', features: ['Blank inside'], review: { who: 'Alex P.', text: 'My friend keeps it on her fridge.' } },
+      { name: 'Two Grooms Wedding Card', price: '£3.50', emoji: '🤵', rating: 4.8, reviews: 1480, cat: 'cards', desc: 'Gold foil, two top hats, one big day.', features: ['With envelope'], review: { who: 'Jay K.', text: 'We framed ours.' } },
+      { name: 'Name Day Card', price: '£4', tag: 'SPECIAL', emoji: '✨', rating: 4.9, reviews: 760, cat: 'cards', special: true, desc: 'For the day someone starts using their name. Write it big inside.', features: ['Personalised'], review: { who: 'River T.', text: 'Got one from my sister. I cried.' } }
+    ],
+    shopCats: [ { key: 'christmas', label: 'Christmas', icon: '🎄' }, { key: 'cards', label: 'Cards', icon: '💌' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 1d', text: 'Our <b>Christmas packs</b> are back, with six new designs for chosen family.', img: U('1516119555254-e3b36f4b6769', 800, 440), eng: '♡ 3.4K · 💬 210', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'DEADLINE', title: 'Last order for Christmas delivery', when: 'Dec 18 · 23:59', desc: 'Order by midnight on 18 December for second-class delivery before Christmas.', registered: 1120, capacity: 4000 } ],
+    about: { founded: 'Bristol · 2018', story: 'An illustrator who could not find a card for her two mums. Now we draw cards for every kind of family.', milestones: [['2018', 'The first ten designs'], ['2023', 'In 900 shops'], ['2026', 'Brand Zone on PrideXX']], values: ['Every family on a card', 'Recycled card, always', 'Drawn by queer illustrators'] } }),
+
+  'carnival-works': { key: 'carnival-works', kind: 'business', gw: 'pride', name: 'Carnival Works', color: '#FF5DA2', gradient: PINK, img: U('1785682563963-df7952f27708', 900, 500),
+    tier: 'Verified', category: 'Event production', tagline: 'Floats, stages and sound for Prides of every size.',
+    about: { founded: 'Manchester · 2004', story: 'We build parade floats, small stages and sound systems for Prides, carnivals and community festivals, and we lend kit to small-town Prides at cost.' },
+    stats: { years: 22, staff: 64, clients: '140 Prides & festivals' },
+    caps: [ { name: 'Parade floats', detail: 'Designed, built, driven and taken away after.' }, { name: 'Stages and sound', detail: 'From a park bandstand to a 5,000-person field.' }, { name: 'Small Pride kit', detail: 'A van of staging and sound at cost for first-year Prides.' } ],
+    specs: { moq: 'One float', lead: 'Book 8 weeks ahead', regions: 'UK & Ireland', certs: ['Event safety accredited', 'Public liability £10M', 'Living Wage employer'] },
+    supplies: [ { kind: 'brand', key: 'proud-threads', what: 'The Proud Threads parade float, every year since 2019' } ],
+    cases: [ { title: 'A first-year Pride in a market town', text: 'Stage, sound and a float for 3,000 people on a budget of £4,000.' } ],
+    feed: [ { sub: 'News · 3d', text: '2027 float bookings are open. Small Prides get first pick of dates.' }, { sub: 'Workshop · 1w', text: 'Our winter project: a float that runs on batteries, no generator.' } ],
+    contact: { person: 'Dee Okonjo, Bookings', response: 'Replies within 24 hours' } },
+
+  'open-door-inclusion': { key: 'open-door-inclusion', kind: 'business', gw: 'pride', name: 'Open Door Workplace Inclusion', color: '#7DD3FC', gradient: SKY, img: U('1720423330656-614d6fe9021e', 900, 500),
+    tier: 'Verified', category: 'Workplace training', tagline: 'Practical LGBTQ+ inclusion training for employers.',
+    about: { founded: 'Leeds · 2015', story: 'We help employers make work a place people can be themselves: policies, manager training and staff networks, in plain English.' },
+    stats: { years: 11, staff: 28, clients: '420 employers' },
+    caps: [ { name: 'Manager training', detail: 'Half-day sessions on pronouns, coming out at work and handling mistakes.' }, { name: 'Policy review', detail: 'Leave, dress code and transition-at-work policies, rewritten clearly.' }, { name: 'Staff networks', detail: 'Setting up an LGBTQ+ network that lasts past June.' } ],
+    specs: { moq: 'One session', lead: 'Start within 3 weeks', regions: 'UK-wide & online', certs: ['ISO 9001', 'Accredited trainers', 'Cyber Essentials'] },
+    supplies: [ { kind: 'brand', key: 'out-and-away', what: 'Inclusion training for every Out & Away planner' } ],
+    cases: [ { title: 'A 2,000-person retailer in Yorkshire', text: 'Trained 180 store managers and launched a staff network with 300 members.' } ],
+    feed: [ { sub: 'Webinar · 2d', text: 'Free: “Getting pronouns right at work”, 3 December, 12:30.' } ],
+    contact: { person: 'Priya Shah, Employer partnerships', response: 'Replies within one working day' } }
+});
+
+/* events in the Events tab */
+EVENTS_FEED.push(
+  { gw: 'pride', zone: 'out-and-away', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Out & Away Live · Pride trips 2027', desc: 'Planners walk through Madrid, Amsterdam and Sitges and answer your questions in the chat.' },
+  { gw: 'pride', type: 'Event', icon: '🕯️', time: 'Nov 20', title: 'Trans Day of Remembrance vigil, Manchester', desc: 'Manchester Queer Social: candles, names read aloud and a warm drink after. All welcome.' },
+  { gw: 'pride', zone: 'proud-threads', type: 'Sale', icon: '🧶', time: 'Nov 27', title: 'Proud Friday at Proud Threads', desc: 'A fifth off everything, and the youth-charity donation doubled.' },
+  { gw: 'pride', zone: 'spectrum-books', type: 'Event', icon: '📚', time: 'Nov 28', title: 'Queer book club online', desc: 'Spectrum Books: this month’s pick, with the author for the last half hour.' },
+  { gw: 'pride', type: 'Event', icon: '🎗️', time: 'Dec 1', title: 'World AIDS Day: red ribbon walk, London', desc: 'Out & About walks from King’s Cross to remember, and raises money for HIV charities.' },
+  { gw: 'pride', type: 'Event', icon: '💼', time: 'Dec 3', title: 'Getting pronouns right at work: free webinar', desc: 'Open Door Workplace Inclusion, 12:30. For managers and colleagues.' },
+  { gw: 'pride', type: 'Event', icon: '🥞', time: 'Dec 12', title: 'Christmas drag brunch, Brighton', desc: 'Hosted by Ruby Lux: pancakes, carols with a twist, no dress code.' },
+  { gw: 'pride', zone: 'kin-cards', type: 'Deadline', icon: '🎄', time: 'Dec 18', title: 'Last order for Christmas cards', desc: 'Kin & Co. Cards: order by midnight for delivery before Christmas.' }
+);
+})();
+/* ═════════ /PRIDEXX ═════════ */
+/* ═════════ SOFAXX — a Home demo gateway (2026-11-19, Sean) ═════════
+   Built like HotelXX: theme, feed, 4 Brand Zones, 2 Business Zones, 3 Pros, 2 communities, 3 apps, events.
+   Palette (light): oat linen, terracotta, sage. Home sector: Home (living).
+   Brands, pros and communities are fictional; places are real. Source of truth: _lab/home85/sofaxx-block.js. */
+(function(){
+const U = (id, w, h) => `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&q=75`;
+const TERRA = 'linear-gradient(135deg,#D9805F,#A3432A)', SAGE = 'linear-gradient(135deg,#9DB59A,#5C7A59)', OAT = 'linear-gradient(135deg,#D8C3A5,#A0845C)', PLUM = 'linear-gradient(135deg,#B48AA8,#6E4565)';
+
+GATEWAYS.sofa = {
+  name: 'SofaXX', domain: 'sofaxx.com', emoji: '🛋️', sector: 'living', live: true,
+  tagline: 'The Sofa Universe',
+  theme: {
+    bg: '#FAF6F0', text: '#2B2420', cardBg: '#FFFFFF', cardBorder: 'rgba(163,67,42,.12)',
+    headerBg: 'linear-gradient(180deg,#F1E6D8,#FAF6F0)', accent: '#C2593A', accentAlt: '#5C7A59', dark: false
+  },
+  gradient: 'linear-gradient(135deg,#A3432A,#D9805F,#D8C3A5)',
+  stats: { members: '3.8M', brands: '5,200+', agents: '64' },
+  spaces: ['All Feed', 'Sofa Shopping', 'Small Spaces', 'Fabrics & Care', 'Reupholstery', 'Living Rooms'],
+  trending: ['#WillItFit', '#Reupholstered', '#CosySeason'],
+  brandZones: [
+    { key: 'hearth-hollow', name: 'Hearth & Hollow', color: '#C2593A', tier: 'Founding Partner', tag: 'Sofas made by hand in High Wycombe' },
+    { key: 'cushionry', name: 'Cushionry', color: '#B48AA8', tier: 'Brand Zone', tag: 'Cushions and covers, made to fit' },
+    { key: 'woolpack', name: 'Woolpack Throws', color: '#A0845C', tier: 'Brand Zone', tag: 'Wool throws from a Halifax mill' },
+    { key: 'settle-down', name: 'Settle Down', color: '#5C7A59', tier: 'Brand Zone', tag: 'Sofa beds and sofas for small rooms' }
+  ],
+  apps: [
+    { name: 'Fit Check', color: '#C2593A', desc: 'Will the sofa get through the door? Find out first', key: 'fit-check', url: 'apps/fit-check.html',
+      dev: 'Doorway Labs', rating: '4.9', users: '1.4M', perms: ['profile', 'feed'],
+      tagline: 'Measure twice. Order once.',
+      about: 'Fit Check tells you whether a sofa will get through your front door, along the hall and into the room, before you buy it. Enter the sofa’s width, depth and height and your narrowest doorway, and it checks upright, on its back and the diagonal tilt that delivery teams use.',
+      features: ['Upright, on-its-back and tilted checks', 'Saves your doorways once', 'Compare sofas side by side', 'Share a fit to SofaXX'],
+      shots: ['apps/fit-check/shot-1.jpg', 'apps/fit-check/shot-2.jpg', 'apps/fit-check/shot-3.jpg'],
+      version: '3.6', size: '9 KB',
+      updates: [ { v: '3.6', ago: 2, notes: 'The diagonal tilt check.' }, { v: '3.2', ago: 70, notes: 'Compare up to four sofas.' }, { v: '2.8', ago: 220, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@flat4_fran', stars: 5, ago: 1, text: 'Told me the corner sofa would not make it up our stairs. It would not have.' }, { who: '@newbuild_nate', stars: 5, ago: 8, text: 'Saved me a £90 return fee.' }, { who: '@cosy_kez', stars: 4, ago: 20, text: 'Would love a stairs-turn check too.' } ] },
+    { name: 'Fabric Finder', color: '#5C7A59', desc: 'Pick a sofa fabric that suits your home, pets and children', key: 'fabric-finder', url: 'apps/fabric-finder.html',
+      dev: 'Cushionry', rating: '4.7', users: '520K', perms: ['profile', 'feed'],
+      tagline: 'The right fabric for real life.',
+      about: 'Fabric Finder asks about your home (dogs, cats, children, sunny windows) and suggests fabrics that will last, with their rub count, how to clean them and how they feel. Order free swatches straight from the app.',
+      features: ['Fabrics matched to your home', 'Rub counts in plain English', 'How to clean each one', 'Order swatches in one tap'],
+      shots: ['apps/fabric-finder/shot-1.jpg', 'apps/fabric-finder/shot-2.jpg', 'apps/fabric-finder/shot-3.jpg'],
+      version: '2.2', size: '9 KB',
+      updates: [ { v: '2.2', ago: 4, notes: 'Cleaning codes explained.' }, { v: '2.0', ago: 80, notes: 'Swatch ordering.' }, { v: '1.5', ago: 200, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@twodogs_tash', stars: 5, ago: 3, text: 'Two spaniels, one cream sofa, zero regrets. Thank you.' }, { who: '@cosy_kez', stars: 5, ago: 12, text: 'Finally understand what a rub count is.' }, { who: '@flat4_fran', stars: 4, ago: 28, text: 'Want more velvet options.' } ] },
+    { name: 'Room Planner', color: '#A0845C', desc: 'Lay out your living room before you buy', key: 'room-planner', url: 'apps/room-planner.html',
+      dev: 'Hearth & Hollow', rating: '4.6', users: '690K', perms: ['profile', 'feed'],
+      tagline: 'See the room before the van comes.',
+      about: 'Room Planner draws your living room to scale and lets you try sofas, a chair and a coffee table in different spots. It warns you when a walkway is too narrow and shows how far the sofa sits from the television.',
+      features: ['Your room, drawn to scale', 'Try layouts in seconds', 'Walkway warnings', 'Sofa-to-TV distance'],
+      shots: ['apps/room-planner/shot-1.jpg', 'apps/room-planner/shot-2.jpg', 'apps/room-planner/shot-3.jpg'],
+      version: '1.9', size: '10 KB',
+      updates: [ { v: '1.9', ago: 6, notes: 'Walkway warnings.' }, { v: '1.6', ago: 90, notes: 'Three ready-made layouts.' }, { v: '1.2', ago: 240, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@newbuild_nate', stars: 5, ago: 4, text: 'Our new-build living room is tiny. This made it work.' }, { who: '@renter_ro', stars: 4, ago: 15, text: 'Simple and quick.' }, { who: '@twodogs_tash', stars: 4, ago: 33, text: 'Needs a dog bed piece!' } ] }
+  ],
+  pros: [
+    { key: 'nell-hartley-upholstery', name: 'Nell Hartley Upholstery', color: '#C2593A', tag: 'Reupholstery, re-springing and new covers · traditional and modern', role: 'Upholsterer',
+      img: U('1592275772614-ec71b19e326f', 800, 800), base: 'Bristol, UK', langs: 'English', years: 18, rating: '4.9', reviewsN: 486, cur: '£',
+      creds: ['Trained in traditional upholstery', 'Member of a UK upholsterers’ guild', 'Fire-safety compliant fabrics only'],
+      about: 'Nell brings good old sofas back to life: new springs, new webbing, new filling and a fabric you choose. A well-made frame can outlast three covers, and reupholstering is often cheaper than you think.',
+      services: [ { id: 'quote', name: 'Home visit and quote', dur: '45 minutes', price: 0, desc: 'Free within ten miles of Bristol.' },
+                  { id: 'chair', name: 'Armchair reupholstery', dur: 'About 3 weeks', price: 420, desc: 'Strip, re-web, refill and recover. Fabric extra.' },
+                  { id: 'sofa', name: 'Three-seat sofa reupholstery', dur: 'About 5 weeks', price: 980, desc: 'The full job, collected and delivered. Fabric extra.' } ],
+      avail: { days: [1, 2, 3, 4, 5], times: ['09:00', '13:00', '16:00'] },
+      reviews: [ { who: '@cosy_kez', stars: 5, ago: 5, text: 'My gran’s sofa, better than new. I sobbed.' }, { who: '@renter_ro', stars: 5, ago: 17, text: 'Honest about what was worth doing and what was not.' }, { who: '@flat4_fran', stars: 5, ago: 42, text: 'Beautiful work and on time.' } ],
+      posts: [ { ago: 1, text: 'Lift the sofa at one end. If it twists or creaks, it is a weak frame. A good one lifts like a plank.' }, { ago: 6, text: 'Booking for February now.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'marcus-bell-interiors', name: 'Marcus Bell Interiors', color: '#5C7A59', tag: 'Living rooms for real life · small spaces, rentals, families', role: 'Interior designer',
+      img: U('1629425733761-caae3b5f2e50', 800, 800), base: 'London, UK · and online', langs: 'English, French', years: 12, rating: '4.8', reviewsN: 302, cur: '£',
+      creds: ['Interior design diploma', 'Former head of design at a furniture retailer', 'Member of a UK interior design society'],
+      about: 'Marcus designs living rooms that work hard: rentals you cannot paint, flats with one window, and family rooms where the sofa is also a trampoline. He starts with the sofa, because everything else follows it.',
+      services: [ { id: 'call', name: 'Living room video call', dur: '45 minutes', price: 65, desc: 'Show Marcus the room; leave with a plan and a shopping list.' },
+                  { id: 'plan', name: 'Room design plan', dur: 'Delivered in 10 days', price: 340, desc: 'A scaled layout, a colour scheme and three sofa picks.' },
+                  { id: 'rental', name: 'Rental refresh', dur: 'Delivered in 7 days', price: 220, desc: 'Changes you can take with you when you move.' } ],
+      avail: { days: [1, 3, 4, 5], times: ['10:00', '14:00', '19:00'] },
+      reviews: [ { who: '@renter_ro', stars: 5, ago: 7, text: 'Our rental finally feels like ours.' }, { who: '@newbuild_nate', stars: 5, ago: 19, text: 'The plan said “smaller sofa, bigger rug”. He was right.' }, { who: '@twodogs_tash', stars: 4, ago: 44, text: 'Great ideas, very practical.' } ],
+      posts: [ { ago: 2, text: 'Leave at least 45cm between the sofa and the coffee table, and 90cm for any walkway.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'aisha-karim-cleaning', name: 'Aisha Karim Sofa Care', color: '#A0845C', tag: 'Sofa and fabric cleaning · stains, pets, end of tenancy', role: 'Upholstery cleaner',
+      img: U('1758600587839-56ba05596c69', 800, 800), base: 'Leeds, UK', langs: 'English, Urdu', years: 9, rating: '4.9', reviewsN: 628, cur: '£',
+      creds: ['Trained fabric-care technician', 'Pet-safe and low-chemical products', 'Fully insured'],
+      about: 'Aisha cleans sofas, chairs and rugs in your home across West Yorkshire. She reads the cleaning code on the label first, tests a hidden patch, and tells you honestly which stains will move and which will not.',
+      services: [ { id: 'sofa', name: 'Sofa deep clean', dur: '2 hours', price: 95, desc: 'Up to a three-seat sofa and its cushions.' },
+                  { id: 'stain', name: 'Stain call-out', dur: '1 hour', price: 55, desc: 'Wine, coffee, crayon, pets. The sooner the better.' },
+                  { id: 'guard', name: 'Fabric protector', dur: '30 minutes', price: 40, desc: 'Added after a clean, to slow the next spill.' } ],
+      avail: { days: [1, 2, 4, 5, 6], times: ['09:00', '12:00', '15:00'] },
+      reviews: [ { who: '@twodogs_tash', stars: 5, ago: 3, text: 'Two spaniels and a cream sofa. She is a miracle worker.' }, { who: '@renter_ro', stars: 5, ago: 14, text: 'Got our whole deposit back.' }, { who: '@cosy_kez', stars: 5, ago: 30, text: 'Red wine, gone.' } ],
+      posts: [ { ago: 3, text: 'Spill? Blot, never rub. Cold water only. Then call me.' } ],
+      tier: 'Pro Zone', verified: true }
+  ],
+  communities: [
+    { key: 'sofa-shoppers', name: 'Sofa Shoppers', domain: 'shoppers.sofaxx.com', color: '#C2593A', img: U('1616047006789-b7af5afb8c20', 900, 500),
+      scope: 'Global', where: 'Every living room', members: 168000, online: 2140, tagline: 'Honest sofa advice from people who sit on them.',
+      about: 'Buying a sofa is a big decision and a long wait. Share what you bought, how it has lasted, how long delivery really took, and whether it got through the door.',
+      rules: ['Say what you paid and when', 'Photos of your own sofa only', 'No brand-bashing without details'],
+      mods: ['@flat4_fran', '@cosy_kez'],
+      threads: [ { t: 'Sofas that still look good after five years', by: '@cosy_kez', tag: 'LONG-TERM', replies: 924, ago: 0, votes: 2140 }, { t: 'Did not fit through the door: your stories', by: '@flat4_fran', tag: 'WILL IT FIT', replies: 412, ago: 1, votes: 860 }, { t: 'Velvet with a dog: madness or fine?', by: '@twodogs_tash', tag: 'Q&A', replies: 288, ago: 2, votes: 540 }, { t: 'Sofa beds you can actually sleep on', by: '@renter_ro', tag: 'SMALL SPACES', replies: 196, ago: 3, votes: 420 } ],
+      events: [ { title: 'Ask an upholsterer: live Q&A', day: 3, time: '19:00', where: 'Online' }, { title: 'Will it fit? Measuring masterclass', day: 8, time: '12:30', where: 'Online' } ] },
+    { key: 'bristol-upholstery-circle', name: 'Bristol Upholstery Circle', domain: 'bristol.sofaxx.com', color: '#5C7A59', img: U('1517858818796-d31fc694c92a', 900, 500),
+      scope: 'Local', where: 'Bristol', members: 3200, online: 64, tagline: 'Saving good chairs, one stool at a time.',
+      about: 'Beginners and old hands who rescue chairs and sofas around Bristol: workshop evenings, tool swaps, fabric off-cuts and a skip-find of the week.',
+      rules: ['Share tools, share tips', 'Fire-safe fabrics only', 'Credit the maker'],
+      mods: ['@nell_hartley', '@stool_sam'],
+      threads: [ { t: 'Skip find of the week: a 1950s armchair', by: '@stool_sam', tag: 'FINDS', replies: 48, ago: 0, votes: 132 }, { t: 'Where to buy webbing in Bristol?', by: '@first_chair_fi', tag: 'Q&A', replies: 22, ago: 1, votes: 40 }, { t: 'December workshop: drop-in stools', by: '@nell_hartley', tag: 'WORKSHOP', replies: 31, ago: 2, votes: 76 } ],
+      events: [ { title: 'Drop-in stool workshop', day: 4, time: '18:30', where: 'Stokes Croft, Bristol' }, { title: 'Fabric off-cut swap', day: 10, time: '11:00', where: 'Bedminster, Bristol' } ] }
+  ],
+  feed: [
+    { av: 'SX', avBg: TERRA, author: 'SofaXX Editorial', sub: 'Featured · Just now', badge: '★ FEATURED',
+      text: 'The most-used thing in your home. Shopping, fabrics, small spaces, reupholstery and the people who make and mend them. Sofas, all in one place.',
+      img: U('1771924648531-94af2b79dc96', 800, 600), eng: '♡ 41.2K · 💬 3.2K · ↗ 4.6K' },
+    { av: 'KZ', avBg: PLUM, author: '@cosy_kez', sub: 'Living Rooms · Just now', badge: 'COMMUNITY',
+      text: 'Ten weeks of waiting and she is finally here. Rust velvet, deep seats, and the cat claimed her in four minutes 🧡',
+      img: U('1763827513396-5917fc6c84f3', 800, 600), eng: '♡ 14.8K · 💬 1.6K · ↗ 420' },
+    { av: 'HH', avBg: TERRA, author: 'Hearth & Hollow', sub: 'Founding Partner · Brand Zone', badge: 'BRAND ZONE',
+      text: 'The <b>Hollow Three-Seater</b>: a beech frame with a 25-year guarantee, deep feather-wrapped seats, and 60 fabrics. Made by hand in High Wycombe.',
+      img: U('1590251024078-8a6d9f90b02d', 800, 600), eng: '♡ 9.6K · 💬 820 · ↗ 1.1K' },
+    { av: 'CY', avBg: PLUM, author: 'Cushionry', sub: 'Brand Zone · 1h ago', badge: 'BRAND ZONE',
+      text: 'Old sofa, new cushions. Our <b>made-to-measure covers</b> fit any seat cushion, from any brand, in four weeks.',
+      img: U('1781888693414-ab97da521f2c', 800, 600), eng: '♡ 5.2K · 💬 410 · ↗ 380' },
+    { av: 'NH', avBg: TERRA, author: 'Nell Hartley Upholstery', sub: 'Reupholstery · 2h ago', badge: 'PRO ZONE',
+      text: 'Before and after: a 1960s sofa from a house clearance, re-sprung and recovered in green wool. The frame will easily do another sixty years.',
+      img: U('1769142218868-a7c6d52c197e', 800, 600), eng: '♡ 8.4K · 💬 720 · ↗ 960' },
+    { av: 'TS', avBg: SAGE, author: '@twodogs_tash', sub: 'Fabrics & Care · 4h ago', badge: 'COMMUNITY',
+      text: 'Fabric Finder said tight-weave performance fabric for two spaniels. Eight months in and not a single pull. Recommend 🐕',
+      img: U('1686178827149-6d55c72d81df', 800, 600), eng: '♡ 4.2K · 💬 380 · ↗ 190' },
+    { av: 'MB', avBg: SAGE, author: 'Marcus Bell Interiors', sub: 'Small Spaces · 6h ago', badge: 'PRO ZONE',
+      text: 'Small living room? Choose a sofa with legs you can see under. More floor showing makes the room feel bigger.',
+      img: U('1583847268964-b28dc8f51f92', 800, 600), eng: '♡ 3.6K · 💬 240 · ↗ 520' }
+  ],
+  prompts: ['Will a 220cm sofa fit through a 76cm door?', 'Which sofa fabric is best with a dog?', 'Is it worth reupholstering my old sofa?', 'Find a sofa bed for a small spare room under £900'],
+  businesses: ['pennine-foam', 'careful-carry']
+};
+
+/* the four Brand Zones and two Business Zones */
+const brand = (o) => Object.assign({ kind: 'brand', gw: 'sofa', verified: true }, o);
+Object.assign(ZONES, {
+  'hearth-hollow': brand({ key: 'hearth-hollow', name: 'Hearth & Hollow', color: '#C2593A', gradient: TERRA, tier: 'Founding Partner',
+    tagline: 'Sofas made by hand in High Wycombe', stats: { followers: '186K', content: '940', products: '38' },
+    ad: { badge: 'Featured', img: U('1590251024078-8a6d9f90b02d', 760, 760), hl: 'The Hollow Three-Seater.', sub: 'Beech frame, 25-year guarantee, 60 fabrics.', meta: 'From £95' },
+    products: [
+      { name: 'Hollow Three-Seater', price: '£1,690', tag: 'FLAGSHIP', emoji: '🛋️', rating: 4.9, reviews: 2840, cat: 'sofas', special: true, desc: 'A solid beech frame, hand-tied springs and deep feather-wrapped seats, in 60 fabrics.', features: ['W 214 · D 96 · H 84 cm', '25-year frame guarantee', 'Made to order in 8 weeks'], review: { who: 'Kez M.', text: 'Sat on it in the showroom and did not want to get up.' } },
+      { name: 'Hollow Snuggler', price: '£1,190', tag: 'BESTSELLER', emoji: '🪑', rating: 4.8, reviews: 1960, cat: 'chairs', desc: 'Bigger than a chair, smaller than a sofa. Room for one and a dog, or two who like each other.', features: ['W 140 · D 96 · H 84 cm'], review: { who: 'Tash B.', text: 'The dog’s favourite place in the house.' } },
+      { name: 'Corner Sofa (left or right)', price: '£2,480', emoji: '📐', rating: 4.8, reviews: 1120, cat: 'sofas', desc: 'Our three-seater with a chaise, comes in two pieces to get through tight doors.', features: ['Arrives in two pieces', 'Made to order'], review: { who: 'Nate O.', text: 'Two pieces made all the difference on our stairs.' } },
+      { name: 'Fabric Swatch Pack', price: '£3', tag: 'SPECIAL', emoji: '🧵', rating: 4.9, reviews: 5400, cat: 'swatches', special: true, desc: 'Up to eight fabric samples, posted to your door. The £3 comes off your sofa.', features: ['Refunded on any sofa order'], review: { who: 'Fran L.', text: 'Lived with them for a week. Glad I did.' } },
+      { name: 'Footstool', price: '£320', emoji: '🟫', rating: 4.7, reviews: 860, cat: 'chairs', desc: 'Matches any of our sofas. Lid lifts for blankets.', features: ['Storage inside'], review: { who: 'Ro P.', text: 'Where all the blankets live now.' } }
+    ],
+    shopCats: [ { key: 'sofas', label: 'Sofas', icon: '🛋️' }, { key: 'chairs', label: 'Chairs & stools', icon: '🪑' }, { key: 'swatches', label: 'Swatches', icon: '🧵' } ],
+    feed: [
+      { type: 'post', sub: 'Brand post · 2h', text: 'The <b>Hollow Three-Seater</b> in moss wool, just finished in the workshop.', img: U('1775029676739-86443af4010d', 800, 440), eng: '♡ 9.6K · 💬 820 · ↗ 1.1K', product: 0 },
+      { type: 'post', sub: 'In the workshop · Yesterday', text: 'Every frame is signed by the person who built it. Lift the bottom cloth on yours and say hello to Dev.', img: U('1759722667832-48e555120458', 800, 440), eng: '♡ 4.4K · 💬 310' },
+      { type: 'community', who: 'Fran L.', whoBg: SAGE, sub: 'Community · 1d', text: 'Our doorway is 74cm. Will the Hollow Three-Seater get in?', eng: '♡ 210 · 💬 46', reply: 'Hi Fran! With its feet off the Hollow is 74cm high, so a 74cm door is right on the limit. Pop your hall and stair measurements into Fit Check and send us the result: if it is too tight, we can build it with removable arms at no extra cost. 📐' }
+    ],
+    events: [ { zoneEvent: true, tag: 'DEADLINE', title: 'Last order for Christmas delivery', when: 'Nov 30 · 23:59', desc: 'In-stock sofas ordered by 30 November arrive before Christmas.', registered: 1840, capacity: 4000 } ],
+    about: { founded: 'High Wycombe · 1962', story: 'Three generations of chair-makers in the town that built Britain’s furniture. We still make every frame by hand, and we joined SofaXX as Founding Partner because this is where people talk about sofas honestly.', milestones: [['1962', 'The first workshop on Desborough Road'], ['2015', 'Selling direct, made to order'], ['2026', 'Founding Partner on SofaXX']], values: ['Made by hand in Britain', 'Frames for a lifetime', 'Repair before replace'] } }),
+
+  'cushionry': brand({ key: 'cushionry', name: 'Cushionry', color: '#B48AA8', gradient: PLUM, tier: 'Brand Zone',
+    tagline: 'Cushions and covers, made to fit', stats: { followers: '92.6K', content: '410', products: '120' },
+    ad: { badge: 'New', img: U('1781888693414-ab97da521f2c', 760, 760), hl: 'Old sofa, new look.', sub: 'Made-to-measure covers for any seat cushion.', meta: 'From £22' },
+    products: [
+      { name: 'Made-to-Measure Seat Covers (set of 3)', price: '£180', tag: 'FLAGSHIP', emoji: '📏', rating: 4.8, reviews: 2180, cat: 'covers', special: true, desc: 'New covers for any seat cushions, any brand, cut to your measurements.', features: ['80 fabrics', 'Zipped and washable', 'Ready in 4 weeks'], review: { who: 'Ro P.', text: 'The sofa looks brand new for a fraction of the price.' } },
+      { name: 'Velvet Scatter Cushion', price: '£32', tag: 'BESTSELLER', emoji: '🟧', rating: 4.8, reviews: 4320, cat: 'cushions', desc: 'Feather-filled, 50cm, in 24 velvets.', features: ['Feather or recycled fill'], review: { who: 'Kez M.', text: 'Plump and heavy, like a proper cushion.' } },
+      { name: 'Seat Cushion Refill', price: '£45', emoji: '🪶', rating: 4.7, reviews: 1240, cat: 'refills', desc: 'New foam and fibre wrap for a seat cushion that has gone flat.', features: ['Cut to size'], review: { who: 'Fran L.', text: 'No more sinking.' } },
+      { name: 'Cushion Bundle (4)', price: '£99', tag: 'SPECIAL', emoji: '🎁', rating: 4.9, reviews: 960, cat: 'cushions', special: true, desc: 'Four cushions in a palette our designers put together.', features: ['Six palettes'], review: { who: 'Nate O.', text: 'No more guessing what goes with what.' } }
+    ],
+    shopCats: [ { key: 'covers', label: 'Covers', icon: '📏' }, { key: 'cushions', label: 'Cushions', icon: '🟧' }, { key: 'refills', label: 'Refills', icon: '🪶' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Twenty-four velvets. Pick four and we will tell you if they work together.', img: U('1553114552-c4ece3a33c93', 800, 440), eng: '♡ 5.2K · 💬 410', product: 1 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday cushion sale', when: 'Nov 27 · All day', desc: 'A third off every scatter cushion for one day.', registered: 3620, capacity: 9000 } ],
+    about: { founded: 'Nottingham · 2017', story: 'A family of curtain-makers who started cutting covers for people’s tired sofas. Now we do it for 30,000 homes a year.', milestones: [['2017', 'The first made-to-measure cover'], ['2023', 'Any brand, any cushion'], ['2026', 'Brand Zone on SofaXX']], values: ['Refresh, don’t replace', 'Cut in Nottingham', 'Washable, always'] } }),
+
+  'woolpack': brand({ key: 'woolpack', name: 'Woolpack Throws', color: '#A0845C', gradient: OAT, tier: 'Brand Zone',
+    tagline: 'Wool throws from a Halifax mill', stats: { followers: '54.8K', content: '260', products: '44' },
+    ad: { badge: 'Featured', img: U('1762803840978-e521a04013f2', 760, 760), hl: 'Cosy season.', sub: 'Pure wool throws, woven in Halifax.', meta: 'From £28' },
+    products: [
+      { name: 'Pennine Wool Throw', price: '£89', tag: 'FLAGSHIP', emoji: '🧶', rating: 4.9, reviews: 2640, cat: 'throws', special: true, desc: 'Pure British wool, woven on our looms in Halifax, in twelve heathery colours.', features: ['130 × 180 cm', 'British wool'], review: { who: 'Kez M.', text: 'Heavy, warm and it does not shed.' } },
+      { name: 'Herringbone Blanket', price: '£120', tag: 'BESTSELLER', emoji: '🟫', rating: 4.8, reviews: 1380, cat: 'throws', desc: 'Big enough for two on the sofa.', features: ['180 × 230 cm'], review: { who: 'Tash B.', text: 'The dogs fight us for it.' } },
+      { name: 'Lap Blanket', price: '£28', emoji: '🧣', rating: 4.7, reviews: 980, cat: 'small', desc: 'For one, for the cold end of the sofa.', features: ['70 × 100 cm'], review: { who: 'Ro P.', text: 'Bought one for my mum and one for me.' } },
+      { name: 'Mill Seconds Throw', price: '£45', tag: 'SPECIAL', emoji: '♻️', rating: 4.8, reviews: 1760, cat: 'throws', special: true, desc: 'A tiny weaving slip, half the price, just as warm.', features: ['While stocks last'], review: { who: 'Fran L.', text: 'Could not find the flaw if I tried.' } }
+    ],
+    shopCats: [ { key: 'throws', label: 'Throws', icon: '🧶' }, { key: 'small', label: 'Lap blankets', icon: '🧣' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 5h', text: 'The looms are running seven days for Christmas. <b>Pennine Wool Throws</b> in twelve colours.', img: U('1698936061086-2bf99c7b9fc5', 800, 440), eng: '♡ 3.1K · 💬 190', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Mill open day, Halifax', when: 'Dec 5 · 10:00', desc: 'See the looms running, then buy seconds in the mill shop.', registered: 640, capacity: 1200 } ],
+    about: { founded: 'Halifax · 1891', story: 'A Calder Valley mill that has woven wool for 135 years. We still buy fleece from Yorkshire and Lancashire farms.', milestones: [['1891', 'The mill opens'], ['2019', 'Selling direct'], ['2026', 'Brand Zone on SofaXX']], values: ['British wool only', 'Woven, not printed', 'Seconds, never wasted'] } }),
+
+  'settle-down': brand({ key: 'settle-down', name: 'Settle Down', color: '#5C7A59', gradient: SAGE, tier: 'Brand Zone',
+    tagline: 'Sofa beds and sofas for small rooms', stats: { followers: '77.3K', content: '480', products: '26' },
+    ad: { badge: 'Live', img: U('1768946131549-f03cafef7bc1', 760, 760), hl: 'Sofa by day. Bed by night.', sub: 'A real mattress, in a sofa 180cm wide.', meta: 'From £649' },
+    products: [
+      { name: 'The Spare Room Sofa Bed', price: '£1,090', tag: 'FLAGSHIP', emoji: '🛏️', rating: 4.8, reviews: 1980, cat: 'sofabeds', special: true, desc: 'A 14cm pocket-sprung mattress that unfolds in one pull. A sofa first, a proper bed second.', features: ['W 182 · D 92 cm', 'Double mattress', 'Fits through a 70cm door'], review: { who: 'Ro P.', text: 'Guests say it is better than their bed at home.' } },
+      { name: 'Studio Two-Seater', price: '£649', tag: 'BESTSELLER', emoji: '🛋️', rating: 4.7, reviews: 2460, cat: 'sofas', desc: 'A full-depth seat in 150cm, for flats and box rooms.', features: ['W 150 · D 86 cm', 'Legs unscrew'], review: { who: 'Fran L.', text: 'Up three floors with no trouble.' } },
+      { name: 'Chair Bed', price: '£590', emoji: '💤', rating: 4.6, reviews: 720, cat: 'sofabeds', desc: 'A single bed hiding in an armchair.', features: ['Single mattress'], review: { who: 'Nate O.', text: 'The kids fight over it at sleepovers.' } },
+      { name: 'Black Friday Sofa Bed Bundle', price: '£990', tag: 'SPECIAL', emoji: '🏷️', rating: 4.8, reviews: 410, cat: 'sofabeds', special: true, desc: 'The Spare Room Sofa Bed with a mattress topper and two pillows.', features: ['This week only'], review: { who: 'Kez M.', text: 'The topper makes it hotel-good.' } }
+    ],
+    shopCats: [ { key: 'sofabeds', label: 'Sofa beds', icon: '🛏️' }, { key: 'sofas', label: 'Small sofas', icon: '🛋️' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 3h', text: 'Christmas guests coming? The <b>Spare Room Sofa Bed</b> arrives in five days.', img: U('1605774337664-7a846e9cdf17', 800, 440), eng: '♡ 2.8K · 💬 260', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'LIVE', title: 'Settle Down Live · Black Friday sofa beds', when: 'Live now', desc: 'Watch every sofa bed unfold, and ask how it sleeps, live.', registered: 2960, capacity: 7000 } ],
+    about: { founded: 'Manchester · 2019', story: 'Made for people who live in flats: sofas that fit up the stairs and beds that hide in sofas.', milestones: [['2019', 'The Studio Two-Seater'], ['2024', 'The Spare Room Sofa Bed'], ['2026', 'Brand Zone on SofaXX']], values: ['Fits through the door', 'Real mattresses only', 'Small rooms, big comfort'] } }),
+
+  'pennine-foam': { key: 'pennine-foam', kind: 'business', gw: 'sofa', name: 'Pennine Foam & Fibre', color: '#A0845C', gradient: OAT, img: U('1762803841519-25bb12e01579', 900, 500),
+    tier: 'Verified', category: 'Upholstery materials', tagline: 'Foam, fibre and feathers for British sofa makers.',
+    about: { founded: 'Rochdale · 1978', story: 'We cut seat foams, blow fibre wraps and supply feathers to sofa makers and upholsterers across the UK, from one-person workshops to big factories.' },
+    stats: { years: 48, staff: 210, clients: '1,100 makers & upholsterers' },
+    caps: [ { name: 'Cut-to-size foam', detail: 'Any shape, any density, fire-safe to UK rules.' }, { name: 'Fibre and feather wraps', detail: 'The soft layer that makes a seat feel expensive.' }, { name: 'Recycled foam', detail: 'Off-cuts bonded into firm bases and cushion cores.' } ],
+    specs: { moq: 'One cushion', lead: 'Cut within 5 days', regions: 'UK-wide', certs: ['UK furniture fire-safety compliant', 'ISO 9001', 'ISO 14001'] },
+    supplies: [ { kind: 'brand', key: 'hearth-hollow', what: 'Every seat foam and feather wrap since 1998' }, { kind: 'brand', key: 'cushionry', what: 'Seat cushion refills' } ],
+    cases: [ { title: 'A Lancashire sofa factory', text: 'Moved to recycled-foam bases and cut foam waste by 40%.' } ],
+    feed: [ { sub: 'Product · 4d', text: 'New: a recycled-core seat foam that keeps its height for ten years in our tests.' }, { sub: 'Notice · 1w', text: 'Christmas: last foam orders 16 December.' } ],
+    contact: { person: 'Gary Holt, Trade accounts', response: 'Replies within 24 hours' } },
+
+  'careful-carry': { key: 'careful-carry', kind: 'business', gw: 'sofa', name: 'Careful Carry Delivery', color: '#C2593A', gradient: TERRA, img: U('1550581190-9c1c48d21d6c', 900, 500),
+    tier: 'Verified', category: 'Furniture delivery', tagline: 'Two-person delivery, into the room of your choice.',
+    about: { founded: 'Birmingham · 2008', story: 'We deliver sofas for furniture makers across England and Wales: two people, into the room, packaging taken away. If it will not fit, we know before we arrive.' },
+    stats: { years: 18, staff: 340, clients: '260 furniture brands' },
+    caps: [ { name: 'Room-of-choice delivery', detail: 'Up the stairs, through the door, placed and unwrapped.' }, { name: 'Pre-delivery fit check', detail: 'We check your measurements a week before.' }, { name: 'Old sofa removal', detail: 'Taken away for reuse or recycling.' } ],
+    specs: { moq: '10 deliveries a month', lead: 'Start within 2 weeks', regions: 'England & Wales', certs: ['Fully insured', 'Waste carrier licence', 'Living Wage employer'] },
+    supplies: [ { kind: 'brand', key: 'hearth-hollow', what: 'All deliveries in the Midlands and the North' }, { kind: 'brand', key: 'settle-down', what: 'Nationwide sofa-bed delivery' } ],
+    cases: [ { title: 'A sofa brand with a 6% return rate', text: 'Our fit checks brought “did not fit” returns down to under 1%.' } ],
+    feed: [ { sub: 'News · 2d', text: 'Christmas slots are filling. Last deliveries 23 December.' } ],
+    contact: { person: 'Leon Marsh, Brand partnerships', response: 'Replies within one working day' } }
+});
+
+/* events in the Events tab */
+EVENTS_FEED.push(
+  { gw: 'sofa', zone: 'settle-down', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Settle Down Live · Black Friday sofa beds', desc: 'Every sofa bed unfolded on camera, and your questions answered.' },
+  { gw: 'sofa', type: 'Event', icon: '🪑', time: 'Nov 22', title: 'Ask an upholsterer: live Q&A', desc: 'Sofa Shoppers with Nell Hartley: is your old sofa worth saving?' },
+  { gw: 'sofa', zone: 'cushionry', type: 'Sale', icon: '🟧', time: 'Nov 27', title: 'Cushionry Black Friday sale', desc: 'A third off every scatter cushion for one day.' },
+  { gw: 'sofa', zone: 'hearth-hollow', type: 'Deadline', icon: '🛋️', time: 'Nov 30', title: 'Last order for Christmas delivery', desc: 'Hearth & Hollow: in-stock sofas ordered by midnight arrive before Christmas.' },
+  { gw: 'sofa', type: 'Event', icon: '🔨', time: 'Dec 3', title: 'Drop-in stool workshop, Bristol', desc: 'Bristol Upholstery Circle: re-web and recover a stool in an evening. Tools provided.' },
+  { gw: 'sofa', zone: 'woolpack', type: 'Event', icon: '🧶', time: 'Dec 5', title: 'Woolpack mill open day, Halifax', desc: 'Watch the looms, then shop seconds in the mill shop.' },
+  { gw: 'sofa', type: 'Event', icon: '📐', time: 'Dec 9', title: 'Small living rooms: free webinar', desc: 'Marcus Bell on sofa size, rugs and walkways in rooms under 12 square metres.' },
+  { gw: 'sofa', zone: 'woolpack', type: 'Deadline', icon: '🎄', time: 'Dec 18', title: 'Woolpack Christmas order deadline', desc: 'Woolpack Throws: order by midnight for delivery before Christmas.' }
+);
+})();
+/* ═════════ /SOFAXX ═════════ */
+/* ═════════ PLANTXX — a Garden demo gateway (2026-11-19, Sean) ═════════
+   Built like HotelXX: theme, feed, 4 Brand Zones, 2 Business Zones, 3 Pros, 2 communities, 3 apps, events.
+   Palette (light): leaf green, terracotta pot, cream. Home sector: Garden (PlantXX was also listed under Nature;
+   GW_HOME below makes Garden its home so it leads that band only).
+   Brands, pros and communities are fictional; places are real. Source of truth: _lab/home85/plantxx-block.js. */
+(function(){
+const U = (id, w, h) => `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&q=75`;
+const LEAF = 'linear-gradient(135deg,#4FA36B,#22603A)', POT = 'linear-gradient(135deg,#E39A5B,#B05A27)', MOSS = 'linear-gradient(135deg,#A3B86C,#5E7431)', SKY = 'linear-gradient(135deg,#7FB7C9,#36748A)';
+GW_HOME.plant = 'garden';
+
+GATEWAYS.plant = {
+  name: 'PlantXX', domain: 'plantxx.com', emoji: '🪴', sector: 'garden', live: true,
+  tagline: 'The Plant Universe',
+  theme: {
+    bg: '#F3F7F0', text: '#1E2B1F', cardBg: '#FFFFFF', cardBorder: 'rgba(34,96,58,.13)',
+    headerBg: 'linear-gradient(180deg,#E1EEDB,#F3F7F0)', accent: '#2F7D4A', accentAlt: '#C8692E', dark: false
+  },
+  gradient: 'linear-gradient(135deg,#22603A,#4FA36B,#E39A5B)',
+  stats: { members: '7.1M', brands: '6,300+', agents: '82' },
+  spaces: ['All Feed', 'Houseplants', 'Grow Your Own', 'Plant Clinic', 'Pots & Tools', 'Garden Design'],
+  trending: ['#PlantParent', '#PeatFree', '#WinterWatering'],
+  brandZones: [
+    { key: 'fernway', name: 'Fernway Plants', color: '#2F7D4A', tier: 'Founding Partner', tag: 'Houseplants grown in Britain, delivered to your door' },
+    { key: 'potters-field', name: 'Potter’s Field Ceramics', color: '#C8692E', tier: 'Brand Zone', tag: 'Plant pots thrown in Stoke-on-Trent' },
+    { key: 'rootwell', name: 'Rootwell', color: '#5E7431', tier: 'Brand Zone', tag: 'Peat-free compost that plants love' },
+    { key: 'greenhand', name: 'Greenhand Tools', color: '#36748A', tier: 'Brand Zone', tag: 'Garden tools forged in Sheffield' }
+  ],
+  apps: [
+    { name: 'Water Me', color: '#2F7D4A', desc: 'Knows when each of your plants needs a drink', key: 'water-me', url: 'apps/water-me.html',
+      dev: 'Fernway Plants', rating: '4.8', users: '2.3M', perms: ['profile', 'feed'],
+      tagline: 'No more drowned ferns.',
+      about: 'Water Me keeps a list of your plants and tells you which ones need water today. It waters less in winter, reminds you to feel the soil first, and keeps a little diary of every drink, feed and repot.',
+      features: ['Today’s watering list', 'Slower schedule in winter', 'Feed and repot reminders', 'A diary for every plant'],
+      shots: ['apps/water-me/shot-1.jpg', 'apps/water-me/shot-2.jpg', 'apps/water-me/shot-3.jpg'],
+      version: '6.1', size: '10 KB',
+      updates: [ { v: '6.1', ago: 2, notes: 'Winter mode: longer gaps from November to February.' }, { v: '5.6', ago: 70, notes: 'Feed reminders.' }, { v: '5.0', ago: 210, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@monstera_mags', stars: 5, ago: 1, text: 'Forty-two plants and I have not lost one since.' }, { who: '@firstflat_finn', stars: 5, ago: 8, text: 'My calathea is alive. That is a sentence I never thought I’d write.' }, { who: '@windowsill_wes', stars: 4, ago: 21, text: 'Would love photos in the diary.' } ] },
+    { name: 'Light Finder', color: '#C8692E', desc: 'Which plants will be happy in which window', key: 'light-finder', url: 'apps/light-finder.html',
+      dev: 'Leafline Labs', rating: '4.7', users: '940K', perms: ['profile', 'feed'],
+      tagline: 'The right plant for the right spot.',
+      about: 'Light Finder asks which way your window faces and how far from it the plant will sit, and suggests plants that will thrive there, with a pet-safe label on each. Save a spot for every room.',
+      features: ['Pick a window, get plants', 'Distance-from-window guide', 'Pet-safe labels', 'Save a spot for every room'],
+      shots: ['apps/light-finder/shot-1.jpg', 'apps/light-finder/shot-2.jpg', 'apps/light-finder/shot-3.jpg'],
+      version: '2.8', size: '9 KB',
+      updates: [ { v: '2.8', ago: 5, notes: 'Pet-safe labels on every plant.' }, { v: '2.4', ago: 85, notes: 'Distance from the window.' }, { v: '2.0', ago: 230, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@catmum_cass', stars: 5, ago: 3, text: 'The pet-safe filter means I can actually buy plants again.' }, { who: '@northflat_nora', stars: 5, ago: 10, text: 'North-facing flat, and now it is a jungle.' }, { who: '@windowsill_wes', stars: 4, ago: 26, text: 'Simple and spot on.' } ] },
+    { name: 'Sow Calendar', color: '#5E7431', desc: 'What to sow, plant and pick this month in the UK', key: 'sow-calendar', url: 'apps/sow-calendar.html',
+      dev: 'Rootwell', rating: '4.8', users: '1.2M', perms: ['profile', 'feed'],
+      tagline: 'Know what to do on the plot this month.',
+      about: 'Sow Calendar tells you what to sow, plant and harvest this month in a UK garden or allotment, from garlic in November to tomatoes in spring. Tick jobs off, keep a plot list, and share your harvest.',
+      features: ['This month’s jobs', 'Sow, plant and harvest lists', 'Your own plot list', 'Share a harvest to PlantXX'],
+      shots: ['apps/sow-calendar/shot-1.jpg', 'apps/sow-calendar/shot-2.jpg', 'apps/sow-calendar/shot-3.jpg'],
+      version: '4.0', size: '10 KB',
+      updates: [ { v: '4.0', ago: 4, notes: 'Your own plot list.' }, { v: '3.5', ago: 95, notes: 'Harvest sharing.' }, { v: '3.0', ago: 250, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@plot42_pat', stars: 5, ago: 2, text: 'Garlic in, broad beans in, ticked off. Lovely.' }, { who: '@firstflat_finn', stars: 4, ago: 14, text: 'Great even for a balcony.' }, { who: '@allotment_ade', stars: 5, ago: 30, text: 'Better than my old paper calendar.' } ] }
+  ],
+  pros: [
+    { key: 'ruth-akande-design', name: 'Ruth Akande Garden Design', color: '#2F7D4A', tag: 'Small gardens, courtyards and balconies · planting plans', role: 'Garden designer',
+      img: U('1573496358961-3c82861ab8f4', 800, 800), base: 'London, UK', langs: 'English, Yoruba', years: 14, rating: '4.9', reviewsN: 342, cur: '£',
+      creds: ['Diploma in garden design', 'Show garden designer at a major UK flower show', 'Member of a UK garden designers’ society'],
+      about: 'Ruth designs small London gardens that feel twice their size: layered planting, places to sit and something in flower every month of the year.',
+      services: [ { id: 'visit', name: 'Garden consultation', dur: '90 minutes', price: 140, desc: 'Ruth walks the garden with you and leaves you with ideas and a plant list.' },
+                  { id: 'plan', name: 'Planting plan', dur: 'Delivered in 3 weeks', price: 480, desc: 'A scaled plan with every plant named and placed.' },
+                  { id: 'full', name: 'Full garden design', dur: 'Delivered in 6 weeks', price: 1600, desc: 'Layout, materials, planting and a builder’s brief.' } ],
+      avail: { days: [1, 2, 3, 4], times: ['09:30', '13:00', '16:00'] },
+      reviews: [ { who: '@balcony_bea', stars: 5, ago: 6, text: 'Our three-metre yard is now the best room in the house.' }, { who: '@monstera_mags', stars: 5, ago: 18, text: 'Something in flower every single month, as promised.' }, { who: '@newgarden_ned', stars: 4, ago: 40, text: 'Clear and practical plans.' } ],
+      posts: [ { ago: 1, text: 'November is for planting bare-root roses and hedging. Cheaper, and they settle in better.' }, { ago: 5, text: 'Taking new design clients for spring.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'owen-price-plant-clinic', name: 'Owen Price Plant Clinic', color: '#C8692E', tag: 'Sick plant? Video diagnosis, pests, rescue repots', role: 'Horticulturist',
+      img: U('1757744705465-ea08b0ddc38a', 800, 800), base: 'Cardiff, UK · and online', langs: 'English, Welsh', years: 10, rating: '4.9', reviewsN: 718, cur: '£',
+      creds: ['Degree in horticulture', 'Former glasshouse manager at a botanic garden', 'Integrated pest management trained'],
+      about: 'Owen ran the tropical glasshouses at a botanic garden before opening his plant clinic. Show him your yellow leaves on a video call and he will tell you why, nine times out of ten in the first minute (it is usually the watering).',
+      services: [ { id: 'video', name: 'Plant clinic video call', dur: '20 minutes', price: 20, desc: 'One or two plants, a diagnosis and a plan.' },
+                  { id: 'collection', name: 'Whole collection check', dur: '60 minutes', price: 55, desc: 'Every plant in the house, room by room.' },
+                  { id: 'rescue', name: 'Rescue repot (Cardiff)', dur: 'At the clinic', price: 30, desc: 'Bring it in. Root check, clean, fresh compost, new pot.' } ],
+      avail: { days: [1, 2, 3, 4, 5, 6], times: ['10:00', '13:00', '18:00'] },
+      reviews: [ { who: '@firstflat_finn', stars: 5, ago: 3, text: 'Saved my fiddle-leaf fig in twenty minutes.' }, { who: '@monstera_mags', stars: 5, ago: 12, text: 'Spotted thrips I had not even seen.' }, { who: '@catmum_cass', stars: 5, ago: 34, text: 'Kind, quick and very funny.' } ],
+      posts: [ { ago: 2, text: 'Winter rule: water less, never on a schedule. Push a finger in. Dry to the second knuckle? Then water.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'leah-morgan-grow', name: 'Leah Morgan Grow Your Own', color: '#5E7431', tag: 'Allotment and veg-patch coaching · first plots, raised beds, balconies', role: 'Grow-your-own coach',
+      img: U('1699899657680-421c2c2d5064', 800, 800), base: 'Sheffield, UK', langs: 'English', years: 8, rating: '4.8', reviewsN: 256, cur: '£',
+      creds: ['Allotment holder for 15 years', 'Community-growing project lead', 'Certificate in horticulture'],
+      about: 'Leah helps people get food out of their first plot without losing heart: what to grow, when, and how to keep on top of it in a few hours a week.',
+      services: [ { id: 'plot', name: 'First plot visit', dur: '90 minutes', price: 60, desc: 'On your plot, with a plan for the first year.' },
+                  { id: 'year', name: 'Year-round coaching', dur: 'Monthly call for 12 months', price: 240, desc: 'A call a month and a seasonal plan.' },
+                  { id: 'balcony', name: 'Balcony veg plan', dur: 'Delivered in 7 days', price: 45, desc: 'What will grow in your pots, in your light.' } ],
+      avail: { days: [2, 4, 5, 6], times: ['09:00', '12:00', '15:00'] },
+      reviews: [ { who: '@plot42_pat', stars: 5, ago: 5, text: 'First year on a plot and we have not bought a potato since July.' }, { who: '@balcony_bea', stars: 5, ago: 15, text: 'Tomatoes on a fourth-floor balcony. Who knew.' }, { who: '@allotment_ade', stars: 4, ago: 38, text: 'Down to earth, literally.' } ],
+      posts: [ { ago: 3, text: 'Plant your garlic before Christmas. It needs the cold to split into cloves.' } ],
+      tier: 'Pro Zone', verified: true }
+  ],
+  communities: [
+    { key: 'houseplant-hospital', name: 'Houseplant Hospital', domain: 'hospital.plantxx.com', color: '#2F7D4A', img: U('1693086913434-96cb7f64729e', 900, 500),
+      scope: 'Global', where: 'Every windowsill', members: 392000, online: 6120, tagline: 'Post a sad leaf. Someone will know.',
+      about: 'Brown tips, yellow leaves, mystery bugs: post a photo and the community will help. Plus swaps, propagation wins and the occasional dramatic recovery.',
+      rules: ['Photo of the whole plant, please', 'Say how often you water', 'Be kind to beginners'],
+      mods: ['@monstera_mags', '@windowsill_wes'],
+      threads: [ { t: 'Why is my monstera crying? (It is guttation, it’s fine)', by: '@firstflat_finn', tag: 'Q&A', replies: 1180, ago: 0, votes: 2460 }, { t: 'Winter watering: share your rules', by: '@windowsill_wes', tag: 'CARE', replies: 524, ago: 1, votes: 980 }, { t: 'Pet-safe plants that actually look good', by: '@catmum_cass', tag: 'PETS', replies: 368, ago: 2, votes: 860 }, { t: 'Rescue of the year: before and after', by: '@monstera_mags', tag: 'WINS', replies: 296, ago: 3, votes: 1120 } ],
+      events: [ { title: 'Winter houseplant clinic, live', day: 2, time: '19:00', where: 'Online' }, { title: 'Cuttings swap', day: 9, time: '11:00', where: 'Online sign-up, local meet-ups' } ] },
+    { key: 'sheffield-allotments', name: 'Sheffield Allotment Network', domain: 'sheffield.plantxx.com', color: '#5E7431', img: U('1525033842647-a956848705f0', 900, 500),
+      scope: 'Local', where: 'Sheffield', members: 6400, online: 110, tagline: 'Seventy sites, one big shed.',
+      about: 'Plot holders across Sheffield sharing seeds, tools, gluts and advice. Waiting-list tips, work days and the annual giant-leek argument.',
+      rules: ['Share your gluts', 'Return borrowed tools', 'No chemical sprays near the bees'],
+      mods: ['@plot42_pat', '@allotment_ade'],
+      threads: [ { t: 'Garlic planting morning this Saturday', by: '@plot42_pat', tag: 'WORK DAY', replies: 38, ago: 0, votes: 96 }, { t: 'Who has spare manure?', by: '@allotment_ade', tag: 'SWAPS', replies: 52, ago: 1, votes: 74 }, { t: 'Waiting list: how long did yours take?', by: '@newgarden_ned', tag: 'Q&A', replies: 64, ago: 2, votes: 88 } ],
+      events: [ { title: 'Garlic planting morning', day: 3, time: '10:00', where: 'Meersbrook, Sheffield' }, { title: 'Seed swap and soup', day: 10, time: '12:00', where: 'Heeley, Sheffield' } ] }
+  ],
+  feed: [
+    { av: 'PX', avBg: LEAF, author: 'PlantXX Editorial', sub: 'Featured · Just now', badge: '★ FEATURED',
+      text: 'From one pothos on a windowsill to a whole allotment. Houseplants, growing your own, plant clinics, pots, tools and garden design. Plants, all in one place.',
+      img: U('1772907952251-09e722aafa6a', 800, 600), eng: '♡ 68.4K · 💬 5.2K · ↗ 7.8K' },
+    { av: 'MM', avBg: MOSS, author: '@monstera_mags', sub: 'Houseplants · Just now', badge: 'COMMUNITY',
+      text: 'Five years ago this monstera was a single leaf in a jam jar. Now she needs her own stool 🌿',
+      img: U('1583753075968-1236ccb83c66', 800, 600), eng: '♡ 22.6K · 💬 2.4K · ↗ 860' },
+    { av: 'FW', avBg: LEAF, author: 'Fernway Plants', sub: 'Founding Partner · Brand Zone', badge: 'BRAND ZONE',
+      text: 'Grown in Britain, delivered in paper. The <b>Winter Windowsill Box</b>: three easy plants that are happy in low winter light, with pots.',
+      img: U('1601985705806-5b9a71f6004f', 800, 600), eng: '♡ 12.8K · 💬 960 · ↗ 1.6K' },
+    { av: 'PF', avBg: POT, author: 'Potter’s Field Ceramics', sub: 'Brand Zone · 1h ago', badge: 'BRAND ZONE',
+      text: 'Every pot has a drainage hole and a matching saucer. Thrown by hand in Stoke-on-Trent, glazed in eight colours.',
+      img: U('1636039479790-be1d880e2b8c', 800, 600), eng: '♡ 5.8K · 💬 420 · ↗ 510' },
+    { av: 'FN', avBg: SKY, author: '@firstflat_finn', sub: 'Plant Clinic · 2h ago', badge: 'COMMUNITY',
+      text: 'Owen from the Plant Clinic diagnosed my fig in one look: too much water, too little light. Moved it, stopped fussing, new leaf this week 🌱',
+      img: U('1768407313710-9fb5f82c63d6', 800, 600), eng: '♡ 6.4K · 💬 540 · ↗ 210' },
+    { av: 'RW', avBg: MOSS, author: 'Rootwell', sub: 'Brand Zone · 4h ago', badge: 'BRAND ZONE',
+      text: 'Peat bogs store more carbon than forests. Our <b>peat-free compost</b> is made from bark, wool and coir, and seedlings love it.',
+      img: U('1742672870196-d79b916ef37d', 800, 600), eng: '♡ 4.2K · 💬 360 · ↗ 680' },
+    { av: 'RA', avBg: LEAF, author: 'Ruth Akande Garden Design', sub: 'Garden Design · 6h ago', badge: 'PRO ZONE',
+      text: 'Plan for every month. Irises for May, salvias for summer, grasses for winter. A small garden can flower all year if you plan it.',
+      img: U('1785693259771-c43a354bf968', 800, 600), eng: '♡ 3.6K · 💬 230 · ↗ 480' }
+  ],
+  prompts: ['Which houseplants are safe for cats?', 'How often should I water a monstera in winter?', 'What can I sow on my allotment in November?', 'Design a small courtyard garden that flowers all year'],
+  businesses: ['lea-valley-growers', 'verdant-offices']
+};
+
+/* the four Brand Zones and two Business Zones */
+const brand = (o) => Object.assign({ kind: 'brand', gw: 'plant', verified: true }, o);
+Object.assign(ZONES, {
+  'fernway': brand({ key: 'fernway', name: 'Fernway Plants', color: '#2F7D4A', gradient: LEAF, tier: 'Founding Partner',
+    tagline: 'Houseplants grown in Britain, delivered to your door', stats: { followers: '284K', content: '1.6K', products: '220' },
+    ad: { badge: 'Featured', img: U('1601985705806-5b9a71f6004f', 760, 760), hl: 'The Winter Windowsill Box.', sub: 'Three low-light plants, with pots, delivered in paper.', meta: 'From £12' },
+    products: [
+      { name: 'Winter Windowsill Box', price: '£48', tag: 'FLAGSHIP', emoji: '📦', rating: 4.9, reviews: 3840, cat: 'boxes', special: true, desc: 'A snake plant, a ZZ plant and a pothos: all happy in low winter light, in three pots.', features: ['Grown in Britain', 'Plastic-free packaging', '30-day plant guarantee'], review: { who: 'Finn W.', text: 'Even I cannot kill these.' } },
+      { name: 'Monstera Deliciosa (60cm)', price: '£38', tag: 'BESTSELLER', emoji: '🌿', rating: 4.8, reviews: 5120, cat: 'plants', desc: 'The big-leaved classic, already showing its holes.', features: ['Toxic to pets', 'Bright, indirect light'], review: { who: 'Mags T.', text: 'Arrived bigger than the picture.' } },
+      { name: 'Pet-Safe Trio', price: '£42', tag: 'SPECIAL', emoji: '🐈', rating: 4.9, reviews: 1460, cat: 'boxes', special: true, desc: 'A calathea, a parlour palm and a spider plant: safe around cats and dogs.', features: ['All pet-safe'], review: { who: 'Cass R.', text: 'Plants and cats, finally together.' } },
+      { name: 'Pothos in a Hanging Pot', price: '£22', emoji: '🪴', rating: 4.8, reviews: 2860, cat: 'plants', desc: 'The easiest trailing plant there is.', features: ['Toxic to pets', 'Low to bright light'], review: { who: 'Wes K.', text: 'Grows a foot a month in summer.' } },
+      { name: 'Plant Gift Card', price: '£25', emoji: '🎁', rating: 4.9, reviews: 980, cat: 'gifts', desc: 'Let them pick their own jungle.', features: ['Never expires'], review: { who: 'Nora P.', text: 'The best present I have given.' } }
+    ],
+    shopCats: [ { key: 'boxes', label: 'Plant boxes', icon: '📦' }, { key: 'plants', label: 'Plants', icon: '🌿' }, { key: 'gifts', label: 'Gift cards', icon: '🎁' } ],
+    feed: [
+      { type: 'post', sub: 'Brand post · 2h', text: 'The <b>Winter Windowsill Box</b> is back: three plants that like a grey day.', img: U('1772795831981-4b66d1a3063e', 800, 440), eng: '♡ 12.8K · 💬 960 · ↗ 1.6K', product: 0 },
+      { type: 'post', sub: 'In the nursery · Yesterday', text: 'Every plant spends two weeks “hardening” in a cool glasshouse before it ships, so it doesn’t sulk in your house.', img: U('1764072385165-f7e7969e0d84', 800, 440), eng: '♡ 4.6K · 💬 310' },
+      { type: 'community', who: 'Cass R.', whoBg: POT, sub: 'Community · 1d', text: 'Is the Winter Windowsill Box safe for my cats?', eng: '♡ 260 · 💬 52', reply: 'Hi Cass! Not quite: snake plants, ZZ plants and pothos can upset cats if they chew them. Our Pet-Safe Trio is made for you: a calathea, a parlour palm and a spider plant, all safe around cats and dogs. And never bring lilies home with cats, even as cut flowers. 🐈' }
+    ],
+    events: [ { zoneEvent: true, tag: 'LIVE', title: 'Fernway Live · Winter houseplant clinic', when: 'Live now', desc: 'Our growers answer your winter plant questions and show what is new in the glasshouse.', registered: 3860, capacity: 9000 } ],
+    about: { founded: 'Lincolnshire · 2013', story: 'A family glasshouse that grew tomatoes for forty years, then switched to houseplants. We grow most of what we sell, and we joined PlantXX as Founding Partner to be where plant people talk.', milestones: [['2013', 'The first houseplants'], ['2020', 'Plastic-free delivery'], ['2026', 'Founding Partner on PlantXX']], values: ['Grown in Britain', 'Peat-free, plastic-free', 'A guarantee on every plant'] } }),
+
+  'potters-field': brand({ key: 'potters-field', name: 'Potter’s Field Ceramics', color: '#C8692E', gradient: POT, tier: 'Brand Zone',
+    tagline: 'Plant pots thrown in Stoke-on-Trent', stats: { followers: '72.4K', content: '340', products: '64' },
+    ad: { badge: 'New', img: U('1614597408749-ed5e0f4f3dc7', 760, 760), hl: 'Every pot has a hole.', sub: 'Thrown by hand in Stoke, glazed in eight colours.', meta: 'From £9' },
+    products: [
+      { name: 'Thrown Plant Pot (15cm)', price: '£24', tag: 'FLAGSHIP', emoji: '🏺', rating: 4.9, reviews: 2460, cat: 'pots', special: true, desc: 'Hand-thrown stoneware with a drainage hole and matching saucer.', features: ['Eight glazes', 'Frost-proof'], review: { who: 'Mags T.', text: 'Every one slightly different. Love that.' } },
+      { name: 'Terracotta Trio', price: '£18', tag: 'BESTSELLER', emoji: '🪴', rating: 4.8, reviews: 3120, cat: 'pots', desc: 'Three plain terracotta pots, 10, 12 and 15cm. Terracotta breathes, so roots don’t rot.', features: ['Unglazed'], review: { who: 'Wes K.', text: 'Perfect for succulents.' } },
+      { name: 'Seconds Box', price: '£30', tag: 'SPECIAL', emoji: '♻️', rating: 4.8, reviews: 980, cat: 'pots', special: true, desc: 'Four pots with tiny glaze slips. Half price.', features: ['Random glazes'], review: { who: 'Finn W.', text: 'Could not see a single flaw.' } },
+      { name: 'Watering Jug', price: '£32', emoji: '🫖', rating: 4.7, reviews: 640, cat: 'extras', desc: 'A slender stoneware jug for watering into the soil, not the leaves.', features: ['1 litre'], review: { who: 'Nora P.', text: 'Too pretty to put away.' } }
+    ],
+    shopCats: [ { key: 'pots', label: 'Pots', icon: '🏺' }, { key: 'extras', label: 'Extras', icon: '🫖' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Seconds Sale on Black Friday: every slightly wonky pot at half price.', img: U('1632900931939-9a1028f7cef6', 800, 440), eng: '♡ 5.8K · 💬 420', product: 2 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday seconds sale', when: 'Nov 27 · All day', desc: 'Every second at half price, while they last.', registered: 2240, capacity: 5000 } ],
+    about: { founded: 'Stoke-on-Trent · 2016', story: 'Three potters in an old pottery bank in Burslem who only make one thing: pots that plants can live in.', milestones: [['2016', 'The first kiln firing'], ['2022', '100,000 pots thrown'], ['2026', 'Brand Zone on PlantXX']], values: ['Always a drainage hole', 'Made in the Potteries', 'Seconds, never skipped'] } }),
+
+  'rootwell': brand({ key: 'rootwell', name: 'Rootwell', color: '#5E7431', gradient: MOSS, tier: 'Brand Zone',
+    tagline: 'Peat-free compost that plants love', stats: { followers: '48.6K', content: '220', products: '18' },
+    ad: { badge: 'Featured', img: U('1791461021399-df54f71f2eb1', 760, 760), hl: 'Peat-free. Proper results.', sub: 'Bark, wool and coir compost for pots, beds and seeds.', meta: 'From £8' },
+    products: [
+      { name: 'Peat-Free Multi-Purpose (40L)', price: '£12', tag: 'FLAGSHIP', emoji: '🟫', rating: 4.8, reviews: 4280, cat: 'compost', special: true, desc: 'For pots, beds and borders. Made from composted bark, sheep’s wool and coir.', features: ['Peat-free', 'Soil Association approved'], review: { who: 'Pat D.', text: 'Best tomatoes I have had in years.' } },
+      { name: 'Houseplant Mix (10L)', price: '£8', tag: 'BESTSELLER', emoji: '🪴', rating: 4.8, reviews: 3620, cat: 'compost', desc: 'Chunky and free-draining, with bark and perlite. For aroids and most houseplants.', features: ['Peat-free'], review: { who: 'Mags T.', text: 'My monstera’s roots have never looked better.' } },
+      { name: 'Seed Sowing Compost (20L)', price: '£9', emoji: '🌱', rating: 4.7, reviews: 1480, cat: 'compost', desc: 'Fine and light, for seeds and cuttings.', features: ['Peat-free'], review: { who: 'Ade O.', text: 'Every seed came up.' } },
+      { name: 'Wool Pellets (2kg)', price: '£14', tag: 'SPECIAL', emoji: '🐑', rating: 4.8, reviews: 860, cat: 'feed', special: true, desc: 'Slow-release feed from British sheep’s wool. Holds water too.', features: ['Feeds for 6 months'], review: { who: 'Bea L.', text: 'Balcony pots stay damp much longer.' } }
+    ],
+    shopCats: [ { key: 'compost', label: 'Compost', icon: '🟫' }, { key: 'feed', label: 'Feed', icon: '🐑' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'Our <b>Houseplant Mix</b>: chunky, airy, and not a gram of peat.', img: U('1615671524827-c1fe3973b648', 800, 440), eng: '♡ 4.2K · 💬 360', product: 1 } ],
+    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Going peat-free: free webinar', when: 'Dec 2 · 19:00', desc: 'Why it matters and how to get the best from peat-free compost.', registered: 1460, capacity: 3000 } ],
+    about: { founded: 'Cumbria · 2011', story: 'A sheep farm that started composting its wool. Now we make peat-free compost for gardeners across Britain.', milestones: [['2011', 'The first wool compost'], ['2021', 'Soil Association approval'], ['2026', 'Brand Zone on PlantXX']], values: ['Never peat', 'British wool', 'Results first'] } }),
+
+  'greenhand': brand({ key: 'greenhand', name: 'Greenhand Tools', color: '#36748A', gradient: SKY, tier: 'Brand Zone',
+    tagline: 'Garden tools forged in Sheffield', stats: { followers: '39.2K', content: '180', products: '36' },
+    ad: { badge: 'Featured', img: U('1783236307381-8057502b2383', 760, 760), hl: 'Tools for a lifetime.', sub: 'Forged in Sheffield, guaranteed for life.', meta: 'From £16' },
+    products: [
+      { name: 'Border Spade', price: '£68', tag: 'FLAGSHIP', emoji: '🪏', rating: 4.9, reviews: 1640, cat: 'digging', special: true, desc: 'A smaller, lighter spade forged from one piece of steel, with an ash handle.', features: ['Lifetime guarantee', 'Made in Sheffield'], review: { who: 'Pat D.', text: 'My grandad’s was like this. Lasted fifty years.' } },
+      { name: 'Bypass Secateurs', price: '£34', tag: 'BESTSELLER', emoji: '✂️', rating: 4.8, reviews: 2880, cat: 'cutting', desc: 'Clean cuts on live stems up to 20mm. Every part replaceable.', features: ['Spare blades sold'], review: { who: 'Ruth A.', text: 'Sharp, balanced, built to last.' } },
+      { name: 'Hand Trowel', price: '£16', emoji: '🥄', rating: 4.8, reviews: 2140, cat: 'digging', desc: 'Stainless steel, a strong neck that will not bend.', features: ['Lifetime guarantee'], review: { who: 'Bea L.', text: 'The only trowel I have not bent.' } },
+      { name: 'Gift Set in a Canvas Roll', price: '£58', tag: 'SPECIAL', emoji: '🎁', rating: 4.9, reviews: 760, cat: 'gifts', special: true, desc: 'Trowel, fork and secateurs in a waxed canvas roll.', features: ['Gift wrapped'], review: { who: 'Ned F.', text: 'My dad has not stopped talking about it.' } }
+    ],
+    shopCats: [ { key: 'digging', label: 'Digging', icon: '🪏' }, { key: 'cutting', label: 'Cutting', icon: '✂️' }, { key: 'gifts', label: 'Gift sets', icon: '🎁' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 1d', text: 'The <b>Border Spade</b>: for people who find a full-size spade too much.', img: U('1533792344354-ed5e8fc12494', 800, 440), eng: '♡ 2.4K · 💬 180', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'DEADLINE', title: 'Last order for Christmas delivery', when: 'Dec 17 · 23:59', desc: 'Order gift sets by midnight on 17 December for delivery before Christmas.', registered: 680, capacity: 2000 } ],
+    about: { founded: 'Sheffield · 1908', story: 'A forge in the Don Valley that made agricultural tools for a century, and now makes them for gardeners.', milestones: [['1908', 'The forge opens'], ['2018', 'Selling direct to gardeners'], ['2026', 'Brand Zone on PlantXX']], values: ['Forged, not stamped', 'Every part replaceable', 'Guaranteed for life'] } }),
+
+  'lea-valley-growers': { key: 'lea-valley-growers', kind: 'business', gw: 'plant', name: 'Lea Valley Growers', color: '#2F7D4A', gradient: LEAF, img: U('1774446931753-5c28039f1a41', 900, 500),
+    tier: 'Verified', category: 'Wholesale nursery', tagline: 'Houseplants and bedding grown under glass for garden centres and shops.',
+    about: { founded: 'Cheshunt · 1952', story: 'Four hectares of glasshouses in the Lea Valley, growing houseplants and bedding for garden centres, florists and online shops across the South East.' },
+    stats: { years: 74, staff: 140, clients: '380 garden centres & shops' },
+    caps: [ { name: 'Contract growing', detail: 'Your plants, grown to your size and date.' }, { name: 'Houseplants', detail: 'Ninety varieties from 6cm plugs to 1.5m specimens.' }, { name: 'Biological pest control', detail: 'Ladybirds and predatory mites, not sprays.' } ],
+    specs: { moq: 'One trolley', lead: 'Ready in 1 to 12 weeks', regions: 'South East England', certs: ['Peat-free growing', 'Plant passport registered', 'Red Tractor'] },
+    supplies: [ { kind: 'brand', key: 'fernway', what: 'Calatheas and palms for the Pet-Safe Trio' } ],
+    cases: [ { title: 'A chain of 12 garden centres', text: 'Moved their entire houseplant range to peat-free in two seasons.' } ],
+    feed: [ { sub: 'Glasshouse · 2d', text: 'Poinsettias are coloured and ready to ship for Christmas.' }, { sub: 'News · 1w', text: 'The last of our glasshouses now runs on a heat pump.' } ],
+    contact: { person: 'Joe Russo, Trade sales', response: 'Replies within 24 hours' } },
+
+  'verdant-offices': { key: 'verdant-offices', kind: 'business', gw: 'plant', name: 'Verdant Office Plants', color: '#C8692E', gradient: POT, img: U('1641816482997-515cdf9bb054', 900, 500),
+    tier: 'Verified', category: 'Plant hire & care', tagline: 'Plants for offices, hotels and shops, looked after for you.',
+    about: { founded: 'Manchester · 2010', story: 'We design, install and look after plants in workplaces across the North West, from a desk plant to a living wall.' },
+    stats: { years: 16, staff: 85, clients: '900 workplaces' },
+    caps: [ { name: 'Plant hire', detail: 'Plants, pots and care for one monthly fee.' }, { name: 'Living walls', detail: 'Designed, planted and kept green.' }, { name: 'Fortnightly care visits', detail: 'Watering, cleaning and swaps if a plant struggles.' } ],
+    specs: { moq: 'Ten plants', lead: 'Installed within 3 weeks', regions: 'North West England', certs: ['ISO 14001', 'Fully insured', 'Living Wage employer'] },
+    supplies: [ { kind: 'brand', key: 'potters-field', what: 'Large planters for office receptions' } ],
+    cases: [ { title: 'A 400-desk office in Spinningfields', text: '260 plants and a living wall, cared for every fortnight.' } ],
+    feed: [ { sub: 'Projects · 5d', text: 'A new living wall for a hospital waiting room in Salford.' } ],
+    contact: { person: 'Chloe Barker, New clients', response: 'Replies within one working day' } }
+});
+
+/* events in the Events tab */
+EVENTS_FEED.push(
+  { gw: 'plant', zone: 'fernway', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Fernway Live · Winter houseplant clinic', desc: 'Growers answer your winter plant questions live from the glasshouse.' },
+  { gw: 'plant', type: 'Event', icon: '🧄', time: 'Nov 21', title: 'Garlic planting morning, Sheffield', desc: 'Sheffield Allotment Network: bring a fork, leave with garlic in the ground.' },
+  { gw: 'plant', zone: 'potters-field', type: 'Sale', icon: '🏺', time: 'Nov 27', title: 'Potter’s Field seconds sale', desc: 'Every slightly wonky pot at half price, for one day.' },
+  { gw: 'plant', zone: 'rootwell', type: 'Event', icon: '🟫', time: 'Dec 2', title: 'Going peat-free: free webinar', desc: 'Rootwell on why peat matters and how to get the best from peat-free compost.' },
+  { gw: 'plant', type: 'Event', icon: '🩺', time: 'Dec 3', title: 'Winter houseplant clinic, live', desc: 'Houseplant Hospital with Owen Price: bring your saddest leaf.' },
+  { gw: 'plant', type: 'Event', icon: '🌱', time: 'Dec 5', title: 'Cuttings swap', desc: 'Houseplant Hospital: sign up online and swap cuttings at local meet-ups.' },
+  { gw: 'plant', type: 'Event', icon: '🏡', time: 'Dec 10', title: 'Small gardens that flower all year', desc: 'A free talk by Ruth Akande on planting for every month.' },
+  { gw: 'plant', zone: 'greenhand', type: 'Deadline', icon: '🎁', time: 'Dec 17', title: 'Last order for Christmas tool gifts', desc: 'Greenhand Tools: order gift sets by midnight for delivery before Christmas.' }
+);
+})();
+/* ═════════ /PLANTXX ═════════ */
+/* ═════════ SUSHIXX — a Food demo gateway (2026-11-19, Sean) ═════════
+   Built like HotelXX: theme, feed, 4 Brand Zones, 2 Business Zones, 3 Pros, 2 communities, 3 apps, events.
+   Palette (dark): ink night, salmon, wasabi, rice cream. Home sector: Food.
+   Brands, pros and communities are fictional; places are real. Allergens are always shown; raw fish is labelled raw.
+   Source of truth: _lab/home85/sushixx-block.js. */
+(function(){
+const U = (id, w, h) => `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&q=75`;
+const SALMON = 'linear-gradient(135deg,#FF9F7A,#D9542E)', WASABI = 'linear-gradient(135deg,#B9D46A,#5F8A2A)', INK = 'linear-gradient(135deg,#4A5A72,#1C2636)', RICE = 'linear-gradient(135deg,#EFE4CF,#B9A47C)';
+
+GATEWAYS.sushi = {
+  name: 'SushiXX', domain: 'sushixx.com', emoji: '🍣', sector: 'food', live: true,
+  tagline: 'The Sushi Universe',
+  theme: {
+    bg: '#0E1318', text: '#F2EEE8', cardBg: 'rgba(255,255,255,.045)', cardBorder: 'rgba(255,138,101,.16)',
+    headerBg: 'linear-gradient(180deg,#1C2636,#0E1318)', accent: '#FF8A65', accentAlt: '#A3C45A', dark: true
+  },
+  gradient: 'linear-gradient(135deg,#1C2636,#D9542E,#FF9F7A)',
+  stats: { members: '5.6M', brands: '4,800+', agents: '74' },
+  spaces: ['All Feed', 'Omakase', 'Make It at Home', 'Fish & Rice', 'Sake & Tea', 'Sushi Chefs'],
+  trending: ['#Omakase', '#HomeSushi', '#SakeSeason'],
+  brandZones: [
+    { key: 'kaito', name: 'Kaito Sushi Bar', color: '#FF8A65', tier: 'Founding Partner', tag: 'Counter sushi in London, Manchester and Edinburgh' },
+    { key: 'hinoki-knives', name: 'Hinoki Knife Co.', color: '#7C8CA6', tier: 'Brand Zone', tag: 'Japanese kitchen knives, finished by hand in Seki' },
+    { key: 'umami-pantry', name: 'Umami Pantry', color: '#C9B48A', tier: 'Brand Zone', tag: 'Rice, nori, soy and everything in between' },
+    { key: 'rolly', name: 'Rolly', color: '#A3C45A', tier: 'Brand Zone', tag: 'Sushi kits to roll at home' }
+  ],
+  apps: [
+    { name: 'Sushi Guide', color: '#FF8A65', desc: 'What is it, is it raw, and what is in it?', key: 'sushi-guide', url: 'apps/sushi-guide.html',
+      dev: 'Kaito Sushi Bar', rating: '4.8', users: '1.9M', perms: ['profile', 'feed'],
+      tagline: 'Order like you have done it for years.',
+      about: 'Sushi Guide explains every piece on the menu: nigiri, maki, sashimi, temaki and more. Each one is labelled raw, cooked or vegetarian, with its allergens, and you can save the ones you love to show the chef.',
+      features: ['Every type of sushi explained', 'Raw, cooked and veggie labels', 'Allergens on every piece', 'Your favourites list'],
+      shots: ['apps/sushi-guide/shot-1.jpg', 'apps/sushi-guide/shot-2.jpg', 'apps/sushi-guide/shot-3.jpg'],
+      version: '3.4', size: '10 KB',
+      updates: [ { v: '3.4', ago: 3, notes: 'Allergen filter: hide anything with sesame, shellfish or gluten.' }, { v: '3.0', ago: 70, notes: 'Favourites to show the chef.' }, { v: '2.5', ago: 200, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@firstomakase_fay', stars: 5, ago: 1, text: 'Read it on the train to my first omakase. Felt like a regular.' }, { who: '@shellfishfree_sid', stars: 5, ago: 9, text: 'The allergen filter is a lifesaver. Literally, for me.' }, { who: '@rollmaster_ray', stars: 4, ago: 22, text: 'Add regional styles please!' } ] },
+    { name: 'Rice Timer', color: '#A3C45A', desc: 'Perfect sushi rice, step by step', key: 'rice-timer', url: 'apps/rice-timer.html',
+      dev: 'Umami Pantry', rating: '4.9', users: '760K', perms: ['profile', 'feed'],
+      tagline: 'Rice is the sushi. Get it right.',
+      about: 'Rice Timer walks you through sushi rice: how much to cook for how many rolls, rinse, soak, cook, rest and season, with a timer for each step and the vinegar mix worked out for you.',
+      features: ['Rice and vinegar for any number of rolls', 'A timer for every step', 'Rinse, soak, cook, rest, season', 'Share your rolls to SushiXX'],
+      shots: ['apps/rice-timer/shot-1.jpg', 'apps/rice-timer/shot-2.jpg', 'apps/rice-timer/shot-3.jpg'],
+      version: '2.1', size: '9 KB',
+      updates: [ { v: '2.1', ago: 5, notes: 'Scales to any number of rolls.' }, { v: '1.8', ago: 90, notes: 'Step timers.' }, { v: '1.4', ago: 240, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@rollmaster_ray', stars: 5, ago: 2, text: 'My rice used to be mush. Now it is perfect every time.' }, { who: '@homecook_hana', stars: 5, ago: 11, text: 'The vinegar maths alone is worth it.' }, { who: '@firstomakase_fay', stars: 4, ago: 27, text: 'Would love a brown rice option.' } ] },
+    { name: 'Counter Seats', color: '#7C8CA6', desc: 'Book a seat at the sushi counter', key: 'counter-seats', url: 'apps/counter-seats.html',
+      dev: 'Kaito Sushi Bar', rating: '4.7', users: '410K', perms: ['profile', 'feed'],
+      tagline: 'Pick your seat. Watch the chef.',
+      about: 'Counter Seats books a seat at the Kaito counter: pick a night and a sitting, choose your seats (the corner sees the knife work best), tell the chef about allergies, and get your booking in one tap.',
+      features: ['Pick your exact seats', 'Two sittings a night', 'Allergies sent to the chef', 'Your booking, ready to show'],
+      shots: ['apps/counter-seats/shot-1.jpg', 'apps/counter-seats/shot-2.jpg', 'apps/counter-seats/shot-3.jpg'],
+      version: '1.7', size: '10 KB',
+      updates: [ { v: '1.7', ago: 4, notes: 'Allergies go straight to the chef.' }, { v: '1.4', ago: 80, notes: 'Edinburgh counter added.' }, { v: '1.0', ago: 220, notes: 'Signed in with GENEXXO.' } ],
+      reviews: [ { who: '@datenight_dan', stars: 5, ago: 3, text: 'Booked the two corner seats for our anniversary. Perfect.' }, { who: '@shellfishfree_sid', stars: 5, ago: 13, text: 'The chef already knew about my allergy when I sat down.' }, { who: '@homecook_hana', stars: 4, ago: 31, text: 'Smooth and quick.' } ] }
+  ],
+  pros: [
+    { key: 'joel-mensah-sushi-school', name: 'Joel Mensah Sushi School', color: '#FF8A65', tag: 'Sushi-making classes · beginners, couples, private groups', role: 'Sushi chef & teacher',
+      img: U('1595211877493-41a4e5f236b3', 800, 800), base: 'London, UK', langs: 'English, Japanese', years: 22, rating: '4.9', reviewsN: 864, cur: '£',
+      creds: ['Trained for seven years in Osaka', 'Former head chef at a London omakase counter', 'Level 3 food hygiene'],
+      about: 'Joel trained in Osaka and ran a London counter for a decade before opening his school. Classes start with the rice, because that is where sushi lives, and end with everyone eating what they made.',
+      services: [ { id: 'class', name: 'Sushi basics class', dur: '3 hours', price: 85, desc: 'Rice, maki and nigiri, then dinner. Groups of ten.' },
+                  { id: 'couple', name: 'Couples class', dur: '2.5 hours', price: 150, desc: 'For two, with a glass of sake each.' },
+                  { id: 'private', name: 'Private group', dur: '3 hours', price: 680, desc: 'Up to eight people, at the school or at home.' } ],
+      avail: { days: [3, 4, 5, 6], times: ['11:00', '15:00', '18:30'] },
+      reviews: [ { who: '@homecook_hana', stars: 5, ago: 4, text: 'Joel’s rice tips changed everything.' }, { who: '@datenight_dan', stars: 5, ago: 15, text: 'Best date night we have ever had.' }, { who: '@rollmaster_ray', stars: 5, ago: 38, text: 'Patient, precise and very funny.' } ],
+      posts: [ { ago: 1, text: 'Wet your hands with vinegar water before touching the rice, and do not squeeze. Sushi is held, not pressed.' }, { ago: 6, text: 'December classes: four places left.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'anna-cole-sake', name: 'Anna Cole Sake & Tea', color: '#A3C45A', tag: 'Sake tastings and pairings · private, corporate, restaurants', role: 'Sake sommelier',
+      img: U('1765005204058-10418f5123c5', 800, 800), base: 'Edinburgh, UK', langs: 'English, Japanese', years: 9, rating: '4.8', reviewsN: 296, cur: '£',
+      creds: ['Certified sake sommelier', 'Two years working at a brewery in Niigata', 'Wine and spirits diploma'],
+      about: 'Anna fell for sake while teaching English in Niigata and stayed two years to work a brewing season. She runs tastings that make sake simple: dry or sweet, warm or chilled, and what to eat with it.',
+      services: [ { id: 'tasting', name: 'Sake tasting evening', dur: '2 hours', price: 45, desc: 'Six sakes, warm and chilled, with small plates.' },
+                  { id: 'pairing', name: 'Restaurant pairing menu', dur: 'Delivered in 10 days', price: 380, desc: 'A sake list and pairings for your menu, with staff notes.' },
+                  { id: 'private', name: 'Private tasting', dur: '2 hours', price: 420, desc: 'For up to twelve, at your home or office.' } ],
+      avail: { days: [2, 4, 5, 6], times: ['17:00', '19:00'] },
+      reviews: [ { who: '@firstomakase_fay', stars: 5, ago: 6, text: 'Did not know sake could taste like melon.' }, { who: '@datenight_dan', stars: 5, ago: 20, text: 'The warm sake was a revelation.' }, { who: '@edinburgh_eats', stars: 4, ago: 44, text: 'Great for a team night out.' } ],
+      posts: [ { ago: 2, text: 'Cold night? Try junmai sake warmed to about 45°C. Not hot. Just warm, like a bath.' } ],
+      tier: 'Pro Zone', verified: true },
+    { key: 'sami-haddad-private-chef', name: 'Sami Haddad Private Sushi Chef', color: '#7C8CA6', tag: 'Omakase at home · dinners, birthdays, weddings', role: 'Private chef',
+      img: U('1758691737646-79dbce8e25fb', 800, 800), base: 'Manchester, UK', langs: 'English, Arabic', years: 12, rating: '4.9', reviewsN: 388, cur: '£',
+      creds: ['Ten years at sushi counters in London and Manchester', 'Level 3 food hygiene', 'Allergen awareness trained'],
+      about: 'Sami brings the counter to your kitchen table: twelve courses, made in front of you, with fish from Grimsby and rice he seasons on the spot. He asks about every allergy before he plans the menu.',
+      services: [ { id: 'omakase', name: 'Omakase at home (per guest)', dur: '3 hours', price: 120, desc: 'Twelve courses for four to ten guests.' },
+                  { id: 'platter', name: 'Party platters', dur: 'Delivered', price: 240, desc: 'Sixty pieces for a party, delivered and arranged.' },
+                  { id: 'wedding', name: 'Wedding sushi station', dur: 'Up to 4 hours', price: 1800, desc: 'A live counter for up to 120 guests.' } ],
+      avail: { days: [4, 5, 6, 0], times: ['18:00', '19:30'] },
+      reviews: [ { who: '@datenight_dan', stars: 5, ago: 5, text: 'Sami made my wife’s 40th unforgettable.' }, { who: '@shellfishfree_sid', stars: 5, ago: 17, text: 'Planned a whole menu around my shellfish allergy. Not one compromise.' }, { who: '@manc_foodie', stars: 5, ago: 36, text: 'Better than most restaurants.' } ],
+      posts: [ { ago: 3, text: 'Christmas omakase dates are nearly gone. Two Sundays left in December.' } ],
+      tier: 'Pro Zone', verified: true }
+  ],
+  communities: [
+    { key: 'roll-call', name: 'Roll Call', domain: 'rollcall.sushixx.com', color: '#FF8A65', img: U('1553621042-f6e147245754', 900, 500),
+      scope: 'Global', where: 'Every counter and kitchen', members: 284000, online: 4120, tagline: 'Show us your rolls.',
+      about: 'Home cooks, counter regulars and chefs: share your rolls, your restaurant finds, your rice disasters and your best piece of the year.',
+      rules: ['Say where you ate it', 'Be kind about wonky rolls', 'Allergies are not a joke'],
+      mods: ['@rollmaster_ray', '@homecook_hana'],
+      threads: [ { t: 'Your first-ever homemade roll vs now', by: '@rollmaster_ray', tag: 'HOME', replies: 1420, ago: 0, votes: 3260 }, { t: 'Omakase under £60 in the UK', by: '@firstomakase_fay', tag: 'FINDS', replies: 612, ago: 1, votes: 1180 }, { t: 'Where to buy fish you can eat raw', by: '@homecook_hana', tag: 'Q&A', replies: 388, ago: 2, votes: 740 }, { t: 'Nigiri etiquette: fingers or chopsticks?', by: '@datenight_dan', tag: 'ETIQUETTE', replies: 524, ago: 3, votes: 960 } ],
+      events: [ { title: 'Roll-along live', day: 1, time: '19:00', where: 'Online' }, { title: 'Best piece of the year vote', day: 12, time: '20:00', where: 'Online' } ] },
+    { key: 'edinburgh-sushi-club', name: 'Edinburgh Sushi Club', domain: 'edinburgh.sushixx.com', color: '#A3C45A', img: U('1608060146923-7b8ab13e22bb', 900, 500),
+      scope: 'Local', where: 'Edinburgh', members: 4100, online: 72, tagline: 'Eating our way round the city, one counter at a time.',
+      about: 'A monthly dinner at a different Edinburgh sushi spot, sake nights with local experts, and a group chat for the best lunchtime deals.',
+      rules: ['Book through the club, pay your share', 'Tell us your allergies', 'Honest reviews only'],
+      mods: ['@edinburgh_eats', '@anna_cole'],
+      threads: [ { t: 'December dinner: vote for the venue', by: '@edinburgh_eats', tag: 'DINNER', replies: 46, ago: 0, votes: 112 }, { t: 'Best lunch bento near the Royal Mile?', by: '@newinedi_nk', tag: 'Q&A', replies: 28, ago: 1, votes: 54 }, { t: 'Sake night with Anna: sign-up', by: '@anna_cole', tag: 'SAKE', replies: 34, ago: 2, votes: 88 } ],
+      events: [ { title: 'Warm sake night', day: 5, time: '19:00', where: 'Leith, Edinburgh' }, { title: 'Christmas sushi dinner', day: 25, time: '19:30', where: 'New Town, Edinburgh' } ] }
+  ],
+  feed: [
+    { av: 'SX', avBg: SALMON, author: 'SushiXX Editorial', sub: 'Featured · Just now', badge: '★ FEATURED',
+      text: 'From a Friday-night platter to a twelve-seat omakase counter. Restaurants, home rolling, fish, rice, sake and the chefs behind it all. Sushi, all in one place.',
+      img: U('1770164520620-a5612325635b', 800, 600), eng: '♡ 58.6K · 💬 4.4K · ↗ 6.2K' },
+    { av: 'RR', avBg: WASABI, author: '@rollmaster_ray', sub: 'Make It at Home · Just now', badge: 'COMMUNITY',
+      text: 'Six months of Rice Timer and Friday sushi nights. Salmon nigiri with a little roe on top. My dad asked which restaurant I got it from 🍣',
+      img: U('1781478990255-f4f61976a1dc', 800, 600), eng: '♡ 19.4K · 💬 2.2K · ↗ 640' },
+    { av: 'KS', avBg: SALMON, author: 'Kaito Sushi Bar', sub: 'Founding Partner · Brand Zone', badge: 'BRAND ZONE',
+      text: 'The <b>Winter Omakase</b> starts on 1 December: fourteen courses at the counter, with yellowtail, scallop and winter citrus, in London, Manchester and Edinburgh.',
+      img: U('1783797407105-8fe9464ec94c', 800, 600), eng: '♡ 12.2K · 💬 980 · ↗ 1.5K' },
+    { av: 'HK', avBg: INK, author: 'Hinoki Knife Co.', sub: 'Brand Zone · 1h ago', badge: 'BRAND ZONE',
+      text: 'One long pull, never a saw. The <b>Yanagiba</b> is made for slicing fish in a single stroke, finished by hand in Seki.',
+      img: U('1675870791262-99ab4c09e2fd', 800, 600), eng: '♡ 6.8K · 💬 520 · ↗ 620' },
+    { av: 'FY', avBg: RICE, author: '@firstomakase_fay', sub: 'Omakase · 2h ago', badge: 'COMMUNITY',
+      text: 'First omakase last night. Sat at the corner, watched every cut, and the chef remembered I don’t eat shellfish without me saying it twice ✨',
+      img: U('1767265581515-afe9ff46ad76', 800, 600), eng: '♡ 8.2K · 💬 740 · ↗ 260' },
+    { av: 'RL', avBg: WASABI, author: 'Rolly', sub: 'Brand Zone · 4h ago', badge: 'BRAND ZONE',
+      text: 'Roll-along Night is live now. Grab a <b>Rolly kit</b>, put the camera on the counter and roll with us.',
+      img: U('1761314025602-d9a27593476f', 800, 600), eng: '♡ 4.6K · 💬 420 · ↗ 380' },
+    { av: 'JM', avBg: SALMON, author: 'Joel Mensah Sushi School', sub: 'Sushi Chefs · 6h ago', badge: 'PRO ZONE',
+      text: 'Twenty years at the counter, and the most important lesson is still the first one: wash the rice until the water runs clear.',
+      img: U('1502364271109-0a9a75a2a9df', 800, 600), eng: '♡ 3.8K · 💬 260 · ↗ 540' }
+  ],
+  prompts: ['Find an omakase in London under £80', 'Which sushi is cooked, not raw?', 'How do I make sushi rice for four people?', 'What sake goes with salmon nigiri?'],
+  businesses: ['north-sea-line', 'counter-craft']
+};
+
+/* the four Brand Zones and two Business Zones */
+const brand = (o) => Object.assign({ kind: 'brand', gw: 'sushi', verified: true }, o);
+Object.assign(ZONES, {
+  'kaito': brand({ key: 'kaito', name: 'Kaito Sushi Bar', color: '#FF8A65', gradient: SALMON, tier: 'Founding Partner',
+    tagline: 'Counter sushi in London, Manchester and Edinburgh', stats: { followers: '226K', content: '1.2K', products: '24' },
+    ad: { badge: 'Featured', img: U('1778071073381-1a4dc5650727', 760, 760), hl: 'The Winter Omakase.', sub: 'Fourteen courses at the counter, from 1 December.', meta: 'From £18' },
+    products: [
+      { name: 'Winter Omakase (per guest)', price: '£95', tag: 'FLAGSHIP', emoji: '🍣', rating: 4.9, reviews: 3260, cat: 'counter', special: true, desc: 'Fourteen courses at the counter, made in front of you: yellowtail, scallop, winter citrus and the chef’s choice.', features: ['Two sittings a night', 'Allergies planned around', 'Twelve seats'], review: { who: 'Fay M.', text: 'Ninety minutes of pure theatre.' } },
+      { name: 'Lunch Nigiri Set', price: '£24', tag: 'BESTSELLER', emoji: '🍱', rating: 4.8, reviews: 4120, cat: 'counter', desc: 'Eight nigiri, a roll and miso soup, weekday lunchtimes.', features: ['Under 40 minutes'], review: { who: 'Dan R.', text: 'The best lunch hour in Soho.' } },
+      { name: 'Sushi Platter to Take Away', price: '£48', emoji: '🥡', rating: 4.7, reviews: 1860, cat: 'takeaway', desc: 'Thirty-two pieces for two to three people.', features: ['Order by 4pm'], review: { who: 'Ray T.', text: 'Friday night sorted.' } },
+      { name: 'Omakase Gift Voucher', price: '£190', tag: 'SPECIAL', emoji: '🎁', rating: 4.9, reviews: 960, cat: 'gifts', special: true, desc: 'Omakase for two, in a hand-folded envelope.', features: ['Valid 12 months', 'Any Kaito counter'], review: { who: 'Hana S.', text: 'The present my partner still talks about.' } },
+      { name: 'Miso Soup', price: '£4', emoji: '🥣', rating: 4.6, reviews: 1240, cat: 'takeaway', desc: 'White miso, tofu and wakame.', features: ['Contains soy'], review: { who: 'Sid P.', text: 'Proper dashi, you can taste it.' } }
+    ],
+    shopCats: [ { key: 'counter', label: 'At the counter', icon: '🍣' }, { key: 'takeaway', label: 'Take away', icon: '🥡' }, { key: 'gifts', label: 'Gift vouchers', icon: '🎁' } ],
+    feed: [
+      { type: 'post', sub: 'Brand post · 2h', text: 'The <b>Winter Omakase</b> begins on 1 December at all three counters.', img: U('1772285283419-b34f42b4a4df', 800, 440), eng: '♡ 12.2K · 💬 980 · ↗ 1.5K', product: 0 },
+      { type: 'post', sub: 'Behind the counter · Yesterday', text: 'Our fish comes from Grimsby every morning at six. The rice is seasoned four times a night, never in advance.', img: U('1758384075930-6e3835d22b1d', 800, 440), eng: '♡ 5.2K · 💬 380' },
+      { type: 'community', who: 'Sid P.', whoBg: INK, sub: 'Community · 1d', text: 'I have a shellfish allergy. Can I still do the omakase?', eng: '♡ 340 · 💬 72', reply: 'Hi Sid, yes. Add the allergy when you book in Counter Seats and it goes straight to the chef, who will plan your fourteen courses without shellfish and prepare them on a separate board. Please remind us when you sit down too. 🍣' }
+    ],
+    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Winter Omakase opening night', when: 'Dec 1 · 18:00', desc: 'The first night of the winter menu, at all three counters.', registered: 2860, capacity: 3000 } ],
+    about: { founded: 'London · 2011', story: 'A twelve-seat counter off Berwick Street that now has siblings in Manchester and Edinburgh. Still twelve seats each. Founding Partner on SushiXX because sushi lovers already talk about us here.', milestones: [['2011', 'The first counter in Soho'], ['2019', 'Manchester and Edinburgh'], ['2026', 'Founding Partner on SushiXX']], values: ['Twelve seats, never more', 'British fish where we can', 'Every allergy planned for'] } }),
+
+  'hinoki-knives': brand({ key: 'hinoki-knives', name: 'Hinoki Knife Co.', color: '#7C8CA6', gradient: INK, tier: 'Brand Zone',
+    tagline: 'Japanese kitchen knives, finished by hand in Seki', stats: { followers: '84.6K', content: '360', products: '28' },
+    ad: { badge: 'New', img: U('1711991022613-63df8929f311', 760, 760), hl: 'One long pull.', sub: 'The Yanagiba, for slicing fish in a single stroke.', meta: 'From £24' },
+    products: [
+      { name: 'Yanagiba (270mm)', price: '£189', tag: 'FLAGSHIP', emoji: '🔪', rating: 4.9, reviews: 1460, cat: 'knives', special: true, desc: 'A long single-bevel slicing knife for sashimi and nigiri, with a magnolia handle.', features: ['Hand-finished in Seki', 'Right-handed', 'Free sharpening for life'], review: { who: 'Ray T.', text: 'Salmon slices like silk.' } },
+      { name: 'Santoku (165mm)', price: '£98', tag: 'BESTSELLER', emoji: '🗡️', rating: 4.8, reviews: 3280, cat: 'knives', desc: 'The everyday Japanese kitchen knife: fish, veg and rice-cake.', features: ['Double bevel', 'Left or right hand'], review: { who: 'Hana S.', text: 'The only knife I use now.' } },
+      { name: 'Whetstone (1000/6000)', price: '£42', emoji: '🪨', rating: 4.8, reviews: 1980, cat: 'care', desc: 'A two-sided stone for sharpening and polishing.', features: ['Non-slip base'], review: { who: 'Dan R.', text: 'Learning to sharpen is weirdly calming.' } },
+      { name: 'Hinoki Chopping Board', price: '£24', tag: 'SPECIAL', emoji: '🪵', rating: 4.9, reviews: 1120, cat: 'care', special: true, desc: 'Japanese cypress: soft on blades and smells of a forest.', features: ['36 × 24 cm'], review: { who: 'Fay M.', text: 'Smells amazing every time it is wet.' } }
+    ],
+    shopCats: [ { key: 'knives', label: 'Knives', icon: '🔪' }, { key: 'care', label: 'Boards & stones', icon: '🪨' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Chef Mei has used the same <b>Santoku</b> every service for eleven years. Sharpened free, every spring.', img: U('1787504916907-10106151ae01', 800, 440), eng: '♡ 6.8K · 💬 520', product: 1 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: free whetstone', when: 'Nov 27 · All day', desc: 'A free whetstone with every knife, for one day.', registered: 2140, capacity: 5000 } ],
+    about: { founded: 'Seki · 1948 · UK since 2017', story: 'A family knife workshop in Seki, Japan’s knife city, now selling direct to cooks in Britain with a UK sharpening service.', milestones: [['1948', 'The workshop opens in Seki'], ['2017', 'The UK shop and sharpening service'], ['2026', 'Brand Zone on SushiXX']], values: ['Finished by hand', 'Sharpened free for life', 'One knife, used for decades'] } }),
+
+  'umami-pantry': brand({ key: 'umami-pantry', name: 'Umami Pantry', color: '#C9B48A', gradient: RICE, tier: 'Brand Zone',
+    tagline: 'Rice, nori, soy and everything in between', stats: { followers: '62.4K', content: '280', products: '140' },
+    ad: { badge: 'Featured', img: U('1579584425555-c3ce17fd4351', 760, 760), hl: 'Start with the rice.', sub: 'Everything for sushi at home, in one box.', meta: 'From £3' },
+    products: [
+      { name: 'Sushi Pantry Box', price: '£34', tag: 'FLAGSHIP', emoji: '📦', rating: 4.8, reviews: 2240, cat: 'boxes', special: true, desc: 'Sushi rice, rice vinegar, nori, soy, pickled ginger and wasabi: enough for six sushi nights.', features: ['Allergens on every item', 'Gluten-free tamari option'], review: { who: 'Hana S.', text: 'Everything in one go. No more hunting.' } },
+      { name: 'Sushi Rice (2kg)', price: '£8', tag: 'BESTSELLER', emoji: '🍚', rating: 4.9, reviews: 4860, cat: 'rice', desc: 'Short-grain rice that turns glossy and holds together.', features: ['2kg'], review: { who: 'Ray T.', text: 'The difference from regular rice is huge.' } },
+      { name: 'Toasted Nori (50 sheets)', price: '£9', emoji: '🟩', rating: 4.7, reviews: 1680, cat: 'nori', desc: 'Crisp, dark, full sheets.', features: ['Resealable'], review: { who: 'Dan R.', text: 'Stays crisp for weeks.' } },
+      { name: 'Real Wasabi Root', price: '£22', tag: 'SPECIAL', emoji: '🌱', rating: 4.8, reviews: 420, cat: 'extras', special: true, desc: 'Fresh wasabi grown in Britain, with a sharkskin grater.', features: ['Lasts 3 weeks in the fridge'], review: { who: 'Fay M.', text: 'Nothing like the paste. Sweet then hot.' } }
+    ],
+    shopCats: [ { key: 'boxes', label: 'Boxes', icon: '📦' }, { key: 'rice', label: 'Rice', icon: '🍚' }, { key: 'nori', label: 'Nori', icon: '🟩' }, { key: 'extras', label: 'Extras', icon: '🌱' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 5h', text: 'Fresh <b>British wasabi</b> is back in stock for December.', img: U('1761314026068-f07ec1ce6e2b', 800, 440), eng: '♡ 2.8K · 💬 190', product: 3 } ],
+    events: [ { zoneEvent: true, tag: 'DEADLINE', title: 'Last order for Christmas delivery', when: 'Dec 18 · 23:59', desc: 'Order by midnight on 18 December for delivery before Christmas.', registered: 980, capacity: 3000 } ],
+    about: { founded: 'Bristol · 2015', story: 'A Japanese grocery in Bristol that started posting rice to customers who had moved away. Now we post to the whole country.', milestones: [['2015', 'The shop in Bristol'], ['2021', 'The Sushi Pantry Box'], ['2026', 'Brand Zone on SushiXX']], values: ['Allergens on everything', 'Real ingredients', 'Small producers'] } }),
+
+  'rolly': brand({ key: 'rolly', name: 'Rolly', color: '#A3C45A', gradient: WASABI, tier: 'Brand Zone',
+    tagline: 'Sushi kits to roll at home', stats: { followers: '96.8K', content: '620', products: '12' },
+    ad: { badge: 'Live', img: U('1761314025602-d9a27593476f', 760, 760), hl: 'Roll-along Night.', sub: 'A kit, a camera and a chef, live now.', meta: 'From £29' },
+    products: [
+      { name: 'Friday Night Kit for Two', price: '£39', tag: 'FLAGSHIP', emoji: '🍣', rating: 4.8, reviews: 3640, cat: 'kits', special: true, desc: 'Fish frozen to food-safety rules for eating raw, rice, nori, a mat and the video lesson. Makes 40 pieces.', features: ['Delivered chilled', 'Video lesson included', 'Allergens listed'], review: { who: 'Dan R.', text: 'Our new Friday ritual.' } },
+      { name: 'Veggie Roll Kit', price: '£29', tag: 'BESTSELLER', emoji: '🥒', rating: 4.8, reviews: 2120, cat: 'kits', desc: 'Avocado, cucumber, pickled radish and sweet tofu. No fish.', features: ['Vegan'], review: { who: 'Hana S.', text: 'The kids love making these.' } },
+      { name: 'Bamboo Mat and Paddle', price: '£12', emoji: '🎋', rating: 4.7, reviews: 1460, cat: 'kit-bits', desc: 'The rolling mat and a rice paddle.', features: ['Washable'], review: { who: 'Ray T.', text: 'Better than my old one.' } },
+      { name: 'Party Kit for Six', price: '£89', tag: 'SPECIAL', emoji: '🎉', rating: 4.9, reviews: 680, cat: 'kits', special: true, desc: 'Everything for a sushi party: three fish, veg, mats for everyone.', features: ['Makes 120 pieces'], review: { who: 'Fay M.', text: 'Best birthday party we have thrown.' } }
+    ],
+    shopCats: [ { key: 'kits', label: 'Kits', icon: '🍣' }, { key: 'kit-bits', label: 'Mats & tools', icon: '🎋' } ],
+    feed: [ { type: 'post', sub: 'Brand post · 3h', text: 'Live now: <b>Roll-along Night</b> with Chef Mika. Next week’s kits ship on Monday.', img: U('1617196034796-73dfa7b1fd56', 800, 440), eng: '♡ 4.6K · 💬 420', product: 0 } ],
+    events: [ { zoneEvent: true, tag: 'LIVE', title: 'Rolly Live · Roll-along Night', when: 'Live now', desc: 'Roll along with Chef Mika, live, and ask anything in the chat.', registered: 3920, capacity: 8000 } ],
+    about: { founded: 'Manchester · 2020', story: 'Started in lockdown, when sushi restaurants were closed and people wanted a fun night in. Now 20,000 kits a month.', milestones: [['2020', 'The first kits'], ['2023', 'Roll-along Night goes live'], ['2026', 'Brand Zone on SushiXX']], values: ['Fun first', 'Fish safe to eat raw, always', 'No food waste'] } }),
+
+  'north-sea-line': { key: 'north-sea-line', kind: 'business', gw: 'sushi', name: 'North Sea Line Seafood', color: '#7C8CA6', gradient: INK, img: U('1770839112008-f6a165687cca', 900, 500),
+    tier: 'Verified', category: 'Seafood supply', tagline: 'Fish for sushi, from the Grimsby market to your counter.',
+    about: { founded: 'Grimsby · 1986', story: 'We buy at the Grimsby fish market every morning and supply sushi restaurants and home-kit companies, with fish prepared and frozen to the rules for eating raw.' },
+    stats: { years: 40, staff: 120, clients: '460 restaurants & brands' },
+    caps: [ { name: 'Sushi-ready fish', detail: 'Salmon, tuna, yellowtail and mackerel, frozen to food-safety rules for raw eating.' }, { name: 'Daily delivery', detail: 'Chilled vans across England and Scotland, before 9am.' }, { name: 'Traceability', detail: 'Every fish traced to the boat or farm.' } ],
+    specs: { moq: '10kg a week', lead: 'Next-day delivery', regions: 'England & Scotland', certs: ['BRCGS food safety', 'Responsibly sourced', 'HACCP'] },
+    supplies: [ { kind: 'brand', key: 'kaito', what: 'All fish for the three Kaito counters' }, { kind: 'brand', key: 'rolly', what: 'Fish for the Rolly kits' } ],
+    cases: [ { title: 'A home-kit company', text: 'Portioned and frozen fish for 20,000 kits a month, with no missed delivery in two years.' } ],
+    feed: [ { sub: 'Market report · 1d', text: 'Scottish salmon is excellent this week. Mackerel season is winding down.' }, { sub: 'News · 1w', text: 'New chilled depot in Glasgow for faster Scottish deliveries.' } ],
+    contact: { person: 'Sarah Kemp, Restaurant accounts', response: 'Replies within 24 hours' } },
+
+  'counter-craft': { key: 'counter-craft', kind: 'business', gw: 'sushi', name: 'Counter & Craft Kitchens', color: '#FF8A65', gradient: SALMON, img: U('1760169799369-2b8574466735', 900, 500),
+    tier: 'Verified', category: 'Restaurant fit-out', tagline: 'Sushi counters and kitchens, designed and built.',
+    about: { founded: 'London · 2009', story: 'We design and build sushi counters, chilled display cases and small restaurant kitchens, from a twelve-seat bar to a food-hall stand.' },
+    stats: { years: 17, staff: 70, clients: '180 restaurants' },
+    caps: [ { name: 'Counter design', detail: 'Timber counters, sightlines and seat spacing that work.' }, { name: 'Chilled display', detail: 'Fish cases that hold the right temperature all night.' }, { name: 'Kitchen fit-out', detail: 'Extraction, sinks and storage for small spaces.' } ],
+    specs: { moq: 'One counter', lead: 'Built in 6 to 10 weeks', regions: 'UK-wide', certs: ['Fully insured', 'Gas Safe engineers', 'ISO 9001'] },
+    supplies: [ { kind: 'brand', key: 'kaito', what: 'The Manchester and Edinburgh counters' } ],
+    cases: [ { title: 'A food-hall sushi stand', text: 'A six-seat counter in a 9 square metre unit, built in five weeks.' } ],
+    feed: [ { sub: 'Projects · 4d', text: 'Just finished a hinoki counter for a new Leeds omakase.' } ],
+    contact: { person: 'Tom Ikeda, New projects', response: 'Replies within one working day' } }
+});
+
+/* events in the Events tab */
+EVENTS_FEED.push(
+  { gw: 'sushi', zone: 'rolly', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Rolly Live · Roll-along Night', desc: 'Roll along with Chef Mika and ask anything in the chat.' },
+  { gw: 'sushi', type: 'Event', icon: '🍶', time: 'Nov 24', title: 'Warm sake night, Edinburgh', desc: 'Edinburgh Sushi Club with Anna Cole: six sakes, warm and chilled, in Leith.' },
+  { gw: 'sushi', zone: 'hinoki-knives', type: 'Sale', icon: '🔪', time: 'Nov 27', title: 'Hinoki Black Friday: free whetstone', desc: 'A free whetstone with every knife, for one day.' },
+  { gw: 'sushi', zone: 'kaito', type: 'Event', icon: '🍣', time: 'Dec 1', title: 'Kaito Winter Omakase opening night', desc: 'The winter menu begins at the London, Manchester and Edinburgh counters.' },
+  { gw: 'sushi', type: 'Event', icon: '🍚', time: 'Dec 4', title: 'Sushi basics class, London', desc: 'Joel Mensah Sushi School: rice, maki and nigiri, then dinner.' },
+  { gw: 'sushi', type: 'Event', icon: '🏆', time: 'Dec 10', title: 'Roll Call: best piece of the year vote', desc: 'The community picks its favourite piece of sushi of 2026.' },
+  { gw: 'sushi', type: 'Event', icon: '🎄', time: 'Dec 14', title: 'Christmas sushi dinner, Edinburgh', desc: 'Edinburgh Sushi Club’s Christmas dinner in the New Town.' },
+  { gw: 'sushi', zone: 'umami-pantry', type: 'Deadline', icon: '📦', time: 'Dec 18', title: 'Last order for Christmas delivery', desc: 'Umami Pantry: order by midnight for delivery before Christmas.' }
+);
+})();
+/* ═════════ /SUSHIXX ═════════ */

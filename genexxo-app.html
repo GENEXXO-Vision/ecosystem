@@ -1878,8 +1878,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-84"></script>
-<script src="genexxo-core.js?v=2026.08.26-84"></script>
+<script src="genexxo-data.js?v=2026.08.26-85"></script>
+<script src="genexxo-core.js?v=2026.08.26-85"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -2780,7 +2780,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-84';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-85';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -4448,7 +4448,7 @@ function buildDrawerR(){
                : from ? `box-shadow:inset 3px 0 0 ${accent}66;`
                : '';
     return `<div class="drow"${on||from?' id="drawerRActiveRow"':''} style="${mark}" onclick="pickGateway('${name}','${sk}')">
-      <div class="dic" style="background:${real?real.gradient:s.g}">${real?real.emoji:s.icon}</div>
+      <div class="dic" style="background:${real?real.gradient:s.g}">${real?real.emoji:gwIcon(name,s)}</div>
       <div style="flex:1;min-width:0"><div class="dnm" style="${on?`color:${accent};`:''}">${gwLabel(name)}${from?`<span style="opacity:.45;font-weight:600;font-size:10.5px;margin-left:6px">just visited</span>`:''}</div></div>
       <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${real?LIVE_DOT:''}${rowStar(key)}</div>
     </div>`;
@@ -4460,7 +4460,7 @@ function buildDrawerR(){
     const home=sectorOf(sks[0]);
     const label=sks.map(k=>sectorOf(k).name).join(' · ');
     return `<div class="drow drow-wide" onclick="pickGateway('${name}','${sks[0]}')">
-      <div class="dic" style="background:${real?real.gradient:home.g}">${real?real.emoji:home.icon}</div>
+      <div class="dic" style="background:${real?real.gradient:home.g}">${real?real.emoji:gwIcon(name,home)}</div>
       <div style="flex:1;min-width:0"><div class="dnm">${gwLabel(name)}</div><div class="dwhere">${label}</div></div>
       <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${real?LIVE_DOT:''}${rowStar(key)}</div>
     </div>`;
@@ -4479,7 +4479,9 @@ function buildDrawerR(){
     // Adventure's gateways lead only Adventure's band (Sean, 2026-11-14): SkiXX, SailXX and CycleXX also sit in the Sports
     // taxonomy, so Sports' band showed them beside its own three. The full list below keeps them. Deliberately narrow: a
     // general "home sector only" rule would empty Fitness, Beauty and Religion, whose only live gateway is homed elsewhere.
-    const localLive = names.filter(n=>!isGwHeader(n) && gwIsLive(n) && (sk==='adventure' || gwHomeSector(n, sk)!=='adventure'));
+    // Same for Garden (-85): PlantXX is also listed under Nature, but Sean placed it in Garden, so it leads Garden's band only.
+    const HOME_ONLY = ['adventure','garden'];
+    const localLive = names.filter(n=>{ if(isGwHeader(n) || !gwIsLive(n)) return false; const h=gwHomeSector(n, sk); return h===sk || !HOME_ONLY.includes(h); });
     if(localLive.length){
       // white dot, not LIVE_DOT — the standard green dot is invisible on a green pill
       return `<div class="gwsec gwsec-live"><span class="livepill"><i class="livedot"></i>Live Demo Gateways</span><span class="livect">${localLive.length}</span></div>`
@@ -7287,7 +7289,7 @@ function renderDiscover(bodyOnly){
     const s = sectorOf(sk); if(!s) return '';
     const seen = state.discoverMemo && state.discoverMemo.gw===name;
     return `<div class="gwrow${seen?' seen':''}" style="--c:${real?real.theme.accent:accentOf(s)}" onclick="discRemember('${name}');state._gwFrom='root';openGateway('${name}','${sk}')">
-      <div class="em" style="background:${real?real.gradient:s.g}">${real?real.emoji:s.icon}</div>
+      <div class="em" style="background:${real?real.gradient:s.g}">${real?real.emoji:gwIcon(name,s)}</div>
       <div style="flex:1;min-width:0"><div class="nm">${gwLabel(name)}</div><div class="dm">${s.name}</div></div>
       <div class="badge ${real?'live':'soon'}">${real?'LIVE':'STRUCTURAL'}</div>
     </div>`;

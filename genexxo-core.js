@@ -106,6 +106,10 @@ function _gwHomeSector(name, prefer){
   const decl = GATEWAYS[k] && GATEWAYS[k].sector;
   return (decl && sectorOf(decl)) ? decl : (prefer || null);
 }
+/* Unbuilt gateways wear their sector's icon. A few would read wrongly under it (19 Nov:
+   the Identity rainbow on StraightXX and CisgenderXX), so they get a neutral one here. */
+const GW_ICON = {straight:'👤', cisgender:'👤'};
+function gwIcon(name, sec){ return GW_ICON[gwKeyFromName(name)] || (sec&&sec.icon) || ''; }
 function getGateway(name, sectorKey){
   const key = gwKeyFromName(name);
   // Real gateway: return a shallow clone carrying the RESOLVED sector, so the shared GATEWAYS
@@ -117,7 +121,7 @@ function getGateway(name, sectorKey){
   const sec = sectorOf(sectorKey) || SECTORS[0];
   const acc = accentOf(sec);
   return {
-    name, domain:key+'xx.com'.replace('xxxx','xx'), emoji:sec.icon, sector:sec.key, live:false,
+    name, domain:key+'xx.com'.replace('xxxx','xx'), emoji:gwIcon(name,sec), sector:sec.key, live:false,
     tagline:'The '+name.replace('XX','')+' Universe',
     theme:{bg:'#101014',text:'#EDEDF0',cardBg:'rgba(255,255,255,.04)',cardBorder:'rgba(255,255,255,.07)',headerBg:sec.g,accent:acc,accentAlt:acc,dark:true},
     gradient:sec.g, stats:{members:'—',brands:'—',agents:'—'},
