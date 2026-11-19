@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Water Me</title>
+<style>
+/* Water Me, by Fernway Plants (fictional), 2026-11-19. A GENEXXO app for PlantXX.
+   Each plant has a summer watering gap in days; from November to February the gap is stretched by 60% (plants
+   grow slowly in low light). "Due" means check it: feel the soil first. Watered / Fed buttons log to the diary.
+   Days are relative to today, so the demo never goes stale. */
+:root{--bg:#F3F7F0;--card:#fff;--line:rgba(30,43,31,.1);--ink:#1E2B1F;--mut:rgba(30,43,31,.55);--leaf:#2F7D4A;--pot:#C8692E;--sky:#3B82C4}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#4FA36B,#22603A);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--leaf)}
+.hero{border-radius:18px;padding:15px;background:linear-gradient(150deg,#2F7D4A,#1D5532);color:#fff}
+.hero small{font-size:11px;font-weight:800;letter-spacing:.08em;opacity:.8}.hero h2{font-size:22px;font-weight:900;margin:3px 0}.hero p{font-size:12.5px;opacity:.85}
+.pl{display:flex;gap:11px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;margin-top:8px}
+.pl .e{width:42px;height:42px;border-radius:12px;background:#E5F0E2;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.pl .x{flex:1;min-width:0}.pl .x b{display:block}.pl .x small{display:block;color:var(--mut);font-size:12px}
+.due{font-size:11px;font-weight:900;padding:3px 8px;border-radius:99px;white-space:nowrap}
+.btn{font:inherit;font-weight:800;font-size:12.5px;border:0;border-radius:99px;padding:8px 12px;cursor:pointer;background:var(--sky);color:#fff;white-space:nowrap}.btn.fd{background:#F3E3D6;color:var(--pot)}.btn:disabled{background:#E6EDE3;color:var(--mut)}
+.lbl{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin:16px 0 4px}
+.lg{display:flex;gap:10px;padding:9px 0;font-size:13px}.lg+.lg{border-top:1px solid var(--line)}.lg span{color:var(--mut);width:74px;flex-shrink:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px 12px;margin-top:8px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--leaf);color:#fff;cursor:pointer}.go:disabled{background:#E6EDE3;color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">💧</div><div><h1>Water Me</h1><p>Fernway Plants · in PlantXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="today" class="on">Today</button><button data-tab="all">My plants</button><button data-tab="diary">Diary</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const seed=()=>({plants:[
+  {n:'Monstera',e:'🌿',room:'Living room',gap:7,last:-12,fed:-40},{n:'Pothos',e:'🪴',room:'Kitchen shelf',gap:7,last:-11,fed:-35},
+  {n:'Calathea',e:'🍃',room:'Bathroom',gap:5,last:-8,fed:-30},{n:'Snake plant',e:'🌵',room:'Bedroom',gap:14,last:-10,fed:-90},
+  {n:'Fiddle-leaf fig',e:'🌳',room:'Living room',gap:8,last:-5,fed:-50},{n:'Spider plant',e:'🌱',room:'Landing',gap:6,last:-3,fed:-28},
+  {n:'Peace lily',e:'🤍',room:'Study',gap:6,last:-9,fed:-45}],log:[{d:-3,t:'Watered the spider plant'},{d:-5,t:'Watered the fiddle-leaf fig'},{d:-8,t:'Watered the calathea'},{d:-14,t:'Repotted the pothos into Houseplant Mix'}]});
+let C,S={tab:'today',shared:false};
+GX.init({gateway:'PlantXX',seed}).then(c=>{C=c;paint();});
+const winter=()=>[10,11,0,1].includes(new Date().getMonth());
+const gap=p=>Math.round(p.gap*(winter()?1.6:1));
+const dueIn=p=>p.last+gap(p);
+const list=()=>C.data.plants.map((p,i)=>Object.assign({i,due:dueIn(p)},p)).sort((a,b)=>a.due-b.due);
+const tag=d=>d<0?`<span class="due" style="background:#FBE3D3;color:var(--pot)">${-d}d overdue</span>`:d===0?`<span class="due" style="background:#DDEBF8;color:var(--sky)">today</span>`:`<span class="due" style="background:#E5F0E2;color:var(--leaf)">in ${d}d</span>`;
+function vToday(){const due=list().filter(p=>p.due<=0),soon=list().filter(p=>p.due>0&&p.due<=3);
+  return `<div class="hero"><small>${winter()?'WINTER MODE · WATERING LESS':'GROWING SEASON'}</small><h2>${due.length?`${due.length} plant${due.length>1?'s':''} to check`:'All watered'}</h2><p>Push a finger into the soil. Dry to the second knuckle? Water. Still damp? Leave it a few days.</p></div>
+  ${due.map(p=>`<div class="pl"><div class="e">${p.e}</div><div class="x"><b>${p.n}</b><small>${p.room} · every ${gap(p)} days</small></div>${tag(p.due)}<button class="btn" data-w="${p.i}">💧 Watered</button></div>`).join('')}
+  ${soon.length?`<div class="lbl">Coming up</div>${soon.map(p=>`<div class="pl"><div class="e">${p.e}</div><div class="x"><b>${p.n}</b><small>${p.room}</small></div>${tag(p.due)}</div>`).join('')}`:''}`;}
+function vAll(){return list().map(p=>`<div class="pl"><div class="e">${p.e}</div><div class="x"><b>${p.n}</b><small>${p.room} · fed ${-p.fed}d ago${winter()?' · no feed till spring':''}</small></div>${tag(p.due)}<button class="btn fd" data-f="${p.i}" ${winter()?'disabled':''}>Fed</button></div>`).join('')+
+  `<div class="legend">${winter()?'Most houseplants rest in winter: no feeding from November to February.':'Feed every two to four weeks while plants are growing.'}</div>`;}
+function vDiary(){const lg=C.data.log.slice().sort((a,b)=>b.d-a.d).slice(0,12);
+  return `<div class="card">${lg.map(l=>`<div class="lg"><span>${l.d===0?'Today':GX.day(GX.today(l.d))}</span><b style="font-weight:600">${GX.esc(l.t)}</b></div>`).join('')}</div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my plant family to ${C.gateway}`}</button>`:''}`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='today'?vToday():S.tab==='all'?vAll():vDiary();
+  v.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const p=C.data.plants[+b.dataset.w];p.last=0;C.data.log.push({d:0,t:'Watered the '+p.n.toLowerCase()});GX.save(C.data);paint();});
+  v.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{const p=C.data.plants[+b.dataset.f];p.fed=0;C.data.log.push({d:0,t:'Fed the '+p.n.toLowerCase()});GX.save(C.data);paint();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>GX.post(`<b>${C.data.plants.length} plants</b> and not one lost this year: ${C.data.plants.map(p=>p.e).join(' ')}. Kept alive with Water Me 💧`,'WATER ME').then(ok=>{if(ok){S.shared=true;paint();}});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

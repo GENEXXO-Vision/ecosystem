@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Light Finder</title>
+<style>
+/* Light Finder, by "Leafline Labs" (fictional), 2026-11-19. A GENEXXO app for PlantXX.
+   Light score 1–4 (low, medium, bright indirect, some direct sun) from the window's direction (UK, northern
+   hemisphere: south brightest) minus distance from the window. Each plant has a light range and a pet-safety flag
+   (based on common guidance, e.g. lilies, pothos, monstera, snake plant, ZZ, aloe, peace lily and fiddle-leaf fig
+   are not pet-safe; calathea, parlour palm, spider plant, Boston fern, peperomia, haworthia, hoya, cast-iron plant
+   and moth orchid are generally considered safe). Not a substitute for a vet's advice. */
+:root{--bg:#F3F7F0;--card:#fff;--line:rgba(30,43,31,.1);--ink:#1E2B1F;--mut:rgba(30,43,31,.55);--leaf:#2F7D4A;--pot:#C8692E;--sun:#E3A008}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#E39A5B,#B05A27);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--pot)}
+.lbl{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin:14px 0 7px}
+.compass{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,62px);gap:6px;max-width:240px;margin:0 auto}
+.compass button{font:inherit;font-weight:900;font-size:15px;border:1px solid var(--line);background:var(--card);border-radius:14px;cursor:pointer;color:var(--ink)}.compass button.on{background:var(--pot);color:#fff;border-color:var(--pot)}
+.compass .mid{display:flex;align-items:center;justify-content:center;font-size:26px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--leaf);border-color:var(--leaf);color:#fff}
+.meter{display:flex;gap:4px;margin-top:8px}.meter i{flex:1;height:10px;border-radius:99px;background:#E3EAE0}.meter i.on{background:linear-gradient(90deg,#F5C451,#E3A008)}
+.res{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px;margin-top:12px;text-align:center}.res b{font-size:18px}.res small{display:block;color:var(--mut);font-size:12.5px}
+.pl{display:flex;gap:11px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;margin-top:8px}
+.pl .e{width:40px;height:40px;border-radius:12px;background:#E5F0E2;display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0}
+.pl .x{flex:1;min-width:0}.pl .x b{display:block}.pl .x small{display:block;color:var(--mut);font-size:12px}
+.pet{font-size:10.5px;font-weight:900;padding:3px 8px;border-radius:99px;white-space:nowrap}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--pot);color:#fff;cursor:pointer}.go:disabled{background:#E6EDE3;color:var(--mut)}
+.del{font:inherit;font-size:16px;background:none;border:0;color:var(--mut);cursor:pointer}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}.empty{padding:26px 10px;text-align:center;color:var(--mut)}
+</style></head><body>
+<div class="hd"><div class="logo">☀️</div><div><h1>Light Finder</h1><p>Leafline Labs · in PlantXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="win" class="on">Window</button><button data-tab="pl">Plants</button><button data-tab="spots">My spots</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const DIR={N:2,E:3,S:4,W:3},DN={N:'North',E:'East',S:'South',W:'West'},DIST=[['On the sill',0],['About 1m away',1],['2m or more',2]],LV=['','Low light','Medium light','Bright, indirect','Some direct sun'];
+const PL=[{n:'Snake plant',e:'🌵',lo:1,hi:4,pet:0},{n:'ZZ plant',e:'🌿',lo:1,hi:3,pet:0},{n:'Cast-iron plant',e:'🍃',lo:1,hi:2,pet:1},{n:'Pothos',e:'🪴',lo:1,hi:3,pet:0},{n:'Parlour palm',e:'🌴',lo:1,hi:3,pet:1},
+ {n:'Calathea',e:'🍃',lo:2,hi:3,pet:1},{n:'Boston fern',e:'🌿',lo:2,hi:3,pet:1},{n:'Peace lily',e:'🤍',lo:2,hi:3,pet:0},{n:'Spider plant',e:'🌱',lo:2,hi:3,pet:1},{n:'Peperomia',e:'🟢',lo:2,hi:3,pet:1},
+ {n:'Monstera',e:'🌿',lo:3,hi:3,pet:0},{n:'Moth orchid',e:'🌸',lo:3,hi:3,pet:1},{n:'Hoya',e:'💗',lo:3,hi:4,pet:1},{n:'Fiddle-leaf fig',e:'🌳',lo:3,hi:4,pet:0},{n:'Haworthia',e:'🌵',lo:3,hi:4,pet:1},{n:'Aloe vera',e:'🌵',lo:4,hi:4,pet:0},{n:'Echeveria',e:'🌸',lo:4,hi:4,pet:1}];
+const seed=()=>({dir:'N',dist:1,pets:true,spots:[{room:'Kitchen',dir:'E',dist:0},{room:'Bedroom',dir:'N',dist:1}]});
+const ROOMS=['Living room','Bathroom','Hallway','Study','Spare room'];
+let C,S={tab:'win',shared:false};
+GX.init({gateway:'PlantXX',seed}).then(c=>{C=c;paint();});
+const lvl=(d,x)=>Math.max(1,DIR[d]-x);
+const fits=(l,pets)=>PL.filter(p=>l>=p.lo&&l<=p.hi&&(!pets||p.pet));
+const meter=l=>`<div class="meter">${[1,2,3,4].map(i=>`<i class="${i<=l?'on':''}"></i>`).join('')}</div>`;
+const pet=p=>p.pet?`<span class="pet" style="background:#E5F0E2;color:var(--leaf)">PET-SAFE</span>`:`<span class="pet" style="background:#FBE3D3;color:var(--pot)">NOT FOR PETS</span>`;
+function vWin(){const d=C.data,l=lvl(d.dir,d.dist),n=fits(l,d.pets).length;
+  return `<div class="lbl">Which way does the window face?</div>
+  <div class="compass"><span></span><button data-dir="N" class="${d.dir==='N'?'on':''}">N</button><span></span><button data-dir="W" class="${d.dir==='W'?'on':''}">W</button><div class="mid">🪟</div><button data-dir="E" class="${d.dir==='E'?'on':''}">E</button><span></span><button data-dir="S" class="${d.dir==='S'?'on':''}">S</button><span></span></div>
+  <div class="lbl">How far from the window?</div><div class="chips">${DIST.map(([t,v])=>`<button class="chip ${d.dist===v?'on':''}" data-dist="${v}">${t}</button>`).join('')}</div>
+  <div class="chips" style="margin-top:8px"><button class="chip ${d.pets?'on':''}" id="pets">🐾 I have cats or dogs</button></div>
+  <div class="res"><b>${LV[l]}</b><small>${DN[d.dir]}-facing, ${DIST[d.dist][0].toLowerCase()} · ${n} plant${n===1?'':'s'} will be happy here</small>${meter(l)}</div>
+  <button class="go" id="save">Save this spot</button>`;}
+function vPl(){const d=C.data,l=lvl(d.dir,d.dist),f=fits(l,d.pets);
+  return `<div class="legend" style="margin:0 0 4px;text-align:left">${LV[l]} · ${DN[d.dir]}-facing, ${DIST[d.dist][0].toLowerCase()}${d.pets?' · pet-safe only':''}</div>
+  ${f.length?f.map(p=>`<div class="pl"><div class="e">${p.e}</div><div class="x"><b>${p.n}</b><small>Likes ${LV[p.lo].toLowerCase()}${p.hi>p.lo?' to '+LV[p.hi].toLowerCase():''}</small></div>${pet(p)}</div>`).join(''):'<div class="empty">Nothing suits this spot with pets about. Try closer to the window.</div>'}
+  <div class="legend">Unsure about a plant and a pet? Ask your vet.</div>`;}
+function vSpots(){const sp=C.data.spots;return (sp.length?sp.map((s,i)=>{const l=lvl(s.dir,s.dist),f=fits(l,C.data.pets);return `<div class="pl"><div class="e">🪟</div><div class="x"><b>${GX.esc(s.room)}</b><small>${DN[s.dir]} · ${DIST[s.dist][0].toLowerCase()} · ${LV[l].toLowerCase()}</small><small>${f.slice(0,3).map(p=>p.n).join(', ')||'No pet-safe matches'}</small></div><button class="del" data-del="${i}" aria-label="Remove">✕</button></div>`;}).join(''):'<div class="empty">Save spots from the Window tab.</div>')+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Ask ${C.gateway} for plant ideas`}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='win'?vWin():S.tab==='pl'?vPl():vSpots();const d=C.data;
+  v.querySelectorAll('[data-dir]').forEach(b=>b.onclick=()=>{d.dir=b.dataset.dir;GX.save(d);paint();});
+  v.querySelectorAll('[data-dist]').forEach(b=>b.onclick=()=>{d.dist=+b.dataset.dist;GX.save(d);paint();});
+  v.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{d.spots.splice(+b.dataset.del,1);GX.save(d);paint();});
+  const p=document.getElementById('pets');if(p)p.onclick=()=>{d.pets=!d.pets;GX.save(d);paint();};
+  const sv=document.getElementById('save');if(sv)sv.onclick=()=>{if(d.spots.length<8)d.spots.push({room:ROOMS[d.spots.length%ROOMS.length],dir:d.dir,dist:d.dist});GX.save(d);S.tab='spots';paint();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const s=d.spots[0];GX.post(`I have a ${s?DN[s.dir].toLowerCase()+'-facing '+s.room.toLowerCase():'dark corner'}${d.pets?' and a cat':''}. Light Finder suggests ${s?fits(lvl(s.dir,s.dist),d.pets).slice(0,2).map(p=>p.n.toLowerCase()).join(' or '):'a snake plant'}. What would you grow? ☀️`,'LIGHT FINDER').then(ok=>{if(ok){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
