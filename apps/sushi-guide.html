@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sushi Guide</title>
+<style>
+/* Sushi Guide, by Kaito Sushi Bar (fictional), 2026-11-19. A GENEXXO app for SushiXX.
+   Fourteen common pieces: what each is, raw / cooked / cured / veggie, and the usual allergens (typical recipes;
+   restaurants vary, so always tell them about allergies). Filter by style; hide allergens; save favourites and
+   show them to the chef. Soy sauce contains wheat (gluten) unless it is tamari. */
+:root{--bg:#0E1318;--card:rgba(255,255,255,.05);--line:rgba(242,238,232,.1);--ink:#F2EEE8;--mut:rgba(242,238,232,.55);--sal:#FF8A65;--was:#A3C45A;--rice:#EFE4CF}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#FF9F7A,#D9542E);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--sal)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.chip{font:inherit;font-size:12px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:6px 11px;cursor:pointer}.chip.on{background:var(--sal);border-color:var(--sal);color:#2A0E04}.chip.al.on{background:#E5484D;border-color:#E5484D;color:#fff}
+.pc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px;margin-top:8px;cursor:pointer}
+.pc .top{display:flex;gap:11px;align-items:center}.pc .e{width:42px;height:42px;border-radius:12px;background:rgba(255,138,101,.12);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.pc .x{flex:1;min-width:0}.pc .x b{display:block;font-size:14.5px}.pc .x small{color:var(--mut);font-size:12px}
+.rw{font-size:10.5px;font-weight:900;padding:3px 8px;border-radius:99px;white-space:nowrap}
+.raw{background:rgba(255,138,101,.16);color:var(--sal)}.cooked{background:rgba(239,228,207,.14);color:var(--rice)}.veg{background:rgba(163,196,90,.16);color:var(--was)}.cured{background:rgba(125,160,220,.16);color:#9DB8E8}
+.more{margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-size:13px;color:var(--mut)}.more b{color:var(--ink)}
+.als{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}.als i{font-style:normal;font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:99px;background:rgba(229,72,77,.15);color:#FF8B8F}
+.sv{font:inherit;font-weight:800;font-size:12.5px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:7px 12px;cursor:pointer;margin-top:8px}.sv.on{background:var(--sal);color:#2A0E04;border-color:var(--sal)}
+.chef{border-radius:18px;padding:18px;background:var(--rice);color:#1C2636;text-align:center}.chef small{font-size:11px;font-weight:900;letter-spacing:.1em;opacity:.6}.chef h2{font-size:22px;margin:4px 0 8px}.chef p{font-size:16px;font-weight:700;line-height:1.6}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--sal);color:#2A0E04;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}.empty{padding:26px 10px;text-align:center;color:var(--mut)}
+</style></head><body>
+<div class="hd"><div class="logo">🍣</div><div><h1>Sushi Guide</h1><p>Kaito Sushi Bar · in SushiXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="menu" class="on">Menu</button><button data-tab="al">Allergens</button><button data-tab="fav">My favourites</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const P=[
+ {n:'Salmon nigiri',j:'Sake',t:'Nigiri',e:'🍣',r:'raw',d:'A slice of raw salmon over a pressed finger of seasoned rice.',a:['Fish']},
+ {n:'Tuna nigiri',j:'Maguro',t:'Nigiri',e:'🍣',r:'raw',d:'Lean red tuna over rice. Ask for otoro for the rich belly cut.',a:['Fish']},
+ {n:'Prawn nigiri',j:'Ebi',t:'Nigiri',e:'🦐',r:'cooked',d:'A butterflied, poached prawn over rice.',a:['Crustaceans']},
+ {n:'Eel nigiri',j:'Unagi',t:'Nigiri',e:'🍢',r:'cooked',d:'Grilled freshwater eel glazed with a sweet soy sauce.',a:['Fish','Soy','Gluten','Sesame']},
+ {n:'Sweet omelette',j:'Tamago',t:'Nigiri',e:'🟨',r:'veg',d:'Layers of sweet rolled omelette, often tied on with nori. Vegetarian.',a:['Egg','Soy']},
+ {n:'Mackerel nigiri',j:'Saba',t:'Nigiri',e:'🐟',r:'cured',d:'Mackerel cured in salt and vinegar: firm, rich and tangy.',a:['Fish']},
+ {n:'Scallop nigiri',j:'Hotate',t:'Nigiri',e:'🐚',r:'raw',d:'Sweet raw scallop over rice.',a:['Molluscs']},
+ {n:'Salmon sashimi',j:'Sake',t:'Sashimi',e:'🐟',r:'raw',d:'Slices of raw salmon on their own, no rice.',a:['Fish']},
+ {n:'Yellowtail sashimi',j:'Hamachi',t:'Sashimi',e:'🐟',r:'raw',d:'Buttery raw yellowtail, often with a little citrus.',a:['Fish']},
+ {n:'Cucumber roll',j:'Kappa maki',t:'Maki',e:'🥒',r:'veg',d:'A thin roll of rice and cucumber wrapped in nori.',a:['Sesame']},
+ {n:'Spicy tuna roll',j:'',t:'Maki',e:'🌶️',r:'raw',d:'Chopped raw tuna with chilli mayo, rolled inside out.',a:['Fish','Egg','Sesame']},
+ {n:'California roll',j:'',t:'Maki',e:'🥑',r:'cooked',d:'Crab stick, avocado and cucumber, rolled inside out in sesame.',a:['Fish','Crustaceans','Egg','Sesame','Gluten']},
+ {n:'Salmon roe boat',j:'Ikura gunkan',t:'Gunkan',e:'🟠',r:'raw',d:'A nori “boat” of rice topped with glossy salmon roe.',a:['Fish','Soy']},
+ {n:'Tofu pocket',j:'Inari',t:'Inari',e:'🫓',r:'veg',d:'A sweet fried-tofu pouch stuffed with rice. Vegetarian.',a:['Soy','Gluten','Sesame']}];
+const TY=['All','Nigiri','Sashimi','Maki','Gunkan','Inari'],AL=['Fish','Crustaceans','Molluscs','Egg','Soy','Gluten','Sesame'],RL={raw:'RAW',cooked:'COOKED',veg:'VEGGIE',cured:'CURED'};
+const seed=()=>({fav:[0,4,9],hide:['Crustaceans']});
+let C,S={tab:'menu',ty:'All',open:null,chef:false,shared:false};
+GX.init({gateway:'SushiXX',seed}).then(c=>{C=c;paint();});
+const ok=p=>!p.a.some(a=>C.data.hide.includes(a));
+const card=(p,i)=>`<div class="pc" data-open="${i}"><div class="top"><div class="e">${p.e}</div><div class="x"><b>${p.n}</b><small>${p.j?p.j+' · ':''}${p.t}</small></div><span class="rw ${p.r}">${RL[p.r]}</span></div>
+  ${S.open===i?`<div class="more">${p.d}<div class="als">${p.a.map(a=>`<i>${a}</i>`).join('')}</div><button class="sv ${C.data.fav.includes(i)?'on':''}" data-fav="${i}">${C.data.fav.includes(i)?'♥ In my favourites':'♡ Add to favourites'}</button></div>`:''}</div>`;
+function vMenu(){const l=P.map((p,i)=>[p,i]).filter(([p])=>(S.ty==='All'||p.t===S.ty)&&ok(p));
+  return `<div class="chips">${TY.map(t=>`<button class="chip ${S.ty===t?'on':''}" data-ty="${t}">${t}</button>`).join('')}</div>
+  ${l.length?l.map(([p,i])=>card(p,i)).join(''):'<div class="empty">Nothing here without your hidden allergens.</div>'}
+  <div class="legend">${C.data.hide.length?`Hiding anything with ${C.data.hide.join(', ').toLowerCase()}. `:''}Tap a piece to learn more.</div>`;}
+function vAl(){const n=P.filter(ok).length;return `<div class="legend" style="text-align:left;margin:0 0 8px">Hide anything containing:</div>
+  <div class="chips">${AL.map(a=>`<button class="chip al ${C.data.hide.includes(a)?'on':''}" data-al="${a}">${a}</button>`).join('')}</div>
+  <div class="pc" style="cursor:default"><div class="x"><b>${n} of ${P.length} pieces left on your menu</b><small>Based on typical recipes. Kitchens vary, so always tell the restaurant about allergies before you order.</small></div></div>
+  <div class="pc" style="cursor:default"><div class="x"><b>Soy sauce contains wheat</b><small>Ask for tamari if you avoid gluten.</small></div></div>`;}
+function vFav(){const f=C.data.fav.map(i=>[P[i],i]).filter(x=>x[0]);
+  if(S.chef)return `<div class="chef"><small>FOR THE CHEF</small><h2>My favourites</h2><p>${f.map(([p])=>p.j||p.n).join(' · ')}</p>${C.data.hide.length?`<p style="margin-top:10px;color:#B3261E">Allergy: no ${C.data.hide.join(', ').toLowerCase()}</p>`:''}</div><button class="go alt" id="chef">Done</button>`;
+  return (f.length?f.map(([p,i])=>card(p,i)).join(''):'<div class="empty">Tap a piece, then ♡ to save it.</div>')+`<button class="go" id="chef" ${f.length?'':'disabled'}>Show the chef</button>`+
+  (GX.can('feed')&&f.length?`<button class="go alt" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my favourites to ${C.gateway}`}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='menu'?vMenu():S.tab==='al'?vAl():vFav();
+  v.querySelectorAll('[data-ty]').forEach(b=>b.onclick=()=>{S.ty=b.dataset.ty;paint();});
+  v.querySelectorAll('[data-open]').forEach(b=>b.onclick=e=>{if(e.target.closest('[data-fav]'))return;const i=+b.dataset.open;S.open=S.open===i?null:i;paint();});
+  v.querySelectorAll('[data-fav]').forEach(b=>b.onclick=e=>{e.stopPropagation();const i=+b.dataset.fav,f=C.data.fav,k=f.indexOf(i);k<0?f.push(i):f.splice(k,1);GX.save(C.data);paint();});
+  v.querySelectorAll('[data-al]').forEach(b=>b.onclick=()=>{const a=b.dataset.al,h=C.data.hide,k=h.indexOf(a);k<0?h.push(a):h.splice(k,1);GX.save(C.data);paint();});
+  const ch=document.getElementById('chef');if(ch)ch.onclick=()=>{S.chef=!S.chef;paint();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>GX.post(`My sushi order, every time: <b>${C.data.fav.map(i=>P[i].n.toLowerCase()).join(', ')}</b>. What’s yours? 🍣`,'SUSHI GUIDE').then(o=>{if(o){S.shared=true;paint();}});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;S.chef=false;paint();};
+</script></body></html>
