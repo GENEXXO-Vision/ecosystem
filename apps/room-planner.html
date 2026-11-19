@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Room Planner</title>
+<style>
+/* Room Planner, by Hearth & Hollow (fictional), 2026-11-19. A GENEXXO app for SofaXX.
+   A living room drawn to scale (cm). Pick one of three layouts and a sofa; it places the sofa, a chair, a coffee
+   table and the TV, then checks: walkways (90cm comfortable, 60cm minimum), sofa-to-coffee-table gap (40–50cm)
+   and sofa-to-TV distance. Rules of thumb used by designers, not building regulations. */
+:root{--bg:#FAF6F0;--card:#fff;--line:rgba(43,36,32,.1);--ink:#2B2420;--mut:rgba(43,36,32,.55);--oat:#A0845C;--terra:#C2593A;--sage:#5C7A59;--bad:#B3261E;--amb:#B7791F}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#D8C3A5,#A0845C);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--oat)}
+.plan{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px}
+.plan svg{width:100%;display:block}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--oat);border-color:var(--oat);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.dim{display:flex;align-items:center;gap:8px;padding:7px 0}.dim+.dim{border-top:1px solid var(--line)}.dim span{flex:1;font-weight:700}.dim b{width:70px;text-align:center;font-size:17px}
+.st{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:#F4EDE4;font:inherit;font-size:18px;font-weight:800;cursor:pointer;color:var(--ink)}
+.ck{display:flex;gap:10px;align-items:center;padding:10px 0}.ck+.ck{border-top:1px solid var(--line)}.ck .ic{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;flex-shrink:0}.ck .x{flex:1}.ck .x b{display:block}.ck .x small{color:var(--mut);font-size:12px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--terra);color:#fff;cursor:pointer}.go:disabled{background:#EDE4D9;color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🏠</div><div><h1>Room Planner</h1><p>Hearth & Hollow · in SofaXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="lay" class="on">Layout</button><button data-tab="room">Room</button><button data-tab="chk">Checks</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const SOFAS=[{n:'Studio Two-Seater',w:150,d:86},{n:'Hollow Three-Seater',w:214,d:96},{n:'Hollow Snuggler',w:140,d:96}];
+const LAYS=['Facing the TV','Sofa and chair','Conversation'];
+const seed=()=>({W:420,L:360,door:'right',lay:0,sofa:1});
+let C,S={tab:'lay',shared:false};
+GX.init({gateway:'SofaXX',seed}).then(c=>{C=c;paint();});
+/* the room is W wide (x) by L deep (y); TV on the top wall; door in the bottom wall at one side */
+function place(){const {W,L,lay}=C.data,s=SOFAS[C.data.sofa],it=[];const tv={x:W/2-60,y:0,w:120,h:12,k:'tv'};it.push(tv);
+  const sy=L-s.d-20;
+  if(lay===0){it.push({x:(W-s.w)/2,y:sy,w:s.w,h:s.d,k:'sofa'});it.push({x:W/2-50,y:sy-45-55,w:100,h:55,k:'table'});it.push({x:W-90,y:sy-30,w:75,h:75,k:'chair'});}
+  if(lay===1){it.push({x:25,y:sy,w:s.w,h:s.d,k:'sofa'});it.push({x:25+s.w/2-50,y:sy-45-55,w:100,h:55,k:'table'});it.push({x:W-100,y:L/2-40,w:80,h:80,k:'chair'});}
+  if(lay===2){it.push({x:10,y:L/2-s.w/2,w:s.d,h:s.w,k:'sofa',rot:1});it.push({x:10+s.d+45,y:L/2-50,w:55,h:100,k:'table'});it.push({x:W-95,y:L/2-80,w:80,h:80,k:'chair'});it.push({x:W-95,y:L/2+10,w:80,h:80,k:'chair'});}
+  return it;}
+function checks(){const {W,L,lay}=C.data,it=place(),s=it.find(i=>i.k==='sofa'),t=it.find(i=>i.k==='table'),out=[];
+  const walk=lay===2?Math.min(W-(s.x+s.w)-45-55-95, L-(s.y+s.h)):lay===0?Math.min(s.x,W-(s.x+s.w)):W-(s.x+s.w)-100;
+  out.push({t:'Main walkway',v:Math.round(walk),ok:walk>=90?2:walk>=60?1:0,s:walk>=90?'Comfortable':walk>=60?'Tight but usable':'Too narrow: people will squeeze past'});
+  const gap=lay===2?t.x-(s.x+s.w):s.y-(t.y+t.h);out.push({t:'Sofa to coffee table',v:Math.round(gap),ok:gap>=40&&gap<=50?2:gap>=30&&gap<=60?1:0,s:'40–50cm lets you reach your tea and still stretch your legs'});
+  const tvd=lay===2?Math.round(Math.hypot(W/2-(s.x+s.w/2),s.y+s.h/2)):Math.round(s.y+s.h/2);out.push({t:'Sofa to TV',v:tvd,ok:tvd>=200&&tvd<=400?2:1,s:tvd<200?'A little close for a big screen':tvd>400?'Quite far: a bigger screen will help':'About right for a 50–65 inch TV'});
+  const fit=SOFAS[C.data.sofa].w<=(lay===2?L-40:W-40);out.unshift({t:'Sofa fits the wall',v:SOFAS[C.data.sofa].w,ok:fit?2:0,s:fit?'With room either side':'The sofa is longer than the wall space'});
+  return out;}
+const COL={tv:'#2B2420',sofa:'#C2593A',table:'#A0845C',chair:'#5C7A59'},LBL={tv:'TV',sofa:'Sofa',table:'Table',chair:'Chair'};
+function svg(){const {W,L}=C.data,it=place(),dx=C.data.door==='right'?W-100:20;
+  return `<svg viewBox="-12 -12 ${W+24} ${L+24}"><rect x="0" y="0" width="${W}" height="${L}" fill="#F6EFE6" stroke="#2B2420" stroke-width="6"/>
+  <line x1="${dx}" y1="${L}" x2="${dx+80}" y2="${L}" stroke="#F6EFE6" stroke-width="8"/><path d="M${dx} ${L} A80 80 0 0 1 ${dx+80} ${L-80}" fill="none" stroke="#2B2420" stroke-width="2" stroke-dasharray="6 5"/><line x1="${dx}" y1="${L}" x2="${dx}" y2="${L-80}" stroke="#2B2420" stroke-width="3"/>
+  ${it.map(i=>`<rect x="${i.x}" y="${i.y}" width="${i.w}" height="${i.h}" rx="${i.k==='table'?6:14}" fill="${COL[i.k]}" opacity="${i.k==='tv'?1:.88}"/><text x="${i.x+i.w/2}" y="${i.y+i.h/2+7}" text-anchor="middle" font-size="${i.k==='tv'?0:20}" font-weight="800" fill="#fff" font-family="-apple-system,sans-serif">${LBL[i.k]}</text>`).join('')}
+  <text x="${W/2}" y="${L-6}" text-anchor="middle" font-size="16" fill="#8C7F72" font-family="-apple-system,sans-serif">${(W/100).toFixed(1)} × ${(L/100).toFixed(1)} m</text></svg>`;}
+const ic=o=>`<div class="ic" style="background:${o===2?'var(--sage)':o===1?'var(--amb)':'var(--bad)'}">${o===2?'✓':o===1?'!':'✗'}</div>`;
+function vLay(){const c=checks(),bad=c.filter(x=>x.ok<2).length;return `<div class="plan">${svg()}</div>
+  <div class="chips">${LAYS.map((l,i)=>`<button class="chip ${C.data.lay===i?'on':''}" data-lay="${i}">${l}</button>`).join('')}</div>
+  <div class="chips">${SOFAS.map((s,i)=>`<button class="chip ${C.data.sofa===i?'on':''}" data-sofa="${i}">${s.n}</button>`).join('')}</div>
+  <div class="legend">${bad?`${bad} thing${bad>1?'s':''} to look at in Checks.`:'Everything checks out. Lovely room.'}</div>`;}
+function vRoom(){return `<div class="card"><h3>Your room (cm)</h3>${[['W','Width (TV wall)'],['L','Depth']].map(([k,l])=>`<div class="dim"><span>${l}</span><button class="st" data-dec="${k}">−</button><b>${C.data[k]}</b><button class="st" data-inc="${k}">+</button></div>`).join('')}</div>
+  <div class="chips"><button class="chip ${C.data.door==='left'?'on':''}" data-door="left">Door on the left</button><button class="chip ${C.data.door==='right'?'on':''}" data-door="right">Door on the right</button></div>
+  <div class="plan" style="margin-top:10px">${svg()}</div>`;}
+function vChk(){const c=checks();return `<div class="card"><h3>${GX.esc(SOFAS[C.data.sofa].n)} · ${LAYS[C.data.lay]}</h3>${c.map(x=>`<div class="ck">${ic(x.ok)}<div class="x"><b>${x.t} · ${x.v}cm</b><small>${x.s}</small></div></div>`).join('')}</div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my layout to ${C.gateway}`}</button>`:''}<div class="legend">Walkways: 90cm comfortable, 60cm at the very least.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='lay'?vLay():S.tab==='room'?vRoom():vChk();
+  const set=(k,val)=>{C.data[k]=val;S.shared=false;GX.save(C.data);paint();};
+  v.querySelectorAll('[data-lay]').forEach(b=>b.onclick=()=>set('lay',+b.dataset.lay));
+  v.querySelectorAll('[data-sofa]').forEach(b=>b.onclick=()=>set('sofa',+b.dataset.sofa));
+  v.querySelectorAll('[data-door]').forEach(b=>b.onclick=()=>set('door',b.dataset.door));
+  v.querySelectorAll('[data-inc]').forEach(b=>b.onclick=()=>set(b.dataset.inc,Math.min(800,C.data[b.dataset.inc]+10)));
+  v.querySelectorAll('[data-dec]').forEach(b=>b.onclick=()=>set(b.dataset.dec,Math.max(250,C.data[b.dataset.dec]-10)));
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>GX.post(`Planned our ${(C.data.W/100).toFixed(1)} × ${(C.data.L/100).toFixed(1)}m living room around the <b>${GX.esc(SOFAS[C.data.sofa].n)}</b>: “${LAYS[C.data.lay]}” layout. Room Planner 🏠`,'ROOM PLANNER').then(ok=>{if(ok){S.shared=true;paint();}});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
