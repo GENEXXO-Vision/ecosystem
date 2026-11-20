@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Yarn Calculator</title>
+<style>
+/* Yarn Calculator, by Heather & Hank (fictional), 2026-11-20. A GENEXXO app for KnitXX.
+   Swap: balls needed = pattern metres ÷ your yarn's metres per ball, rounded up, plus a 10% margin; warns if the
+   yarn weights differ. Estimate: typical metres for a garment by size and weight (a rough guide; your pattern's
+   figure wins). Stash: what you have, and whether it covers the estimate. */
+:root{--bg:#FBF7F2;--card:#fff;--line:rgba(42,34,48,.1);--ink:#2A2230;--mut:rgba(42,34,48,.55);--hea:#9333EA;--rose:#BE4BA8;--bad:#B3261E}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#F0ABFC,#BE4BA8);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--rose)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.dim{display:flex;align-items:center;gap:8px;padding:6px 0}.dim+.dim{border-top:1px solid var(--line)}.dim span{flex:1;font-weight:700}.dim b{width:64px;text-align:center;font-size:16px}
+.st{width:32px;height:32px;border-radius:10px;border:1px solid var(--line);background:#F5EEF8;font:inherit;font-size:17px;font-weight:800;cursor:pointer;color:var(--ink)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:6px 11px;cursor:pointer}.chip.on{background:var(--rose);border-color:var(--rose);color:#fff}
+.res{border-radius:18px;padding:16px;text-align:center;background:linear-gradient(135deg,#A855F7,#6B21A8);color:#fff;margin-top:10px}.res b{font-size:40px;font-weight:900;display:block;line-height:1.1}.res small{font-size:12.5px;opacity:.9}
+.warn{margin-top:10px;border-radius:12px;padding:10px 12px;background:#FDECEA;color:var(--bad);font-weight:700;font-size:13px}
+.sy{display:flex;gap:10px;align-items:center;padding:9px 0}.sy+.sy{border-top:1px solid var(--line)}.sy i{width:26px;height:26px;border-radius:50%;flex-shrink:0}.sy .x{flex:1}.sy .x small{display:block;color:var(--mut);font-size:12px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--rose);color:#fff;cursor:pointer}.go:disabled{background:#EEE6F3;color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🧮</div><div><h1>Yarn Calculator</h1><p>Heather & Hank · in KnitXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="swap" class="on">Swap</button><button data-tab="est">Estimate</button><button data-tab="stash">Stash</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const W=['4-ply','DK','Aran','Chunky'];
+const BASE={Hat:{'4-ply':300,DK:220,Aran:170,Chunky:120},Scarf:{'4-ply':800,DK:600,Aran:450,Chunky:300},Socks:{'4-ply':400,DK:300,Aran:240,Chunky:180},Jumper:{'4-ply':1700,DK:1250,Aran:1000,Chunky:700},Cardigan:{'4-ply':1900,DK:1400,Aran:1100,Chunky:780}};
+const SIZE={S:.88,M:1,L:1.12,XL:1.26,'2XL':1.4},GE={Hat:'🧢',Scarf:'🧣',Socks:'🧦',Jumper:'🧥',Cardigan:'🧶'};
+const seed=()=>({pBalls:10,pM:110,pW:'4-ply',yM:166,yW:'Aran',g:'Jumper',size:'M',w:'Aran',stash:[{n:'Aran wool · heather',c:'#8E5BA8',m:830},{n:'Shetland 4-ply · moss',c:'#6F8A5B',m:440},{n:'Aran wool · oatmeal',c:'#D7C3A3',m:332},{n:'Chunky · rust',c:'#B5562F',m:200}]});
+let C,S={tab:'swap',shared:false};
+GX.init({gateway:'KnitXX',seed}).then(c=>{C=c;paint();});
+const est=()=>Math.round(BASE[C.data.g][C.data.w]*SIZE[C.data.size]/10)*10;
+function vSwap(){const d=C.data,metres=d.pBalls*d.pM,balls=Math.ceil(metres/d.yM),safe=Math.ceil(metres*1.1/d.yM);
+  return `<div class="card"><h3>The pattern’s yarn</h3>
+  <div class="dim"><span>Balls</span><button class="st" data-k="pBalls" data-d="-1">−</button><b>${d.pBalls}</b><button class="st" data-k="pBalls" data-d="1">+</button></div>
+  <div class="dim"><span>Metres per ball</span><button class="st" data-k="pM" data-d="-5">−</button><b>${d.pM}m</b><button class="st" data-k="pM" data-d="5">+</button></div>
+  <div class="chips">${W.map(w=>`<button class="chip ${d.pW===w?'on':''}" data-pw="${w}">${w}</button>`).join('')}</div></div>
+  <div class="card"><h3>Your yarn</h3><div class="dim"><span>Metres per ball</span><button class="st" data-k="yM" data-d="-5">−</button><b>${d.yM}m</b><button class="st" data-k="yM" data-d="5">+</button></div>
+  <div class="chips">${W.map(w=>`<button class="chip ${d.yW===w?'on':''}" data-yw="${w}">${w}</button>`).join('')}</div></div>
+  <div class="res"><b>${safe} balls</b><small>${metres.toLocaleString('en-GB')}m needed · ${balls} exactly, ${safe} with a 10% margin</small></div>
+  ${d.pW!==d.yW?`<div class="warn">⚠️ The pattern uses ${d.pW} and your yarn is ${d.yW}. Different weights knit to different sizes: swatch first, or choose a ${d.pW} yarn.</div>`:''}`;}
+function vEst(){const d=C.data;return `<div class="chips">${Object.keys(BASE).map(g=>`<button class="chip ${d.g===g?'on':''}" data-g="${g}">${GE[g]} ${g}</button>`).join('')}</div>
+  <div class="chips">${Object.keys(SIZE).map(s=>`<button class="chip ${d.size===s?'on':''}" data-size="${s}">${s}</button>`).join('')}</div>
+  <div class="chips">${W.map(w=>`<button class="chip ${d.w===w?'on':''}" data-w="${w}">${w}</button>`).join('')}</div>
+  <div class="res"><b>about ${est().toLocaleString('en-GB')}m</b><small>${GE[d.g]} ${d.g}, size ${d.size}, in ${d.w}</small></div>
+  <div class="legend">A rough guide from typical patterns. Your pattern’s own figure always wins.</div>`;}
+function vStash(){const d=C.data,need=est(),same=d.stash.filter(s=>s.n.toLowerCase().includes(d.w.toLowerCase())),have=same.reduce((a,s)=>a+s.m,0);
+  return `<div class="card"><h3>My stash</h3>${d.stash.map(s=>`<div class="sy"><i style="background:${s.c}"></i><div class="x"><b>${GX.esc(s.n)}</b><small>${s.m}m</small></div></div>`).join('')}</div>
+  <div class="res" style="background:${have>=need?'linear-gradient(135deg,#7FA07B,#4E6B4B)':'linear-gradient(135deg,#D25B4C,#9E2A1E)'}"><b>${have>=need?'Enough':'Not quite'}</b><small>${have.toLocaleString('en-GB')}m of ${d.w} in the stash for a ${d.g.toLowerCase()} needing about ${need.toLocaleString('en-GB')}m</small></div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Ask ${C.gateway} what to knit with my stash`}</button>`:''}`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='swap'?vSwap():S.tab==='est'?vEst():vStash();const d=C.data,sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{const k=b.dataset.k;d[k]=Math.max(k==='pBalls'?1:20,d[k]+(+b.dataset.d));sv();});
+  [['pw','pW'],['yw','yW'],['g','g'],['size','size'],['w','w']].forEach(([a,k])=>v.querySelectorAll(`[data-${a}]`).forEach(b=>b.onclick=()=>{d[k]=b.dataset[a];sv();}));
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>GX.post(`My stash: ${d.stash.map(s=>`${s.m}m ${GX.esc(s.n.split(' · ')[1]||s.n)}`).join(', ')}. What would you knit? 🧶`,'YARN CALCULATOR').then(o=>{if(o){S.shared=true;paint();}});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
