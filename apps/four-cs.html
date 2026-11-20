@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>4Cs Guide</title>
+<style>
+/* 4Cs Guide, by Hatton & Stone (fictional), 2026-11-20. A GENEXXO app for DiamondXX.
+   Cut, colour, clarity and carat, explained; choose a grade for each and see an ILLUSTRATIVE UK retail range for a
+   round brilliant, natural and lab-grown. The price model is deliberately simple (base × carat^1.8 × grade factors;
+   lab-grown about a fifth of natural) and labelled as such: real prices vary by stone, seller and month. */
+:root{--bg:#0C0E14;--card:rgba(255,255,255,.05);--line:rgba(241,243,248,.1);--ink:#F1F3F8;--mut:rgba(241,243,248,.55);--ice:#A5D8FF;--rose:#F472B6}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#A5D8FF,#3B6E9E);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--ice)}
+.c{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:9px}
+.c h3{font-size:15px;font-weight:900;display:flex;justify-content:space-between;align-items:baseline}.c h3 span{font-size:12px;color:var(--ice);font-weight:800}.c p{color:var(--mut);font-size:12.5px;margin:3px 0 8px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--mut);border-radius:99px;padding:6px 11px;cursor:pointer}.chip.on{background:var(--ice);border-color:var(--ice);color:#0C1A2A}
+.pr{border-radius:18px;padding:16px;margin-top:4px;background:linear-gradient(150deg,#1A2A44,#0F1726);border:1px solid rgba(165,216,255,.25)}
+.pr small{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--ice)}.pr h2{font-size:18px;font-weight:900;margin:3px 0 10px}
+.two{display:flex;gap:10px}.two div{flex:1;background:rgba(255,255,255,.06);border-radius:12px;padding:10px;text-align:center}.two b{display:block;font-size:19px;font-weight:900}.two span{font-size:11px;font-weight:800;color:var(--mut);letter-spacing:.05em}
+.see{margin-top:10px;font-size:12.5px;color:var(--mut)}
+.sl{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:14px;background:var(--card);margin-top:8px}.sl .x{flex:1}.sl .x b{display:block}.sl .x small{color:var(--mut);font-size:12px}
+.del{font:inherit;background:none;border:0;color:var(--mut);font-size:15px;cursor:pointer}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--ice);color:#0C1A2A;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}.empty{padding:24px 10px;text-align:center;color:var(--mut)}
+</style></head><body>
+<div class="hd"><div class="logo">💎</div><div><h1>4Cs Guide</h1><p>Hatton & Stone · in DiamondXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="cs" class="on">The 4Cs</button><button data-tab="pr">Price</button><button data-tab="sl">Shortlist</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const CS={
+ cut:{t:'Cut',p:'How well the stone is shaped to return light. The C that matters most for sparkle.',o:[['Excellent',1,'Maximum sparkle'],['Very good',.88,'Hard to tell from excellent'],['Good',.75,'A little less life']]},
+ colour:{t:'Colour',p:'How colourless it is, from D (icy white) down the alphabet.',o:[['D–F',1.35,'Colourless'],['G–H',1,'Looks colourless once set'],['I–J',.78,'A faint warmth, lovely in yellow gold']]},
+ clarity:{t:'Clarity',p:'Tiny natural marks inside. Most are invisible without a loupe.',o:[['IF',1.6,'Flawless under 10× magnification'],['VVS',1.3,'Very, very slight'],['VS',1,'Clean to the eye'],['SI',.8,'Usually clean to the eye; check'],['I',.55,'Marks you can see']]},
+ carat:{t:'Carat',p:'Weight, not size: 1 carat is 0.2 grams. Price climbs faster than weight.',o:[['0.5ct',.5],['0.75ct',.75],['1ct',1],['1.5ct',1.5],['2ct',2]]}};
+const seed=()=>({cut:0,colour:1,clarity:2,carat:2,list:[{cut:0,colour:1,clarity:2,carat:2},{cut:1,colour:2,clarity:3,carat:3}]});
+let C,S={tab:'cs',shared:false};
+GX.init({gateway:'DiamondXX',seed}).then(c=>{C=c;paint();});
+const lab=g=>`${CS.cut.o[g.cut][0]} cut · ${CS.colour.o[g.colour][0]} · ${CS.clarity.o[g.clarity][0]} · ${CS.carat.o[g.carat][0]}`;
+function price(g){const ct=CS.carat.o[g.carat][1],nat=5200*Math.pow(ct,1.8)*CS.cut.o[g.cut][1]*CS.colour.o[g.colour][1]*CS.clarity.o[g.clarity][1],lb=nat*.2;
+  const r=v=>'£'+(Math.round(v/50)*50).toLocaleString('en-GB');return {nat:`${r(nat*.88)}–${r(nat*1.12)}`,lab:`${r(lb*.85)}–${r(lb*1.15)}`};}
+function vCs(){const d=C.data;return Object.entries(CS).map(([k,c])=>`<div class="c"><h3>${c.t}<span>${c.o[d[k]][0]}</span></h3><p>${c.p}</p><div class="chips">${c.o.map((o,i)=>`<button class="chip ${d[k]===i?'on':''}" data-k="${k}" data-i="${i}">${o[0]}</button>`).join('')}</div>${c.o[d[k]][2]?`<p style="margin:8px 0 0;color:var(--ink)">${c.o[d[k]][2]}</p>`:''}</div>`).join('');}
+function vPr(){const d=C.data,p=price(d),tip=d.colour===0?'Tip: G–H looks colourless once set, for much less.':d.clarity<=1?'Tip: VS is clean to the eye and costs far less than VVS.':d.cut>0?'Tip: cut is the C to spend on. It drives the sparkle.':'A sensible balance. Nice choice.';
+  return `<div class="pr"><small>ROUND BRILLIANT · ILLUSTRATIVE</small><h2>${lab(d)}</h2><div class="two"><div><b>${p.nat}</b><span>NATURAL</span></div><div><b>${p.lab}</b><span>LAB-GROWN</span></div></div><div class="see">${tip}</div></div>
+  <button class="go" id="save">Add to my shortlist</button><div class="legend">Illustrative ranges only. Real prices vary by stone and seller; always ask for the grading report.</div>`;}
+function vSl(){const l=C.data.list;return (l.length?l.map((g,i)=>{const p=price(g);return `<div class="sl"><div class="x"><b>${lab(g)}</b><small>Natural ${p.nat} · lab-grown ${p.lab}</small></div><button class="del" data-del="${i}">✕</button></div>`;}).join(''):'<div class="empty">Nothing on your shortlist yet.</div>')+
+  (GX.can('feed')&&l.length?`<button class="go alt" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Ask ${C.gateway}: which would you choose?`}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='cs'?vCs():S.tab==='pr'?vPr():vSl();const d=C.data;
+  v.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{d[b.dataset.k]=+b.dataset.i;GX.save(d);paint();});
+  v.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{d.list.splice(+b.dataset.del,1);GX.save(d);paint();});
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('save',()=>{d.list.push({cut:d.cut,colour:d.colour,clarity:d.clarity,carat:d.carat});S.shared=false;GX.save(d);S.tab='sl';paint();});
+  on('share',()=>GX.post(`Ring shortlist: ${d.list.map(g=>`<b>${lab(g)}</b>`).join(' or ')}. Which would you choose? 💎`,'4CS GUIDE').then(o=>{if(o){S.shared=true;paint();}}));}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

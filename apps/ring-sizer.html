@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ring Sizer</title>
+<style>
+/* Ring Sizer, by Facet & Co. (fictional), 2026-11-20. A GENEXXO app for DiamondXX.
+   From finger circumference or a ring's inner diameter (mm) to UK, US and EU sizes. EU/ISO size = inner circumference
+   in mm; US ≈ (circumference − 36.5) / 2.5535; UK letters A–Z in half sizes, A ≈ 37.8mm, +0.625mm per half size.
+   Conversions are approximate: a jeweller's sizer is the final word. */
+:root{--bg:#0C0E14;--card:rgba(255,255,255,.05);--line:rgba(241,243,248,.1);--ink:#F1F3F8;--mut:rgba(241,243,248,.55);--rose:#F472B6;--ice:#A5D8FF}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#F472B6,#9D174D);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--rose)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--rose);border-color:var(--rose);color:#fff}
+.ring{width:190px;height:190px;margin:14px auto 6px;border-radius:50%;border:14px solid #D9DEE8;display:flex;align-items:center;justify-content:center;flex-direction:column;box-shadow:0 0 0 1px rgba(255,255,255,.1) inset}
+.ring b{font-size:30px;font-weight:900}.ring small{font-size:11.5px;color:var(--mut);font-weight:800}
+.dim{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:6px}.dim b{font-size:22px;font-weight:900;min-width:110px;text-align:center}
+.st{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);font:inherit;font-size:20px;font-weight:900;color:var(--ink);cursor:pointer}
+.res{display:flex;gap:8px;margin-top:12px}.res div{flex:1;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 4px}.res b{display:block;font-size:22px;font-weight:900;color:var(--rose)}.res span{font-size:10.5px;font-weight:800;color:var(--mut);letter-spacing:.06em}
+table{width:100%;border-collapse:collapse;margin-top:6px;font-size:13.5px}td,th{padding:8px 6px;text-align:center;border-bottom:1px solid var(--line)}th{color:var(--mut);font-size:11px;letter-spacing:.06em}tr.on td{color:var(--rose);font-weight:900}
+.pp{display:flex;gap:10px;align-items:center;padding:11px;border:1px solid var(--line);border-radius:14px;background:var(--card);margin-top:8px}.pp .x{flex:1}.pp .x b{display:block}.pp .x small{color:var(--mut);font-size:12px}
+.tip{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin-top:10px;font-size:13px;color:var(--mut)}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--rose);color:#fff;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">💍</div><div><h1>Ring Sizer</h1><p>Facet & Co. · in DiamondXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="m" class="on">Measure</button><button data-tab="t">Size chart</button><button data-tab="p">People</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const L='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const seed=()=>({mode:'circ',circ:51.8,dia:16.5,people:[{n:'Her (from her silver ring)',c:51.2},{n:'Me',c:62.1},{n:'Mum',c:55.3}]});
+let C,S={tab:'m',shared:false};
+GX.init({gateway:'DiamondXX',seed}).then(c=>{C=c;paint();});
+const circOf=d=>d.mode==='circ'?d.circ:Math.round(d.dia*Math.PI*10)/10;
+function sizes(c){const half=Math.round((c-37.8)/0.625),uk=half<0?'—':half>50?'Z+':L[Math.floor(half/2)]+(half%2?'½':''),us=Math.round(((c-36.5)/2.5535)*4)/4,eu=Math.round(c);return {uk,us:us<1?'—':us.toString().replace('.25','¼').replace('.5','½').replace('.75','¾'),eu};}
+function vM(){const d=C.data,c=circOf(d),s=sizes(c);return `<div class="chips"><button class="chip ${d.mode==='circ'?'on':''}" data-mode="circ">Around a finger</button><button class="chip ${d.mode==='dia'?'on':''}" data-mode="dia">Across a ring they wear</button></div>
+  <div class="ring"><b>${s.uk}</b><small>UK SIZE</small></div>
+  <div class="dim"><button class="st" id="dn">−</button><b>${d.mode==='circ'?d.circ.toFixed(1)+' mm around':d.dia.toFixed(1)+' mm across'}</b><button class="st" id="up">+</button></div>
+  <div class="res"><div><b>${s.uk}</b><span>UK</span></div><div><b>${s.us}</b><span>US</span></div><div><b>${s.eu}</b><span>EU</span></div></div>
+  <div class="tip">${d.mode==='circ'?'Wrap a strip of paper round the base of the finger, mark where it meets, and measure flat. Measure at the end of the day: fingers are bigger when warm.':'Secretly: borrow a ring they wear on the same finger and measure straight across the inside, edge to edge.'}</div>
+  <button class="go" id="save">Save this size</button>`;}
+function vT(){const c=circOf(C.data),rows=[];for(let h=-6;h<=6;h+=2){const cc=Math.round((c+h*0.625)*10)/10,s=sizes(cc);rows.push(`<tr class="${h===0?'on':''}"><td>${s.uk}</td><td>${s.us}</td><td>${s.eu}</td><td>${cc.toFixed(1)}</td><td>${(cc/Math.PI).toFixed(1)}</td></tr>`);}
+  return `<table><tr><th>UK</th><th>US</th><th>EU</th><th>AROUND (MM)</th><th>ACROSS (MM)</th></tr>${rows.join('')}</table><div class="legend">Approximate conversions. A jeweller’s ring sizer is the final word.</div>`;}
+function vP(){return C.data.people.map(p=>{const s=sizes(p.c);return `<div class="pp"><div style="font-size:22px">💍</div><div class="x"><b>${GX.esc(p.n)}</b><small>${p.c.toFixed(1)}mm around · US ${s.us} · EU ${s.eu}</small></div><b style="font-size:20px;color:var(--rose)">${s.uk}</b></div>`;}).join('')+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share a sizing tip to ${C.gateway}`}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='m'?vM():S.tab==='t'?vT():vP();const d=C.data;
+  v.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{d.mode=b.dataset.mode;GX.save(d);paint();});
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  const step=k=>{if(d.mode==='circ')d.circ=Math.max(38,Math.min(75,Math.round((d.circ+k*0.5)*10)/10));else d.dia=Math.max(12,Math.min(24,Math.round((d.dia+k*0.1)*10)/10));GX.save(d);paint();};
+  on('up',()=>step(1));on('dn',()=>step(-1));
+  on('save',()=>{d.people.push({n:'Saved '+GX.day(GX.today(0),{day:'numeric',month:'short'}),c:circOf(d)});GX.save(d);S.tab='p';paint();});
+  on('share',()=>GX.post('Ring-size tip: borrow a ring they already wear on the same finger and measure across the inside. Ring Sizer did the rest 💍','RING SIZER').then(o=>{if(o){S.shared=true;paint();}}));}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
