@@ -1878,8 +1878,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-87"></script>
-<script src="genexxo-core.js?v=2026.08.26-87"></script>
+<script src="genexxo-data.js?v=2026.08.26-88"></script>
+<script src="genexxo-core.js?v=2026.08.26-88"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -2780,7 +2780,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-87';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-88';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -4484,8 +4484,10 @@ function buildDrawerR(){
     // taxonomy, so Sports' band showed them beside its own three. The full list below keeps them. Deliberately narrow: a
     // general "home sector only" rule would empty Fitness, Beauty and Religion, whose only live gateway is homed elsewhere.
     // Same for Garden (-85): PlantXX is also listed under Nature, but Sean placed it in Garden, so it leads Garden's band only.
-    const HOME_ONLY = ['adventure','garden'];
-    const localLive = names.filter(n=>{ if(isGwHeader(n) || !gwIsLive(n)) return false; const h=gwHomeSector(n, sk); return h===sk || !HOME_ONLY.includes(h); });
+    const HOME_ONLY = ['adventure','garden','hobby'];   // -88: KnitXX is also listed in Art; it leads Hobbies only
+    const localLive = names.filter(n=>{ if(isGwHeader(n) || !gwIsLive(n)) return false; const h=gwHomeSector(n, sk); return h===sk || !HOME_ONLY.includes(h); })
+      /* -88: a sector's own gateways lead its band (Sean's rule), then any homed elsewhere (CalisthenicsXX before YogaXX in Fitness) */
+      .sort((a,b)=>(gwHomeSector(a, sk)===sk?0:1)-(gwHomeSector(b, sk)===sk?0:1));
     if(localLive.length){
       // white dot, not LIVE_DOT — the standard green dot is invisible on a green pill
       return `<div class="gwsec gwsec-live"><span class="livepill"><i class="livedot"></i>Live Demo Gateways</span><span class="livect">${localLive.length}</span></div>`
