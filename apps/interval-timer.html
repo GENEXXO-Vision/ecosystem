@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Interval Timer</title>
+<style>
+/* Interval Timer, by Grip Theory (fictional), 2026-11-20. A GENEXXO app for CalisthenicsXX.
+   EMOM (work at the top of every minute), Tabata (8 × 20s on / 10s off) and a custom circuit (rounds × work/rest).
+   The timer runs for real; a short beep (Web Audio) marks each change. Finished sessions go in the log. */
+:root{--bg:#111214;--card:rgba(255,255,255,.05);--line:rgba(244,244,245,.1);--ink:#F4F4F5;--mut:rgba(244,244,245,.55);--red:#EF4444;--amb:#F5C451;--ok:#4ADE80}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#F5C451,#B7791F);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--amb)}
+.face{border-radius:22px;padding:22px 16px;text-align:center;transition:background .2s}.face small{font-size:13px;font-weight:900;letter-spacing:.14em}.face b{display:block;font-size:92px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums;margin:6px 0}.face p{font-size:14px;font-weight:700;opacity:.85}
+.work{background:linear-gradient(150deg,#EF4444,#991B1B)}.rest{background:linear-gradient(150deg,#3F3F46,#18181B)}.idle{background:var(--card);border:1px solid var(--line)}.fin{background:linear-gradient(150deg,#16A34A,#14532D)}
+.btns{display:flex;gap:8px;margin-top:12px}.btns button{flex:1}
+.go{width:100%;font:inherit;font-weight:800;font-size:15px;border:0;border-radius:99px;padding:13px;background:var(--amb);color:#2A1C00;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:var(--card);color:var(--mut)}
+.wo{display:flex;gap:11px;align-items:center;padding:12px;border-radius:14px;border:1px solid var(--line);background:var(--card);margin-top:8px;cursor:pointer}.wo.on{border-color:var(--amb);background:rgba(245,196,81,.08)}
+.wo .e{font-size:24px}.wo .x{flex:1}.wo .x b{display:block}.wo .x small{color:var(--mut);font-size:12px}
+.lg{display:flex;gap:10px;padding:9px 0;font-size:13px}.lg+.lg{border-top:1px solid var(--line)}.lg span{color:var(--mut);width:64px;flex-shrink:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 12px;margin-top:10px}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">⏱️</div><div><h1>Interval Timer</h1><p>Grip Theory · in CalisthenicsXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="t" class="on">Timer</button><button data-tab="w">Workouts</button><button data-tab="l">Log</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const WO=[{n:'EMOM 10',e:'🔁',d:'5 pull-ups at the top of every minute, 10 minutes',rounds:10,work:60,rest:0},{n:'Tabata',e:'🔥',d:'8 rounds: 20s push-ups, 10s rest',rounds:8,work:20,rest:10},{n:'Park circuit',e:'🌳',d:'5 rounds: 40s work, 20s rest',rounds:5,work:40,rest:20},{n:'Core finisher',e:'🧱',d:'6 rounds: 30s hollow hold, 15s rest',rounds:6,work:30,rest:15}];
+const seed=()=>({w:0,log:[{d:-1,n:'Tabata',m:4},{d:-3,n:'EMOM 10',m:10},{d:-5,n:'Park circuit',m:5}]});
+let C,S={tab:'t',run:false,round:1,phase:'idle',left:0,shared:false},tick=null,ac=null;
+GX.init({gateway:'CalisthenicsXX',seed}).then(c=>{C=c;reset();paint();});
+const W=()=>WO[C.data.w];
+function beep(f){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.frequency.value=f;g.gain.value=.08;o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+.15);}catch(e){}}
+function reset(){clearInterval(tick);tick=null;S.run=false;S.round=1;S.phase='idle';S.left=W().work;}
+function step(){S.left--;if(S.left>0){paint();return;}
+  if(S.phase==='work'&&W().rest){S.phase='rest';S.left=W().rest;beep(440);}
+  else if(S.round<W().rounds){S.round++;S.phase='work';S.left=W().work;beep(880);}
+  else{clearInterval(tick);tick=null;S.run=false;S.phase='fin';beep(1320);C.data.log.push({d:0,n:W().n,m:Math.round(W().rounds*(W().work+W().rest)/60)});GX.save(C.data);}
+  paint();}
+const mmss=s=>`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+function vT(){const w=W(),ph=S.phase;return `<div class="face ${ph==='idle'?'idle':ph}"><small>${ph==='idle'?w.n.toUpperCase():ph==='fin'?'DONE':ph==='work'?'WORK':'REST'}</small><b>${ph==='fin'?'✓':mmss(S.left)}</b><p>${ph==='fin'?`${w.rounds} rounds finished`:`Round ${S.round} of ${w.rounds}`}</p></div>
+  <div class="btns"><button class="go" id="run">${S.run?'Pause':ph==='idle'?'Start':ph==='fin'?'Again':'Resume'}</button><button class="go alt" id="rst">Reset</button></div>
+  <div class="legend">${GX.esc(w.d)}</div>`;}
+function vW(){return WO.map((w,i)=>`<div class="wo ${i===C.data.w?'on':''}" data-w="${i}"><div class="e">${w.e}</div><div class="x"><b>${w.n}</b><small>${w.d}</small></div></div>`).join('')+`<div class="legend">Warm up before you start. Stop if anything hurts.</div>`;}
+function vL(){const l=C.data.log,mins=l.reduce((a,x)=>a+x.m,0);return `<div class="card">${l.slice().sort((a,b)=>b.d-a.d).slice(0,12).map(x=>`<div class="lg"><span>${x.d===0?'Today':GX.day(GX.today(x.d),{weekday:'short',day:'numeric'})}</span><b style="font-weight:600;flex:1">${x.n}</b><span style="width:auto">${x.m} min</span></div>`).join('')}</div>
+  ${GX.can('feed')?`<button class="go" id="share" style="margin-top:12px" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share ${l.length} sessions, ${mins} minutes`}</button>`:''}`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='t'?vT():S.tab==='w'?vW():vL();
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('run',()=>{if(S.run){clearInterval(tick);tick=null;S.run=false;paint();return;}if(S.phase==='fin')reset();if(S.phase==='idle'){S.phase='work';beep(880);}S.run=true;tick=setInterval(step,1000);paint();});
+  on('rst',()=>{reset();paint();});
+  v.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{C.data.w=+b.dataset.w;GX.save(C.data);reset();S.tab='t';paint();});
+  on('share',()=>{const l=C.data.log;GX.post(`<b>${l.length} sessions</b> and ${l.reduce((a,x)=>a+x.m,0)} minutes of intervals logged, latest: ${GX.esc(l[l.length-1].n)} ⏱️`,'INTERVAL TIMER').then(o=>{if(o){S.shared=true;paint();}});});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

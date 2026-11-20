@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Hold Timer</title>
+<style>
+/* Hold Timer, by Lever Apparel (fictional), 2026-11-20. A GENEXXO app for CalisthenicsXX.
+   Time static holds: tap Start for a 3-second get-set countdown, tap Stop when you come down; the time is saved.
+   Personal bests per hold and a 30-day chart (seeded history, so the demo has a story). */
+:root{--bg:#111214;--card:rgba(255,255,255,.05);--line:rgba(244,244,245,.1);--ink:#F4F4F5;--mut:rgba(244,244,245,.55);--sl:#94A3B8;--red:#EF4444;--ok:#4ADE80}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#64748B,#1E293B);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--sl)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--sl);border-color:var(--sl);color:#0F172A}
+.dial{width:230px;height:230px;border-radius:50%;margin:8px auto;display:flex;flex-direction:column;align-items:center;justify-content:center;border:6px solid rgba(148,163,184,.25)}
+.dial.go{border-color:var(--red);box-shadow:0 0 40px rgba(239,68,68,.25)}.dial.set{border-color:#F5C451}
+.dial b{font-size:64px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1}.dial small{font-size:12px;font-weight:800;color:var(--mut);letter-spacing:.08em;margin-top:6px}
+.btn{width:100%;font:inherit;font-weight:800;font-size:15px;border:0;border-radius:99px;padding:13px;background:var(--sl);color:#0F172A;cursor:pointer;margin-top:10px}.btn.stop{background:var(--red);color:#fff}.btn.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.btn:disabled{background:var(--card);color:var(--mut)}
+.pb{display:flex;align-items:center;gap:10px;padding:11px 12px;border:1px solid var(--line);border-radius:14px;background:var(--card);margin-top:8px}.pb .x{flex:1}.pb .x b{display:block}.pb .x small{color:var(--mut);font-size:12px}.pb .t{font-size:22px;font-weight:900}
+.note{margin-top:10px;border-radius:12px;padding:10px 12px;background:rgba(74,222,128,.12);color:var(--ok);font-weight:800;text-align:center}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+svg{width:100%;display:block}
+</style></head><body>
+<div class="hd"><div class="logo">⏳</div><div><h1>Hold Timer</h1><p>Lever Apparel · in CalisthenicsXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="h" class="on">Hold</button><button data-tab="b">Bests</button><button data-tab="t">Trend</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const H=['Handstand','L-sit','Plank','Dead hang','Tuck lever','Hollow hold'],EM={'Handstand':'🤸','L-sit':'🪑','Plank':'🧱','Dead hang':'🙆','Tuck lever':'🦵','Hollow hold':'🍌'};
+const seed=()=>{const r=GX.rng('holds'),base={'Handstand':14,'L-sit':9,'Plank':70,'Dead hang':45,'Tuck lever':8,'Hollow hold':35},log=[];
+  H.forEach(h=>{for(let d=-29;d<=-1;d+=2+Math.floor(r()*2)){const g=1+(d+30)/30*0.6;log.push({h,d,s:Math.round(base[h]*g*(0.85+r()*0.25))});}});return {h:'Handstand',log};};
+let C,S={tab:'h',phase:'idle',t0:0,cd:3,secs:0,last:null,shared:false},tick=null;
+GX.init({gateway:'CalisthenicsXX',seed}).then(c=>{C=c;paint();});
+const best=h=>Math.max(0,...C.data.log.filter(l=>l.h===h).map(l=>l.s));
+const chips=()=>`<div class="chips">${H.map(h=>`<button class="chip ${C.data.h===h?'on':''}" data-h="${h}">${EM[h]} ${h}</button>`).join('')}</div>`;
+function vH(){const ph=S.phase,b=best(C.data.h);return chips()+`<div class="dial ${ph==='go'?'go':ph==='set'?'set':''}"><b>${ph==='set'?S.cd:ph==='go'?S.secs:S.last!=null?S.last:0}</b><small>${ph==='set'?'GET SET':ph==='go'?'SECONDS · HOLD IT':'SECONDS'}</small></div>
+  ${ph==='go'?`<button class="btn stop" id="stop">Stop</button>`:ph==='set'?`<button class="btn alt" id="cancel">Cancel</button>`:`<button class="btn" id="start">Start (3, 2, 1…)</button>`}
+  ${S.last!=null&&ph==='idle'?(S.last>=b&&S.last>0?`<div class="note">🏆 New best: ${S.last}s</div>`:`<div class="legend">Saved. Your best is ${b}s.</div>`):`<div class="legend">Best ${EM[C.data.h]} ${C.data.h.toLowerCase()}: ${b}s</div>`}`;}
+function vB(){return H.map(h=>{const l=C.data.log.filter(x=>x.h===h),b=best(h),first=l.length?l.reduce((a,x)=>x.d<a.d?x:a).s:0;return `<div class="pb"><div style="font-size:24px">${EM[h]}</div><div class="x"><b>${h}</b><small>${l.length} holds · up ${Math.max(0,b-first)}s this month</small></div><div class="t">${b}s</div></div>`;}).join('')+
+  (GX.can('feed')?`<button class="btn" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my bests to ${C.gateway}`}</button>`:'');}
+function vT(){const h=C.data.h,l=C.data.log.filter(x=>x.h===h).sort((a,b)=>a.d-b.d),mx=Math.max(1,...l.map(x=>x.s)),w=320,hh=150,bw=w/30;
+  return chips()+`<div class="pb" style="display:block"><svg viewBox="0 0 ${w} ${hh+20}">${l.map(x=>{const bh=(x.s/mx)*hh;return `<rect x="${(x.d+29)*bw+1}" y="${hh-bh}" width="${bw*.9}" height="${bh}" rx="2" fill="${x.s===mx?'#EF4444':'#94A3B8'}"/>`;}).join('')}<text x="0" y="${hh+16}" fill="#888" font-size="10">30 days ago</text><text x="${w}" y="${hh+16}" fill="#888" font-size="10" text-anchor="end">today</text></svg></div>
+  <div class="legend">Little and often beats long and rare.</div>`;}
+function stopAll(){clearInterval(tick);tick=null;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='h'?vH():S.tab==='b'?vB():vT();
+  v.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>{if(S.phase!=='idle'){stopAll();S.phase='idle';}C.data.h=b.dataset.h;S.last=null;GX.save(C.data);paint();});
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('start',()=>{S.phase='set';S.cd=3;S.last=null;paint();tick=setInterval(()=>{if(S.phase==='set'){S.cd--;if(S.cd<=0){S.phase='go';S.t0=Date.now();S.secs=0;}}else{S.secs=Math.floor((Date.now()-S.t0)/1000);}paint();},1000);});
+  on('cancel',()=>{stopAll();S.phase='idle';paint();});
+  on('stop',()=>{stopAll();S.last=Math.floor((Date.now()-S.t0)/1000);S.phase='idle';if(S.last>0){C.data.log.push({h:C.data.h,d:0,s:S.last});GX.save(C.data);}paint();});
+  on('share',()=>GX.post(`My holds this month: ${H.slice(0,4).map(h=>`${h.toLowerCase()} <b>${best(h)}s</b>`).join(', ')}. Timed with Hold Timer ⏳`,'HOLD TIMER').then(o=>{if(o){S.shared=true;paint();}}));}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(S.phase!=='idle'){stopAll();S.phase='idle';}S.tab=b.dataset.tab;paint();};   // leaving the tab cancels a hold in progress
+</script></body></html>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Skill Ladder</title>
+<style>
+/* Skill Ladder, by Barline Rigs (fictional), 2026-11-20. A GENEXXO app for CalisthenicsXX.
+   Each skill is a ladder of rungs. Log a session at your current rung as clean or not; three clean sessions in a row
+   at a rung = ready to try the next. A guide, not a coach: warm up, build gradually, stop if it hurts. */
+:root{--bg:#111214;--card:rgba(255,255,255,.05);--line:rgba(244,244,245,.1);--ink:#F4F4F5;--mut:rgba(244,244,245,.55);--red:#EF4444;--amb:#F5C451;--ok:#4ADE80}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#EF4444,#991B1B);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--red)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--red);border-color:var(--red);color:#fff}
+.rung{display:flex;gap:11px;align-items:center;padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:var(--card);margin-top:6px}
+.rung .n{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0;background:rgba(255,255,255,.08);color:var(--mut)}
+.rung.done .n{background:var(--ok);color:#0B2A14}.rung.cur{border-color:var(--red);background:rgba(239,68,68,.1)}.rung.cur .n{background:var(--red);color:#fff}
+.rung .x{flex:1}.rung .x b{display:block;font-size:14px}.rung .x small{color:var(--mut);font-size:12px}
+.btns{display:flex;gap:8px;margin-top:12px}.btns button{flex:1}
+.go{width:100%;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--red);color:#fff;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:var(--card);color:var(--mut)}
+.lg{display:flex;gap:10px;padding:9px 0;font-size:13px;align-items:center}.lg+.lg{border-top:1px solid var(--line)}.lg span{color:var(--mut);width:64px;flex-shrink:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.ready{border-radius:18px;padding:16px;text-align:center;margin-top:4px}.ready h2{font-size:21px;font-weight:900}.ready p{font-size:13px;opacity:.9;margin-top:4px}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:10px}.dots i{width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,.2)}.dots i.on{background:#fff}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🪜</div><div><h1>Skill Ladder</h1><p>Barline Rigs · in CalisthenicsXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="lad" class="on">Ladder</button><button data-tab="ready">Ready?</button><button data-tab="log">Log</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const SK={
+ 'Pull-up':['Dead hang, 30s','Scapular pulls, 3×10','Slow negatives, 3×5','Band-assisted, 3×8','First strict pull-up','Strict pull-ups, 3×5','Strict pull-ups, 3×8'],
+ 'Handstand':['Wall plank hold, 30s','Chest-to-wall, 30s','Chest-to-wall, 60s','Kick-ups, 10 tries','Freestanding, 5s','Freestanding, 15s','Freestanding, 30s'],
+ 'Front lever':['Hollow body hold, 30s','Tuck lever, 10s','Advanced tuck, 10s','One leg, 8s','Straddle, 5s','Full lever, 3s'],
+ 'Dip':['Support hold, 30s','Negative dips, 3×5','Bar dips, 3×5','Bar dips, 3×10','Ring support, 30s','Ring dips, 3×5'],
+ 'L-sit':['Tuck sit, 10s','One leg out, 10s','L-sit, 5s','L-sit, 15s','L-sit, 30s']};
+const seed=()=>({skill:'Pull-up',at:{'Pull-up':4,'Handstand':2,'Front lever':1,'Dip':3,'L-sit':2},log:[
+ {s:'Pull-up',r:4,ok:true,d:-1},{s:'Pull-up',r:4,ok:true,d:-3},{s:'Handstand',r:2,ok:false,d:-2},{s:'Pull-up',r:4,ok:false,d:-6},{s:'Dip',r:3,ok:true,d:-4},{s:'Pull-up',r:3,ok:true,d:-9}]});
+let C,S={tab:'lad',shared:false};
+GX.init({gateway:'CalisthenicsXX',seed}).then(c=>{C=c;paint();});
+const cur=()=>C.data.at[C.data.skill];
+const streak=()=>{let n=0;for(const l of C.data.log.filter(l=>l.s===C.data.skill&&l.r===cur()).sort((a,b)=>b.d-a.d)){if(!l.ok)break;n++;}return n;};
+const chips=()=>`<div class="chips">${Object.keys(SK).map(k=>`<button class="chip ${C.data.skill===k?'on':''}" data-sk="${k}">${k}</button>`).join('')}</div>`;
+function vLad(){const s=C.data.skill,r=cur();return chips()+SK[s].map((t,i)=>`<div class="rung ${i<r?'done':i===r?'cur':''}"><div class="n">${i<r?'✓':i+1}</div><div class="x"><b>${t}</b><small>${i<r?'Done':i===r?'You are here':'Later'}</small></div></div>`).join('')+
+  `<div class="btns"><button class="go" id="clean">✓ Clean session</button><button class="go alt" id="rough">Not yet</button></div><div class="legend">Clean = every rep or second with good form, no pain.</div>`;}
+function vReady(){const s=C.data.skill,r=cur(),n=streak(),last=r>=SK[s].length-1,ok=n>=3;
+  return chips()+`<div class="ready" style="background:${ok?'linear-gradient(135deg,#16A34A,#14532D)':'linear-gradient(135deg,#3F3F46,#18181B)'}"><h2>${last?'Top of the ladder':ok?'Ready for the next rung':'Not yet'}</h2>
+  <p>${GX.esc(SK[s][r])}${last?'':` → ${GX.esc(SK[s][r+1])}`}</p><div class="dots">${[0,1,2].map(i=>`<i class="${i<Math.min(3,n)?'on':''}"></i>`).join('')}</div><p>${Math.min(3,n)} of 3 clean sessions in a row</p></div>
+  <button class="go" id="up" style="margin-top:12px" ${ok&&!last?'':'disabled'}>Move up a rung</button>
+  ${GX.can('feed')?`<button class="go alt" id="share" style="margin-top:8px" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my ${s.toLowerCase()} progress`}</button>`:''}
+  <div class="legend">Warm up first. Sharp pain or pain that lasts: rest, and see a physio or GP.</div>`;}
+function vLog(){return `<div class="card">${C.data.log.slice().sort((a,b)=>b.d-a.d).slice(0,14).map(l=>`<div class="lg"><span>${l.d===0?'Today':GX.day(GX.today(l.d),{weekday:'short',day:'numeric'})}</span><b style="flex:1;font-weight:600">${l.s}: ${GX.esc(SK[l.s][l.r])}</b>${l.ok?'<span style="color:var(--ok);width:auto">✓</span>':'<span style="width:auto">–</span>'}</div>`).join('')}</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='lad'?vLad():S.tab==='ready'?vReady():vLog();const d=C.data;
+  v.querySelectorAll('[data-sk]').forEach(b=>b.onclick=()=>{d.skill=b.dataset.sk;S.shared=false;GX.save(d);paint();});
+  const add=ok=>{d.log.push({s:d.skill,r:cur(),ok,d:0});GX.save(d);paint();};
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('clean',()=>add(true));on('rough',()=>add(false));
+  on('up',()=>{d.at[d.skill]=Math.min(SK[d.skill].length-1,cur()+1);GX.save(d);paint();});
+  on('share',()=>GX.post(`${d.skill}: on <b>${GX.esc(SK[d.skill][cur()].toLowerCase())}</b>, rung ${cur()+1} of ${SK[d.skill].length}. One clean session at a time 🪜`,'SKILL LADDER').then(o=>{if(o){S.shared=true;paint();}}));}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
