@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Shelf Life</title>
+<style>
+/* Shelf Life, by Refill & Rose (fictional), 2026-11-20. A GENEXXO app for LipstickXX.
+   Each product's period after opening (the open-jar symbol, e.g. 12M) counted from the day you opened it; amber in the
+   last month, red when past. Typical PAOs used: mascara 3M, liquid liner 6M, lip gloss/balm/foundation/cream blush 12M,
+   lipstick 18M, powder 24M. Your product's own symbol wins. Recycling notes are general guidance. */
+:root{--bg:#FDF8F5;--card:#fff;--line:rgba(42,26,32,.1);--ink:#2A1A20;--mut:rgba(42,26,32,.55);--nude:#A0674B;--ok:#2F7D4A;--amb:#B7791F;--bad:#B3261E}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#F9C6CF,#D9798A);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--nude)}
+.sum{display:flex;gap:8px}.sum div{flex:1;text-align:center;border-radius:14px;padding:10px 4px;background:var(--card);border:1px solid var(--line)}.sum b{display:block;font-size:24px;font-weight:900}.sum small{font-size:10.5px;font-weight:800;color:var(--mut);letter-spacing:.06em}
+.it{display:flex;gap:11px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;margin-top:8px}
+.it .e{font-size:24px;width:34px;text-align:center}.it .x{flex:1}.it .x b{display:block}.it .x small{display:block;color:var(--mut);font-size:12px}
+.pao{font-size:10.5px;font-weight:900;border:1.5px solid currentColor;border-radius:6px 6px 8px 8px;padding:1px 5px;margin-right:6px}
+.tag{font-size:11px;font-weight:900;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.bin{font:inherit;font-size:16px;background:none;border:0;cursor:pointer;color:var(--mut)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.add{font:inherit;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;cursor:pointer;color:var(--ink)}.add span{display:block;font-size:22px}.add b{display:block}.add small{color:var(--mut);font-size:12px}
+.rc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin-top:8px}.rc b{display:block}.rc p{font-size:13px;color:var(--mut)}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--nude);color:#fff;cursor:pointer}.go:disabled{background:#F1E6E0;color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🗓️</div><div><h1>Shelf Life</h1><p>Refill & Rose · in LipstickXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="shelf" class="on">My shelf</button><button data-tab="add">Add</button><button data-tab="rec">Recycle</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const T={Mascara:{e:'👁️',m:3},'Liquid liner':{e:'✒️',m:6},'Lip gloss':{e:'✨',m:12},'Lip balm':{e:'💋',m:12},Foundation:{e:'🧴',m:12},'Cream blush':{e:'🌸',m:12},Lipstick:{e:'💄',m:18},Powder:{e:'🪞',m:24}};
+const REC={Lipstick:'Twist the bullet out; the case goes in an empties envelope (any brand) or kerbside if it is plain metal.',Mascara:'Wipe out what you can; tubes go in beauty-recycling schemes, not kerbside.','Lip gloss':'Beauty-recycling schemes only; the wand and tube are mixed plastics.',Foundation:'Glass bottles: rinse and recycle with glass; pumps go in beauty recycling.',Powder:'Compacts with mirrors go in beauty recycling.'};
+const seed=()=>({items:[{t:'Mascara',n:'Lash Lift',o:-80},{t:'Lipstick',n:'Party Red',o:-300},{t:'Lip gloss',n:'Frost Gloss',o:-340},{t:'Foundation',n:'Skin Tint',o:-150},{t:'Liquid liner',n:'Fine Line',o:-200},{t:'Powder',n:'Setting Powder',o:-400},{t:'Lip balm',n:'Overnight Mask',o:-30}],cleared:0});
+let C,S={tab:'shelf',shared:false};
+GX.init({gateway:'LipstickXX',seed}).then(c=>{C=c;paint();});
+const left=it=>Math.round(T[it.t].m*30.4+it.o);
+const st=d=>d<0?['Past its best','#FDECEA','var(--bad)']:d<=30?[`${d} days left`,'#FBF0DD','var(--amb)']:[`${Math.round(d/30)} months left`,'#E8F1EA','var(--ok)'];
+function vShelf(){const it=C.data.items.map((x,i)=>Object.assign({i,l:left(x)},x)).sort((a,b)=>a.l-b.l),past=it.filter(x=>x.l<0).length,soon=it.filter(x=>x.l>=0&&x.l<=30).length;
+  return `<div class="sum"><div><b style="color:var(--bad)">${past}</b><small>PAST</small></div><div><b style="color:var(--amb)">${soon}</b><small>THIS MONTH</small></div><div><b style="color:var(--ok)">${it.length-past-soon}</b><small>FRESH</small></div></div>
+  ${it.map(x=>{const [lab,bg,fg]=st(x.l);return `<div class="it"><div class="e">${T[x.t].e}</div><div class="x"><b>${GX.esc(x.n)}</b><small><span class="pao" style="color:${fg}">${T[x.t].m}M</span>${x.t} · opened ${GX.day(GX.today(x.o),{day:'numeric',month:'short',year:'numeric'})}</small></div><span class="tag" style="background:${bg};color:${fg}">${lab}</span>${x.l<0?`<button class="bin" data-bin="${x.i}" aria-label="Clear out">🗑️</button>`:''}</div>`;}).join('')}
+  <div class="legend">The little open-jar symbol on the pack (like 12M) is how many months it keeps once opened.</div>`;}
+function vAdd(){return `<div class="grid">${Object.entries(T).map(([t,v])=>`<button class="add" data-add="${t}"><span>${v.e}</span><b>${t}</b><small>Keeps ${v.m} months</small></button>`).join('')}</div><div class="legend">Tap what you’ve just opened. Check the symbol on your own product too.</div>`;}
+function vRec(){return Object.entries(REC).map(([t,r])=>`<div class="rc"><b>${T[t].e} ${t}</b><p>${r}</p></div>`).join('')+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared||!C.data.cleared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:C.data.cleared?`Share: cleared out ${C.data.cleared}`:'Clear something out first'}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='shelf'?vShelf():S.tab==='add'?vAdd():vRec();const d=C.data;
+  v.querySelectorAll('[data-bin]').forEach(b=>b.onclick=()=>{d.items.splice(+b.dataset.bin,1);d.cleared++;S.shared=false;GX.save(d);paint();});
+  v.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{d.items.push({t:b.dataset.add,n:'New '+b.dataset.add.toLowerCase(),o:0});GX.save(d);S.tab='shelf';paint();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>GX.post(`Cleared out <b>${d.cleared} products</b> past their best, and the empties are off to be recycled. Tracked with Shelf Life 🗓️`,'SHELF LIFE').then(o=>{if(o){S.shared=true;paint();}});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

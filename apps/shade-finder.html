@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Shade Finder</title>
+<style>
+/* Shade Finder, by Shade Lab (fictional), 2026-11-20. A GENEXXO app for LipstickXX.
+   Three questions (skin depth, undertone, how bold) → a nude, a pink, a red and a berry that usually flatter, built
+   from simple rules: nudes a step deeper than the skin, blue-reds for cool, orange-reds for warm, and so on. A starting
+   point, not a rule: wear whatever you love. Shade names are fictional. */
+:root{--bg:#FDF6F7;--card:#fff;--line:rgba(42,26,32,.1);--ink:#2A1A20;--mut:rgba(42,26,32,.55);--cr:#E11D48;--nude:#A0674B}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#F43F5E,#9F1239);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--cr)}
+.q{margin-top:12px}.q h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}
+.skin{display:flex;gap:6px}.skin button{flex:1;height:46px;border-radius:12px;border:2px solid transparent;cursor:pointer}.skin button.on{border-color:var(--cr);box-shadow:0 0 0 2px #fff inset}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font:inherit;font-size:13px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--cr);border-color:var(--cr);color:#fff}
+.tip{margin-top:8px;font-size:12px;color:var(--mut)}
+.sh{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-top:9px}
+.sh .sw{width:58px;height:58px;border-radius:50%;flex-shrink:0;box-shadow:inset 0 -6px 12px rgba(0,0,0,.18),inset 0 4px 8px rgba(255,255,255,.25)}
+.sh .x{flex:1;min-width:0}.sh .x small{font-size:10.5px;font-weight:900;letter-spacing:.08em;color:var(--mut)}.sh .x b{display:block;font-size:15px}.sh .x span{font-size:12px;color:var(--mut)}
+.sv{font:inherit;font-size:20px;background:none;border:0;cursor:pointer;color:var(--mut)}.sv.on{color:var(--cr)}
+.counter{border-radius:20px;padding:22px 16px;text-align:center;background:#fff;border:1px solid var(--line)}.counter small{font-size:11px;font-weight:900;letter-spacing:.1em;color:var(--mut)}
+.counter .row{display:flex;justify-content:center;gap:14px;margin-top:14px;flex-wrap:wrap}.counter .row div{text-align:center;width:84px}.counter i{display:block;width:64px;height:64px;border-radius:50%;margin:0 auto 6px}.counter b{font-size:12.5px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--cr);color:#fff;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:#F3E4E7;color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}.empty{padding:26px 10px;text-align:center;color:var(--mut)}
+</style></head><body>
+<div class="hd"><div class="logo">💄</div><div><h1>Shade Finder</h1><p>Shade Lab · in LipstickXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="quiz" class="on">About you</button><button data-tab="shades">Your shades</button><button data-tab="saved">Saved</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const DEPTH=[['Fair','#F3D5C4'],['Light','#E5BC9F'],['Medium','#C99674'],['Tan','#A06C4C'],['Deep','#6B4330']];
+const UND=['Cool','Neutral','Warm'],BOLD=['Subtle','Everyday','Bold'];
+const NUDE=[['Petal','#D9A08E'],['Biscuit','#C7856F'],['Toffee','#AB6A51'],['Cinnamon','#8E5139'],['Cocoa','#683726']];
+const PINK={Cool:['Orchid','#D0588A'],Neutral:['Rosebud','#D46479'],Warm:['Coral Kiss','#E2706A']};
+const RED={Cool:['Party Red','#B0123A'],Neutral:['Classic','#C41E2E'],Warm:['Poppy','#D3402A']},REDDEEP={Cool:['Black Cherry','#7E1430'],Neutral:['Cherrywood','#8A1C26'],Warm:['Brick','#93301F']};
+const BERRY={Cool:['Plum','#6E1D4C'],Neutral:['Mulberry','#7A2148'],Warm:['Spiced Berry','#7E2A3A']};
+const FIN={Subtle:'Sheer satin',Everyday:'Satin',Bold:'Velvet matte'};
+const seed=()=>({d:2,u:'Neutral',b:'Everyday',saved:['Classic']});
+let C,S={tab:'quiz',show:false,shared:false};
+GX.init({gateway:'LipstickXX',seed}).then(c=>{C=c;paint();});
+function shades(){const {d,u,b}=C.data,deep=d>=3,nude=NUDE[Math.min(4,d+(b==='Bold'?1:0))];
+  return [{k:'NUDE',n:nude[0],c:nude[1],w:'A step deeper than your skin, so it reads as a lip, not concealer.'},
+          {k:'PINK',n:PINK[u][0],c:PINK[u][1],w:u==='Warm'?'A coral-leaning pink: warm skin glows with it.':u==='Cool'?'A blue-leaning pink, bright and fresh.':'A balanced rose, easy every day.'},
+          {k:'RED',n:(deep?REDDEEP:RED)[u][0],c:(deep?REDDEEP:RED)[u][1],w:u==='Cool'?'A blue-red: makes teeth look whiter.':u==='Warm'?'An orange-red, lovely with warm skin.':'A true red, flattering on almost everyone.'},
+          {k:'BERRY',n:BERRY[u][0],c:BERRY[u][1],w:'Deep and rich, for evenings.'}].map(x=>Object.assign(x,{f:FIN[b]}));}
+function vQuiz(){const d=C.data;return `<div class="q"><h3>1 · Your skin</h3><div class="skin">${DEPTH.map(([n,c],i)=>`<button class="${d.d===i?'on':''}" style="background:${c}" data-d="${i}" title="${n}"></button>`).join('')}</div><div class="tip">${DEPTH[d.d][0]}</div></div>
+  <div class="q"><h3>2 · Your undertone</h3><div class="chips">${UND.map(u=>`<button class="chip ${d.u===u?'on':''}" data-u="${u}">${u}</button>`).join('')}</div><div class="tip">Not sure? Veins look bluish on the wrist: probably cool. Greenish: warm. Both: neutral.</div></div>
+  <div class="q"><h3>3 · How bold?</h3><div class="chips">${BOLD.map(x=>`<button class="chip ${d.b===x?'on':''}" data-b="${x}">${x}</button>`).join('')}</div></div>
+  <button class="go" id="see">See my shades</button>`;}
+const card=s=>`<div class="sh"><div class="sw" style="background:${s.c}"></div><div class="x"><small>${s.k}</small><b>${s.n}</b><span>${s.f} · ${s.w}</span></div><button class="sv ${C.data.saved.includes(s.n)?'on':''}" data-save="${s.n}">${C.data.saved.includes(s.n)?'♥':'♡'}</button></div>`;
+function vShades(){return `<div class="legend" style="margin:0 0 4px;text-align:left">${DEPTH[C.data.d][0]} skin · ${C.data.u.toLowerCase()} undertone · ${C.data.b.toLowerCase()}</div>`+shades().map(card).join('')+`<div class="legend">A starting point, not a rule. Wear whatever you love.</div>`;}
+function vSaved(){const all=[...NUDE.map(([n,c])=>({k:'NUDE',n,c})),...Object.values(PINK).map(([n,c])=>({k:'PINK',n,c})),...Object.values(RED).map(([n,c])=>({k:'RED',n,c})),...Object.values(REDDEEP).map(([n,c])=>({k:'RED',n,c})),...Object.values(BERRY).map(([n,c])=>({k:'BERRY',n,c}))];
+  const sv=C.data.saved.map(n=>all.find(x=>x.n===n)).filter(Boolean);
+  if(S.show)return `<div class="counter"><small>MY SHADES · PLEASE SHOW ME</small><div class="row">${sv.map(s=>`<div><i style="background:${s.c}"></i><b>${s.n}</b></div>`).join('')}</div></div><button class="go alt" id="show">Done</button>`;
+  return (sv.length?sv.map(s=>`<div class="sh"><div class="sw" style="background:${s.c}"></div><div class="x"><small>${s.k}</small><b>${s.n}</b></div><button class="sv on" data-save="${s.n}">♥</button></div>`).join(''):'<div class="empty">Tap ♡ on a shade to save it.</div>')+
+  `<button class="go" id="show" ${sv.length?'':'disabled'}>Show at a counter</button>`+(GX.can('feed')&&sv.length?`<button class="go alt" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my shades to ${C.gateway}`}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='quiz'?vQuiz():S.tab==='shades'?vShades():vSaved();const d=C.data,sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{d.d=+b.dataset.d;sv();});v.querySelectorAll('[data-u]').forEach(b=>b.onclick=()=>{d.u=b.dataset.u;sv();});v.querySelectorAll('[data-b]').forEach(b=>b.onclick=()=>{d.b=b.dataset.b;sv();});
+  v.querySelectorAll('[data-save]').forEach(b=>b.onclick=()=>{const n=b.dataset.save,k=d.saved.indexOf(n);k<0?d.saved.push(n):d.saved.splice(k,1);S.shared=false;sv();});
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('see',()=>{S.tab='shades';paint();});on('show',()=>{S.show=!S.show;paint();});
+  on('share',()=>GX.post(`My shades, according to Shade Finder: <b>${d.saved.join(', ')}</b>. What would you add? 💄`,'SHADE FINDER').then(o=>{if(o){S.shared=true;paint();}}));}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;S.show=false;paint();};
+</script></body></html>

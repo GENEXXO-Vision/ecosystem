@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Swatch Book</title>
+<style>
+/* Swatch Book, by Rouge Atelier (fictional), 2026-11-20. A GENEXXO app for LipstickXX.
+   Your lipsticks by colour family, with finish and a love rating. Pick two to compare side by side; the wishlist checks
+   each candidate against what you own and warns when it is a near-duplicate (colour distance in RGB under a set
+   threshold). Brands and shade names are fictional. */
+:root{--bg:#FDF6F7;--card:#fff;--line:rgba(42,26,32,.1);--ink:#2A1A20;--mut:rgba(42,26,32,.55);--berry:#C2417A;--cr:#E11D48;--ok:#2F7D4A}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#C2417A,#6D1A47);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--berry)}
+.fam h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin:12px 0 6px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.it{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 6px;text-align:center;cursor:pointer;font:inherit;color:var(--ink)}.it.pick{border-color:var(--berry);box-shadow:0 0 0 2px var(--berry) inset}
+.it i{display:block;height:34px;border-radius:9px;margin-bottom:5px}.it b{display:block;font-size:11.5px;line-height:1.2}.it small{font-size:10px;color:var(--mut)}
+.cmp{display:flex;gap:10px}.cmp div{flex:1;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center}.cmp i{display:block;height:110px;border-radius:12px;margin-bottom:8px}.cmp b{display:block}.cmp small{color:var(--mut);font-size:12px}
+.verdict{margin-top:12px;border-radius:14px;padding:12px;text-align:center;font-weight:800}
+.wl{display:flex;gap:11px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;margin-top:8px}.wl i{width:44px;height:44px;border-radius:50%;flex-shrink:0}.wl .x{flex:1}.wl .x b{display:block}.wl .x small{font-size:12px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--berry);color:#fff;cursor:pointer}.go:disabled{background:#F3E4E7;color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🎨</div><div><h1>Swatch Book</h1><p>Rouge Atelier · in LipstickXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="col" class="on">Collection</button><button data-tab="cmp">Compare</button><button data-tab="wish">Wishlist</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const FAM=['Nudes','Pinks','Reds','Berries'];
+const seed=()=>({pick:[4,5],own:[
+ {n:'Biscuit',b:'Rouge Atelier',c:'#C7856F',f:'Satin',fam:'Nudes',l:3},{n:'Bare Toffee',b:'Velvet Pout',c:'#B4745A',f:'Matte',fam:'Nudes',l:2},{n:'Petal',b:'Rouge Atelier',c:'#D9A08E',f:'Sheer',fam:'Nudes',l:2},
+ {n:'Rosebud',b:'Shade Lab',c:'#D46479',f:'Satin',fam:'Pinks',l:3},{n:'Party Red',b:'Rouge Atelier',c:'#B0123A',f:'Satin',fam:'Reds',l:3},{n:'Ruby Rush',b:'Velvet Pout',c:'#B5163C',f:'Velvet',fam:'Reds',l:2},
+ {n:'Poppy',b:'Rouge Atelier',c:'#D3402A',f:'Satin',fam:'Reds',l:1},{n:'Plum',b:'Shade Lab',c:'#6E1D4C',f:'Matte',fam:'Berries',l:2},{n:'Coral Kiss',b:'Velvet Pout',c:'#E2706A',f:'Gloss',fam:'Pinks',l:1}],
+ wish:[{n:'Cherry Bomb',b:'Velvet Pout',c:'#B21540'},{n:'Orchid',b:'Shade Lab',c:'#B05FA0'},{n:'Dusky Mauve',b:'Rouge Atelier',c:'#9A5E80'}]});
+let C,S={tab:'col',shared:false};
+GX.init({gateway:'LipstickXX',seed}).then(c=>{C=c;paint();});
+const rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const dist=(a,b)=>{const x=rgb(a),y=rgb(b);return Math.round(Math.sqrt(x.reduce((s,v,i)=>s+(v-y[i])**2,0)));};
+const nearest=c=>C.data.own.map((o,i)=>({o,i,d:dist(o.c,c)})).sort((a,b)=>a.d-b.d)[0];
+function vCol(){return FAM.map(f=>{const it=C.data.own.map((o,i)=>[o,i]).filter(([o])=>o.fam===f);return it.length?`<div class="fam"><h3>${f} · ${it.length}</h3><div class="grid">${it.map(([o,i])=>`<button class="it ${C.data.pick.includes(i)?'pick':''}" data-p="${i}"><i style="background:${o.c}"></i><b>${GX.esc(o.n)}</b><small>${'♥'.repeat(o.l)}</small></button>`).join('')}</div></div>`:'';}).join('')+
+  `<div class="legend">${C.data.own.length} lipsticks. Tap two to compare.</div>`;}
+function vCmp(){const [a,b]=C.data.pick.map(i=>C.data.own[i]);if(!a||!b)return '<div class="legend">Pick two in your collection first.</div>';const d=dist(a.c,b.c),dup=d<40;
+  return `<div class="cmp">${[a,b].map(o=>`<div><i style="background:${o.c}"></i><b>${GX.esc(o.n)}</b><small>${GX.esc(o.b)} · ${o.f}</small></div>`).join('')}</div>
+  <div class="verdict" style="background:${dup?'#FDECEA':'#E8F1EA'};color:${dup?'#B3261E':'var(--ok)'}">${dup?'Near-twins: you could live with one':'Different enough to keep both'}</div><div class="legend">Colour difference: ${d} (under 40 looks the same on the lip).</div>`;}
+function vWish(){return C.data.wish.map((w,i)=>{const n=nearest(w.c),dup=n.d<40;return `<div class="wl"><i style="background:${w.c}"></i><div class="x"><b>${GX.esc(w.n)}</b><small style="color:${dup?'#B3261E':'var(--ok)'}">${dup?`⚠️ Very like your ${GX.esc(n.o.n)}`:`✓ Nothing like it in your collection`}</small></div></div>`;}).join('')+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my collection to ${C.gateway}`}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='col'?vCol():S.tab==='cmp'?vCmp():vWish();
+  v.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const i=+b.dataset.p,p=C.data.pick;if(p.includes(i))return;p.push(i);if(p.length>2)p.shift();GX.save(C.data);paint();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const fav=C.data.own.filter(o=>o.l===3).map(o=>o.n);GX.post(`${C.data.own.length} lipsticks in the Swatch Book. Favourites: <b>${fav.join(', ')}</b> 🎨`,'SWATCH BOOK').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
