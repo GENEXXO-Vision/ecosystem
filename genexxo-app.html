@@ -1878,8 +1878,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-85"></script>
-<script src="genexxo-core.js?v=2026.08.26-85"></script>
+<script src="genexxo-data.js?v=2026.08.26-86"></script>
+<script src="genexxo-core.js?v=2026.08.26-86"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -2320,7 +2320,7 @@ function _prefetchVids(vids){
   const WARM_ALL_HEROES = true;
   if(WARM_ALL_HEROES) Object.keys(GATEWAYS).forEach(k=>{
     const g = GATEWAYS[k];
-    const f = g && g.feed && g.feed.find(x=>x.video);
+    const f = (g && g.feed && g.feed.find(x=>x.video)) || (g && g._hero && {video:g._hero});   // -86: stubs carry _hero
     if(f){ const u = mediaUrl(f.video); if(!seen.has(u)){ seen.add(u); heroes.push(u); } }
   });
   let list = feedUrls.map(u => ({u, feed:true})).concat(heroes.map(u => ({u})));
@@ -2780,7 +2780,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-85';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-86';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -4044,6 +4044,10 @@ const pulsePic = (m, cls, inner='', fallback='#26262b') => `<div class="${cls}" 
 function pulseHtml(sk){
   const s = sk ? sectorOf(sk) : null, acc = s ? washFor(s.g).accent : '#26262b';
   const homeGws = Object.keys(GATEWAYS).filter(k => sk ? gwSecOf(GATEWAYS[k])===sk : PINNED_GWS.includes(k));
+  /* -86: drops and deals come from the gateways' products, which arrive with their files. Draw now with what is here,
+     redraw the Pulse once the rest is in (normally it already is: the background preload runs at startup). */
+  const missing = homeGws.filter(k=>!gwLoaded(k));
+  if(missing.length) gwEnsure(missing).then(()=>{ if(state.pulse) buildDrawer(); }).catch(()=>{});
   const sec = (h, note) => `<div class="pls-h">${h}${note?`<i>${note}</i>`:''}</div>`;
   let h = 2166136261; for(const c of (new Date().toDateString()) + (sk||'net')) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
   const rnd = () => { h ^= h << 13; h ^= h >>> 17; h ^= h << 5; return ((h >>> 0) % 100000) / 100000; };
@@ -8304,19 +8308,19 @@ function discRemember(gw){
    The calendar is EVENTS_FEED plus every brand zone's own events, which until now only showed
    inside the zone. A zone event already carried in the feed (same title) is listed once. */
 function evAll(){
-  if (evAll._c) return evAll._c;   // static data: build once
-  const out = [...EVENTS_FEED], seen = new Set(EVENTS_FEED.map(e=>e.title));
+  if (evAll._c) return evAll._c;   // static data: build once (reset when a gateway file lands, -86)
+  const out = [...EVENTS_FEED], seen = new Set(EVENTS_FEED.map(e=>e.gw+'|'+e.title));   // per gateway (-86): two brands may share a title
   Object.keys(ZONES).forEach(k=>{
     const z = ZONES[k];
     (z.events||[]).forEach(ev=>{
-      if (!ev || seen.has(ev.title)) return;
-      seen.add(ev.title);
+      if (!ev || seen.has(z.gw+'|'+ev.title)) return;
+      seen.add(z.gw+'|'+ev.title);
       out.push({gw:z.gw, zone:k, type:'Event', icon:'📅', time:(ev.when||'').split(' · ')[0].replace(/,\s*\d{4}$/,''), title:ev.title, desc:ev.desc||''});   // year dropped: the feed's own dates are yearless
     });
   });
   // Community events (2026-10-10): every hosted community's calendar flows into GENEXXO Events.
   Object.keys(GATEWAYS).forEach(gk=>(GATEWAYS[gk].communities||[]).forEach(c=>(c.events||[]).forEach(ev=>{
-    if (seen.has(ev.title)) return; seen.add(ev.title);
+    if (seen.has(gk+'|'+ev.title)) return; seen.add(gk+'|'+ev.title);
     const d = new Date(); d.setHours(12,0,0,0); d.setDate(d.getDate()+ev.day);
     out.push({gw:gk, type:'Event', icon:'👥', time:dayLabel(d)+' '+ev.time, title:ev.title, desc:`${c.name} · ${ev.where}`, go:`openComm('${c.key}')`});
   })));
@@ -9283,14 +9287,51 @@ buildDrawer();
   }, {passive:true});
 })();
 
+/* ═════════ GATEWAY FILES: entry points wait for their gateway (-86, 2026-11-20) ═════════
+   A built gateway's full content lives in gateways/<key>.js (see GATEWAY LOADING in core). Each way IN to that
+   content is wrapped: if the file is already here the original runs at once, exactly as before; if not, it runs as
+   soon as the file lands (usually a few hundred ms, and the background preload means it is normally already here).
+   Wrapping the globals catches inline onclick handlers and internal calls alike. */
+(function gwWrapEntryPoints(){
+  const wrap = (name, keysOf) => {
+    const orig = window[name]; if(typeof orig!=='function') return;
+    window[name] = function(...a){
+      let keys = []; try { keys = [].concat(keysOf(...a)||[]).filter(Boolean); } catch(e){}
+      if(keys.every(gwLoaded)) return orig.apply(this, a);
+      gwEnsure(keys).then(()=>orig.apply(this, a), ()=>toast('Couldn’t load that just now. Check your connection and try again.'));
+    };
+  };
+  const byName = n => n && gwKeyFromName(String(n));
+  wrap('openGateway', n => byName(n));
+  wrap('pickGateway', n => byName(n));
+  wrap('openSector',  sk => gwKeysInSector(sk));
+  wrap('pickSector',  sk => gwKeysInSector(sk));
+  wrap('openZoneFav', k => gwOfZone(k));
+  wrap('openZone',    k => gwOfZone(k));
+  wrap('pickZone',    k => gwOfZone(k));
+  wrap('openApp',     k => gwOfItem('apps', k));
+  wrap('openPro',     k => gwOfItem('pros', k));
+  wrap('openComm',    k => gwOfItem('communities', k));
+})();
+gwOnLoad((keys, what) => {
+  evAll._c = null;                                              // events include zone and community events
+  if(what==='tags'){                                             // search tags arrived: refresh a search in progress
+    if(state.gwQuery) buildRightList();
+    if(state.discoverQ && typeof onDiscoverSearch==='function'){ const i=document.activeElement; onDiscoverSearch(state.discoverQ); if(i&&i.focus) i.focus(); }
+  }
+});
+document.addEventListener('focusin', e => { if(e.target && e.target.tagName==='INPUT') gwTagsLoad().catch(()=>{}); });
+
 /* ═════════ BOOT — the entry domain decides the front door ═════════ */
 if (ENTRY && GATEWAYS[ENTRY]) {
   state._gwFrom = 'root';
   state._gwObj = getGateway(GATEWAYS[ENTRY].name);   // resolved sector, not the stale def field
   state.gateway = ENTRY;
   state.screen = 'gateway';
+  if(!gwLoaded(ENTRY)) gwEnsure(ENTRY).then(()=>{ if(state.gateway===ENTRY && state.screen==='gateway'){ state._gwObj = getGateway(GATEWAYS[ENTRY].name); render(); } }).catch(()=>{});
 }
 render();
+setTimeout(()=>{ (window.requestIdleCallback||setTimeout)(()=>gwPreload()); }, 2500);   // the rest, quietly, after the intro starts
 
 /* ═════════ WELCOME INTRO — "Lights up + hand-off" (2026-10-08) ═════════
    Shows every load (it's the front door of the demo); a tap skips it. The XX lights up (black, gold

@@ -169,3 +169,49 @@ function gwMetaFromKey(k){
   }
   return null;
 }
+
+/* ═════════ GATEWAY LOADING (-86, 2026-11-20) ═════════
+   Built gateways live in gateways/<key>.js; at startup GATEWAYS/ZONES hold light stubs (_stub) from the index in
+   genexxo-data.js. gwEnsure(keys) fetches the files still missing and resolves when they're in; the app's entry
+   points (open a gateway, zone, pro, app or community; a sector; Pulse) call it first. gwPreload() fetches the rest in
+   the background after startup, and genexxo-tags.js (search tags) rides along, or comes sooner on the first search.
+   Every file carries a content hash in its ?v=, so a new build only re-downloads the gateways that changed. */
+const GW_STATE = { pending:{}, loaded:{}, listeners:[] };
+function gwLoaded(k){ return !(typeof GW_FILES!=='undefined' && GW_FILES[k]) || !!GW_STATE.loaded[k]; }
+function gwOnLoad(fn){ GW_STATE.listeners.push(fn); }
+function gxScript(src){
+  return new Promise((res, rej)=>{
+    const s=document.createElement('script'); s.src=src; s.async=true;
+    s.onload=()=>res(); s.onerror=()=>{ s.remove(); rej(new Error('load failed: '+src)); };
+    document.head.appendChild(s);
+  });
+}
+function gwLoad(k){
+  if(gwLoaded(k)) return Promise.resolve();
+  if(GW_STATE.pending[k]) return GW_STATE.pending[k];
+  const once = () => gxScript('gateways/'+k+'.js?v='+GW_FILES[k]);
+  const p = once().catch(()=>new Promise(r=>setTimeout(r,800)).then(once))   // one quiet retry (flaky mobile signal)
+    .then(()=>{ GW_STATE.loaded[k]=true; delete GW_STATE.pending[k]; GW_STATE.listeners.forEach(f=>{ try{ f([k]); }catch(e){} }); },
+          e=>{ delete GW_STATE.pending[k]; throw e; });
+  return (GW_STATE.pending[k]=p);
+}
+function gwEnsure(keys){
+  const need=[].concat(keys||[]).filter(k=>k && !gwLoaded(k));
+  return need.length ? Promise.all(need.map(gwLoad)) : Promise.resolve();
+}
+/* the gateways whose content a sector screen or its Pulse shows */
+function gwKeysInSector(sk){ return Object.keys(GATEWAYS).filter(k=>gwSecOf(GATEWAYS[k])===sk); }
+/* zone / pro / app / community key → its gateway, from the stubs (always present) */
+function gwOfZone(k){ const z=ZONES[k]; return z && z.gw; }
+function gwOfItem(list, key){ for(const gk in GATEWAYS) if((GATEWAYS[gk][list]||[]).some(x=>x.key===key || x.name===key)) return gk; return null; }
+let GW_TAGS_STATE = null;
+function gwTagsLoad(){
+  if(typeof GW_TAGS!=='undefined') return Promise.resolve();
+  return GW_TAGS_STATE || (GW_TAGS_STATE = gxScript('genexxo-tags.js?v='+(typeof GW_TAGS_V!=='undefined'?GW_TAGS_V:''))
+    .then(()=>{ GW_STATE.listeners.forEach(f=>{ try{ f([], 'tags'); }catch(e){} }); }, e=>{ GW_TAGS_STATE=null; throw e; }));
+}
+function gwPreload(){
+  const rest = (typeof GW_FILES!=='undefined') ? Object.keys(GW_FILES).filter(k=>!gwLoaded(k)) : [];
+  let i=0; const next=()=>{ if(i>=rest.length) return Promise.resolve(); const k=rest[i++]; return gwLoad(k).catch(()=>{}).then(next); };
+  return gwTagsLoad().catch(()=>{}).then(()=>Promise.all([next(), next(), next()]));   // three at a time, gently
+}

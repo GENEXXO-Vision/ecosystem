@@ -33,6 +33,13 @@ const SHELL = 'genexxo-app.html';
    cache-buster stripped, so a build bump can never strand an installed app without its data. */
 const DATA = 'genexxo-data.js';
 const isData = (p) => p.endsWith('/' + DATA) || p.endsWith(DATA);
+/* v7 (-86, 2026-11-20): the rest of the app's code and data.
+   · genexxo-core.js: network first like the data, stored under the bare path (it was never cached, so an offline open lost it).
+   · gateways/<key>.js and genexxo-tags.js: CACHE FIRST by full URL. Their ?v= is a hash of the content, so a URL never
+     changes meaning; once a phone has a gateway it never asks the server again until that gateway changes. This also keeps
+     the background preload from sending dozens of requests to the origin on every start (the 520/525 lesson). */
+const isCore = (p) => /\/genexxo-core\.js$/.test(p);
+const isHashed = (p) => /\/genexxo-tags\.js$/.test(p) || /\/gateways\/[a-z0-9-]+\.js$/.test(p);
 
 /* ▸ v6 RETIRE ON THE BARE DOMAIN (2026-11-02, build -76). Since 2026-11-01 Cloudflare 301s genexxovision.com/* to
    www.genexxovision.com. A worker installed earlier on the bare domain then saw every page fetch come back as a
@@ -185,6 +192,39 @@ self.addEventListener('fetch', (e) => {
   // The data payload: NETWORK FIRST like the shell, but it must also be PUT into the cache —
   // the generic !isDoc branch below fetches without ever storing, which offline would mean a
   // blank app rather than a stale one.
+  if (isHashed(url.pathname)) {
+    e.respondWith((async () => {
+      const hit = await caches.match(req.url);
+      if (hit) return hit;
+      try {
+        const net = await fetch(req.url);
+        if (net && net.ok) {
+          const c = await caches.open(CACHE);
+          for (const k of await c.keys()) { const u = new URL(k.url); if (u.pathname === url.pathname && k.url !== req.url) c.delete(k); }   // drop older versions
+          c.put(req.url, net.clone()); return net;
+        }
+        return (await caches.match(req.url, { ignoreSearch: true })) || net;
+      } catch (_) {
+        return (await caches.match(req.url, { ignoreSearch: true })) || Response.error();
+      }
+    })());
+    return;
+  }
+
+  if (isCore(url.pathname)) {
+    const bare = url.origin + url.pathname;                       // ?v= stripped, like DATA
+    e.respondWith((async () => {
+      try {
+        const net = await fetch(req.url, { cache: 'no-cache' });
+        if (net && net.ok) { (await caches.open(CACHE)).put(bare, net.clone()); return net; }
+        return (await caches.match(bare)) || net;
+      } catch (_) {
+        return (await caches.match(bare)) || Response.error();
+      }
+    })());
+    return;
+  }
+
   if (isData(url.pathname)) {
     e.respondWith((async () => {
       try {
