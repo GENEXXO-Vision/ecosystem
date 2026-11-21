@@ -224,7 +224,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('engineer', [
   { gw: 'engineer', zone: 'sparkplane', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Sparkplane Live · Build a Weather Station', desc: 'Two Sparkplane engineers build the Weather Station Kit live. Build along at home and ask anything.' },
-  { gw: 'engineer', type: 'Event', icon: '🤖', time: 'Nov 20', title: 'Bristol Robotics show-and-tell', desc: 'Bring a robot, finished or not, and show it off. Every level welcome.' },
+  { gw: 'engineer', type: 'Event', icon: '🤖', time: 'Dec 4', title: 'Bristol Robotics show-and-tell', desc: 'Bring a robot, finished or not, and show it off. Every level welcome.' },
   { gw: 'engineer', zone: 'torque-tally', type: 'Event', icon: '🔧', time: 'Nov 26', title: 'Free calibration day, Sheffield', desc: 'Torque & Tally: bring any torque wrench or caliper and have it checked while you wait.' },
   { gw: 'engineer', type: 'Event', icon: '📋', time: 'Dec 2', title: 'Chartership report workshop (online)', desc: 'Dr Hannah Kerr: how to write a competence report reviewers can follow.' },
   { gw: 'engineer', zone: 'layerline-3d', type: 'Event', icon: '🖨️', time: 'Dec 4', title: 'Layerline print farm open day, Leeds', desc: 'Forty printers running. Bring a file and print it on the day.' },

@@ -225,7 +225,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('doctor', [
   { gw: 'doctor', zone: 'ward-round-press', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Ward Round Press Live · Exam Q&A', desc: 'Two consultants work through ten membership-exam questions live and take yours in the chat.' },
-  { gw: 'doctor', type: 'Event', icon: '🌙', time: 'Nov 20', title: 'Night Shift Club midnight check-in', desc: 'A quiet online catch-up for anyone on nights. Bring a cup of tea.' },
+  { gw: 'doctor', type: 'Event', icon: '🌙', time: 'Nov 28', title: 'Night Shift Club midnight check-in', desc: 'A quiet online catch-up for anyone on nights. Bring a cup of tea.' },
   { gw: 'doctor', zone: 'auscult', type: 'Event', icon: '❤️', time: 'Nov 27', title: 'Heart sounds masterclass', desc: 'Auscult: a cardiologist talks through murmurs with recorded heart sounds. Online and free.' },
   { gw: 'doctor', zone: 'ward-weave', type: 'Event', icon: '🩺', time: 'Dec 3', title: 'Scrubs fitting pop-up, Manchester', desc: 'Ward & Weave: try every cut and size, embroidery while you wait.' },
   { gw: 'doctor', type: 'Event', icon: '🎄', time: 'Dec 5', title: 'Med Students Manchester winter social', desc: 'The end-of-term social in the Northern Quarter. Exams permitting.' },

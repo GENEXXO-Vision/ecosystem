@@ -132,7 +132,7 @@ Object.assign(ZONES, {
    "zoneEvent": true,
    "tag": "FACTORY DAYS",
    "title": "Northbound Made-in-USA Factory Days",
-   "when": "Nov 20–22 · Lawrence, MA",
+   "when": "Dec 11–13 · Lawrence, MA",
    "desc": "Three days inside the Lawrence, Massachusetts factory — watch the 990 built by hand, meet the craftspeople, and get a first fitting of the 770v6 with the Northbound team.",
    "registered": 640,
    "capacity": 900

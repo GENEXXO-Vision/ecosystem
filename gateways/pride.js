@@ -101,7 +101,7 @@ GATEWAYS.pride = {
       about: 'Walks, board games, choirs, sober socials and the odd big night on Canal Street. New to the city or new to being out? Come and say hello.',
       rules: ['Never out anyone', 'Sober events stay sober', 'Under-18s only at youth-group events'],
       mods: ['@sober_sol', '@newtotown_nia'],
-      threads: [ { t: 'Sober Saturday board games: who is in?', by: '@sober_sol', tag: 'SOCIAL', replies: 84, ago: 0, votes: 196 }, { t: 'Trans Day of Remembrance vigil details', by: '@river_they', tag: 'EVENT', replies: 112, ago: 1, votes: 340 }, { t: 'Queer choirs taking new voices?', by: '@newtotown_nia', tag: 'Q&A', replies: 46, ago: 2, votes: 88 } ],
+      threads: [ { t: 'Sober Saturday board games: who is in?', by: '@sober_sol', tag: 'SOCIAL', replies: 84, ago: 0, votes: 196 }, { t: 'Trans+ winter social: who’s coming?', by: '@river_they', tag: 'EVENT', replies: 112, ago: 1, votes: 340 }, { t: 'Queer choirs taking new voices?', by: '@newtotown_nia', tag: 'Q&A', replies: 46, ago: 2, votes: 88 } ],
       events: [ { title: 'Sober board games night', day: 3, time: '18:30', where: 'Northern Quarter, Manchester' }, { title: 'Winter walk and hot chocolate', day: 9, time: '11:00', where: 'Heaton Park, Manchester' } ] }
   ],
   feed: [
@@ -221,7 +221,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('pride', [
   { gw: 'pride', zone: 'out-and-away', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Out & Away Live · Pride trips 2027', desc: 'Planners walk through Madrid, Amsterdam and Sitges and answer your questions in the chat.' },
-  { gw: 'pride', type: 'Event', icon: '🕯️', time: 'Nov 20', title: 'Trans Day of Remembrance vigil, Manchester', desc: 'Manchester Queer Social: candles, names read aloud and a warm drink after. All welcome.' },
+  { gw: 'pride', type: 'Event', icon: '🧣', time: 'Dec 10', title: 'Trans+ winter social, Manchester', desc: 'Manchester Queer Social: hot drinks, games and good company in the Northern Quarter. All welcome.' },
   { gw: 'pride', zone: 'proud-threads', type: 'Sale', icon: '🧶', time: 'Nov 27', title: 'Proud Friday at Proud Threads', desc: 'A fifth off everything, and the youth-charity donation doubled.' },
   { gw: 'pride', zone: 'spectrum-books', type: 'Event', icon: '📚', time: 'Nov 28', title: 'Queer book club online', desc: 'Spectrum Books: this month’s pick, with the author for the last half hour.' },
   { gw: 'pride', type: 'Event', icon: '🎗️', time: 'Dec 1', title: 'World AIDS Day: red ribbon walk, London', desc: 'Out & About walks from King’s Cross to remember, and raises money for HIV charities.' },

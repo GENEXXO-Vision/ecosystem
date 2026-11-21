@@ -221,7 +221,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('asthma', [
   { gw: 'asthma', zone: 'clearleaf-air', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Clearleaf Air Live · Winter air at home', desc: 'An air-quality scientist answers questions about damp, mould and clean air indoors.' },
-  { gw: 'asthma', type: 'Event', icon: '🎒', time: 'Nov 20', title: 'Asthma Parents: school asthma chat', desc: 'An online chat on school plans, spare inhalers and PE.' },
+  { gw: 'asthma', type: 'Event', icon: '🎒', time: 'Dec 2', title: 'Asthma Parents: school asthma chat', desc: 'An online chat on school plans, spare inhalers and PE.' },
   { gw: 'asthma', type: 'Event', icon: '🏃', time: 'Nov 22', title: 'Run Easy Leeds: Roundhay Park 5K', desc: 'An easy-paced 5K with a long warm-up. Reliever in your pocket.' },
   { gw: 'asthma', zone: 'dustproof-home', type: 'Sale', icon: '🛏️', time: 'Nov 27', title: 'Dustproof Home Black Friday sale', desc: 'A third off every barrier cover for one day.' },
   { gw: 'asthma', type: 'Event', icon: '🫁', time: 'Dec 2', title: 'Breathing class with Tom Price', desc: 'An online group class: breathing exercises alongside your usual treatment.' },
