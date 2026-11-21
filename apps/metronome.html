@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Metronome</title>
+<style>
+/* Metronome, by Northbridge Guitars (fictional), 2026-11-21. A GENEXXO app for GuitarXX.
+   A Web Audio click (higher pitch on beat one) at 40–220 bpm in 2, 3, 4 or 6. Practice mode: start slow and add 5 bpm
+   each time you mark a run clean, up to your target. Tap tempo averages the last four taps. */
+:root{--bg:#120F14;--card:rgba(255,255,255,.05);--line:rgba(243,239,246,.1);--ink:#F3EFF6;--mut:rgba(243,239,246,.55);--sun:#F5B342;--lil:#C084FC}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#F5B342,#B4581C);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--sun)}
+.bpm{display:flex;align-items:center;justify-content:center;gap:16px;padding:10px 0}.bpm b{font-size:76px;font-weight:900;min-width:150px;text-align:center;font-variant-numeric:tabular-nums;line-height:1}.bpm small{display:block;text-align:center;font-size:12px;color:var(--mut);font-weight:800;letter-spacing:.1em}
+.st{width:50px;height:50px;border-radius:50%;border:1px solid var(--line);background:var(--card);font:inherit;font-size:20px;font-weight:900;cursor:pointer;color:var(--ink)}
+.dots{display:flex;gap:10px;justify-content:center;margin:10px 0}.dots i{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.1);transition:background .05s}.dots i.on{background:var(--sun)}.dots i.one.on{background:var(--lil)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.chip{font:inherit;font-size:13px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 13px;cursor:pointer}.chip.on{background:var(--sun);border-color:var(--sun);color:#2A1700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.bar{height:12px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:linear-gradient(90deg,#C084FC,#F5B342)}
+.tap{width:100%;height:150px;border-radius:24px;border:2px dashed rgba(245,179,66,.5);background:rgba(245,179,66,.06);font:inherit;font-size:22px;font-weight:900;color:var(--sun);cursor:pointer;margin-top:6px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:15px;border:0;border-radius:99px;padding:13px;background:var(--sun);color:#2A1700;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🥁</div><div><h1>Metronome</h1><p>Northbridge Guitars · in GuitarXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="k" class="on">Click</button><button data-tab="p">Practice</button><button data-tab="t">Tap tempo</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const seed=()=>({bpm:90,beats:4,p:{start:60,target:100,now:75,song:'Lead break, bars 9–16'}});
+let C,S={tab:'k',run:false,beat:-1,taps:[],shared:false},tick=null,ac=null;
+GX.init({gateway:'GuitarXX',seed}).then(c=>{C=c;paint();});
+function click(one){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.frequency.value=one?1500:1000;g.gain.setValueAtTime(.12,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.06);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+.07);}catch(e){}}
+function stop(){clearInterval(tick);tick=null;S.run=false;S.beat=-1;}
+function start(bpm){stop();S.run=true;tick=setInterval(()=>{S.beat=(S.beat+1)%C.data.beats;click(S.beat===0);const dots=document.querySelectorAll('.dots i');dots.forEach((d,i)=>d.classList.toggle('on',i===S.beat));},60000/bpm);}
+const dots=()=>`<div class="dots">${Array.from({length:C.data.beats},(_,i)=>`<i class="${i===0?'one':''} ${i===S.beat?'on':''}"></i>`).join('')}</div>`;
+function vK(){const d=C.data;return `<div class="bpm"><button class="st" id="dn">−</button><div><b>${d.bpm}</b><small>BEATS PER MINUTE</small></div><button class="st" id="up">+</button></div>${dots()}
+  <div class="chips">${[2,3,4,6].map(b=>`<button class="chip ${d.beats===b?'on':''}" data-b="${b}">${b}/4</button>`).join('')}</div>
+  <button class="go" id="run">${S.run?'Stop':'Start'}</button><div class="legend">Beat one clicks higher and lights up purple.</div>`;}
+function vP(){const p=C.data.p,pct=Math.round(100*(p.now-p.start)/Math.max(1,p.target-p.start));return `<div class="card"><h3>${GX.esc(p.song)}</h3><div class="bpm" style="padding:4px 0"><div><b style="font-size:56px">${p.now}</b><small>NOW · TARGET ${p.target}</small></div></div><div class="bar"><i style="width:${pct}%"></i></div></div>
+  ${dots()}<button class="go" id="prun">${S.run?'Stop':`Play at ${p.now} bpm`}</button><button class="go alt" id="clean" ${p.now>=p.target?'disabled':''}>✓ That was clean: +5 bpm</button>
+  ${p.now>=p.target&&GX.can('feed')?`<button class="go alt" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share: hit ${p.target} bpm!`}</button>`:''}
+  <div class="legend">Only speed up when it’s clean. Slow is smooth; smooth is fast.</div>`;}
+function vT(){const t=S.taps,bpm=t.length>1?Math.round(60000/((t[t.length-1]-t[0])/(t.length-1))):null;return `<button class="tap" id="tapb">${bpm?bpm+' bpm':'Tap here in time'}</button><button class="go" id="use" ${bpm?'':'disabled'}>Use ${bpm||'—'} bpm</button><div class="legend">Tap along with the song four or more times.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='k'?vK():S.tab==='p'?vP():vT();const d=C.data,sv=()=>{GX.save(d);paint();};
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('up',()=>{d.bpm=Math.min(220,d.bpm+2);if(S.run)start(d.bpm);sv();});on('dn',()=>{d.bpm=Math.max(40,d.bpm-2);if(S.run)start(d.bpm);sv();});
+  v.querySelectorAll('[data-b]').forEach(b=>b.onclick=()=>{d.beats=+b.dataset.b;if(S.run)start(d.bpm);sv();});
+  on('run',()=>{S.run?stop():start(d.bpm);paint();});on('prun',()=>{S.run?stop():start(d.p.now);paint();});
+  on('clean',()=>{d.p.now=Math.min(d.p.target,d.p.now+5);if(S.run)start(d.p.now);S.shared=false;sv();});
+  on('tapb',()=>{const n=Date.now();S.taps=S.taps.filter(x=>n-x<3000).concat(n).slice(-5);paint();});
+  on('use',()=>{const t=S.taps;d.bpm=Math.max(40,Math.min(220,Math.round(60000/((t[t.length-1]-t[0])/(t.length-1)))));S.taps=[];S.tab='k';sv();});
+  on('share',()=>GX.post(`Started at ${d.p.start} bpm, hit <b>${d.p.target} bpm</b> clean on my ${GX.esc(d.p.song.toLowerCase())}. Slow is smooth 🥁`,'METRONOME').then(o=>{if(o){S.shared=true;paint();}}));}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;stop();S.tab=b.dataset.tab;paint();};
+</script></body></html>

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Chord Finder</title>
+<style>
+/* Chord Finder, by Fretwise (fictional), 2026-11-21. A GENEXXO app for GuitarXX.
+   Standard-tuning chord shapes written low E to high e ('x' = don't play, '0' = open, numbers = fret). Barre chords have
+   an easier four- or five-string version for beginners. Song: the four-chord progression G–D–Em–C and your own list.
+   Switch: a one-minute challenge counting clean changes between two chords. */
+:root{--bg:#120F14;--card:rgba(255,255,255,.05);--line:rgba(243,239,246,.1);--ink:#F3EFF6;--mut:rgba(243,239,246,.55);--lil:#C084FC;--sun:#F5B342}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#C084FC,#6B21A8);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--lil)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.chip{font:inherit;font-size:13px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer;min-width:40px}.chip.on{background:var(--lil);border-color:var(--lil);color:#1E0B33}
+.dia{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;text-align:center;margin-top:6px}.dia h2{font-size:30px;font-weight:900}.dia small{color:var(--mut)}
+.dia svg{width:220px;max-width:100%;display:block;margin:8px auto 0}
+.tg{font:inherit;font-weight:800;font-size:12.5px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:7px 12px;cursor:pointer;margin-top:10px}.tg.on{background:var(--sun);color:#2A1700;border-color:var(--sun)}
+.song{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.song button{font:inherit;font-weight:900;font-size:18px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:14px 18px;cursor:pointer}
+.big{text-align:center;padding:14px 0}.big b{display:block;font-size:72px;font-weight:900;color:var(--lil);line-height:1}.big span{color:var(--mut);font-weight:800;font-size:12px;letter-spacing:.06em}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--lil);color:#1E0B33;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🎼</div><div><h1>Chord Finder</h1><p>Fretwise · in GuitarXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="c" class="on">Chords</button><button data-tab="s">My song</button><button data-tab="x">Switch practice</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const SH={C:['x32010'],D:['xx0232'],E:['022100'],F:['133211','xx3211'],G:['320003'],A:['x02220'],B:['x24442','xx4442'],
+ Cm:['x35543','xx5543'],Dm:['xx0231'],Em:['022000'],Fm:['133111','xx3111'],Gm:['355333','xx5333'],Am:['x02210'],Bm:['x24432','xx4432'],
+ C7:['x32310'],D7:['xx0212'],E7:['020100'],F7:['131211','xx1211'],G7:['320001'],A7:['x02020'],B7:['x21202']};
+const ROOTS=['C','D','E','F','G','A','B'],TYPES=[['','major'],['m','minor'],['7','seventh']];
+const seed=()=>({root:'G',type:'',easy:false,song:['G','D','Em','C'],best:18});
+let C,S={tab:'c',x:{a:'G',b:'C',n:0,left:0,run:false},shared:false},tick=null;
+GX.init({gateway:'GuitarXX',seed}).then(c=>{C=c;paint();});
+const name=()=>C.data.root+C.data.type;
+function svg(shape){const f=[...shape].map(c=>c==='x'?-1:+c),played=f.filter(n=>n>0),base=Math.max(...played,0)>4?Math.min(...played):1,W=180,H=200,sx=i=>18+i*28.8,fy=n=>24+(n-base+.5)*34;
+  let s=`<svg viewBox="0 0 ${W+20} ${H+10}">`;if(base===1)s+=`<rect x="16" y="20" width="148" height="6" fill="#F3EFF6"/>`;else s+=`<text x="2" y="${fy(base)+5}" fill="#aaa" font-size="13" font-weight="800">${base}fr</text>`;
+  for(let i=0;i<6;i++)s+=`<line x1="${sx(i)}" y1="24" x2="${sx(i)}" y2="${24+5*34}" stroke="#888" stroke-width="${2-i*0.2}"/>`;
+  for(let r=0;r<=5;r++)s+=`<line x1="18" y1="${24+r*34}" x2="${sx(5)}" y2="${24+r*34}" stroke="#555" stroke-width="2"/>`;
+  f.forEach((n,i)=>{if(n<0)s+=`<text x="${sx(i)}" y="14" text-anchor="middle" fill="#F87171" font-size="15" font-weight="900">×</text>`;else if(n===0)s+=`<circle cx="${sx(i)}" cy="10" r="6" fill="none" stroke="#F3EFF6" stroke-width="2"/>`;else s+=`<circle cx="${sx(i)}" cy="${fy(n)}" r="11" fill="#C084FC"/>`;});
+  return s+`<text x="18" y="${H+8}" fill="#777" font-size="11">E  A  D  G  B  e</text></svg>`;}
+function vC(){const d=C.data,sh=SH[name()],hasEasy=sh.length>1,shape=hasEasy&&d.easy?sh[1]:sh[0];
+  return `<div class="chips">${ROOTS.map(r=>`<button class="chip ${d.root===r?'on':''}" data-r="${r}">${r}</button>`).join('')}</div>
+  <div class="chips">${TYPES.map(([t,l])=>`<button class="chip ${d.type===t?'on':''}" data-t="${t}">${l}</button>`).join('')}</div>
+  <div class="dia"><h2>${name()}</h2><small>${shape.split('').join(' ')}${hasEasy?(d.easy?' · easy version':' · full shape'):''}</small>${svg(shape)}
+  ${hasEasy?`<button class="tg ${d.easy?'on':''}" id="easy">${d.easy?'✓ Easy version':'Show the easy version'}</button>`:''}</div>
+  <button class="go alt" id="add">+ Add ${name()} to my song</button>`;}
+function vS(){return `<div class="legend" style="text-align:left;margin:0 0 4px">Tap a chord to see its shape. Long songs are just a few chords on repeat.</div><div class="song">${C.data.song.map((c,i)=>`<button data-sc="${i}">${c}</button>`).join('')}</div>
+  <button class="go alt" id="clear">Start a new song</button>${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my chords`}</button>`:''}`;}
+function vX(){const x=S.x;return `<div class="chips">${C.data.song.map(c=>`<button class="chip ${x.a===c?'on':''}" data-xa="${c}">${c}</button>`).join('')}</div><div class="legend" style="margin-top:0">switching to</div>
+  <div class="chips">${C.data.song.map(c=>`<button class="chip ${x.b===c?'on':''}" data-xb="${c}">${c}</button>`).join('')}</div>
+  <div class="big"><b>${x.n}</b><span>${x.run?`CHANGES · ${x.left}s LEFT`:x.left===0&&x.n?'CHANGES IN A MINUTE':'READY'} · BEST ${C.data.best}</span></div>
+  ${x.run?`<button class="go" id="tap">${x.n%2?x.a:x.b} → tap on each clean change</button>`:`<button class="go" id="startx">Start one minute: ${x.a} ↔ ${x.b}</button>`}`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='c'?vC():S.tab==='s'?vS():vX();const d=C.data,sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{d.root=b.dataset.r;sv();});v.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{d.type=b.dataset.t;sv();});
+  v.querySelectorAll('[data-sc]').forEach(b=>b.onclick=()=>{const n=d.song[+b.dataset.sc];d.root=n[0];d.type=n.slice(1);S.tab='c';sv();});
+  v.querySelectorAll('[data-xa]').forEach(b=>b.onclick=()=>{S.x.a=b.dataset.xa;paint();});v.querySelectorAll('[data-xb]').forEach(b=>b.onclick=()=>{S.x.b=b.dataset.xb;paint();});
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('easy',()=>{d.easy=!d.easy;sv();});on('add',()=>{if(d.song.length<12)d.song.push(name());S.shared=false;sv();});on('clear',()=>{d.song=[name()];sv();});
+  on('startx',()=>{S.x.n=0;S.x.left=60;S.x.run=true;tick=setInterval(()=>{S.x.left--;if(S.x.left<=0){clearInterval(tick);S.x.run=false;if(S.x.n>d.best){d.best=S.x.n;GX.save(d);}}if(S.tab==='x')paint();},1000);paint();});
+  on('tap',()=>{S.x.n++;paint();});
+  on('share',()=>GX.post(`Learning a song with <b>${d.song.join(' – ')}</b>. My best chord switch: ${d.best} clean changes in a minute 🎸`,'CHORD FINDER').then(o=>{if(o){S.shared=true;paint();}}));}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
