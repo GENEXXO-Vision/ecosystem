@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Scrim Planner</title>
+<style>
+/* Scrim Planner, by Level Up Academy (fictional), 2026-11-21. A GENEXXO app for EsportsXX.
+   A team's week (Mon–Sun) of sessions. Warnings: a day over the team's hours limit, a session ending after bedtime,
+   or no rest day in the week. The seeded team is an under-18 academy side (limit 2.5 h, bedtime 21:30). */
+:root{--bg:#0B0A14;--card:rgba(255,255,255,.045);--line:rgba(240,234,255,.1);--ink:#F0EAFF;--mut:rgba(240,234,255,.55);--pink:#F472B6;--cy:#22D3EE;--amb:#FBBF24}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#F472B6,#9D174D);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--pink)}
+.sum{display:flex;gap:8px;margin-bottom:8px}.sum div{flex:1;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px}.sum small{display:block;font-size:10px;font-weight:800;letter-spacing:.06em;color:var(--mut)}.sum b{font-size:18px}
+.day{padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:7px}.day .h{display:flex;justify-content:space-between;align-items:baseline}.day .h b{font-size:14px}.day .h span{color:var(--mut);font-size:12px;font-weight:700}
+.ses{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:13px}.ty{font-size:10.5px;font-weight:900;padding:3px 7px;border-radius:7px;min-width:56px;text-align:center}
+.ses .x{flex:1}.ses small{color:var(--mut)}.ck{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);background:none;cursor:pointer;color:#0B0A14;font-weight:900}.ck.on{background:#86EFAC;border-color:#86EFAC}
+.warn{margin-top:6px;font-size:12px;font-weight:800;color:var(--amb)}.rest{color:#86EFAC;font-weight:800;font-size:12.5px;margin-top:4px}
+label{display:block;font-size:12px;font-weight:800;color:var(--mut);margin:12px 0 5px;text-transform:uppercase;letter-spacing:.05em}
+.seg{display:flex;gap:5px;flex-wrap:wrap}.seg button{flex:1;min-width:44px;font:inherit;font-weight:800;font-size:12.5px;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:11px;padding:9px 2px;cursor:pointer}.seg button.on{background:var(--pink);border-color:var(--pink);color:#2A0717}
+.av{width:100%;border-collapse:collapse;margin-top:4px}.av td,.av th{text-align:center;padding:7px 2px;font-size:12px;border-bottom:1px solid var(--line)}.av th{color:var(--mut);font-weight:800}.av td:first-child{text-align:left;font-weight:700}.av i{display:inline-block;width:14px;height:14px;border-radius:4px;background:#2A2440}.av i.y{background:#86EFAC}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--pink);color:#2A0717;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🗓️</div><div><h1>Scrim Planner</h1><p>Level Up Academy · in EsportsXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="w" class="on">This week</button><button data-tab="a">Add a session</button><button data-tab="t">Team</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],TY={Scrim:'#F472B6',Review:'#22D3EE',Solo:'#A855F7',Match:'#FBBF24'};
+const seed=()=>({team:'Salford Sparks (U18)',limit:2.5,bed:21.5,ses:[
+  {d:0,ty:'Review',at:17,h:1,ok:true},{d:1,ty:'Scrim',at:18,h:1.5,ok:true},{d:1,ty:'Solo',at:19.5,h:0.5,ok:true},{d:3,ty:'Scrim',at:18,h:2,ok:false},
+  {d:4,ty:'Solo',at:17,h:1,ok:false},{d:5,ty:'Match',at:13,h:2,ok:false},{d:5,ty:'Review',at:16,h:1,ok:false}],
+  draft:{d:2,ty:'Scrim',at:19,h:1.5},
+  players:[['Kai',[1,1,0,1,1,1,0]],['Leo',[1,1,1,1,0,1,0]],['Mia',[1,0,1,1,1,1,1]],['Sam',[0,1,1,1,1,1,0]],['Zara',[1,1,1,0,1,1,0]]]});
+let C,S={tab:'w',added:false,shared:false};
+GX.init({gateway:'EsportsXX',seed}).then(c=>{C=c;paint();});
+const tm=x=>`${Math.floor(x)}:${x%1?'30':'00'}`;
+function vW(){const d=C.data,tot=d.ses.reduce((a,s)=>a+s.h,0),rest=DAYS.filter((_,i)=>!d.ses.some(s=>s.d===i)).length,done=d.ses.filter(s=>s.ok).reduce((a,s)=>a+s.h,0);
+  return `<div style="font-weight:800;margin-bottom:8px">${GX.esc(d.team)} · limit ${d.limit} h a day · bedtime ${tm(d.bed)}</div>
+  <div class="sum"><div><small>PLANNED</small><b>${tot} h</b></div><div><small>DONE</small><b>${done} h</b></div><div><small>REST DAYS</small><b style="color:${rest?'#86EFAC':'#FBBF24'}">${rest}</b></div></div>
+  ${DAYS.map((nm,i)=>{const ss=d.ses.map((s,k)=>[s,k]).filter(([s])=>s.d===i).sort((a,b)=>a[0].at-b[0].at),h=ss.reduce((a,[s])=>a+s.h,0),late=ss.some(([s])=>s.at+s.h>d.bed);
+    return `<div class="day"><div class="h"><b>${nm}</b><span>${h?h+' h':''}</span></div>${ss.length?ss.map(([s,k])=>`<div class="ses"><span class="ty" style="background:${TY[s.ty]}26;color:${TY[s.ty]}">${s.ty.toUpperCase()}</span><div class="x">${tm(s.at)}–${tm(s.at+s.h)} <small>· ${s.h} h</small></div><button class="ck ${s.ok?'on':''}" data-ok="${k}">${s.ok?'✓':''}</button></div>`).join(''):'<div class="rest">Rest day 🌙</div>'}
+    ${h>d.limit?`<div class="warn">⚠ ${h} h is over the ${d.limit} h limit</div>`:''}${late?`<div class="warn">⚠ Runs past bedtime</div>`:''}</div>`;}).join('')}
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share our week'}</button>`:''}`;}
+function vA(){const f=C.data.draft,d=C.data,dayH=d.ses.filter(s=>s.d===f.d).reduce((a,s)=>a+s.h,0)+f.h;
+  return `<label>Day</label><div class="seg">${DAYS.map((n,i)=>`<button data-d="${i}" class="${f.d===i?'on':''}">${n}</button>`).join('')}</div>
+  <label>Session</label><div class="seg">${Object.keys(TY).map(t=>`<button data-ty="${t}" class="${f.ty===t?'on':''}">${t}</button>`).join('')}</div>
+  <label>Starts</label><div class="seg">${[16,17,18,19,20].map(t=>`<button data-at="${t}" class="${f.at===t?'on':''}">${t}:00</button>`).join('')}</div>
+  <label>Length</label><div class="seg">${[0.5,1,1.5,2].map(h=>`<button data-h="${h}" class="${f.h===h?'on':''}">${h} h</button>`).join('')}</div>
+  ${dayH>d.limit?`<div class="warn">⚠ That makes ${dayH} h on ${DAYS[f.d]}, over the ${d.limit} h limit</div>`:''}${f.at+f.h>d.bed?`<div class="warn">⚠ Ends at ${tm(f.at+f.h)}, after bedtime</div>`:''}
+  <button class="go" id="add" ${S.added?'disabled':''}>${S.added?'✓ Added':'Add to the week'}</button>`;}
+function vT(){const d=C.data,cnt=i=>d.players.filter(p=>p[1][i]).length;
+  return `<table class="av"><tr><th></th>${DAYS.map(n=>`<th>${n[0]}</th>`).join('')}</tr>${d.players.map(p=>`<tr><td>${p[0]}</td>${p[1].map(x=>`<td><i class="${x?'y':''}"></i></td>`).join('')}</tr>`).join('')}
+  <tr><td style="color:var(--mut)">All 5?</td>${DAYS.map((_,i)=>`<td style="font-weight:900;color:${cnt(i)===5?'#86EFAC':'var(--mut)'}">${cnt(i)}</td>`).join('')}</tr></table>
+  <div class="legend">Everyone’s free on ${DAYS.filter((_,i)=>cnt(i)===5).join(' and ')||'no day this week'}. School and family come first.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='w'?vW():S.tab==='a'?vA():vT();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-ok]').forEach(b=>b.onclick=()=>{const s=d.ses[+b.dataset.ok];s.ok=!s.ok;sv();});
+  [['d',1],['ty',0],['at',1],['h',1]].forEach(([k,n])=>v.querySelectorAll(`[data-${k}]`).forEach(b=>b.onclick=()=>{d.draft[k]=n?+b.dataset[k]:b.dataset[k];S.added=false;sv();}));
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('add',()=>{d.ses.push(Object.assign({ok:false},d.draft));S.added=true;sv();});
+  on('share',()=>{const tot=d.ses.reduce((a,s)=>a+s.h,0),rest=DAYS.filter((_,i)=>!d.ses.some(s=>s.d===i)).length;GX.post(`${GX.esc(d.team)}: <b>${tot} hours</b> of practice planned this week, ${rest} rest days, everyone in bed on time 🗓️`,'SCRIM PLANNER').then(o=>{if(o){S.shared=true;paint();}});});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

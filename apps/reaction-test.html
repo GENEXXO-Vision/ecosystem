@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Reaction Test</title>
+<style>
+/* Reaction Test, by Kinetic Gear (fictional), 2026-11-21. A GENEXXO app for EsportsXX.
+   Five rounds: tap to start, wait for green (random 1.2–3.5 s), tap; too early = round restarts. Average and best in ms,
+   history with sleep / warm-up tags. Phone touch latency adds a little; the trend matters more than the number. */
+:root{--bg:#0A0B14;--card:rgba(255,255,255,.045);--line:rgba(234,242,255,.1);--ink:#EAF2FF;--mut:rgba(234,242,255,.55);--cy:#22D3EE;--vi:#A855F7;--lime:#A3E635}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#A855F7,#581C87);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--cy)}
+.pad{height:300px;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;user-select:none;transition:background .05s}
+.pad b{font-size:44px;font-weight:900}.pad p{font-size:14px;font-weight:700;opacity:.85;margin-top:4px}
+.pad.idle{background:linear-gradient(160deg,#1E2340,#0F1224);border:1px solid rgba(34,211,238,.3)}.pad.wait{background:#7F1D1D}.pad.go{background:#16A34A}.pad.early{background:#B45309}.pad.res{background:linear-gradient(160deg,#164E63,#0F1224)}
+.rounds{display:flex;gap:6px;margin-top:10px}.rounds div{flex:1;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 0;font-size:12.5px;font-weight:800;color:var(--mut)}.rounds div.f{color:var(--cy)}
+.seg{display:flex;gap:6px;margin-top:10px}.seg button{flex:1;font:inherit;font-weight:800;font-size:12.5px;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:11px;padding:9px 0;cursor:pointer}.seg button.on{background:var(--cy);border-color:var(--cy);color:#06202A}
+.chart{display:flex;align-items:flex-end;gap:6px;height:150px;padding:10px;background:var(--card);border:1px solid var(--line);border-radius:16px}.chart div{flex:1;text-align:center}.chart i{display:block;border-radius:6px 6px 2px 2px;margin:0 auto;width:80%}.chart small{display:block;font-size:10px;color:var(--mut);margin-top:3px}
+.it{display:flex;gap:10px;align-items:center;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px}.it b{flex:1;font-size:13px}.it span{font-weight:900;color:var(--cy)}.tag{font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:99px;background:rgba(163,230,53,.12);color:var(--lime);margin-left:4px}.tag.bad{background:rgba(248,113,113,.12);color:#F87171}
+.tip{padding:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:8px}.tip b{display:block}.tip p{color:var(--mut);font-size:13px}
+.go{width:100%;margin-top:10px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--cy);color:#06202A;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">⚡</div><div><h1>Reaction Test</h1><p>Kinetic Gear · in EsportsXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="t" class="on">Test</button><button data-tab="h">History</button><button data-tab="i">Tips</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const seed=()=>({tag:'Slept well',hist:[{d:-13,ms:298,tag:'Tired'},{d:-11,ms:271,tag:'Slept well'},{d:-9,ms:264,tag:'Warmed up'},{d:-7,ms:289,tag:'Tired'},{d:-5,ms:258,tag:'Warmed up'},{d:-3,ms:252,tag:'Slept well'},{d:-1,ms:247,tag:'Warmed up'}]});
+let C,S={tab:'t',st:'idle',r:[],t0:0,to:null,shared:false};
+GX.init({gateway:'EsportsXX',seed}).then(c=>{C=c;paint();});
+const avg=a=>Math.round(a.reduce((x,y)=>x+y,0)/a.length);
+function vT(){const r=S.r,lab={idle:['Tap to start','Five rounds. Tap the moment it turns green.'],wait:['Wait…','for green'],go:['TAP!',''],early:['Too soon!','Tap to try that round again'],res:[r.length?r[r.length-1]+' ms':'','Tap for the next round']};
+  let main=lab[S.st];if(r.length===5&&S.st==='res')main=[avg(r)+' ms','Average of five · best '+Math.min(...r)+' ms'];
+  return `<div class="pad ${S.st}" id="pad"><b>${main[0]}</b><p>${main[1]}</p></div>
+  <div class="rounds">${[0,1,2,3,4].map(i=>`<div class="${r[i]?'f':''}">${r[i]?r[i]:'—'}</div>`).join('')}</div>
+  <div class="seg">${['Slept well','Warmed up','Tired'].map(t=>`<button data-tag="${t}" class="${C.data.tag===t?'on':''}">${t}</button>`).join('')}</div>
+  ${r.length===5?`<button class="go" id="save">Save ${avg(r)} ms</button>`:''}`;}
+function vH(){const h=C.data.hist.slice(-10),mx=Math.max(...h.map(x=>x.ms)),mn=Math.min(...h.map(x=>x.ms));
+  return `<div class="chart">${h.map(x=>`<div><i style="height:${30+90*(mx-x.ms)/Math.max(1,mx-mn)}px;background:${x.tag==='Tired'?'#F87171':'linear-gradient(#22D3EE,#0E7490)'}"></i><small>${x.ms}</small></div>`).join('')}</div>
+  <div class="legend">Taller is faster. Red bars were tired days.</div>
+  ${h.slice().reverse().map(x=>`<div class="it"><b>${x.d===0?'Today':GX.day(GX.today(x.d))}<span class="tag ${x.tag==='Tired'?'bad':''}">${x.tag}</span></b><span>${x.ms} ms</span></div>`).join('')}
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share my best'}</button>`:''}`;}
+function vI(){return [['Sleep is the best upgrade','Our players are 20 to 40 ms faster after a full night’s sleep than after a late one.'],['Warm up first','Five minutes of easy aim practice or this test, before ranked.'],['Look after your eyes','Every 20 minutes, look at something 20 feet away for 20 seconds.'],['It’s a trend, not a score','Phones and screens add their own delay. Compare yourself with yourself.']].map(t=>`<div class="tip"><b>${t[0]}</b><p>${t[1]}</p></div>`).join('');}
+function tap(){if(S.st==='wait'){clearTimeout(S.to);S.st='early';paint();return;}
+  if(S.st==='go'){S.r.push(Math.round(performance.now()-S.t0));S.st='res';paint();return;}
+  if(S.r.length===5){S.r=[];}
+  S.st='wait';paint();S.to=setTimeout(()=>{S.st='go';S.t0=performance.now();paint();},1200+Math.random()*2300);}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='t'?vT():S.tab==='h'?vH():vI();
+  const pad=document.getElementById('pad');if(pad)pad.onpointerdown=tap;
+  v.querySelectorAll('[data-tag]').forEach(b=>b.onclick=()=>{d.tag=b.dataset.tag;GX.save(d);paint();});
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('save',()=>{d.hist.push({d:0,ms:avg(S.r),tag:d.tag});S.r=[];S.st='idle';GX.save(d);S.tab='h';S.shared=false;paint();});
+  on('share',()=>{const b=Math.min(...d.hist.map(x=>x.ms));GX.post(`Reaction time: <b>${b} ms</b> average, my best yet. Turns out sleep really is the best upgrade ⚡`,'REACTION TEST').then(o=>{if(o){S.shared=true;paint();}});});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(S.st==='wait'){clearTimeout(S.to);S.st='idle';}S.tab=b.dataset.tab;paint();};
+</script></body></html>
