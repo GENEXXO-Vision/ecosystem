@@ -1878,8 +1878,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-91"></script>
-<script src="genexxo-core.js?v=2026.08.26-91"></script>
+<script src="genexxo-data.js?v=2026.08.26-92"></script>
+<script src="genexxo-core.js?v=2026.08.26-92"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -1921,16 +1921,23 @@ const NETWORK_PICKS = [
   ['dress', 1],   // Silvere Paris — 🔴 live couture SS27 from Avenue Montaigne
   ['ski',   1],   // @apres_life — après on the ridge (video)
   ['climb', 1],   // @beta_breaker — V10 send (video)
+  ['christmas', 1], // -92: @fairylight_fran — a whole street lit as the Nutcracker
   ['denim', 1],   // @fade_obsessed_frank — 365-day raw fade (video)
+  ['cat', 1],     // -92: @kitten_mum_kim — Pip, twelve weeks, from the Cardiff rescue
   ['cycle', 1],   // @sunday_spokes — Cotswolds dawn ride (video)
   ['goth',  1],   // @midnight_moth — full alt look (video)
+  ['golf', 1],    // -92: @par3_paddy — fourteen years of the ballot, tomorrow the Old Course
   ['sail',  1],   // @helm_and_wake — coastal sail at first light (video)
   ['therapy', 1], // @quiet_progress — one year of therapy (video)
+  ['rome', 1],    // -92: @roma_rachel — lost in Trastevere on purpose
   ['yoga',  1],   // @saltwater_flow — sunrise beach vinyasa (video)
   ['spa',   1],   // SpaXX — hidden Iceland hot spring (video)
+  ['jigsaw', 1],  // -92: @bath_bryony — the cat and the four hours of sky
   ['bitcoin', 0], // BitcoinXX — the chain doesn't lie (featured video)
+  ['cruise', 1],  // -92: @fjordfan_freya — waking up in the Geirangerfjord
   ['currency', 1], // CurrencyXX — global FX briefing (video)
   ['mortgage', 1], // @first_home_fiona — completion day (story)
+  ['esports', 1], // -92: @kestrel_kai — grand final day
 ];
 const NETWORK_FEED = NETWORK_PICKS
   .map(([gw,i]) => { const f = (GATEWAYS[gw] && GATEWAYS[gw].feed || [])[i]; return f ? {gw, ...f} : null; })
@@ -2105,6 +2112,10 @@ const FOLLOWED_SECTORS = ['adventure','fashion','wellness','finance'];
 /* Seed a text-only post into a sector's curated feed (2026-08-06) so text cards show up at the
    sector level too — same data shape as the rest of SECTOR_FEED, just no videoSrc/img so it routes
    to a text card. Long body → the Show-more expand. Slotted into Adventure at position 2. */
+/* -92: SECTOR_FEED now arrives after start-up (genexxo-sectorfeed.js), so these three additions run when it lands. */
+let _sfExtrasDone = false;
+function sectorFeedExtras(){
+  if(_sfExtrasDone) return; _sfExtrasDone = true;
 if (SECTOR_FEED.adventure) SECTOR_FEED.adventure.splice(2, 0, {
   gateway:'climb', author:'@beta_breaker', authorSub:'ClimbXX community · 3h ago',
   text:'Sent my first V10 today after eight months on the same problem. What nobody tells you about a long project: the send is almost an anticlimax. The real work happened weeks ago — the day I stopped forcing the crux and started listening to where my body wanted to go. Learned to trust a heel I didn’t believe in, to breathe on a hold I used to rush. The grade is just the receipt. The climbing changed months before the tick did. Onto the next one.',
@@ -2122,6 +2133,8 @@ if (SECTOR_FEED.adventure) SECTOR_FEED.adventure.splice(1, 0, {
 if (SECTOR_FEED.fashion) SECTOR_FEED.fashion.splice(1, 0, {
   gateway:'dress', videoOnly:true, videoSrc:'genexxo-videos/dressxx3.mp4', gwName:'DressXX', gwAccent:'#C4384F'
 });
+}
+if (sectorFeedLoaded()) sectorFeedExtras();   // an old data file with SECTOR_FEED inline
 function initialsFromAuthor(a){
   const parts=(a||'').replace(/^@/,'').replace(/[^A-Za-z0-9_ ]/g,'').split(/[_\s]+/).filter(Boolean);
   return ((parts[0]?parts[0][0]:'')+(parts[1]?parts[1][0]:((parts[0]||'')[1]||''))).toUpperCase()||'GX';
@@ -2780,7 +2793,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-91';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-92';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -4046,7 +4059,7 @@ function pulseHtml(sk){
   const homeGws = Object.keys(GATEWAYS).filter(k => sk ? gwSecOf(GATEWAYS[k])===sk : PINNED_GWS.includes(k));
   /* -86: drops and deals come from the gateways' products, which arrive with their files. Draw now with what is here,
      redraw the Pulse once the rest is in (normally it already is: the background preload runs at startup). */
-  const missing = homeGws.filter(k=>!gwLoaded(k));
+  const missing = [...homeGws, ...(sk ? ['sectorfeed'] : [])].filter(k=>!gwLoaded(k));   // -92: 'From the sector' needs the sector feed
   if(missing.length) gwEnsure(missing).then(()=>{ if(state.pulse) buildDrawer(); }).catch(()=>{});
   const sec = (h, note) => `<div class="pls-h">${h}${note?`<i>${note}</i>`:''}</div>`;
   let h = 2166136261; for(const c of (new Date().toDateString()) + (sk||'net')) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
@@ -9306,8 +9319,8 @@ buildDrawer();
   const byName = n => n && gwKeyFromName(String(n));
   wrap('openGateway', n => byName(n));
   wrap('pickGateway', n => byName(n));
-  wrap('openSector',  sk => gwKeysInSector(sk));
-  wrap('pickSector',  sk => gwKeysInSector(sk));
+  wrap('openSector',  sk => [...gwKeysInSector(sk), 'sectorfeed']);
+  wrap('pickSector',  sk => [...gwKeysInSector(sk), 'sectorfeed']);
   wrap('openZoneFav', k => gwOfZone(k));
   wrap('openZone',    k => gwOfZone(k));
   wrap('pickZone',    k => gwOfZone(k));
@@ -9317,6 +9330,11 @@ buildDrawer();
 })();
 gwOnLoad((keys, what) => {
   evAll._c = null;                                              // events include zone and community events
+  if(what==='sectorfeed'){                                       // -92: sector feeds arrived: finish them, redraw a sector or Pulse on screen
+    sectorFeedExtras();
+    if(state.screen==='sector') render();
+    if(state.pulse) buildDrawer();
+  }
   if(what==='tags'){                                             // search tags arrived: refresh a search in progress
     if(state.gwQuery) buildRightList();
     if(state.discoverQ && typeof onDiscoverSearch==='function'){ const i=document.activeElement; onDiscoverSearch(state.discoverQ); if(i&&i.focus) i.focus(); }
@@ -9333,6 +9351,7 @@ if (ENTRY && GATEWAYS[ENTRY]) {
   if(!gwLoaded(ENTRY)) gwEnsure(ENTRY).then(()=>{ if(state.gateway===ENTRY && state.screen==='gateway'){ state._gwObj = getGateway(GATEWAYS[ENTRY].name); render(); } }).catch(()=>{});
 }
 render();
+setTimeout(()=>sectorFeedLoad().catch(()=>{}), 400);   // -92: sector feeds, straight after the first screen is drawn
 setTimeout(()=>{ (window.requestIdleCallback||setTimeout)(()=>gwPreload()); }, 2500);   // the rest, quietly, after the intro starts
 
 /* ═════════ WELCOME INTRO — "Lights up + hand-off" (2026-10-08) ═════════
