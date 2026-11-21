@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Care Reminders</title>
+<style>
+/* Care Reminders, by Purrch (fictional), 2026-11-21. A GENEXXO app for CatXX.
+   Routine jobs on the schedule YOUR VET set (the app ships with editable example intervals, not advice): flea treatment,
+   worming, vaccination booster, check-up, claw trim. Shows what's due, overdue or coming up; "Done today" resets the
+   clock and logs it. Days are relative to today, so the demo never goes stale. */
+:root{--bg:#F4FAF8;--card:#fff;--line:rgba(43,33,27,.1);--ink:#2B211B;--mut:rgba(43,33,27,.55);--teal:#2F7E73;--gin:#D9772E;--bad:#B3261E;--amb:#B7791F}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#7CC4BA,#2F7E73);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--teal)}
+.sum{display:flex;gap:8px;margin-bottom:6px}.sum div{flex:1;text-align:center;border-radius:14px;padding:10px 4px;background:var(--card);border:1px solid var(--line)}.sum b{display:block;font-size:24px;font-weight:900}.sum small{font-size:10.5px;font-weight:800;color:var(--mut);letter-spacing:.06em}
+.it{display:flex;gap:11px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;margin-top:8px}
+.it .e{font-size:22px;width:32px;text-align:center}.it .x{flex:1;min-width:0}.it .x b{display:block}.it .x small{display:block;color:var(--mut);font-size:12px}
+.tag{font-size:11px;font-weight:900;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.done{font:inherit;font-weight:800;font-size:12px;border:0;background:var(--teal);color:#fff;border-radius:99px;padding:7px 11px;cursor:pointer;white-space:nowrap}
+.dim{display:flex;align-items:center;gap:8px;padding:8px 0}.dim+.dim{border-top:1px solid var(--line)}.dim span{flex:1;font-weight:700;font-size:13.5px}.dim b{width:78px;text-align:center;font-size:14px}
+.st{width:32px;height:32px;border-radius:10px;border:1px solid var(--line);background:#E6F2EF;font:inherit;font-size:17px;font-weight:900;cursor:pointer;color:var(--ink)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 12px;margin-top:10px}
+.cats{display:flex;gap:8px;margin-bottom:10px}.cats button{flex:1;font:inherit;font-weight:800;border:1px solid var(--line);background:var(--card);border-radius:14px;padding:9px;cursor:pointer;color:var(--ink)}.cats button.on{border-color:var(--teal);background:#E6F2EF}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--teal);color:#fff;cursor:pointer}.go:disabled{background:#E1ECE9;color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🔔</div><div><h1>Care Reminders</h1><p>Purrch · in CatXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="d" class="on">What’s due</button><button data-tab="s">Schedule</button><button data-tab="h">History</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const J={flea:['🪲','Flea treatment'],worm:['💊','Worming'],vacc:['💉','Vaccination booster'],check:['🩺','Check-up'],claws:['✂️','Claw trim']};
+const seed=()=>({cat:0,cats:[{n:'Mo',e:'🐈',every:{flea:30,worm:90,vacc:365,check:365,claws:21},last:{flea:-33,worm:-60,vacc:-330,check:-330,claws:-18}},{n:'Pip',e:'🐱',every:{flea:30,worm:30,vacc:365,check:180,claws:21},last:{flea:-12,worm:-29,vacc:-20,check:-20,claws:-25}}],log:[{d:-12,t:'Pip: flea treatment'},{d:-18,t:'Mo: claw trim'},{d:-20,t:'Pip: second vaccination'},{d:-29,t:'Pip: worming'}]});
+let C,S={tab:'d',shared:false};
+GX.init({gateway:'CatXX',seed}).then(c=>{C=c;paint();});
+const cat=()=>C.data.cats[C.data.cat];
+const due=(c,k)=>c.last[k]+c.every[k];
+const tag=d=>d<0?[`${-d}d overdue`,'#FDECEA','var(--bad)']:d<=7?[d===0?'today':`in ${d}d`,'#FBF0DD','var(--amb)']:[`in ${d}d`,'#E6F2EF','var(--teal)'];
+const cats=()=>`<div class="cats">${C.data.cats.map((c,i)=>`<button class="${C.data.cat===i?'on':''}" data-c="${i}">${c.e} ${c.n}</button>`).join('')}</div>`;
+function vD(){const c=cat(),it=Object.keys(J).map(k=>({k,d:due(c,k)})).sort((a,b)=>a.d-b.d),od=it.filter(x=>x.d<0).length,wk=it.filter(x=>x.d>=0&&x.d<=7).length;
+  return cats()+`<div class="sum"><div><b style="color:var(--bad)">${od}</b><small>OVERDUE</small></div><div><b style="color:var(--amb)">${wk}</b><small>THIS WEEK</small></div><div><b style="color:var(--teal)">${it.length-od-wk}</b><small>LATER</small></div></div>
+  ${it.map(x=>{const [l,bg,fg]=tag(x.d);return `<div class="it"><div class="e">${J[x.k][0]}</div><div class="x"><b>${J[x.k][1]}</b><small>every ${c.every[x.k]} days · last ${GX.day(GX.today(c.last[x.k]),{day:'numeric',month:'short'})}</small></div><span class="tag" style="background:${bg};color:${fg}">${l}</span>${x.d<=7?`<button class="done" data-done="${x.k}">Done today</button>`:''}</div>`;}).join('')}
+  <div class="legend">Intervals are the ones your vet gave you. Change them in Schedule.</div>`;}
+function vS(){const c=cat();return cats()+`<div class="card">${Object.keys(J).map(k=>`<div class="dim"><span>${J[k][0]} ${J[k][1]}</span><button class="st" data-k="${k}" data-d="-1">−</button><b>${c.every[k]} days</b><button class="st" data-k="${k}" data-d="1">+</button></div>`).join('')}</div><div class="legend">Set these to match what your vet has advised for ${c.n}.</div>`;}
+function vH(){return `<div class="card">${C.data.log.slice().sort((a,b)=>b.d-a.d).slice(0,12).map(l=>`<div class="dim"><span style="font-weight:600">${GX.esc(l.t)}</span><b style="width:auto;color:var(--mut);font-weight:700;font-size:12px">${l.d===0?'Today':GX.day(GX.today(l.d),{day:'numeric',month:'short'})}</b></div>`).join('')}</div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share: all up to date`}</button>`:''}`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='d'?vD():S.tab==='s'?vS():vH();const d=C.data,c=cat(),sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{d.cat=+b.dataset.c;sv();});
+  v.querySelectorAll('[data-done]').forEach(b=>b.onclick=()=>{const k=b.dataset.done;c.last[k]=0;d.log.push({d:0,t:`${c.n}: ${J[k][1].toLowerCase()}`});S.shared=false;sv();});
+  v.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{const k=b.dataset.k,step=c.every[k]>=180?30:c.every[k]>=60?10:1;c.every[k]=Math.max(7,c.every[k]+step*(+b.dataset.d));sv();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>GX.post(`Flea, worming, boosters and claws: <b>all up to date</b> for ${d.cats.map(x=>x.e+' '+x.n).join(' and ')}. Thanks, Care Reminders 🔔`,'CARE REMINDERS').then(o=>{if(o){S.shared=true;paint();}});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

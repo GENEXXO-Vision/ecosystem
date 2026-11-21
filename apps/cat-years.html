@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cat Years</title>
+<style>
+/* Cat Years, by Pounce Play (fictional), 2026-11-21. A GENEXXO app for CatXX.
+   The common conversion: a cat of one is about 15 in human years, two is about 24, then about four human years for
+   each cat year (months are interpolated in the first two years). Life stages follow the widely used feline
+   stages: kitten (to 6 months), junior (to 2 years), prime (3 to 6), mature (7 to 10), senior (11 to 14),
+   super-senior (15 and over). */
+:root{--bg:#FBF7FF;--card:#fff;--line:rgba(43,33,27,.1);--ink:#2B211B;--mut:rgba(43,33,27,.55);--vio:#6D28D9;--gin:#D9772E}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#A78BFA,#6D28D9);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--vio)}
+.hero{border-radius:20px;padding:18px;text-align:center;background:linear-gradient(150deg,#7C3AED,#4C1D95);color:#fff}.hero small{font-size:11px;font-weight:800;letter-spacing:.1em;opacity:.85}.hero b{display:block;font-size:64px;font-weight:900;line-height:1.05}.hero p{opacity:.9}
+.dim{display:flex;align-items:center;gap:10px;padding:8px 0}.dim+.dim{border-top:1px solid var(--line)}.dim span{flex:1;font-weight:700}.dim b{width:56px;text-align:center;font-size:18px}
+.st{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:#F1EAFE;font:inherit;font-size:18px;font-weight:900;cursor:pointer;color:var(--ink)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:10px}
+.sg{display:flex;gap:11px;align-items:flex-start;padding:10px;border:1px solid var(--line);border-radius:14px;background:var(--card);margin-top:8px}.sg.on{border-color:var(--vio);background:#F4EEFF}
+.sg .e{font-size:24px}.sg .x{flex:1}.sg .x b{display:block}.sg .x small{color:var(--mut);font-size:12.5px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--vio);border-color:var(--vio);color:#fff}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--vio);color:#fff;cursor:pointer}.go:disabled{background:#EDE6F8;color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🎂</div><div><h1>Cat Years</h1><p>Pounce Play · in CatXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="a" class="on">Age</button><button data-tab="s">Life stages</button><button data-tab="b">Birthdays</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const STG=[['Kitten','🍼',0,0.5,'Vaccinations, neutering, and endless play.'],['Junior','🧶',0.5,2,'Full of energy; still learning the house rules.'],['Prime','🐈',3,6,'At their peak. Keep them busy and slim.'],['Mature','🛋️',7,10,'Slowing a little. Watch weight and teeth.'],['Senior','👓',11,14,'Twice-yearly check-ups are often suggested. Soft food helps old teeth.'],['Super-senior','👑',15,30,'Comfort first: warm beds, easy steps, and your vet’s advice.']];
+const seed=()=>({sel:0,cats:[{n:'Mo',e:'🐈',y:9,m:4,bd:41},{n:'Pip',e:'🐱',y:0,m:5,bd:120},{n:'Biscuit',e:'🐾',y:17,m:1,bd:9}]});
+let C,S={tab:'a',shared:false};
+GX.init({gateway:'CatXX',seed}).then(c=>{C=c;paint();});
+const cat=()=>C.data.cats[C.data.sel];
+function human(y,m){const t=y+m/12;if(t<=1)return Math.round(15*t);if(t<=2)return Math.round(15+9*(t-1));return Math.round(24+4*(t-2));}
+function stage(y,m){const t=y+m/12,i=t<0.5?0:t<3?1:t<7?2:t<11?3:t<15?4:5;return STG[i];}
+const chips=()=>`<div class="chips">${C.data.cats.map((c,i)=>`<button class="chip ${C.data.sel===i?'on':''}" data-sel="${i}">${c.e} ${c.n}</button>`).join('')}</div>`;
+function vA(){const c=cat(),h=human(c.y,c.m),s=stage(c.y,c.m);return chips()+`<div class="hero"><small>${c.n.toUpperCase()} IS ABOUT</small><b>${h}</b><p>in human years · ${s[1]} ${s[0].toLowerCase()}</p></div>
+  <div class="card"><div class="dim"><span>Years</span><button class="st" data-k="y" data-d="-1">−</button><b>${c.y}</b><button class="st" data-k="y" data-d="1">+</button></div><div class="dim"><span>Months</span><button class="st" data-k="m" data-d="-1">−</button><b>${c.m}</b><button class="st" data-k="m" data-d="1">+</button></div></div>
+  <div class="legend">The common rule: 15 at one, 24 at two, then about four a year.</div>`;}
+function vS(){const s=stage(cat().y,cat().m);return chips()+STG.map(g=>`<div class="sg ${g===s?'on':''}"><div class="e">${g[1]}</div><div class="x"><b>${g[0]}${g===s?` · ${cat().n} is here`:''}</b><small>${g[0]==='Kitten'?'Up to 6 months':g[0]==='Junior'?'6 months to 2 years':g[0]==='Super-senior'?'15 years and over':`${g[2]} to ${g[3]} years`} · ${g[4]}</small></div></div>`).join('')+`<div class="legend">Your vet knows your cat best.</div>`;}
+function vB(){const list=C.data.cats.slice().sort((a,b)=>a.bd-b.bd);return list.map(c=>`<div class="sg"><div class="e">${c.e}</div><div class="x"><b>${c.n} turns ${c.y+1}</b><small>${GX.day(GX.today(c.bd),{weekday:'long',day:'numeric',month:'long'})} · in ${c.bd} days · ${human(c.y+1,0)} in human years</small></div></div>`).join('')+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share ${list[0].n}’s birthday countdown`}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='a'?vA():S.tab==='s'?vS():vB();const d=C.data,c=cat();
+  v.querySelectorAll('[data-sel]').forEach(b=>b.onclick=()=>{d.sel=+b.dataset.sel;GX.save(d);paint();});
+  v.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{const k=b.dataset.k;c[k]=Math.max(0,c[k]+(+b.dataset.d));if(k==='m'&&c[k]>11){c.m=0;c.y++;}if(k==='y')c.y=Math.min(30,c.y);GX.save(d);paint();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const c=d.cats.slice().sort((a,b)=>a.bd-b.bd)[0];GX.post(`${c.e} ${c.n} turns ${c.y+1} in ${c.bd} days: that’s <b>${human(c.y+1,0)} in human years</b>. Cake (for me) and a sardine (for them) 🎂`,'CAT YEARS').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
