@@ -1878,8 +1878,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-92"></script>
-<script src="genexxo-core.js?v=2026.08.26-92"></script>
+<script src="genexxo-data.js?v=2026.08.26-93"></script>
+<script src="genexxo-core.js?v=2026.08.26-93"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -2793,7 +2793,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-92';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-93';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -8813,6 +8813,7 @@ function profileBody(){
     <div class="pf-tabs">${[['posts','Posts','Public'],['cal','Calendar','Only you'],['orders','Orders','Only you'],['saved','Saved','Only you']].map(([k,l,sb])=>`<div class="${tab===k?'on':''}" onclick="setProfileTab('${k}')">${l}<small>${sb}</small></div>`).join('')}</div>
     ${tab==='posts'?pfPostsHtml():tab==='cal'?pfCalHtml():tab==='orders'?pfOrdersHtml():pfSavedHtml()}
     ${state.ibxBack?`<div class="ibx-back-wrap"><div class="ibx-back" onclick="ibxReturn()"><span style="font-size:16px;line-height:1">‹</span> Back to Activity</div></div>`:''}
+    <div style="text-align:center;padding:18px 16px 0"><button onclick="tourStart()" style="font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:11px 20px;background:#D6B15C;color:#17130A;cursor:pointer">▶ Take the guided tour</button></div>
     <div onclick="vdbgTap()" style="text-align:center;padding:22px 16px 4px;font-size:10.5px;letter-spacing:.06em;color:var(--muted);opacity:.7;font-weight:700">GENEXXO · build ${BUILD}</div>
     <div style="height:16px"></div>`;
 }
@@ -9499,6 +9500,93 @@ setInterval(()=>{
     .then(()=>clearTimeout(tid))
     .catch(()=>{ clearTimeout(tid); if(_vdebug) vlog('⚠ net ping failed'); });
 }, 25000);
+
+/* ═════════ GUIDED TOUR (-93, 2026-11-21, Sean: "an actual walkthrough presentation") ═════════
+   The app presents itself: twelve stops, each opening a real screen (the same functions a tap would call) with a caption
+   card on top: step count, title, one or two lines, Back / Next, minimise, ✕. Start it from Profile ("Take the guided
+   tour") or with ?tour=1 in the link (starts when the intro has finished). On desktop ← → and Esc work, for presenting.
+   Each step rebuilds its own context (closes any open app, Pulse or tab first, then opens the gateway it needs), so Back,
+   Next and jumping are always safe. The script mirrors DEMO-WALKTHROUGH.md; change both together. */
+const TOUR = [
+  { t:'Welcome to GENEXXO', s:'One app for every interest: 10,000+ domains across 70+ sectors, each a ready-made community with its brands, pros, apps and events. This tour takes about five minutes.', go:()=>goHub() },
+  { t:'One network feed', s:'The best of the whole network in one place: live streams, brand films and people’s own moments. Every post links back to the community it came from.', go:()=>{ goHub(); setTimeout(()=>{ const sc=$('screen'); if(sc) sc.scrollTo({top:DESKTOP()?260:520, behavior:'smooth'}); }, 350); } },
+  { t:'A sector: Performing Arts', s:'Each of the 68 sectors is a place of its own, with a feed drawn from its gateways.', go:()=>openSector('perform') },
+  { t:'Pulse: what’s on right now', s:'Live now, today’s drop and deal, what’s coming up and the best posts, for this sector. Every sector has one.', go:()=>{ openSector('perform'); setTimeout(()=>{ if(!PANELS_PINNED()) openDrawer(); pulseOpen(); }, 250); }, pos:'top' },
+  { t:'A gateway: BalletXX', s:'balletxx.com is a community built around one word: its own look, feed, spaces, brands, pros, apps and events.', go:()=>openGateway('BalletXX','perform') },
+  { t:'A Brand Zone', s:'Riverside Ballet is this gateway’s Founding Partner, with its own zone: a live event, a shop and real conversations with fans.', go:()=>{ openGateway('BalletXX','perform'); openZone('riverside-ballet'); } },
+  { t:'A Pro', s:'Professionals sell their time where their customers already gather: credentials, services and real slots to book.', go:()=>{ openGateway('BalletXX','perform'); openPro('leah-campbell-ballet'); }, pos:'top' },
+  { t:'An app that talks back', s:'Third-party apps open instantly inside the gateway, nothing to download. Tap Open, allow it, and try it: what you share posts back into the community.', go:()=>{ openGateway('BalletXX','perform'); openApp('barre-timer'); }, pos:'top' },
+  { t:'A different world, same frame', s:'RomeXX: the same structure, a completely different look and audience. 51 gateways are built for this demo, and thousands more are ready to switch on.', go:()=>openGateway('RomeXX','places') },
+  { t:'Events across the network', s:'Everything live now and coming up, across the whole network, then by sector and by gateway.', go:()=>{ goHub(); setTab('events'); } },
+  { t:'The AI Host', s:'One assistant that knows every gateway. Ask it anything, or tap a suggestion.', go:()=>{ goHub(); setTab('ai'); } },
+  { t:'That’s GENEXXO', s:'Every interest, one network. Explore anything you saw; the tour is always in Profile.', go:()=>goHub(), last:true }
+];
+let tourI = -1, tourMin = false;
+function tourReset(){
+  try{ if(state.app) closeApp(true); }catch(e){}
+  state.utilOver = null;
+  if(state.pulse){ state.pulse = false; try{ syncGwChrome(); buildDrawer(); }catch(e){} }
+  try{ if(!PANELS_PINNED()) closeDrawer(); }catch(e){}
+}
+function tourCard(){
+  let c = $('tourCard');
+  if(!c){
+    const st = document.createElement('style'); st.id = 'tourCss';
+    st.textContent = `#tourCard{position:fixed;left:50%;transform:translateX(-50%);z-index:2147483000;width:min(440px,calc(100vw - 24px));
+      background:rgba(14,14,18,.94);color:#F4F1EA;border:1px solid rgba(214,177,92,.45);border-radius:20px;padding:14px 16px 12px;
+      box-shadow:0 18px 50px rgba(0,0,0,.45);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);transition:top .25s,bottom .25s}
+      #tourCard.bot{bottom:calc(84px + env(safe-area-inset-bottom))} #tourCard.top{top:calc(70px + env(safe-area-inset-top))}
+      @media(min-width:900px){#tourCard.bot{bottom:28px}#tourCard.top{top:auto;bottom:28px;left:auto;right:28px;transform:none}}
+      #tourCard .tc-h{display:flex;align-items:center;gap:8px}#tourCard .tc-n{font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#D6B15C}
+      #tourCard .tc-sp{flex:1}#tourCard .tc-i{width:28px;height:28px;border-radius:50%;border:0;background:rgba(255,255,255,.08);color:#F4F1EA;font-size:14px;font-weight:900;cursor:pointer;line-height:28px;padding:0}
+      #tourCard h3{font-size:18px;font-weight:900;margin:4px 0 4px;letter-spacing:-.01em}#tourCard p{margin:0;color:rgba(244,241,234,.78);font-size:13.5px}
+      #tourCard .tc-dots{display:flex;gap:4px;margin:12px 0 10px}#tourCard .tc-dots i{flex:1;height:3px;border-radius:3px;background:rgba(255,255,255,.14)}#tourCard .tc-dots i.on{background:#D6B15C}
+      #tourCard .tc-b{display:flex;gap:8px}#tourCard .tc-b button{flex:1;font:inherit;font-weight:800;font-size:14px;border-radius:99px;padding:10px;cursor:pointer;border:1px solid rgba(255,255,255,.16);background:transparent;color:#F4F1EA}
+      #tourCard .tc-b button.go{background:#D6B15C;border-color:#D6B15C;color:#17130A}#tourCard .tc-b button:disabled{opacity:.35;cursor:default}
+      #tourCard.min{width:auto;padding:8px 14px;border-radius:99px;cursor:pointer}#tourCard.min .tc-body{display:none}#tourCard .tc-pill{display:none;font-weight:800;font-size:13px}#tourCard.min .tc-pill{display:block}`;
+    document.head.appendChild(st);
+    c = document.createElement('div'); c.id = 'tourCard'; c.setAttribute('role','dialog'); c.setAttribute('aria-label','Guided tour');
+    document.body.appendChild(c);
+    c.addEventListener('click', e => {
+      if(c.classList.contains('min')){ tourMin = false; tourPaint(); return; }
+      const a = e.target.closest('[data-t]'); if(!a) return; e.stopPropagation();
+      const k = a.dataset.t;
+      if(k==='next') TOUR[tourI].last ? tourEnd() : tourGo(tourI+1);
+      else if(k==='back') tourGo(tourI-1);
+      else if(k==='min'){ tourMin = true; tourPaint(); }
+      else if(k==='x') tourEnd();
+    });
+  }
+  return c;
+}
+function tourPaint(){
+  const c = tourCard(), s = TOUR[tourI];
+  c.className = (s.pos==='top' ? 'top' : 'bot') + (tourMin ? ' min' : '');
+  c.innerHTML = `<div class="tc-pill">▶ Tour ${tourI+1} / ${TOUR.length} · tap to show</div>
+    <div class="tc-body"><div class="tc-h"><span class="tc-n">GUIDED TOUR · ${tourI+1} OF ${TOUR.length}</span><span class="tc-sp"></span>
+      <button class="tc-i" data-t="min" title="Hide for a moment" aria-label="Hide for a moment">–</button><button class="tc-i" data-t="x" title="End the tour" aria-label="End the tour">✕</button></div>
+    <h3>${s.t}</h3><p>${s.s}</p>
+    <div class="tc-dots">${TOUR.map((_,i)=>`<i class="${i<=tourI?'on':''}"></i>`).join('')}</div>
+    <div class="tc-b"><button data-t="back" ${tourI?'':'disabled'}>‹ Back</button><button class="go" data-t="next">${s.last?'Finish':'Next ›'}</button></div></div>`;
+}
+function tourGo(i){
+  if(i<0 || i>=TOUR.length) return;
+  tourI = i; tourMin = false;
+  tourReset();
+  try{ TOUR[i].go(); }catch(e){ console.warn('tour step', i, e); }
+  tourPaint();
+}
+function tourStart(){ tourGo(0); }
+function tourEnd(){ tourI = -1; const c = $('tourCard'); if(c) c.remove(); }
+document.addEventListener('keydown', e => {
+  if(tourI<0 || /INPUT|TEXTAREA/.test((e.target&&e.target.tagName)||'')) return;
+  if(e.key==='ArrowRight'){ TOUR[tourI].last ? tourEnd() : tourGo(tourI+1); }
+  else if(e.key==='ArrowLeft') tourGo(tourI-1);
+  else if(e.key==='Escape') tourEnd();
+});
+if(new URLSearchParams(location.search).get('tour')){
+  let waited = 0; const t = setInterval(()=>{ waited += 250; if(!$('splash') || waited>9000){ clearInterval(t); setTimeout(tourStart, 300); } }, 250);
+}
 </script>
 </body>
 </html>
