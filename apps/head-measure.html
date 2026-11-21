@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Head Measure</title>
+<style>
+/* Head Measure, by Carve Club (fictional), 2026-11-21. A GENEXXO app for SculptureXX.
+   Classical proportions for a portrait head, as fractions of crown-to-chin height: eyes halfway, hairline/brow/nose/chin
+   in thirds of the face, mouth a third of the way from nose to chin, ears from brow to nose. Scaled to the piece.
+   A starting point only: every sitter differs, which is the point of measuring them. */
+:root{--bg:#F6F3EE;--card:#fff;--line:rgba(36,32,28,.1);--ink:#24201C;--mut:rgba(36,32,28,.55);--br:#8A6A2E;--clay:#B85A33}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#C9A15A,#7A5A22);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--br)}
+label{display:block;font-size:12px;font-weight:800;color:var(--mut);margin:12px 0 6px;text-transform:uppercase;letter-spacing:.05em}
+.seg{display:flex;gap:6px}.seg button{flex:1;font:inherit;font-weight:800;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:12px;padding:10px 0;cursor:pointer}.seg button.on{background:var(--br);border-color:var(--br);color:#fff}
+.dim{display:flex;align-items:center;justify-content:center;gap:14px}.dim b{font-size:28px;font-weight:900;min-width:130px;text-align:center}
+.st{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);font:inherit;font-size:20px;font-weight:900;cursor:pointer;color:var(--ink)}
+.tbl{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px 12px;margin-top:12px}.tbl div{display:flex;justify-content:space-between;padding:8px 0;font-size:13.5px}.tbl div+div{border-top:1px solid var(--line)}.tbl span{color:var(--mut);font-weight:800;font-variant-numeric:tabular-nums}
+.big{text-align:center;margin-top:12px;border-radius:16px;padding:12px;background:linear-gradient(150deg,#3A2E1C,#1E1810);color:#F4ECDD}.big small{font-size:11px;font-weight:800;letter-spacing:.08em;color:#E2C58C}.big b{display:block;font-size:30px;font-weight:900}
+svg{display:block;width:100%;height:auto;background:var(--card);border:1px solid var(--line);border-radius:16px}
+.note{font-size:12.5px;color:var(--mut);margin-top:8px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--br);color:#fff;cursor:pointer}.go:disabled{background:#ECE6DC;color:var(--mut)}
+</style></head><body>
+<div class="hd"><div class="logo">📐</div><div><h1>Head Measure</h1><p>Carve Club · in SculptureXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="m" class="on">Measure</button><button data-tab="f">Front</button><button data-tab="s">Side</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+/* fraction of crown-to-chin height, measured down from the crown */
+const LM=[['Hairline',.14,'Where the forehead meets the hair. Varies the most.'],['Brow line',.43,'Top of the ears lines up here.'],['Eye line',.5,'Halfway down the whole head, not the face.'],['Base of nose',.71,'Bottom of the ears lines up here.'],['Mouth (lips meet)',.81,'A third of the way from nose to chin.'],['Chin',1,'Bottom of the chin, not the jaw.']];
+const SCALES=[['Life',1],['¾',.75],['½',.5],['⅓',1/3]];
+const seed=()=>({h:23,sc:0});
+let C,S={tab:'m',shared:false};
+GX.init({gateway:'SculptureXX',seed}).then(c=>{C=c;paint();});
+const H=()=>C.data.h*SCALES[C.data.sc][1],f1=x=>(Math.round(x*10)/10).toFixed(1);
+function vM(){const d=C.data,h=H();
+  return `<label>Sitter’s head height (crown to chin)</label><div class="dim"><button class="st" id="dn">−</button><b>${f1(d.h)} cm</b><button class="st" id="up">+</button></div>
+  <p class="note" style="text-align:center">Measure with calipers from the top of the skull to the bottom of the chin. An adult is usually 21 to 25 cm.</p>
+  <label>Working at</label><div class="seg">${SCALES.map((s,i)=>`<button data-sc="${i}" class="${d.sc===i?'on':''}">${s[0]}</button>`).join('')}</div>
+  <div class="big"><small>YOUR HEAD WILL BE</small><b>${f1(h)} cm</b><small style="color:#CDBB98">tall · ${f1(h*.68)} cm wide · ${f1(h*.92)} cm deep</small></div>
+  <div class="tbl">${LM.map(l=>`<div><b style="font-weight:600">${l[0]}</b><span>${f1(h*l[1])} cm from crown</span></div>`).join('')}</div>`;}
+function face(side){const W=320,Hh=360,top=24,hh=300,cx=side?150:W/2,w=hh*.68,dp=hh*.92,y=f=>top+hh*f,h=H();
+  let g=`<svg viewBox="0 0 ${W} ${Hh}" xmlns="http://www.w3.org/2000/svg">`;
+  if(!side){g+=`<ellipse cx="${cx}" cy="${top+hh*.47}" rx="${w/2}" ry="${hh*.5}" fill="#F1E6D6" stroke="#B89A6A" stroke-width="2"/>`;
+    g+=`<ellipse cx="${cx-w*.2}" cy="${y(.5)}" rx="${w*.1}" ry="${hh*.025}" fill="#fff" stroke="#8A6A2E" stroke-width="1.5"/><ellipse cx="${cx+w*.2}" cy="${y(.5)}" rx="${w*.1}" ry="${hh*.025}" fill="#fff" stroke="#8A6A2E" stroke-width="1.5"/>`;
+    g+=`<path d="M${cx-w*.08} ${y(.71)} Q${cx} ${y(.74)} ${cx+w*.08} ${y(.71)}" fill="none" stroke="#8A6A2E" stroke-width="2"/><path d="M${cx-w*.17} ${y(.81)} Q${cx} ${y(.84)} ${cx+w*.17} ${y(.81)}" fill="none" stroke="#B85A33" stroke-width="2.5"/>`;
+    g+=`<rect x="${cx-w/2-12}" y="${y(.43)}" width="12" height="${hh*.28}" rx="6" fill="#E8D7BF" stroke="#B89A6A"/><rect x="${cx+w/2}" y="${y(.43)}" width="12" height="${hh*.28}" rx="6" fill="#E8D7BF" stroke="#B89A6A"/>`;}
+  else{g+=`<ellipse cx="${cx+dp*.08}" cy="${top+hh*.45}" rx="${dp/2}" ry="${hh*.48}" fill="#F1E6D6" stroke="#B89A6A" stroke-width="2"/>`;
+    g+=`<path d="M${cx-dp*.38} ${y(.62)} L${cx-dp*.5} ${y(.71)} L${cx-dp*.38} ${y(.72)}" fill="#F1E6D6" stroke="#8A6A2E" stroke-width="2"/>`;
+    g+=`<ellipse cx="${cx+dp*.12}" cy="${y(.57)}" rx="16" ry="${hh*.14}" fill="#E8D7BF" stroke="#B89A6A" stroke-width="2"/><circle cx="${cx-dp*.3}" cy="${y(.5)}" r="5" fill="#8A6A2E"/>`;}
+  LM.forEach(l=>{g+=`<line x1="8" x2="${W-8}" y1="${y(l[1])}" y2="${y(l[1])}" stroke="#B85A33" stroke-width="1" stroke-dasharray="4 4"/><text x="${W-8}" y="${y(l[1])-4}" text-anchor="end" font-size="11" font-weight="700" fill="#6B5430" font-family="-apple-system,sans-serif">${l[0]} · ${f1(h*l[1])}</text>`;});
+  return g+`<line x1="8" x2="${W-8}" y1="${top}" y2="${top}" stroke="#8A6A2E" stroke-width="1.5"/><text x="${W-8}" y="${top-6}" text-anchor="end" font-size="11" font-weight="700" fill="#6B5430" font-family="-apple-system,sans-serif">Crown · 0</text></svg>`;}
+function vF(){return face(false)+`<p class="note">Front: the eyes sit about one eye-width apart, and the head is about two-thirds as wide as it is tall.</p>`;}
+function vS(){return face(true)+`<p class="note">Side: the ear sits just behind the middle of the skull, from brow line to base of nose. The head is almost as deep as it is tall.</p>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share my head plan'}</button>`:''}`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='m'?vM():S.tab==='f'?vF():vS();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-sc]').forEach(b=>b.onclick=()=>{d.sc=+b.dataset.sc;sv();});
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('up',()=>{d.h=Math.min(30,Math.round((d.h+.5)*10)/10);sv();});on('dn',()=>{d.h=Math.max(15,Math.round((d.h-.5)*10)/10);sv();});
+  on('share',()=>GX.post(`Starting a <b>${SCALES[d.sc][0].toLowerCase()==='life'?'life-size':SCALES[d.sc][0]+'-size'}</b> portrait head: ${f1(H())} cm tall, eyes at ${f1(H()*.5)} cm. Measured with Head Measure 📐`,'HEAD MEASURE').then(o=>{if(o){S.shared=true;paint();}}));}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Clay Shrink</title>
+<style>
+/* Clay Shrink, by Wedge & Wire (fictional), 2026-11-21. A GENEXXO app for SculptureXX.
+   Total shrinkage (drying + firing) by clay body. Wet → fired: fired = wet × (1 − s). Fired → wet: wet = fired ÷ (1 − s).
+   Percentages are typical figures; the maker's data sheet wins. */
+:root{--bg:#FBF8F4;--card:#fff;--line:rgba(42,36,32,.1);--ink:#2A2420;--mut:rgba(42,36,32,.55);--clay:#B85A33}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#E08A5F,#A34E2A);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--clay)}
+label{display:block;font-size:12px;font-weight:800;color:var(--mut);margin:12px 0 6px;text-transform:uppercase;letter-spacing:.05em}
+select{width:100%;font:inherit;font-weight:700;font-size:14px;padding:11px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.seg{display:flex;gap:6px}.seg button{flex:1;font:inherit;font-weight:800;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:12px;padding:10px 0;cursor:pointer}.seg button.on{background:var(--clay);border-color:var(--clay);color:#fff}
+.dim{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:4px}.dim b{font-size:30px;font-weight:900;min-width:120px;text-align:center}
+.st{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);font:inherit;font-size:20px;font-weight:900;cursor:pointer;color:var(--ink)}
+.res{margin-top:14px;border-radius:18px;padding:16px;background:linear-gradient(150deg,#3A2A22,#1F1712);color:#F6EEE8;display:flex;align-items:flex-end;gap:14px}
+.res .blk{flex:1;text-align:center}.res small{display:block;font-size:11px;font-weight:800;letter-spacing:.08em;color:#E9B79C}.res b{font-size:30px;font-weight:900}
+.res .vis{display:flex;align-items:flex-end;justify-content:center;gap:10px;height:110px}.res .vis i{display:block;width:44px;border-radius:8px 8px 3px 3px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--clay);color:#fff;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:#EEE7E0;color:var(--mut)}
+.it{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:8px}.it b{flex:1}.it span{color:var(--mut);font-size:12.5px;font-weight:700;text-align:right}
+.tbl{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px 12px}.tbl div{display:flex;justify-content:space-between;padding:9px 0;font-size:13.5px}.tbl div+div{border-top:1px solid var(--line)}.tbl span{color:var(--mut);font-weight:700}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🧱</div><div><h1>Clay Shrink</h1><p>Wedge &amp; Wire · in SculptureXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="c" class="on">Calculate</button><button data-tab="s">My pieces</button><button data-tab="b">Clay bodies</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const CLAYS=[['Grogged sculpting clay (red)',10],['Grogged sculpting clay (buff)',9],['Smooth earthenware',8],['Stoneware',12],['Crank (very grogged)',7],['Porcelain',14],['Paper clay',9],['Terracotta',8]];
+const seed=()=>({clay:0,mode:'wf',size:30,unit:'cm',pieces:[{n:'Portrait head (commission)',clay:0,wet:'33.3 cm',fired:'30 cm'},{n:'Sleeping hare',clay:4,wet:'21.5 cm',fired:'20 cm'},{n:'Porcelain hands',clay:5,wet:'18 cm',fired:'15.5 cm'}]});
+let C,S={tab:'c',saved:false,shared:false};
+GX.init({gateway:'SculptureXX',seed}).then(c=>{C=c;paint();});
+const r1=x=>Math.round(x*10)/10;
+function calc(){const d=C.data,s=CLAYS[d.clay][1]/100;return d.mode==='wf'?{wet:d.size,fired:r1(d.size*(1-s))}:{wet:r1(d.size/(1-s)),fired:d.size};}
+function vC(){const d=C.data,r=calc(),u=d.unit,h=v=>Math.round(100*v/Math.max(r.wet,r.fired));
+  return `<label>Clay</label><select id="clay">${CLAYS.map((c,i)=>`<option value="${i}" ${d.clay===i?'selected':''}>${c[0]} · ${c[1]}%</option>`).join('')}</select>
+  <label>I know the</label><div class="seg"><button data-m="wf" class="${d.mode==='wf'?'on':''}">Wet size</button><button data-m="fw" class="${d.mode==='fw'?'on':''}">Finished size</button></div>
+  <label>${d.mode==='wf'?'Wet size':'Finished size I want'}</label><div class="dim"><button class="st" id="dn">−</button><b>${d.size} ${u}</b><button class="st" id="up">+</button></div>
+  <div class="seg" style="margin-top:8px"><button data-u="cm" class="${u==='cm'?'on':''}">cm</button><button data-u="in" class="${u==='in'?'on':''}">inches</button></div>
+  <div class="res"><div class="blk"><div class="vis"><i style="height:${h(r.wet)}px;background:#9C6B4E"></i></div><small>MAKE IT WET</small><b>${r.wet}</b> ${u}</div><div class="blk"><div class="vis"><i style="height:${h(r.fired)}px;background:#E08A5F"></i></div><small>AFTER FIRING</small><b>${r.fired}</b> ${u}</div></div>
+  <button class="go" id="save" ${S.saved?'disabled':''}>${S.saved?'✓ Saved to My pieces':'Save this piece'}</button>
+  <div class="legend">Shrinkage is a typical figure. Test a ruler-marked tile from each new bag.</div>`;}
+function vS(){return C.data.pieces.map(p=>`<div class="it"><b>${GX.esc(p.n)}<br><small style="color:var(--mut);font-weight:600">${CLAYS[p.clay][0]}</small></b><span>wet ${p.wet}<br>fired ${p.fired}</span></div>`).join('')+
+  (GX.can('feed')?`<button class="go alt" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share my latest piece'}</button>`:'');}
+function vB(){return `<div class="tbl">${CLAYS.map(c=>`<div><b style="font-weight:600">${c[0]}</b><span>${c[1]}%</span></div>`).join('')}</div><div class="legend">Total shrinkage from wet clay to fired, at its usual firing temperature.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='c'?vC():S.tab==='s'?vS():vB();const sv=()=>{S.saved=false;GX.save(d);paint();};
+  const cl=document.getElementById('clay');if(cl)cl.onchange=()=>{d.clay=+cl.value;sv();};
+  v.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{d.mode=b.dataset.m;sv();});
+  v.querySelectorAll('[data-u]').forEach(b=>b.onclick=()=>{if(d.unit===b.dataset.u)return;d.size=b.dataset.u==='in'?Math.round(d.size/2.54):Math.round(d.size*2.54);d.unit=b.dataset.u;sv();});
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('up',()=>{d.size=Math.min(200,d.size+1);sv();});on('dn',()=>{d.size=Math.max(1,d.size-1);sv();});
+  on('save',()=>{const r=calc();d.pieces.unshift({n:'New piece, '+GX.day(GX.today(0),{day:'numeric',month:'short'}),clay:d.clay,wet:r.wet+' '+d.unit,fired:r.fired+' '+d.unit});GX.save(d);S.saved=true;paint();});
+  on('share',()=>{const p=d.pieces[0];GX.post(`Making <b>${GX.esc(p.n)}</b> at ${p.wet} wet so it fires to ${p.fired}. Sums done in Clay Shrink 🧱`,'CLAY SHRINK').then(o=>{if(o){S.shared=true;paint();}});});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Casting Calc</title>
+<style>
+/* Casting Calc, by Hollow Lane Sculpture Park (fictional), 2026-11-21. A GENEXXO app for SculptureXX.
+   Metal weight ≈ wax weight × (metal density ÷ wax density), plus an allowance for sprues and pouring cup.
+   Wax taken as 0.95 g/cm³. Prices are illustrative metal costs only; the foundry quote includes labour. */
+:root{--bg:#16120E;--card:rgba(255,255,255,.05);--line:rgba(246,238,228,.1);--ink:#F6EEE4;--mut:rgba(246,238,228,.55);--br:#D9A752;--fire:#E2683C}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#E08A5F,#A34E2A);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--br)}
+label{display:block;font-size:12px;font-weight:800;color:var(--mut);margin:12px 0 6px;text-transform:uppercase;letter-spacing:.05em}
+.seg{display:flex;gap:6px}.seg button{flex:1;font:inherit;font-weight:800;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:12px;padding:10px 0;cursor:pointer}.seg button.on{background:var(--br);border-color:var(--br);color:#1E150A}
+.dim{display:flex;align-items:center;justify-content:center;gap:14px}.dim b{font-size:28px;font-weight:900;min-width:130px;text-align:center}
+.st{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);font:inherit;font-size:20px;font-weight:900;cursor:pointer;color:var(--ink)}
+.res{margin-top:14px;border-radius:18px;padding:16px;background:linear-gradient(150deg,#4A2A14,#20140A);border:1px solid rgba(217,167,82,.3);display:flex;gap:10px}
+.res div{flex:1;text-align:center}.res small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.08em;color:#E9B97A}.res b{display:block;font-size:24px;font-weight:900;margin-top:2px}
+.it{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:8px}.it b{flex:1}.it span{color:var(--mut);font-size:12.5px;font-weight:700;text-align:right}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--br);color:#1E150A;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:var(--card);color:var(--mut)}
+.step{display:flex;gap:12px;padding:10px 0}.step+.step{border-top:1px solid var(--line)}.step i{font-style:normal;width:28px;height:28px;border-radius:50%;background:rgba(217,167,82,.15);color:var(--br);font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}.step p{color:var(--mut);font-size:13px}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🔥</div><div><h1>Casting Calc</h1><p>Hollow Lane Sculpture Park · in SculptureXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="c" class="on">Calculate</button><button data-tab="l">My casts</button><button data-tab="h">How it works</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const WAX=.95,METALS=[['Bronze',8.8,18],['Aluminium',2.7,4],['Brass',8.5,10],['Silver',10.4,780]];
+const seed=()=>({wax:420,metal:0,sprue:30,casts:[{n:'Sleeping hare',wax:310,metal:0,sprue:30,d:-21},{n:'Hand study',wax:540,metal:0,sprue:25,d:-48},{n:'Ring for Gina',wax:3,metal:3,sprue:40,d:-70}]});
+let C,S={tab:'c',saved:false,shared:false};
+GX.init({gateway:'SculptureXX',seed}).then(c=>{C=c;paint();});
+function calc(w,m,sp){const M=METALS[m],piece=w*M[1]/WAX,total=piece*(1+sp/100);return {piece,total,cost:total/1000*M[2]};}
+const kg=g=>g>=1000?(Math.round(g/100)/10)+' kg':Math.round(g)+' g',gbp=x=>'£'+(x<10?x.toFixed(2):Math.round(x).toLocaleString('en-GB'));
+function vC(){const d=C.data,r=calc(d.wax,d.metal,d.sprue);
+  return `<label>Finished wax weight</label><div class="dim"><button class="st" id="dn">−</button><b>${d.wax} g</b><button class="st" id="up">+</button></div>
+  <label>Metal</label><div class="seg">${METALS.map((m,i)=>`<button data-m="${i}" class="${d.metal===i?'on':''}">${m[0]}</button>`).join('')}</div>
+  <label>Sprues and cup</label><div class="seg">${[20,30,40].map(p=>`<button data-sp="${p}" class="${d.sprue===p?'on':''}">+${p}%</button>`).join('')}</div>
+  <div class="res"><div><small>THE PIECE</small><b>${kg(r.piece)}</b></div><div><small>TO MELT</small><b>${kg(r.total)}</b></div><div><small>METAL COST</small><b>${gbp(r.cost)}</b></div></div>
+  <button class="go" id="save" ${S.saved?'disabled':''}>${S.saved?'✓ Added to My casts':'Add to my casts'}</button>
+  <div class="legend">Solid wax gives a solid cast. Most pieces are cast hollow; ask your foundry about wall thickness.</div>`;}
+function vL(){return C.data.casts.map(c=>{const r=calc(c.wax,c.metal,c.sprue);return `<div class="it"><b>${GX.esc(c.n)}<br><small style="color:var(--mut);font-weight:600">${METALS[c.metal][0]} · ${GX.day(GX.today(c.d),{day:'numeric',month:'short'})}</small></b><span>${c.wax} g wax<br>${kg(r.total)} · ${gbp(r.cost)}</span></div>`;}).join('')+
+  (GX.can('feed')?`<button class="go alt" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share my next cast'}</button>`:'');}
+function vH(){return `<div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px 12px">${[['Weigh the wax','Your finished wax, without sprues.'],['Multiply by density','Bronze is about nine times heavier than wax, aluminium about three.'],['Add the sprues','The channels and cup that feed the metal add 20 to 40 per cent.'],['Ask the foundry','They’ll quote for the metal, the moulding, finishing and patina.']].map((s,i)=>`<div class="step"><i>${i+1}</i><div><b>${s[0]}</b><p>${s[1]}</p></div></div>`).join('')}</div>
+  <div class="legend">Metal prices change daily. Figures here are rough guides for budgeting.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='c'?vC():S.tab==='l'?vL():vH();const sv=()=>{S.saved=false;GX.save(d);paint();};
+  v.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{d.metal=+b.dataset.m;sv();});
+  v.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{d.sprue=+b.dataset.sp;sv();});
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;},stp=()=>d.wax<50?1:d.wax<500?10:50;
+  on('up',()=>{d.wax=Math.min(20000,d.wax+stp());sv();});on('dn',()=>{d.wax=Math.max(1,d.wax-stp());sv();});
+  on('save',()=>{d.casts.unshift({n:'New cast',wax:d.wax,metal:d.metal,sprue:d.sprue,d:0});GX.save(d);S.saved=true;paint();});
+  on('share',()=>{const c=d.casts[0],r=calc(c.wax,c.metal,c.sprue);GX.post(`Next pour: <b>${GX.esc(c.n)}</b> in ${METALS[c.metal][0].toLowerCase()}. ${c.wax} g of wax, about ${kg(r.total)} of metal to melt 🔥`,'CASTING CALC').then(o=>{if(o){S.shared=true;paint();}});});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
