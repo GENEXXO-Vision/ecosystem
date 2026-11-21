@@ -35,11 +35,11 @@ const DATA = 'genexxo-data.js';
 const isData = (p) => p.endsWith('/' + DATA) || p.endsWith(DATA);
 /* v7 (-86, 2026-11-20): the rest of the app's code and data.
    · genexxo-core.js: network first like the data, stored under the bare path (it was never cached, so an offline open lost it).
-   · gateways/<key>.js and genexxo-tags.js: CACHE FIRST by full URL. Their ?v= is a hash of the content, so a URL never
+   · gateways/<key>.js, genexxo-tags.js and (-92) genexxo-sectorfeed.js: CACHE FIRST by full URL. Their ?v= is a hash of the content, so a URL never
      changes meaning; once a phone has a gateway it never asks the server again until that gateway changes. This also keeps
      the background preload from sending dozens of requests to the origin on every start (the 520/525 lesson). */
 const isCore = (p) => /\/genexxo-core\.js$/.test(p);
-const isHashed = (p) => /\/genexxo-tags\.js$/.test(p) || /\/gateways\/[a-z0-9-]+\.js$/.test(p);
+const isHashed = (p) => /\/genexxo-(tags|sectorfeed)\.js$/.test(p) || /\/gateways\/[a-z0-9-]+\.js$/.test(p);   // -92: + genexxo-sectorfeed.js
 
 /* ▸ v6 RETIRE ON THE BARE DOMAIN (2026-11-02, build -76). Since 2026-11-01 Cloudflare 301s genexxovision.com/* to
    www.genexxovision.com. A worker installed earlier on the bare domain then saw every page fetch come back as a

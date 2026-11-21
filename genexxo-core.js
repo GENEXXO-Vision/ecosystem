@@ -177,7 +177,7 @@ function gwMetaFromKey(k){
    the background after startup, and genexxo-tags.js (search tags) rides along, or comes sooner on the first search.
    Every file carries a content hash in its ?v=, so a new build only re-downloads the gateways that changed. */
 const GW_STATE = { pending:{}, loaded:{}, listeners:[] };
-function gwLoaded(k){ return !(typeof GW_FILES!=='undefined' && GW_FILES[k]) || !!GW_STATE.loaded[k]; }
+function gwLoaded(k){ if(k==='sectorfeed') return sectorFeedLoaded(); return !(typeof GW_FILES!=='undefined' && GW_FILES[k]) || !!GW_STATE.loaded[k]; }
 function gwOnLoad(fn){ GW_STATE.listeners.push(fn); }
 function gxScript(src){
   return new Promise((res, rej)=>{
@@ -187,6 +187,7 @@ function gxScript(src){
   });
 }
 function gwLoad(k){
+  if(k==='sectorfeed') return sectorFeedLoad();
   if(gwLoaded(k)) return Promise.resolve();
   if(GW_STATE.pending[k]) return GW_STATE.pending[k];
   const once = () => gxScript('gateways/'+k+'.js?v='+GW_FILES[k]);
@@ -209,6 +210,19 @@ function gwTagsLoad(){
   if(typeof GW_TAGS!=='undefined') return Promise.resolve();
   return GW_TAGS_STATE || (GW_TAGS_STATE = gxScript('genexxo-tags.js?v='+(typeof GW_TAGS_V!=='undefined'?GW_TAGS_V:''))
     .then(()=>{ GW_STATE.listeners.forEach(f=>{ try{ f([], 'tags'); }catch(e){} }); }, e=>{ GW_TAGS_STATE=null; throw e; }));
+}
+/* ═════════ SECTOR FEED LOADING (-92, 2026-11-21) ═════════
+   SECTOR_FEED (every sector's curated feed, ~112 KB compressed) lives in genexxo-sectorfeed.js, not the start-up payload.
+   The app starts fetching it as soon as the first screen is drawn. Anything that shows a sector feed asks for it first:
+   gwEnsure([... , 'sectorfeed']) treats it like one more gateway file (openSector / pickSector / Pulse do this).
+   Listeners hear ([], 'sectorfeed') when it lands. */
+let SF_STATE = null, SF_READY = false;
+function sectorFeedLoaded(){ return SF_READY || typeof SECTOR_FEED_V==='undefined' || !SECTOR_FEED_V; }
+function sectorFeedLoad(){
+  if(sectorFeedLoaded()) return Promise.resolve();
+  const once = () => gxScript('genexxo-sectorfeed.js?v='+SECTOR_FEED_V);
+  return SF_STATE || (SF_STATE = once().catch(()=>new Promise(r=>setTimeout(r,800)).then(once))
+    .then(()=>{ SF_READY = true; GW_STATE.listeners.forEach(f=>{ try{ f([], 'sectorfeed'); }catch(e){} }); }, e=>{ SF_STATE=null; throw e; }));
 }
 function gwPreload(){
   const rest = (typeof GW_FILES!=='undefined') ? Object.keys(GW_FILES).filter(k=>!gwLoaded(k)) : [];
