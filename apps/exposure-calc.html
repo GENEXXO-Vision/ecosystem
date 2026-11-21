@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Exposure Calc</title>
+<style>
+/* Exposure Calc, by Shutter School (fictional), 2026-11-21. A GENEXXO app for CameraXX.
+   Full-stop scales. Aperture index up = one stop less light; shutter index up = one stop more; ISO index up = one stop more.
+   Changing one setting moves the chosen partner (shutter or ISO) to hold exposure. Sunny 16 and ND times included. */
+:root{--bg:#111418;--card:rgba(255,255,255,.05);--line:rgba(238,241,245,.1);--ink:#EEF1F5;--mut:rgba(238,241,245,.55);--amb:#F5A524;--teal:#2DD4BF}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#5EEAD4,#0F766E);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--amb)}
+.dial{display:flex;align-items:center;gap:10px;padding:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;margin-top:8px}
+.dial .n{flex:1}.dial small{display:block;font-size:11px;font-weight:800;color:var(--mut);letter-spacing:.06em}.dial b{font-size:24px;font-weight:900;font-variant-numeric:tabular-nums}.dial.auto{border-color:rgba(245,165,36,.5)}.dial.auto small{color:var(--amb)}
+.dial p{font-size:12px;color:var(--mut)}
+.st{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--card);font:inherit;font-size:18px;font-weight:900;cursor:pointer;color:var(--ink)}
+.seg{display:flex;gap:6px;margin-top:8px}.seg button{flex:1;font:inherit;font-weight:800;font-size:12.5px;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:12px;padding:9px 0;cursor:pointer}.seg button.on{background:var(--amb);border-color:var(--amb);color:#1A1205}
+label{display:block;font-size:12px;font-weight:800;color:var(--mut);margin:14px 0 4px;text-transform:uppercase;letter-spacing:.05em}
+.big{margin-top:14px;border-radius:18px;padding:16px;text-align:center;background:linear-gradient(150deg,#3B2A10,#16110A);border:1px solid rgba(245,165,36,.3)}.big small{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--amb)}.big b{display:block;font-size:30px;font-weight:900;margin:4px 0}.big p{color:var(--mut);font-size:13px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--amb);color:#1A1205;cursor:pointer}.go:disabled{background:var(--card);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🎛️</div><div><h1>Exposure Calc</h1><p>Shutter School · in CameraXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="e" class="on">Equivalent</button><button data-tab="s">Sunny 16</button><button data-tab="n">ND filters</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const AP=['f/1.4','f/2','f/2.8','f/4','f/5.6','f/8','f/11','f/16','f/22'];
+const SH=['1/4000','1/2000','1/1000','1/500','1/250','1/125','1/60','1/30','1/15','1/8','1/4','1/2','1"','2"','4"','8"','15"','30"'];
+const SHs=[1/4000,1/2000,1/1000,1/500,1/250,1/125,1/60,1/30,1/15,1/8,1/4,1/2,1,2,4,8,15,30];
+const ISO=[100,200,400,800,1600,3200,6400];
+const COND=[['Snow or sand',8,'Bright and reflective'],['Sunny',7,'Hard shadows'],['Light cloud',6,'Soft shadows'],['Overcast',5,'Barely any shadow'],['Heavy cloud',4,'No shadows'],['Open shade or sunset',3,'Low, gentle light']];
+const seed=()=>({a:5,s:4,i:0,auto:'s',cond:1,ciso:0,nd:10,base:5});
+let C,S={tab:'e',msg:'',shared:false};
+GX.init({gateway:'CameraXX',seed}).then(c=>{C=c;paint();});
+const E=()=>C.data.a-C.data.s-C.data.i;
+function change(k,dx){const d=C.data,e=E(),old={a:d.a,s:d.s,i:d.i},max={a:AP.length-1,s:SH.length-1,i:ISO.length-1};
+  d[k]=Math.min(max[k],Math.max(0,d[k]+dx));let other=d.auto===k?(k==='s'?'i':'s'):d.auto;
+  if(other==='s')d.s=d.a-d.i-e;else d.i=d.a-d.s-e;
+  if(d.s<0||d.s>max.s||d.i<0||d.i>max.i){Object.assign(d,old);S.msg='That’s as far as it goes without changing the exposure.';}else S.msg='';GX.save(d);paint();}
+const what={a:i=>i<=2?'Very shallow focus: blurry backgrounds':i<=4?'Some background blur':i<=6?'Most of the scene sharp':'Everything sharp, front to back',
+  s:i=>i<=3?'Freezes fast action':i<=6?'Fine handheld':i<=9?'Use a steady hand or a tripod':'Tripod. Moving things blur',
+  i:i=>i<=1?'Clean, no grain':i<=3?'A little grain':'Grainy, but you get the shot'};
+function dial(k,label,val){const d=C.data,isAuto=d.auto===k&&k!=='a';return `<div class="dial ${isAuto?'auto':''}"><button class="st" data-k="${k}" data-dx="-1">−</button><div class="n"><small>${label}${isAuto?' · MOVES TO MATCH':''}</small><b>${val}</b><p>${what[k](d[k])}</p></div><button class="st" data-k="${k}" data-dx="1">+</button></div>`;}
+function vE(){const d=C.data;return dial('a','APERTURE',AP[d.a])+dial('s','SHUTTER',SH[d.s])+dial('i','ISO',ISO[d.i])+
+  `<label>When I change a setting, move the</label><div class="seg"><button data-auto="s" class="${d.auto==='s'?'on':''}">Shutter</button><button data-auto="i" class="${d.auto==='i'?'on':''}">ISO</button></div>
+  <div class="legend">${S.msg||'Every combination here gives the same brightness.'}</div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share these settings'}</button>`:''}`;}
+function vS(){const d=C.data,c=COND[d.cond],iso=ISO[d.ciso],ap=AP[c[1]],sh=SHs.reduce((b,x,i)=>Math.abs(Math.log(x*iso))<Math.abs(Math.log(SHs[b]*iso))?i:b,0);
+  return `<div class="seg" style="flex-wrap:wrap">${COND.map((x,i)=>`<button data-c="${i}" class="${d.cond===i?'on':''}" style="flex:1 1 30%">${x[0]}</button>`).join('')}</div>
+  <label>Film or ISO</label><div class="seg">${ISO.slice(0,5).map((x,i)=>`<button data-ci="${i}" class="${d.ciso===i?'on':''}">${x}</button>`).join('')}</div>
+  <div class="big"><small>${c[0].toUpperCase()} · ${c[2].toUpperCase()}</small><b>${ap} at ${SH[sh]}</b><p>Sunny 16: in bright sun, f/16 at one over your ISO. Open up a stop for each step dimmer.</p></div>`;}
+function fmt(t){if(t<1){const n=Math.round(1/t);return '1/'+n+' s';}if(t<60)return (Math.round(t*10)/10)+' s';const m=Math.floor(t/60),s=Math.round(t%60);return m+' min'+(s?' '+s+' s':'');}
+function vN(){const d=C.data,b=SHs[d.base],t=b*Math.pow(2,d.nd);
+  return `<div class="dial"><button class="st" id="bdn">−</button><div class="n"><small>SHUTTER WITHOUT A FILTER</small><b>${SH[d.base]}</b></div><button class="st" id="bup">+</button></div>
+  <label>Filter strength</label><div class="seg">${[[3,'ND8 · 3 stops'],[6,'ND64 · 6'],[10,'ND1000 · 10']].map(x=>`<button data-nd="${x[0]}" class="${d.nd===x[0]?'on':''}">${x[1]}</button>`).join('')}</div>
+  <div class="big"><small>WITH THE FILTER</small><b>${fmt(t)}</b><p>${t>=1?'Use a tripod and a remote or two-second timer. Clouds streak and water turns to mist.':'Handholdable, with slower motion blur.'}</p></div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='e'?vE():S.tab==='s'?vS():vN();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>change(b.dataset.k,+b.dataset.dx));
+  v.querySelectorAll('[data-auto]').forEach(b=>b.onclick=()=>{d.auto=b.dataset.auto;sv();});
+  v.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{d.cond=+b.dataset.c;sv();});
+  v.querySelectorAll('[data-ci]').forEach(b=>b.onclick=()=>{d.ciso=+b.dataset.ci;sv();});
+  v.querySelectorAll('[data-nd]').forEach(b=>b.onclick=()=>{d.nd=+b.dataset.nd;sv();});
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('bup',()=>{d.base=Math.min(SH.length-1,d.base+1);sv();});on('bdn',()=>{d.base=Math.max(0,d.base-1);sv();});
+  on('share',()=>GX.post(`Today’s settings: <b>${AP[d.a]}, ${SH[d.s]}, ISO ${ISO[d.i]}</b>. ${what.a(d.a)}. Worked out in Exposure Calc 🎛️`,'EXPOSURE CALC').then(o=>{if(o){S.shared=true;paint();}}));}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
