@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pasta Shapes</title>
+<style>
+/* Pasta Shapes, by Testaccio Kitchen (fictional), 2026-11-21. A GENEXXO app for RomeXX.
+   Rome's four classic pastas, then sauce → shapes with the reason each pairing works, and a "to cook" list.
+   Traditional pairings; Romans argue about all of them, which is part of the fun. */
+:root{--bg:#FBF6EE;--card:#fff;--line:rgba(44,36,32,.1);--ink:#2C2420;--mut:rgba(44,36,32,.55);--ochre:#C9962B;--terra:#B5462B}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#E8B54D,#A87A1C);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--ochre)}
+.cl{padding:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;margin-top:8px}.cl .tp{display:flex;align-items:center;gap:10px}.cl .em{font-size:28px}.cl b{font-size:16px;display:block}.cl small{color:var(--mut);font-size:12px}
+.cl .ing{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}.cl .ing i{font-style:normal;font-size:11.5px;font-weight:800;padding:3px 8px;border-radius:99px;background:#F6EBD6;color:#7A5A12}
+.cl p{font-size:13px;color:var(--mut);margin-top:6px}.shape{font-weight:800;color:var(--terra)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--ochre);border-color:var(--ochre);color:#fff}
+.sh{display:flex;gap:12px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:8px}.sh svg{width:46px;height:46px;flex-shrink:0}.sh .x{flex:1}.sh b{display:block}.sh p{color:var(--mut);font-size:12.5px}
+.mini{font:inherit;font-size:12px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:7px 10px;cursor:pointer;white-space:nowrap}.mini.on{background:var(--terra);border-color:var(--terra);color:#fff}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--ochre);color:#fff;cursor:pointer}.go:disabled{background:#ECE3D6;color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🍝</div><div><h1>Pasta Shapes</h1><p>Testaccio Kitchen · in RomeXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="r" class="on">Roman four</button><button data-tab="s">By sauce</button><button data-tab="c">To cook</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const ROMAN=[['Carbonara','🥚',['guanciale','egg yolks','pecorino','black pepper'],'rigatoni or spaghetti','Off the heat, so the egg turns creamy, not scrambled. No cream.'],['Cacio e pepe','🧀',['pecorino','black pepper','pasta water'],'tonnarelli','Starchy pasta water melts the cheese into a glossy sauce.'],['Amatriciana','🍅',['guanciale','tomato','pecorino','chilli'],'bucatini','The hollow middle holds sauce. Expect splashes.'],['Gricia','🥓',['guanciale','pecorino','black pepper'],'rigatoni or mezze maniche','Carbonara without the egg; amatriciana without the tomato.']];
+const SH={rigatoni:['Rigatoni','Wide ridged tubes: sauce gets inside and clings to the ridges.','t'],spaghetti:['Spaghetti','Long and round: best with oily or creamy sauces that coat.','l'],tonnarelli:['Tonnarelli','Square-cut, thicker spaghetti with a rough surface that grips cheese.','l'],bucatini:['Bucatini','Long with a hole through the middle that fills with sauce.','l'],tagliatelle:['Tagliatelle','Flat egg ribbons that hold a meaty ragù.','r'],pappardelle:['Pappardelle','Very wide ribbons for slow-cooked sauces.','r'],trofie:['Trofie','Little twists that catch pesto.','t'],linguine:['Linguine','Flattened spaghetti, made for seafood and light sauces.','l'],ravioli:['Ravioli','Filled pillows; keep the sauce simple: butter and sage.','f'],penne:['Penne','Angled tubes for a smooth tomato sauce.','t'],ditalini:['Ditalini','Tiny tubes for soups and pasta e ceci.','t'],mezze:['Mezze maniche','Short, fat “half sleeves”, a Roman favourite.','t']};
+const SAUCE={'Carbonara':['rigatoni','spaghetti'],'Cacio e pepe':['tonnarelli','spaghetti'],'Amatriciana':['bucatini','rigatoni'],'Gricia':['rigatoni','mezze'],'Ragù':['tagliatelle','pappardelle'],'Pesto':['trofie','linguine'],'Seafood':['linguine','spaghetti'],'Butter and sage':['ravioli'],'Arrabbiata':['penne'],'Chickpea soup':['ditalini']};
+const seed=()=>({sauce:'Ragù',cook:['Cacio e pepe · tonnarelli','Ragù · pappardelle'],cooked:['Carbonara · rigatoni']});
+let C,S={tab:'r',shared:false};
+GX.init({gateway:'RomeXX',seed}).then(c=>{C=c;paint();});
+const icon=k=>{const t=SH[k][2],c='#E8B54D',s='#A87A1C';return `<svg viewBox="0 0 46 46">${t==='t'?`<rect x="8" y="14" width="30" height="18" rx="5" fill="${c}" stroke="${s}" stroke-width="1.5"/><line x1="14" y1="14" x2="14" y2="32" stroke="${s}"/><line x1="20" y1="14" x2="20" y2="32" stroke="${s}"/><line x1="26" y1="14" x2="26" y2="32" stroke="${s}"/><line x1="32" y1="14" x2="32" y2="32" stroke="${s}"/>`:t==='l'?[10,16,22,28,34].map(y=>`<path d="M4 ${y} Q23 ${y-6} 42 ${y}" stroke="${c}" stroke-width="3" fill="none"/>`).join(''):t==='r'?[12,22,32].map(y=>`<path d="M4 ${y} Q23 ${y-5} 42 ${y}" stroke="${c}" stroke-width="7" fill="none"/>`).join(''):`<rect x="9" y="9" width="28" height="28" rx="4" fill="${c}" stroke="${s}" stroke-width="2" stroke-dasharray="3 2"/><circle cx="23" cy="23" r="7" fill="#F4D58F"/>`}</svg>`;};
+function vR(){return ROMAN.map(r=>`<div class="cl"><div class="tp"><span class="em">${r[1]}</span><div><b>${r[0]}</b><small>Best with <span class="shape">${r[3]}</span></small></div></div><div class="ing">${r[2].map(i=>`<i>${i}</i>`).join('')}</div><p>${r[4]}</p></div>`).join('')+`<div class="legend">Every Roman has an opinion. These are the traditional ones.</div>`;}
+function vS(){const d=C.data,inl=x=>d.cook.includes(x)||d.cooked.includes(x);
+  return `<div class="chips">${Object.keys(SAUCE).map(s=>`<button class="chip ${d.sauce===s?'on':''}" data-sauce="${s}">${s}</button>`).join('')}</div>`+
+  SAUCE[d.sauce].map(k=>{const lab=d.sauce+' · '+SH[k][0].toLowerCase();return `<div class="sh">${icon(k)}<div class="x"><b>${SH[k][0]}</b><p>${SH[k][1]}</p></div><button class="mini ${inl(lab)?'on':''}" data-add="${GX.esc(lab)}">${inl(lab)?'✓ Listed':'+ Cook'}</button></div>`;}).join('');}
+function vC(){const d=C.data;return `<div style="font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em">To cook</div>`+(d.cook.map((x,i)=>`<div class="sh"><span style="font-size:22px">🍝</span><div class="x"><b>${GX.esc(x)}</b></div><button class="mini" data-done="${i}">Cooked it</button></div>`).join('')||'<div class="legend">Add pairings from the By sauce tab.</div>')+
+  `<div style="font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin-top:14px">Cooked</div>`+d.cooked.map(x=>`<div class="sh"><span style="font-size:22px">✅</span><div class="x"><b>${GX.esc(x)}</b></div></div>`).join('')+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share what I cooked'}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='r'?vR():S.tab==='s'?vS():vC();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-sauce]').forEach(b=>b.onclick=()=>{d.sauce=b.dataset.sauce;sv();});
+  v.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{const x=b.dataset.add;if(!d.cook.includes(x)&&!d.cooked.includes(x))d.cook.push(x);sv();});
+  v.querySelectorAll('[data-done]').forEach(b=>b.onclick=()=>{d.cooked.unshift(d.cook.splice(+b.dataset.done,1)[0]);S.shared=false;sv();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const x=d.cooked[0];GX.post(`Tonight: <b>${GX.esc(x)}</b>, the Roman way. ${d.cooked.length} classic pairings cooked so far 🍝`,'PASTA SHAPES').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

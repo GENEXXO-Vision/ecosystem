@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Rome Walks</title>
+<style>
+/* Rome Walks, by Via Lucia Tours (fictional), 2026-11-21. A GENEXXO app for RomeXX.
+   Four walks through real places in Rome, with approximate walking minutes between stops and what to look for.
+   Tick stops off; assign walks to trip days. Opening times are not shown on purpose (they change; check before you go). */
+:root{--bg:#FBF6EE;--card:#fff;--line:rgba(44,36,32,.1);--ink:#2C2420;--mut:rgba(44,36,32,.55);--terra:#B5462B;--ochre:#C9962B;--cyp:#5E8C61}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#D9734E,#9A3B22);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--terra)}
+.wk{display:flex;gap:12px;align-items:center;padding:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;margin-top:8px;cursor:pointer}.wk.on{border-color:var(--terra);box-shadow:0 0 0 2px rgba(181,70,43,.12)}
+.wk .e{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}.wk .x{flex:1}.wk b{display:block;font-size:15px}.wk small{color:var(--mut);font-size:12px}
+.prog{height:5px;border-radius:9px;background:#EFE6D8;overflow:hidden;margin-top:5px}.prog i{display:block;height:100%;background:var(--terra)}
+.hero{border-radius:18px;padding:14px;background:linear-gradient(150deg,#9A3B22,#5E2312);color:#FBEFE6}.hero small{font-size:11px;font-weight:800;letter-spacing:.08em;color:#F6CFA8}.hero h2{font-size:21px;font-weight:900;margin:2px 0}.hero p{font-size:13px;opacity:.85}
+.stop{display:flex;gap:10px;margin-top:0}.rail{display:flex;flex-direction:column;align-items:center;width:30px}.rail .dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--terra);background:var(--card);color:var(--terra);font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center;cursor:pointer}.rail .dot.on{background:var(--terra);color:#fff}.rail .ln{flex:1;width:2px;background:#E5D5C2;min-height:14px}
+.stop .x{flex:1;padding:4px 0 12px}.stop b{display:block}.stop p{color:var(--mut);font-size:12.5px}.stop .mn{font-size:11.5px;font-weight:800;color:var(--ochre);margin-bottom:2px}
+.day{padding:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:8px}.day b{display:block;margin-bottom:6px}
+.seg{display:flex;gap:5px;flex-wrap:wrap}.seg button{flex:1;min-width:60px;font:inherit;font-weight:800;font-size:12px;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:11px;padding:8px 4px;cursor:pointer}.seg button.on{background:var(--terra);border-color:var(--terra);color:#fff}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--terra);color:#fff;cursor:pointer}.go:disabled{background:#ECE3D6;color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🚶</div><div><h1>Rome Walks</h1><p>Via Lucia Tours · in RomeXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="a" class="on">Walks</button><button data-tab="w">On the walk</button><button data-tab="d">My days</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const W=[
+ {n:'Ancient Rome',em:'🏛️',bg:'#F4D9C6',km:2.6,st:[['The Colosseum',0,'Walk round the outside first: count the arches still standing.'],['Arch of Constantine',3,'Some of its carvings were taken from older monuments.'],['Via di San Gregorio',6,'The Palatine Hill on your left: emperors lived up there.'],['Via dei Fori Imperiali',12,'Look down into the forums of Trajan and Augustus.'],['Piazza del Campidoglio',10,'Michelangelo designed this square and its star-patterned paving.'],['The Forum terrace',3,'Behind the town hall: the whole Roman Forum below you.']]},
+ {n:'Fountains and piazzas',em:'⛲',bg:'#D7E6EF',km:2.4,st:[['Trevi Fountain',0,'Go early or late. Coin over your left shoulder.'],['Piazza di Pietra',7,'Eleven columns of a temple built into a later building.'],['The Pantheon',5,'Look up: the hole in the dome is nine metres across.'],['Piazza Navona',6,'The shape of the square is the old stadium’s racetrack.'],['Campo de’ Fiori',6,'A morning market; in the evening, everyone’s out.']]},
+ {n:'Trastevere',em:'🛵',bg:'#E8E0C8',km:2.2,st:[['Ponte Sisto',0,'A footbridge with the dome of St Peter’s upriver.'],['Piazza di Santa Maria in Trastevere',7,'Golden mosaics on the church front catch the evening light.'],['Via della Lungaretta',4,'Ivy, washing lines and trattorias.'],['Piazza di San Cosimato',6,'A neighbourhood market where locals actually shop.'],['Gianicolo terrace',18,'Uphill, but the best free view of Rome.']]},
+ {n:'Aventine and Testaccio',em:'🍊',bg:'#E3EBD6',km:3.0,st:[['Circus Maximus',0,'Once 150,000 seats for chariot races; now a long green field.'],['Rose Garden',8,'Quiet in winter, but the view over the Circus is lovely.'],['Orange Garden',6,'Bitter oranges and a sunset terrace.'],['The keyhole',3,'Look through the door of the Knights of Malta. You’ll see why.'],['Testaccio Market',15,'Lunch: supplì, porchetta, a glass of something.']]}];
+const seed=()=>({cur:1,done:{0:[0,1,2,3,4,5],1:[0,1]},days:{0:0,1:1,2:2,3:1}});
+let C,S={tab:'a',shared:false};
+GX.init({gateway:'RomeXX',seed}).then(c=>{C=c;paint();});
+const dn=i=>C.data.done[i]||[],mins=w=>w.st.reduce((a,s)=>a+s[1],0);
+function vA(){const d=C.data;return W.map((w,i)=>`<div class="wk ${d.cur===i?'on':''}" data-w="${i}"><div class="e" style="background:${w.bg}">${w.em}</div><div class="x"><b>${w.n}</b><small>${w.st.length} stops · ${w.km} km · about ${mins(w)} minutes’ walking</small><div class="prog"><i style="width:${100*dn(i).length/w.st.length}%"></i></div></div></div>`).join('')+`<div class="legend">Walking times only. Allow longer for looking, coffee and gelato.</div>`;}
+function vW(){const d=C.data,w=W[d.cur],k=dn(d.cur);
+  return `<div class="hero"><small>${k.length} OF ${w.st.length} STOPS</small><h2>${w.em} ${w.n}</h2><p>${w.km} km · about ${mins(w)} minutes’ walking</p></div><div style="margin-top:12px">`+
+  w.st.map((s,i)=>`<div class="stop"><div class="rail"><span class="dot ${k.includes(i)?'on':''}" data-s="${i}">${k.includes(i)?'✓':i+1}</span>${i<w.st.length-1?'<span class="ln"></span>':''}</div><div class="x">${i?`<div class="mn">${s[1]} min walk</div>`:''}<b>${s[0]}</b><p>${s[2]}</p></div></div>`).join('')+`</div>
+  ${GX.can('feed')&&k.length===w.st.length?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share this walk'}</button>`:''}`;}
+function vD(){const d=C.data;return [0,1,2].map(n=>`<div class="day"><b>Day ${n+1} · ${GX.day(GX.today(n+12),{weekday:'long',day:'numeric',month:'short'})}</b>${W.map((w,i)=>d.days[i]===n?`<div style="font-size:13px;margin-top:3px">${w.em} ${w.n} <span style="color:var(--mut)">· ${w.km} km</span></div>`:'').join('')||'<div style="color:var(--mut);font-size:13px">A free day</div>'}</div>`).join('')+
+  `<div style="margin-top:14px;font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em">Move a walk</div>`+W.map((w,i)=>`<div style="margin-top:8px;font-size:13px;font-weight:700">${w.em} ${w.n}</div><div class="seg" style="margin-top:4px">${[0,1,2].map(n=>`<button data-day="${i}:${n}" class="${d.days[i]===n?'on':''}">Day ${n+1}</button>`).join('')}</div>`).join('');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='a'?vA():S.tab==='w'?vW():vD();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{d.cur=+b.dataset.w;S.tab='w';S.shared=false;sv();});
+  v.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{const k=d.done[d.cur]=d.done[d.cur]||[],i=+b.dataset.s,x=k.indexOf(i);x<0?k.push(i):k.splice(x,1);sv();});
+  v.querySelectorAll('[data-day]').forEach(b=>b.onclick=()=>{const [i,n]=b.dataset.day.split(':').map(Number);d.days[i]=n;sv();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const w=W[d.cur];GX.post(`Walked <b>${w.n}</b> today: ${w.st.length} stops, ${w.km} km, from ${w.st[0][0]} to ${w.st[w.st.length-1][0]} 🚶`,'ROME WALKS').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

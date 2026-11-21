@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Italian Phrases</title>
+<style>
+/* Italian Phrases, by Dispensa (fictional), 2026-11-21. A GENEXXO app for RomeXX.
+   Everyday Italian for a trip to Rome, grouped by situation, with an English say-it guide (stressed syllable in capitals).
+   Star phrases, then practise the starred ones as flashcards (English → Italian). */
+:root{--bg:#F7F4EC;--card:#fff;--line:rgba(36,40,32,.1);--ink:#242820;--mut:rgba(36,40,32,.55);--cyp:#5E8C61;--terra:#B5462B;--ochre:#C9962B}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#5E8C61,#2E4E33);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--cyp)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--cyp);border-color:var(--cyp);color:#fff}
+.ph{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:7px}.ph .x{flex:1}.ph b{display:block;font-size:15.5px}.ph i{display:block;font-style:normal;color:var(--terra);font-size:12.5px;font-weight:700}.ph small{color:var(--mut);font-size:12.5px}
+.star{font-size:20px;background:none;border:0;cursor:pointer;color:#CFC8B8}.star.on{color:var(--ochre)}
+.fc{border-radius:20px;padding:26px 18px;min-height:230px;background:linear-gradient(160deg,#2E4E33,#1A2E1D);color:#F2F6EE;text-align:center;display:flex;flex-direction:column;justify-content:center;cursor:pointer}
+.fc small{font-size:11px;font-weight:800;letter-spacing:.08em;color:#BFD8B8}.fc h2{font-size:24px;font-weight:900;margin:8px 0}.fc p{font-size:14px;opacity:.85}.fc .it{color:#F6CFA8;font-weight:800}
+.row{display:flex;gap:8px}.go{flex:1;width:100%;margin-top:10px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--cyp);color:#fff;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:#E6E2D6;color:var(--mut)}
+.tip{padding:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:8px}.tip b{display:block}.tip p{color:var(--mut);font-size:13px}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">💬</div><div><h1>Italian Phrases</h1><p>Dispensa · in RomeXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="p" class="on">Phrases</button><button data-tab="f">Practise</button><button data-tab="t">Tips</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const P=[
+ ['Basics','Buongiorno','bwon-JOR-no','Good morning / hello (until mid-afternoon)'],['Basics','Buonasera','bwo-na-SEH-ra','Good evening'],['Basics','Per favore','pehr fa-VO-reh','Please'],['Basics','Grazie mille','GRAT-see-eh MEEL-leh','Thank you very much'],['Basics','Mi scusi','mee SKOO-zee','Excuse me (polite)'],['Basics','Non parlo bene l’italiano','non PAR-lo BEH-neh lee-tal-YA-no','I don’t speak Italian well'],
+ ['At the bar','Un caffè, per favore','oon kaf-FEH, pehr fa-VO-reh','An espresso, please'],['At the bar','Un cappuccino e un cornetto','oon kap-poo-CHEE-no eh oon kor-NET-to','A cappuccino and a croissant'],['At the bar','Quanto costa?','KWAN-to KOS-ta','How much is it?'],['At the bar','Posso pagare con la carta?','POS-so pa-GA-reh kon la KAR-ta','Can I pay by card?'],
+ ['Restaurant','Un tavolo per due','oon TA-vo-lo pehr DOO-eh','A table for two'],['Restaurant','Cosa ci consiglia?','KO-za chee kon-SEEL-ya','What do you recommend?'],['Restaurant','Sono allergico alle noci','SO-no al-LEHR-jee-ko AL-leh NO-chee','I’m allergic to nuts'],['Restaurant','Il conto, per favore','eel KON-to, pehr fa-VO-reh','The bill, please'],
+ ['Getting around','Dov’è il Colosseo?','do-VEH eel ko-los-SEH-o','Where is the Colosseum?'],['Getting around','Un biglietto, per favore','oon beel-YET-to, pehr fa-VO-reh','A ticket, please'],['Getting around','A che ora parte il treno?','a keh O-ra PAR-teh eel TREH-no','What time does the train leave?'],['Getting around','È lontano?','eh lon-TA-no','Is it far?']];
+const CAT=['Basics','At the bar','Restaurant','Getting around'];
+const seed=()=>({cat:'At the bar',star:[6,8,13,14,2]});
+let C,S={tab:'p',i:0,flip:false,shared:false};
+GX.init({gateway:'RomeXX',seed}).then(c=>{C=c;paint();});
+function vP(){const d=C.data;return `<div class="chips">${CAT.map(c=>`<button class="chip ${d.cat===c?'on':''}" data-c="${c}">${c}</button>`).join('')}</div>`+
+  P.map((p,i)=>[p,i]).filter(([p])=>p[0]===d.cat).map(([p,i])=>`<div class="ph"><div class="x"><b>${p[1]}</b><i>${p[2]}</i><small>${p[3]}</small></div><button class="star ${d.star.includes(i)?'on':''}" data-s="${i}">★</button></div>`).join('')+`<div class="legend">Capitals show the stressed part. ★ adds a phrase to Practise.</div>`;}
+function vF(){const st=C.data.star;if(!st.length)return '<div class="legend">Star some phrases first.</div>';const p=P[st[S.i%st.length]];
+  return `<div class="fc" id="card"><small>${(S.i%st.length)+1} OF ${st.length} · ${p[0].toUpperCase()}</small><h2>${S.flip?p[1]:p[3]}</h2>${S.flip?`<p class="it">${p[2]}</p><p style="margin-top:6px">${p[3]}</p>`:'<p>How do you say it in Italian? Tap to check</p>'}</div>
+  <div class="row"><button class="go alt" id="again">Again</button><button class="go" id="got">Got it</button></div>
+  ${GX.can('feed')?`<div class="row"><button class="go alt" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share: ${st.length} phrases learned`}</button></div>`:''}`;}
+function vT(){return [['Buongiorno or buonasera?','Switch to buonasera from mid-afternoon. Romans will notice.'],['At the bar','Pay at the till first, then show your receipt at the counter.'],['Cappuccino after lunch?','Allowed, but you’ll get a look. Locals drink it in the morning.'],['Try anyway','A few words of Italian, however wobbly, are always welcome.']].map(t=>`<div class="tip"><b>${t[0]}</b><p>${t[1]}</p></div>`).join('');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='p'?vP():S.tab==='f'?vF():vT();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{d.cat=b.dataset.c;sv();});
+  v.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{const i=+b.dataset.s,k=d.star.indexOf(i);k<0?d.star.push(i):d.star.splice(k,1);sv();});
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('card',()=>{S.flip=!S.flip;paint();});on('again',()=>{S.flip=false;S.i++;paint();});on('got',()=>{S.flip=false;S.i++;paint();});
+  on('share',()=>GX.post(`Practising <b>${d.star.length} Italian phrases</b> before Rome. “Un caffè, per favore” is nearly perfect 💬`,'ITALIAN PHRASES').then(o=>{if(o){S.shared=true;paint();}}));}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;S.flip=false;paint();};
+</script></body></html>
