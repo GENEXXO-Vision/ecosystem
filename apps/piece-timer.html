@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Piece Timer</title>
+<style>
+/* Piece Timer, by Haverly Puzzles (fictional), 2026-11-21. A GENEXXO app for JigsawXX.
+   Start / pause / finish a puzzle timer; pieces per minute = pieces ÷ minutes. Log and personal bests by size.
+   The seeded in-progress puzzle starts with time on the clock so the demo shows a pace. */
+:root{--bg:#FBF7EF;--card:#fff;--line:rgba(35,48,46,.1);--ink:#23302E;--mut:rgba(35,48,46,.55);--teal:#138A80;--mus:#D99A1E}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#2BB3A3,#11706A);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--teal)}
+.clock{border-radius:20px;padding:18px;text-align:center;background:linear-gradient(160deg,#11706A,#0B4B47);color:#fff}
+.clock small{font-size:11px;font-weight:800;letter-spacing:.08em;color:#BFF0EA}.clock h2{font-size:17px;font-weight:800;margin:2px 0}.clock b{display:block;font-size:56px;font-weight:900;font-variant-numeric:tabular-nums;margin:8px 0 2px}.clock p{font-size:13px;color:#D4F4F0}
+.seg{display:flex;gap:6px;margin-top:10px}.seg button{flex:1;font:inherit;font-weight:800;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:12px;padding:10px 0;cursor:pointer}.seg button.on{background:var(--mus);border-color:var(--mus);color:#fff}
+.row{display:flex;gap:8px}.go{flex:1;width:100%;margin-top:10px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--teal);color:#fff;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:#ECE6DA;color:var(--mut)}
+.it{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:8px}.it .x{flex:1}.it b{display:block}.it small{color:var(--mut);font-size:12px}.it span{font-weight:900;color:var(--teal);text-align:right;font-size:15px}.it span em{display:block;font-style:normal;font-size:10.5px;color:var(--mut);font-weight:700}
+.pb{border-radius:16px;padding:14px;background:var(--card);border:1px solid var(--line);margin-top:8px;display:flex;align-items:center;gap:12px}.pb .sz{width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,#F2C14E,#B9851A);color:#fff;font-weight:900;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:17px}.pb .sz small{font-size:9.5px;font-weight:800}
+.pb b{font-size:22px;font-weight:900}.pb p{color:var(--mut);font-size:12.5px}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">⏱️</div><div><h1>Piece Timer</h1><p>Haverly Puzzles · in JigsawXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="t" class="on">Timer</button><button data-tab="l">Log</button><button data-tab="b">Bests</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const seed=()=>({cur:{n:'Winter Harbour',p:1000,secs:15960},log:[
+  {n:'The Christmas Market',p:500,mins:142,d:-6},{n:'Lighthouse at Dusk',p:1000,mins:392,d:-15},{n:'Wooden Robin',p:250,mins:58,d:-21},
+  {n:'Speed heat: Allotment',p:500,mins:71,d:-28},{n:'Garden Party',p:1000,mins:455,d:-44},{n:'Big Sky (2,000)',p:2000,mins:1080,d:-70}]});
+let C,S={tab:'t',run:false,shared:false},tick=null;
+GX.init({gateway:'JigsawXX',seed}).then(c=>{C=c;paint();});
+const hms=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return (h?h+':'+String(m).padStart(2,'0'):m)+':'+String(x).padStart(2,'0');};
+const hm=m=>Math.floor(m/60)+'h '+String(m%60).padStart(2,'0')+'m',ppm=(p,m)=>(p/m).toFixed(1);
+function vT(){const c=C.data.cur,est=C.data.log.filter(x=>x.p===c.p),avg=est.length?est.reduce((a,x)=>a+x.p/x.mins,0)/est.length:4;
+  return `<div class="clock"><small>${S.run?'PUZZLING':c.secs?'PAUSED':'READY'}</small><h2>${GX.esc(c.n)} · ${c.p.toLocaleString('en-GB')} pieces</h2><b id="clk">${hms(c.secs)}</b><p>At your usual ${avg.toFixed(1)} pieces a minute, about ${hm(Math.round(c.p/avg))} in total</p></div>
+  <div class="seg">${[250,500,1000,2000].map(p=>`<button data-p="${p}" class="${c.p===p?'on':''}" ${c.secs?'disabled':''}>${p.toLocaleString('en-GB')}</button>`).join('')}</div>
+  <div class="row"><button class="go" id="run">${S.run?'Pause for tea':c.secs?'Carry on':'Start'}</button><button class="go alt" id="fin" ${c.secs>=60?'':'disabled'}>Last piece in!</button></div>
+  <div class="legend">Paused time doesn’t count. Take as many tea breaks as you like.</div>`;}
+function vL(){return C.data.log.map(x=>`<div class="it"><div class="x"><b>${GX.esc(x.n)}</b><small>${x.p.toLocaleString('en-GB')} pieces · ${hm(x.mins)} · ${x.d===0?'Today':GX.day(GX.today(x.d),{day:'numeric',month:'short'})}</small></div><span>${ppm(x.p,x.mins)}<em>PER MIN</em></span></div>`).join('')+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share my latest finish'}</button>`:'');}
+function vB(){const sizes=[...new Set(C.data.log.map(x=>x.p))].sort((a,b)=>a-b);
+  return sizes.map(p=>{const b=C.data.log.filter(x=>x.p===p).sort((a,c)=>a.mins-c.mins)[0];return `<div class="pb"><div class="sz">${p>=1000?p/1000+'k':p}<small>PIECES</small></div><div><b>${hm(b.mins)}</b><p>${GX.esc(b.n)} · ${ppm(p,b.mins)} pieces a minute</p></div></div>`;}).join('')+`<div class="legend">Competition speed puzzlers manage 500 pieces in under an hour.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='t'?vT():S.tab==='l'?vL():vB();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{d.cur.p=+b.dataset.p;sv();});
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('run',()=>{if(S.run){clearInterval(tick);S.run=false;GX.save(d);}else{S.run=true;tick=setInterval(()=>{d.cur.secs++;const k=document.getElementById('clk');if(k)k.textContent=hms(d.cur.secs);},1000);}paint();});
+  on('fin',()=>{clearInterval(tick);S.run=false;d.log.unshift({n:d.cur.n,p:d.cur.p,mins:Math.max(1,Math.round(d.cur.secs/60)),d:0});d.cur={n:'Next puzzle',p:d.cur.p,secs:0};S.tab='l';S.shared=false;sv();});
+  on('share',()=>{const x=d.log[0];GX.post(`Finished <b>${GX.esc(x.n)}</b>: ${x.p.toLocaleString('en-GB')} pieces in ${hm(x.mins)}, ${ppm(x.p,x.mins)} pieces a minute 🧩`,'PIECE TIMER').then(o=>{if(o){S.shared=true;paint();}});});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

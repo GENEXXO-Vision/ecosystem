@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Puzzle Swap</title>
+<style>
+/* Puzzle Swap, by Piece Together (fictional), 2026-11-21. A GENEXXO app for JigsawXX.
+   Your shelf of finished puzzles (offer / keep), puzzles offered nearby (Bath, fictional people), request a swap by
+   picking one of yours, and confirm all pieces were there (honesty badge). Puzzles and makers are fictional. */
+:root{--bg:#FBF7EF;--card:#fff;--line:rgba(35,48,46,.1);--ink:#23302E;--mut:rgba(35,48,46,.55);--teal:#138A80;--mus:#D99A1E;--coral:#B9472B}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#F2C14E,#B9851A);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--mus)}
+.pz{display:flex;gap:11px;align-items:center;padding:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:8px}
+.box{width:52px;height:40px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:inset 0 0 0 2px rgba(255,255,255,.4)}
+.pz .x{flex:1;min-width:0}.pz b{display:block;font-size:14px}.pz small{color:var(--mut);font-size:12px}
+.badge{font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:99px;background:rgba(19,138,128,.12);color:var(--teal);margin-left:4px}
+.mini{font:inherit;font-size:12px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:7px 10px;cursor:pointer;white-space:nowrap}.mini.on{background:var(--mus);border-color:var(--mus);color:#fff}.mini:disabled{opacity:.6}
+.pick{border-radius:16px;padding:14px;background:#FFF6E3;border:1px solid rgba(217,154,30,.35);margin-top:10px}.pick b{display:block;margin-bottom:6px}
+.sw{padding:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:8px}.sw .tp{display:flex;justify-content:space-between;align-items:center}.sw small{color:var(--mut);font-size:12px}
+.st{font-size:11px;font-weight:800;padding:3px 8px;border-radius:99px}.st.p{background:rgba(217,154,30,.15);color:#9A6B10}.st.a{background:rgba(19,138,128,.13);color:var(--teal)}.st.d{background:#EEE;color:#555}
+.go{width:100%;margin-top:10px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--mus);color:#fff;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:#ECE6DA;color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🔄</div><div><h1>Puzzle Swap</h1><p>Piece Together · in JigsawXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="n" class="on">Nearby</button><button data-tab="m">My shelf</button><button data-tab="s">Swaps</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const seed=()=>({mine:[
+  {n:'Lighthouse at Dusk',p:1000,mk:'Haverly',em:'🗼',bg:'#F2C14E',offer:true},{n:'The Christmas Market',p:500,mk:'Haverly',em:'🎄',bg:'#5E8C61',offer:true},
+  {n:'Cats of Venice',p:1000,mk:'Puzzle Post',em:'🐈',bg:'#7A52AE',offer:false},{n:'Seed Packets',p:500,mk:'Bramble Games',em:'🌱',bg:'#8FBF6A',offer:true}],
+ near:[
+  {n:'Winter Harbour',p:1000,mk:'Haverly',em:'⚓',bg:'#2BB3A3',who:'Bryony',km:0.8,swaps:22},{n:'Bookshop Window',p:1000,mk:'Puzzle Post',em:'📚',bg:'#B9472B',who:'Tom',km:1.4,swaps:9},
+  {n:'Birds of Britain',p:500,mk:'Bramble Games',em:'🐦',bg:'#5E8C61',who:'Nora',km:2.1,swaps:4},{n:'Big Sky (2,000)',p:2000,mk:'Haverly',em:'☁️',bg:'#7CB8E8',who:'Sasha',km:3.0,swaps:31},
+  {n:'Sweet Shop',p:750,mk:'Bramble Games',em:'🍬',bg:'#F58B6C',who:'Ade',km:3.6,swaps:12}],
+ swaps:[{get:'Bookshop Window',give:'Seed Packets',who:'Tom',st:'a',d:0},{get:'Garden Party',give:'Fox in the Snow',who:'Bryony',st:'d',d:-9,all:true},{get:'Robin (wooden)',give:'Allotment',who:'Sasha',st:'d',d:-30,all:true}],ask:null});
+let C,S={tab:'n',shared:false};
+GX.init({gateway:'JigsawXX',seed}).then(c=>{C=c;paint();});
+const box=z=>`<div class="box" style="background:${z.bg}">${z.em}</div>`;
+function vN(){const d=C.data,asked=n=>d.swaps.some(s=>s.get===n&&s.st!=='d');
+  return d.near.map((z,i)=>`<div class="pz">${box(z)}<div class="x"><b>${z.n}</b><small>${z.p.toLocaleString('en-GB')} pieces · ${z.mk}<br>${z.who}, ${z.km} km away<span class="badge">✓ ${z.swaps} complete swaps</span></small></div><button class="mini ${d.ask===i?'on':''}" data-ask="${i}" ${asked(z.n)?'disabled':''}>${asked(z.n)?'Asked':'Swap?'}</button></div>`+
+   (d.ask===i?`<div class="pick"><b>What will you give ${z.who}?</b>${d.mine.filter(m=>m.offer).map(m=>`<div class="pz" style="margin-top:6px">${box(m)}<div class="x"><b>${m.n}</b><small>${m.p} pieces</small></div><button class="mini" data-give="${GX.esc(m.n)}">Offer this</button></div>`).join('')}</div>`:'')).join('')+
+  `<div class="legend">Swaps happen at the monthly Bath Puzzle Swap, or anywhere you agree.</div>`;}
+function vM(){return C.data.mine.map((z,i)=>`<div class="pz">${box(z)}<div class="x"><b>${z.n}</b><small>${z.p.toLocaleString('en-GB')} pieces · ${z.mk}</small></div><button class="mini ${z.offer?'on':''}" data-off="${i}">${z.offer?'Up for swap':'Keeping'}</button></div>`).join('')+`<div class="legend">Only offer puzzles with every piece. If one’s missing, say so.</div>`;}
+function vS(){const d=C.data,lab={p:'Waiting for reply',a:'Agreed · Sat at the swap',d:'Done'};
+  return d.swaps.map((s,i)=>`<div class="sw"><div class="tp"><b>${GX.esc(s.get)}</b><span class="st ${s.st}">${lab[s.st]}</span></div><small>From ${s.who}, for your ${GX.esc(s.give)}${s.d?' · '+GX.day(GX.today(s.d),{day:'numeric',month:'short'}):''}</small>${s.st==='a'?`<button class="go alt" data-all="${i}">All pieces there ✓</button>`:''}${s.st==='d'&&s.all?'<div style="font-size:12px;color:#138A80;font-weight:800;margin-top:4px">✓ Every piece present</div>':''}</div>`).join('')+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share my swap count'}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='n'?vN():S.tab==='m'?vM():vS();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-ask]').forEach(b=>b.onclick=()=>{const i=+b.dataset.ask;d.ask=d.ask===i?null:i;sv();});
+  v.querySelectorAll('[data-give]').forEach(b=>b.onclick=()=>{const z=d.near[d.ask];d.swaps.unshift({get:z.n,give:b.dataset.give,who:z.who,st:'p',d:0});d.ask=null;S.tab='s';sv();setTimeout(()=>{const s=d.swaps.find(x=>x.st==='p');if(s){s.st='a';GX.save(d);if(S.tab==='s')paint();}},2500);});
+  v.querySelectorAll('[data-off]').forEach(b=>b.onclick=()=>{const z=d.mine[+b.dataset.off];z.offer=!z.offer;sv();});
+  v.querySelectorAll('[data-all]').forEach(b=>b.onclick=()=>{const s=d.swaps[+b.dataset.all];s.st='d';s.all=true;sv();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const n=d.swaps.filter(s=>s.st==='d').length;GX.post(`<b>${n} puzzle swaps</b> done, every piece present. Not bought a new jigsaw since the summer 🧩`,'PUZZLE SWAP').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
