@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fresh Check</title>
+<style>
+/* Fresh Check, by Crema Club (fictional), 2026-11-21. A GENEXXO app for CoffeeXX.
+   Days since roasting, against typical windows: filter rests ~3 days and is at its best to ~30; espresso rests ~7
+   and is best to ~40. After that it isn't bad, just flatter. Rough guidance; your taste decides. */
+:root{--bg:#15100C;--card:rgba(255,255,255,.05);--line:rgba(245,237,228,.1);--ink:#F5EDE4;--mut:rgba(245,237,228,.55);--oat:#A8916C;--ok:#86C67A;--amb:#E8B04A;--past:#B98C78}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#E9DCC7,#A8916C);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--oat)}
+.bag{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin-top:8px}
+.bag .t{display:flex;justify-content:space-between;align-items:center;gap:8px}.bag b{font-size:14.5px}.bag small{display:block;color:var(--mut);font-size:12px}
+.tag{font-size:11px;font-weight:900;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.track{position:relative;height:10px;border-radius:99px;margin-top:9px;background:linear-gradient(90deg,rgba(232,176,74,.35) 0 var(--r),rgba(134,198,122,.45) var(--r) var(--p),rgba(185,140,120,.3) var(--p) 100%)}
+.track i{position:absolute;top:-4px;width:4px;height:18px;border-radius:2px;background:#fff;transform:translateX(-2px)}
+.hero{border-radius:18px;padding:16px;background:linear-gradient(150deg,#3A2A18,#1E150C);border:1px solid rgba(168,145,108,.3)}.hero small{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--oat)}.hero h2{font-size:20px;font-weight:900;margin:4px 0}.hero p{color:var(--mut);font-size:13px}
+.g{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin-top:8px}.g b{display:block}.g p{color:var(--mut);font-size:13px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--oat);color:#1E150C;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:var(--card);color:var(--mut)}
+.fin{font:inherit;font-weight:800;font-size:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:6px 10px;cursor:pointer}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🗓️</div><div><h1>Fresh Check</h1><p>Crema Club · in CoffeeXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="b" class="on">My bags</button><button data-tab="n">Open next</button><button data-tab="g">Guide</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const W={Filter:{rest:3,peak:30},Espresso:{rest:7,peak:40}};
+const seed=()=>({bags:[{n:'Yirgacheffe Natural',r:'Ember & Bean',u:'Filter',roast:-2,open:false},{n:'House Espresso',r:'Ember & Bean',u:'Espresso',roast:-12,open:true},{n:'Huila Washed',r:'Peak Roastery',u:'Filter',roast:-26,open:true},{n:'Kenya AA',r:'Hillcrest Roasters',u:'Filter',roast:-41,open:true}],done:0});
+let C,S={tab:'b',shared:false};
+GX.init({gateway:'CoffeeXX',seed}).then(c=>{C=c;paint();});
+const age=b=>-b.roast;
+const st=b=>{const w=W[b.u],a=age(b);return a<w.rest?['Resting',`ready in ${w.rest-a}d`,'rgba(232,176,74,.18)','var(--amb)']:a<=w.peak?['At its best',`${w.peak-a}d left at peak`,'rgba(134,198,122,.18)','var(--ok)']:['Past its peak','still fine, a bit flatter','rgba(185,140,120,.18)','var(--past)'];};
+const track=b=>{const w=W[b.u],max=Math.max(w.peak+15,age(b)+3),r=100*w.rest/max,p=100*w.peak/max,x=Math.min(100,100*age(b)/max);return `<div class="track" style="--r:${r}%;--p:${p}%"><i style="left:${x}%"></i></div>`;};
+function vB(){return C.data.bags.map((b,i)=>{const [l,sub,bg,fg]=st(b);return `<div class="bag"><div class="t"><div><b>${GX.esc(b.n)}</b><small>${GX.esc(b.r)} · ${b.u.toLowerCase()} · roasted ${age(b)} days ago${b.open?' · open':''}</small></div><span class="tag" style="background:${bg};color:${fg}">${l}</span></div>${track(b)}<small style="margin-top:6px">${sub}</small>${b.open?`<div style="margin-top:8px"><button class="fin" data-fin="${i}">Finished this bag</button></div>`:''}</div>`;}).join('')+
+  `<button class="go alt" id="add">+ Add today’s delivery</button>`;}
+function vN(){const ready=C.data.bags.filter(b=>age(b)>=W[b.u].rest).sort((a,b)=>(W[a.u].peak-age(a))-(W[b.u].peak-age(b))),n=ready[0];
+  return n?`<div class="hero"><small>OPEN NEXT</small><h2>${GX.esc(n.n)}</h2><p>${GX.esc(n.r)} · roasted ${age(n)} days ago. ${age(n)>W[n.u].peak?'Past its peak: finish it soon, before the fresh bags.':'Closest to the end of its best window, so drink this one first.'}</p></div>
+  <div class="legend">Resting bags (${C.data.bags.filter(b=>age(b)<W[b.u].rest).length}) wait their turn.</div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share what I’m brewing`}</button>`:''}`:'<div class="legend">Everything is still resting. Patience!</div>';}
+function vG(){return [['Why rest coffee?','Freshly roasted beans release carbon dioxide for a few days. Too much gas makes brewing uneven, so a short rest helps.'],['Filter: about 3 to 30 days','Lighter roasts for filter are usually at their best from a few days to about a month after roasting.'],['Espresso: about 7 to 40 days','Espresso is pickier: a week’s rest often makes shots more even.'],['Store it well','Keep beans in the bag they came in, sealed, away from light and heat. The fridge isn’t needed.']].map(([b,p])=>`<div class="g"><b>${b}</b><p>${p}</p></div>`).join('')+`<div class="legend">General guidance. Your taste decides.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='b'?vB():S.tab==='n'?vN():vG();const d=C.data;
+  v.querySelectorAll('[data-fin]').forEach(b=>b.onclick=()=>{d.bags.splice(+b.dataset.fin,1);d.done++;GX.save(d);paint();});
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('add',()=>{d.bags.push({n:'Crema Club: December',r:'Peak District roaster',u:'Filter',roast:-1,open:false});GX.save(d);paint();});
+  on('share',()=>{const n=d.bags.filter(b=>age(b)>=W[b.u].rest)[0];GX.post(`Brewing next: <b>${GX.esc(n.n)}</b> from ${GX.esc(n.r)}, ${age(n)} days off roast. Fresh Check says now’s the time 🗓️`,'FRESH CHECK').then(o=>{if(o){S.shared=true;paint();}});});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

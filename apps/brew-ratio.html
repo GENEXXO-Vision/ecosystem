@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Brew Ratio</title>
+<style>
+/* Brew Ratio, by Pourwell (fictional), 2026-11-21. A GENEXXO app for CoffeeXX.
+   Common starting ratios (coffee:water by weight): pour-over 1:16, Chemex 1:16, cafetière 1:15, AeroPress 1:13,
+   cold brew 1:8 (then dilute), espresso 1:2 (an 18g dose). Cups are 250ml (espresso: double shots). The timer runs a
+   30-second bloom with twice the coffee's weight in water, then the main pour. Starting points; adjust to taste. */
+:root{--bg:#15100C;--card:rgba(255,255,255,.05);--line:rgba(245,237,228,.1);--ink:#F5EDE4;--mut:rgba(245,237,228,.55);--crema:#D4A373;--ember:#E8783A}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#D4A373,#8A5A2B);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--crema)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--crema);border-color:var(--crema);color:#2A1A0E}
+.cups{display:flex;align-items:center;justify-content:center;gap:18px;margin:14px 0 4px}.cups b{font-size:40px;font-weight:900;min-width:60px;text-align:center}.cups small{display:block;text-align:center;font-size:11px;font-weight:800;color:var(--mut);letter-spacing:.06em}
+.st{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);font:inherit;font-size:22px;font-weight:900;cursor:pointer;color:var(--ink)}
+.big{display:flex;gap:8px;margin-top:10px}.big div{flex:1;border-radius:16px;padding:14px 6px;text-align:center;background:linear-gradient(150deg,#3A2616,#1E140C);border:1px solid rgba(212,163,115,.25)}.big b{display:block;font-size:30px;font-weight:900;color:var(--crema)}.big span{font-size:11px;font-weight:800;color:var(--mut);letter-spacing:.06em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px 12px;margin-top:10px}
+.row{display:flex;justify-content:space-between;padding:9px 0;font-size:13.5px}.row+.row{border-top:1px solid var(--line)}.row span{color:var(--mut)}
+.timer{text-align:center;padding:10px 0}.timer b{font-size:72px;font-weight:900;font-variant-numeric:tabular-nums;display:block;line-height:1}.timer p{color:var(--mut);margin-top:6px}
+.stage{border-radius:14px;padding:12px;margin-top:10px;text-align:center;font-weight:800;background:rgba(212,163,115,.12);color:var(--crema)}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--crema);color:#2A1A0E;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:var(--card);color:var(--mut)}
+.m{display:flex;gap:11px;align-items:center;padding:11px;border:1px solid var(--line);border-radius:14px;background:var(--card);margin-top:8px;cursor:pointer}.m.on{border-color:var(--crema)}.m .e{font-size:24px}.m .x{flex:1}.m .x b{display:block}.m .x small{color:var(--mut);font-size:12px}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">⚖️</div><div><h1>Brew Ratio</h1><p>Pourwell · in CoffeeXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="r" class="on">Recipe</button><button data-tab="t">Brew timer</button><button data-tab="m">Methods</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const M={
+ 'Pour-over':{e:'🔻',r:16,t:'92–96°C',g:'Medium-fine, like table salt',time:180,unit:'cup',ml:250},
+ 'Cafetière':{e:'🫖',r:15,t:'93°C',g:'Coarse, like sea salt',time:240,unit:'cup',ml:250},
+ 'AeroPress':{e:'🧪',r:13,t:'85°C',g:'Fine',time:120,unit:'cup',ml:220},
+ 'Chemex':{e:'⏳',r:16,t:'94°C',g:'Medium-coarse',time:270,unit:'cup',ml:250},
+ 'Espresso':{e:'☕',r:2,t:'93°C',g:'Fine, like flour',time:28,unit:'double shot',dose:18},
+ 'Cold brew':{e:'🧊',r:8,t:'Cold water',g:'Coarse',time:57600,unit:'cup',ml:250,note:'Steep 16 hours in the fridge, then dilute 1:1 with water or milk.'}};
+const seed=()=>({m:'Pour-over',cups:2,brews:14});
+let C,S={tab:'r',run:false,left:0,phase:'idle',shared:false},tick=null;
+GX.init({gateway:'CoffeeXX',seed}).then(c=>{C=c;paint();});
+const calc=()=>{const m=M[C.data.m],n=C.data.cups;if(m.dose){const c=m.dose*n;return {c,w:c*m.r,out:true};}const w=m.ml*n;return {c:Math.round(w/m.r*10)/10,w};};
+const mmss=s=>s>=3600?`${Math.round(s/3600)}h`:`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+function vR(){const m=M[C.data.m],r=calc();return `<div class="chips">${Object.keys(M).map(k=>`<button class="chip ${C.data.m===k?'on':''}" data-m="${k}">${M[k].e} ${k}</button>`).join('')}</div>
+  <div class="cups"><button class="st" id="dn">−</button><div><b>${C.data.cups}</b><small>${(m.unit+(C.data.cups>1?'S':'')).toUpperCase()}</small></div><button class="st" id="up">+</button></div>
+  <div class="big"><div><b>${r.c}g</b><span>COFFEE</span></div><div><b>${r.w}${r.out?'g':'g'}</b><span>${r.out?'IN THE CUP':'WATER'}</span></div><div><b>1:${m.r}</b><span>RATIO</span></div></div>
+  <div class="card"><div class="row"><span>Grind</span><b>${m.g}</b></div><div class="row"><span>Water</span><b>${m.t}</b></div><div class="row"><span>Brew time</span><b>${mmss(m.time)}</b></div></div>
+  <div class="legend">${m.note||'A starting point. Too sour? Grind finer. Too bitter? Grind coarser.'}</div>`;}
+function vT(){const m=M[C.data.m],r=calc(),bloom=Math.round(r.c*2);
+  if(m.time>3600)return `<div class="stage">Cold brew steeps for 16 hours. No timer needed: set a reminder and go to bed 🌙</div>`;
+  const lab=S.phase==='bloom'?`Bloom: pour ${bloom}g and wait`:S.phase==='brew'?`Pour slowly to ${r.w}g`:S.phase==='done'?'Done. Enjoy ☕':`${C.data.m}: ${r.c}g coffee, ${r.w}g water`;
+  return `<div class="timer"><b>${mmss(S.phase==='idle'?m.time:S.left)}</b><p>${S.phase==='idle'?'Ready when you are':S.run?'Brewing…':S.phase==='done'?'':'Paused'}</p></div><div class="stage">${lab}</div>
+  <button class="go" id="run">${S.run?'Pause':S.phase==='done'?'Brew again':S.phase==='idle'?'Start':'Resume'}</button>`;}
+function vM(){return Object.entries(M).map(([k,m])=>`<div class="m ${C.data.m===k?'on':''}" data-m="${k}"><div class="e">${m.e}</div><div class="x"><b>${k} · 1:${m.r}</b><small>${m.g} · ${m.t} · ${mmss(m.time)}</small></div></div>`).join('')+
+  (GX.can('feed')?`<button class="go alt" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my ${C.data.m.toLowerCase()} recipe`}</button>`:'');}
+function stop(){clearInterval(tick);tick=null;S.run=false;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='r'?vR():S.tab==='t'?vT():vM();const d=C.data;
+  v.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{d.m=b.dataset.m;stop();S.phase='idle';S.shared=false;GX.save(d);paint();});
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('up',()=>{d.cups=Math.min(8,d.cups+1);GX.save(d);paint();});on('dn',()=>{d.cups=Math.max(1,d.cups-1);GX.save(d);paint();});
+  on('run',()=>{const m=M[d.m];if(S.run){stop();paint();return;}if(S.phase==='idle'||S.phase==='done'){S.phase=m.dose?'brew':'bloom';S.left=m.dose?m.time:30;}
+    S.run=true;tick=setInterval(()=>{S.left--;if(S.left<=0){if(S.phase==='bloom'){S.phase='brew';S.left=Math.max(30,m.time-30);}else{stop();S.phase='done';d.brews++;GX.save(d);}}if(S.tab==='t')paint();},1000);paint();});
+  on('share',()=>{const r=calc();GX.post(`My ${d.m.toLowerCase()}: <b>${r.c}g coffee to ${r.w}g water</b> (1:${M[d.m].r}), ${M[d.m].g.toLowerCase()} grind. Worked out with Brew Ratio ⚖️`,'BREW RATIO').then(o=>{if(o){S.shared=true;paint();}});});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
