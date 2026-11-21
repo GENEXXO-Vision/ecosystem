@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ghost Walk</title>
+<style>
+/* Ghost Walk, by Candle & Crypt (fictional), 2026-11-21. A GENEXXO app for HorrorXX.
+   A self-guided York route: eight real places in the old city, each with a FICTIONAL story (labelled as ours, not
+   local legend). Stylised map (not to scale), stop-by-stop reader, tick-off, step-free option. */
+:root{--bg:#0F0E10;--card:rgba(255,255,255,.045);--line:rgba(232,230,236,.1);--ink:#ECEAF0;--mut:rgba(236,234,240,.55);--fog:#9CA3AF;--amb:#F2B15A}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#9CA3AF,#3F4450);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--amb)}
+svg{display:block;width:100%;height:auto;border-radius:16px;background:#17161B;border:1px solid var(--line)}
+.st{display:flex;gap:10px;align-items:center;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px;cursor:pointer}
+.st .n{width:26px;height:26px;border-radius:50%;background:rgba(242,177,90,.15);color:var(--amb);font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}.st.done .n{background:var(--amb);color:#1E1305}
+.st b{flex:1;font-size:13.5px}.st span{color:var(--mut);font-size:12px;font-weight:700}
+.sum{display:flex;gap:8px;margin:10px 0 4px}.sum div{flex:1;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px}.sum small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:var(--mut)}.sum b{font-size:18px}
+.story{border-radius:18px;padding:16px;background:linear-gradient(170deg,#24222C,#121116);border:1px solid rgba(156,163,175,.25)}
+.story small{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--amb)}.story h2{font-size:22px;font-weight:900;margin:2px 0}.story .w{color:var(--mut);font-size:12.5px}
+.story p{font-family:Georgia,serif;font-size:16px;line-height:1.55;margin-top:12px}.story .lk{margin-top:12px;font-size:12.5px;color:var(--fog)}
+.row{display:flex;gap:8px}.go{flex:1;width:100%;margin-top:10px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--amb);color:#1E1305;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:var(--card);color:var(--mut)}
+.tog{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:8px;font-weight:700}.tog button{font:inherit;font-weight:800;border:0;border-radius:99px;padding:6px 12px;cursor:pointer;background:var(--card);color:var(--mut)}.tog button.on{background:var(--amb);color:#1E1305}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">👻</div><div><h1>Ghost Walk</h1><p>Candle &amp; Crypt · in HorrorXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="r" class="on">Route</button><button data-tab="s">Story</button><button data-tab="w">My walks</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const STOPS=[
+ {n:'York Minster, west doors',x:150,y:40,m:0,look:'Look up at the stone faces above the doors.',s:'The masons say one face was carved from memory, not from life: a boy who fell from the scaffold in 1361. On frosty nights, they say, his face is the only one without frost on it.'},
+ {n:'Precentor’s Court',x:95,y:70,m:120,look:'The narrow lane with the best view of the towers.',s:'A choirboy who stayed late to practise is still heard here, singing the same four notes, always stopping just before the fifth. Nobody has ever heard the fifth.'},
+ {n:'Stonegate',x:120,y:120,m:220,look:'Find the red devil high on the wall.',s:'A printer’s apprentice swore the little red devil above his shop moved in the night. His master laughed, until the morning the devil was found facing the other way.'},
+ {n:'Coffee Yard',x:160,y:150,m:110,alt:'Grape Lane (step-free)',look:'A snickelway: duck your head under the beam.',s:'Walk Coffee Yard alone after dark and you may hear footsteps keeping pace behind you, stopping when you stop. Turn round and there is only the passage, and the sound of someone holding their breath.'},
+ {n:'The Shambles',x:200,y:190,m:260,look:'The overhanging upper floors almost touch.',s:'The butchers’ hooks are gone, but a woman in a grey shawl still walks the cobbles at closing time, asking each shopkeeper if they have seen her son. Then she is gone, and the bell above the door rings once.'},
+ {n:'Whip-Ma-Whop-Ma-Gate',x:240,y:230,m:150,look:'York’s shortest street, with the longest name.',s:'The shortest street in the city has the longest memory. Stand in the middle at midnight, they say, and you will hear a coach that never arrives.'},
+ {n:'Lady Peckett’s Yard',x:200,y:270,m:180,look:'Timber-framed and crooked. Mind the step.',s:'A lady in a fine blue gown is seen at the upstairs window, watching the yard. She has been watching for three hundred years. Nobody knows who she is waiting for.'},
+ {n:'King’s Staith',x:130,y:300,m:460,look:'The riverside, where the floods come up to the pub doors.',s:'When the Ouse rises, the old boatmen say, the river gives something back. A lantern, a boot, once a wedding ring. Always something someone was looking for.'}];
+const seed=()=>({cur:2,done:[0,1],stepfree:false,walks:[{d:-12,stops:8,km:1.5,when:'Dusk'},{d:-40,stops:6,km:1.1,when:'Night'}]});
+let C,S={tab:'r',shared:false};
+GX.init({gateway:'HorrorXX',seed}).then(c=>{C=c;paint();});
+const nm=i=>C.data.stepfree&&STOPS[i].alt?STOPS[i].alt:STOPS[i].n,km=()=>STOPS.reduce((a,s)=>a+s.m,0)/1000;
+function map(){const d=C.data;let g='<svg viewBox="0 0 320 330" xmlns="http://www.w3.org/2000/svg"><path d="M20 312 Q160 290 310 318" stroke="#2B3A55" stroke-width="16" fill="none" opacity=".8"/><text x="250" y="325" font-size="9" fill="#6B7A99" font-family="-apple-system,sans-serif">River Ouse</text>';
+  g+=`<polyline points="${STOPS.map(s=>s.x+','+s.y).join(' ')}" fill="none" stroke="#F2B15A" stroke-width="2.5" stroke-dasharray="5 5" opacity=".7"/>`;
+  STOPS.forEach((s,i)=>{const dn=d.done.includes(i),cu=i===d.cur;g+=`<circle cx="${s.x}" cy="${s.y}" r="${cu?13:10}" fill="${dn?'#F2B15A':cu?'#ECEAF0':'#2A2830'}" stroke="#F2B15A" stroke-width="2"/><text x="${s.x}" y="${s.y+4}" text-anchor="middle" font-size="11" font-weight="900" fill="${dn||cu?'#1E1305':'#F2B15A'}" font-family="-apple-system,sans-serif">${i+1}</text>`;});
+  return g+'<text x="10" y="18" font-size="10" fill="#8A8794" font-family="-apple-system,sans-serif">Not to scale</text></svg>';}
+function vR(){const d=C.data;return map()+`<div class="sum"><div><small>STOPS</small><b>${d.done.length}/8</b></div><div><small>DISTANCE</small><b>${km().toFixed(1)} km</b></div><div><small>TIME</small><b>~1 hr</b></div></div>
+  <div class="tog"><span>Step-free route</span><button id="sf" class="${d.stepfree?'on':''}">${d.stepfree?'On':'Off'}</button></div>
+  ${STOPS.map((s,i)=>`<div class="st ${d.done.includes(i)?'done':''}" data-go="${i}"><span class="n">${d.done.includes(i)?'✓':i+1}</span><b>${nm(i)}</b><span>${i?s.m+' m':'start'}</span></div>`).join('')}`;}
+function vS(){const d=C.data,i=d.cur,s=STOPS[i],dn=d.done.includes(i);
+  return `<div class="story"><small>STOP ${i+1} OF 8${i?` · ${s.m} M FROM THE LAST`:''}</small><h2>${nm(i)}</h2><div class="w">${s.look}</div><p>${s.s}</p><div class="lk">A Candle &amp; Crypt story, not a local legend. The street is real.</div></div>
+  <div class="row"><button class="go alt" id="prev" ${i?'':'disabled'}>‹ Back</button><button class="go" id="next">${dn?(i<7?'Next stop ›':'Finish the walk'):(i<7?'✓ Done, next stop ›':'✓ Finish the walk')}</button></div>`;}
+function vW(){const d=C.data;return d.walks.map(w=>`<div class="st"><span class="n">👻</span><b>${w.when} walk · ${w.stops} stops</b><span>${w.km} km · ${GX.day(GX.today(w.d),{day:'numeric',month:'short'})}</span></div>`).join('')+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share my ghost walk'}</button>`:'')+`<div class="legend">Wear good shoes: York’s cobbles are older than its ghosts.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='r'?vR():S.tab==='s'?vS():vW();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{d.cur=+b.dataset.go;S.tab='s';sv();});
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('sf',()=>{d.stepfree=!d.stepfree;sv();});
+  on('prev',()=>{d.cur=Math.max(0,d.cur-1);sv();});
+  on('next',()=>{if(!d.done.includes(d.cur))d.done.push(d.cur);if(d.cur<7){d.cur++;sv();}else{d.walks.unshift({d:0,stops:d.done.length,km:+km().toFixed(1),when:'Tonight’s'});d.done=[];d.cur=0;S.tab='w';sv();}});
+  on('share',()=>{const w=d.walks[0];GX.post(`Just walked York’s old streets after dark: <b>${w.stops} stops, ${w.km} km</b>, and only jumped twice. Ghost Walk by Candle &amp; Crypt 👻`,'GHOST WALK').then(o=>{if(o){S.shared=true;paint();}});});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

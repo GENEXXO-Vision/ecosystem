@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Story Sprint</title>
+<style>
+/* Story Sprint, by Blackthorn Press (fictional), 2026-11-21. A GENEXXO app for HorrorXX.
+   Deal a ghost story prompt (setting + something that shouldn't be there + a last line), write against a 15-minute
+   timer with a live word count, save drafts, share an opening line. */
+:root{--bg:#120F0D;--card:rgba(255,255,255,.045);--line:rgba(240,230,218,.1);--ink:#F0E6DA;--mut:rgba(240,230,218,.55);--amb:#F2B15A;--red:#D8343B}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#F2B15A,#8A4B12);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--amb)}
+.card{border-radius:16px;padding:14px;background:linear-gradient(160deg,#2A1E12,#140F0A);border:1px solid rgba(242,177,90,.25);margin-top:10px}
+.card small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.08em;color:var(--amb)}.card p{font-family:Georgia,serif;font-size:17px;margin-top:4px;line-height:1.35}
+.timer{display:flex;align-items:center;gap:12px;margin-bottom:8px}.timer b{font-size:40px;font-weight:900;font-variant-numeric:tabular-nums}.timer span{color:var(--mut);font-size:12.5px;font-weight:700}
+.bar{height:5px;border-radius:9px;background:rgba(255,255,255,.08);overflow:hidden;margin-bottom:8px}.bar i{display:block;height:100%;background:var(--amb)}
+textarea{width:100%;min-height:250px;font:16px/1.5 Georgia,serif;padding:12px;border-radius:14px;border:1px solid var(--line);background:#1A1511;color:var(--ink);resize:vertical}
+.go{width:100%;margin-top:10px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--amb);color:#1E1305;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:var(--card);color:var(--mut)}
+.row{display:flex;gap:8px}.row .go{flex:1}
+.dr{padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:8px}.dr b{display:block}.dr p{font-family:Georgia,serif;color:var(--mut);font-size:13.5px;margin-top:3px}.dr small{color:var(--amb);font-weight:800;font-size:11.5px}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">✒️</div><div><h1>Story Sprint</h1><p>Blackthorn Press · in HorrorXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="p" class="on">Prompt</button><button data-tab="w">Sprint</button><button data-tab="d">Drafts</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const SET=['A seaside guesthouse, out of season','The last train home, nearly empty','A village hall on Christmas Eve','A lighthouse with a new keeper','Your grandmother’s attic','A school after everyone has gone home','A hotel with one guest too many','A canal boat in thick fog'];
+const OBJ=['a wet footprint that isn’t yours','a photograph with one face scratched out','a music box that winds itself','a letter addressed to you, dated 1911','a child’s mitten on the stairs','an extra place laid at the table','a doll facing the window','a phone ringing in an empty room'];
+const END=['“And that’s why we never open the shutters.”','The bell rang once more, though no one was there to ring it.','She closed the book. The footsteps did not stop.','He was the only one who remembered the fourth sister.','In the morning, the snow showed only one set of tracks.','It is still waiting, I think. It is very patient.'];
+const seed=()=>({p:[0,4,4],text:'The Seaview closed every October, but Mrs Penhallow kept one room made up, just in case. On the first night of November I found out who it was for. There was a child’s mitten on the stairs, small and red and wet with sea water, and the tide was a mile out.',drafts:[{t:'The Fourth Sister',w:1240,d:-2,open:'There were three of us at breakfast, and four plates.'},{t:'Low Tide',w:860,d:-9,open:'The sea went out further than it ever had, and kept going.'}]});
+let C,S={tab:'p',left:900,run:false,saved:false,shared:false},tick=null;
+GX.init({gateway:'HorrorXX',seed}).then(c=>{C=c;paint();});
+const wc=t=>(t.trim().match(/\S+/g)||[]).length,mmss=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+function vP(){const p=C.data.p;return `<div class="card"><small>WHERE</small><p>${SET[p[0]]}</p></div><div class="card"><small>SOMETHING THAT SHOULDN’T BE THERE</small><p>${OBJ[p[1]]}</p></div><div class="card"><small>YOUR LAST LINE</small><p>${END[p[2]]}</p></div>
+  <div class="row"><button class="go alt" id="deal">Deal another</button><button class="go" id="start">Write for 15 minutes</button></div><div class="legend">Don’t explain the ghost. Let the reader do that.</div>`;}
+function vW(){const t=C.data.text;return `<div class="timer"><b>${mmss(S.left)}</b><span>${wc(t)} words<br>${S.run?'writing…':S.left<900?'paused':'ready'}</span></div><div class="bar"><i style="width:${100*(900-S.left)/900}%"></i></div>
+  <textarea id="tx" placeholder="${GX.esc(SET[C.data.p[0]])}…">${GX.esc(t)}</textarea>
+  <div class="row"><button class="go alt" id="run">${S.run?'Pause':S.left<900?'Resume':'Start the clock'}</button><button class="go" id="save" ${wc(t)&&!S.saved?'':'disabled'}>${S.saved?'✓ Saved':'Save draft'}</button></div>`;}
+function vD(){return C.data.drafts.map(d=>`<div class="dr"><b>${GX.esc(d.t)}</b><p>${GX.esc(d.open)}</p><small>${d.w} words · ${d.d===0?'Today':GX.day(GX.today(d.d),{day:'numeric',month:'short'})}</small></div>`).join('')+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share my latest opening line'}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='p'?vP():S.tab==='w'?vW():vD();
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  const tx=document.getElementById('tx');if(tx)tx.oninput=()=>{d.text=tx.value;S.saved=false;document.querySelector('.timer span').innerHTML=`${wc(d.text)} words<br>${S.run?'writing…':S.left<900?'paused':'ready'}`;const s=document.getElementById('save');s.disabled=!wc(d.text);s.textContent='Save draft';};
+  on('deal',()=>{const r=Math.random;d.p=[Math.floor(r()*SET.length),Math.floor(r()*OBJ.length),Math.floor(r()*END.length)];GX.save(d);paint();});
+  on('start',()=>{S.tab='w';paint();});
+  on('run',()=>{if(S.run){clearInterval(tick);S.run=false;}else{S.run=true;tick=setInterval(()=>{S.left=Math.max(0,S.left-1);if(!S.left){clearInterval(tick);S.run=false;}if(S.tab==='w'){const b=document.querySelector('.timer b'),i=document.querySelector('.bar i');if(b)b.textContent=mmss(S.left);if(i)i.style.width=100*(900-S.left)/900+'%';if(!S.run)paint();}},1000);}paint();});
+  on('save',()=>{const t=d.text.trim(),first=(t.match(/^[^.!?]*[.!?]/)||[t.slice(0,90)])[0];d.drafts.unshift({t:SET[d.p[0]].split(',')[0],w:wc(t),d:0,open:first});S.saved=true;GX.save(d);paint();});
+  on('share',()=>{const x=d.drafts[0];GX.post(`My ghost story opens: <i>“${GX.esc(x.open)}”</i> ${x.w} words so far, written in Story Sprint ✒️`,'STORY SPRINT').then(o=>{if(o){S.shared=true;paint();}});});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
