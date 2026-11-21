@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Barre Timer</title>
+<style>
+/* Barre Timer, by Barre at Home (fictional), 2026-11-21. A GENEXXO app for BalletXX.
+   A ballet barre in the traditional order, scaled to 30/45/60 minutes, with a running timer and a cue per exercise.
+   Finished classes are logged; streak-free on purpose (rest days matter). */
+:root{--bg:#FFF7F8;--card:#fff;--line:rgba(34,34,58,.1);--ink:#22223A;--mut:rgba(34,34,58,.55);--rose:#D6466E;--navy:#2B3A67}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#F48CA6,#C2375B);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--rose)}
+.seg{display:flex;gap:6px;margin-bottom:10px}.seg button{flex:1;font:inherit;font-weight:800;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:12px;padding:10px 0;cursor:pointer}.seg button.on{background:var(--rose);border-color:var(--rose);color:#fff}
+.ex{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px}
+.ex b{flex:1;font-size:14px}.ex span{color:var(--mut);font-size:12.5px;font-weight:700}.ex.done{opacity:.45}.ex.now{border-color:var(--rose);box-shadow:0 0 0 2px rgba(214,70,110,.15)}
+.now-card{border-radius:18px;padding:16px;background:linear-gradient(150deg,#2B3A67,#1F2A4D);color:#fff;text-align:center}
+.now-card small{font-size:11px;font-weight:800;letter-spacing:.08em;color:#F9D5DC}.now-card h2{font-size:24px;font-weight:900;margin:4px 0}.now-card p{font-size:13px;opacity:.8}
+.now-card .t{font-size:56px;font-weight:900;font-variant-numeric:tabular-nums;margin:8px 0 2px}
+.bar{height:6px;border-radius:9px;background:rgba(255,255,255,.15);overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;background:#F48CA6}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--rose);color:#fff;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:#EDE6E8;color:var(--mut)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin-top:10px}.card h3{font-size:12px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin:4px 0 6px}
+.lg{display:flex;gap:10px;padding:9px 0;font-size:13px}.lg+.lg{border-top:1px solid var(--line)}.lg span{color:var(--mut);width:84px;flex-shrink:0}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🩰</div><div><h1>Barre Timer</h1><p>Barre at Home · in BalletXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="c" class="on">Class</button><button data-tab="r">Now</button><button data-tab="l">My classes</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+/* base minutes are for a 60-minute class; shorter classes scale down */
+const EX=[['Pliés',6,'Long spine, knees over toes. Breathe down into the plié.'],['Tendus',6,'Brush through the floor; the foot leaves the floor last.'],['Jetés',5,'Quick and sharp, just off the floor. Keep the hips still.'],['Ronds de jambe',5,'Draw a perfect half-circle. Turnout from the hips.'],['Fondus',5,'Melt and rise together, both legs at once.'],['Frappés',4,'Strike from the ankle; the thigh stays still.'],['Adage',6,'Slow and controlled. Lift from underneath the leg.'],['Grands battements',5,'Throw the leg and control it down.'],['Stretch',6,'Hamstrings, hips and calves. Never bounce.'],['Pirouette prep',6,'Spot your head. Up, then turn.'],['Sautés',6,'Push through the floor; land through the foot.']];
+const seed=()=>({len:45,log:[{d:-1,len:45},{d:-3,len:30},{d:-5,len:60},{d:-8,len:45},{d:-10,len:45},{d:-12,len:30},{d:-15,len:60}]});
+let C,S={tab:'c',run:false,i:0,left:0,shared:false},tick=null;
+GX.init({gateway:'BalletXX',seed}).then(c=>{C=c;paint();});
+function plan(len){const L=EX.filter((e,i)=>len>=45||i<9),sc=len/L.reduce((a,e)=>a+e[1],0),raw=L.map(e=>e[1]*sc),m=raw.map(Math.floor);let r=len-m.reduce((a,x)=>a+x,0);raw.map((x,i)=>[x-m[i],i]).sort((a,b)=>b[0]-a[0]).slice(0,r).forEach(([,i])=>m[i]++);return L.map((e,i)=>({n:e[0],m:m[i],c:e[2]}));}
+const mmss=s=>`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+function vC(){const p=plan(C.data.len),tot=p.reduce((a,e)=>a+e.m,0);
+  return `<div class="seg">${[30,45,60].map(l=>`<button data-len="${l}" class="${C.data.len===l?'on':''}">${l} min</button>`).join('')}</div>
+  ${p.map((e,i)=>`<div class="ex ${S.run||S.left?(i<S.i?'done':i===S.i?'now':''):''}"><b>${i+1}. ${e.n}</b><span>${e.m} min</span></div>`).join('')}
+  <button class="go" id="start">${S.left?'Back to class':'Start a '+tot+'-minute class'}</button>
+  <div class="legend">Warm up first. Hold a steady counter, chair back or barre.</div>`;}
+function vR(){const p=plan(C.data.len);if(!S.left&&!S.run)return `<div class="now-card"><small>READY WHEN YOU ARE</small><h2>${p[0].n}</h2><p>${p[0].c}</p><div class="t">${p[0].m}:00</div></div><button class="go" id="run">Start class</button>`;
+  const e=p[S.i],pct=100*(1-S.left/(e.m*60));
+  return `<div class="now-card"><small>EXERCISE ${S.i+1} OF ${p.length}</small><h2>${e.n}</h2><p>${e.c}</p><div class="t">${mmss(S.left)}</div><div class="bar"><i style="width:${pct}%"></i></div></div>
+  <button class="go" id="run">${S.run?'Pause':'Resume'}</button><button class="go alt" id="next">${S.i<p.length-1?'Next: '+p[S.i+1].n:'Finish class'}</button>`;}
+function vL(){const l=C.data.log.slice().sort((a,b)=>b.d-a.d),wk=l.filter(x=>x.d>-7),mins=wk.reduce((a,x)=>a+x.len,0);
+  return `<div class="card"><h3>${wk.length} classes · ${mins} minutes this week</h3>${l.slice(0,10).map(x=>`<div class="lg"><span>${x.d===0?'Today':GX.day(GX.today(x.d))}</span><b style="flex:1;font-weight:600">${x.len}-minute barre</b></div>`).join('')}</div>
+  ${GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my week of ballet`}</button>`:''}
+  <div class="legend">Rest days count too. Three classes a week is plenty.</div>`;}
+function step(){const p=plan(C.data.len);S.left--;if(S.left<=0){if(S.i<p.length-1){S.i++;S.left=p[S.i].m*60;}else{finish();return;}}if(S.tab==='r')paint();}
+function finish(){clearInterval(tick);S.run=false;S.left=0;S.i=0;C.data.log.push({d:0,len:C.data.len});GX.save(C.data);S.tab='l';paint();}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v');v.innerHTML=S.tab==='c'?vC():S.tab==='r'?vR():vL();
+  v.querySelectorAll('[data-len]').forEach(b=>b.onclick=()=>{if(S.run||S.left)return;C.data.len=+b.dataset.len;GX.save(C.data);paint();});
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('start',()=>{S.tab='r';paint();});
+  on('run',()=>{const p=plan(C.data.len);if(!S.left){S.i=0;S.left=p[0].m*60;}if(S.run){clearInterval(tick);S.run=false;}else{S.run=true;tick=setInterval(step,1000);}paint();});
+  on('next',()=>{const p=plan(C.data.len);if(S.i<p.length-1){S.i++;S.left=p[S.i].m*60;paint();}else finish();});
+  on('share',()=>{const wk=C.data.log.filter(x=>x.d>-7);GX.post(`<b>${wk.length} ballet classes</b> this week, ${wk.reduce((a,x)=>a+x.len,0)} minutes at the barre. Pliés to grands battements 🩰`,'BARRE TIMER').then(o=>{if(o){S.shared=true;paint();}});});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

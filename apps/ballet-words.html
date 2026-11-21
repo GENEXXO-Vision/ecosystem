@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ballet Words</title>
+<style>
+/* Ballet Words, by Riverside Ballet (fictional), 2026-11-21. A GENEXXO app for BalletXX.
+   Ballet terms grouped by barre / centre / jumps, with an English say-it guide and what the step is.
+   Flashcards mark terms as known; progress is saved. */
+:root{--bg:#141A2E;--card:rgba(255,255,255,.05);--line:rgba(240,238,248,.1);--ink:#F0EEF8;--mut:rgba(240,238,248,.55);--rose:#F48CA6;--navy:#4B5E96}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#4B5E96,#1F2A4D);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--rose)}
+.chips{display:flex;gap:6px;margin-bottom:8px}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--rose);border-color:var(--rose);color:#1F2A4D}
+.t{padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:8px}
+.t .h{display:flex;align-items:baseline;gap:8px}.t b{font-size:16px;font-style:italic}.t i{font-style:normal;color:var(--rose);font-size:12.5px;font-weight:700}.t p{color:var(--mut);font-size:13px;margin-top:3px}.t .k{margin-left:auto;font-size:11px;font-weight:800;color:#86EFAC}
+.fc{border-radius:20px;padding:26px 18px;min-height:250px;background:linear-gradient(160deg,#2B3A67,#1F2A4D);border:1px solid rgba(244,140,166,.3);text-align:center;display:flex;flex-direction:column;justify-content:center;cursor:pointer}
+.fc small{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--rose)}.fc h2{font-size:30px;font-weight:900;font-style:italic;margin:8px 0}.fc p{color:var(--mut);font-size:14px}
+.row{display:flex;gap:8px}.go{flex:1;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--rose);color:#1F2A4D;cursor:pointer}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}.go:disabled{background:var(--card);color:var(--mut)}
+.prog{height:6px;border-radius:9px;background:rgba(255,255,255,.08);overflow:hidden;margin:4px 0 12px}.prog i{display:block;height:100%;background:var(--rose)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">📖</div><div><h1>Ballet Words</h1><p>Riverside Ballet · in BalletXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="w" class="on">Words</button><button data-tab="f">Flashcards</button><button data-tab="k">Progress</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const W=[
+ ['Barre','Plié','plee-AY','To bend. Bend the knees over the toes, keeping the heels down (demi) or letting them rise (grand).'],
+ ['Barre','Tendu','tahn-DOO','Stretched. Slide the foot out along the floor until only the tips of the toes touch.'],
+ ['Barre','Jeté','zhuh-TAY','Thrown. Like a tendu, but the foot brushes just off the floor.'],
+ ['Barre','Rond de jambe','rawn duh ZHAHMB','Circle of the leg. The foot draws a half-circle on the floor.'],
+ ['Barre','Fondu','fawn-DOO','Melted. Bend the standing leg as the working leg folds, then both stretch together.'],
+ ['Barre','Frappé','fra-PAY','Struck. The foot strikes out from the ankle, quick and sharp.'],
+ ['Barre','Relevé','ruh-luh-VAY','Raised. Rise onto demi-pointe or pointe.'],
+ ['Barre','Grand battement','grahn bat-MAHN','Big beat. Throw the straight leg high and bring it down with control.'],
+ ['Centre','Adage','a-DAHZH','Slow, flowing movements that test balance and control.'],
+ ['Centre','Arabesque','a-ra-BESK','Standing on one leg, the other stretched straight behind.'],
+ ['Centre','Attitude','a-tee-TOOD','Like an arabesque, but the raised leg is bent.'],
+ ['Centre','Pirouette','peer-oo-ET','A turn on one leg. Spot by keeping your eyes on one point.'],
+ ['Centre','Port de bras','por duh BRAH','Carriage of the arms. How the arms move between positions.'],
+ ['Centre','Pas de bourrée','pah duh boo-RAY','Three quick small steps, often linking other steps.'],
+ ['Jumps','Sauté','soh-TAY','Jumped. A jump from two feet to two feet.'],
+ ['Jumps','Changement','shahnzh-MAHN','Change. Jump from fifth position and swap the feet in the air.'],
+ ['Jumps','Échappé','ay-sha-PAY','Escaped. The feet spring apart from fifth to second.'],
+ ['Jumps','Glissade','glee-SAHD','Glide. A travelling step along the floor, often before a big jump.'],
+ ['Jumps','Grand jeté','grahn zhuh-TAY','Big thrown. A big leap from one leg to the other, like a split in the air.'],
+ ['Jumps','Assemblé','a-sahm-BLAY','Assembled. Brush one leg out, jump, land with both feet together.']];
+const seed=()=>({known:[0,1,2,6,9,14]});
+let C,S={tab:'w',g:'Barre',i:0,flip:false,shared:false};
+GX.init({gateway:'BalletXX',seed}).then(c=>{C=c;paint();});
+function vW(){return `<div class="chips">${['Barre','Centre','Jumps'].map(g=>`<button class="chip ${S.g===g?'on':''}" data-g="${g}">${g}</button>`).join('')}</div>
+  ${W.map((w,i)=>[w,i]).filter(x=>x[0][0]===S.g).map(([w,i])=>`<div class="t"><div class="h"><b>${w[1]}</b><i>${w[2]}</i>${C.data.known.includes(i)?'<span class="k">✓ KNOWN</span>':''}</div><p>${w[3]}</p></div>`).join('')}`;}
+function vF(){const w=W[S.i];
+  return `<div class="fc" id="card"><small>${w[0].toUpperCase()} · ${S.i+1} OF ${W.length}</small><h2>${w[1]}</h2>${S.flip?`<p style="color:var(--rose);font-weight:800">${w[2]}</p><p style="margin-top:8px">${w[3]}</p>`:'<p>Tap to see what it means</p>'}</div>
+  <div class="row"><button class="go alt" id="again">Not yet</button><button class="go" id="got">I know this</button></div>`;}
+function vK(){const k=C.data.known.length,g=['Barre','Centre','Jumps'].map(x=>[x,W.filter(w=>w[0]===x).length,W.map((w,i)=>[w,i]).filter(([w,i])=>w[0]===x&&C.data.known.includes(i)).length]);
+  return `<div class="t"><div class="h"><b style="font-style:normal">${k} of ${W.length} words known</b></div><div class="prog"><i style="width:${100*k/W.length}%"></i></div>
+  ${g.map(([x,n,m])=>`<div class="h" style="margin-top:8px"><b style="font-style:normal;font-size:14px;flex:1">${x}</b><i>${m} / ${n}</i></div><div class="prog"><i style="width:${100*m/n}%"></i></div>`).join('')}</div>
+  ${GX.can('feed')?`<div class="row"><button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share my progress'}</button></div>`:''}
+  <div class="legend">Practise a few cards before class and you’ll hear the words differently.</div>`;}
+function nextCard(){S.flip=false;S.i=(S.i+1)%W.length;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='w'?vW():S.tab==='f'?vF():vK();
+  v.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{S.g=b.dataset.g;paint();});
+  const on=(id,f)=>{const e=document.getElementById(id);if(e)e.onclick=f;};
+  on('card',()=>{S.flip=!S.flip;paint();});
+  on('again',()=>{const k=d.known.indexOf(S.i);if(k>=0)d.known.splice(k,1);GX.save(d);nextCard();paint();});
+  on('got',()=>{if(!d.known.includes(S.i))d.known.push(S.i);GX.save(d);nextCard();paint();});
+  on('share',()=>GX.post(`I know <b>${d.known.length} of ${W.length}</b> ballet words now. Next class, when they say frappé, I’ll be ready 🩰`,'BALLET WORDS').then(o=>{if(o){S.shared=true;paint();}}));}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
