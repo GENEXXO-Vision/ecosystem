@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Passage Planner</title>
+<style>
+/* Passage Planner, by Corvina Yachts (fictional), 2026-11-23. A GENEXXO app for YachtXX.
+   A week of island hops from Split: distance ÷ speed = time at sea, with arrival times. Distances are rounded,
+   illustrative nautical miles; a planning aid, not a chart or a forecast. */
+:root{--bg:#F7F3EA;--card:#fff;--line:rgba(60,45,20,.1);--ink:#1F1A10;--mut:rgba(31,26,16,.55);--sand:#B08850;--teal:#0F6E7A}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#E9D5A8,#B08850);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--sand)}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--teal);border-color:var(--teal);color:#fff}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.sum div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center}.sum b{display:block;font-size:20px;font-weight:900}.sum small{color:var(--mut);font-size:11px;font-weight:700}
+.map{background:linear-gradient(180deg,#CDEBE6,#9FD3CB);border-radius:18px;margin-top:10px;overflow:hidden}.map svg{display:block;width:100%}
+.hop{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:6px}.hop .x{flex:1}.hop b{display:block}.hop p{color:var(--mut);font-size:12.5px}.hop .t{font-weight:900;color:var(--teal);text-align:right;white-space:nowrap}.hop .t small{display:block;color:var(--mut);font-weight:700;font-size:11px}
+.day{font-weight:900;margin-top:14px}.day small{color:var(--mut);font-weight:700;margin-left:6px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--teal);color:#fff;cursor:pointer}.go:disabled{background:#E7E0D2;color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🧭</div><div><h1>Passage Planner</h1><p>Corvina Yachts · in YachtXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="p" class="on">Plan</button><button data-tab="d">By day</button><button data-tab="h">Hops</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const PL={split:['Split',52,40],solta:['Maslinica, Šolta',34,62],hvar:['Hvar Town',70,108],palmizana:['Palmižana',58,116],vis:['Vis Town',30,150],komiza:['Komiža',14,160],korcula:['Korčula',150,170],stari:['Stari Grad',96,96]};
+const HOPS=[['split','solta',11],['solta','hvar',22],['hvar','palmizana',3],['palmizana','vis',17],['vis','komiza',8],['komiza','korcula',40],['korcula','stari',30],['stari','split',24],['hvar','stari',15],['vis','split',30]];
+const seed=()=>({speed:7,dep:'09:00',days:[['split','solta'],['solta','hvar'],['hvar','palmizana','vis'],['vis','komiza'],['komiza','korcula'],['korcula','stari'],['stari','split']]});
+let C,S={tab:'p',shared:false};
+GX.init({gateway:'YachtXX',seed}).then(c=>{C=c;paint();});
+const nm=(a,b)=>{const h=HOPS.find(x=>(x[0]===a&&x[1]===b)||(x[0]===b&&x[1]===a));return h?h[2]:20;};
+const hm=m=>`${Math.floor(m/60)}h ${String(Math.round(m%60)).padStart(2,'0')}`;
+const at=(t,add)=>{const [h,m]=t.split(':').map(Number),x=h*60+m+add;return String(Math.floor(x/60)%24).padStart(2,'0')+':'+String(Math.round(x%60)).padStart(2,'0');};
+function legs(){const d=C.data,out=[];d.days.forEach((st,di)=>{for(let i=0;i<st.length-1;i++)out.push({day:di,a:st[i],b:st[i+1],nm:nm(st[i],st[i+1])});});return out;}
+function map(){const L=legs();return `<div class="map"><svg viewBox="0 0 200 190"><path d="M0 30 Q40 20 70 34 L90 20 L200 18 V0 H0Z" fill="#E9D5A8"/>`+
+  L.map(l=>`<line x1="${PL[l.a][1]}" y1="${PL[l.a][2]}" x2="${PL[l.b][1]}" y2="${PL[l.b][2]}" stroke="#0F6E7A" stroke-width="2" stroke-dasharray="4 3"/>`).join('')+
+  Object.values(PL).map(p=>`<circle cx="${p[1]}" cy="${p[2]}" r="4" fill="#fff" stroke="#0F6E7A" stroke-width="2"/><text x="${p[1]+6}" y="${p[2]-5}" font-size="7" font-weight="700" fill="#0B2A36">${p[0].split(',')[0]}</text>`).join('')+`</svg></div>`;}
+function vP(){const d=C.data,L=legs(),tot=L.reduce((a,l)=>a+l.nm,0);
+  return `<div class="sum"><div><b>${tot}</b><small>miles</small></div><div><b>${hm(tot/d.speed*60)}</b><small>at sea</small></div><div><b>${d.days.length}</b><small>days</small></div></div>`+map()+
+  `<div class="lbl">Cruising speed</div><div class="chips">${[5,6,7,8,10,15].map(s=>`<button class="chip ${d.speed===s?'on':''}" data-sp="${s}">${s} knots</button>`).join('')}</div>
+  <div class="lbl">Leave each morning at</div><div class="chips">${['08:00','09:00','10:00','11:00'].map(t=>`<button class="chip ${d.dep===t?'on':''}" data-dep="${t}">${t}</button>`).join('')}</div>
+  <div class="legend">A planning aid, not a chart. Check the forecast and pilot book before every passage.</div>`;}
+function vD(){const d=C.data;let out='';d.days.forEach((st,di)=>{let t=0;out+=`<div class="day">Day ${di+1}<small>${GX.day(GX.today(150+di))}</small></div>`;
+  for(let i=0;i<st.length-1;i++){const n=nm(st[i],st[i+1]),m=n/d.speed*60;out+=`<div class="hop"><span style="font-size:20px">⛵</span><div class="x"><b>${PL[st[i]][0]} → ${PL[st[i+1]][0]}</b><p>${n} miles · ${hm(m)}</p></div><div class="t">${at(d.dep,t+m)}<small>arrive</small></div></div>`;t+=m+60;}});
+  return out+(GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share our route with the crew'}</button>`:'');}
+function vH(){return `<div class="lbl">Hop distances</div>`+HOPS.map(h=>`<div class="hop"><span style="font-size:20px">📍</span><div class="x"><b>${PL[h[0]][0]} ↔ ${PL[h[1]][0]}</b><p>${h[2]} nautical miles</p></div><div class="t">${hm(h[2]/C.data.speed*60)}<small>at ${C.data.speed} kn</small></div></div>`).join('')+`<div class="legend">Rounded, illustrative distances.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='p'?vP():S.tab==='d'?vD():vH();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{d.speed=+b.dataset.sp;sv();});
+  v.querySelectorAll('[data-dep]').forEach(b=>b.onclick=()=>{d.dep=b.dataset.dep;sv();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const tot=legs().reduce((a,l)=>a+l.nm,0);GX.post(`Our week is planned: Split, Hvar, Vis and Korčula, ${tot} miles in ${d.days.length} days at ${d.speed} knots 🧭`,'PASSAGE PLANNER').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

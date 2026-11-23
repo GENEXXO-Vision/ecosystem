@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Knot Guide</title>
+<style>
+/* Knot Guide, by Aurelia Yacht Charter (fictional), 2026-11-23. A GENEXXO app for YachtXX.
+   Eight everyday yacht knots with steps and uses, a mastered list, and a quiz (which knot for this job?). */
+:root{--bg:#F4F8F7;--card:#fff;--line:rgba(11,42,54,.1);--ink:#0B2A36;--mut:rgba(11,42,54,.55);--teal:#0F6E7A;--sand:#B08850}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#14B8A6,#0F4C5C);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--teal)}
+.prog{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#0F4C5C,#0F6E7A);color:#fff;border-radius:18px;padding:14px 16px}.prog b{font-size:30px;font-weight:900}.prog small{opacity:.85}
+.k{display:flex;gap:12px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:8px;cursor:pointer}
+.k svg{width:44px;height:44px;flex-shrink:0}.k .x{flex:1}.k b{display:block}.k p{color:var(--mut);font-size:12.5px}.k .m{font-size:11px;font-weight:800;padding:3px 8px;border-radius:99px;background:#E6F4F1;color:var(--teal)}.k .m.no{background:#F1F5F9;color:var(--mut)}
+.big{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}.big h2{font-size:20px}.big .use{color:var(--mut);margin-top:2px}
+.step{display:flex;gap:10px;margin-top:12px}.step .n{width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tip{margin-top:12px;padding:10px 12px;background:#FBF5EA;border-radius:12px;font-size:13px;color:#7A5A2A}
+.q{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}.q small{color:var(--mut);font-weight:800;font-size:12px}.q b{display:block;font-size:17px;margin:4px 0 12px}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:700;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);margin-top:6px;cursor:pointer}.opt.r{background:#DCFCE7;border-color:#16A34A}.opt.w{background:#FEE2E2;border-color:#DC2626}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--teal);color:#fff;cursor:pointer}.go:disabled{background:#DDE8E6;color:var(--mut)}.go.s{background:var(--sand)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🪢</div><div><h1>Knot Guide</h1><p>Aurelia Yacht Charter · in YachtXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="k" class="on">Knots</button><button data-tab="l">Learn</button><button data-tab="q">Quiz</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const KN=[['Bowline','A fixed loop that won’t slip or jam','Mooring lines, tying a sheet to a sail',['Make a small loop in the standing part, with the working end on top.','Bring the end up through the loop from underneath (“the rabbit comes out of the hole”).','Pass it round behind the standing part (“round the tree”).','Back down through the small loop (“back down the hole”) and pull tight.'],'Leave a tail at least ten times the rope’s width.'],
+['Cleat hitch','Secures a line to a cleat, fast','Mooring lines, halyards',['Take the line round the far horn of the cleat.','Cross over the top and round the other horn: a figure of eight.','Make a loop with the line underneath and drop it over the horn.','Pull tight. One figure of eight and one locking hitch is enough.'],'Too many turns makes it slow to release.'],
+['Clove hitch','Quick to tie round a rail or post','Fenders on a guard rail',['Take the end round the rail.','Cross over itself and go round again.','Tuck the end under the second turn.','Pull both ends to tighten.'],'It can slip under load: add a half hitch for safety.'],
+['Round turn and two half hitches','Holds under load and unties easily','Tying to a ring or post ashore',['Take two full turns round the post or ring.','Make a half hitch round the standing part.','Make a second half hitch the same way.','Snug them together.'],'The round turn takes the load while you tie.'],
+['Figure of eight','A stopper knot at the end of a line','Stops sheets running out of blocks',['Make a loop near the end of the line.','Take the end round behind the standing part.','Bring it down through the loop.','Pull tight: it looks like an 8.'],'Easy to undo even after heavy loads.'],
+['Reef knot','Joins two ends of the same rope','Tying in a reef, bundling sails',['Right over left, and tuck under.','Left over right, and tuck under.','Pull both ends: it should lie flat.'],'Never use it to join two ropes that will take a load.'],
+['Sheet bend','Joins two ropes, even of different sizes','Lengthening a line',['Make a bight (U-shape) in the thicker rope.','Bring the thinner rope up through the bight.','Round behind both parts of the bight.','Tuck it under itself, not through the bight.'],'Leave the two tails on the same side.'],
+['Rolling hitch','Grips along another rope or a pole','Taking the load off a jammed sheet',['Take two turns round the rope, towards the pull.','Cross over both turns.','Finish with a half hitch on the other side.','Slide it tight in the direction of pull.'],'It grips one way only: tie it towards the load.']];
+const QZ=[['You need a loop at the end of a mooring line that won’t slip.',0],['A fender needs hanging from the guard rail.',2],['The sheet keeps running out through the block.',4],['You’re tying a reef in the mainsail.',5],['Your line is too short and you need to join another, thinner one.',6],['A sheet is jammed on a winch and you need to take the load off.',7],['You’re making fast to a cleat on the pontoon.',1],['You’re tying to a ring on a harbour wall.',3]];
+const seed=()=>({sel:0,done:[0,1,4],q:0,score:0,ans:null});
+let C,S={tab:'k',shared:false};
+GX.init({gateway:'YachtXX',seed}).then(c=>{C=c;paint();});
+const ic=i=>{const p=['M10 34 Q10 10 22 12 Q34 14 30 26 Q26 34 20 28 Q14 22 24 18 L34 34','M6 28 H38 M12 22 L32 34 M12 34 L32 22','M22 4 V40 M10 18 Q22 26 34 18 M10 26 Q22 34 34 26','M4 22 H18 M22 10 a10 10 0 1 1 0 24 a10 10 0 1 1 0 -24 M30 18 L40 14','M10 8 Q34 8 22 22 Q10 36 34 36','M4 20 Q22 34 40 20 M4 24 Q22 10 40 24','M6 14 Q22 6 22 22 Q22 38 6 30 M38 22 Q22 22 26 30','M4 22 H40 M14 12 V32 M20 12 V32 M28 14 L34 30'][i];return `<svg viewBox="0 0 44 44"><rect width="44" height="44" rx="10" fill="#E6F4F1"/><path d="${p}" stroke="#0F6E7A" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`;};
+function vK(){const d=C.data;return `<div class="prog"><b>${d.done.length}/8</b><small>knots mastered.<br>Tap a knot to learn it.</small></div>`+KN.map((k,i)=>`<div class="k" data-open="${i}">${ic(i)}<div class="x"><b>${k[0]}</b><p>${k[1]}</p></div><span class="m ${d.done.includes(i)?'':'no'}">${d.done.includes(i)?'✓ Mastered':'To learn'}</span></div>`).join('');}
+function vL(){const d=C.data,k=KN[d.sel],m=d.done.includes(d.sel);return `<div class="big"><h2>${k[0]}</h2><div class="use">Use it for: ${k[2]}</div>`+k[3].map((s,i)=>`<div class="step"><span class="n">${i+1}</span><span>${s}</span></div>`).join('')+`<div class="tip">💡 ${k[4]}</div></div>
+  <button class="go" id="mast" ${m?'disabled':''}>${m?'✓ Mastered':'I can tie it without looking'}</button>
+  ${GX.can('feed')&&m?`<button class="go s" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share that I’ve mastered it'}</button>`:''}`;}
+function vQ(){const d=C.data,q=QZ[d.q%QZ.length],opts=[q[1],(q[1]+3)%8,(q[1]+5)%8].sort((a,b)=>KN[a][0].localeCompare(KN[b][0]));
+  return `<div class="q"><small>Question ${d.q%QZ.length+1} of ${QZ.length} · score ${d.score}</small><b>${q[0]}</b>`+opts.map(o=>`<button class="opt ${d.ans!=null?(o===q[1]?'r':o===d.ans?'w':''):''}" data-ans="${o}">${KN[o][0]}</button>`).join('')+`</div>`+
+  (d.ans!=null?`<button class="go" id="next">Next question</button>`:'<div class="legend">Which knot would you tie?</div>');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='k'?vK():S.tab==='l'?vL():vQ();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>{d.sel=+b.dataset.open;S.tab='l';S.shared=false;sv();});
+  const m=document.getElementById('mast');if(m)m.onclick=()=>{if(!d.done.includes(d.sel))d.done.push(d.sel);sv();};
+  v.querySelectorAll('[data-ans]').forEach(b=>b.onclick=()=>{if(d.ans!=null)return;d.ans=+b.dataset.ans;if(d.ans===QZ[d.q%QZ.length][1])d.score++;sv();});
+  const n=document.getElementById('next');if(n)n.onclick=()=>{d.q++;d.ans=null;sv();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{GX.post(`Just mastered the <b>${KN[d.sel][0]}</b>: ${d.done.length} of 8 essential knots, ready for charter season 🪢`,'KNOT GUIDE').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
