@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Jet Lag Planner</title>
+<style>
+/* Jet Lag Planner, by Northgate Private Terminal (fictional), 2026-11-23. A GENEXXO app for JetXX.
+   General, widely given tips for healthy adults (shift bedtime before flying, time your light, stay hydrated), as a
+   day-by-day plan. Not medical advice: the app says to ask a GP for anyone with a health condition. Time differences
+   are from London in late November. */
+:root{--bg:#0F0B14;--card:rgba(255,255,255,.05);--line:rgba(240,232,250,.1);--ink:#F1EAF7;--mut:rgba(241,234,247,.55);--dusk:#FB923C;--sky:#38BDF8;--moon:#A78BFA}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#FB923C,#7C2D12);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--dusk)}
+.dest{display:grid;grid-template-columns:1fr 1fr;gap:6px}.dest button{font:inherit;text-align:left;padding:11px 12px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}.dest button b{display:block}.dest button small{color:var(--mut);font-size:11.5px}.dest button.on{border-color:var(--dusk);background:rgba(251,146,60,.12)}
+.hero{background:linear-gradient(135deg,#7C2D12,#FB923C);border-radius:20px;padding:16px;margin-top:12px}.hero small{opacity:.85;font-weight:700;font-size:12px}.hero b{display:block;font-size:22px;margin-top:2px}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.day{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-top:8px}.day h3{font-size:14px;display:flex;justify-content:space-between}.day h3 small{color:var(--mut);font-weight:700}
+.it{display:flex;gap:10px;margin-top:8px;font-size:13px}.it .i{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}.it.l .i{background:rgba(251,191,36,.18)}.it.d .i{background:rgba(167,139,250,.18)}.it.s .i{background:rgba(56,189,248,.18)}
+.tip{padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px;font-size:13px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--dusk);color:#2A1005;cursor:pointer}.go:disabled{background:rgba(255,255,255,.08);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🌙</div><div><h1>Jet Lag Planner</h1><p>Northgate Private Terminal · in JetXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="t" class="on">Trip</button><button data-tab="p">My plan</button><button data-tab="g">Good habits</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const DEST=[['Tokyo',9],['Dubai',4],['Bangkok',7],['Sydney',11],['New York',-5],['Los Angeles',-8],['Singapore',8],['Cape Town',2]];
+const seed=()=>({dest:'Tokyo',fly:5,bed:'23:00'});
+let C,S={tab:'t',shared:false};
+GX.init({gateway:'JetXX',seed}).then(c=>{C=c;paint();});
+const D=()=>DEST.find(x=>x[0]===C.data.dest);
+const tm=(t,h)=>{let [a,b]=t.split(':').map(Number);a=((a+h)%24+24)%24;return String(a).padStart(2,'0')+':'+String(b).padStart(2,'0');};
+function plan(){const [n,dh]=D(),east=dh>0,shift=Math.min(3,Math.ceil(Math.abs(dh)/3)),b=C.data.bed,out=[];
+  for(let i=shift;i>=1;i--){const h=east?-(shift-i+1):(shift-i+1);out.push({k:`${i} day${i>1?'s':''} before`,off:C.data.fly-i,items:[['s','🛏️',`Bed at ${tm(b,h)}, up an hour ${east?'earlier':'later'} too`],['l','☀️',east?'Get bright light early in the morning':'Get bright light in the evening'],['d','🕶️',east?'Dim the lights in the evening':'Keep mornings dim']]});}
+  out.push({k:'Flight day',off:C.data.fly,items:[['s','⌚',`Set your watch to ${n} time when you board`],['s','💧','Drink water through the flight; go easy on alcohol and caffeine'],['d','😴',east?`Sleep on board if it’s night in ${n}`:'Try to stay awake until evening on arrival']]});
+  out.push({k:'First days there',off:C.data.fly+1,items:[['l','☀️',east?'Morning daylight, outside if you can':'Afternoon and evening daylight'],['d','🌙',`Bed by about ${tm(b,0)} ${n} time`],['s','🚶','A walk outside beats a long nap. Keep naps under 30 minutes']]});return out;}
+function vT(){const d=C.data,[n,dh]=D();return `<div class="lbl">Where are you going?</div><div class="dest">${DEST.map(x=>`<button data-d="${x[0]}" class="${d.dest===x[0]?'on':''}"><b>${x[0]}</b><small>${x[1]>0?'+':''}${x[1]} hours from London</small></button>`).join('')}</div>
+  <div class="lbl">You fly in</div><div class="dest" style="grid-template-columns:repeat(4,1fr)">${[3,5,7,14].map(f=>`<button data-fly="${f}" class="${d.fly===f?'on':''}"><b>${f} days</b></button>`).join('')}</div>
+  <div class="hero"><small>${Math.abs(dh)} hours ${dh>0?'ahead':'behind'} · flying ${dh>0?'east':'west'}</small><b>Start ${Math.min(3,Math.ceil(Math.abs(dh)/3))} days before you fly</b></div>`;}
+function vP(){const [n]=D();return plan().map(p=>`<div class="day"><h3>${p.k}<small>${GX.day(GX.today(p.off))}</small></h3>${p.items.map(i=>`<div class="it ${i[0]}"><span class="i">${i[1]}</span><span>${i[2]}</span></div>`).join('')}</div>`).join('')+
+  `<div class="legend">General tips for healthy adults, not medical advice. If you have a health condition or take regular medicines, ask your GP before you travel.</div>`+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share my ${GX.esc(n)} plan`}</button>`:'');}
+function vG(){return ['☀️ Light is the strongest signal to your body clock. Time it, don’t avoid it.','💧 Cabin air is dry: drink water regularly.','☕ Caffeine after midday makes the first night harder.','🍽️ Eat meals at local times from the first day.','🚶 Move around the cabin every couple of hours.','😴 Short naps only: under 30 minutes.','📵 Screens off an hour before bed at your destination.'].map(t=>`<div class="tip">${t}</div>`).join('')+`<div class="legend">General guidance, not medical advice.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='t'?vT():S.tab==='p'?vP():vG();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{d.dest=b.dataset.d;S.shared=false;sv();});
+  v.querySelectorAll('[data-fly]').forEach(b=>b.onclick=()=>{d.fly=+b.dataset.fly;sv();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{GX.post(`Off to <b>${GX.esc(d.dest)}</b> and beating jet lag this time: light, water and bedtime plan sorted 🌙`,'JET LAG PLANNER').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
