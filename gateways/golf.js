@@ -225,7 +225,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('golf', [
   { gw: 'golf', zone: 'linksmith-clubs', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Linksmith Live · Forge Cam, St Andrews', desc: 'Watch a Kingdom Forged iron ground by hand in the Fife workshop, and ask the fitter anything.' },
-  { gw: 'golf', type: 'Event', icon: '🌉', time: 'Nov 21', title: 'Swilcan Bridge meet-up, St Andrews', desc: 'The Old Course Ballot Club meets at the bridge for a photo and a coffee. Everyone welcome.' },
+  { gw: 'golf', type: 'Event', icon: '🌉', time: 'Nov 28', title: 'Swilcan Bridge meet-up, St Andrews', desc: 'The Old Course Ballot Club meets at the bridge for a photo and a coffee. Everyone welcome.' },
   { gw: 'golf', zone: 'linksmith-clubs', type: 'Event', icon: '🏌️', time: 'Dec 5', title: 'Linksmith workshop open day', desc: 'See an iron ground by hand in St Andrews, then hit the range on a launch monitor.' },
   { gw: 'golf', zone: 'caddieline', type: 'Event', icon: '🛒', time: 'Dec 6', title: 'Caddieline Follow demo, Leeds', desc: 'Walk nine holes with the hands-free trolley at the Sunday Hackers’ round.' },
   { gw: 'golf', zone: 'pinseeker-balls', type: 'Deadline', icon: '⚪', time: 'Dec 12', title: 'Personalised balls for Christmas', desc: 'Order personalised Pinseeker balls by midnight to arrive before Christmas.' },

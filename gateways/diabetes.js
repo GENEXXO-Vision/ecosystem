@@ -223,7 +223,7 @@ Object.assign(ZONES, {
 gxEvents('diabetes', [
   { gw: 'diabetes', zone: 'balance-bakery', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Balance Bakery Live · Christmas baking', desc: 'Stollen and mince pies baked live, with the carbs per portion worked out on screen.' },
   { gw: 'diabetes', type: 'Event', icon: '💬', time: 'Dec 3', title: 'Type 1 Together parents’ evening chat', desc: 'An online chat for parents of children with type 1. School, sleep and sensors.' },
-  { gw: 'diabetes', type: 'Event', icon: '🚶', time: 'Nov 21', title: 'Kelvingrove Park walk, Glasgow', desc: 'Diabetes Walkers Glasgow: an easy loop from the bandstand, then tea.' },
+  { gw: 'diabetes', type: 'Event', icon: '🚶', time: 'Nov 28', title: 'Kelvingrove Park walk, Glasgow', desc: 'Diabetes Walkers Glasgow: an easy loop from the bandstand, then tea.' },
   { gw: 'diabetes', zone: 'glucora', type: 'Event', icon: '🎨', time: 'Nov 26', title: 'Glucora colour vote', desc: 'Pick the next three Overpatch colours with the community.' },
   { gw: 'diabetes', zone: 'solewell', type: 'Sale', icon: '🧦', time: 'Nov 28', title: 'Solewell winter sock sale', desc: 'Buy two five-packs, get a third free, all weekend.' },
   { gw: 'diabetes', type: 'Event', icon: '🍽️', time: 'Dec 3', title: 'Eating out at Christmas: online talk', desc: 'Sarah Quinn on menus, carbs and enjoying the party. Free.' },

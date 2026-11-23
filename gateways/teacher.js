@@ -223,7 +223,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('teacher', [
   { gw: 'teacher', zone: 'bright-sparks-science', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Bright Sparks Live · Elephant Toothpaste', desc: 'A free live science lesson streamed to KS2 classrooms, with a worksheet to follow along.' },
-  { gw: 'teacher', type: 'Event', icon: '☕', time: 'Nov 22', title: 'The Staffroom: Sunday night check-in', desc: 'An online cuppa before the week starts. Bring your planning, or don’t.' },
+  { gw: 'teacher', type: 'Event', icon: '☕', time: 'Nov 29', title: 'The Staffroom: Sunday night check-in', desc: 'An online cuppa before the week starts. Bring your planning, or don’t.' },
   { gw: 'teacher', type: 'Event', icon: '🔬', time: 'Nov 28', title: 'Science show tour, Cambridge', desc: 'Science Show Workshops: open show for teachers thinking of booking a STEM day.' },
   { gw: 'teacher', zone: 'story-corner', type: 'Event', icon: '📚', time: 'Dec 2', title: 'Christmas reading list launch', desc: 'Story Corner Books: the teacher panel’s twenty best books of the year. Online.' },
   { gw: 'teacher', type: 'Event', icon: '🎒', time: 'Dec 3', title: 'Bristol primary resource swap', desc: 'Primary Teachers, Bristol: bring what you don’t need, take what you do.' },

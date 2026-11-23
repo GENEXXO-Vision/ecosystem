@@ -221,7 +221,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('knit', [
   { gw: 'knit', zone: 'heather-hank', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Heather & Hank Live · Christmas jumper knit-along', desc: 'Cast on with the dyehouse team live: clue 1 of the Christmas jumper.' },
-  { gw: 'knit', type: 'Event', icon: '🧶', time: 'Nov 22', title: 'Knit Night online', desc: 'Knit Night: bring what’s on your needles and say hello.' },
+  { gw: 'knit', type: 'Event', icon: '🧶', time: 'Nov 29', title: 'Knit Night online', desc: 'Knit Night: bring what’s on your needles and say hello.' },
   { gw: 'knit', zone: 'needle-nook', type: 'Sale', icon: '🪡', time: 'Nov 27', title: 'Needle & Nook Black Friday', desc: 'A fifth off every needle and set, for one day.' },
   { gw: 'knit', zone: 'pattern-post', type: 'Event', icon: '📬', time: 'Dec 1', title: 'December pattern release: Fair Isle yoke', desc: 'Pattern Post: out at 9am, live Q&A at lunchtime.' },
   { gw: 'knit', type: 'Event', icon: '🧵', time: 'Dec 5', title: 'Mending workshop, Bristol', desc: 'Tom Hughes: learn to darn, and take home a darning mushroom.' },

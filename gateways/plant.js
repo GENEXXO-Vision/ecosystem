@@ -222,7 +222,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('plant', [
   { gw: 'plant', zone: 'fernway', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Fernway Live · Winter houseplant clinic', desc: 'Growers answer your winter plant questions live from the glasshouse.' },
-  { gw: 'plant', type: 'Event', icon: '🧄', time: 'Nov 21', title: 'Garlic planting morning, Sheffield', desc: 'Sheffield Allotment Network: bring a fork, leave with garlic in the ground.' },
+  { gw: 'plant', type: 'Event', icon: '🧄', time: 'Nov 28', title: 'Garlic planting morning, Sheffield', desc: 'Sheffield Allotment Network: bring a fork, leave with garlic in the ground.' },
   { gw: 'plant', zone: 'potters-field', type: 'Sale', icon: '🏺', time: 'Nov 27', title: 'Potter’s Field seconds sale', desc: 'Every slightly wonky pot at half price, for one day.' },
   { gw: 'plant', zone: 'rootwell', type: 'Event', icon: '🟫', time: 'Dec 2', title: 'Going peat-free: free webinar', desc: 'Rootwell on why peat matters and how to get the best from peat-free compost.' },
   { gw: 'plant', type: 'Event', icon: '🩺', time: 'Dec 3', title: 'Winter houseplant clinic, live', desc: 'Houseplant Hospital with Owen Price: bring your saddest leaf.' },

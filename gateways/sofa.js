@@ -220,7 +220,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('sofa', [
   { gw: 'sofa', zone: 'settle-down', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Settle Down Live · Black Friday sofa beds', desc: 'Every sofa bed unfolded on camera, and your questions answered.' },
-  { gw: 'sofa', type: 'Event', icon: '🪑', time: 'Nov 22', title: 'Ask an upholsterer: live Q&A', desc: 'Sofa Shoppers with Nell Hartley: is your old sofa worth saving?' },
+  { gw: 'sofa', type: 'Event', icon: '🪑', time: 'Nov 29', title: 'Ask an upholsterer: live Q&A', desc: 'Sofa Shoppers with Nell Hartley: is your old sofa worth saving?' },
   { gw: 'sofa', zone: 'cushionry', type: 'Sale', icon: '🟧', time: 'Nov 27', title: 'Cushionry Black Friday sale', desc: 'A third off every scatter cushion for one day.' },
   { gw: 'sofa', zone: 'hearth-hollow', type: 'Deadline', icon: '🛋️', time: 'Nov 30', title: 'Last order for Christmas delivery', desc: 'Hearth & Hollow: in-stock sofas ordered by midnight arrive before Christmas.' },
   { gw: 'sofa', type: 'Event', icon: '🔨', time: 'Dec 3', title: 'Drop-in stool workshop, Bristol', desc: 'Bristol Upholstery Circle: re-web and recover a stool in an evening. Tools provided.' },

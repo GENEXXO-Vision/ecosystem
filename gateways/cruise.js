@@ -224,7 +224,7 @@ Object.assign(ZONES, {
 gxEvents('cruise', [
   { gw: 'cruise', zone: 'azure-wake', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Azure Wake Live · Fjords 2027 launch', desc: 'A walk round the Azure Meridian and the new itinerary, with the captain taking questions in the chat.' },
   { gw: 'cruise', type: 'Event', icon: '❓', time: 'Dec 1', title: 'First Cruise Club Q&A', desc: 'Old hands answer first-timers’ questions live: tipping, cabins, formal nights and seasickness.' },
-  { gw: 'cruise', type: 'Event', icon: '⚓', time: 'Nov 22', title: 'Sail-away watch, Mayflower Park', desc: 'Southampton Cruisers: wave off the evening ships with a flask of something warm.' },
+  { gw: 'cruise', type: 'Event', icon: '⚓', time: 'Nov 29', title: 'Sail-away watch, Mayflower Park', desc: 'Southampton Cruisers: wave off the evening ships with a flask of something warm.' },
   { gw: 'cruise', zone: 'port-starboard', type: 'Sale', icon: '🏛️', time: 'Nov 28', title: '2027 excursions early-booking sale', desc: 'Port & Starboard: a fifth off every 2027 shore day booked this weekend.' },
   { gw: 'cruise', zone: 'deckhand-outfitters', type: 'Event', icon: '🤵', time: 'Dec 4', title: 'Formal-night fitting day, Southampton', desc: 'Deckhand Outfitters: try the formal range and get it altered before you sail.' },
   { gw: 'cruise', type: 'Event', icon: '🛳️', time: 'Dec 9', title: 'Ship visit for first-timers', desc: 'First Cruise Club: a guided look round a ship at the Ocean Terminal, Southampton.' },

@@ -222,7 +222,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('hotel', [
   { gw: 'hotel', zone: 'concierge-club', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Concierge Club Live · Winter hotel deals', desc: 'Two concierges pick the best winter stays and answer your questions in the chat.' },
-  { gw: 'hotel', type: 'Event', icon: '🍳', time: 'Nov 21', title: 'Hotel Hunters breakfast awards: vote closes', desc: 'The community’s vote for the best hotel breakfast in the UK closes at 8pm.' },
+  { gw: 'hotel', type: 'Event', icon: '🍳', time: 'Nov 28', title: 'Hotel Hunters breakfast awards: vote closes', desc: 'The community’s vote for the best hotel breakfast in the UK closes at 8pm.' },
   { gw: 'hotel', zone: 'pillowry', type: 'Sale', icon: '🛏️', time: 'Nov 27', title: 'Pillowry Black Friday bedding sale', desc: 'A quarter off sheets, duvets and toppers for one day.' },
   { gw: 'hotel', zone: 'linen-lantern', type: 'Deadline', icon: '🏨', time: 'Nov 30', title: 'Winter Weekend early booking ends', desc: 'Linen & Lantern: book January or February by midnight for a free dinner upgrade.' },
   { gw: 'hotel', type: 'Event', icon: '🛎️', time: 'Dec 2', title: 'Front-desk skills evening, London', desc: 'London Hospitality Network with James Okafor: arrivals, complaints and the first five minutes.' },
