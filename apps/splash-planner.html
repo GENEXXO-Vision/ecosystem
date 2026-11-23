@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Park Day Planner</title>
+<style>
+/* Park Day Planner, by Floatabout (fictional), 2026-11-23. A GENEXXO app for WaterparkXX.
+   Pick the children's heights, get the rides they can do and a day plan with food and sun-cream breaks; a wave-pool
+   countdown (waves every 30 minutes on the hour and half hour, illustrative) and a packing list. */
+:root{--bg:#FFF8F1;--card:#fff;--line:rgba(60,30,10,.1);--ink:#2A1A0E;--mut:rgba(42,26,14,.55);--sun:#EA580C;--aqua:#0284C7}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#FBBF24,#EA580C);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--sun)}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.kid{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:8px}
+.kid b{flex:1}.kid .h{font-weight:900;color:var(--sun);min-width:64px;text-align:center}
+.pm{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;font:inherit;font-size:18px;font-weight:800;cursor:pointer}
+.ride{display:flex;gap:10px;align-items:center;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:6px}
+.ride .em{font-size:22px}.ride .x{flex:1}.ride b{display:block}.ride p{font-size:12px;color:var(--mut)}
+.ok{font-size:11.5px;font-weight:800;padding:4px 9px;border-radius:99px;background:#DCFCE7;color:#166534;white-space:nowrap}.no{background:#F3F4F6;color:#6B7280}
+.tl{position:relative;padding-left:22px;margin-top:6px}.tl:before{content:'';position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:#FED7AA}
+.st{position:relative;padding:8px 0}.st:before{content:'';position:absolute;left:-20px;top:13px;width:10px;height:10px;border-radius:50%;background:var(--sun)}.st.brk:before{background:var(--aqua)}
+.st small{font-weight:800;color:var(--mut);font-size:12px;margin-right:6px}
+.wave{background:linear-gradient(135deg,#0369A1,#38BDF8);color:#fff;border-radius:18px;padding:16px;text-align:center}.wave .n{font-size:40px;font-weight:900;font-variant-numeric:tabular-nums}.wave small{opacity:.9}
+.chk{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px;cursor:pointer}.chk .b{width:22px;height:22px;border-radius:6px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff}.chk.on .b{background:var(--sun);border-color:var(--sun)}.chk.on span{text-decoration:line-through;color:var(--mut)}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--sun);color:#fff;cursor:pointer}.go:disabled{background:#EEE5DC;color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">☀️</div><div><h1>Park Day Planner</h1><p>Floatabout · in WaterparkXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="r" class="on">Who can ride</button><button data-tab="p">Day plan</button><button data-tab="k">Pack</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const RIDES=[['Splash zone','💦',0],['Lazy river','🛟',0],['Wave pool','🌊',0],['Family raft','🛶',1.0],['Tube slides','🌀',1.1],['Black hole','🕳️',1.2],['The Plunge (drop)','⬇️',1.2],['Trapdoor','🚪',1.3]];
+const PACK=['Swimsuits (and a spare)','Towels','Goggles','Sun cream','Swim nappies','Flip-flops','Water bottles','Snacks','£1 for the lockers','Plastic bag for wet things','Hairbrush','Warm hoodies for after'];
+const seed=()=>({kids:[{n:'Maya',h:1.24},{n:'Leo',h:1.06}],packed:['Swimsuits (and a spare)','Towels','Sun cream']});
+let C,S={tab:'r',shared:false};
+GX.init({gateway:'WaterparkXX',seed}).then(c=>{C=c;paint();setInterval(()=>{if(S.tab==='p')tick();},1000);});
+const min=()=>Math.min(...C.data.kids.map(k=>k.h));
+function vR(){const d=C.data;return `<div class="lbl">Heights</div>`+d.kids.map((k,i)=>`<div class="kid"><span style="font-size:22px">${k.h>=1.2?'🧒':'👶'}</span><b>${GX.esc(k.n)}</b><button class="pm" data-dn="${i}">−</button><span class="h">${k.h.toFixed(2)} m</span><button class="pm" data-up="${i}">+</button></div>`).join('')+
+  `<div class="lbl">Rides everyone can do</div>`+RIDES.map(r=>{const ok=min()>=r[2];return `<div class="ride"><span class="em">${r[1]}</span><div class="x"><b>${r[0]}</b><p>${r[2]?'From '+r[2].toFixed(2)+' m':'Any height, with an adult'}</p></div><span class="ok ${ok?'':'no'}">${ok?'✓ Everyone':'Not yet: '+d.kids.filter(k=>k.h<r[2]).map(k=>GX.esc(k.n)).join(', ')}</span></div>`;}).join('')+
+  `<div class="legend">Height limits vary by park. Check the post at the top of each slide.</div>`;}
+function plan(){const rides=RIDES.filter(r=>min()>=r[2]).map(r=>r[0]);const big=rides.slice(3);
+  return [['10:00','Arrive, lockers, sun cream',1],['10:20','Wave pool while it’s quiet',0],['11:00',big.length?big.slice(0,2).join(' and '):'Splash zone',0],['12:15','Lunch and a rest out of the water',1],['13:00','Lazy river (let lunch settle)',0],['13:45',big.length>2?big.slice(2).join(', '):'Family raft',0],['14:45','Sun cream again, snack',1],['15:00','Favourite rides, one more time',0],['16:00','Showers and warm clothes',1]];}
+function vP(){return `<div class="wave"><small>Next wave session in</small><div class="n" id="cd">--:--</div><small>Waves every 30 minutes</small></div><div class="lbl">Your day</div><div class="tl">`+plan().map(p=>`<div class="st ${p[2]?'brk':''}"><small>${p[0]}</small>${p[1]}</div>`).join('')+`</div>`+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share our day plan'}</button>`:'');}
+function tick(){const el=document.getElementById('cd');if(!el)return;const n=new Date(),s=(30-n.getMinutes()%30)*60-n.getSeconds();el.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function vK(){const d=C.data;return `<div class="lbl">${d.packed.length} of ${PACK.length} packed</div>`+PACK.map(p=>`<div class="chk ${d.packed.includes(p)?'on':''}" data-p="${GX.esc(p)}"><div class="b">✓</div><span>${p}</span></div>`).join('');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='r'?vR():S.tab==='p'?vP():vK();const sv=()=>{GX.save(d);paint();};tick();
+  v.querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>{const k=d.kids[+b.dataset.up];k.h=Math.min(1.9,Math.round((k.h+0.02)*100)/100);sv();});
+  v.querySelectorAll('[data-dn]').forEach(b=>b.onclick=()=>{const k=d.kids[+b.dataset.dn];k.h=Math.max(0.6,Math.round((k.h-0.02)*100)/100);sv();});
+  v.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const p=b.dataset.p,i=d.packed.indexOf(p);i<0?d.packed.push(p):d.packed.splice(i,1);sv();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const n=RIDES.filter(r=>min()>=r[2]).length;GX.post(`Waterpark day planned: ${n} rides the whole family can do, lunch at 12:15 and sun cream twice ☀️🌊`,'PARK DAY').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Slide Ranker</title>
+<style>
+/* Slide Ranker, by Splashline Parks (fictional), 2026-11-23. A GENEXXO app for WaterparkXX.
+   Rank every slide you ride with a thrill score; a top list, an add form and a still-to-ride list. Parks and slides are fictional. */
+:root{--bg:#F2FAFE;--card:#fff;--line:rgba(11,42,58,.1);--ink:#0B2A3A;--mut:rgba(11,42,58,.55);--aqua:#0284C7;--sun:#EA580C}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#38BDF8,#0369A1);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--aqua)}
+.hero{background:linear-gradient(135deg,#0369A1,#0EA5E9);color:#fff;border-radius:18px;padding:16px;display:flex;gap:14px;align-items:center}
+.hero .n{font-size:38px;font-weight:900;line-height:1}.hero b{display:block;font-size:16px}.hero small{opacity:.85;font-size:12px}
+.row{display:flex;gap:12px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:8px}
+.rk{width:30px;height:30px;border-radius:50%;background:#E0F2FE;color:var(--aqua);font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
+.rk.g{background:#FEF3C7;color:#B45309}.x{flex:1;min-width:0}.x b{display:block}.x p{color:var(--mut);font-size:12.5px}
+.st{color:#F59E0B;font-size:13px;letter-spacing:1px;white-space:nowrap}.st i{color:#CBD5E1;font-style:normal}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+input,select,textarea{width:100%;font:inherit;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+.stars{display:flex;gap:6px}.stars button{flex:1;font-size:22px;padding:8px 0;border:1px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;filter:grayscale(1);opacity:.5}.stars button.on{filter:none;opacity:1;background:#FFFBEB;border-color:#F59E0B}
+.mini{font:inherit;font-size:12px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:7px 10px;cursor:pointer;white-space:nowrap}.mini.on{background:var(--aqua);border-color:var(--aqua);color:#fff}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--aqua);color:#fff;cursor:pointer}.go:disabled{background:#E2ECF2;color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🎢</div><div><h1>Slide Ranker</h1><p>Splashline Parks · in WaterparkXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="r" class="on">My ranking</button><button data-tab="a">Rate a slide</button><button data-tab="t">To ride</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const seed=()=>({slides:[
+  {n:'The Plunge',p:'Splashline Birmingham',s:5,t:'Near-vertical drop. Screamed the whole way.',d:GX.iso(-1)},
+  {n:'Black Hole Run',p:'Splashline Glasgow',s:5,t:'Pitch dark with one tiny light. Brilliant.',d:GX.iso(-12)},
+  {n:'Tornado Bowl',p:'Coralline, Dubai',s:4,t:'Round and round, then out the bottom.',d:GX.iso(-40)},
+  {n:'Family Raft',p:'Splashline Birmingham',s:4,t:'Four of us, one raft, lots of soaking.',d:GX.iso(-1)},
+  {n:'Twister',p:'Splashline Leeds',s:3,t:'Fun, short queue.',d:GX.iso(-25)},
+  {n:'Lazy River',p:'Splashline Leeds',s:2,t:'Relaxing. Very relaxing.',d:GX.iso(-25)},
+  {n:'Kiddie Splash',p:'Splashline Glasgow',s:2,t:'Rode it with my nephew. Thrilling for him.',d:GX.iso(-12)}],
+  todo:[{n:'Trapdoor Drop',p:'Splashline Leeds',done:false},{n:'The Abyss',p:'Coralline, Dubai',done:false},{n:'Wave Rider',p:'Wavehouse, Bristol',done:false}]});
+let C,S={tab:'r',score:4,shared:false};
+GX.init({gateway:'WaterparkXX',seed}).then(c=>{C=c;paint();});
+const stars=n=>`<span class="st">${'★'.repeat(n)}<i>${'★'.repeat(5-n)}</i></span>`;
+const sorted=()=>C.data.slides.slice().sort((a,b)=>b.s-a.s||(b.d>a.d?1:-1));
+function vR(){const L=sorted(),top=L[0];
+  return (top?`<div class="hero"><div class="n">#1</div><div><b>${GX.esc(top.n)}</b><small>${GX.esc(top.p)} · thrill ${top.s}/5</small></div></div>`:'')+
+  `<div class="lbl">${L.length} slides ranked</div>`+L.map((s,i)=>`<div class="row"><div class="rk ${i<3?'g':''}">${i+1}</div><div class="x"><b>${GX.esc(s.n)}</b><p>${GX.esc(s.p)}${s.t?' · '+GX.esc(s.t):''}</p></div>${stars(s.s)}</div>`).join('')+
+  (GX.can('feed')&&top?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share my number one'}</button>`:'');}
+function vA(){return `<div class="lbl">Slide</div><input id="fn" placeholder="e.g. The Plunge">
+  <div class="lbl">Park</div><input id="fp" placeholder="e.g. Splashline Birmingham">
+  <div class="lbl">Thrill score</div><div class="stars">${[1,2,3,4,5].map(n=>`<button data-score="${n}" class="${n<=S.score?'on':''}">★</button>`).join('')}</div>
+  <div class="lbl">Note</div><input id="ft" placeholder="How was it?">
+  <button class="go" id="add">Add to my ranking</button><div class="legend">Always follow the height and safety signs at the top of the stairs.</div>`;}
+function vT(){const d=C.data;return `<div class="lbl">Still to ride</div>`+d.todo.map((t,i)=>`<div class="row"><span style="font-size:22px">${t.done?'✅':'🎢'}</span><div class="x"><b>${GX.esc(t.n)}</b><p>${GX.esc(t.p)}</p></div><button class="mini ${t.done?'on':''}" data-rode="${i}">${t.done?'Rated':'I rode it'}</button></div>`).join('')+
+  `<div class="lbl">Add one</div><input id="tn" placeholder="Slide and park, e.g. Trapdoor Drop, Leeds"><button class="go" id="tadd">Add to list</button>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='r'?vR():S.tab==='a'?vA():vT();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-score]').forEach(b=>b.onclick=()=>{S.score=+b.dataset.score;v.querySelectorAll('[data-score]').forEach(x=>x.classList.toggle('on',+x.dataset.score<=S.score));});
+  const add=document.getElementById('add');if(add)add.onclick=()=>{const n=document.getElementById('fn').value.trim();if(!n)return;d.slides.push({n,p:document.getElementById('fp').value.trim()||'Somewhere wet',s:S.score,t:document.getElementById('ft').value.trim(),d:GX.iso(0)});S.tab='r';S.shared=false;sv();};
+  v.querySelectorAll('[data-rode]').forEach(b=>b.onclick=()=>{const t=d.todo[+b.dataset.rode];if(t.done)return;t.done=true;GX.save(d);S.tab='a';paint();document.getElementById('fn').value=t.n;document.getElementById('fp').value=t.p;});
+  const ta=document.getElementById('tadd');if(ta)ta.onclick=()=>{const x=document.getElementById('tn').value.trim();if(!x)return;const [n,...p]=x.split(',');d.todo.push({n:n.trim(),p:p.join(',').trim()||'—',done:false});sv();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const t=sorted()[0];GX.post(`My number one slide: <b>${GX.esc(t.n)}</b> at ${GX.esc(t.p)}, thrill ${t.s}/5. ${d.slides.length} slides ranked so far 🎢`,'SLIDE RANKER').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Swim Badges</title>
+<style>
+/* Swim Badges, by Tidewell Swim (fictional), 2026-11-23. A GENEXXO app for WaterparkXX.
+   Seven learn-to-swim stages (a simplified, illustrative scheme, not any official award), skills ticked off per child,
+   badges earned when a stage is complete, and notes for the swimming teacher. */
+:root{--bg:#F1FAF8;--card:#fff;--line:rgba(15,60,55,.1);--ink:#0E2B28;--mut:rgba(14,43,40,.55);--teal:#0F766E;--sun:#F59E0B}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#2DD4BF,#0F766E);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--teal)}
+.kids{display:flex;gap:6px}.kids button{font:inherit;font-weight:800;font-size:13px;border:1px solid var(--line);background:#fff;color:var(--mut);border-radius:99px;padding:7px 14px;cursor:pointer}.kids button.on{background:var(--teal);border-color:var(--teal);color:#fff}
+.now{background:linear-gradient(135deg,#0F766E,#14B8A6);color:#fff;border-radius:18px;padding:16px;margin-top:12px}.now small{opacity:.85;font-weight:700;font-size:12px}.now b{display:block;font-size:20px;margin:2px 0 8px}
+.bar{height:10px;border-radius:99px;background:rgba(255,255,255,.25);overflow:hidden}.bar i{display:block;height:100%;background:#FDE68A;border-radius:99px}
+.chk{display:flex;align-items:center;gap:10px;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px;cursor:pointer}.chk .b{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;flex-shrink:0}.chk.on .b{background:var(--teal);border-color:var(--teal)}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.bd{text-align:center;padding:10px 4px;background:var(--card);border:1px solid var(--line);border-radius:14px}.bd .m{width:48px;height:48px;margin:0 auto 6px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;background:#E5E7EB;filter:grayscale(1);opacity:.5}.bd.on .m{filter:none;opacity:1;background:linear-gradient(135deg,#FDE68A,#F59E0B);box-shadow:0 0 0 3px #FEF3C7}.bd small{font-size:11px;font-weight:800;color:var(--mut)}
+textarea{width:100%;font:inherit;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);min-height:90px}
+.note{padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px;font-size:13px}.note small{display:block;color:var(--mut);font-weight:700;font-size:11.5px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--teal);color:#fff;cursor:pointer}.go:disabled{background:#DDEBE8;color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🏅</div><div><h1>Swim Badges</h1><p>Tidewell Swim · in WaterparkXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="s" class="on">Skills</button><button data-tab="b">Badges</button><button data-tab="n">Notes</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const STAGES=[['Splash','💧',['Gets face wet happily','Blows bubbles','Walks across the shallow end']],['Float','🫧',['Floats on front with a float','Floats on back with help','Stands up from a float']],['Kick','🦵',['Kicks with a woggle','Kicks on back with a float','Pushes and glides 3 m']],['Paddle','🐶',['Doggy paddle 5 m','Puts face in while paddling','Climbs out unaided']],['Stroke','🏊',['Front crawl arms 5 m','Back stroke 5 m','Treads water 15 seconds']],['Breathe','🌬️',['Breathes to the side','Front crawl 10 m','Jumps in and swims to the side']],['Length','🏆',['Swims 25 m without stopping','Two strokes, 10 m each','Floats still for 30 seconds']]];
+const seed=()=>({kid:0,kids:[{n:'Maya',done:['0.0','0.1','0.2','1.0','1.1','1.2','2.0','2.1','2.2','3.0','3.1']},{n:'Leo',done:['0.0','0.1','1.0']}],notes:[{d:GX.iso(-3),t:'Maya nervous about putting her face in. Practising in the bath.'},{d:GX.iso(-10),t:'Leo loves the woggle. Can we try without it?'}]});
+let C,S={tab:'s',shared:false};
+GX.init({gateway:'WaterparkXX',seed}).then(c=>{C=c;paint();});
+const K=()=>C.data.kids[C.data.kid];
+const stageDone=(k,i)=>STAGES[i][2].every((_,j)=>k.done.includes(i+'.'+j));
+const cur=k=>{for(let i=0;i<STAGES.length;i++)if(!stageDone(k,i))return i;return STAGES.length-1;};
+const kids=()=>`<div class="kids">${C.data.kids.map((k,i)=>`<button data-kid="${i}" class="${i===C.data.kid?'on':''}">${GX.esc(k.n)}</button>`).join('')}</div>`;
+function vS(){const k=K(),i=cur(k),st=STAGES[i],n=st[2].filter((_,j)=>k.done.includes(i+'.'+j)).length;
+  return kids()+`<div class="now"><small>Stage ${i+1} of 7</small><b>${st[1]} ${st[0]}</b><div class="bar"><i style="width:${n/3*100}%"></i></div></div><div class="lbl">Skills in this stage</div>`+
+  st[2].map((s,j)=>`<div class="chk ${k.done.includes(i+'.'+j)?'on':''}" data-sk="${i}.${j}"><div class="b">✓</div><span>${s}</span></div>`).join('')+
+  `<div class="legend">Tick a skill when they can do it on their own, three times.</div>`;}
+function vB(){const k=K(),got=STAGES.filter((_,i)=>stageDone(k,i)).length;
+  return kids()+`<div class="lbl">${GX.esc(k.n)} has ${got} of 7 badges</div><div class="grid">`+STAGES.map((s,i)=>`<div class="bd ${stageDone(k,i)?'on':''}"><div class="m">${s[1]}</div><small>${s[0]}</small></div>`).join('')+`</div>`+
+  (GX.can('feed')&&got?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:`Share ${GX.esc(k.n)}’s badges`}</button>`:'');}
+function vN(){return `<div class="lbl">Note for the swim teacher</div><textarea id="nt" placeholder="What did you notice this week?"></textarea><button class="go" id="nadd">Save note</button><div class="lbl">Earlier notes</div>`+
+  C.data.notes.map(n=>`<div class="note"><small>${GX.day(n.d)}</small>${GX.esc(n.t)}</div>`).join('');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='s'?vS():S.tab==='b'?vB():vN();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-kid]').forEach(b=>b.onclick=()=>{d.kid=+b.dataset.kid;S.shared=false;sv();});
+  v.querySelectorAll('[data-sk]').forEach(b=>b.onclick=()=>{const k=K(),x=b.dataset.sk,i=k.done.indexOf(x);i<0?k.done.push(x):k.done.splice(i,1);sv();});
+  const na=document.getElementById('nadd');if(na)na.onclick=()=>{const t=document.getElementById('nt').value.trim();if(!t)return;d.notes.unshift({d:GX.iso(0),t});sv();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const k=K(),got=STAGES.filter((_,i)=>stageDone(k,i));GX.post(`${GX.esc(k.n)} just earned the <b>${got[got.length-1][0]}</b> badge: ${got.length} of 7 learn-to-swim stages done 🏅`,'SWIM BADGES').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
