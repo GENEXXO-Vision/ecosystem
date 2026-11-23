@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Load Planner</title>
+<style>
+/* Load Planner, by Gritline Workwear (fictional), 2026-11-23. A GENEXXO app for TruckXX.
+   Add pallets against a truck's payload and floor space. Payloads and pallet counts are typical round figures, not
+   any vehicle's plated weights: a planning aid, the weighbridge and the plate are the record. */
+:root{--bg:#0E120B;--card:rgba(255,255,255,.05);--line:rgba(230,240,220,.1);--ink:#E9F0E2;--mut:rgba(233,240,226,.55);--lime:#84CC16;--amber:#F59E0B;--red:#EF4444}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#D9F99D,#65A30D);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--lime)}
+.deck{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px}
+.floor{display:grid;gap:3px;margin:10px 0}.floor div{aspect-ratio:1/1.2;border-radius:3px;background:rgba(255,255,255,.06)}.floor div.f{background:#A3E635}.floor div.h{background:#F59E0B}.floor div.o{background:var(--red)}
+.meter small{display:flex;justify-content:space-between;color:var(--mut);font-weight:700;font-size:12px;margin-top:8px}.meter small b{color:var(--ink)}
+.bar{height:10px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:4px}.bar i{display:block;height:100%;border-radius:99px;background:var(--lime)}
+.status{margin-top:10px;font-weight:800;padding:10px;border-radius:12px;text-align:center;background:rgba(132,204,22,.12);color:#A3E635}.status.bad{background:rgba(239,68,68,.15);color:#F87171}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.add{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.add button{font:inherit;font-weight:800;font-size:12.5px;padding:10px 4px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}.add button small{display:block;color:var(--mut);font-size:10.5px;font-weight:700}
+.row{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:6px;cursor:pointer}.row.on{border-color:var(--lime);background:rgba(132,204,22,.08)}.row .x{flex:1}.row b{display:block}.row p{color:var(--mut);font-size:12.5px}
+.mini{font:inherit;font-size:12px;font-weight:800;border:1px solid var(--line);background:none;color:var(--ink);border-radius:99px;padding:7px 10px;cursor:pointer}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--lime);color:#14200A;cursor:pointer}.go:disabled{background:rgba(255,255,255,.08);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">📦</div><div><h1>Load Planner</h1><p>Gritline Workwear · in TruckXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="l" class="on">Load</button><button data-tab="t">Truck</button><button data-tab="s">Saved</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const TRUCKS=[['artic','44-tonne artic','🚛',29000,26,13],['rigid18','18-tonne rigid','🚚',9500,14,7],['rigid26','26-tonne rigid','🚚',15000,18,9],['van','7.5-tonne truck','🚐',2500,8,4]];
+const W=[[250,'Light'],[500,'Half'],[800,'Standard'],[1000,'Heavy']];
+const seed=()=>({truck:'artic',pallets:[800,800,1000,1000,500,800,800,250,1000,800,500,800,800,1000,800,800,500,250],saved:[{n:'Leeds drop, Tuesday',t:'artic',p:22,kg:17400,d:GX.iso(-6)},{n:'Bakery run',t:'rigid18',p:12,kg:4800,d:GX.iso(-2)}]});
+let C,S={tab:'l',shared:false};
+GX.init({gateway:'TruckXX',seed}).then(c=>{C=c;paint();});
+const T=()=>TRUCKS.find(t=>t[0]===C.data.truck);
+const kg=()=>C.data.pallets.reduce((a,b)=>a+b,0);
+const ok=()=>kg()<=T()[3]&&C.data.pallets.length<=T()[4];
+function vL(){const t=T(),d=C.data,n=d.pallets.length,k=kg(),over=n>t[4];
+  const cells=Array.from({length:Math.max(t[4],n)},(_,i)=>`<div class="${i>=t[4]?'o':i<n?(d.pallets[i]>=1000?'h':'f'):''}"></div>`).join('');
+  return `<div class="deck"><b>${t[2]} ${t[1]}</b><div class="floor" style="grid-template-columns:repeat(${t[5]},1fr)">${cells}</div>
+  <div class="meter"><small><span>Weight</span><b>${(k/1000).toFixed(1)} of ${(t[3]/1000).toFixed(1)} t</b></small><div class="bar"><i style="width:${Math.min(100,k/t[3]*100)}%;background:${k>t[3]?'#EF4444':'#84CC16'}"></i></div>
+  <small><span>Floor space</span><b>${n} of ${t[4]} pallets</b></small><div class="bar"><i style="width:${Math.min(100,n/t[4]*100)}%;background:${over?'#EF4444':'#84CC16'}"></i></div></div>
+  <div class="status ${ok()?'':'bad'}">${ok()?`✓ Fits. Room for ${t[4]-n} more pallets, ${((t[3]-k)/1000).toFixed(1)} t`:k>t[3]?`Over by ${((k-t[3])/1000).toFixed(1)} t: take some off`:'Not enough floor space'}</div></div>
+  <div class="lbl">Add a pallet</div><div class="add">${W.map(w=>`<button data-w="${w[0]}">+ ${w[1]}<small>${w[0]} kg</small></button>`).join('')}</div>
+  <div class="add" style="grid-template-columns:1fr 1fr;margin-top:6px"><button id="undo">↩ Remove last</button><button id="save">💾 Save load</button></div>
+  <div class="legend">A planning aid. The weighbridge and your truck’s plate are the record.</div>`;}
+function vT(){return `<div class="lbl">Choose your truck</div>`+TRUCKS.map(t=>`<div class="row ${C.data.truck===t[0]?'on':''}" data-t="${t[0]}"><span style="font-size:24px">${t[2]}</span><div class="x"><b>${t[1]}</b><p>Payload about ${(t[3]/1000).toFixed(1)} t · ${t[4]} pallets</p></div>${C.data.truck===t[0]?'✓':''}</div>`).join('')+`<div class="legend">Typical figures. Check your own vehicle’s plated weights.</div>`;}
+function vS(){const d=C.data;return `<div class="lbl">Saved loads</div>`+d.saved.map(s=>`<div class="row"><span style="font-size:22px">📦</span><div class="x"><b>${GX.esc(s.n)}</b><p>${GX.day(s.d)} · ${s.p} pallets · ${(s.kg/1000).toFixed(1)} t · ${TRUCKS.find(t=>t[0]===s.t)[1]}</p></div></div>`).join('')+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share today’s load'}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='l'?vL():S.tab==='t'?vT():vS();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{d.pallets.push(+b.dataset.w);sv();});
+  v.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{d.truck=b.dataset.t;sv();});
+  const u=document.getElementById('undo');if(u)u.onclick=()=>{d.pallets.pop();sv();};
+  const s=document.getElementById('save');if(s)s.onclick=()=>{d.saved.unshift({n:'Load for '+GX.day(GX.today(0),{weekday:'long'}),t:d.truck,p:d.pallets.length,kg:kg(),d:GX.iso(0)});S.tab='s';S.shared=false;sv();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const l=d.saved[0];GX.post(`Loaded and planned: ${l.p} pallets, ${(l.kg/1000).toFixed(1)} tonnes, everything strapped 📦`,'LOAD PLANNER').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

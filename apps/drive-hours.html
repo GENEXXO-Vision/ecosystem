@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Drive Hours</title>
+<style>
+/* Drive Hours, by Haulmark Trucks (fictional), 2026-11-23. A GENEXXO app for TruckXX.
+   A planning aid for drivers' hours, using the familiar GB/EU limits in simplified form: a 45-minute break after
+   4.5 hours' driving (or 15 then 30 minutes), 9 hours a day (10 twice a week) and 56 a week. Illustrative only:
+   the tachograph and the rules are the record. */
+:root{--bg:#0D1117;--card:rgba(255,255,255,.05);--line:rgba(230,234,240,.1);--ink:#E6EAF0;--mut:rgba(230,234,240,.55);--blue:#3B82F6;--amber:#F59E0B;--green:#22C55E}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#3B82F6,#1E3A8A);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--blue)}
+.ring{display:flex;align-items:center;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px}
+.ring svg{width:120px;height:120px;flex-shrink:0}.ring .x small{color:var(--mut);font-weight:700;font-size:12px}.ring .x b{display:block;font-size:26px;font-weight:900;font-variant-numeric:tabular-nums}
+.pill{display:inline-block;margin-top:6px;font-size:11.5px;font-weight:800;padding:4px 9px;border-radius:99px;background:rgba(34,197,94,.15);color:var(--green)}.pill.w{background:rgba(245,158,11,.15);color:var(--amber)}.pill.r{background:rgba(239,68,68,.15);color:#F87171}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}.box small{color:var(--mut);font-weight:700;font-size:11.5px}.box b{display:block;font-size:19px;font-weight:900;font-variant-numeric:tabular-nums}
+.btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px}.btns button{font:inherit;font-weight:800;font-size:12.5px;padding:11px 4px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}.btns button.p{background:var(--blue);border-color:var(--blue)}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.seg{display:flex;gap:10px;align-items:center;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px}.seg .d{width:10px;height:10px;border-radius:50%}.seg b{flex:1}.seg span{color:var(--mut);font-variant-numeric:tabular-nums}
+.wk{display:flex;align-items:flex-end;gap:6px;height:150px;padding:10px;background:var(--card);border:1px solid var(--line);border-radius:16px}.wk div{flex:1;text-align:center;font-size:11px;color:var(--mut);font-weight:700}.wk i{display:block;border-radius:6px 6px 2px 2px;background:var(--blue);margin-bottom:4px}.wk .t i{background:var(--amber)}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--blue);color:#fff;cursor:pointer}.go:disabled{background:rgba(255,255,255,.08);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">⏱️</div><div><h1>Drive Hours</h1><p>Haulmark Trucks · in TruckXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="n" class="on">Now</button><button data-tab="t">Today</button><button data-tab="w">Last 7 days</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const LIM={stint:270,day:540,week:3360};
+/* week = the six days before today, oldest first (one rest day); today comes from segs */
+const seed=()=>({segs:[{k:'d',m:150},{k:'b',m:45},{k:'d',m:95}],week:[510,585,0,540,480,525],tens:1});
+let C,S={tab:'n',shared:false};
+GX.init({gateway:'TruckXX',seed}).then(c=>{C=c;paint();});
+const hm=m=>`${Math.floor(m/60)}h ${String(m%60).padStart(2,'0')}`;
+function stint(){let s=0,part15=false;for(const g of C.data.segs){if(g.k==='d')s+=g.m;else if(g.m>=45||(part15&&g.m>=30)){s=0;part15=false;}else if(g.m>=15)part15=true;}return {s,part15};}
+const today=()=>C.data.segs.filter(g=>g.k==='d').reduce((a,g)=>a+g.m,0);
+const dayLim=()=>C.data.tens<2?600:540;
+function vN(){const {s,part15}=stint(),left=Math.max(0,LIM.stint-s),t=today(),dl=Math.max(0,dayLim()-t),f=Math.min(1,s/LIM.stint),C2=2*Math.PI*50;
+  const col=left<=0?'#EF4444':left<45?'#F59E0B':'#3B82F6',cls=left<=0?'r':left<45?'w':'';
+  return `<div class="ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="12"/><circle cx="60" cy="60" r="50" fill="none" stroke="${col}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C2*f} ${C2}" transform="rotate(-90 60 60)"/><text x="60" y="66" text-anchor="middle" fill="#E6EAF0" font-size="18" font-weight="800">${Math.round(f*100)}%</text></svg>
+  <div class="x"><small>Break due in</small><b>${left?hm(left):'Now'}</b><span class="pill ${cls}">${left<=0?'Take a 45-minute break':part15?'15 min taken: 30 more due':left<45?'Plan your stop':'Driving within limits'}</span></div></div>
+  <div class="two"><div class="box"><small>Driven today</small><b>${hm(t)}</b></div><div class="box"><small>Left today (${dayLim()/60}h day)</small><b>${hm(dl)}</b></div></div>
+  <div class="btns"><button class="p" data-add="d">+30 min drive</button><button data-add="b15">15 min break</button><button data-add="b45">45 min break</button></div>
+  <div class="legend">A planning aid. Your tachograph is always the record.</div>`;}
+function vT(){const d=C.data;return `<div class="lbl">Today’s shift</div>`+d.segs.map(g=>`<div class="seg"><span class="d" style="background:${g.k==='d'?'#3B82F6':'#22C55E'}"></span><b>${g.k==='d'?'Driving':'Break'}</b><span>${hm(g.m)}</span></div>`).join('')+
+  `<button class="go" id="end">End shift and log it</button>`;}
+function vW(){const d=C.data,days=[...d.week,today()],tot=days.reduce((a,b)=>a+b,0);
+  return `<div class="two" style="margin-top:0"><div class="box"><small>Last 7 days</small><b>${hm(tot)}</b></div><div class="box"><small>Rest days</small><b>${days.filter(m=>!m).length}</b></div></div>
+  <div class="lbl">Driving by day</div><div class="wk">${days.map((m,i)=>`<div class="${i===6?'t':''}"><i style="height:${Math.max(2,m/600*110)}px"></i>${i===6?'Today':GX.day(GX.today(i-6),{weekday:'narrow'})}</div>`).join('')}</div>
+  <div class="legend">10-hour days used this week: ${d.tens} of 2</div>`+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share my week'}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='n'?vN():S.tab==='t'?vT():vW();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{const a=b.dataset.add,last=d.segs[d.segs.length-1];
+    if(a==='d'){if(last&&last.k==='d')last.m+=30;else d.segs.push({k:'d',m:30});}else d.segs.push({k:'b',m:a==='b15'?15:45});sv();});
+  const e=document.getElementById('end');if(e)e.onclick=()=>{if(today()>540)d.tens++;d.week=[...d.week.slice(1),today()];d.segs=[];S.tab='w';sv();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const tot=d.week.reduce((a,b)=>a+b,0)+today();GX.post(`${hm(tot)} behind the wheel in the last seven days, every break taken. Safe miles 🚛`,'DRIVE HOURS').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
