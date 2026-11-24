@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Drop Route</title>
+<style>
+/* Drop Route, by Parcelwise (fictional), 2026-11-24. A GENEXXO app for CourierXX.
+   Today's drops around Leeds (real streets, made-up numbers, no real addresses), put in order nearest-first from the
+   depot with timed drops first, miles saved, ticked off as you go. A planning aid: use your judgement on the road. */
+:root{--bg:#F7F8F5;--card:#fff;--line:rgba(22,32,26,.1);--ink:#16201A;--mut:rgba(22,32,26,.55);--acc:#15803D;--vis:#EA580C}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#22C55E,#14532D);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.map{position:relative;height:210px;border-radius:18px;background:#E8EFE6;border:1px solid var(--line);overflow:hidden}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.two{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px}.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 11px}.box small{color:var(--mut);font-weight:700;font-size:11px}.box b{display:block;font-size:18px;font-weight:900;font-variant-numeric:tabular-nums}.box b.g{color:var(--acc)}
+.drop{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:6px}.drop .n{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;font-size:12.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0}.drop .x{flex:1}.drop b{display:block;font-size:14px}.drop small{color:var(--mut)}
+.drop.done{opacity:.5}.drop.done .n{background:var(--mut)}.tm{font-style:normal;font-size:11px;font-weight:800;color:var(--vis);background:rgba(234,88,12,.1);padding:2px 7px;border-radius:99px;margin-left:4px}
+.tick{font:inherit;font-weight:800;font-size:12.5px;padding:8px 12px;border-radius:99px;border:1px solid var(--acc);background:none;color:var(--acc);cursor:pointer}.drop.done .tick{border-color:var(--line);color:var(--mut)}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:#fff;cursor:pointer}.go:disabled{background:rgba(22,32,26,.08);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🧭</div><div><h1>Drop Route</h1><p>Parcelwise · in CourierXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="r" class="on">Route</button><button data-tab="d">Drops</button><button data-tab="s">Summary</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+/* x,y on a 0–100 grid around the depot; 1 grid unit ≈ 0.035 miles */
+const DEPOT=[50,92];
+const DROPS=[['Kirkgate',3,'2 parcels',58,40],['Briggate',2,'1 parcel',48,34,'Before 10:00'],['Call Lane',1,'1 parcel',62,48],['The Headrow',4,'3 parcels',40,22],['Park Row',2,'1 parcel',34,30],['Boar Lane',1,'2 parcels',46,52],['Wellington Street',3,'1 parcel',22,48],['Great George Street',2,'1 parcel',30,14,'Before 12:00'],['Vicar Lane',1,'2 parcels',66,28],['Sovereign Street',2,'1 parcel',44,68]];
+const seed=()=>({order:null,done:[1,7,3]});
+let C,S={tab:'r',shared:false};
+GX.init({gateway:'CourierXX',seed}).then(c=>{C=c;paint();});
+const dist=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]),pt=i=>[DROPS[i][3],DROPS[i][4]];
+const miles=ord=>{let p=DEPOT,t=0;for(const i of ord){t+=dist(p,pt(i));p=pt(i);}return (t+dist(p,DEPOT))*0.035;};
+function plan(){const left=[...DROPS.keys()],out=[];let p=DEPOT;const timed=left.filter(i=>DROPS[i][5]).sort((a,b)=>DROPS[a][5].localeCompare(DROPS[b][5]));
+  for(const i of timed){out.push(i);left.splice(left.indexOf(i),1);p=pt(i);}
+  while(left.length){left.sort((a,b)=>dist(p,pt(a))-dist(p,pt(b)));const i=left.shift();out.push(i);p=pt(i);}return out;}
+const listed=[...DROPS.keys()];
+function svg(ord){const P=[DEPOT,...ord.map(pt),DEPOT];return `<svg viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0 60 L100 56 M38 0 L42 100 M0 26 L100 32 M70 0 L64 100" stroke="#fff" stroke-width="2.4" fill="none"/>
+  <polyline points="${P.map(p=>p.join(',')).join(' ')}" fill="none" stroke="${C.data.order?'#15803D':'#94A3B8'}" stroke-width="1.1" stroke-dasharray="${C.data.order?'':'2 1.5'}" vector-effect="non-scaling-stroke" style="stroke-width:2.5px"/>
+  ${ord.map((i,k)=>`<circle cx="${DROPS[i][3]}" cy="${DROPS[i][4]}" r="2.6" fill="${C.data.done.includes(i)?'#94A3B8':'#15803D'}"/>`).join('')}<rect x="47" y="89" width="6" height="6" rx="1" fill="#EA580C"/></svg>`;}
+function vR(){const d=C.data,ord=d.order||listed,m=miles(ord),saved=d.order?miles(listed)-m:0;
+  return `<div class="map">${svg(ord)}</div><div class="two"><div class="box"><small>Drops</small><b>${DROPS.length}</b></div><div class="box"><small>Route</small><b>${m.toFixed(1)} mi</b></div><div class="box"><small>Saved</small><b class="g">${d.order?saved.toFixed(1)+' mi':'—'}</b></div></div>`+
+  (d.order?`<div class="lbl">Your order</div>`+ord.map((i,k)=>`<div class="drop ${d.done.includes(i)?'done':''}"><span class="n">${k+1}</span><div class="x"><b>${DROPS[i][0]}${DROPS[i][5]?`<i class="tm">${DROPS[i][5]}</i>`:''}</b><small>${DROPS[i][2]} · ${DROPS[i][1]} min stop</small></div><button class="tick" data-t="${i}">${d.done.includes(i)?'✓ Done':'Done'}</button></div>`).join('')
+   :`<button class="go" id="plan">Order my route</button><div class="legend">Timed drops go first, then nearest-first from the depot (orange).</div>`);}
+function vD(){const d=C.data;return `<div class="lbl">As they came off the van</div>`+listed.map(i=>`<div class="drop ${d.done.includes(i)?'done':''}"><span class="n">${i+1}</span><div class="x"><b>${DROPS[i][0]}${DROPS[i][5]?`<i class="tm">${DROPS[i][5]}</i>`:''}</b><small>${DROPS[i][2]}</small></div></div>`).join('')+'<div class="legend">Street names only: no customer addresses are kept.</div>';}
+function vS(){const d=C.data,n=d.done.length;return `<div class="two"><div class="box"><small>Delivered</small><b>${n}</b></div><div class="box"><small>To go</small><b>${DROPS.length-n}</b></div><div class="box"><small>Saved</small><b class="g">${d.order?(miles(listed)-miles(d.order)).toFixed(1)+' mi':'—'}</b></div></div>
+  <div class="legend">${n===DROPS.length?'Round done. Back to the depot 🎉':'Keep going: tick drops off on the Route tab.'}</div>`+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share my round'}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='r'?vR():S.tab==='d'?vD():vS();const sv=()=>{GX.save(d);paint();};
+  const p=document.getElementById('plan');if(p)p.onclick=()=>{d.order=plan();sv();};
+  v.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{const i=+b.dataset.t,x=d.done.indexOf(i);x<0?d.done.push(i):d.done.splice(x,1);sv();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>GX.post(`${d.done.length} drops done round Leeds city centre${d.order?`, and ${(miles(listed)-miles(d.order)).toFixed(1)} miles saved by doing them in a sensible order`:''} 📦`,'DROP ROUTE').then(o=>{if(o){S.shared=true;paint();}});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

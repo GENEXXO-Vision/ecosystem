@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Parcel Tracker</title>
+<style>
+/* Parcel Tracker, by Boxwell Packaging (fictional), 2026-11-24. A GENEXXO app for CourierXX.
+   Parcels you're expecting and sending (fictional shops and carriers, dates relative to today), each with its steps.
+   Tracking numbers are made up. */
+:root{--bg:#F7F8F5;--card:#fff;--line:rgba(22,32,26,.1);--ink:#16201A;--mut:rgba(22,32,26,.55);--acc:#EA580C;--g:#15803D}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#FB923C,#C2410C);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.pc{display:flex;gap:12px;align-items:center;padding:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;margin-top:8px;cursor:pointer}
+.pc .ic{width:44px;height:44px;border-radius:12px;background:#F4EBDD;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}.pc .x{flex:1;min-width:0}.pc b{display:block;font-size:14.5px}.pc small{color:var(--mut)}
+.st{font-size:11.5px;font-weight:800;padding:4px 9px;border-radius:99px;white-space:nowrap;background:rgba(234,88,12,.1);color:var(--acc)}.st.d{background:rgba(21,128,61,.12);color:var(--g)}
+.prog{height:6px;border-radius:99px;background:rgba(22,32,26,.08);margin-top:7px;overflow:hidden}.prog i{display:block;height:100%;background:var(--acc)}.pc.dl .prog i{background:var(--g)}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.hero{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}.hero small{color:var(--mut);font-weight:700}.hero b{display:block;font-size:20px;font-weight:900;margin:2px 0}
+.tl{margin-top:12px;padding-left:18px;border-left:2px solid rgba(22,32,26,.1)}.tl div{position:relative;padding:0 0 14px 6px}.tl div:before{content:'';position:absolute;left:-25px;top:3px;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid rgba(22,32,26,.2)}
+.tl div.on:before{background:var(--acc);border-color:var(--acc)}.tl div.dn:before{background:var(--g);border-color:var(--g)}.tl b{display:block;font-size:13.5px}.tl small{color:var(--mut)}.tl div.todo b{color:var(--mut)}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:#fff;cursor:pointer}.go:disabled{background:rgba(22,32,26,.08);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">📦</div><div><h1>Parcel Tracker</h1><p>Boxwell Packaging · in CourierXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="a" class="on">Arriving</button><button data-tab="s">Sending</button><button data-tab="p">Parcel</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const STEPS=['Label created','Collected','At the hub','Out for delivery','Delivered'];
+/* [id, what, from/to, emoji, step reached, day offset of the last step, carrier, direction] */
+const seed=()=>({sel:'PW4K82',parcels:[
+  ['PW4K82','Winter boots','From Fellside Outdoor','🥾',3,0,'Parcelwise','in'],['PW7Q19','Christmas cards','From Inkwell Paper Co.','💌',2,0,'Parcelwise','in'],
+  ['TB2M44','Coffee beans','From Steady Roast','☕',4,-1,'Parcelwise','in'],['PW9D03','Board game','From Rookery Games','🎲',1,0,'Parcelwise','in'],
+  ['PW5S61','Hand-knitted scarf','To Grandma, Whitby','🧣',2,0,'Parcelwise','out'],['PW3B27','Wholesale order, 6 boxes','To Little Shop, York','🛍️',4,-1,'Parcelwise','out']]});
+let C,S={tab:'a',shared:false};
+GX.init({gateway:'CourierXX',seed}).then(c=>{C=c;paint();});
+const eta=p=>p[4]>=4?'Delivered '+GX.day(GX.today(p[5]),{weekday:'short'}):p[4]===3?'Today':p[4]===2?'Tomorrow':GX.day(GX.today(2),{weekday:'long'});
+const card=p=>`<div class="pc ${p[4]>=4?'dl':''}" data-p="${p[0]}"><span class="ic">${p[3]}</span><div class="x"><b>${p[1]}</b><small>${p[2]}</small><div class="prog"><i style="width:${p[4]/4*100}%"></i></div></div><span class="st ${p[4]>=4?'d':''}">${eta(p)}</span></div>`;
+function vA(){const L=C.data.parcels.filter(p=>p[7]==='in'),n=L.filter(p=>p[4]===3).length;return `<div class="hero"><small>Arriving today</small><b>${n} parcel${n===1?'':'s'} out for delivery</b><small>${L.filter(p=>p[4]<4).length} on the way this week</small></div>`+L.sort((a,b)=>(a[4]>=4)-(b[4]>=4)||b[4]-a[4]).map(card).join('');}
+function vS(){return `<div class="lbl">Parcels you’ve sent</div>`+C.data.parcels.filter(p=>p[7]==='out').map(card).join('')+'<div class="legend">Tap a parcel to see every step.</div>';}
+function vP(){const p=C.data.parcels.find(x=>x[0]===C.data.sel)||C.data.parcels[0],times=['08:12','14:40','21:05','07:22','12:48'];
+  return `<div class="hero"><small>${p[6]} · ${p[0]}</small><b>${p[3]} ${p[1]}</b><small>${p[2]}</small></div><div class="tl">${STEPS.map((s,i)=>{const off=p[5]-(p[4]-i>0?Math.ceil((p[4]-i)/2):0);return `<div class="${i<p[4]?'dn':i===p[4]?(i===4?'dn':'on'):'todo'}"><b>${s}</b><small>${i<=p[4]?GX.day(GX.today(off))+' · '+times[i]:'Coming up'}</small></div>`;}).join('')}</div>`+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:p[4]>=4?'Share: it’s arrived!':'Share where it’s got to'}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='a'?vA():S.tab==='s'?vS():vP();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{d.sel=b.dataset.p;S.tab='p';S.shared=false;sv();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const p=d.parcels.find(x=>x[0]===d.sel)||d.parcels[0];GX.post(p[4]>=4?`It’s here! ${p[3]} ${p[1]} delivered, right on time.`:`${p[3]} ${p[1]}: ${STEPS[p[4]].toLowerCase()}. Not long now 📦`,'PARCEL TRACKER').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
