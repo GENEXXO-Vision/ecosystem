@@ -219,7 +219,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('calisthenics', [
   { gw: 'calisthenics', zone: 'barline-rigs', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Barline Live · Front lever clinic', desc: 'Coach Dan Kowalski runs the front lever ladder live and checks your form in the chat.' },
-  { gw: 'calisthenics', type: 'Event', icon: '🌳', time: 'Nov 23', title: 'Sunday bars session, Manchester', desc: 'Manchester Street Workout at Hulme Park. Beginners’ corner from 10am.' },
+  { gw: 'calisthenics', type: 'Event', icon: '🌳', time: 'Nov 29', title: 'Sunday bars session, Manchester', desc: 'Manchester Street Workout at Hulme Park. Beginners’ corner from 10am.' },
   { gw: 'calisthenics', zone: 'grip-theory', type: 'Sale', icon: '🧴', time: 'Nov 27', title: 'Grip Theory Black Friday', desc: 'Two liquid chalks for the price of one.' },
   { gw: 'calisthenics', zone: 'lever-apparel', type: 'Event', icon: '🧥', time: 'Dec 4', title: 'Lever Apparel winter launch', desc: 'The Winter Park Layer, launched live from Hulme Park.' },
   { gw: 'calisthenics', type: 'Event', icon: '🤸', time: 'Dec 6', title: 'Handstand workshop, Bristol', desc: 'Jordan Blake: three hours, all levels, lots of wall work.' },

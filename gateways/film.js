@@ -219,7 +219,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('film', [
   { gw: 'film', zone: 'lantern-cinemas', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Lantern Live · Q&A with the director of The Quiet Harbour', desc: 'Straight after the screening, live to six cinemas and to you.' },
-  { gw: 'film', type: 'Event', icon: '🎞️', time: 'Nov 23', title: 'Monday screening, Cardiff', desc: 'Cardiff Film Society: a film, then a pub and a good argument.' },
+  { gw: 'film', type: 'Event', icon: '🎞️', time: 'Nov 30', title: 'Monday screening, Cardiff', desc: 'Cardiff Film Society: a film, then a pub and a good argument.' },
   { gw: 'film', type: 'Event', icon: '🍿', time: 'Nov 26', title: 'Watch party: film of the week', desc: 'The Film Club watches together online, spoilers tagged.' },
   { gw: 'film', zone: 'clapper-kit', type: 'Sale', icon: '🎬', time: 'Nov 27', title: 'Clapper Kit Black Friday', desc: 'A fifth off every filmmaking kit, for one day.' },
   { gw: 'film', zone: 'reelhouse', type: 'Event', icon: '🎄', time: 'Dec 1', title: 'The December Collection begins', desc: 'Reelhouse: a new film every night of December.' },

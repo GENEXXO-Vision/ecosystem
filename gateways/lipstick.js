@@ -220,7 +220,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('lipstick', [
   { gw: 'lipstick', zone: 'rouge-atelier', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Rouge Atelier Live · Party shades', desc: 'Six party reds on six skin tones, live, with your questions answered.' },
-  { gw: 'lipstick', type: 'Event', icon: '💄', time: 'Nov 23', title: 'Swatch Sunday live', desc: 'Swatch Club swatches this week’s launches on every skin tone.' },
+  { gw: 'lipstick', type: 'Event', icon: '💄', time: 'Nov 29', title: 'Swatch Sunday live', desc: 'Swatch Club swatches this week’s launches on every skin tone.' },
   { gw: 'lipstick', zone: 'velvet-pout', type: 'Sale', icon: '🌙', time: 'Nov 27', title: 'Velvet Pout Black Friday', desc: 'A third off every balm and mask, for one day.' },
   { gw: 'lipstick', type: 'Event', icon: '🗳️', time: 'Nov 29', title: 'Party reds: the community vote', desc: 'Swatch Club picks the red of the season.' },
   { gw: 'lipstick', zone: 'shade-lab', type: 'Event', icon: '🧪', time: 'Dec 6', title: 'Mix your own: Christmas workshop, Leeds', desc: 'Shade Lab: two hours mixing your own party shade.' },
