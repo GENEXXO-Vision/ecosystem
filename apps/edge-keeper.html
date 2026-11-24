@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Edge Keeper</title>
+<style>
+/* Edge Keeper, by Hallam Blades (fictional), 2026-11-24. A GENEXXO app for SteelXX.
+   Reminders for knife and pan care. Hone every week of use, sharpen every three months, re-season carbon-steel pans when food starts to stick (about every two months). */
+:root{--bg:#0F0D0C;--card:rgba(255,255,255,.05);--line:rgba(255,255,255,.1);--off:rgba(255,255,255,.08);--ink:#EEE9E4;--mut:rgba(238,233,228,.55);--acc:#D6D3D1;--accInk:#1C1917;--ok:#22C55E;--bad:#EF4444}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#A8A29E,#44403C);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:8px}
+.hero{text-align:center;padding:18px 14px}.hero small{display:block;color:var(--mut);font-weight:700;font-size:12px}.hero b{display:block;font-size:34px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--acc);line-height:1.15}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid .card{margin:0;text-align:center}.grid small{display:block;color:var(--mut);font-weight:700;font-size:11.5px}.grid b{display:block;font-size:20px;font-weight:900;font-variant-numeric:tabular-nums}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--acc);border-color:var(--acc);color:var(--accInk)}
+.row{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px}.row b{flex:1;font-size:14px}.row span{font-variant-numeric:tabular-nums;color:var(--mut);font-weight:700;font-size:13px;text-align:right}.row em{font-style:normal;font-size:11.5px;color:var(--mut);font-weight:600;display:block}
+.row.warn{border-color:var(--acc)}.row.bad{border-color:var(--bad)}
+.step{display:flex;align-items:center;gap:8px;margin-top:6px}.step label{flex:1;font-weight:700;font-size:13.5px}.step button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:900;font-size:17px;cursor:pointer}.step output{min-width:74px;text-align:center;font-weight:900;font-variant-numeric:tabular-nums}
+input.tx{width:100%;font:inherit;font-size:14px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px}
+.bars{display:flex;align-items:flex-end;gap:4px;height:130px;margin-top:8px}.bars div{flex:1;background:var(--acc);border-radius:5px 5px 0 0;min-height:3px;position:relative}.bars div.dim{opacity:.45}.bars div.hi{background:var(--bad)}
+.blab{display:flex;gap:4px}.blab span{flex:1;text-align:center;font-size:10px;color:var(--mut);font-weight:700}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:var(--accInk);cursor:pointer}.go:disabled{background:var(--off);color:var(--mut)}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+.pill{display:inline-block;font-size:11px;font-weight:900;border-radius:99px;padding:3px 9px;letter-spacing:.04em}.pill.ok{background:rgba(34,197,94,.16);color:var(--ok)}.pill.bad{background:rgba(239,68,68,.16);color:var(--bad)}.pill.due{background:var(--off);color:var(--acc)}
+.prog{height:12px;border-radius:99px;background:var(--off);overflow:hidden;margin-top:10px}.prog i{display:block;height:100%;background:var(--acc);border-radius:99px}
+.q b{display:block;font-size:16px;margin-top:4px}.q small{color:var(--mut);font-weight:700}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:700;font-size:14px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px;cursor:pointer}.opt.right{border-color:var(--ok);background:rgba(34,197,94,.12)}.opt.wrong{border-color:var(--bad);background:rgba(239,68,68,.1)}
+
+</style></head><body>
+<div class="hd"><div class="logo">🔪</div><div><h1>Edge Keeper</h1><p>Hallam Blades · in SteelXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="d" class="on">Due</button><button data-tab="k">My kit</button><button data-tab="g">Guides</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+let C,S={tab:'d',shared:false};
+const $=id=>document.getElementById(id),fmt=(n,d=0)=>Number(n).toLocaleString('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d});
+const shareBtn=(label)=>GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:label}</button>`:'';
+
+const EVERY={hone:7,sharpen:90,season:60},WORD={hone:'Hone',sharpen:'Sharpen',season:'Re-season'};
+const seed=()=>({kit:[{n:'Chef’s knife 20 cm',k:'knife',hone:GX.iso(-9),sharpen:GX.iso(-84)},{n:'Paring knife',k:'knife',hone:GX.iso(-3),sharpen:GX.iso(-40)},{n:'Bread knife',k:'knife',hone:GX.iso(-30),sharpen:GX.iso(-200)},{n:'Frying pan 28',k:'pan',season:GX.iso(-66)},{n:'Wok 32',k:'pan',season:GX.iso(-20)}],done:0});
+const age=d=>Math.round((GX.today()-new Date(d))/864e5);
+function tasks(){const T=[];C.data.kit.forEach((x,i)=>Object.keys(EVERY).forEach(t=>{if(x[t]){const left=EVERY[t]-age(x[t]);T.push({i,t,left,n:x.n});}}));return T.sort((a,b)=>a.left-b.left);}
+const VIEWS={
+ d(){const T=tasks(),due=T.filter(x=>x.left<=0);return `<div class="card hero"><small>Jobs due now</small><b>${due.length}</b><small>${due.length?'Ten minutes at the sink sorts it':'Everything’s sharp and seasoned'}</small></div>`+
+  T.slice(0,6).map(x=>`<div class="row ${x.left<=0?'warn':''}"><b>${WORD[x.t]}: ${GX.esc(x.n)}<em>${x.left<=0?`${-x.left} days overdue`:`in ${x.left} days`}</em></b>${x.left<=0?`<button class="chip on" data-done="${x.i},${x.t}">Done</button>`:'<span class="pill ok">OK</span>'}</div>`).join('')+shareBtn('Share my sharp kit');},
+ k(){return C.data.kit.map(x=>`<div class="row"><b>${x.k==='pan'?'🍳':'🔪'} ${GX.esc(x.n)}<em>${x.k==='pan'?`Seasoned ${GX.day(x.season)}`:`Honed ${GX.day(x.hone)} · sharpened ${GX.day(x.sharpen)}`}</em></b></div>`).join('')+`<input class="tx" id="nm" placeholder="Add a knife or pan"><div class="chips" style="margin-top:6px"><button class="chip" data-add="knife">+ Knife</button><button class="chip" data-add="pan">+ Pan</button></div>`;},
+ g(){return [['Honing','Six light strokes each side on a steel, edge at about 15°. It straightens the edge; it doesn’t remove metal.'],['Sharpening','Coarse stone until you feel a burr along the whole edge, then the fine stone. Wipe, test on paper.'],['Seasoning a pan','Scrub, dry on the hob, wipe on a thin film of oil, heat until it just smokes. Repeat three times.'],['Why carbon steel rusts','Iron plus water plus oxygen makes rust. Dry it straight away and keep a film of oil on it.']].map(g=>`<div class="card"><b>${g[0]}</b><div style="color:var(--mut);margin-top:4px">${g[1]}</div></div>`).join('');}};
+function bind(v){const d=C.data;v.querySelectorAll('[data-done]').forEach(b=>b.onclick=()=>{const [i,t]=b.dataset.done.split(',');d.kit[+i][t]=GX.iso(0);d.done++;S.shared=false;save();});
+ v.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{const n=$('nm').value.trim();if(!n)return;d.kit.push(b.dataset.add==='pan'?{n,k:'pan',season:GX.iso(0)}:{n,k:'knife',hone:GX.iso(0),sharpen:GX.iso(0)});save();});}
+const shareText=()=>`Knives honed, pans seasoned: ${C.data.kit.length} bits of kit, all in shape 🔪`;
+
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=$('v');v.innerHTML=VIEWS[S.tab]();bind(v);
+  const sh=$('share');if(sh)sh.onclick=()=>GX.post(shareText(),'EDGE KEEPER').then(o=>{if(o){S.shared=true;paint();}});}
+const save=()=>{GX.save(C.data);paint();};
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+GX.init({gateway:'SteelXX',seed}).then(c=>{C=c;paint();});
+</script></body></html>
