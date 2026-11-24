@@ -1,4 +1,4 @@
-# Updated May 2026
+# Updated Nov 2026: actions pinned, scoped Cloudflare token
 # The name of the entire automated process as it will appear in GitHub Actions
 name: FTP Smart Deploy
 # Defines the trigger for this workflow
@@ -23,12 +23,12 @@ jobs:
     # STEP 1: Download your code from the GitHub repository onto the virtual machine
     - name: 🚚 Get latest code
       # Uses the official GitHub action to clone/checkout your repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
     
     # STEP 2: Connect via FTP and upload only the modified files
     - name: 📂 Sync files to server
       # Uses a community-built action specialized in smart FTP deployments
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      uses: SamKirkland/FTP-Deploy-Action@8e83cea8672e3fbcbb9fdafff34debf6ae4c5f65 # v4.3.5
       # Pass the required configuration settings (inputs) to this action
       with:
         # The FTP host address, securely pulled from your GitHub Repository Secrets
@@ -47,9 +47,8 @@ jobs:
     # STEP 3: Purge Cloudflare cache so the updated site appears immediately
     - name: 🧹 Purge Cloudflare cache
       run: |
-        curl -s -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
-          -H "X-Auth-Email: ${{ secrets.CLOUDFLARE_AUTH_EMAIL }}" \
-          -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_AUTH_KEY }}" \
+        curl -s --fail-with-body -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
+          -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
           -H "Content-Type: application/json" \
           --data '{"purge_everything":true}'
         echo "✅ Cloudflare cache purged!"
