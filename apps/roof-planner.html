@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Roof Planner</title>
+<style>
+/* Roof Planner, by Brightroof (fictional), 2026-11-24. A GENEXXO app for SolarXX.
+   Panels 1.72 m × 1.13 m, 430 W each, with a 0.3 m margin round the roof edge; each chimney or window takes out one panel; about 900 kWh a year per kW facing south. */
+:root{--bg:#FFFBF0;--card:#FFFFFF;--line:rgba(0,0,0,.09);--off:rgba(0,0,0,.06);--ink:#1F1A0E;--mut:rgba(31,26,14,.55);--acc:#1D4ED8;--accInk:#FFFFFF;--ok:#22C55E;--bad:#EF4444}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#38BDF8,#1D4ED8);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:8px}
+.hero{text-align:center;padding:18px 14px}.hero small{display:block;color:var(--mut);font-weight:700;font-size:12px}.hero b{display:block;font-size:34px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--acc);line-height:1.15}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid .card{margin:0;text-align:center}.grid small{display:block;color:var(--mut);font-weight:700;font-size:11.5px}.grid b{display:block;font-size:20px;font-weight:900;font-variant-numeric:tabular-nums}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--acc);border-color:var(--acc);color:var(--accInk)}
+.row{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px}.row b{flex:1;font-size:14px}.row span{font-variant-numeric:tabular-nums;color:var(--mut);font-weight:700;font-size:13px;text-align:right}.row em{font-style:normal;font-size:11.5px;color:var(--mut);font-weight:600;display:block}
+.row.warn{border-color:var(--acc)}.row.bad{border-color:var(--bad)}
+.step{display:flex;align-items:center;gap:8px;margin-top:6px}.step label{flex:1;font-weight:700;font-size:13.5px}.step button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:900;font-size:17px;cursor:pointer}.step output{min-width:74px;text-align:center;font-weight:900;font-variant-numeric:tabular-nums}
+input.tx{width:100%;font:inherit;font-size:14px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px}
+.bars{display:flex;align-items:flex-end;gap:4px;height:130px;margin-top:8px}.bars div{flex:1;background:var(--acc);border-radius:5px 5px 0 0;min-height:3px;position:relative}.bars div.dim{opacity:.45}.bars div.hi{background:var(--bad)}
+.blab{display:flex;gap:4px}.blab span{flex:1;text-align:center;font-size:10px;color:var(--mut);font-weight:700}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:var(--accInk);cursor:pointer}.go:disabled{background:var(--off);color:var(--mut)}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+.pill{display:inline-block;font-size:11px;font-weight:900;border-radius:99px;padding:3px 9px;letter-spacing:.04em}.pill.ok{background:rgba(34,197,94,.16);color:var(--ok)}.pill.bad{background:rgba(239,68,68,.16);color:var(--bad)}.pill.due{background:var(--off);color:var(--acc)}
+.prog{height:12px;border-radius:99px;background:var(--off);overflow:hidden;margin-top:10px}.prog i{display:block;height:100%;background:var(--acc);border-radius:99px}
+.q b{display:block;font-size:16px;margin-top:4px}.q small{color:var(--mut);font-weight:700}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:700;font-size:14px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px;cursor:pointer}.opt.right{border-color:var(--ok);background:rgba(34,197,94,.12)}.opt.wrong{border-color:var(--bad);background:rgba(239,68,68,.1)}
+.roof{width:100%;display:block;margin-top:8px;border-radius:12px;background:#B45309}
+</style></head><body>
+<div class="hd"><div class="logo">🏠</div><div><h1>Roof Planner</h1><p>Brightroof · in SolarXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="r" class="on">Roof</button><button data-tab="f">My roofs</button><button data-tab="o">Output</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+let C,S={tab:'r',shared:false};
+const $=id=>document.getElementById(id),fmt=(n,d=0)=>Number(n).toLocaleString('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d});
+const shareBtn=(label)=>GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:label}</button>`:'';
+
+const PW=1.13,PH=1.72,W=430;
+const seed=()=>({cur:0,roofs:[{name:'Front roof',w:8.4,h:5.2,obs:1,saved:GX.iso(-12)},{name:'Garage',w:5.0,h:3.4,obs:0,saved:GX.iso(-40)}]});
+const fit=r=>{const c=Math.max(0,Math.floor((r.w-.6)/PW)),rw=Math.max(0,Math.floor((r.h-.6)/PH));return {c,rw,n:Math.max(0,c*rw-r.obs)};};
+const VIEWS={
+ r(){const r=C.data.roofs[C.data.cur],f=fit(r),sw=300,sh=sw*r.h/r.w;let cells='',k=0;
+  for(let y=0;y<f.rw;y++)for(let x=0;x<f.c;x++){const ob=k++<r.obs&&x===f.c-1-y;cells+=`<rect x="${(.3+x*PW)/r.w*sw+1}" y="${(.3+y*PH)/r.h*sh+1}" width="${PW/r.w*sw-2}" height="${PH/r.h*sh-2}" rx="2" fill="${ob?'#78350F':'#1E3A8A'}" stroke="#93C5FD" stroke-width=".6"/>`;}
+  return `<div class="card"><b>${GX.esc(r.name)}</b><svg class="roof" viewBox="0 0 ${sw} ${sh}">${cells}</svg></div>
+  <div class="grid" style="margin-top:8px"><div class="card"><small>Panels</small><b>${f.n}</b></div><div class="card"><small>System</small><b>${fmt(f.n*W/1000,1)} kW</b></div></div>
+  <div class="step"><label>Width</label><button data-d="w,-0.2">−</button><output>${fmt(r.w,1)} m</output><button data-d="w,0.2">+</button></div>
+  <div class="step"><label>Height (eaves to ridge)</label><button data-d="h,-0.2">−</button><output>${fmt(r.h,1)} m</output><button data-d="h,0.2">+</button></div>
+  <div class="step"><label>Chimneys and windows</label><button data-d="obs,-1">−</button><output>${r.obs}</output><button data-d="obs,1">+</button></div>
+  ${shareBtn('Share my roof')}`;},
+ f(){const d=C.data;return d.roofs.map((r,i)=>`<div class="row ${i===d.cur?'warn':''}" data-pick="${i}" style="cursor:pointer"><b>${GX.esc(r.name)}<em>Saved ${GX.day(r.saved)}</em></b><span>${fit(r).n} panels</span></div>`).join('')+`<button class="go alt" id="add">+ Add a roof face</button>`;},
+ o(){const t=C.data.roofs.reduce((a,r)=>a+fit(r).n,0),kw=t*W/1000;return `<div class="card hero"><small>All your roofs together</small><b>${fmt(kw*900)} kWh</b><small>a year, roughly, facing south</small></div>
+  <div class="row"><b>Panels</b><span>${t}</span></div><div class="row"><b>System size</b><span>${fmt(kw,1)} kW</span></div><div class="row"><b>Facing east or west</b><span>${fmt(kw*720)} kWh</span></div><div class="legend">Illustrative. Shade from trees and chimneys lowers it.</div>`;}};
+function bind(v){const d=C.data,r=d.roofs[d.cur];v.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const [k,s]=b.dataset.d.split(',');r[k]=Math.max(k==='obs'?0:2,Math.round((r[k]+ +s)*10)/10);S.shared=false;save();});
+ v.querySelectorAll('[data-pick]').forEach(b=>b.onclick=()=>{d.cur=+b.dataset.pick;S.tab='r';save();});
+ const a=$('add');if(a)a.onclick=()=>{d.roofs.push({name:`Roof ${d.roofs.length+1}`,w:6,h:4,obs:0,saved:GX.iso(0)});d.cur=d.roofs.length-1;S.tab='r';save();};}
+const shareText=()=>{const r=C.data.roofs[C.data.cur],f=fit(r);return `${f.n} panels fit on our ${r.name.toLowerCase()}: about ${fmt(f.n*W/1000,1)} kW of sunshine 🏠`;};
+
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=$('v');v.innerHTML=VIEWS[S.tab]();bind(v);
+  const sh=$('share');if(sh)sh.onclick=()=>GX.post(shareText(),'ROOF PLANNER').then(o=>{if(o){S.shared=true;paint();}});}
+const save=()=>{GX.save(C.data);paint();};
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+GX.init({gateway:'SolarXX',seed}).then(c=>{C=c;paint();});
+</script></body></html>

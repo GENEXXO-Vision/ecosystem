@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Payback Planner</title>
+<style>
+/* Payback Planner, by Sunvault (fictional), 2026-11-24. A GENEXXO app for SolarXX.
+   Illustrative sums: about 900 kWh a year per kW of panels facing south in the UK, less for other directions; you use 35% of it yourself without a battery, 65% with; import 26p and export 12p a kWh. */
+:root{--bg:#FFFBF0;--card:#FFFFFF;--line:rgba(0,0,0,.09);--off:rgba(0,0,0,.06);--ink:#1F1A0E;--mut:rgba(31,26,14,.55);--acc:#CA8A04;--accInk:#FFFFFF;--ok:#22C55E;--bad:#EF4444}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#FACC15,#CA8A04);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:8px}
+.hero{text-align:center;padding:18px 14px}.hero small{display:block;color:var(--mut);font-weight:700;font-size:12px}.hero b{display:block;font-size:34px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--acc);line-height:1.15}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid .card{margin:0;text-align:center}.grid small{display:block;color:var(--mut);font-weight:700;font-size:11.5px}.grid b{display:block;font-size:20px;font-weight:900;font-variant-numeric:tabular-nums}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--acc);border-color:var(--acc);color:var(--accInk)}
+.row{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px}.row b{flex:1;font-size:14px}.row span{font-variant-numeric:tabular-nums;color:var(--mut);font-weight:700;font-size:13px;text-align:right}.row em{font-style:normal;font-size:11.5px;color:var(--mut);font-weight:600;display:block}
+.row.warn{border-color:var(--acc)}.row.bad{border-color:var(--bad)}
+.step{display:flex;align-items:center;gap:8px;margin-top:6px}.step label{flex:1;font-weight:700;font-size:13.5px}.step button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:900;font-size:17px;cursor:pointer}.step output{min-width:74px;text-align:center;font-weight:900;font-variant-numeric:tabular-nums}
+input.tx{width:100%;font:inherit;font-size:14px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px}
+.bars{display:flex;align-items:flex-end;gap:4px;height:130px;margin-top:8px}.bars div{flex:1;background:var(--acc);border-radius:5px 5px 0 0;min-height:3px;position:relative}.bars div.dim{opacity:.45}.bars div.hi{background:var(--bad)}
+.blab{display:flex;gap:4px}.blab span{flex:1;text-align:center;font-size:10px;color:var(--mut);font-weight:700}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:var(--accInk);cursor:pointer}.go:disabled{background:var(--off);color:var(--mut)}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+.pill{display:inline-block;font-size:11px;font-weight:900;border-radius:99px;padding:3px 9px;letter-spacing:.04em}.pill.ok{background:rgba(34,197,94,.16);color:var(--ok)}.pill.bad{background:rgba(239,68,68,.16);color:var(--bad)}.pill.due{background:var(--off);color:var(--acc)}
+.prog{height:12px;border-radius:99px;background:var(--off);overflow:hidden;margin-top:10px}.prog i{display:block;height:100%;background:var(--acc);border-radius:99px}
+.q b{display:block;font-size:16px;margin-top:4px}.q small{color:var(--mut);font-weight:700}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:700;font-size:14px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px;cursor:pointer}.opt.right{border-color:var(--ok);background:rgba(34,197,94,.12)}.opt.wrong{border-color:var(--bad);background:rgba(239,68,68,.1)}
+
+</style></head><body>
+<div class="hd"><div class="logo">☀️</div><div><h1>Payback Planner</h1><p>Sunvault · in SolarXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="s" class="on">Sums</button><button data-tab="y">By year</button><button data-tab="t">Tips</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+let C,S={tab:'s',shared:false};
+const $=id=>document.getElementById(id),fmt=(n,d=0)=>Number(n).toLocaleString('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d});
+const shareBtn=(label)=>GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:label}</button>`:'';
+
+const SIZES={3:4500,4:5400,6:7200},BATT=3900,DIR={South:1,'SE / SW':.95,'East / West':.8},USE=[2700,3500,4500];
+const seed=()=>({kw:4,dir:'South',use:3500,batt:true});
+function calc(d){const gen=d.kw*900*DIR[d.dir],self=Math.min(gen*(d.batt?.65:.35),d.use*.8),exp=gen-self,save=self*.26+exp*.12,cost=SIZES[d.kw]+(d.batt?BATT:0);return {gen,self,exp,save,cost,pay:cost/save};}
+const VIEWS={
+ s(){const d=C.data,r=calc(d);return `<div class="card hero"><small>Pays for itself in about</small><b>${fmt(r.pay,1)} years</b><small>then saves about £${fmt(r.save)} a year</small></div>
+  <div class="grid" style="margin-top:8px"><div class="card"><small>Makes a year</small><b>${fmt(r.gen)} kWh</b></div><div class="card"><small>Cost fitted</small><b>£${fmt(r.cost)}</b></div><div class="card"><small>You use</small><b>${fmt(r.self)} kWh</b></div><div class="card"><small>You export</small><b>${fmt(r.exp)} kWh</b></div></div>
+  <div class="lbl">System size</div><div class="chips">${Object.keys(SIZES).map(k=>`<button class="chip ${d.kw==k?'on':''}" data-kw="${k}">${k} kW</button>`).join('')}</div>
+  <div class="lbl">Roof faces</div><div class="chips">${Object.keys(DIR).map(k=>`<button class="chip ${d.dir===k?'on':''}" data-dir="${k}">${k}</button>`).join('')}</div>
+  <div class="lbl">Electricity you use a year</div><div class="chips">${USE.map(k=>`<button class="chip ${d.use===k?'on':''}" data-use="${k}">${fmt(k)} kWh</button>`).join('')}</div>
+  <div class="lbl">Battery</div><div class="chips"><button class="chip ${d.batt?'on':''}" data-batt="1">With a battery</button><button class="chip ${!d.batt?'on':''}" data-batt="0">Panels only</button></div>
+  ${shareBtn('Share my sums')}<div class="legend">Illustrative figures. A real survey gives you real numbers.</div>`;},
+ y(){const r=calc(C.data),yrs=[...Array(20)].map((_,i)=>r.save*(i+1)-r.cost),mx=Math.max(...yrs.map(Math.abs));
+  return `<div class="card"><b>Money back over 20 years</b><div class="bars">${yrs.map(v=>`<div class="${v<0?'dim':''}" style="height:${Math.abs(v)/mx*100}%"></div>`).join('')}</div><div class="blab">${yrs.map((_,i)=>`<span>${(i+1)%5?'':i+1}</span>`).join('')}</div></div>
+  <div class="row"><b>Paid back</b><span>year ${Math.ceil(r.pay)}</span></div><div class="row"><b>Ahead after 20 years</b><span>£${fmt(yrs[19])}</span></div><div class="legend">Faded bars: still paying back. Prices held flat for simplicity.</div>`;},
+ t(){return ['Insulate the loft and fix draughts first: the cheapest savings.','Run the washing machine and dishwasher in the middle of the day.','A battery helps most if you’re out all day and home in the evening.','Get three quotes from certified installers.','Panels keep working for 25 years or more; inverters usually need replacing once.'].map(t=>`<div class="row"><b style="font-weight:600">${t}</b></div>`).join('');}};
+function bind(v){const d=C.data;v.querySelectorAll('[data-kw]').forEach(b=>b.onclick=()=>{d.kw=+b.dataset.kw;S.shared=false;save();});v.querySelectorAll('[data-dir]').forEach(b=>b.onclick=()=>{d.dir=b.dataset.dir;S.shared=false;save();});
+ v.querySelectorAll('[data-use]').forEach(b=>b.onclick=()=>{d.use=+b.dataset.use;S.shared=false;save();});v.querySelectorAll('[data-batt]').forEach(b=>b.onclick=()=>{d.batt=b.dataset.batt==='1';S.shared=false;save();});}
+const shareText=()=>{const d=C.data,r=calc(d);return `Did the sums: a ${d.kw} kW system${d.batt?' with a battery':''} on our ${d.dir.toLowerCase()} roof pays back in about ${fmt(r.pay,1)} years ☀️`;};
+
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=$('v');v.innerHTML=VIEWS[S.tab]();bind(v);
+  const sh=$('share');if(sh)sh.onclick=()=>GX.post(shareText(),'PAYBACK PLANNER').then(o=>{if(o){S.shared=true;paint();}});}
+const save=()=>{GX.save(C.data);paint();};
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+GX.init({gateway:'SolarXX',seed}).then(c=>{C=c;paint();});
+</script></body></html>
