@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Knowledge Runs</title>
+<style>
+/* Knowledge Runs, by Bluebook Knowledge School (fictional), 2026-11-24. A GENEXXO app for TaxiXX.
+   A points quiz for students of the Knowledge of London: real places and the streets they stand on, a daily quiz
+   (seeded by date), a streak, the points you know and the first runs ticked off. A study aid, not the Blue Book. */
+:root{--bg:#0E0E10;--card:rgba(255,255,255,.05);--line:rgba(244,244,245,.1);--ink:#F4F4F5;--mut:rgba(244,244,245,.55);--acc:#FB923C;--ok:#22C55E;--no:#F87171}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#FB923C,#9A3412);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.q{background:linear-gradient(135deg,rgba(251,146,60,.18),rgba(251,146,60,.04));border:1px solid rgba(251,146,60,.3);border-radius:20px;padding:18px}
+.q small{color:var(--mut);font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.05em}.q b{display:block;font-size:22px;font-weight:900;margin:4px 0 2px}.q p{color:var(--mut);font-size:13px}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:700;font-size:14.5px;padding:13px 14px;margin-top:8px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.opt.ok{border-color:var(--ok);background:rgba(34,197,94,.14)}.opt.no{border-color:var(--no);background:rgba(239,68,68,.12)}
+.row{display:flex;gap:8px;margin-top:12px}.stat{flex:1;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px}.stat small{color:var(--mut);font-weight:700;font-size:11.5px}.stat b{display:block;font-size:20px;font-weight:900;font-variant-numeric:tabular-nums}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.pt{display:flex;gap:10px;align-items:center;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px}.pt .x{flex:1}.pt b{display:block;font-size:14px}.pt small{color:var(--mut)}.pt i{font-style:normal;font-weight:900;color:var(--ok)}.pt i.n{color:var(--mut)}
+.bar{height:10px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:var(--acc);border-radius:99px}
+.run{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px;cursor:pointer}.run b{flex:1;font-size:13.5px}.run .c{width:22px;height:22px;border-radius:7px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900}.run.on .c{background:var(--acc);border-color:var(--acc);color:#1A1205}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:#1A1205;cursor:pointer}.go:disabled{background:rgba(255,255,255,.08);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🗺️</div><div><h1>Knowledge Runs</h1><p>Bluebook Knowledge School · in TaxiXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="q" class="on">Today’s quiz</button><button data-tab="p">My points</button><button data-tab="r">Runs</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const POINTS=[['Royal Opera House','Bow Street'],['The Old Vic','The Cut'],['St Thomas’ Hospital','Westminster Bridge Road'],['British Museum','Great Russell Street'],['Natural History Museum','Cromwell Road'],['Lord’s Cricket Ground','St John’s Wood Road'],['Royal Albert Hall','Kensington Gore'],['Shakespeare’s Globe','New Globe Walk'],['Somerset House','Strand'],['Barbican Centre','Silk Street'],['Sadler’s Wells','Rosebery Avenue'],['Moorfields Eye Hospital','City Road'],['Wigmore Hall','Wigmore Street'],['London Palladium','Argyll Street'],['Royal London Hospital','Whitechapel Road'],['London Zoo','Outer Circle'],['Euston Station','Euston Road'],['Royal Courts of Justice','Strand'],['Science Museum','Exhibition Road'],['Imperial War Museum','Lambeth Road']];
+const RUNS=['Manor House Gardens to Gibson Square','Thornhill Square to Queen Square','Chancery Lane to Hampstead Heath','Wapping Lane to Sadler’s Wells','Shoreditch Church to Mount Pleasant','Belgrave Square to Lord’s'];
+const seed=()=>({known:[0,1,3,6,8,9,16,18,2,5,12],streak:6,last:GX.iso(-1),runs:[0,1,2,4],best:9});
+let C,S={tab:'q',ans:{},shared:false};
+GX.init({gateway:'TaxiXX',seed}).then(c=>{C=c;paint();});
+const R=GX.rng(GX.iso(0)+'kr');
+const QS=(()=>{const idx=[...POINTS.keys()].sort(()=>R()-.5).slice(0,5);return idx.map(i=>{const right=POINTS[i][1];const wrong=[...new Set(POINTS.map(p=>p[1]).filter(s=>s!==right))].sort(()=>R()-.5).slice(0,3);return {i,opts:[right,...wrong].sort(()=>R()-.5)};});})();
+function vQ(){const n=Object.keys(S.ans).length,q=QS.find((x,k)=>S.ans[k]===undefined),k=QS.indexOf(q),right=Object.entries(S.ans).filter(([k,v])=>QS[k].opts[v]===POINTS[QS[k].i][1]).length;
+  if(!q)return `<div class="q"><small>Done for today</small><b>${right} of ${QS.length} right</b><p>Come back tomorrow for five new points.</p></div>
+    <div class="row"><div class="stat"><small>Streak</small><b>${C.data.streak} days 🔥</b></div><div class="stat"><small>Points known</small><b>${C.data.known.length}</b></div></div>`+
+    (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share my streak'}</button>`:'');
+  const P=POINTS[q.i];return `<div class="q"><small>Point ${n+1} of ${QS.length}</small><b>${P[0]}</b><p>Which street is it on?</p></div>`+
+    q.opts.map((o,j)=>`<button class="opt" data-a="${k}:${j}">${o}</button>`).join('')+
+    `<div class="row"><div class="stat"><small>Streak</small><b>${C.data.streak} days 🔥</b></div><div class="stat"><small>Right today</small><b>${right} / ${n}</b></div></div>`;}
+function vP(){const d=C.data,f=d.known.length/POINTS.length;return `<div class="stat"><small>Points you know</small><b>${d.known.length} of ${POINTS.length}</b><div class="bar"><i style="width:${f*100}%"></i></div></div><div class="lbl">Points</div>`+
+  POINTS.map((p,i)=>{const k=d.known.includes(i);return `<div class="pt"><div class="x"><b>${p[0]}</b><small>${k?p[1]:'Not yet'}</small></div><i class="${k?'':'n'}">${k?'✓':'·'}</i></div>`;}).join('');}
+function vR(){const d=C.data;return `<div class="stat"><small>First runs done</small><b>${d.runs.length} of ${RUNS.length}</b><div class="bar"><i style="width:${d.runs.length/RUNS.length*100}%"></i></div></div><div class="lbl">Tap a run when you’ve called it over</div>`+
+  RUNS.map((r,i)=>`<div class="run ${d.runs.includes(i)?'on':''}" data-run="${i}"><span class="c">${d.runs.includes(i)?'✓':''}</span><b>${i+1}. ${r}</b></div>`).join('')+`<div class="legend">A study aid. Your school’s run list is the one to follow.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='q'?vQ():S.tab==='p'?vP():vR();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const [k,j]=b.dataset.a.split(':').map(Number),q=QS[k],ok=q.opts[j]===POINTS[q.i][1];
+    b.classList.add(ok?'ok':'no');if(!ok)v.querySelectorAll('[data-a]').forEach(x=>{if(q.opts[+x.dataset.a.split(':')[1]]===POINTS[q.i][1])x.classList.add('ok');});
+    setTimeout(()=>{S.ans[k]=j;if(ok&&!d.known.includes(q.i))d.known.push(q.i);if(Object.keys(S.ans).length===QS.length&&d.last!==GX.iso(0)){d.streak++;d.last=GX.iso(0);}sv();},650);});
+  v.querySelectorAll('[data-run]').forEach(b=>b.onclick=()=>{const i=+b.dataset.run,x=d.runs.indexOf(i);x<0?d.runs.push(i):d.runs.splice(x,1);sv();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>GX.post(`Day ${d.streak} on the Knowledge 🔥 ${d.known.length} points down, ${d.runs.length} runs called over. One street at a time.`,'KNOWLEDGE RUNS').then(o=>{if(o){S.shared=true;paint();}});}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fare Estimator</title>
+<style>
+/* Fare Estimator, by Kerbside Cabs (fictional), 2026-11-24. A GENEXXO app for TaxiXX.
+   An illustrative metered-fare estimate: a start charge, a rate per mile and a waiting charge that grows with traffic,
+   with day, night and holiday tariffs. Not any council's real tariff: the meter is always the fare. */
+:root{--bg:#0E0E10;--card:rgba(255,255,255,.05);--line:rgba(244,244,245,.1);--ink:#F4F4F5;--mut:rgba(244,244,245,.55);--acc:#FACC15}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#FACC15,#A16207);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.meter{background:#050506;border:1px solid rgba(250,204,21,.35);border-radius:20px;padding:18px;text-align:center}
+.meter small{color:var(--mut);font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase}.meter b{display:block;font:900 46px/1.1 ui-monospace,Menlo,monospace;color:var(--acc);margin:6px 0}.meter p{color:var(--mut);font-size:12.5px}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px;display:flex;justify-content:space-between}.lbl span{color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--acc)}
+.chips{display:flex;gap:6px}.chip{flex:1;font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:12px;padding:9px 4px;cursor:pointer}.chip.on{background:var(--acc);border-color:var(--acc);color:#1A1505}
+.big{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:10px}.big button{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:22px;font-weight:800;cursor:pointer}.big b{font-size:34px;font-weight:900;min-width:60px;text-align:center}
+.trip{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:6px;cursor:pointer}.trip .x{flex:1}.trip b{display:block;font-size:14px}.trip small{color:var(--mut)}.trip i{font-style:normal;font-weight:900;color:var(--acc);font-variant-numeric:tabular-nums}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:#1A1505;cursor:pointer}.go:disabled{background:rgba(255,255,255,.08);color:var(--mut)}
+.go.s{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🚕</div><div><h1>Fare Estimator</h1><p>Kerbside Cabs · in TaxiXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="e" class="on">Estimate</button><button data-tab="s">Split</button><button data-tab="t">My trips</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const T={Day:{start:3.8,mile:2.6},Night:{start:3.8,mile:3.0},Holiday:{start:4.6,mile:3.6}};
+const MIN={Light:2.4,Normal:3.6,Heavy:5.4},WAIT=0.32;   /* minutes per mile, and the waiting charge per minute above a free-flowing 2.4 */
+const seed=()=>({mi:4.5,when:'Night',traffic:'Normal',people:3,trips:[{n:'King’s Cross to Home',mi:3.2,when:'Night',traffic:'Light'},{n:'Office to Paddington',mi:2.4,when:'Day',traffic:'Heavy'},{n:'Home to the airport',mi:15,when:'Day',traffic:'Normal'}]});
+let C,S={tab:'e',shared:false,saved:false};
+GX.init({gateway:'TaxiXX',seed}).then(c=>{C=c;paint();});
+function fare(mi,when,traffic){const t=T[when],m=mi*MIN[traffic],wait=Math.max(0,m-mi*2.4)*WAIT;const f=t.start+mi*t.mile+wait;return {f,lo:f*.9,hi:f*1.12,m};}
+const gbp=n=>'£'+n.toFixed(2);
+function vE(){const d=C.data,r=fare(d.mi,d.when,d.traffic);
+  return `<div class="meter"><small>Estimated fare</small><b>${gbp(r.f)}</b><p>Likely ${gbp(r.lo)} to ${gbp(r.hi)} · about ${Math.round(r.m)} minutes</p></div>
+  <div class="lbl">Distance <span>${d.mi.toFixed(1)} miles</span></div><input type="range" id="mi" min="0.5" max="20" step="0.5" value="${d.mi}">
+  <div class="lbl">When</div><div class="chips">${Object.keys(T).map(k=>`<button class="chip ${d.when===k?'on':''}" data-when="${k}">${k}</button>`).join('')}</div>
+  <div class="lbl">Traffic</div><div class="chips">${Object.keys(MIN).map(k=>`<button class="chip ${d.traffic===k?'on':''}" data-tr="${k}">${k}</button>`).join('')}</div>
+  <button class="go s" id="save" ${S.saved?'disabled':''}>${S.saved?'✓ Saved to My trips':'Save this trip'}</button>
+  <div class="legend">An estimate with illustrative rates. The meter is always the fare.</div>`;}
+function vS(){const d=C.data,r=fare(d.mi,d.when,d.traffic);
+  return `<div class="meter"><small>Each pays</small><b>${gbp(r.f/d.people)}</b><p>${gbp(r.f)} split ${d.people} ways</p></div><div class="lbl">How many of you?</div>
+  <div class="big"><button data-p="-1">−</button><b>${d.people}</b><button data-p="1">+</button></div>`+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share the split'}</button>`:'');}
+function vT(){const L=C.data.trips;return L.length?L.map((t,i)=>`<div class="trip" data-trip="${i}"><div class="x"><b>${GX.esc(t.n)}</b><small>${t.mi} miles · ${t.when} · ${t.traffic} traffic</small></div><i>${gbp(fare(t.mi,t.when,t.traffic).f)}</i></div>`).join('')+'<div class="legend">Tap a trip to load it.</div>':'<div class="legend">No saved trips yet.</div>';}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='e'?vE():S.tab==='s'?vS():vT();const sv=()=>{GX.save(d);paint();};
+  const mi=document.getElementById('mi');if(mi)mi.oninput=()=>{d.mi=+mi.value;S.saved=false;sv();};
+  v.querySelectorAll('[data-when]').forEach(b=>b.onclick=()=>{d.when=b.dataset.when;S.saved=false;sv();});
+  v.querySelectorAll('[data-tr]').forEach(b=>b.onclick=()=>{d.traffic=b.dataset.tr;S.saved=false;sv();});
+  v.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{d.people=Math.min(6,Math.max(1,d.people+ +b.dataset.p));sv();});
+  v.querySelectorAll('[data-trip]').forEach(b=>b.onclick=()=>{const t=d.trips[+b.dataset.trip];Object.assign(d,{mi:t.mi,when:t.when,traffic:t.traffic});S.tab='e';S.saved=true;sv();});
+  const s=document.getElementById('save');if(s)s.onclick=()=>{d.trips.unshift({n:`${d.mi} miles, ${d.when.toLowerCase()}`,mi:d.mi,when:d.when,traffic:d.traffic});S.saved=true;sv();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const r=fare(d.mi,d.when,d.traffic);GX.post(`Cab home: about ${gbp(r.f)} for ${d.mi} miles, so ${gbp(r.f/d.people)} each between ${d.people} of us. Cheaper than the night bus and two hours earlier 🚕`,'FARE ESTIMATOR').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

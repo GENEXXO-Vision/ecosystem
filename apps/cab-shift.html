@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cab Shift</title>
+<style>
+/* Cab Shift, by Ranklight (fictional), 2026-11-24. A GENEXXO app for TaxiXX.
+   Log tonight's fares and costs, see takings, costs and the real hourly rate, and the last seven shifts.
+   Figures are the driver's own; keep proper records for tax. */
+:root{--bg:#0E0E10;--card:rgba(255,255,255,.05);--line:rgba(244,244,245,.1);--ink:#F4F4F5;--mut:rgba(244,244,245,.55);--acc:#2DD4BF;--amb:#FACC15}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#2DD4BF,#115E59);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.hero{background:linear-gradient(135deg,rgba(45,212,191,.2),rgba(45,212,191,.04));border:1px solid rgba(45,212,191,.3);border-radius:20px;padding:16px}.hero small{color:var(--mut);font-weight:800;font-size:12px}.hero b{display:block;font-size:38px;font-weight:900;font-variant-numeric:tabular-nums}.hero p{color:var(--mut);font-size:12.5px}
+.two{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px}.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 11px}.box small{color:var(--mut);font-weight:700;font-size:11px}.box b{display:block;font-size:17px;font-weight:900;font-variant-numeric:tabular-nums}
+.btns{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}.btns button{font:inherit;font-weight:800;font-size:13px;padding:12px 2px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}.btns button.p{background:var(--acc);border-color:var(--acc);color:#04201D}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.it{display:flex;gap:10px;align-items:center;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px}.it b{flex:1;font-size:13.5px}.it span{font-weight:800;font-variant-numeric:tabular-nums}.it span.c{color:#F87171}
+.wk{display:flex;align-items:flex-end;gap:6px;height:160px;padding:10px;background:var(--card);border:1px solid var(--line);border-radius:16px}.wk div{flex:1;text-align:center;font-size:11px;color:var(--mut);font-weight:700}.wk em{display:block;font-style:normal;font-size:10px;margin-bottom:3px;color:var(--ink)}.wk i{display:block;border-radius:6px 6px 2px 2px;background:var(--acc);margin-bottom:4px}.wk .t i{background:var(--amb)}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:#04201D;cursor:pointer}.go:disabled{background:rgba(255,255,255,.08);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">💷</div><div><h1>Cab Shift</h1><p>Ranklight · in TaxiXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="n" class="on">Tonight</button><button data-tab="c">Costs</button><button data-tab="w">Last 7 shifts</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const seed=()=>({fares:[14.2,9.8,22.6,11.4,31.0,8.6,16.8,12.4],costs:[['⚡ Charging',11.6],['🚕 Cab rent (share)',18]],hours:5.5,week:[[118,7],[96,6],[0,0],[164,8.5],[142,8],[188,9]]});
+let C,S={tab:'n',shared:false};
+GX.init({gateway:'TaxiXX',seed}).then(c=>{C=c;paint();});
+const gbp=n=>'£'+n.toFixed(2),sum=a=>a.reduce((x,y)=>x+y,0);
+const take=()=>sum(C.data.fares),cost=()=>sum(C.data.costs.map(c=>c[1])),net=()=>take()-cost(),rate=()=>C.data.hours?net()/C.data.hours:0;
+function vN(){const d=C.data;return `<div class="hero"><small>Real hourly rate tonight</small><b>${gbp(rate())}</b><p>After costs, over ${d.hours} hours on shift</p></div>
+  <div class="two"><div class="box"><small>Takings</small><b>${gbp(take())}</b></div><div class="box"><small>Costs</small><b>${gbp(cost())}</b></div><div class="box"><small>Fares</small><b>${d.fares.length}</b></div></div>
+  <div class="lbl">Log a fare</div><div class="btns">${[8,12,18,25].map(n=>`<button class="p" data-f="${n}">+£${n}</button>`).join('')}</div>
+  <div class="btns" style="grid-template-columns:1fr 1fr"><button data-h="0.5">+30 min on shift</button><button data-undo="1">Undo last fare</button></div>
+  <div class="lbl">Tonight’s fares</div>${d.fares.slice().reverse().slice(0,6).map((f,i)=>`<div class="it"><b>Fare ${d.fares.length-i}</b><span>${gbp(f)}</span></div>`).join('')}`;}
+function vC(){const d=C.data;return `<div class="lbl">Tonight’s costs</div>`+d.costs.map(c=>`<div class="it"><b>${c[0]}</b><span class="c">−${gbp(c[1])}</span></div>`).join('')+
+  `<div class="lbl">Add a cost</div><div class="btns" style="grid-template-columns:1fr 1fr 1fr"><button data-c="⚡ Charging|8">⚡ +£8</button><button data-c="🅿️ Parking|4">🅿️ +£4</button><button data-c="☕ Food|6">☕ +£6</button></div>
+  <button class="go" id="end">End shift and log it</button><div class="legend">Keep your receipts for your accountant.</div>`;}
+function vW(){const d=C.data,days=[...d.week,[net(),d.hours]],max=Math.max(...days.map(x=>x[0]),1),tot=sum(days.map(x=>x[0])),hrs=sum(days.map(x=>x[1]));
+  return `<div class="two" style="grid-template-columns:1fr 1fr;margin-top:0"><div class="box"><small>Net, 7 shifts</small><b>${gbp(tot)}</b></div><div class="box"><small>Average per hour</small><b>${gbp(hrs?tot/hrs:0)}</b></div></div>
+  <div class="lbl">Net by day</div><div class="wk">${days.map((x,i)=>`<div class="${i===6?'t':''}"><em>${x[0]?'£'+Math.round(x[0]):''}</em><i style="height:${Math.max(2,x[0]/max*100)}px"></i>${i===6?'Today':GX.day(GX.today(i-6),{weekday:'narrow'})}</div>`).join('')}</div>`+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share my week'}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='n'?vN():S.tab==='c'?vC():vW();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{d.fares.push(+b.dataset.f);sv();});
+  v.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>{d.hours+=+b.dataset.h;sv();});
+  v.querySelectorAll('[data-undo]').forEach(b=>b.onclick=()=>{d.fares.pop();sv();});
+  v.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{const [n,a]=b.dataset.c.split('|');d.costs.push([n,+a]);sv();});
+  const e=document.getElementById('end');if(e)e.onclick=()=>{d.week=[...d.week.slice(1),[net(),d.hours]];d.fares=[];d.costs=[];d.hours=0;S.tab='w';sv();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const days=[...d.week,[net(),d.hours]],tot=sum(days.map(x=>x[0])),hrs=sum(days.map(x=>x[1]));GX.post(`Seven shifts, ${Math.round(hrs)} hours on the road, ${gbp(hrs?tot/hrs:0)} an hour after costs. Night shifts still pay best 🌙`,'CAB SHIFT').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
