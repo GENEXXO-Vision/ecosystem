@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Plan Picker</title>
+<style>
+/* Plan Picker, by Brightsim (fictional), 2026-11-24. A GENEXXO app for PhoneXX.
+   Estimate monthly mobile data from weekly habits (rough rates: video ~1GB/hour at phone quality, music ~0.07GB/hour,
+   social ~0.5GB/hour, maps ~0.03GB/hour, browsing ~0.1GB/hour), then compare illustrative SIM plans and the yearly saving. */
+:root{--bg:#F8F7FC;--card:#fff;--line:rgba(27,24,48,.09);--ink:#1B1830;--mut:rgba(27,24,48,.55);--acc:#4F46E5;--g:#10B981}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#475569,#0F172A);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.hero{background:linear-gradient(135deg,#4F46E5,#3730A3);color:#fff;border-radius:20px;padding:16px}.hero small{opacity:.75;font-weight:700}.hero b{display:block;font-size:34px;font-weight:900}.hero p{opacity:.8;font-size:12.5px}
+.sl{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:6px}.sl .t{display:flex;justify-content:space-between;font-weight:700;font-size:13.5px}.sl .t span{color:var(--mut)}input[type=range]{width:100%;accent-color:var(--acc)}
+.plan{display:flex;gap:12px;align-items:center;padding:13px;background:var(--card);border:2px solid var(--line);border-radius:16px;margin-top:8px}.plan .x{flex:1}.plan b{display:block;font-size:15px}.plan small{color:var(--mut)}.plan .p{font-size:20px;font-weight:900;text-align:right}.plan .p small{display:block;font-size:11px;font-weight:700}
+.plan.best{border-color:var(--g);background:#F2FBF7}.tag{font-size:10.5px;font-weight:900;color:#fff;background:var(--g);padding:3px 8px;border-radius:99px;margin-left:6px;vertical-align:2px}.plan.small{opacity:.55}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cmp div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}.cmp small{color:var(--mut);font-weight:700;font-size:11.5px}.cmp b{display:block;font-size:22px;font-weight:900}
+.big{font-size:44px;font-weight:900;color:var(--g);text-align:center;margin-top:16px}
+.tgrow{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:6px;font-weight:700}
+.tg{width:44px;height:26px;border-radius:99px;background:rgba(27,24,48,.15);position:relative;cursor:pointer;border:0}.tg:after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s}.tg.on{background:var(--acc)}.tg.on:after{left:21px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:#fff;cursor:pointer}.go:disabled{background:rgba(27,24,48,.07);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">📶</div><div><h1>Plan Picker</h1><p>Brightsim · in PhoneXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="u" class="on">My usage</button><button data-tab="p">Plans</button><button data-tab="s">Saving</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const USE=[['video','🎬 Video, away from wi-fi',1.0,0,14],['social','📱 Social apps',0.5,0,20],['music','🎵 Music streaming',0.07,0,30],['maps','🗺️ Maps and travel',0.03,0,15],['web','🌐 Browsing and email',0.1,0,25]];
+const PLANS=[['Brightsim Light',5,6],['Brightsim 20GB',20,10],['Brightsim 60GB',60,15],['Brightsim Unlimited',Infinity,20]];
+const seed=()=>({h:{video:2,social:6,music:8,maps:3,web:7},abroad:true,now:30,nowName:'Current 100GB contract'});
+let C,S={tab:'u',shared:false};
+GX.init({gateway:'PhoneXX',seed}).then(c=>{C=c;paint();});
+const need=()=>{const d=C.data;let gb=USE.reduce((a,u)=>a+d.h[u[0]]*u[2],0)*4.35;if(d.abroad)gb+=2;return Math.ceil(gb*1.15);};   /* +15% headroom */
+const best=()=>PLANS.find(p=>p[1]>=need());
+function vU(){const d=C.data;return `<div class="hero"><small>You need about</small><b>${need()}GB a month</b><p>Including 15% headroom${d.abroad?' and 2GB for travel':''}</p></div><div class="lbl">Hours a week, away from wi-fi</div>`+
+  USE.map(u=>`<div class="sl"><div class="t">${u[1]}<span>${d.h[u[0]]} h</span></div><input type="range" min="${u[3]}" max="${u[4]}" value="${d.h[u[0]]}" data-u="${u[0]}"></div>`).join('')+
+  `<div class="tgrow">✈️ I travel in Europe<button class="tg ${d.abroad?'on':''}" id="ab"></button></div>`;}
+function vP(){const n=need(),b=best();return `<div class="lbl">For about ${n}GB a month</div>`+PLANS.map(p=>`<div class="plan ${p===b?'best':''} ${p[1]<n?'small':''}"><div class="x"><b>${p[0]}${p===b?'<span class="tag">BEST FIT</span>':''}</b><small>${p[1]===Infinity?'Unlimited data':p[1]+'GB data'} · unlimited calls and texts${p[1]<n?' · too small for you':''}</small></div><div class="p">£${p[2]}<small>a month</small></div></div>`).join('')+`<div class="legend">No contract. Plans and prices are illustrative.</div>`;}
+function vS(){const d=C.data,b=best(),save=(d.now-b[2])*12;return `<div class="cmp"><div><small>${GX.esc(d.nowName)}</small><b>£${d.now}/mo</b></div><div><small>${b[0]}</small><b>£${b[2]}/mo</b></div></div>
+  <div class="big">${save>0?'£'+save:'£0'}</div><div class="legend" style="margin-top:2px">${save>0?'saved a year by paying for what you use':'You’re already on a good deal'}</div>`+
+  (GX.can('feed')&&save>0?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share my saving'}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='u'?vU():S.tab==='p'?vP():vS();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-u]').forEach(r=>r.onchange=r.oninput=()=>{d.h[r.dataset.u]=+r.value;r.previousElementSibling.querySelector('span').textContent=r.value+' h';v.querySelector('.hero b').textContent=need()+'GB a month';GX.save(d);});
+  const ab=document.getElementById('ab');if(ab)ab.onclick=()=>{d.abroad=!d.abroad;sv();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const b=best();GX.post(`Turns out I use about ${need()}GB a month, not 100. Switching to a £${b[2]} plan saves me £${(d.now-b[2])*12} a year 📶`,'PLAN PICKER').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

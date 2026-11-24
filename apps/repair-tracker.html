@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Repair Tracker</title>
+<style>
+/* Repair Tracker, by Fixwell Repairs (fictional), 2026-11-24. A GENEXXO app for PhoneXX.
+   Quote a screen, battery or port repair for a few fictional phones, book a slot (dates from today), follow the
+   repair through its steps and keep warranties on file. Prices are illustrative. */
+:root{--bg:#F8F7FC;--card:#fff;--line:rgba(27,24,48,.09);--ink:#1B1830;--mut:rgba(27,24,48,.55);--acc:#F43F5E;--g:#10B981}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#FB7185,#BE123C);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}.lbl:first-child{margin-top:0}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:8px 12px;cursor:pointer}.chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.fx{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}.fx button{font:inherit;font-weight:800;font-size:12.5px;padding:12px 4px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}.fx button span{display:block;font-size:22px}.fx button.on{border:2px solid var(--acc);background:#FFF1F3}
+.quote{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:12px}.quote small{color:var(--mut);font-weight:700}.quote b{font-size:28px;font-weight:900}
+.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.slots button{font:inherit;font-size:12px;font-weight:800;padding:9px 2px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}.slots button.on{background:var(--ink);color:#fff}
+.hero{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}.hero small{color:var(--mut);font-weight:700}.hero b{display:block;font-size:19px;font-weight:900;margin:2px 0}
+.tl{margin-top:12px;padding-left:18px;border-left:2px solid rgba(27,24,48,.1)}.tl div{position:relative;padding:0 0 14px 6px}.tl div:before{content:'';position:absolute;left:-25px;top:3px;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid rgba(27,24,48,.2)}
+.tl div.dn:before{background:var(--g);border-color:var(--g)}.tl div.on:before{background:var(--acc);border-color:var(--acc);box-shadow:0 0 0 4px rgba(244,63,94,.18)}.tl b{display:block;font-size:13.5px}.tl small{color:var(--mut)}.tl div.todo b{color:var(--mut)}
+.w{display:flex;gap:10px;align-items:center;padding:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:6px}.w .e{font-size:22px}.w .x{flex:1}.w b{display:block;font-size:14px}.w small{color:var(--mut)}.w span{font-size:11.5px;font-weight:800;color:var(--g);background:rgba(16,185,129,.1);padding:4px 8px;border-radius:99px}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:#fff;cursor:pointer}.go:disabled{background:rgba(27,24,48,.07);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🔧</div><div><h1>Repair Tracker</h1><p>Fixwell Repairs · in PhoneXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="q" class="on">Get a quote</button><button data-tab="r">My repair</button><button data-tab="w">Warranties</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const PHONES={'Lumen 9':1,'Lumen 8':.85,'Lumen 9 Lite':.75,'Other phone':1.1};
+const FIX=[['screen','📱','Screen',89,'45 min'],['battery','🔋','Battery',49,'30 min'],['port','🔌','Charging port',59,'40 min']];
+const STEPS=['Booked','Checked in','Being repaired','Quality checked','Ready to collect'];
+const SLOTS=['10:00','11:30','13:00','14:30','16:00'];
+const seed=()=>({phone:'Lumen 8',fix:'battery',day:0,slot:'13:00',repair:{phone:'Lumen 9',fix:'screen',shop:'Fixwell Cardiff Queen Street',step:2,ref:'FX-20418'},warranties:[['🔋','Battery, Lumen 8',GX.iso(-140)],['📱','Screen, Lumen 9 Lite',GX.iso(-300)]]});
+let C,S={tab:'q',shared:false,booked:false};
+GX.init({gateway:'PhoneXX',seed}).then(c=>{C=c;paint();});
+const price=(ph,fx)=>Math.round(FIX.find(f=>f[0]===fx)[3]*PHONES[ph]);
+function vQ(){const d=C.data,f=FIX.find(x=>x[0]===d.fix);return `<div class="lbl">Your phone</div><div class="chips">${Object.keys(PHONES).map(p=>`<button class="chip ${d.phone===p?'on':''}" data-ph="${p}">${p}</button>`).join('')}</div>
+  <div class="lbl">What needs fixing?</div><div class="fx">${FIX.map(x=>`<button class="${d.fix===x[0]?'on':''}" data-fx="${x[0]}"><span>${x[1]}</span>${x[2]}</button>`).join('')}</div>
+  <div class="quote"><div><small>${d.phone} · ${f[2].toLowerCase()}</small><br><small>About ${f[4]}, while you wait</small></div><b>£${price(d.phone,d.fix)}</b></div>
+  <div class="lbl">Pick a slot</div><div class="chips">${[0,1,2].map(o=>`<button class="chip ${d.day===o?'on':''}" data-day="${o}">${o===0?'Today':o===1?'Tomorrow':GX.day(GX.today(o),{weekday:'long'})}</button>`).join('')}</div>
+  <div class="slots" style="margin-top:8px">${SLOTS.slice(d.day===0?2:0).map(s=>`<button class="${d.slot===s?'on':''}" data-sl="${s}">${s}</button>`).join('')}</div>
+  <button class="go" id="book" ${S.booked?'disabled':''}>${S.booked?'✓ Booked: see My repair':'Book this repair'}</button><div class="legend">Twelve-month guarantee on every repair.</div>`;}
+function vR(){const r=C.data.repair;if(!r)return '<div class="legend" style="margin-top:30px">No repair in progress.</div>';const f=FIX.find(x=>x[0]===r.fix);
+  return `<div class="hero"><small>${r.ref} · ${r.shop}</small><b>${f[1]} ${r.phone}: ${f[2].toLowerCase()}</b><small>${r.step>=4?'Ready now. Bring your reference.':'We’ll message you when it’s ready.'}</small></div>
+  <div class="tl">${STEPS.map((s,i)=>`<div class="${i<r.step?'dn':i===r.step?'on':'todo'}"><b>${s}</b><small>${i<r.step?'Done':i===r.step?'Now':'Next'}</small></div>`).join('')}</div>`+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share: repaired, not replaced'}</button>`:'');}
+function vW(){const L=C.data.warranties;return `<div class="lbl">Repairs under guarantee</div>`+L.map(w=>{const end=new Date(w[2]);end.setFullYear(end.getFullYear()+1);const days=Math.round((end-GX.today(0))/864e5);
+  return `<div class="w"><span class="e">${w[0]}</span><div class="x"><b>${GX.esc(w[1])}</b><small>Repaired ${GX.day(w[2],{day:'numeric',month:'short',year:'numeric'})}</small></div><span>${days>0?days+' days left':'Expired'}</span></div>`;}).join('')+'<div class="legend">Keep this: it’s your proof of repair.</div>';}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='q'?vQ():S.tab==='r'?vR():vW();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-ph]').forEach(b=>b.onclick=()=>{d.phone=b.dataset.ph;S.booked=false;sv();});
+  v.querySelectorAll('[data-fx]').forEach(b=>b.onclick=()=>{d.fix=b.dataset.fx;S.booked=false;sv();});
+  v.querySelectorAll('[data-day]').forEach(b=>b.onclick=()=>{d.day=+b.dataset.day;if(d.day===0&&SLOTS.indexOf(d.slot)<2)d.slot=SLOTS[2];S.booked=false;sv();});
+  v.querySelectorAll('[data-sl]').forEach(b=>b.onclick=()=>{d.slot=b.dataset.sl;S.booked=false;sv();});
+  const bk=document.getElementById('book');if(bk)bk.onclick=()=>{d.repair={phone:d.phone,fix:d.fix,shop:'Fixwell Cardiff Queen Street',step:0,ref:'FX-'+Math.floor(10000+Math.random()*89999)};const f=FIX.find(x=>x[0]===d.fix);d.warranties.unshift([f[1],`${f[2]}, ${d.phone}`,GX.iso(d.day)]);S.booked=true;S.shared=false;S.tab='r';sv();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const r=d.repair,f=FIX.find(x=>x[0]===r.fix);GX.post(`New ${f[2].toLowerCase()} for my ${r.phone} instead of a new phone. Repaired, not replaced 🔧`,'REPAIR TRACKER').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
