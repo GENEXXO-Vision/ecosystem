@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Orbit School</title>
+<style>
+/* Orbit School, by Clearorbit Imaging (fictional), 2026-11-24. A GENEXXO app for SatelliteXX.
+   Low, medium and geostationary orbits explained; a five-question quiz; and an orbit calculator using real physics:
+   period T = 2π√(a³/μ), speed v = √(μ/a), μ = 398,600 km³/s², Earth radius 6,371 km (circular orbits). */
+:root{--bg:#070B1A;--card:rgba(255,255,255,.05);--line:rgba(230,233,245,.1);--ink:#E6E9F5;--mut:rgba(230,233,245,.55);--acc:#22D3EE;--ind:#818CF8;--ok:#22C55E;--no:#F87171}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#22D3EE,#0E7490);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.les{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:8px;cursor:pointer}.les .tp{display:flex;align-items:center;gap:10px}.les .e{font-size:26px}.les b{display:block;font-size:15px}.les small{color:var(--mut)}.les p{margin-top:8px;color:rgba(230,233,245,.85);font-size:13.5px}.les .ck{margin-left:auto;font-weight:900;color:var(--ok)}
+.q{background:linear-gradient(135deg,rgba(34,211,238,.16),rgba(34,211,238,.03));border:1px solid rgba(34,211,238,.3);border-radius:18px;padding:16px}.q small{color:var(--mut);font-weight:800;font-size:12px}.q b{display:block;font-size:17px;font-weight:800;margin-top:4px}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:700;font-size:14px;padding:12px 14px;margin-top:8px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}.opt.ok{border-color:var(--ok);background:rgba(34,197,94,.14)}.opt.no{border-color:var(--no);background:rgba(239,68,68,.12)}
+.calc{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px}.calc .alt{font-size:30px;font-weight:900;font-variant-numeric:tabular-nums}.calc small{color:var(--mut);font-weight:700}
+input[type=range]{width:100%;accent-color:var(--acc);margin:10px 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px}.box small{color:var(--mut);font-weight:700;font-size:11.5px}.box b{display:block;font-size:19px;font-weight:900;font-variant-numeric:tabular-nums}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}.chip{font:inherit;font-size:12px;font-weight:800;border:1px solid var(--line);background:none;color:var(--mut);border-radius:99px;padding:6px 10px;cursor:pointer}
+.orb{height:150px;margin-top:8px}.orb svg{width:100%;height:100%}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:#04202A;cursor:pointer}.go:disabled{background:rgba(255,255,255,.08);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🪐</div><div><h1>Orbit School</h1><p>Clearorbit Imaging · in SatelliteXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="l" class="on">Learn</button><button data-tab="q">Quiz</button><button data-tab="c">Calculator</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const MU=398600.4418,RE=6371;
+const LES=[['🛰️','Low Earth orbit','160 to 2,000 km up','Most satellites live here: space stations, Earth-imaging and broadband constellations. Close means sharp pictures and quick signals, but a full lap takes only about 90 minutes, so each satellite is overhead for minutes at a time. That’s why broadband needs thousands of them.'],
+ ['🧭','Medium Earth orbit','2,000 to 35,786 km up','Home of the navigation satellites that tell your phone where you are, about 20,000 km up. Each one orbits twice a day, and a couple of dozen are enough to cover the whole planet.'],
+ ['📡','Geostationary orbit','35,786 km above the equator','Here a satellite takes exactly one day to go round, matching the Earth’s spin, so it seems to hang still in the sky. Point a dish once and leave it: perfect for TV and weather pictures of a whole hemisphere.'],
+ ['🍎','Why don’t they fall?','They are falling','A satellite is always falling towards Earth, but it’s moving sideways so fast (about 7.7 km a second in low orbit) that the ground curves away beneath it as quickly as it falls. It keeps missing.']];
+const QZ=[['How long does the space station take to go once round the Earth?',['About 90 minutes','About 12 hours','One day','One week'],0],['Why does a geostationary satellite seem to stand still?',['It isn’t moving','It orbits once a day, matching the Earth','It’s tied to a cable','It’s too far away to see moving'],1],['Which orbit do most navigation satellites use?',['Low Earth orbit','Medium Earth orbit','Geostationary orbit','The Moon’s orbit'],1],['How fast does a satellite in low orbit travel?',['About 100 km an hour','About 1 km a second','About 7.7 km a second','The speed of light'],2],['Why do broadband constellations need thousands of satellites?',['They break often','Each one is overhead for only minutes','To look impressive','For spare parts'],1]];
+const seed=()=>({read:[0,3],best:3});
+let C,S={tab:'l',open:0,ans:{},alt:420,shared:false};
+GX.init({gateway:'SatelliteXX',seed}).then(c=>{C=c;paint();});
+const orbit=alt=>{const a=RE+alt,T=2*Math.PI*Math.sqrt(a**3/MU),v=Math.sqrt(MU/a);return {T,v,laps:86400/T};};
+const dur=s=>s<7200?`${Math.round(s/60)} min`:`${(s/3600).toFixed(1)} hours`;
+function vL(){const d=C.data;return LES.map((l,i)=>`<div class="les" data-l="${i}"><div class="tp"><span class="e">${l[0]}</span><div><b>${l[1]}</b><small>${l[2]}</small></div>${d.read.includes(i)?'<span class="ck">✓</span>':''}</div>${S.open===i?`<p>${l[3]}</p>`:''}</div>`).join('')+`<div class="legend">${d.read.length} of ${LES.length} lessons read</div>`;}
+function vQ(){const n=Object.keys(S.ans).length,right=Object.entries(S.ans).filter(([k,v])=>QZ[k][2]===v).length;
+  if(n===QZ.length)return `<div class="q"><small>Quiz done</small><b>${right} of ${QZ.length} right ${right===QZ.length?'🚀':''}</b><small>Best score: ${Math.max(C.data.best,right)} of ${QZ.length}</small></div>`+
+    (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share my score'}</button>`:'')+`<button class="go" id="again" style="background:var(--card);color:var(--ink)">Try again</button>`;
+  const q=QZ[n];return `<div class="q"><small>Question ${n+1} of ${QZ.length}</small><b>${q[0]}</b></div>`+q[1].map((o,j)=>`<button class="opt" data-a="${j}">${o}</button>`).join('');}
+function vC(){return `<div class="calc"><small>Height above the Earth</small><div class="alt" id="altv">${S.alt.toLocaleString('en-GB')} km</div><input type="range" id="alt" min="200" max="36000" step="10" value="${S.alt}">
+  <div class="chips">${[['Space station',420],['Broadband',550],['Navigation',20200],['Geostationary',35786]].map(c=>`<button class="chip" data-alt="${c[1]}">${c[0]}</button>`).join('')}</div></div><div id="res">${res()}</div>`;}
+function res(){const o=orbit(S.alt),r=28+Math.sqrt(S.alt/36000)*42;
+  return `<div class="orb"><svg viewBox="0 0 300 150"><circle cx="150" cy="75" r="22" fill="#1D4ED8"/><circle cx="144" cy="69" r="7" fill="#22C55E" opacity=".55"/><circle cx="150" cy="75" r="${r}" fill="none" stroke="#22D3EE" stroke-dasharray="3 3"/><circle cx="${150+r}" cy="75" r="4" fill="#FBBF24"/></svg></div>
+  <div class="two"><div class="box"><small>One orbit takes</small><b>${dur(o.T)}</b></div><div class="box"><small>Speed</small><b>${o.v.toFixed(2)} km/s</b></div><div class="box"><small>Laps a day</small><b>${o.laps.toFixed(o.laps<2?2:1)}</b></div><div class="box"><small>That’s</small><b>${Math.round(o.v*3600).toLocaleString('en-GB')} km/h</b></div></div>
+  <div class="legend">Circular orbits, real physics.</div>`;}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='l'?vL():S.tab==='q'?vQ():vC();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{const i=+b.dataset.l;S.open=S.open===i?-1:i;if(!d.read.includes(i))d.read.push(i);sv();});
+  v.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const n=Object.keys(S.ans).length,j=+b.dataset.a,ok=QZ[n][2]===j;b.classList.add(ok?'ok':'no');if(!ok)v.querySelectorAll('[data-a]')[QZ[n][2]].classList.add('ok');
+    setTimeout(()=>{S.ans[n]=j;if(Object.keys(S.ans).length===QZ.length){const r=Object.entries(S.ans).filter(([k,x])=>QZ[k][2]===x).length;d.best=Math.max(d.best,r);}sv();},650);});
+  const a=document.getElementById('alt');if(a)a.oninput=()=>{S.alt=+a.value;document.getElementById('altv').textContent=S.alt.toLocaleString('en-GB')+' km';document.getElementById('res').innerHTML=res();};
+  v.querySelectorAll('[data-alt]').forEach(b=>b.onclick=()=>{S.alt=+b.dataset.alt;paint();});
+  const ag=document.getElementById('again');if(ag)ag.onclick=()=>{S.ans={};S.shared=false;paint();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const r=Object.entries(S.ans).filter(([k,x])=>QZ[k][2]===x).length;GX.post(`${r} out of ${QZ.length} on today’s Orbit School quiz. Fun fact: the space station goes round the Earth about 16 times a day 🛰️`,'ORBIT SCHOOL').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

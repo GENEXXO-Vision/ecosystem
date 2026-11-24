@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pass Predictor</title>
+<style>
+/* Pass Predictor, by Nightpass Optics (fictional), 2026-11-24. A GENEXXO app for SatelliteXX.
+   Tonight's bright satellite passes over a UK town: start time, from and to, highest point and brightness.
+   ILLUSTRATIVE: passes are generated per day for the demo, not computed from real orbits. */
+:root{--bg:#070B1A;--card:rgba(255,255,255,.05);--line:rgba(230,233,245,.1);--ink:#E6E9F5;--mut:rgba(230,233,245,.55);--acc:#818CF8;--cy:#22D3EE;--sun:#FBBF24}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#FBBF24,#B45309);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--acc);border-color:var(--acc);color:#0B0E24}
+.sky{position:relative;height:180px;border-radius:18px;background:radial-gradient(circle at 50% 100%,#1E1B4B,#070B1A 70%);border:1px solid var(--line);margin-top:10px;overflow:hidden}
+.sky svg{position:absolute;inset:0;width:100%;height:100%}
+.ps{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-top:8px}.ps .tp{display:flex;align-items:center;gap:10px}.ps .t{font-size:22px;font-weight:900;font-variant-numeric:tabular-nums;min-width:66px}.ps .x{flex:1}.ps b{display:block;font-size:14px}.ps small{color:var(--mut);font-size:12px}
+.mag{font-size:11.5px;font-weight:800;padding:4px 8px;border-radius:99px;background:rgba(251,191,36,.14);color:var(--sun);white-space:nowrap}.mag.f{background:rgba(255,255,255,.07);color:var(--mut)}
+.rm{font:inherit;font-weight:800;font-size:12px;padding:7px 11px;border-radius:99px;border:1px solid var(--line);background:none;color:var(--ink);cursor:pointer;margin-top:8px}.rm.on{background:var(--acc);border-color:var(--acc);color:#0B0E24}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.it{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px}.it .x{flex:1}.it b{display:block;font-size:13.5px}.it small{color:var(--mut)}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:#0B0E24;cursor:pointer}.go:disabled{background:rgba(255,255,255,.08);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">🔭</div><div><h1>Pass Predictor</h1><p>Nightpass Optics · in SatelliteXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="t" class="on">Tonight</button><button data-tab="r">Reminders</button><button data-tab="s">Seen</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const TOWNS=['London','Manchester','Glasgow','Cardiff','Belfast'];
+const OBJ=[['International Space Station',-3.4,6],['Orbitra satellite train',1.2,4],['Weather satellite',2.6,10],['Old rocket stage',2.1,7],['Earth-imaging satellite',3.0,8]];
+const DIR=['W','WSW','SW','NW','WNW','N','NNW'],END=['E','ESE','SE','NE','ENE','S','SSE'];
+const seed=()=>({town:'Manchester',rem:[GX.iso(0)+'-Manchester-1',GX.iso(0)+'-Manchester-3'],seen:[[GX.iso(-1),'International Space Station','Bright and steady, overhead in four minutes'],[GX.iso(-3),'Orbitra satellite train','A line of dots, like a string of pearls'],[GX.iso(-6),'Old rocket stage','Slowly flashing as it tumbled']]});
+let C,S={tab:'t',shared:false};
+GX.init({gateway:'SatelliteXX',seed}).then(c=>{C=c;paint();});
+function passes(town){const R=GX.rng(GX.iso(0)+town);let m=17*60+20+Math.floor(R()*20);const out=[];
+  for(let i=0;i<5;i++){const o=OBJ[(i+Math.floor(R()*5))%5];m+=25+Math.floor(R()*35);const el=Math.round(18+R()*70);
+    out.push({id:`${GX.iso(0)}-${town}-${i}`,name:o[0],mag:+(o[1]+R()*.8).toFixed(1),dur:o[2]-1+Math.floor(R()*3),t:`${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`,from:DIR[Math.floor(R()*DIR.length)],to:END[Math.floor(R()*END.length)],el});}
+  out.sort((a,b)=>a.t.localeCompare(b.t));return out;}
+function arc(p){const h=150-p.el*1.5;return `<path d="M20 160 Q${150+(p.from.length-p.to.length)*20} ${h} 280 160" fill="none" stroke="${p.mag<0?'#FBBF24':'#818CF8'}" stroke-width="${p.mag<0?3:1.6}" stroke-dasharray="${p.mag<0?'':'4 4'}" opacity=".9"/>`;}
+function vT(){const d=C.data,L=passes(d.town);return `<div class="chips">${TOWNS.map(t=>`<button class="chip ${d.town===t?'on':''}" data-town="${t}">${t}</button>`).join('')}</div>
+  <div class="sky"><svg viewBox="0 0 300 180">${[...Array(40)].map((_,i)=>{const R=GX.rng('s'+i);return `<circle cx="${R()*300}" cy="${R()*140}" r="${R()*.9+.2}" fill="#fff" opacity="${.3+R()*.5}"/>`;}).join('')}${L.map(arc).join('')}<text x="12" y="174" fill="#8A90B0" font-size="10">W</text><text x="282" y="174" fill="#8A90B0" font-size="10">E</text></svg></div>`+
+  L.map(p=>`<div class="ps"><div class="tp"><span class="t">${p.t}</span><div class="x"><b>${p.name}</b><small>${p.from} → ${p.to} · up to ${p.el}° high · ${p.dur} min</small></div><span class="mag ${p.mag>1.5?'f':''}">${p.mag<0?'Very bright':p.mag<1.5?'Bright':'Faint'}</span></div>
+    <button class="rm ${d.rem.includes(p.id)?'on':''}" data-rem="${p.id}">${d.rem.includes(p.id)?'🔔 Reminder set':'🔕 Remind me 5 min before'}</button>
+    <button class="rm" data-seen="${GX.esc(p.name)}">👀 I saw it</button></div>`).join('')+`<div class="legend">Times for ${d.town} tonight, ${GX.day(GX.today(0))}. Illustrative in this demo.</div>`;}
+function vR(){const d=C.data,L=passes(d.town).filter(p=>d.rem.includes(p.id));return L.length?`<div class="lbl">Tonight’s reminders</div>`+L.map(p=>`<div class="it"><div class="x"><b>${p.t} · ${p.name}</b><small>Look ${p.from}, up to ${p.el}°</small></div><span>🔔</span></div>`).join(''):'<div class="legend" style="margin-top:30px">No reminders yet. Tap “Remind me” on a pass.</div>';}
+function vS(){const d=C.data;return `<div class="lbl">${d.seen.length} passes seen</div>`+d.seen.map(s=>`<div class="it"><div class="x"><b>${GX.esc(s[1])}</b><small>${GX.esc(s[2])}</small></div><small>${GX.day(s[0],{day:'numeric',month:'short'})}</small></div>`).join('')+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share my latest sighting'}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='t'?vT():S.tab==='r'?vR():vS();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-town]').forEach(b=>b.onclick=()=>{d.town=b.dataset.town;sv();});
+  v.querySelectorAll('[data-rem]').forEach(b=>b.onclick=()=>{const k=b.dataset.rem,i=d.rem.indexOf(k);i<0?d.rem.push(k):d.rem.splice(i,1);sv();});
+  v.querySelectorAll('[data-seen]').forEach(b=>b.onclick=()=>{d.seen.unshift([GX.iso(0),b.dataset.seen,`Seen from ${d.town}`]);S.tab='s';S.shared=false;sv();});
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const s=d.seen[0];GX.post(`Just watched the <b>${GX.esc(s[1])}</b> cross the sky. ${d.seen.length} passes spotted so far, and it never gets old ✨`,'PASS PREDICTOR').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>

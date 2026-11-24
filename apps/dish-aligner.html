@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dish Aligner</title>
+<style>
+/* Dish Aligner, by Groundlink Kits (fictional), 2026-11-24. A GENEXXO app for SatelliteXX.
+   Where to point a dish at a geostationary orbital slot from a UK town, using the standard geometry:
+   G = slot − longitude; elevation = atan((cosG·cosL − 0.1512) / √(1 − cos²G·cos²L)); bearing = 180° − atan(tanG / sinL)
+   (true north; your compass reads magnetic, about 1° different in the UK in 2026). Slots are named by position only. */
+:root{--bg:#070B1A;--card:rgba(255,255,255,.05);--line:rgba(230,233,245,.1);--ink:#E6E9F5;--mut:rgba(230,233,245,.55);--acc:#FBBF24;--ind:#818CF8}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#94A3B8,#334155);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.dial{display:grid;grid-template-columns:1fr 1fr;gap:8px}.dial>div{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;text-align:center}.dial svg{width:120px;height:120px}.dial small{display:block;color:var(--mut);font-weight:700;font-size:12px}.dial b{display:block;font-size:26px;font-weight:900;font-variant-numeric:tabular-nums}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--acc);border-color:var(--acc);color:#1F1503}
+.tw{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px;cursor:pointer}.tw b{flex:1;font-size:14px}.tw span{font-variant-numeric:tabular-nums;color:var(--mut);font-weight:700;font-size:13px}.tw.on{border-color:var(--acc)}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:#1F1503;cursor:pointer}.go:disabled{background:rgba(255,255,255,.08);color:var(--mut)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+</style></head><body>
+<div class="hd"><div class="logo">📡</div><div><h1>Dish Aligner</h1><p>Groundlink Kits · in SatelliteXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="p" class="on">Point</button><button data-tab="t">All towns</button><button data-tab="s">Saved</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+const TOWNS={London:[51.51,-0.13],Manchester:[53.48,-2.24],Glasgow:[55.86,-4.25],Aberdeen:[57.15,-2.09],Cardiff:[51.48,-3.18],Belfast:[54.60,-5.93],Plymouth:[50.37,-4.14],Norwich:[52.63,1.30]};
+const SLOTS=[28.2,19.2,13.0,9.0];
+const seed=()=>({town:'Aberdeen',slot:28.2,saved:[['Home dish','Glasgow',28.2],['Caravan','Plymouth',19.2]]});
+let C,S={tab:'p',shared:false,saved:false};
+GX.init({gateway:'SatelliteXX',seed}).then(c=>{C=c;paint();});
+const rad=x=>x*Math.PI/180,deg=x=>x*180/Math.PI;
+function aim(town,slot){const [lat,lon]=TOWNS[town],G=rad(slot-lon),L=rad(lat),cg=Math.cos(G)*Math.cos(L);
+  return {el:deg(Math.atan((cg-0.1512)/Math.sqrt(1-cg*cg))),az:(180-deg(Math.atan(Math.tan(G)/Math.sin(L)))+360)%360};}
+const pts=a=>['N','NE','E','SE','S','SW','W','NW'][Math.round(a/45)%8];
+function vP(){const d=C.data,r=aim(d.town,d.slot),ax=60+44*Math.sin(rad(r.az)),ay=60-44*Math.cos(rad(r.az)),ex=14+90*Math.cos(rad(r.el)),ey=104-90*Math.sin(rad(r.el));
+  return `<div class="dial"><div><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="2"/>${['N','E','S','W'].map((c,i)=>`<text x="${60+40*Math.sin(i*Math.PI/2)}" y="${64-40*Math.cos(i*Math.PI/2)}" text-anchor="middle" fill="#8A90B0" font-size="10" font-weight="700">${c}</text>`).join('')}<line x1="60" y1="60" x2="${ax}" y2="${ay}" stroke="#FBBF24" stroke-width="4" stroke-linecap="round"/><circle cx="60" cy="60" r="4" fill="#FBBF24"/></svg><small>Bearing (true)</small><b>${r.az.toFixed(1)}°</b><small>${pts(r.az)}</small></div>
+  <div><svg viewBox="0 0 120 120"><line x1="10" y1="104" x2="112" y2="104" stroke="rgba(255,255,255,.25)" stroke-width="2"/><path d="M${14+30} 104 A30 30 0 0 0 ${14+30*Math.cos(rad(r.el))} ${104-30*Math.sin(rad(r.el))}" fill="none" stroke="#818CF8" stroke-width="2"/><line x1="14" y1="104" x2="${ex}" y2="${ey}" stroke="#FBBF24" stroke-width="4" stroke-linecap="round"/></svg><small>Elevation</small><b>${r.el.toFixed(1)}°</b><small>above the horizon</small></div></div>
+  <div class="lbl">Town</div><div class="chips">${Object.keys(TOWNS).map(t=>`<button class="chip ${d.town===t?'on':''}" data-town="${t}">${t}</button>`).join('')}</div>
+  <div class="lbl">Orbital slot</div><div class="chips">${SLOTS.map(s=>`<button class="chip ${d.slot===s?'on':''}" data-slot="${s}">${s.toFixed(1)}°E</button>`).join('')}</div>
+  <button class="go" id="save" ${S.saved?'disabled':''}>${S.saved?'✓ Saved':'Save this setup'}</button>
+  <div class="legend">True bearing: check against a compass, then fine-tune for the strongest signal.</div>`;}
+function vT(){const d=C.data;return `<div class="lbl">Every town, to ${d.slot.toFixed(1)}°E</div>`+Object.keys(TOWNS).map(t=>{const r=aim(t,d.slot);return `<div class="tw ${d.town===t?'on':''}" data-town="${t}"><b>${t}</b><span>${r.az.toFixed(1)}° · ${r.el.toFixed(1)}° up</span></div>`;}).join('')+'<div class="legend">Further north, the dish points lower.</div>';}
+function vS(){const L=C.data.saved;return `<div class="lbl">Saved setups</div>`+L.map(s=>{const r=aim(s[1],s[2]);return `<div class="tw"><b>${GX.esc(s[0])}<br><span>${s[1]} · ${s[2].toFixed(1)}°E</span></b><span>${r.az.toFixed(1)}°<br>${r.el.toFixed(1)}° up</span></div>`;}).join('')+
+  (GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:'Share my setup'}</button>`:'');}
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=document.getElementById('v'),d=C.data;v.innerHTML=S.tab==='p'?vP():S.tab==='t'?vT():vS();const sv=()=>{GX.save(d);paint();};
+  v.querySelectorAll('[data-town]').forEach(b=>b.onclick=()=>{d.town=b.dataset.town;S.saved=false;if(S.tab==='t')S.tab='p';sv();});
+  v.querySelectorAll('[data-slot]').forEach(b=>b.onclick=()=>{d.slot=+b.dataset.slot;S.saved=false;sv();});
+  const s=document.getElementById('save');if(s)s.onclick=()=>{d.saved.unshift([`My ${d.town} dish`,d.town,d.slot]);S.saved=true;sv();};
+  const sh=document.getElementById('share');if(sh)sh.onclick=()=>{const x=d.saved[0],r=aim(x[1],x[2]);GX.post(`Dish lined up in ${x[1]}: ${r.az.toFixed(0)}° bearing, ${r.el.toFixed(0)}° up, signal first time 📡`,'DISH ALIGNER').then(o=>{if(o){S.shared=true;paint();}});};}
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+</script></body></html>
