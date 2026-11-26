@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Trunk Quiz</title>
+<style>
+/* Trunk Quiz, by Hivefence Honey (fictional), 2026-11-24. A GENEXXO app for ElephantXX.
+   Ten questions a day about elephants, picked by date. */
+:root{--bg:#FAF6EE;--card:#FFFFFF;--line:rgba(0,0,0,.09);--off:rgba(0,0,0,.06);--ink:#2A2118;--mut:rgba(42,33,24,.55);--acc:#B45309;--accInk:#FFFFFF;--ok:#22C55E;--bad:#EF4444}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#FCD34D,#B45309);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:8px}
+.hero{text-align:center;padding:18px 14px}.hero small{display:block;color:var(--mut);font-weight:700;font-size:12px}.hero b{display:block;font-size:34px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--acc);line-height:1.15}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid .card{margin:0;text-align:center}.grid small{display:block;color:var(--mut);font-weight:700;font-size:11.5px}.grid b{display:block;font-size:20px;font-weight:900;font-variant-numeric:tabular-nums}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--acc);border-color:var(--acc);color:var(--accInk)}
+.row{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px}.row b{flex:1;font-size:14px}.row span{font-variant-numeric:tabular-nums;color:var(--mut);font-weight:700;font-size:13px;text-align:right}.row em{font-style:normal;font-size:11.5px;color:var(--mut);font-weight:600;display:block}
+.row.warn{border-color:var(--acc)}.row.bad{border-color:var(--bad)}
+.step{display:flex;align-items:center;gap:8px;margin-top:6px}.step label{flex:1;font-weight:700;font-size:13.5px}.step button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:900;font-size:17px;cursor:pointer}.step output{min-width:74px;text-align:center;font-weight:900;font-variant-numeric:tabular-nums}
+input.tx{width:100%;font:inherit;font-size:14px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px}
+.bars{display:flex;align-items:flex-end;gap:4px;height:130px;margin-top:8px}.bars div{flex:1;background:var(--acc);border-radius:5px 5px 0 0;min-height:3px;position:relative}.bars div.dim{opacity:.45}.bars div.hi{background:var(--bad)}
+.blab{display:flex;gap:4px}.blab span{flex:1;text-align:center;font-size:10px;color:var(--mut);font-weight:700}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:var(--accInk);cursor:pointer}.go:disabled{background:var(--off);color:var(--mut)}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+.pill{display:inline-block;font-size:11px;font-weight:900;border-radius:99px;padding:3px 9px;letter-spacing:.04em}.pill.ok{background:rgba(34,197,94,.16);color:var(--ok)}.pill.bad{background:rgba(239,68,68,.16);color:var(--bad)}.pill.due{background:var(--off);color:var(--acc)}
+.prog{height:12px;border-radius:99px;background:var(--off);overflow:hidden;margin-top:10px}.prog i{display:block;height:100%;background:var(--acc);border-radius:99px}
+.q b{display:block;font-size:16px;margin-top:4px}.q small{color:var(--mut);font-weight:700}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:700;font-size:14px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px;cursor:pointer}.opt.right{border-color:var(--ok);background:rgba(34,197,94,.12)}.opt.wrong{border-color:var(--bad);background:rgba(239,68,68,.1)}
+
+</style></head><body>
+<div class="hd"><div class="logo">❓</div><div><h1>Trunk Quiz</h1><p>Hivefence Honey · in ElephantXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="q" class="on">Quiz</button><button data-tab="s">Scores</button><button data-tab="f">Facts</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+let C,S={tab:'q',shared:false};
+const $=id=>document.getElementById(id),fmt=(n,d=0)=>Number(n).toLocaleString('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d});
+const shareBtn=(label)=>GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:label}</button>`:'';
+
+const QKEY='trunk',BEST0=8,WIN='Elephant expert';
+const QZ=[['Who leads an elephant family?',['The oldest female','The biggest bull','The youngest calf'],0,'The matriarch remembers where water is in a drought, sometimes decades later.'],
+['Roughly how long is an elephant pregnant?',['9 months','22 months','36 months'],1,'About 22 months, the longest of any land mammal.'],
+['Which elephants have bigger ears?',['African','Asian','They’re the same'],0,'African elephants’ ears are larger and shaped a little like the map of Africa.'],
+['Why do farmers hang beehives along fences?',['For honey only','Elephants avoid bees','To feed the elephants'],1,'Elephants steer clear of buzzing hives, so crops stay safe and farmers get honey too.'],
+['About how many muscles are in an elephant’s trunk?',['Hundreds','Tens of thousands','Exactly twelve'],1,'Tens of thousands of muscle units let it pick up a peanut or pull down a branch.'],
+['How do elephants talk over long distances?',['Low rumbles','Whistles','Stamping only'],0,'Many rumbles are too low for us to hear and travel for kilometres.'],
+['Why do elephants throw dust on themselves?',['To keep cool and protect their skin','To hide','For fun only'],0,'Dust and mud work as sunscreen and keep insects off.'],
+['Are tusks a kind of tooth?',['Yes, long incisors','No, they’re horns','They’re bones'],0,'Tusks are teeth, which is why poaching for ivory is so cruel.'],
+['Is riding an elephant a kind thing to do?',['Yes','No: training and riding harm them','Only for short rides'],1,'Ethical tourism means watching wild elephants, never riding them.'],
+['How do researchers tell elephants apart?',['By ear notches and tusks','By colour','By height alone'],0,'Every ear has its own pattern of notches and holes, like a fingerprint.'],
+['How much can an adult elephant eat in a day?',['About 15 kg','About 150 kg','About 1,500 kg'],1,'Around 150 kg of grass, leaves and bark, much of the day spent eating.'],
+['Where do Asian elephants live?',['South and Southeast Asia','Australia','South America'],0,'From India and Sri Lanka to Borneo and Thailand.']];
+
+const seed=()=>({best:BEST0,plays:[{d:GX.iso(-2),s:BEST0},{d:GX.iso(-6),s:BEST0-2}]});
+let Q=null;const pick=()=>{const r=GX.rng(QKEY+GX.iso(0)),a=QZ.map((q,i)=>[r(),i]).sort((x,y)=>x[0]-y[0]).slice(0,10).map(x=>x[1]);return {a,n:0,score:0,ans:null};};
+const VIEWS={
+ q(){if(!Q)Q=pick();if(Q.n>=Q.a.length)return `<div class="card hero"><small>Today’s score</small><b>${Q.score} / ${Q.a.length}</b><small>${Q.score>=8?WIN:'Come back tomorrow for ten more'}</small></div>${shareBtn('Share my score')}<button class="go alt" id="again">Try again</button>`;
+  const q=QZ[Q.a[Q.n]];return `<div class="q"><small>Question ${Q.n+1} of ${Q.a.length}</small><b>${q[0]}</b></div>`+q[1].map((o,j)=>`<button class="opt ${Q.ans!=null?(j===q[2]?'right':j===Q.ans?'wrong':''):''}" data-a="${j}">${o}</button>`).join('')+(Q.ans!=null?`<div class="card">${q[3]}</div><button class="go" id="next">Next</button>`:'');},
+ s(){const d=C.data;return `<div class="card hero"><small>Best score</small><b>${d.best} / 10</b></div>`+d.plays.map(p=>`<div class="row"><b>${GX.day(p.d)}</b><span>${p.s} / 10</span></div>`).join('');},
+ f(){return QZ.map(q=>`<div class="row"><b style="font-weight:600">${q[3]}</b></div>`).join('');}};
+function bind(v){v.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{if(Q.ans!=null)return;Q.ans=+b.dataset.a;if(Q.ans===QZ[Q.a[Q.n]][2])Q.score++;paint();});
+ const n=$('next');if(n)n.onclick=()=>{Q.n++;Q.ans=null;if(Q.n>=Q.a.length){const d=C.data;d.plays.unshift({d:GX.iso(0),s:Q.score});d.best=Math.max(d.best,Q.score);S.shared=false;save();}else paint();};
+ const a=$('again');if(a)a.onclick=()=>{Q=pick();paint();};}
+
+const shareText=()=>`${C.data.plays[0].s} out of 10 on today’s Trunk Quiz 🐘`;
+
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=$('v');v.innerHTML=VIEWS[S.tab]();bind(v);
+  const sh=$('share');if(sh)sh.onclick=()=>GX.post(shareText(),'TRUNK QUIZ').then(o=>{if(o){S.shared=true;paint();}});}
+const save=()=>{GX.save(C.data);paint();};
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+GX.init({gateway:'ElephantXX',seed}).then(c=>{C=c;paint();});
+</script></body></html>
