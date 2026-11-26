@@ -219,7 +219,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('horror', [
   { gw: 'horror', zone: 'blackthorn-press', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Blackthorn Live · Ghost stories by candlelight', desc: 'Three authors read new ghost stories live from Whitby. Lights off recommended.' },
-  { gw: 'horror', type: 'Event', icon: '🔥', time: 'Nov 25', title: 'Fireside ghost stories, York', desc: 'York Ghost Story Club: stories read aloud by candlelight.' },
+  { gw: 'horror', type: 'Event', icon: '🔥', time: 'Dec 2', title: 'Fireside ghost stories, York', desc: 'York Ghost Story Club: stories read aloud by candlelight.' },
   { gw: 'horror', type: 'Event', icon: '📖', time: 'Nov 26', title: 'Read-along: The Salt House, part one', desc: 'The Night Shift reads together online.' },
   { gw: 'horror', zone: 'gravegoods', type: 'Sale', icon: '🕯️', time: 'Nov 27', title: 'Gravegoods Black Friday', desc: 'A quarter off every candle, for one day.' },
   { gw: 'horror', zone: 'midnight-matinee', type: 'Event', icon: '🎬', time: 'Dec 1', title: 'Winter Chills begins', desc: 'Midnight Matinee: a new horror film every night until Christmas Eve.' },

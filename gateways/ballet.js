@@ -219,7 +219,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('ballet', [
   { gw: 'ballet', zone: 'riverside-ballet', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Riverside Ballet Live · Nutcracker rehearsal', desc: 'The snow scene, rehearsed live, with the ballet mistress explaining every correction.' },
-  { gw: 'ballet', type: 'Event', icon: '🩰', time: 'Nov 24', title: 'Online adult beginners class', desc: 'Adult Ballet Club: a gentle first class from your kitchen.' },
+  { gw: 'ballet', type: 'Event', icon: '🩰', time: 'Dec 1', title: 'Online adult beginners class', desc: 'Adult Ballet Club: a gentle first class from your kitchen.' },
   { gw: 'ballet', zone: 'arabesque-wear', type: 'Sale', icon: '🧶', time: 'Nov 27', title: 'Arabesque Black Friday', desc: 'A quarter off every warm-up, for one day.' },
   { gw: 'ballet', type: 'Event', icon: '🎄', time: 'Dec 4', title: 'The Nutcracker opens, Bristol', desc: 'Riverside Ballet’s opening night, with a live orchestra.' },
   { gw: 'ballet', zone: 'pointe-ribbon', type: 'Event', icon: '👣', time: 'Dec 5', title: 'Pointe fitting day, Northampton', desc: 'Free fittings with the makers. Teacher’s note needed for a first pair.' },

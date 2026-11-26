@@ -220,7 +220,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('coffee', [
   { gw: 'coffee', zone: 'ember-bean', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Ember & Bean Live · Cupping the 2026 Ethiopians', desc: 'Six new Ethiopian lots cupped live, and which ones to buy.' },
-  { gw: 'coffee', type: 'Event', icon: '☕', time: 'Nov 24', title: 'Live home cupping', desc: 'Brew Club: four coffees, one kitchen table, everyone tasting together.' },
+  { gw: 'coffee', type: 'Event', icon: '☕', time: 'Dec 1', title: 'Live home cupping', desc: 'Brew Club: four coffees, one kitchen table, everyone tasting together.' },
   { gw: 'coffee', zone: 'pourwell', type: 'Sale', icon: '⚙️', time: 'Nov 27', title: 'Pourwell Black Friday', desc: 'A fifth off every grinder, for one day.' },
   { gw: 'coffee', zone: 'crema-club', type: 'Event', icon: '📬', time: 'Dec 1', title: 'Crema Club: December box reveal', desc: 'Meet December’s roaster live as the boxes land.' },
   { gw: 'coffee', type: 'Event', icon: '🔄', time: 'Nov 26', title: 'Home brewers’ bean swap, Brighton', desc: 'Brighton Coffee Crawl: bring a bag, take a bag.' },

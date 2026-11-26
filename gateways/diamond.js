@@ -220,7 +220,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('diamond', [
   { gw: 'diamond', zone: 'hatton-stone', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Hatton & Stone Live · Design a ring with us', desc: 'Designers sketch rings from viewers’ ideas, live from Hatton Garden.' },
-  { gw: 'diamond', type: 'Event', icon: '💎', time: 'Nov 25', title: 'Ask a gemmologist live', desc: 'Ring Talk with Margaret Hale: your diamond questions, answered independently.' },
+  { gw: 'diamond', type: 'Event', icon: '💎', time: 'Dec 2', title: 'Ask a gemmologist live', desc: 'Ring Talk with Margaret Hale: your diamond questions, answered independently.' },
   { gw: 'diamond', zone: 'lumen-lab', type: 'Event', icon: '🧪', time: 'Nov 26', title: 'Natural vs lab-grown: live Q&A', desc: 'Lumen Lab’s gemmologist answers the big question honestly.' },
   { gw: 'diamond', zone: 'facet-co', type: 'Deadline', icon: '💍', time: 'Dec 1', title: 'Last order for Christmas proposals', desc: 'Facet & Co.: design by midnight and it’s made in time.' },
   { gw: 'diamond', zone: 'clarity-care', type: 'Event', icon: '🧼', time: 'Dec 6', title: 'Free ring checks, Hatton Garden', desc: 'Clarity Care: a free clean and claw check while you wait.' },

@@ -219,7 +219,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('esports', [
   { gw: 'esports', zone: 'volt-arena', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Volt Arena Live · Northern Circuit Grand Final', desc: 'Mersey Wolves vs Clyde Kestrels, best of five, live from Manchester.' },
-  { gw: 'esports', type: 'Event', icon: '👋', time: 'Nov 25', title: 'New players’ night, Manchester', desc: 'Manchester LAN Club: bring your rig, meet a team.' },
+  { gw: 'esports', type: 'Event', icon: '👋', time: 'Dec 2', title: 'New players’ night, Manchester', desc: 'Manchester LAN Club: bring your rig, meet a team.' },
   { gw: 'esports', zone: 'kinetic-gear', type: 'Sale', icon: '🎧', time: 'Nov 27', title: 'Kinetic Gear Black Friday', desc: 'A quarter off every headset, for one day.' },
   { gw: 'esports', type: 'Event', icon: '🏆', time: 'Nov 28', title: 'Community cup qualifiers', desc: 'Ready Check: open qualifiers, online.' },
   { gw: 'esports', zone: 'ready-up', type: 'Event', icon: '🪑', time: 'Dec 5', title: 'Free posture check day', desc: 'Ready Up and Dr Elena Voss check your set-up by video.' },

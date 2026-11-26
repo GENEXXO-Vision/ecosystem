@@ -219,7 +219,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('sculpture', [
   { gw: 'sculpture', zone: 'hollow-lane-park', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Hollow Lane Live · A bronze pour from the foundry', desc: 'Molten bronze poured into twelve moulds, live, with the foundry team explaining each step.' },
-  { gw: 'sculpture', type: 'Event', icon: '🗿', time: 'Nov 25', title: 'Live portrait sculpt-along', desc: 'Clay & Chisel: model a small head in 90 minutes, online.' },
+  { gw: 'sculpture', type: 'Event', icon: '🗿', time: 'Dec 2', title: 'Live portrait sculpt-along', desc: 'Clay & Chisel: model a small head in 90 minutes, online.' },
   { gw: 'sculpture', type: 'Event', icon: '✏️', time: 'Nov 27', title: 'Life modelling session, Bristol', desc: 'Bristol Sculptors: a three-hour pose in Bedminster.' },
   { gw: 'sculpture', zone: 'wedge-wire', type: 'Sale', icon: '🛠️', time: 'Nov 27', title: 'Wedge & Wire Black Friday', desc: 'A quarter off every tool and armature, for one day.' },
   { gw: 'sculpture', zone: 'hollow-lane-park', type: 'Event', icon: '🏮', time: 'Dec 5', title: 'Lantern night on the Winter Trail', desc: 'Hollow Lane Sculpture Park after dark, with mulled drinks at the barn.' },

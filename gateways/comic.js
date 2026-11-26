@@ -220,7 +220,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('comic', [
   { gw: 'comic', zone: 'panel-gutter', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Panel & Gutter Live · Draw-along with the artist', desc: 'A page of The Lighthouse Keeper’s Daughter painted live, with your questions answered.' },
-  { gw: 'comic', type: 'Event', icon: '✏️', time: 'Nov 25', title: 'Live draw-along', desc: 'Panel Talk: one prompt, one hour, everyone draws.' },
+  { gw: 'comic', type: 'Event', icon: '✏️', time: 'Dec 2', title: 'Live draw-along', desc: 'Panel Talk: one prompt, one hour, everyone draws.' },
   { gw: 'comic', type: 'Event', icon: '🍺', time: 'Nov 26', title: 'Drink and draw, Leeds', desc: 'Leeds Comics Collective: bring a sketchbook, any level.' },
   { gw: 'comic', zone: 'nib-brush', type: 'Sale', icon: '🖋️', time: 'Nov 27', title: 'Nib & Brush Black Friday', desc: 'A quarter off every kit, for one day.' },
   { gw: 'comic', type: 'Event', icon: '📮', time: 'Dec 3', title: 'December zine swap: posting day', desc: 'Panel Talk: post your zine to your swap partner.' },

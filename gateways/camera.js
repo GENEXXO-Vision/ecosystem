@@ -219,7 +219,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('camera', [
   { gw: 'camera', zone: 'halden-cameras', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Halden Live · Golden hour in the Lake District', desc: 'The winter sunset above Buttermere, shot live with settings on screen.' },
-  { gw: 'camera', type: 'Event', icon: '🌃', time: 'Nov 25', title: 'Night photowalk, Merchant City', desc: 'Glasgow Photowalks: city lights, tripods optional.' },
+  { gw: 'camera', type: 'Event', icon: '🌃', time: 'Dec 2', title: 'Night photowalk, Merchant City', desc: 'Glasgow Photowalks: city lights, tripods optional.' },
   { gw: 'camera', zone: 'strap-satchel', type: 'Sale', icon: '🎗️', time: 'Nov 27', title: 'Strap & Satchel Black Friday', desc: 'A quarter off every strap, for one day.' },
   { gw: 'camera', type: 'Event', icon: '🌅', time: 'Nov 28', title: 'Golden hour challenge', desc: 'Golden Hour Club: one photo at golden hour, wherever you are.' },
   { gw: 'camera', zone: 'shutter-school', type: 'Event', icon: '🎓', time: 'Dec 2', title: 'Live photo critique', desc: 'Shutter School tutors critique your photos live.' },

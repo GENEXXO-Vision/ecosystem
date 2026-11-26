@@ -219,7 +219,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('cat', [
   { gw: 'cat', zone: 'purrch', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Purrch Live · Build a catio with us', desc: 'A Garden Catio goes up in an afternoon, with workshop cats supervising.' },
-  { gw: 'cat', type: 'Event', icon: '🐾', time: 'Nov 25', title: 'Ask a behaviourist live', desc: 'Cat Lounge with Hannah Price: scratching, spraying and cats who don’t get on.' },
+  { gw: 'cat', type: 'Event', icon: '🐾', time: 'Dec 2', title: 'Ask a behaviourist live', desc: 'Cat Lounge with Hannah Price: scratching, spraying and cats who don’t get on.' },
   { gw: 'cat', zone: 'tabby-kitchen', type: 'Sale', icon: '🍗', time: 'Nov 27', title: 'Tabby Kitchen Black Friday', desc: 'A free taster box with any order of two cases.' },
   { gw: 'cat', type: 'Event', icon: '🏠', time: 'Nov 27', title: 'New foster training, Cardiff', desc: 'Cardiff Cat Rescue Volunteers: learn to foster. All costs covered.' },
   { gw: 'cat', zone: 'litterly', type: 'Event', icon: '🌱', time: 'Dec 2', title: 'Litter Q&A with a vet nurse', desc: 'Trays, litter and what changes in the tray can mean.' },

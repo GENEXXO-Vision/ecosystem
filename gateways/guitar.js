@@ -219,7 +219,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('guitar', [
   { gw: 'guitar', zone: 'northbridge', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Northbridge Live · Workshop tour', desc: 'Walk the Kendal workshop with the makers and hear every model played.' },
-  { gw: 'guitar', type: 'Event', icon: '🎤', time: 'Nov 24', title: 'Tuesday open mic, Glasgow', desc: 'Glasgow Guitar Circle in the West End. Sign-up from 7:30.' },
+  { gw: 'guitar', type: 'Event', icon: '🎤', time: 'Dec 1', title: 'Tuesday open mic, Glasgow', desc: 'Glasgow Guitar Circle in the West End. Sign-up from 7:30.' },
   { gw: 'guitar', type: 'Event', icon: '💻', time: 'Nov 26', title: 'Online open mic', desc: 'Open Mic Club: play one song from your living room.' },
   { gw: 'guitar', zone: 'fretwise', type: 'Sale', icon: '🎼', time: 'Nov 27', title: 'Fretwise Black Friday', desc: 'Three sets of strings for the price of two.' },
   { gw: 'guitar', zone: 'tonebox', type: 'Event', icon: '🔊', time: 'Dec 3', title: 'Valve amp clinic', desc: 'Tonebox: how valve amps work and how to look after yours.' },

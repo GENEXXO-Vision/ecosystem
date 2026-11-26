@@ -221,7 +221,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('sushi', [
   { gw: 'sushi', zone: 'rolly', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Rolly Live · Roll-along Night', desc: 'Roll along with Chef Mika and ask anything in the chat.' },
-  { gw: 'sushi', type: 'Event', icon: '🍶', time: 'Nov 24', title: 'Warm sake night, Edinburgh', desc: 'Edinburgh Sushi Club with Anna Cole: six sakes, warm and chilled, in Leith.' },
+  { gw: 'sushi', type: 'Event', icon: '🍶', time: 'Dec 1', title: 'Warm sake night, Edinburgh', desc: 'Edinburgh Sushi Club with Anna Cole: six sakes, warm and chilled, in Leith.' },
   { gw: 'sushi', zone: 'hinoki-knives', type: 'Sale', icon: '🔪', time: 'Nov 27', title: 'Hinoki Black Friday: free whetstone', desc: 'A free whetstone with every knife, for one day.' },
   { gw: 'sushi', zone: 'kaito', type: 'Event', icon: '🍣', time: 'Dec 1', title: 'Kaito Winter Omakase opening night', desc: 'The winter menu begins at the London, Manchester and Edinburgh counters.' },
   { gw: 'sushi', type: 'Event', icon: '🍚', time: 'Dec 4', title: 'Sushi basics class, London', desc: 'Joel Mensah Sushi School: rice, maki and nigiri, then dinner.' },

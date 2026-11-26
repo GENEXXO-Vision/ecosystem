@@ -219,7 +219,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('rome', [
   { gw: 'rome', zone: 'via-lucia-tours', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Via Lucia Live · Sunrise at the Colosseum', desc: 'The arena floor at first light, live, with a guide answering your questions.' },
-  { gw: 'rome', type: 'Event', icon: '💬', time: 'Nov 24', title: 'Italian conversation evening, London', desc: 'London Italian Conversation Club: tables by level, aperitivo.' },
+  { gw: 'rome', type: 'Event', icon: '💬', time: 'Dec 1', title: 'Italian conversation evening, London', desc: 'London Italian Conversation Club: tables by level, aperitivo.' },
   { gw: 'rome', type: 'Event', icon: '❓', time: 'Nov 26', title: 'Live Q&A: planning a winter trip to Rome', desc: 'Roma Lovers: guides answer your questions.' },
   { gw: 'rome', zone: 'casa-sette-colli', type: 'Sale', icon: '❄️', time: 'Nov 27', title: 'Casa Sette Colli Black Friday', desc: 'Three winter nights for €300, one day only.' },
   { gw: 'rome', zone: 'testaccio-kitchen', type: 'Event', icon: '🍝', time: 'Dec 4', title: 'Christmas pasta cook-along', desc: 'Testaccio Kitchen: make tortellini, live online.' },

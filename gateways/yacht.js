@@ -220,7 +220,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('yacht', [
   { gw: 'yacht', zone: 'aurelia-charter', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Aurelia Live · Sunset off Hvar', desc: 'Live from the catamaran Aurelia Sol, with the skipper answering questions.' },
-  { gw: 'yacht', type: 'Event', icon: '❓', time: 'Nov 25', title: 'Live Q&A: planning a 2027 charter', desc: 'Yacht Life skippers answer your questions.' },
+  { gw: 'yacht', type: 'Event', icon: '❓', time: 'Dec 2', title: 'Live Q&A: planning a 2027 charter', desc: 'Yacht Life skippers answer your questions.' },
   { gw: 'yacht', zone: 'weatherdeck', type: 'Sale', icon: '👟', time: 'Nov 27', title: 'Weatherdeck Black Friday', desc: '30% off deck shoes, one day only.' },
   { gw: 'yacht', zone: 'corvina-yachts', type: 'Event', icon: '🛥️', time: 'Dec 2', title: 'Corvina 58 virtual tour', desc: 'A live walk-through with the designer.' },
   { gw: 'yacht', type: 'Event', icon: '⚓', time: 'Dec 3', title: 'Winter talk: anchoring in the Med, Southampton', desc: 'Southampton Weekend Boaters’ December talk.' },
