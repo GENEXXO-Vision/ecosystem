@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Grass Wedge</title>
+<style>
+/* Grass Wedge, by Byre & Bale (fictional), 2026-11-24. A GENEXXO app for CattleXX.
+   Grazing days = Σ(cover above residual × hectares) ÷ (cattle × daily dry-matter intake). Residual 1,500 kg DM/ha; intake about 2.5% of liveweight. Covers are illustrative. */
+:root{--bg:#F7F8F1;--card:#FFFFFF;--line:rgba(0,0,0,.09);--off:rgba(0,0,0,.06);--ink:#1F2416;--mut:rgba(31,36,22,.55);--acc:#15803D;--accInk:#FFFFFF;--ok:#22C55E;--bad:#EF4444}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#FDE68A,#CA8A04);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:8px}
+.hero{text-align:center;padding:18px 14px}.hero small{display:block;color:var(--mut);font-weight:700;font-size:12px}.hero b{display:block;font-size:34px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--acc);line-height:1.15}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid .card{margin:0;text-align:center}.grid small{display:block;color:var(--mut);font-weight:700;font-size:11.5px}.grid b{display:block;font-size:20px;font-weight:900;font-variant-numeric:tabular-nums}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--acc);border-color:var(--acc);color:var(--accInk)}
+.row{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px}.row b{flex:1;font-size:14px}.row span{font-variant-numeric:tabular-nums;color:var(--mut);font-weight:700;font-size:13px;text-align:right}.row em{font-style:normal;font-size:11.5px;color:var(--mut);font-weight:600;display:block}
+.row.warn{border-color:var(--acc)}.row.bad{border-color:var(--bad)}
+.step{display:flex;align-items:center;gap:8px;margin-top:6px}.step label{flex:1;font-weight:700;font-size:13.5px}.step button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:900;font-size:17px;cursor:pointer}.step output{min-width:74px;text-align:center;font-weight:900;font-variant-numeric:tabular-nums}
+input.tx{width:100%;font:inherit;font-size:14px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px}
+.bars{display:flex;align-items:flex-end;gap:4px;height:130px;margin-top:8px}.bars div{flex:1;background:var(--acc);border-radius:5px 5px 0 0;min-height:3px;position:relative}.bars div.dim{opacity:.45}.bars div.hi{background:var(--bad)}
+.blab{display:flex;gap:4px}.blab span{flex:1;text-align:center;font-size:10px;color:var(--mut);font-weight:700}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:var(--accInk);cursor:pointer}.go:disabled{background:var(--off);color:var(--mut)}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+.pill{display:inline-block;font-size:11px;font-weight:900;border-radius:99px;padding:3px 9px;letter-spacing:.04em}.pill.ok{background:rgba(34,197,94,.16);color:var(--ok)}.pill.bad{background:rgba(239,68,68,.16);color:var(--bad)}.pill.due{background:var(--off);color:var(--acc)}
+.prog{height:12px;border-radius:99px;background:var(--off);overflow:hidden;margin-top:10px}.prog i{display:block;height:100%;background:var(--acc);border-radius:99px}
+.q b{display:block;font-size:16px;margin-top:4px}.q small{color:var(--mut);font-weight:700}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:700;font-size:14px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px;cursor:pointer}.opt.right{border-color:var(--ok);background:rgba(34,197,94,.12)}.opt.wrong{border-color:var(--bad);background:rgba(239,68,68,.1)}
+
+</style></head><body>
+<div class="hd"><div class="logo">🌱</div><div><h1>Grass Wedge</h1><p>Byre & Bale · in CattleXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="w" class="on">Wedge</button><button data-tab="f">Fields</button><button data-tab="h">Herd</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+let C,S={tab:'w',shared:false};
+const $=id=>document.getElementById(id),fmt=(n,d=0)=>Number(n).toLocaleString('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d});
+const shareBtn=(label)=>GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:label}</button>`:'';
+
+const RES=1500;
+const seed=()=>({fields:[['Top Meadow',4.2,2600],['Long Field',6.0,2300],['Brook',3.1,2900],['Hilltop',5.5,1900],['Orchard',1.8,2450]],cattle:40,lw:550});
+const intake=d=>d.lw*0.025;
+const kg=f=>Math.max(0,f[2]-RES)*f[1];
+const VIEWS={
+ w(){const d=C.data,tot=d.fields.reduce((a,f)=>a+kg(f),0),days=tot/(d.cattle*intake(d)),L=d.fields.slice().sort((a,b)=>b[2]-a[2]),mx=Math.max(...L.map(f=>f[2]));
+  return `<div class="card hero"><small>Grazing ahead</small><b>${fmt(days,1)} days</b><small>${fmt(tot)} kg of grass above the residual</small></div>
+  <div class="card"><b>The wedge: highest cover first</b><div class="bars">${L.map(f=>`<div class="${f[2]<RES+500?'hi':''}" style="height:${f[2]/mx*100}%"></div>`).join('')}</div><div class="blab">${L.map(f=>`<span>${f[0].split(' ')[0]}</span>`).join('')}</div></div>${shareBtn('Share our wedge')}`;},
+ f(){return C.data.fields.map((f,i)=>`<div class="step"><label>${f[0]}<br><span style="font-size:11.5px;color:var(--mut);font-weight:600">${f[1]} ha</span></label><button data-f="${i},-100">−</button><output>${fmt(f[2])}</output><button data-f="${i},100">+</button></div>`).join('')+'<div class="legend">Cover in kg of dry matter per hectare, from your plate meter.</div>';},
+ h(){const d=C.data;return `<div class="step"><label>Cattle grazing</label><button data-h="cattle,-5">−</button><output>${d.cattle}</output><button data-h="cattle,5">+</button></div>
+  <div class="step"><label>Average liveweight</label><button data-h="lw,-25">−</button><output>${d.lw} kg</output><button data-h="lw,25">+</button></div>
+  <div class="row"><b>Each eats about</b><span>${fmt(intake(d),1)} kg DM a day</span></div><div class="row"><b>Herd eats</b><span>${fmt(d.cattle*intake(d))} kg DM a day</span></div>`;}};
+function bind(v){const d=C.data;v.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{const [i,s]=b.dataset.f.split(',');d.fields[+i][2]=Math.max(800,d.fields[+i][2]+ +s);S.shared=false;save();});
+ v.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>{const [k,s]=b.dataset.h.split(',');d[k]=Math.max(5,d[k]+ +s);S.shared=false;save();});}
+const shareText=()=>{const d=C.data,t=d.fields.reduce((a,f)=>a+kg(f),0);return `${fmt(t/(d.cattle*intake(d)),0)} days of grazing in the wedge for ${d.cattle} cattle 🌱`;};
+
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=$('v');v.innerHTML=VIEWS[S.tab]();bind(v);
+  const sh=$('share');if(sh)sh.onclick=()=>GX.post(shareText(),'GRASS WEDGE').then(o=>{if(o){S.shared=true;paint();}});}
+const save=()=>{GX.save(C.data);paint();};
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+GX.init({gateway:'CattleXX',seed}).then(c=>{C=c;paint();});
+</script></body></html>
