@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tree Tally</title>
+<style>
+/* Tree Tally, by Treeline Nurseries (fictional), 2026-11-24. A GENEXXO app for ClimateXX.
+   Expected height uses rough first-years growth rates for UK natives (oak ~0.3 m/yr, birch ~0.6, hazel ~0.4, hawthorn ~0.4, rowan ~0.5, alder ~0.6) from a 0.4 m whip. Illustrative. */
+:root{--bg:#F3F8F5;--card:#FFFFFF;--line:rgba(0,0,0,.09);--off:rgba(0,0,0,.06);--ink:#10231A;--mut:rgba(16,35,26,.55);--acc:#0369A1;--accInk:#FFFFFF;--ok:#22C55E;--bad:#EF4444}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#4ADE80,#166534);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:8px}
+.hero{text-align:center;padding:18px 14px}.hero small{display:block;color:var(--mut);font-weight:700;font-size:12px}.hero b{display:block;font-size:34px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--acc);line-height:1.15}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid .card{margin:0;text-align:center}.grid small{display:block;color:var(--mut);font-weight:700;font-size:11.5px}.grid b{display:block;font-size:20px;font-weight:900;font-variant-numeric:tabular-nums}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--acc);border-color:var(--acc);color:var(--accInk)}
+.row{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px}.row b{flex:1;font-size:14px}.row span{font-variant-numeric:tabular-nums;color:var(--mut);font-weight:700;font-size:13px;text-align:right}.row em{font-style:normal;font-size:11.5px;color:var(--mut);font-weight:600;display:block}
+.row.warn{border-color:var(--acc)}.row.bad{border-color:var(--bad)}
+.step{display:flex;align-items:center;gap:8px;margin-top:6px}.step label{flex:1;font-weight:700;font-size:13.5px}.step button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:900;font-size:17px;cursor:pointer}.step output{min-width:74px;text-align:center;font-weight:900;font-variant-numeric:tabular-nums}
+input.tx{width:100%;font:inherit;font-size:14px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px}
+.bars{display:flex;align-items:flex-end;gap:4px;height:130px;margin-top:8px}.bars div{flex:1;background:var(--acc);border-radius:5px 5px 0 0;min-height:3px;position:relative}.bars div.dim{opacity:.45}.bars div.hi{background:var(--bad)}
+.blab{display:flex;gap:4px}.blab span{flex:1;text-align:center;font-size:10px;color:var(--mut);font-weight:700}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:var(--accInk);cursor:pointer}.go:disabled{background:var(--off);color:var(--mut)}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+.pill{display:inline-block;font-size:11px;font-weight:900;border-radius:99px;padding:3px 9px;letter-spacing:.04em}.pill.ok{background:rgba(34,197,94,.16);color:var(--ok)}.pill.bad{background:rgba(239,68,68,.16);color:var(--bad)}.pill.due{background:var(--off);color:var(--acc)}
+.prog{height:12px;border-radius:99px;background:var(--off);overflow:hidden;margin-top:10px}.prog i{display:block;height:100%;background:var(--acc);border-radius:99px}
+.q b{display:block;font-size:16px;margin-top:4px}.q small{color:var(--mut);font-weight:700}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:700;font-size:14px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px;cursor:pointer}.opt.right{border-color:var(--ok);background:rgba(34,197,94,.12)}.opt.wrong{border-color:var(--bad);background:rgba(239,68,68,.1)}
+
+</style></head><body>
+<div class="hd"><div class="logo">🌳</div><div><h1>Tree Tally</h1><p>Treeline Nurseries · in ClimateXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="p" class="on">Plant</button><button data-tab="m">My trees</button><button data-tab="g">Group</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+let C,S={tab:'p',shared:false};
+const $=id=>document.getElementById(id),fmt=(n,d=0)=>Number(n).toLocaleString('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d});
+const shareBtn=(label)=>GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:label}</button>`:'';
+
+const SP={Oak:0.3,Birch:0.6,Hazel:0.4,Hawthorn:0.4,Rowan:0.5,Alder:0.6};
+const seed=()=>({sp:'Oak',n:10,where:'School field',log:[{d:GX.iso(-400),sp:'Birch',n:30,where:'School field'},{d:GX.iso(-380),sp:'Hawthorn',n:50,where:'Hedge by the lane'},{d:GX.iso(-30),sp:'Oak',n:12,where:'School field'},{d:GX.iso(-8),sp:'Rowan',n:8,where:'Community wood'}],group:2840});
+const ht=x=>0.4+SP[x.sp]*((GX.today()-new Date(x.d))/864e5/365);
+const VIEWS={
+ p(){const d=C.data;return `<div class="card hero"><small>Planting today</small><b>${d.n} ${d.sp.toLowerCase()}</b><small>${GX.esc(d.where)}</small></div>
+  <div class="lbl">Species</div><div class="chips">${Object.keys(SP).map(s=>`<button class="chip ${d.sp===s?'on':''}" data-sp="${s}">${s}</button>`).join('')}</div>
+  <div class="step"><label>How many</label><button data-n="-1">−</button><output>${d.n}</output><button data-n="1">+</button></div>
+  <div class="lbl">Where</div><input class="tx" id="wh" value="${GX.esc(d.where)}"><button class="go" id="add">Log planting</button><div class="legend">Bare-root season runs from November to March.</div>`;},
+ m(){const L=C.data.log,t=L.reduce((a,x)=>a+x.n,0);return `<div class="card hero"><small>Trees you’ve planted</small><b>${fmt(t)}</b></div>`+L.map(x=>`<div class="row"><b>${x.n} ${x.sp.toLowerCase()}<em>${GX.esc(x.where)} · ${GX.day(x.d,{day:'numeric',month:'short',year:'numeric'})}</em></b><span>~${fmt(ht(x),1)} m tall</span></div>`).join('')+shareBtn('Share my planting');},
+ g(){const d=C.data,mine=d.log.reduce((a,x)=>a+x.n,0),goal=5000;return `<div class="card hero"><small>Riverside School group</small><b>${fmt(d.group+mine)}</b><small>trees towards ${fmt(goal)}</small><div class="prog"><i style="width:${Math.min(100,(d.group+mine)/goal*100)}%"></i></div></div><div class="row"><b>Your share</b><span>${fmt(mine)}</span></div><div class="row"><b>To go</b><span>${fmt(Math.max(0,goal-d.group-mine))}</span></div>`;}};
+function bind(v){const d=C.data;v.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{d.sp=b.dataset.sp;save();});v.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{d.n=Math.max(1,d.n+ +b.dataset.n);save();});
+ const w=$('wh');if(w)w.onchange=()=>{d.where=w.value||'Somewhere green';GX.save(d);};
+ const a=$('add');if(a)a.onclick=()=>{d.log.unshift({d:GX.iso(0),sp:d.sp,n:d.n,where:d.where});S.tab='m';S.shared=false;save();};}
+const shareText=()=>{const x=C.data.log[0];return `Planted ${x.n} ${x.sp.toLowerCase()} today at ${x.where} 🌳`;};
+
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=$('v');v.innerHTML=VIEWS[S.tab]();bind(v);
+  const sh=$('share');if(sh)sh.onclick=()=>GX.post(shareText(),'TREE TALLY').then(o=>{if(o){S.shared=true;paint();}});}
+const save=()=>{GX.save(C.data);paint();};
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+GX.init({gateway:'ClimateXX',seed}).then(c=>{C=c;paint();});
+</script></body></html>
