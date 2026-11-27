@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Follow-Up List</title>
+<style>
+/* Follow-Up List, by Talktrack (fictional), 2026-11-24. A GENEXXO app for SalesXX.
+   Promised calls and emails, sorted by when they’re due. Sample contacts are fictional. */
+:root{--bg:#F5F7FB;--card:#FFFFFF;--line:rgba(0,0,0,.09);--off:rgba(0,0,0,.06);--ink:#0F1B33;--mut:rgba(15,27,51,.55);--acc:#1E3A8A;--accInk:#FFFFFF;--ok:#22C55E;--bad:#EF4444}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#3B82F6,#1E3A8A);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:8px}
+.hero{text-align:center;padding:18px 14px}.hero small{display:block;color:var(--mut);font-weight:700;font-size:12px}.hero b{display:block;font-size:34px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--acc);line-height:1.15}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid .card{margin:0;text-align:center}.grid small{display:block;color:var(--mut);font-weight:700;font-size:11.5px}.grid b{display:block;font-size:20px;font-weight:900;font-variant-numeric:tabular-nums}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--acc);border-color:var(--acc);color:var(--accInk)}
+.row{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px}.row b{flex:1;font-size:14px}.row span{font-variant-numeric:tabular-nums;color:var(--mut);font-weight:700;font-size:13px;text-align:right}.row em{font-style:normal;font-size:11.5px;color:var(--mut);font-weight:600;display:block}
+.row.warn{border-color:var(--acc)}.row.bad{border-color:var(--bad)}
+.step{display:flex;align-items:center;gap:8px;margin-top:6px}.step label{flex:1;font-weight:700;font-size:13.5px}.step button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:900;font-size:17px;cursor:pointer}.step output{min-width:74px;text-align:center;font-weight:900;font-variant-numeric:tabular-nums}
+input.tx{width:100%;font:inherit;font-size:14px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px}
+.bars{display:flex;align-items:flex-end;gap:4px;height:130px;margin-top:8px}.bars div{flex:1;background:var(--acc);border-radius:5px 5px 0 0;min-height:3px;position:relative}.bars div.dim{opacity:.45}.bars div.hi{background:var(--bad)}
+.blab{display:flex;gap:4px}.blab span{flex:1;text-align:center;font-size:10px;color:var(--mut);font-weight:700}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:var(--accInk);cursor:pointer}.go:disabled{background:var(--off);color:var(--mut)}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+.pill{display:inline-block;font-size:11px;font-weight:900;border-radius:99px;padding:3px 9px;letter-spacing:.04em}.pill.ok{background:rgba(34,197,94,.16);color:var(--ok)}.pill.bad{background:rgba(239,68,68,.16);color:var(--bad)}.pill.due{background:var(--off);color:var(--acc)}
+.prog{height:12px;border-radius:99px;background:var(--off);overflow:hidden;margin-top:10px}.prog i{display:block;height:100%;background:var(--acc);border-radius:99px}
+.q b{display:block;font-size:16px;margin-top:4px}.q small{color:var(--mut);font-weight:700}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:700;font-size:14px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px;cursor:pointer}.opt.right{border-color:var(--ok);background:rgba(34,197,94,.12)}.opt.wrong{border-color:var(--bad);background:rgba(239,68,68,.1)}
+.tick{width:30px;height:30px;border-radius:99px;border:2px solid var(--acc);background:none;cursor:pointer;flex:none}
+</style></head><body>
+<div class="hd"><div class="logo">📞</div><div><h1>Follow-Up List</h1><p>Talktrack · in SalesXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="t" class="on">Due</button><button data-tab="a">Add</button><button data-tab="d">Done</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+let C,S={tab:'t',shared:false};
+const $=id=>document.getElementById(id),fmt=(n,d=0)=>Number(n).toLocaleString('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d});
+const shareBtn=(label)=>GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:label}</button>`:'';
+const daysTo=d=>Math.round((new Date(d)-new Date(GX.iso(0)))/864e5);
+
+const seed=()=>({streak:12,cur:{who:'',what:'Call',inD:2},items:[
+ {who:'Priya, Kiln Coffee',what:'Call',due:GX.iso(-1),note:'Send the proposal she asked for'},{who:'Tom, Brook Vets',what:'Email',due:GX.iso(0),note:'Demo recording and prices'},
+ {who:'Abbey Opticians',what:'Call',due:GX.iso(0),note:'Check they got the brochure'},{who:'Mill Lane Gym',what:'Call',due:GX.iso(2),note:'After their board meeting'},
+ {who:'Orchard Florists',what:'Visit',due:GX.iso(4),note:'Before Christmas rush'},{who:'Riverside Print',what:'Email',due:GX.iso(6),note:'Case study'}],
+ done:[{who:'Harbour Bakery',what:'Call',d:GX.iso(-1)},{who:'Northgate Dental',what:'Email',d:GX.iso(-1)},{who:'Fern & Co',what:'Call',d:GX.iso(-2)}]});
+const WH=['Call','Email','Visit'];
+const VIEWS={
+ t(){const I=C.data.items.map((x,i)=>[x,i]).sort((a,b)=>a[0].due<b[0].due?-1:1),od=I.filter(p=>daysTo(p[0].due)<0).length;
+  const grp=[['Overdue',p=>daysTo(p[0].due)<0,'bad'],['Today',p=>daysTo(p[0].due)===0,'warn'],['This week',p=>daysTo(p[0].due)>0,'']];
+  return `<div class="grid"><div class="card"><small>Due today</small><b>${I.filter(p=>daysTo(p[0].due)===0).length}</b></div><div class="card"><small>Nothing overdue streak</small><b>${C.data.streak} days</b></div></div>`+
+  grp.map(g=>{const L=I.filter(g[1]);return L.length?`<div class="lbl">${g[0]}</div>`+L.map(([x,i])=>`<div class="row ${g[2]}"><button class="tick" data-done="${i}" title="Done"></button><b>${GX.esc(x.who)}<em>${x.what} · ${GX.day(x.due)} · ${GX.esc(x.note)}</em></b></div>`).join(''):'';}).join('')+(od?'':shareBtn('Share my streak'));},
+ a(){const c=C.data.cur;return `<div class="lbl">Who</div><input class="tx" id="who" placeholder="Name and business" value="${GX.esc(c.who)}">
+  <div class="lbl">How</div><div class="chips">${WH.map(w=>`<button class="chip ${c.what===w?'on':''}" data-w="${w}">${w}</button>`).join('')}</div>
+  <div class="step"><label>Due in</label><button data-i="-1">−</button><output>${c.inD===0?'today':c.inD+' day'+(c.inD===1?'':'s')}</output><button data-i="1">+</button></div>
+  <input class="tx" id="note" placeholder="What did you promise?">
+  <button class="go" id="add" ${c.who.trim()?'':'disabled'}>Add follow-up</button>`;},
+ d(){return C.data.done.slice(0,12).map(x=>`<div class="row"><b>${GX.esc(x.who)}<em>${x.what} · done ${GX.day(x.d)}</em></b><span class="pill ok">DONE</span></div>`).join('');}};
+function bind(v){const d=C.data;
+ v.querySelectorAll('[data-done]').forEach(b=>b.onclick=()=>{const x=d.items.splice(+b.dataset.done,1)[0];d.done.unshift({who:x.who,what:x.what,d:GX.iso(0)});if(!d.items.some(y=>daysTo(y.due)<0))S.shared=false;save();});
+ v.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{d.cur.what=b.dataset.w;save();});
+ v.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{d.cur.inD=Math.max(0,Math.min(30,d.cur.inD+ +b.dataset.i));save();});
+ const w=$('who');if(w)w.oninput=()=>{d.cur.who=w.value;$('add').disabled=!w.value.trim();};
+ const a=$('add');if(a)a.onclick=()=>{d.items.push({who:d.cur.who.trim(),what:d.cur.what,due:GX.iso(d.cur.inD),note:$('note').value||'Follow up'});d.cur.who='';S.tab='t';save();};}
+const shareText=()=>`${C.data.streak} days with no follow-up overdue 📞 The fortune is in the follow-up.`;
+
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=$('v');v.innerHTML=VIEWS[S.tab]();bind(v);
+  const sh=$('share');if(sh)sh.onclick=()=>GX.post(shareText(),'FOLLOW-UP').then(o=>{if(o){S.shared=true;paint();}});}
+const save=()=>{GX.save(C.data);paint();};
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+GX.init({gateway:'SalesXX',seed}).then(c=>{C=c;paint();});
+</script></body></html>

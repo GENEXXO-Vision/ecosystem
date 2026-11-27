@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pipeline Board</title>
+<style>
+/* Pipeline Board, by Pipewise (fictional), 2026-11-24. A GENEXXO app for SalesXX.
+   Deals weighted by stage. Sample deals and values are fictional. */
+:root{--bg:#F5F7FB;--card:#FFFFFF;--line:rgba(0,0,0,.09);--off:rgba(0,0,0,.06);--ink:#0F1B33;--mut:rgba(15,27,51,.55);--acc:#047857;--accInk:#FFFFFF;--ok:#22C55E;--bad:#EF4444}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#34D399,#047857);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:8px}
+.hero{text-align:center;padding:18px 14px}.hero small{display:block;color:var(--mut);font-weight:700;font-size:12px}.hero b{display:block;font-size:34px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--acc);line-height:1.15}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid .card{margin:0;text-align:center}.grid small{display:block;color:var(--mut);font-weight:700;font-size:11.5px}.grid b{display:block;font-size:20px;font-weight:900;font-variant-numeric:tabular-nums}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--acc);border-color:var(--acc);color:var(--accInk)}
+.row{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px}.row b{flex:1;font-size:14px}.row span{font-variant-numeric:tabular-nums;color:var(--mut);font-weight:700;font-size:13px;text-align:right}.row em{font-style:normal;font-size:11.5px;color:var(--mut);font-weight:600;display:block}
+.row.warn{border-color:var(--acc)}.row.bad{border-color:var(--bad)}
+.step{display:flex;align-items:center;gap:8px;margin-top:6px}.step label{flex:1;font-weight:700;font-size:13.5px}.step button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:900;font-size:17px;cursor:pointer}.step output{min-width:74px;text-align:center;font-weight:900;font-variant-numeric:tabular-nums}
+input.tx{width:100%;font:inherit;font-size:14px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px}
+.bars{display:flex;align-items:flex-end;gap:4px;height:130px;margin-top:8px}.bars div{flex:1;background:var(--acc);border-radius:5px 5px 0 0;min-height:3px;position:relative}.bars div.dim{opacity:.45}.bars div.hi{background:var(--bad)}
+.blab{display:flex;gap:4px}.blab span{flex:1;text-align:center;font-size:10px;color:var(--mut);font-weight:700}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:var(--accInk);cursor:pointer}.go:disabled{background:var(--off);color:var(--mut)}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+.pill{display:inline-block;font-size:11px;font-weight:900;border-radius:99px;padding:3px 9px;letter-spacing:.04em}.pill.ok{background:rgba(34,197,94,.16);color:var(--ok)}.pill.bad{background:rgba(239,68,68,.16);color:var(--bad)}.pill.due{background:var(--off);color:var(--acc)}
+.prog{height:12px;border-radius:99px;background:var(--off);overflow:hidden;margin-top:10px}.prog i{display:block;height:100%;background:var(--acc);border-radius:99px}
+.q b{display:block;font-size:16px;margin-top:4px}.q small{color:var(--mut);font-weight:700}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:700;font-size:14px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px;cursor:pointer}.opt.right{border-color:var(--ok);background:rgba(34,197,94,.12)}.opt.wrong{border-color:var(--bad);background:rgba(239,68,68,.1)}
+.mv{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:900;cursor:pointer}
+</style></head><body>
+<div class="hd"><div class="logo">📊</div><div><h1>Pipeline Board</h1><p>Pipewise · in SalesXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="b" class="on">Board</button><button data-tab="f">Forecast</button><button data-tab="a">Add deal</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+let C,S={tab:'b',shared:false};
+const $=id=>document.getElementById(id),fmt=(n,d=0)=>Number(n).toLocaleString('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d});
+const shareBtn=(label)=>GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:label}</button>`:'';
+
+const ST=[['Lead',.1],['Talking',.25],['Demo',.5],['Proposal',.75],['Won',1]];
+const seed=()=>({cur:{name:'',value:2500},won:[{name:'Harbour Bakery',value:4200,d:GX.iso(-3)},{name:'Fern & Co',value:1800,d:GX.iso(-9)}],deals:[
+ {name:'Northgate Dental',value:6000,s:3},{name:'Kiln Coffee',value:2400,s:3},{name:'Brook Vets',value:3800,s:2},{name:'Mill Lane Gym',value:5200,s:2},
+ {name:'Orchard Florists',value:1500,s:1},{name:'Riverside Print',value:2900,s:1},{name:'Abbey Opticians',value:4400,s:0},{name:'Copper Kettle Café',value:1200,s:0}]});
+const gbp=n=>'£'+fmt(n);
+const weighted=()=>C.data.deals.reduce((a,x)=>a+x.value*ST[x.s][1],0);
+const VIEWS={
+ b(){const D=C.data.deals;return [3,2,1,0].map(s=>{const L=D.map((x,i)=>[x,i]).filter(p=>p[0].s===s);return `<div class="lbl">${ST[s][0]} · ${Math.round(ST[s][1]*100)}% · ${L.length}</div>`+(L.length?L.map(([x,i])=>`<div class="row"><b>${GX.esc(x.name)}<em>${gbp(x.value)} · worth ${gbp(x.value*ST[s][1])} weighted</em></b><button class="mv" data-lose="${i}" title="Lost">✕</button><button class="mv" data-up="${i}" title="Move on">→</button></div>`).join(''):'<div class="legend">Nothing here yet</div>');}).join('')+`<div class="legend">→ moves a deal on a stage; from Proposal it’s won.</div>`;},
+ f(){const D=C.data.deals,W=C.data.won,tot=D.reduce((a,x)=>a+x.value,0),mx=Math.max(1,...[0,1,2,3].map(s=>D.filter(x=>x.s===s).reduce((a,x)=>a+x.value,0)));
+  return `<div class="card hero"><small>Honest forecast</small><b>${gbp(weighted())}</b><small>from ${gbp(tot)} in the pipeline</small></div>
+  <div class="card"><div class="bars">${[0,1,2,3].map(s=>`<div style="height:${D.filter(x=>x.s===s).reduce((a,x)=>a+x.value,0)/mx*100}%"></div>`).join('')}</div><div class="blab">${[0,1,2,3].map(s=>`<span>${ST[s][0]}</span>`).join('')}</div></div>
+  <div class="lbl">Won lately</div>`+W.slice(0,5).map(x=>`<div class="row"><b>${GX.esc(x.name)}<em>${GX.day(x.d)}</em></b><span>${gbp(x.value)}</span></div>`).join('')+shareBtn('Share my latest win');},
+ a(){const c=C.data.cur;return `<div class="lbl">Who</div><input class="tx" id="nm" placeholder="Business name" value="${GX.esc(c.name)}">
+  <div class="step"><label>Value</label><button data-v="-500">−</button><output>${gbp(c.value)}</output><button data-v="500">+</button></div>
+  <button class="go" id="add" ${c.name.trim()?'':'disabled'}>Add as a lead</button><div class="legend">Every deal starts as a lead at 10%. Move it on when something real happens.</div>`;}};
+function bind(v){const d=C.data;
+ v.querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>{const i=+b.dataset.up,x=d.deals[i];if(x.s>=3){d.deals.splice(i,1);d.won.unshift({name:x.name,value:x.value,d:GX.iso(0)});S.shared=false;}else x.s++;save();});
+ v.querySelectorAll('[data-lose]').forEach(b=>b.onclick=()=>{d.deals.splice(+b.dataset.lose,1);save();});
+ v.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{d.cur.value=Math.max(500,d.cur.value+ +b.dataset.v);save();});
+ const n=$('nm');if(n)n.oninput=()=>{d.cur.name=n.value;$('add').disabled=!n.value.trim();};
+ const a=$('add');if(a)a.onclick=()=>{d.deals.push({name:d.cur.name.trim(),value:d.cur.value,s:0});d.cur.name='';S.tab='b';save();};}
+const shareText=()=>{const w=C.data.won[0];return w?`Just won ${w.name}: ${gbp(w.value)} 🎉 Honest forecast for the rest: ${gbp(weighted())} 📊`:`My honest forecast: ${gbp(weighted())} 📊`;};
+
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=$('v');v.innerHTML=VIEWS[S.tab]();bind(v);
+  const sh=$('share');if(sh)sh.onclick=()=>GX.post(shareText(),'PIPELINE').then(o=>{if(o){S.shared=true;paint();}});}
+const save=()=>{GX.save(C.data);paint();};
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+GX.init({gateway:'SalesXX',seed}).then(c=>{C=c;paint();});
+</script></body></html>
