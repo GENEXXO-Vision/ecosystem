@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Access Checklist</title>
+<style>
+/* Access Checklist, by Openway (fictional), 2026-11-24. A GENEXXO app for EqualityXX.
+   Fifteen everyday access basics for small venues. General good practice, not a formal access audit. */
+:root{--bg:#FBF8F6;--card:#FFFFFF;--line:rgba(0,0,0,.09);--off:rgba(0,0,0,.06);--ink:#1F1416;--mut:rgba(31,20,22,.55);--acc:#B91C1C;--accInk:#FFFFFF;--ok:#22C55E;--bad:#EF4444}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#F87171,#B91C1C);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:8px}
+.hero{text-align:center;padding:18px 14px}.hero small{display:block;color:var(--mut);font-weight:700;font-size:12px}.hero b{display:block;font-size:34px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--acc);line-height:1.15}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid .card{margin:0;text-align:center}.grid small{display:block;color:var(--mut);font-weight:700;font-size:11.5px}.grid b{display:block;font-size:20px;font-weight:900;font-variant-numeric:tabular-nums}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--acc);border-color:var(--acc);color:var(--accInk)}
+.row{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px}.row b{flex:1;font-size:14px}.row span{font-variant-numeric:tabular-nums;color:var(--mut);font-weight:700;font-size:13px;text-align:right}.row em{font-style:normal;font-size:11.5px;color:var(--mut);font-weight:600;display:block}
+.row.warn{border-color:var(--acc)}.row.bad{border-color:var(--bad)}
+.step{display:flex;align-items:center;gap:8px;margin-top:6px}.step label{flex:1;font-weight:700;font-size:13.5px}.step button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:900;font-size:17px;cursor:pointer}.step output{min-width:74px;text-align:center;font-weight:900;font-variant-numeric:tabular-nums}
+input.tx{width:100%;font:inherit;font-size:14px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px}
+.bars{display:flex;align-items:flex-end;gap:4px;height:130px;margin-top:8px}.bars div{flex:1;background:var(--acc);border-radius:5px 5px 0 0;min-height:3px;position:relative}.bars div.dim{opacity:.45}.bars div.hi{background:var(--bad)}
+.blab{display:flex;gap:4px}.blab span{flex:1;text-align:center;font-size:10px;color:var(--mut);font-weight:700}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:var(--accInk);cursor:pointer}.go:disabled{background:var(--off);color:var(--mut)}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+.pill{display:inline-block;font-size:11px;font-weight:900;border-radius:99px;padding:3px 9px;letter-spacing:.04em}.pill.ok{background:rgba(34,197,94,.16);color:var(--ok)}.pill.bad{background:rgba(239,68,68,.16);color:var(--bad)}.pill.due{background:var(--off);color:var(--acc)}
+.prog{height:12px;border-radius:99px;background:var(--off);overflow:hidden;margin-top:10px}.prog i{display:block;height:100%;background:var(--acc);border-radius:99px}
+.q b{display:block;font-size:16px;margin-top:4px}.q small{color:var(--mut);font-weight:700}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:700;font-size:14px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px;cursor:pointer}.opt.right{border-color:var(--ok);background:rgba(34,197,94,.12)}.opt.wrong{border-color:var(--bad);background:rgba(239,68,68,.1)}
+.tick{width:28px;height:28px;border-radius:8px;border:2px solid var(--acc);background:none;cursor:pointer;flex:none;color:var(--accInk);font-weight:900}.tick.on{background:var(--acc)}
+</style></head><body>
+<div class="hd"><div class="logo">🚪</div><div><h1>Access Checklist</h1><p>Openway · in EqualityXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="c" class="on">Checklist</button><button data-tab="s">Score</button><button data-tab="f">Fix first</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+let C,S={tab:'c',shared:false};
+const $=id=>document.getElementById(id),fmt=(n,d=0)=>Number(n).toLocaleString('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d});
+const shareBtn=(label)=>GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:label}</button>`:'';
+
+const G=[['Getting in',[['Step-free entrance, or a portable ramp',3],['A door that’s easy to open, or a bell',3],['Clear, high-contrast signs',2],['A space to wait, with a seat',1],['Assistance dogs welcome sign',1]]],
+ ['Inside',[['Some tables at wheelchair height',2],['An accessible toilet, or directions to one',3],['Good lighting',1],['A quiet corner or quiet hour',2],['Large-print menu or price list',1]]],
+ ['Online',[['Photos of your entrance on your website',2],['Opening hours and access info in one place',2],['Website works with a screen reader',2],['A phone number and an email',1],['Say what you don’t have yet, honestly',1]]]];
+const seed=()=>({done:[1,2,4,9,13]});
+const SHOWNOTE=false;
+
+const ALL=[];G.forEach(([g,L])=>L.forEach(x=>ALL.push([g,x[0],x[1]])));
+const pct=()=>Math.round(C.data.done.length/ALL.length*100);
+const list=g=>ALL.map((x,i)=>[x,i]).filter(p=>p[0][0]===g).map(([x,i])=>`<div class="row"><button class="tick ${C.data.done.includes(i)?'on':''}" data-s="${i}">${C.data.done.includes(i)?'✓':''}</button><b>${x[1]}${SHOWNOTE?`<em>${x[2]}</em>`:''}</b></div>`).join('');
+function tick(i){const d=C.data,k=d.done.indexOf(i);k<0?d.done.push(i):d.done.splice(k,1);S.shared=false;save();}
+
+const VIEWS={
+ c(){return G.map(([g])=>`<div class="lbl">${g}</div>`+list(g)).join('');},
+ s(){return `<div class="card hero"><small>Your access score</small><b>${pct()} / 100</b><small>${C.data.done.length} of ${ALL.length} basics in place</small><div class="prog"><i style="width:${pct()}%"></i></div></div>`+
+  G.map(([g])=>{const all=ALL.filter(x=>x[0]===g).length,dn=C.data.done.filter(i=>ALL[i][0]===g).length;return `<div class="row"><b>${g}</b><span>${dn} / ${all}</span></div>`;}).join('')+shareBtn('Share our progress');},
+ f(){const todo=ALL.map((x,i)=>[x,i]).filter(p=>!C.data.done.includes(p[1])).sort((a,b)=>b[0][2]-a[0][2]);
+  return `<div class="legend" style="margin-bottom:6px">Biggest difference first.</div>`+todo.map(([x,i])=>`<div class="row ${x[2]===3?'warn':''}"><button class="tick" data-s="${i}"></button><b>${x[1]}<em>${x[0]} · ${['','Nice to have','Important','Most important'][x[2]]}</em></b></div>`).join('')+'<div class="legend">General good practice, not a formal access audit.</div>';}};
+function bind(v){v.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>tick(+b.dataset.s));}
+const shareText=()=>`Our access score is ${pct()} / 100 🚪 ${C.data.done.length} of ${ALL.length} basics in place, and working on the rest.`;
+
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=$('v');v.innerHTML=VIEWS[S.tab]();bind(v);
+  const sh=$('share');if(sh)sh.onclick=()=>GX.post(shareText(),'ACCESS CHECKLIST').then(o=>{if(o){S.shared=true;paint();}});}
+const save=()=>{GX.save(C.data);paint();};
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+GX.init({gateway:'EqualityXX',seed}).then(c=>{C=c;paint();});
+</script></body></html>
