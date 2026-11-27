@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Reach Planner</title>
+<style>
+/* Reach Planner, by Bigboard Media (fictional), 2026-11-24. A GENEXXO app for AdvertisingXX.
+   Illustrative costs per thousand views and average frequencies; real rates come from your media seller. */
+:root{--bg:#0E0B14;--card:rgba(255,255,255,.05);--line:rgba(255,255,255,.1);--off:rgba(255,255,255,.08);--ink:#F4EFFA;--mut:rgba(244,239,250,.55);--acc:#FB923C;--accInk:#1A0F05;--ok:#22C55E;--bad:#EF4444}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#FDBA74,#C2410C);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:8px}
+.hero{text-align:center;padding:18px 14px}.hero small{display:block;color:var(--mut);font-weight:700;font-size:12px}.hero b{display:block;font-size:34px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--acc);line-height:1.15}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid .card{margin:0;text-align:center}.grid small{display:block;color:var(--mut);font-weight:700;font-size:11.5px}.grid b{display:block;font-size:20px;font-weight:900;font-variant-numeric:tabular-nums}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--acc);border-color:var(--acc);color:var(--accInk)}
+.row{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px}.row b{flex:1;font-size:14px}.row span{font-variant-numeric:tabular-nums;color:var(--mut);font-weight:700;font-size:13px;text-align:right}.row em{font-style:normal;font-size:11.5px;color:var(--mut);font-weight:600;display:block}
+.row.warn{border-color:var(--acc)}.row.bad{border-color:var(--bad)}
+.step{display:flex;align-items:center;gap:8px;margin-top:6px}.step label{flex:1;font-weight:700;font-size:13.5px}.step button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:900;font-size:17px;cursor:pointer}.step output{min-width:74px;text-align:center;font-weight:900;font-variant-numeric:tabular-nums}
+input.tx{width:100%;font:inherit;font-size:14px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px}
+.bars{display:flex;align-items:flex-end;gap:4px;height:130px;margin-top:8px}.bars div{flex:1;background:var(--acc);border-radius:5px 5px 0 0;min-height:3px;position:relative}.bars div.dim{opacity:.45}.bars div.hi{background:var(--bad)}
+.blab{display:flex;gap:4px}.blab span{flex:1;text-align:center;font-size:10px;color:var(--mut);font-weight:700}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:var(--accInk);cursor:pointer}.go:disabled{background:var(--off);color:var(--mut)}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+.pill{display:inline-block;font-size:11px;font-weight:900;border-radius:99px;padding:3px 9px;letter-spacing:.04em}.pill.ok{background:rgba(34,197,94,.16);color:var(--ok)}.pill.bad{background:rgba(239,68,68,.16);color:var(--bad)}.pill.due{background:var(--off);color:var(--acc)}
+.prog{height:12px;border-radius:99px;background:var(--off);overflow:hidden;margin-top:10px}.prog i{display:block;height:100%;background:var(--acc);border-radius:99px}
+.q b{display:block;font-size:16px;margin-top:4px}.q small{color:var(--mut);font-weight:700}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:700;font-size:14px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px;cursor:pointer}.opt.right{border-color:var(--ok);background:rgba(34,197,94,.12)}.opt.wrong{border-color:var(--bad);background:rgba(239,68,68,.1)}
+
+</style></head><body>
+<div class="hd"><div class="logo">📣</div><div><h1>Reach Planner</h1><p>Bigboard Media · in AdvertisingXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="p" class="on">Plan</button><button data-tab="c">Compare</button><button data-tab="s">Saved</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+let C,S={tab:'p',shared:false};
+const $=id=>document.getElementById(id),fmt=(n,d=0)=>Number(n).toLocaleString('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d});
+const shareBtn=(label)=>GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:label}</button>`:'';
+
+const CH={Posters:{cpm:6,f:5,e:'🚏'},Social:{cpm:5,f:3,e:'📱'},Radio:{cpm:4,f:4,e:'📻'},'Local press':{cpm:12,f:1.5,e:'📰'}};
+const seed=()=>({budget:1500,ch:'Posters',saved:[{ch:'Posters',budget:2000,d:GX.iso(-4)},{ch:'Radio',budget:1200,d:GX.iso(-10)}]});
+const calc=(ch,b)=>{const c=CH[ch],imp=b/c.cpm*1000;return {imp,reach:imp/c.f,f:c.f};};
+const K=n=>n>=1e6?fmt(n/1e6,1)+'M':n>=1e3?fmt(n/1e3,0)+'K':fmt(n);
+const VIEWS={
+ p(){const d=C.data,r=calc(d.ch,d.budget);return `<div class="chips">${Object.keys(CH).map(k=>`<button class="chip ${d.ch===k?'on':''}" data-ch="${k}">${CH[k].e} ${k}</button>`).join('')}</div>
+  <div class="step"><label>Budget</label><button data-b="-250">−</button><output>£${fmt(d.budget)}</output><button data-b="250">+</button></div>
+  <div class="card hero"><small>People reached</small><b>${K(r.reach)}</b><small>each seeing it about ${fmt(r.f,1)} times</small></div>
+  <div class="grid"><div class="card"><small>Views in total</small><b>${K(r.imp)}</b></div><div class="card"><small>Cost per 1,000 views</small><b>£${CH[d.ch].cpm}</b></div></div>
+  <button class="go alt" id="sv">Save this plan</button>${shareBtn('Share my plan')}`;},
+ c(){const b=C.data.budget,R=Object.keys(CH).map(k=>[k,calc(k,b)]),mx=Math.max(...R.map(r=>r[1].reach));return `<div class="card hero"><small>For £${fmt(b)}</small><b>${R.sort((x,y)=>y[1].reach-x[1].reach)[0][0]}</b><small>reaches the most people</small></div>`+
+  R.map(([k,r])=>`<div class="row"><b>${CH[k].e} ${k}<em>${K(r.reach)} people · ${fmt(r.f,1)}× each</em></b></div><div class="prog"><i style="width:${r.reach/mx*100}%"></i></div>`).join('')+`<div class="legend">Reach first, then frequency.</div>`;},
+ s(){return C.data.saved.map(x=>{const r=calc(x.ch,x.budget);return `<div class="row"><b>${CH[x.ch].e} ${x.ch} · £${fmt(x.budget)}<em>${K(r.reach)} people · saved ${GX.day(x.d)}</em></b></div>`;}).join('');}};
+function bind(v){const d=C.data;v.querySelectorAll('[data-ch]').forEach(b=>b.onclick=()=>{d.ch=b.dataset.ch;S.shared=false;save();});
+ v.querySelectorAll('[data-b]').forEach(b=>b.onclick=()=>{d.budget=Math.max(250,Math.min(50000,d.budget+ +b.dataset.b));S.shared=false;save();});
+ const s=$('sv');if(s)s.onclick=()=>{d.saved.unshift({ch:d.ch,budget:d.budget,d:GX.iso(0)});S.tab='s';save();};}
+const shareText=()=>{const d=C.data,r=calc(d.ch,d.budget);return `£${fmt(d.budget)} on ${d.ch.toLowerCase()} reaches about ${K(r.reach)} people 📣`;};
+
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=$('v');v.innerHTML=VIEWS[S.tab]();bind(v);
+  const sh=$('share');if(sh)sh.onclick=()=>GX.post(shareText(),'REACH PLANNER').then(o=>{if(o){S.shared=true;paint();}});}
+const save=()=>{GX.save(C.data);paint();};
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+GX.init({gateway:'AdvertisingXX',seed}).then(c=>{C=c;paint();});
+</script></body></html>
