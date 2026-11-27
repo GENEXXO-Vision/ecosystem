@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Data Request</title>
+<style>
+/* Data Request, by Hushline (fictional), 2026-11-24. A GENEXXO app for PrivacyXX.
+   Writes a subject access request letter and tracks the one-month deadline. A demo, not legal advice. Sample companies are fictional. */
+:root{--bg:#F3F7F4;--card:#FFFFFF;--line:rgba(0,0,0,.09);--off:rgba(0,0,0,.06);--ink:#0E1A14;--mut:rgba(14,26,20,.55);--acc:#6D28D9;--accInk:#FFFFFF;--ok:#22C55E;--bad:#EF4444}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#A78BFA,#6D28D9);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:8px}
+.hero{text-align:center;padding:18px 14px}.hero small{display:block;color:var(--mut);font-weight:700;font-size:12px}.hero b{display:block;font-size:34px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--acc);line-height:1.15}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid .card{margin:0;text-align:center}.grid small{display:block;color:var(--mut);font-weight:700;font-size:11.5px}.grid b{display:block;font-size:20px;font-weight:900;font-variant-numeric:tabular-nums}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--acc);border-color:var(--acc);color:var(--accInk)}
+.row{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px}.row b{flex:1;font-size:14px}.row span{font-variant-numeric:tabular-nums;color:var(--mut);font-weight:700;font-size:13px;text-align:right}.row em{font-style:normal;font-size:11.5px;color:var(--mut);font-weight:600;display:block}
+.row.warn{border-color:var(--acc)}.row.bad{border-color:var(--bad)}
+.step{display:flex;align-items:center;gap:8px;margin-top:6px}.step label{flex:1;font-weight:700;font-size:13.5px}.step button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:900;font-size:17px;cursor:pointer}.step output{min-width:74px;text-align:center;font-weight:900;font-variant-numeric:tabular-nums}
+input.tx{width:100%;font:inherit;font-size:14px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px}
+.bars{display:flex;align-items:flex-end;gap:4px;height:130px;margin-top:8px}.bars div{flex:1;background:var(--acc);border-radius:5px 5px 0 0;min-height:3px;position:relative}.bars div.dim{opacity:.45}.bars div.hi{background:var(--bad)}
+.blab{display:flex;gap:4px}.blab span{flex:1;text-align:center;font-size:10px;color:var(--mut);font-weight:700}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:var(--accInk);cursor:pointer}.go:disabled{background:var(--off);color:var(--mut)}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+.pill{display:inline-block;font-size:11px;font-weight:900;border-radius:99px;padding:3px 9px;letter-spacing:.04em}.pill.ok{background:rgba(34,197,94,.16);color:var(--ok)}.pill.bad{background:rgba(239,68,68,.16);color:var(--bad)}.pill.due{background:var(--off);color:var(--acc)}
+.prog{height:12px;border-radius:99px;background:var(--off);overflow:hidden;margin-top:10px}.prog i{display:block;height:100%;background:var(--acc);border-radius:99px}
+.q b{display:block;font-size:16px;margin-top:4px}.q small{color:var(--mut);font-weight:700}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:700;font-size:14px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px;cursor:pointer}.opt.right{border-color:var(--ok);background:rgba(34,197,94,.12)}.opt.wrong{border-color:var(--bad);background:rgba(239,68,68,.1)}
+.letter{white-space:pre-wrap;font-size:13px;line-height:1.55}
+</style></head><body>
+<div class="hd"><div class="logo">📬</div><div><h1>Data Request</h1><p>Hushline · in PrivacyXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="w" class="on">Write</button><button data-tab="t">Tracker</button><button data-tab="r">Rights</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+let C,S={tab:'w',shared:false};
+const $=id=>document.getElementById(id),fmt=(n,d=0)=>Number(n).toLocaleString('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d});
+const shareBtn=(label)=>GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:label}</button>`:'';
+const daysTo=d=>Math.round((new Date(d)-new Date(GX.iso(0)))/864e5);
+
+const seed=()=>({org:'',reqs:[{org:'Swift Mobile',sent:GX.iso(-3),back:false},{org:'Mill Lane Gym',sent:GX.iso(-24),back:false},{org:'Brightway Supermarket',sent:GX.iso(-40),back:true}]});
+const letter=o=>`Dear Data Protection Officer${o?' at '+o:''},\n\nI am making a subject access request under UK data protection law. Please send me:\n• a copy of all the personal data you hold about me\n• why you hold it and where it came from\n• who you have shared it with\n• how long you will keep it\n\nI look forward to your reply within one month.\n\nYours sincerely,\n[Your name]`;
+const due=r=>daysTo(r.sent)+30;
+const VIEWS={
+ w(){const o=C.data.org;return `<div class="lbl">Company</div><input class="tx" id="org" placeholder="Which company?" value="${GX.esc(o)}">
+  <div class="card letter" id="lt">${GX.esc(letter(o.trim()))}</div><button class="go" id="send" ${o.trim()?'':'disabled'}>I’ve sent it: start the clock</button><div class="legend">Send it by email or post to the company’s data protection contact. A demo, not legal advice.</div>`;},
+ t(){const R=C.data.reqs;return `<div class="grid"><div class="card"><small>Waiting</small><b>${R.filter(r=>!r.back).length}</b></div><div class="card"><small>Replied</small><b>${R.filter(r=>r.back).length}</b></div></div>`+
+  R.map((r,i)=>{const d=due(r);return `<div class="row ${!r.back&&d<0?'bad':!r.back&&d<=7?'warn':''}"><b>${GX.esc(r.org)}<em>Sent ${GX.day(r.sent)}</em></b>${r.back?'<span class="pill ok">REPLIED</span>':`<span>${d<0?'Overdue':d+' days left'}</span><button class="chip" data-b="${i}">Got it</button>`}</div>`;}).join('')+shareBtn('Share my requests');},
+ r(){return [['See your data','You can ask any organisation for a copy of the personal data it holds about you, usually for free.'],['One month','They should normally reply within one calendar month.'],['Put it right','You can ask them to correct data that is wrong.'],['Delete it','In many cases you can ask them to delete it.'],['Need help?','The ICO, the UK’s data protection regulator, explains your rights on its website.']].map(g=>`<div class="card"><b>${g[0]}</b><div style="color:var(--mut);margin-top:4px">${g[1]}</div></div>`).join('')+'<div class="legend">A demo, not legal advice.</div>';}};
+function bind(v){const d=C.data,o=$('org');if(o)o.oninput=()=>{d.org=o.value;$('lt').textContent=letter(o.value.trim());$('send').disabled=!o.value.trim();};
+ const s=$('send');if(s)s.onclick=()=>{d.reqs.unshift({org:d.org.trim(),sent:GX.iso(0),back:false});d.org='';S.tab='t';S.shared=false;save();};
+ v.querySelectorAll('[data-b]').forEach(b=>b.onclick=()=>{d.reqs[+b.dataset.b].back=true;save();});}
+const shareText=()=>`I’ve asked ${C.data.reqs.length} companies what data they hold on me 📬 It’s your data: ask for it.`;
+
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=$('v');v.innerHTML=VIEWS[S.tab]();bind(v);
+  const sh=$('share');if(sh)sh.onclick=()=>GX.post(shareText(),'DATA REQUEST').then(o=>{if(o){S.shared=true;paint();}});}
+const save=()=>{GX.save(C.data);paint();};
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+GX.init({gateway:'PrivacyXX',seed}).then(c=>{C=c;paint();});
+</script></body></html>
