@@ -235,7 +235,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('christmas', [
   { gw: 'christmas', zone: 'northpine-ornaments', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Northpine Live · Bauble Blowing, Kendal', desc: 'The Cumbrian workshop is blowing this year’s Heritage Crimson baubles live. Pull up a chair.' },
-  { gw: 'christmas', type: 'Event', icon: '🎄', time: 'Nov 26', title: 'Bath Christmas Market opens', desc: 'Over 150 chalets around the Abbey for 18 days. The Bath Christmas Market Friends meet by the Abbey on Fridays.' },
+  { gw: 'christmas', type: 'Event', icon: '🎄', time: 'Dec 3', title: 'Bath Christmas Market: late-night shopping', desc: 'The chalets around the Abbey stay open late. Bath Christmas Market Friends meet by the Abbey at six.' },
   { gw: 'christmas', type: 'Event', icon: '✨', time: 'Nov 28', title: 'Fairy Light Street, the Nutcracker', desc: 'Twenty-three houses, one theme. Lights on at 6pm, everyone welcome. Posted by @fairylight_fran.' },
   { gw: 'christmas', zone: 'northpine-ornaments', type: 'Event', icon: '📅', time: 'Dec 4', title: 'Northpine workshop open evening', desc: 'Watch a bauble blown and painted live, then paint your own. RSVP inside the Northpine Ornaments zone.' },
   { gw: 'christmas', zone: 'kindle-co', type: 'Event', icon: '🕯️', time: 'Dec 6', title: 'Pour your own candle, Bath', desc: 'Choose your scent and pour your own candle in the Kindle & Co studio.' },

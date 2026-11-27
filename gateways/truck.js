@@ -220,7 +220,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('truck', [
   { gw: 'truck', zone: 'haulmark-trucks', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Haulmark Live · The E-Haul 44 night run', desc: 'Glasgow to London on one charge, live from the cab.' },
-  { gw: 'truck', type: 'Event', icon: '🔋', time: 'Nov 26', title: 'Live Q&A: switching to electric', desc: 'Knights of the Road ask drivers who’ve switched.' },
+  { gw: 'truck', type: 'Event', icon: '🔋', time: 'Dec 3', title: 'Live Q&A: switching to electric', desc: 'Knights of the Road ask drivers who’ve switched.' },
   { gw: 'truck', zone: 'nightroute-cab', type: 'Sale', icon: '🛏️', time: 'Nov 27', title: 'Nightroute Black Friday', desc: '25% off cab kit, one day only.' },
   { gw: 'truck', zone: 'gritline-workwear', type: 'Event', icon: '🧥', time: 'Dec 1', title: 'Gritline winter kit live', desc: 'What to wear for winter driving, with questions answered.' },
   { gw: 'truck', type: 'Event', icon: '🍳', time: 'Dec 5', title: 'Midlands Truckers’ breakfast', desc: 'The monthly breakfast in Birmingham. New drivers welcome.' },

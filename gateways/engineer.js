@@ -150,7 +150,7 @@ Object.assign(ZONES, {
       { type: 'post', sub: 'Workshop · Yesterday', text: 'Every spanner is drop-forged, heat-treated and checked by hand before it leaves Sheffield.', img: U('1613206484719-7e2e511ed117', 800, 440), eng: '♡ 4.1K · 💬 220' },
       { type: 'community', who: 'Ella J.', whoBg: CYAN, sub: 'Community · 1d', text: 'First-year student. What do I actually need for workshop modules?', eng: '♡ 164 · 💬 38', reply: 'Good question, Ella. Start with the Digital Vernier Caliper and an Engineer’s Square Set; your university lends the rest. Our student discount takes 20% off with your university email. 📏' }
     ],
-    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Free calibration day', when: 'Nov 26 · Sheffield', desc: 'Bring any torque wrench or caliper and we check it while you have a coffee.', registered: 340, capacity: 500 } ],
+    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Free calibration day', when: 'Dec 3 · Sheffield', desc: 'Bring any torque wrench or caliper and we check it while you have a coffee.', registered: 340, capacity: 500 } ],
     about: { founded: 'Sheffield · 1921', story: 'Toolmakers in Sheffield for a century, now making calibrated tools for engineers in every field. We joined GENEXXO as EngineerXX’s Founding Partner because this is where the people who use our tools gather.', milestones: [['1921', 'The first spanners forged in Sheffield'], ['1998', 'Calibration lab opens'], ['2026', 'Founding Partner on EngineerXX']], values: ['Measured, not guessed', 'Guaranteed for life', 'Repair and recalibrate'] } }),
 
   'sparkplane': brand({ key: 'sparkplane', name: 'Sparkplane Electronics', color: '#4FC3F7', gradient: CYAN, tier: 'Brand Zone',
@@ -225,7 +225,7 @@ Object.assign(ZONES, {
 gxEvents('engineer', [
   { gw: 'engineer', zone: 'sparkplane', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Sparkplane Live · Build a Weather Station', desc: 'Two Sparkplane engineers build the Weather Station Kit live. Build along at home and ask anything.' },
   { gw: 'engineer', type: 'Event', icon: '🤖', time: 'Dec 4', title: 'Bristol Robotics show-and-tell', desc: 'Bring a robot, finished or not, and show it off. Every level welcome.' },
-  { gw: 'engineer', zone: 'torque-tally', type: 'Event', icon: '🔧', time: 'Nov 26', title: 'Free calibration day, Sheffield', desc: 'Torque & Tally: bring any torque wrench or caliper and have it checked while you wait.' },
+  { gw: 'engineer', zone: 'torque-tally', type: 'Event', icon: '🔧', time: 'Dec 3', title: 'Free calibration day, Sheffield', desc: 'Torque & Tally: bring any torque wrench or caliper and have it checked while you wait.' },
   { gw: 'engineer', type: 'Event', icon: '📋', time: 'Dec 2', title: 'Chartership report workshop (online)', desc: 'Dr Hannah Kerr: how to write a competence report reviewers can follow.' },
   { gw: 'engineer', zone: 'layerline-3d', type: 'Event', icon: '🖨️', time: 'Dec 4', title: 'Layerline print farm open day, Leeds', desc: 'Forty printers running. Bring a file and print it on the day.' },
   { gw: 'engineer', type: 'Event', icon: '🌬️', time: 'Dec 9', title: 'Offshore Wind Crew meet-up, Hull', desc: 'Crew between rotations meet on the waterfront. New starters very welcome.' },

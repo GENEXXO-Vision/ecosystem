@@ -223,7 +223,7 @@ gxEvents('coffee', [
   { gw: 'coffee', type: 'Event', icon: '☕', time: 'Dec 1', title: 'Live home cupping', desc: 'Brew Club: four coffees, one kitchen table, everyone tasting together.' },
   { gw: 'coffee', zone: 'pourwell', type: 'Sale', icon: '⚙️', time: 'Nov 27', title: 'Pourwell Black Friday', desc: 'A fifth off every grinder, for one day.' },
   { gw: 'coffee', zone: 'crema-club', type: 'Event', icon: '📬', time: 'Dec 1', title: 'Crema Club: December box reveal', desc: 'Meet December’s roaster live as the boxes land.' },
-  { gw: 'coffee', type: 'Event', icon: '🔄', time: 'Nov 26', title: 'Home brewers’ bean swap, Brighton', desc: 'Brighton Coffee Crawl: bring a bag, take a bag.' },
+  { gw: 'coffee', type: 'Event', icon: '🔄', time: 'Dec 3', title: 'Home brewers’ bean swap, Brighton', desc: 'Brighton Coffee Crawl: bring a bag, take a bag.' },
   { gw: 'coffee', type: 'Event', icon: '🥛', time: 'Dec 4', title: 'Latte art class, Bristol', desc: 'Maya Brooks: silky milk, a heart, then a tulip.' },
   { gw: 'coffee', type: 'Event', icon: '🚶', time: 'Dec 5', title: 'December coffee crawl, Brighton', desc: 'Five independent cafés in the North Laine, on foot.' },
   { gw: 'coffee', zone: 'kettle-kiln', type: 'Deadline', icon: '🎁', time: 'Dec 16', title: 'Last order for Christmas cups', desc: 'Kettle & Kiln: order by midnight for delivery before Christmas.' }

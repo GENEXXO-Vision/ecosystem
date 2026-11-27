@@ -163,7 +163,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'stones', label: 'Loose stones', icon: '💎' }, { key: 'jewellery', label: 'Jewellery', icon: '✨' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Graded, inscribed and ready to set: this week’s <b>lab-grown rounds</b>.', img: U('1599707367072-cd6ada2bc375', 800, 440), eng: '♡ 6.8K · 💬 920', product: 1 } ],
-    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Natural vs lab-grown: live Q&A', when: 'Nov 26 · 19:00', desc: 'Our gemmologist answers the big question honestly.', registered: 2140, capacity: 5000 } ],
+    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Natural vs lab-grown: live Q&A', when: 'Dec 3 · 19:00', desc: 'Our gemmologist answers the big question honestly.', registered: 2140, capacity: 5000 } ],
     about: { founded: 'London · 2019', story: 'We grow diamonds in partner labs powered by renewable energy, and grade every one independently.', milestones: [['2019', 'The first stones'], ['2024', '100% renewable power'], ['2026', 'Brand Zone on DiamondXX']], values: ['Graded independently', 'Renewable power', 'Clear about what they are'] } }),
 
   'facet-co': brand({ key: 'facet-co', name: 'Facet & Co.', color: '#D1D5DB', gradient: PLAT, tier: 'Brand Zone',
@@ -221,7 +221,7 @@ Object.assign(ZONES, {
 gxEvents('diamond', [
   { gw: 'diamond', zone: 'hatton-stone', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Hatton & Stone Live · Design a ring with us', desc: 'Designers sketch rings from viewers’ ideas, live from Hatton Garden.' },
   { gw: 'diamond', type: 'Event', icon: '💎', time: 'Dec 2', title: 'Ask a gemmologist live', desc: 'Ring Talk with Margaret Hale: your diamond questions, answered independently.' },
-  { gw: 'diamond', zone: 'lumen-lab', type: 'Event', icon: '🧪', time: 'Nov 26', title: 'Natural vs lab-grown: live Q&A', desc: 'Lumen Lab’s gemmologist answers the big question honestly.' },
+  { gw: 'diamond', zone: 'lumen-lab', type: 'Event', icon: '🧪', time: 'Dec 3', title: 'Natural vs lab-grown: live Q&A', desc: 'Lumen Lab’s gemmologist answers the big question honestly.' },
   { gw: 'diamond', zone: 'facet-co', type: 'Deadline', icon: '💍', time: 'Dec 1', title: 'Last order for Christmas proposals', desc: 'Facet & Co.: design by midnight and it’s made in time.' },
   { gw: 'diamond', zone: 'clarity-care', type: 'Event', icon: '🧼', time: 'Dec 6', title: 'Free ring checks, Hatton Garden', desc: 'Clarity Care: a free clean and claw check while you wait.' },
   { gw: 'diamond', type: 'Event', icon: '🥂', time: 'Dec 3', title: 'Proposal stories night', desc: 'Ring Talk shares the best proposals of the year.' },

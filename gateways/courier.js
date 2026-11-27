@@ -219,7 +219,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('courier', [
   { gw: 'courier', zone: 'parcelwise', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Parcelwise Live · peak night in the hub', desc: 'A million parcels before breakfast: inside the sorting hub on the first night of peak.' },
-  { gw: 'courier', type: 'Event', icon: '🎙️', time: 'Nov 26', title: 'Peak season survival: live Q&A', desc: 'Couriers United: experienced drivers and riders answer questions.' },
+  { gw: 'courier', type: 'Event', icon: '🎙️', time: 'Dec 3', title: 'Peak season survival: live Q&A', desc: 'Couriers United: experienced drivers and riders answer questions.' },
   { gw: 'courier', zone: 'boxwell', type: 'Sale', icon: '📦', time: 'Nov 27', title: 'Boxwell Black Friday', desc: '30% off boxes, mailers and tape, one day only.' },
   { gw: 'courier', zone: 'tailwind-kit', type: 'Sale', icon: '🧥', time: 'Nov 27', title: 'Tailwind Black Friday', desc: '25% off winter jackets, gloves and lights.' },
   { gw: 'courier', type: 'Event', icon: '🔧', time: 'Dec 1', title: 'Workshop night: winter brakes, Leeds', desc: 'Leeds Cargo Riders learn to check and swap brake pads.' },
