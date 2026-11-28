@@ -1180,6 +1180,23 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
     .gwp-img-lb{font-size:9px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
     .gwp-cap{display:flex;flex-direction:column;gap:5px;flex-shrink:0;padding:0 2px 2px}
     .gwp-cap span{height:6px;border-radius:3px;opacity:.16}
+    /* -103 (Sean, 28 Nov): the empty showcase frames greet you. On entering a zone the six
+       frames rise in turn (left and right interleaved), a sheen in the brand colour crosses
+       each once, then a faint glow drifts through them every few seconds. Generic on purpose:
+       the same graphic serves all Brand Zones without per-product art. */
+    .gwp-frame{position:relative;overflow:hidden}
+    .gwp-frame::after{content:'';position:absolute;inset:-40% -60%;pointer-events:none;
+      background:linear-gradient(105deg,transparent 42%,color-mix(in srgb,var(--acc) 22%,transparent) 50%,transparent 58%);
+      transform:translateX(-70%);opacity:0}
+    .gwp-img svg{width:26px;height:26px}
+    .gwp-anim .gwp-frame{animation:gwpRise .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i)*110ms)}
+    .gwp-anim .gwp-frame::after{animation:gwpSheen 1.4s ease-in-out both;animation-delay:calc(var(--i)*110ms + 500ms)}
+    .gwp-frame .gwp-img{animation:gwpGlow 7.2s ease-in-out infinite;animation-delay:calc(var(--i)*1.2s + 2.4s)}
+    @keyframes gwpRise{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+    @keyframes gwpSheen{0%{opacity:1;transform:translateX(-70%)}100%{opacity:1;transform:translateX(70%)}}
+    @keyframes gwpGlow{0%,82%,100%{opacity:.35;box-shadow:none}
+      90%{opacity:.85;box-shadow:inset 0 0 22px color-mix(in srgb,var(--acc) 30%,transparent)}}
+    @media (prefers-reduced-motion:reduce){.gwp-anim .gwp-frame,.gwp-anim .gwp-frame::after,.gwp-frame .gwp-img{animation:none}}
     /* Brands-tab ads (paintGwAds). Full-bleed image ads with the copy over a dark scrim, so the
        text is white on every gateway, light or dark. Two cards a side, sharing the height. */
     .gwa-h{display:flex;align-items:baseline;justify-content:space-between;padding:4px 14px 12px;flex-shrink:0}
@@ -1878,8 +1895,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-102"></script>
-<script src="genexxo-core.js?v=2026.08.26-102"></script>
+<script src="genexxo-data.js?v=2026.08.26-103"></script>
+<script src="genexxo-core.js?v=2026.08.26-103"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -2793,7 +2810,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-102';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-103';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
@@ -4965,23 +4982,29 @@ function buildGwPanels(){
   const accent = z ? z.color : (t.accent||'var(--ink)');
   const head = label => `<div class="gwp-h" style="color:${accent}">${label}</div>`;
 
+  if(!z || z.kind==='business') L.dataset.zone='';   // leaving a zone: the next visit replays the entrance
   if(z && z.kind==='business'){ paintBizPanels(z, gw, L, R); L.dataset.gw = R.dataset.gw = ''; return; }
   if(z){
     /* One commerce slot: an image frame over a two-line caption. Deliberately EMPTY — the
        template the creative drops into, not a rendering of z.products. It carries the
        brand's colour so the shape of the page is right at a glance while the inventory
        that fills it is still being decided. */
-    const frame = () => `
-      <div class="gwp-frame" style="border-color:${t.cardBorder||'var(--line)'};background:${t.cardBg||'#fff'}">
-        <div class="gwp-img" style="border-color:${t.cardBorder||'var(--line)'};color:${accent}">▣<span class="gwp-img-lb">Product showcase</span></div>
+    const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/><path d="M12 12.5l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2L9.1 14.6l2-.3z" fill="currentColor" stroke="none"/></svg>';
+    const frame = i => `
+      <div class="gwp-frame" style="--i:${i};--acc:${accent};border-color:${t.cardBorder||'var(--line)'};background:${t.cardBg||'#fff'}">
+        <div class="gwp-img" style="border-color:${t.cardBorder||'var(--line)'};color:${accent}">${icon}<span class="gwp-img-lb">Product showcase</span></div>
         <div class="gwp-cap">
           <span style="background:${t.text||'var(--ink)'};width:64%"></span>
           <span style="background:${t.text||'var(--ink)'};width:38%"></span>
         </div>
       </div>`;
-    const wall = label => head(label) + frame() + frame() + frame();
-    L.innerHTML = wall(z.name);
-    R.innerHTML = wall('Featured');
+    // Interleave the order (L0 R0 L1 R1 …) so the wall fills from both sides at once.
+    const wall = (label, o) => head(label) + frame(o) + frame(o+2) + frame(o+4);
+    L.innerHTML = wall(z.name, 0);
+    R.innerHTML = wall('Featured', 1);
+    // Play the entrance once per zone visit, not on every repaint (resize, tab switch).
+    const fresh = L.dataset.zone !== state.zone;
+    [L,R].forEach(p=>{ p.classList.toggle('gwp-anim', fresh); p.dataset.zone = state.zone; });
     L.dataset.gw = R.dataset.gw = '';   // panel HTML replaced — force a shell rebuild on return
     return;
   }
