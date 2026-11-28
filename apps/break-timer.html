@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Take a Break</title>
+<style>
+/* Take a Break, by Copper Coupe (fictional), 2026-11-24. A GENEXXO app for CasinoXX.
+   Reminds you to step away and decide whether to carry on. Help: National Gambling Helpline 0808 8020 133. 18+. */
+:root{--bg:#0B1411;--card:rgba(255,255,255,.05);--line:rgba(255,255,255,.1);--off:rgba(255,255,255,.08);--ink:#F1F5F2;--mut:rgba(241,245,242,.55);--acc:#EF4444;--accInk:#FFFFFF;--ok:#22C55E;--bad:#EF4444}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:14px 14px 28px;max-width:560px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#FCA5A5,#B91C1C);display:flex;align-items:center;justify-content:center;font-size:21px}
+.hd h1{font-size:18px;font-weight:800}.hd p{font-size:11.5px;color:var(--mut);font-weight:600}
+.tabs{display:flex;gap:6px;margin:16px 0 12px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:800;font-size:13.5px;color:var(--mut);background:none;border:0;border-bottom:2px solid transparent;padding:8px 6px 10px;margin-right:8px;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:8px}
+.hero{text-align:center;padding:18px 14px}.hero small{display:block;color:var(--mut);font-weight:700;font-size:12px}.hero b{display:block;font-size:34px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--acc);line-height:1.15}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid .card{margin:0;text-align:center}.grid small{display:block;color:var(--mut);font-weight:700;font-size:11.5px}.grid b{display:block;font-size:20px;font-weight:900;font-variant-numeric:tabular-nums}
+.lbl{font-weight:800;font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font:inherit;font-size:12.5px;font-weight:800;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:99px;padding:7px 12px;cursor:pointer}.chip.on{background:var(--acc);border-color:var(--acc);color:var(--accInk)}
+.row{display:flex;gap:10px;align-items:center;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px}.row b{flex:1;font-size:14px}.row span{font-variant-numeric:tabular-nums;color:var(--mut);font-weight:700;font-size:13px;text-align:right}.row em{font-style:normal;font-size:11.5px;color:var(--mut);font-weight:600;display:block}
+.row.warn{border-color:var(--acc)}.row.bad{border-color:var(--bad)}
+.step{display:flex;align-items:center;gap:8px;margin-top:6px}.step label{flex:1;font-weight:700;font-size:13.5px}.step button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:900;font-size:17px;cursor:pointer}.step output{min-width:74px;text-align:center;font-weight:900;font-variant-numeric:tabular-nums}
+input.tx{width:100%;font:inherit;font-size:14px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px}
+.bars{display:flex;align-items:flex-end;gap:4px;height:130px;margin-top:8px}.bars div{flex:1;background:var(--acc);border-radius:5px 5px 0 0;min-height:3px;position:relative}.bars div.dim{opacity:.45}.bars div.hi{background:var(--bad)}
+.blab{display:flex;gap:4px}.blab span{flex:1;text-align:center;font-size:10px;color:var(--mut);font-weight:700}
+.go{width:100%;margin-top:12px;font:inherit;font-weight:800;font-size:14px;border:0;border-radius:99px;padding:12px;background:var(--acc);color:var(--accInk);cursor:pointer}.go:disabled{background:var(--off);color:var(--mut)}.go.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.legend{font-size:11.5px;color:var(--mut);margin-top:10px;text-align:center}
+.pill{display:inline-block;font-size:11px;font-weight:900;border-radius:99px;padding:3px 9px;letter-spacing:.04em}.pill.ok{background:rgba(34,197,94,.16);color:var(--ok)}.pill.bad{background:rgba(239,68,68,.16);color:var(--bad)}.pill.due{background:var(--off);color:var(--acc)}
+.prog{height:12px;border-radius:99px;background:var(--off);overflow:hidden;margin-top:10px}.prog i{display:block;height:100%;background:var(--acc);border-radius:99px}
+.q b{display:block;font-size:16px;margin-top:4px}.q small{color:var(--mut);font-weight:700}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:700;font-size:14px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);margin-top:6px;cursor:pointer}.opt.right{border-color:var(--ok);background:rgba(34,197,94,.12)}.opt.wrong{border-color:var(--bad);background:rgba(239,68,68,.1)}
+.clock{font-size:56px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--acc);text-align:center;margin:18px 0 6px}
+</style></head><body>
+<div class="hd"><div class="logo">⏸️</div><div><h1>Take a Break</h1><p>Copper Coupe · in CasinoXX</p></div></div>
+<div class="tabs" id="tabs"><button data-tab="b" class="on">Timer</button><button data-tab="i">Break ideas</button><button data-tab="k">Help</button></div>
+<div id="v"></div>
+<script src="gx-sdk.js"></script>
+<script>
+let C,S={tab:'b',shared:false};
+const $=id=>document.getElementById(id),fmt=(n,d=0)=>Number(n).toLocaleString('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d});
+const shareBtn=(label)=>GX.can('feed')?`<button class="go" id="share" ${S.shared?'disabled':''}>${S.shared?`✓ Shared to ${C.gateway}`:label}</button>`:'';
+const HELP_GAMB=`<div class="card"><b>National Gambling Helpline</b><div style="color:var(--mut);margin-top:4px">Free, confidential, 24 hours: <b style="display:inline">0808 8020 133</b>. For anyone worried about their own gambling or someone else’s.</div></div><div class="card"><b>Self-exclusion</b><div style="color:var(--mut);margin-top:4px">You can ask any venue to exclude you, and there is a free national scheme that blocks gambling websites and apps. Staff will help without questions.</div></div>`;
+
+const IDEAS=['Step outside for some fresh air','Have a glass of water','Text a friend how your night is going','Check the time, and your limit','Get something to eat','Watch the next set at the show','Walk once round the block'];
+const seed=()=>({every:30,taken:[{d:GX.iso(-6),n:3},{d:GX.iso(-20),n:2}],tonight:1});
+const T={left:null,run:false,iv:null,due:false};
+const mmss=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+const idea=()=>IDEAS[(C.data.tonight+new Date().getDate())%IDEAS.length];
+function go(){clearInterval(T.iv);T.run=true;T.due=false;T.left=C.data.every*60;T.iv=setInterval(()=>{T.left--;const c=$('clk');if(c)c.textContent=mmss(T.left);if(T.left<=0){clearInterval(T.iv);T.run=false;T.due=true;paint();}},1000);}
+const VIEWS={
+ b(){const d=C.data;if(T.due)return `<div class="card hero"><small>Time for a break</small><b>⏸️</b><small>${idea()}</small></div><button class="go" id="brk">I took a break</button><button class="go alt" id="end">Call it a night</button>`;
+  const left=T.left==null?d.every*60:T.left;return `<div class="chips">${[20,30,45,60].map(m=>`<button class="chip ${d.every===m?'on':''}" data-m="${m}">Every ${m} min</button>`).join('')}</div><div class="clock" id="clk">${mmss(left)}</div><button class="go" id="go">${T.run?'Restart':'Start the reminder'}</button>
+  <div class="grid" style="margin-top:8px"><div class="card"><small>Breaks tonight</small><b>${d.tonight}</b></div><div class="card"><small>Next idea</small><b style="font-size:13px">${idea()}</b></div></div>`+shareBtn('Share my breaks');},
+ i(){return IDEAS.map(x=>`<div class="row"><b>${x}</b></div>`).join('')+'<div class="legend">Ten minutes away helps you decide clearly.</div>';},
+ k(){return HELP_GAMB;}};
+function bind(v){const d=C.data;
+ v.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{d.every=+b.dataset.m;if(T.run)go();save();});
+ const g=$('go');if(g)g.onclick=()=>{go();paint();};
+ const b=$('brk');if(b)b.onclick=()=>{d.tonight++;S.shared=false;go();save();};
+ const e=$('end');if(e)e.onclick=()=>{d.taken.unshift({d:GX.iso(0),n:d.tonight});d.tonight=0;T.due=false;T.left=null;save();};}
+const shareText=()=>`Took ${C.data.tonight} break${C.data.tonight===1?'':'s'} tonight ⏸️ Stepping away keeps it fun. 18+`;
+
+function paint(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab));
+  const v=$('v');v.innerHTML=VIEWS[S.tab]();bind(v);
+  const sh=$('share');if(sh)sh.onclick=()=>GX.post(shareText(),'TAKE A BREAK').then(o=>{if(o){S.shared=true;paint();}});}
+const save=()=>{GX.save(C.data);paint();};
+document.getElementById('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.tab=b.dataset.tab;paint();};
+GX.init({gateway:'CasinoXX',seed}).then(c=>{C=c;paint();});
+</script></body></html>
