@@ -164,7 +164,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'needles', label: 'Needles', icon: '🪡' }, { key: 'bags', label: 'Bags', icon: '👜' }, { key: 'notions', label: 'Notions', icon: '📎' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Everything for the project in one place: the <b>Project Bag</b>, with a yarn hole and a pocket for the pattern.', img: U('1762955911310-f068a0622703', 800, 440), eng: '♡ 5.8K · 💬 420', product: 2 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: a fifth off needles', when: 'Nov 27 · All day', desc: 'A fifth off every needle and set, for one day.', registered: 2860, capacity: 7000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: a fifth off needles', when: 'Dec 4 · All day', desc: 'A fifth off every needle and set, for one day.', registered: 2860, capacity: 7000 } ],
     about: { founded: 'Sheffield · 2014', story: 'A woodturner and a knitter who wanted needles that felt nice to hold. Every tip is turned from FSC birch.', milestones: [['2014', 'The first straight needles'], ['2021', 'The interchangeable set'], ['2026', 'Brand Zone on KnitXX']], values: ['Made to last', 'FSC birch', 'Spare parts for everything'] } }),
 
   'pattern-post': brand({ key: 'pattern-post', name: 'Pattern Post', color: '#56704A', gradient: MOSS, tier: 'Brand Zone',
@@ -222,7 +222,7 @@ Object.assign(ZONES, {
 gxEvents('knit', [
   { gw: 'knit', zone: 'heather-hank', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Heather & Hank Live · Christmas jumper knit-along', desc: 'Cast on with the dyehouse team live: clue 1 of the Christmas jumper.' },
   { gw: 'knit', type: 'Event', icon: '🧶', time: 'Nov 29', title: 'Knit Night online', desc: 'Knit Night: bring what’s on your needles and say hello.' },
-  { gw: 'knit', zone: 'needle-nook', type: 'Sale', icon: '🪡', time: 'Nov 27', title: 'Needle & Nook Black Friday', desc: 'A fifth off every needle and set, for one day.' },
+  { gw: 'knit', zone: 'needle-nook', type: 'Sale', icon: '🪡', time: 'Dec 4', title: 'Needle & Nook Christmas sale', desc: 'A fifth off every needle and set, for one day.' },
   { gw: 'knit', zone: 'pattern-post', type: 'Event', icon: '📬', time: 'Dec 1', title: 'December pattern release: Fair Isle yoke', desc: 'Pattern Post: out at 9am, live Q&A at lunchtime.' },
   { gw: 'knit', type: 'Event', icon: '🧵', time: 'Dec 5', title: 'Mending workshop, Bristol', desc: 'Tom Hughes: learn to darn, and take home a darning mushroom.' },
   { gw: 'knit', type: 'Event', icon: '🎄', time: 'Dec 6', title: 'Christmas craft fair, Leeds', desc: 'Leeds Knit & Natter has a stall at the Corn Exchange. Come and say hello.' },

@@ -166,7 +166,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'stethoscopes', label: 'Stethoscopes', icon: '🩺' }, { key: 'parts', label: 'Parts', icon: '🔩' }, { key: 'service', label: 'Engraving & service', icon: '✍️' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'The <b>Auscult Classic</b>, engraved for the class of 2027.', img: U('1505751172876-fa1923c5c528', 800, 440), eng: '♡ 5.1K · 💬 402', product: 1 } ],
-    events: [ { zoneEvent: true, tag: 'MASTERCLASS', title: 'Heart sounds masterclass', when: 'Nov 27 · Online', desc: 'A cardiologist talks through murmurs with recorded heart sounds. Free.', registered: 2140, capacity: 5000 } ],
+    events: [ { zoneEvent: true, tag: 'MASTERCLASS', title: 'Heart sounds masterclass', when: 'Dec 4 · Online', desc: 'A cardiologist talks through murmurs with recorded heart sounds. Free.', registered: 2140, capacity: 5000 } ],
     about: { founded: 'Sheffield · 2009', story: 'An engineer and a cardiologist who thought a good stethoscope should last a career. Every Auscult is serviced for life.', milestones: [['2009', 'The first Classic'], ['2019', 'The Cardio launches'], ['2026', 'Brand Zone on DoctorXX']], values: ['Built for a career', 'Serviced for life', 'Recycled packaging'] } }),
 
   'ward-round-press': brand({ key: 'ward-round-press', name: 'Ward Round Press', color: '#6C5CE7', gradient: INDIGO, tier: 'Brand Zone',
@@ -226,7 +226,7 @@ Object.assign(ZONES, {
 gxEvents('doctor', [
   { gw: 'doctor', zone: 'ward-round-press', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Ward Round Press Live · Exam Q&A', desc: 'Two consultants work through ten membership-exam questions live and take yours in the chat.' },
   { gw: 'doctor', type: 'Event', icon: '🌙', time: 'Nov 28', title: 'Night Shift Club midnight check-in', desc: 'A quiet online catch-up for anyone on nights. Bring a cup of tea.' },
-  { gw: 'doctor', zone: 'auscult', type: 'Event', icon: '❤️', time: 'Nov 27', title: 'Heart sounds masterclass', desc: 'Auscult: a cardiologist talks through murmurs with recorded heart sounds. Online and free.' },
+  { gw: 'doctor', zone: 'auscult', type: 'Event', icon: '❤️', time: 'Dec 4', title: 'Heart sounds masterclass', desc: 'Auscult: a cardiologist talks through murmurs with recorded heart sounds. Online and free.' },
   { gw: 'doctor', zone: 'ward-weave', type: 'Event', icon: '🩺', time: 'Dec 3', title: 'Scrubs fitting pop-up, Manchester', desc: 'Ward & Weave: try every cut and size, embroidery while you wait.' },
   { gw: 'doctor', type: 'Event', icon: '🎄', time: 'Dec 5', title: 'Med Students Manchester winter social', desc: 'The end-of-term social in the Northern Quarter. Exams permitting.' },
   { gw: 'doctor', zone: 'ward-round-press', type: 'Deadline', icon: '📝', time: 'Dec 10', title: 'Spring exam bundle early-bird ends', desc: 'Ward Round Press: early-bird pricing ends at midnight.' },

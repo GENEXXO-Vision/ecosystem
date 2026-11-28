@@ -123,7 +123,7 @@ GATEWAYS.courier = {
       text: 'Flat-packed and ready for peak. <b>Recycled Shipping Boxes</b>, made from old boxes, ready to be made into new ones.',
       img: U('1700165644892-3dd6b67b25bc', 800, 600), eng: '♡ 4.8K · 💬 290 · ↗ 360' },
     { av: 'LF', avBg: ROUTE, author: 'Lucia Ferreira Shipping Help', sub: 'Sending · 6h ago', badge: 'PRO ZONE',
-      text: 'Checking a client’s orders before the Black Friday rush. Right-size your boxes and you can save more than you think on postage.',
+      text: 'Checking a client’s orders before the Christmas rush. Right-size your boxes and you can save more than you think on postage.',
       img: U('1770013413878-2530e2c3d82b', 800, 600), eng: '♡ 3.6K · 💬 210 · ↗ 380' }
   ],
   prompts: ['What are this year’s Christmas posting dates?', 'Is a cargo bike better than a van in a city?', 'How do I start as a self-employed courier?', 'Cheapest way to send a parcel to Spain'],
@@ -175,8 +175,8 @@ Object.assign(ZONES, {
       { name: 'Starter Packing Kit', price: '£9', tag: 'SPECIAL', emoji: '🎁', rating: 4.8, reviews: 860, cat: 'boxes', special: true, desc: 'Ten boxes, ten mailers and a roll of tape to try.', features: ['Free delivery'], review: { who: 'Erin W.', text: 'Perfect for a new shop.' } }
     ],
     shopCats: [ { key: 'boxes', label: 'Boxes', icon: '📦' }, { key: 'mailers', label: 'Mailers', icon: '✉️' }, { key: 'tape', label: 'Tape', icon: '🧻' } ],
-    feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'Packed and ready to go out the door. <b>Paper mailers</b> and boxes for the Black Friday rush.', img: U('1769355104335-acef3aa4c9b6', 800, 440), eng: '♡ 4.8K · 💬 290', product: 1 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 30% off packaging', when: 'Nov 27 · All day', desc: 'Boxes, mailers and tape, a third off, one day only.', registered: 1840, capacity: 5000 } ],
+    feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'Packed and ready to go out the door. <b>Paper mailers</b> and boxes for the Christmas rush.', img: U('1769355104335-acef3aa4c9b6', 800, 440), eng: '♡ 4.8K · 💬 290', product: 1 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 30% off packaging', when: 'Dec 4 · All day', desc: 'Boxes, mailers and tape, a third off, one day only.', registered: 1840, capacity: 5000 } ],
     about: { founded: 'Kent · 2012', story: 'A family box-maker that switched to recycled board and never looked back.', milestones: [['2012', 'The first recycled box'], ['2020', 'Plastic-free across the range'], ['2026', 'Brand Zone on CourierXX']], values: ['Made from old boxes', 'Plastic-free', 'Small-shop prices'] } }),
 
   'tailwind-kit': brand({ key: 'tailwind-kit', name: 'Tailwind Courier Kit', color: '#475569', gradient: SLATE, tier: 'Brand Zone',
@@ -190,7 +190,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'bags', label: 'Bags', icon: '🎒' }, { key: 'clothing', label: 'Clothing', icon: '🧥' }, { key: 'lights', label: 'Lights', icon: '🔦' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1d', text: 'Last drop of the night, box on the back, <b>Storm Jacket</b> keeping the rain out.', img: U('1617347454431-f49d7ff5c3b1', 800, 440), eng: '♡ 3.2K · 💬 180', product: 1 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 25% off winter kit', when: 'Nov 27 · All day', desc: 'A quarter off jackets, gloves and lights.', registered: 860, capacity: 3000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 25% off winter kit', when: 'Dec 4 · All day', desc: 'A quarter off jackets, gloves and lights.', registered: 860, capacity: 3000 } ],
     about: { founded: 'Glasgow · 2014', story: 'A courier who got tired of soggy bags and started sewing better ones.', milestones: [['2014', 'The first bag'], ['2021', 'The Storm Jacket'], ['2026', 'Brand Zone on CourierXX']], values: ['Tested in Glasgow rain', 'Repairs for life', 'Be seen'] } }),
 
   'sortline-automation': { key: 'sortline-automation', kind: 'business', gw: 'courier', name: 'Sortline Automation', color: '#15803D', gradient: ROUTE, img: U('1689942010216-dc412bb1e7a9', 900, 500),
@@ -220,8 +220,8 @@ Object.assign(ZONES, {
 gxEvents('courier', [
   { gw: 'courier', zone: 'parcelwise', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Parcelwise Live · peak night in the hub', desc: 'A million parcels before breakfast: inside the sorting hub on the first night of peak.' },
   { gw: 'courier', type: 'Event', icon: '🎙️', time: 'Dec 3', title: 'Peak season survival: live Q&A', desc: 'Couriers United: experienced drivers and riders answer questions.' },
-  { gw: 'courier', zone: 'boxwell', type: 'Sale', icon: '📦', time: 'Nov 27', title: 'Boxwell Black Friday', desc: '30% off boxes, mailers and tape, one day only.' },
-  { gw: 'courier', zone: 'tailwind-kit', type: 'Sale', icon: '🧥', time: 'Nov 27', title: 'Tailwind Black Friday', desc: '25% off winter jackets, gloves and lights.' },
+  { gw: 'courier', zone: 'boxwell', type: 'Sale', icon: '📦', time: 'Dec 4', title: 'Boxwell Christmas sale', desc: '30% off boxes, mailers and tape, one day only.' },
+  { gw: 'courier', zone: 'tailwind-kit', type: 'Sale', icon: '🧥', time: 'Dec 4', title: 'Tailwind Christmas sale', desc: '25% off winter jackets, gloves and lights.' },
   { gw: 'courier', type: 'Event', icon: '🔧', time: 'Dec 1', title: 'Workshop night: winter brakes, Leeds', desc: 'Leeds Cargo Riders learn to check and swap brake pads.' },
   { gw: 'courier', zone: 'pedalfreight', type: 'Event', icon: '🚲', time: 'Dec 5', title: 'Cargo bike test ride day', desc: 'Ride a loaded Pedalfreight Hauler round a city course.' },
   { gw: 'courier', type: 'Event', icon: '🎄', time: 'Dec 12', title: 'Christmas lights ride, Leeds', desc: 'Leeds Cargo Riders ride the city’s lights together.' },

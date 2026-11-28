@@ -162,7 +162,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'moves', label: 'Moves', icon: '🚚' }, { key: 'boxes', label: 'Boxes', icon: '📦' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1d', text: 'The best bit of every move: keys in hand. Then the kettle, from the <b>First-Night Box</b>.', img: U('1722487631997-cf1e0f92c2c4', 800, 440), eng: '♡ 8.6K · 💬 640', product: 3 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: free boxes with every move', when: 'Nov 27 · All day', desc: 'A free Box Bundle with any move booked today.', registered: 1860, capacity: 5000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: free boxes with every move', when: 'Dec 4 · All day', desc: 'A free Box Bundle with any move booked today.', registered: 1860, capacity: 5000 } ],
     about: { founded: 'Bristol · 2008', story: 'One van, two brothers and a promise to treat every home like their mum’s.', milestones: [['2008', 'The first van'], ['2018', 'Twelve crews'], ['2026', 'Brand Zone on PropertyXX']], values: ['Fixed quotes', 'Careful hands', 'Living wage crews'] } }),
 
   'brightlet': brand({ key: 'brightlet', name: 'Brightlet', color: '#B45309', gradient: SAND, tier: 'Brand Zone',
@@ -219,7 +219,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('property', [
   { gw: 'property', zone: 'keystone-homes', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Keystone Live · open house in Sheffield', desc: 'A family home, room by room, with your questions answered on camera.' },
-  { gw: 'property', zone: 'movewell', type: 'Sale', icon: '📦', time: 'Nov 27', title: 'Movewell Black Friday', desc: 'Free boxes with every move booked today.' },
+  { gw: 'property', zone: 'movewell', type: 'Sale', icon: '📦', time: 'Dec 4', title: 'Movewell Christmas sale', desc: 'Free boxes with every move booked today.' },
   { gw: 'property', zone: 'brightlet', type: 'Event', icon: '🔑', time: 'Dec 2', title: 'Live: your renting questions answered', desc: 'Renters and landlords ask Brightlet anything.' },
   { gw: 'property', type: 'Event', icon: '⚖️', time: 'Dec 3', title: 'Ask a conveyancer: live Q&A', desc: 'First Home Club asks about offer to keys.' },
   { gw: 'property', type: 'Event', icon: '🏘️', time: 'Dec 5', title: 'Leeds Renters’ drop-in', desc: 'Tenancy questions answered in Leeds.' },

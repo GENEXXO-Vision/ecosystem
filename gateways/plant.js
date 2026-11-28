@@ -164,8 +164,8 @@ Object.assign(ZONES, {
       { name: 'Watering Jug', price: '£32', emoji: '🫖', rating: 4.7, reviews: 640, cat: 'extras', desc: 'A slender stoneware jug for watering into the soil, not the leaves.', features: ['1 litre'], review: { who: 'Nora P.', text: 'Too pretty to put away.' } }
     ],
     shopCats: [ { key: 'pots', label: 'Pots', icon: '🏺' }, { key: 'extras', label: 'Extras', icon: '🫖' } ],
-    feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Seconds Sale on Black Friday: every slightly wonky pot at half price.', img: U('1632900931939-9a1028f7cef6', 800, 440), eng: '♡ 5.8K · 💬 420', product: 2 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday seconds sale', when: 'Nov 27 · All day', desc: 'Every second at half price, while they last.', registered: 2240, capacity: 5000 } ],
+    feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Seconds Sale this Friday: every slightly wonky pot at half price.', img: U('1632900931939-9a1028f7cef6', 800, 440), eng: '♡ 5.8K · 💬 420', product: 2 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas seconds sale', when: 'Dec 4 · All day', desc: 'Every second at half price, while they last.', registered: 2240, capacity: 5000 } ],
     about: { founded: 'Stoke-on-Trent · 2016', story: 'Three potters in an old pottery bank in Burslem who only make one thing: pots that plants can live in.', milestones: [['2016', 'The first kiln firing'], ['2022', '100,000 pots thrown'], ['2026', 'Brand Zone on PlantXX']], values: ['Always a drainage hole', 'Made in the Potteries', 'Seconds, never skipped'] } }),
 
   'rootwell': brand({ key: 'rootwell', name: 'Rootwell', color: '#5E7431', gradient: MOSS, tier: 'Brand Zone',
@@ -223,7 +223,7 @@ Object.assign(ZONES, {
 gxEvents('plant', [
   { gw: 'plant', zone: 'fernway', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Fernway Live · Winter houseplant clinic', desc: 'Growers answer your winter plant questions live from the glasshouse.' },
   { gw: 'plant', type: 'Event', icon: '🧄', time: 'Nov 28', title: 'Garlic planting morning, Sheffield', desc: 'Sheffield Allotment Network: bring a fork, leave with garlic in the ground.' },
-  { gw: 'plant', zone: 'potters-field', type: 'Sale', icon: '🏺', time: 'Nov 27', title: 'Potter’s Field seconds sale', desc: 'Every slightly wonky pot at half price, for one day.' },
+  { gw: 'plant', zone: 'potters-field', type: 'Sale', icon: '🏺', time: 'Dec 4', title: 'Potter’s Field seconds sale', desc: 'Every slightly wonky pot at half price, for one day.' },
   { gw: 'plant', zone: 'rootwell', type: 'Event', icon: '🟫', time: 'Dec 2', title: 'Going peat-free: free webinar', desc: 'Rootwell on why peat matters and how to get the best from peat-free compost.' },
   { gw: 'plant', type: 'Event', icon: '🩺', time: 'Dec 3', title: 'Winter houseplant clinic, live', desc: 'Houseplant Hospital with Owen Price: bring your saddest leaf.' },
   { gw: 'plant', type: 'Event', icon: '🌱', time: 'Dec 5', title: 'Cuttings swap', desc: 'Houseplant Hospital: sign up online and swap cuttings at local meet-ups.' },

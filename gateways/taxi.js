@@ -176,7 +176,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'payments', label: 'Payments', icon: '💳' }, { key: 'meters', label: 'Meters', icon: '🧮' }, { key: 'lights', label: 'Lights', icon: '💡' } ],
     feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'Light on, ready for the next fare. The <b>Tap</b> reader takes every card.', img: U('1638366174129-e83938733381', 800, 440), eng: '♡ 4.2K · 💬 260', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: card reader half price', when: 'Nov 27 · All day', desc: 'The Tap reader at half price, one day only.', registered: 1240, capacity: 4000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: card reader half price', when: 'Dec 4 · All day', desc: 'The Tap reader at half price, one day only.', registered: 1240, capacity: 4000 } ],
     about: { founded: 'Coventry · 2008', story: 'Engineers who started out repairing taxi meters and now make the kit inside thousands of cabs.', milestones: [['2008', 'The first meter repair'], ['2017', 'The Tap reader'], ['2026', 'Brand Zone on TaxiXX']], values: ['Payouts the next morning', 'Made to be repaired', 'Fair fees'] } }),
 
   'steadyseat': brand({ key: 'steadyseat', name: 'Steadyseat Cab Comfort', color: '#A1A1AA', gradient: NIGHT, tier: 'Brand Zone',
@@ -190,7 +190,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'comfort', label: 'Comfort', icon: '🪑' }, { key: 'mounts', label: 'Mounts', icon: '📱' }, { key: 'kit', label: 'Kit', icon: '☕' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1d', text: 'Map up, phone steady, eyes on the road: the <b>Magnetic Phone Mount</b>.', img: U('1600320254374-ce2d293c324e', 800, 440), eng: '♡ 2.8K · 💬 160', product: 1 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 25% off comfort', when: 'Nov 27 · All day', desc: 'A quarter off back supports and seat covers.', registered: 620, capacity: 2000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 25% off comfort', when: 'Dec 4 · All day', desc: 'A quarter off back supports and seat covers.', registered: 620, capacity: 2000 } ],
     about: { founded: 'Leicester · 2015', story: 'A physio married to a cabbie, tired of hearing about his back.', milestones: [['2015', 'The first back support'], ['2022', 'Phone mounts'], ['2026', 'Brand Zone on TaxiXX']], values: ['Made for ten-hour shifts', 'Tested by drivers', 'Two-year guarantee'] } }),
 
   'citywide-cab-insurance': { key: 'citywide-cab-insurance', kind: 'business', gw: 'taxi', name: 'Citywide Cab Insurance', color: '#FACC15', gradient: ROOF, img: U('1582820795651-f358eebe4406', 900, 500),
@@ -219,9 +219,9 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('taxi', [
   { gw: 'taxi', zone: 'kerbside-cabs', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Kerbside Live · a night shift across London', desc: 'Ride along with a cabbie: the Knowledge in action, every street from memory.' },
-  { gw: 'taxi', zone: 'ranklight', type: 'Sale', icon: '💳', time: 'Nov 27', title: 'Ranklight Black Friday', desc: 'The Tap card reader at half price, one day only.' },
-  { gw: 'taxi', zone: 'steadyseat', type: 'Sale', icon: '🪑', time: 'Nov 27', title: 'Steadyseat Black Friday', desc: '25% off back supports and seat covers.' },
-  { gw: 'taxi', type: 'Event', icon: '⚡', time: 'Nov 27', title: 'Going electric: ask a driver', desc: 'Cabbies’ Corner: drivers a year into electric cabs answer questions.' },
+  { gw: 'taxi', zone: 'ranklight', type: 'Sale', icon: '💳', time: 'Dec 4', title: 'Ranklight Christmas sale', desc: 'The Tap card reader at half price, one day only.' },
+  { gw: 'taxi', zone: 'steadyseat', type: 'Sale', icon: '🪑', time: 'Dec 4', title: 'Steadyseat Christmas sale', desc: '25% off back supports and seat covers.' },
+  { gw: 'taxi', type: 'Event', icon: '⚡', time: 'Dec 4', title: 'Going electric: ask a driver', desc: 'Cabbies’ Corner: drivers a year into electric cabs answer questions.' },
   { gw: 'taxi', type: 'Event', icon: '🍳', time: 'Nov 29', title: 'Drivers’ breakfast, Liverpool', desc: 'Liverpool Cab Drivers meet for their monthly breakfast.' },
   { gw: 'taxi', zone: 'bluebook-knowledge', type: 'Event', icon: '🗺️', time: 'Dec 2', title: 'Knowledge open evening', desc: 'Bluebook explains what the Knowledge involves and how to start.' },
   { gw: 'taxi', type: 'Event', icon: '🎄', time: 'Dec 9', title: 'Christmas lights night, Liverpool', desc: 'Liverpool Cab Drivers plan the ranks for the busiest night.' },

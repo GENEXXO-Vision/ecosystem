@@ -163,7 +163,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'home', label: 'Home', icon: '🍌' }, { key: 'trade', label: 'Trade', icon: '🛒' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Green today, yellow by Friday. Speed them up with a <b>Ripening Bag</b>, or slow them down with a sachet.', img: U('1760696473646-ca046232002b', 800, 440), eng: '♡ 8.4K · 💬 620', product: 1 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: buy two, get one free', when: 'Nov 27 · All day', desc: 'Three packs of sachets for the price of two.', registered: 1460, capacity: 4000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: buy two, get one free', when: 'Dec 4 · All day', desc: 'Three packs of sachets for the price of two.', registered: 1460, capacity: 4000 } ],
     about: { founded: 'Norwich · 2015', story: 'Food scientists who were tired of throwing away fruit.', milestones: [['2015', 'The first sachet'], ['2022', 'Shops and markets'], ['2026', 'Brand Zone on EthyleneXX']], values: ['Less food waste', 'Plastic-free sachets', 'Science you can taste'] } }),
 
   'polyloop': brand({ key: 'polyloop', name: 'Polyloop', color: '#A78BFA', gradient: LOOP, tier: 'Brand Zone',
@@ -177,7 +177,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'garden', label: 'Garden', icon: '🪑' }, { key: 'kitchen', label: 'Kitchen', icon: '🔪' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1d', text: 'Baled, washed, melted, moulded. Milk bottles on their way to becoming a <b>Raised Bed Kit</b>.', img: U('1591193686104-fddba4d0e4d8', 800, 440), eng: '♡ 4.6K · 💬 300', product: 1 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 20% off benches', when: 'Nov 27 · All day', desc: 'A fifth off every bench, one day only.', registered: 980, capacity: 3000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 20% off benches', when: 'Dec 4 · All day', desc: 'A fifth off every bench, one day only.', registered: 980, capacity: 3000 } ],
     about: { founded: 'Hull · 2018', story: 'Engineers who wanted plastic that’s already been made to stay useful for decades.', milestones: [['2018', 'The first bench'], ['2023', 'Cap collection boxes'], ['2026', 'Brand Zone on EthyleneXX']], values: ['Made from waste', 'Built to last fifty years', 'Recyclable again'] } }),
 
   'molekit': brand({ key: 'molekit', name: 'Molekit', color: '#94A3B8', gradient: NIGHT, tier: 'Brand Zone',
@@ -220,8 +220,8 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('ethylene', [
   { gw: 'ethylene', zone: 'teesmere-chemicals', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Teesmere Live · the electric furnace trial', desc: 'Follow the control room as an electrically heated furnace starts up.' },
-  { gw: 'ethylene', zone: 'ripewell', type: 'Sale', icon: '🍌', time: 'Nov 27', title: 'Ripewell Black Friday', desc: 'Three packs of sachets for the price of two.' },
-  { gw: 'ethylene', zone: 'polyloop', type: 'Sale', icon: '🪑', time: 'Nov 27', title: 'Polyloop Black Friday', desc: '20% off every recycled bench.' },
+  { gw: 'ethylene', zone: 'ripewell', type: 'Sale', icon: '🍌', time: 'Dec 4', title: 'Ripewell Christmas sale', desc: 'Three packs of sachets for the price of two.' },
+  { gw: 'ethylene', zone: 'polyloop', type: 'Sale', icon: '🪑', time: 'Dec 4', title: 'Polyloop Christmas sale', desc: '20% off every recycled bench.' },
   { gw: 'ethylene', zone: 'molekit', type: 'Event', icon: '🧪', time: 'Dec 2', title: 'Teachers’ webinar: teaching polymers', desc: 'Lesson ideas with Molekit, with live Q&A.' },
   { gw: 'ethylene', type: 'Event', icon: '💬', time: 'Dec 3', title: 'Ask a chemist: live chat', desc: 'The Fume Cupboard puts your questions to a chemist.' },
   { gw: 'ethylene', type: 'Event', icon: '🎓', time: 'Dec 9', title: 'Careers night: chemicals on Teesside', desc: 'Teesside Chemistry Network meets apprentices and employers.' },

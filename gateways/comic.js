@@ -163,7 +163,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'kits', label: 'Kits', icon: '🖋️' }, { key: 'paper', label: 'Paper', icon: '📄' }, { key: 'pens', label: 'Pens', icon: '🖌️' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Pencils first, ink later: our <b>Comic Page Pad</b> has blue lines that disappear on scanning.', img: U('1530103540420-3f5fce164e66', 800, 440), eng: '♡ 6.6K · 💬 480', product: 1 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: a quarter off kits', when: 'Nov 27 · All day', desc: 'A quarter off every kit, for one day.', registered: 2860, capacity: 7000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: a quarter off kits', when: 'Dec 4 · All day', desc: 'A quarter off every kit, for one day.', registered: 2860, capacity: 7000 } ],
     about: { founded: 'Sheffield · 2015', story: 'An inker who couldn’t find blue-line pads in Britain and started printing her own.', milestones: [['2015', 'The first page pad'], ['2022', 'The Inker’s Kit'], ['2026', 'Brand Zone on ComicXX']], values: ['Made for comics', 'Refillable where possible', 'Tested by working artists'] } }),
 
   'halftone-comics': brand({ key: 'halftone-comics', name: 'Halftone Comics', color: '#C9851A', gradient: SUNNY, tier: 'Brand Zone',
@@ -222,7 +222,7 @@ gxEvents('comic', [
   { gw: 'comic', zone: 'panel-gutter', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Panel & Gutter Live · Draw-along with the artist', desc: 'A page of The Lighthouse Keeper’s Daughter painted live, with your questions answered.' },
   { gw: 'comic', type: 'Event', icon: '✏️', time: 'Dec 2', title: 'Live draw-along', desc: 'Panel Talk: one prompt, one hour, everyone draws.' },
   { gw: 'comic', type: 'Event', icon: '🍺', time: 'Dec 3', title: 'Drink and draw, Leeds', desc: 'Leeds Comics Collective: bring a sketchbook, any level.' },
-  { gw: 'comic', zone: 'nib-brush', type: 'Sale', icon: '🖋️', time: 'Nov 27', title: 'Nib & Brush Black Friday', desc: 'A quarter off every kit, for one day.' },
+  { gw: 'comic', zone: 'nib-brush', type: 'Sale', icon: '🖋️', time: 'Dec 4', title: 'Nib & Brush Christmas sale', desc: 'A quarter off every kit, for one day.' },
   { gw: 'comic', type: 'Event', icon: '📮', time: 'Dec 3', title: 'December zine swap: posting day', desc: 'Panel Talk: post your zine to your swap partner.' },
   { gw: 'comic', type: 'Event', icon: '🎄', time: 'Dec 5', title: 'Small-press Christmas fair, Leeds', desc: 'Zines, comics and prints from northern makers in Chapel Allerton.' },
   { gw: 'comic', zone: 'halftone-comics', type: 'Event', icon: '🌙', time: 'Dec 10', title: 'Late-night Christmas shopping, Halftone Comics', desc: 'Open till 10pm in Leeds, with mince pies and a signing table.' },

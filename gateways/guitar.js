@@ -162,7 +162,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'strings', label: 'Strings', icon: '🎼' }, { key: 'picks', label: 'Picks', icon: '🔺' }, { key: 'capos', label: 'Capos', icon: '🔧' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Electric or acoustic, we’ve got your set. <b>10–46s</b> are back in three-packs.', img: U('1516924962500-2b4b3b99ea02', 800, 440), eng: '♡ 6.4K · 💬 480', product: 1 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: strings three for two', when: 'Nov 27 · All day', desc: 'Three sets for the price of two, for one day.', registered: 4260, capacity: 10000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: strings three for two', when: 'Dec 4 · All day', desc: 'Three sets for the price of two, for one day.', registered: 4260, capacity: 10000 } ],
     about: { founded: 'Birmingham · 2011', story: 'A string-winding workshop in Digbeth that started making its own sets.', milestones: [['2011', 'The first set'], ['2020', 'Coated acoustics'], ['2026', 'Brand Zone on GuitarXX']], values: ['Wound in Britain', 'Recyclable packaging', 'Tested on real guitars'] } }),
 
   'tonebox': brand({ key: 'tonebox', name: 'Tonebox Amps', color: '#9CA3AF', gradient: STAGE, tier: 'Brand Zone',
@@ -221,7 +221,7 @@ gxEvents('guitar', [
   { gw: 'guitar', zone: 'northbridge', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Northbridge Live · Workshop tour', desc: 'Walk the Kendal workshop with the makers and hear every model played.' },
   { gw: 'guitar', type: 'Event', icon: '🎤', time: 'Dec 1', title: 'Tuesday open mic, Glasgow', desc: 'Glasgow Guitar Circle in the West End. Sign-up from 7:30.' },
   { gw: 'guitar', type: 'Event', icon: '💻', time: 'Dec 3', title: 'Online open mic', desc: 'Open Mic Club: play one song from your living room.' },
-  { gw: 'guitar', zone: 'fretwise', type: 'Sale', icon: '🎼', time: 'Nov 27', title: 'Fretwise Black Friday', desc: 'Three sets of strings for the price of two.' },
+  { gw: 'guitar', zone: 'fretwise', type: 'Sale', icon: '🎼', time: 'Dec 4', title: 'Fretwise Christmas sale', desc: 'Three sets of strings for the price of two.' },
   { gw: 'guitar', zone: 'tonebox', type: 'Event', icon: '🔊', time: 'Dec 3', title: 'Valve amp clinic', desc: 'Tonebox: how valve amps work and how to look after yours.' },
   { gw: 'guitar', type: 'Event', icon: '🎸', time: 'Dec 2', title: 'Monthly jam, Glasgow', desc: 'Glasgow Guitar Circle: bring a guitar, any level.' },
   { gw: 'guitar', type: 'Event', icon: '🎄', time: 'Dec 9', title: 'Christmas songs jam', desc: 'Open Mic Club: carols, Christmas pop and a lot of capos.' },

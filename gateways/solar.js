@@ -162,7 +162,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'roofs', label: 'Roofs', icon: '🏠' }, { key: 'panels', label: 'Panels', icon: '⬛' }, { key: 'surveys', label: 'Surveys', icon: '🚁' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Low, black and tidy: <b>Slim Panels</b> under a big Yorkshire sky.', img: U('1508514177221-188b1cf16e9d', 800, 440), eng: '♡ 9.4K · 💬 720', product: 1 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: free drone surveys', when: 'Nov 27 · All day', desc: 'A free roof survey by drone with every quote booked today.', registered: 1640, capacity: 4000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: free drone surveys', when: 'Dec 4 · All day', desc: 'A free roof survey by drone with every quote booked today.', registered: 1640, capacity: 4000 } ],
     about: { founded: 'Bath · 2017', story: 'Architects who wanted solar that old streets would welcome.', milestones: [['2017', 'The first tile'], ['2023', 'Facade panels'], ['2026', 'Brand Zone on SolarXX']], values: ['Beautiful roofs', 'Made to last fifty years', 'Planning help included'] } }),
 
   'plugsun': brand({ key: 'plugsun', name: 'Plugsun', color: '#15803D', gradient: LEAF, tier: 'Brand Zone',
@@ -176,7 +176,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'balcony', label: 'Balcony', icon: '🏙️' }, { key: 'van', label: 'Van', icon: '🚐' }, { key: 'garden', label: 'Garden', icon: '💡' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1d', text: 'Small panels, big smiles. The <b>Van Kit 200</b> powers a weekend away.', img: U('1509389928833-fe62aef36deb', 800, 440), eng: '♡ 4.6K · 💬 300', product: 1 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 20% off kits', when: 'Nov 27 · All day', desc: 'A fifth off every Plugsun kit, one day only.', registered: 1240, capacity: 3500 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 20% off kits', when: 'Dec 4 · All day', desc: 'A fifth off every Plugsun kit, one day only.', registered: 1240, capacity: 3500 } ],
     about: { founded: 'Bristol · 2019', story: 'Started by renters who couldn’t put panels on a roof they didn’t own.', milestones: [['2019', 'The first balcony kit'], ['2024', 'Van kits'], ['2026', 'Brand Zone on SolarXX']], values: ['Solar for renters', 'Safe by design', 'Repairable parts'] } }),
 
   'gridkind': brand({ key: 'gridkind', name: 'Gridkind', color: '#EA580C', gradient: DUSK, tier: 'Brand Zone',
@@ -219,8 +219,8 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('solar', [
   { gw: 'solar', zone: 'sunvault', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Sunvault Live · a whole street goes solar', desc: 'Follow one crew as twelve homes in Leeds get panels in a single day.' },
-  { gw: 'solar', zone: 'brightroof', type: 'Sale', icon: '🚁', time: 'Nov 27', title: 'Brightroof Black Friday', desc: 'A free drone roof survey with every quote booked.' },
-  { gw: 'solar', zone: 'plugsun', type: 'Sale', icon: '🏙️', time: 'Nov 27', title: 'Plugsun Black Friday', desc: '20% off every plug-in solar kit.' },
+  { gw: 'solar', zone: 'brightroof', type: 'Sale', icon: '🚁', time: 'Dec 4', title: 'Brightroof Christmas sale', desc: 'A free drone roof survey with every quote booked.' },
+  { gw: 'solar', zone: 'plugsun', type: 'Sale', icon: '🏙️', time: 'Dec 4', title: 'Plugsun Christmas sale', desc: '20% off every plug-in solar kit.' },
   { gw: 'solar', type: 'Event', icon: '💬', time: 'Dec 1', title: 'Winter solar Q&A: live chat', desc: 'Solar Owners Club answers your winter questions.' },
   { gw: 'solar', zone: 'gridkind', type: 'Event', icon: '🔌', time: 'Dec 3', title: 'Webinar: charge your car on sunshine', desc: 'How much of your driving your roof can cover.' },
   { gw: 'solar', type: 'Event', icon: '🗳️', time: 'Dec 3', title: 'Bristol Solar Co-op members’ meeting', desc: 'Choosing the co-op’s next school roof.' },

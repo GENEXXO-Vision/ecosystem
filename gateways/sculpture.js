@@ -162,7 +162,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'clay', label: 'Clay', icon: '🧱' }, { key: 'tools', label: 'Tools', icon: '🛠️' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Twelve-and-a-half kilos of <b>Grogged Sculpting Clay</b> becomes one portrait head.', img: U('1758522277297-e7c5c327fd4f', 800, 440), eng: '♡ 4.8K · 💬 360', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: a quarter off tools', when: 'Nov 27 · All day', desc: 'A quarter off every tool and armature, for one day.', registered: 1860, capacity: 5000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: a quarter off tools', when: 'Dec 4 · All day', desc: 'A quarter off every tool and armature, for one day.', registered: 1860, capacity: 5000 } ],
     about: { founded: 'Stoke-on-Trent · 1971', story: 'A family clay works in the Potteries that started selling to sculptors when the local studios asked.', milestones: [['1971', 'The clay works opens'], ['2012', 'Sculpture clays and armatures'], ['2026', 'Brand Zone on SculptureXX']], values: ['Dug in Staffordshire', 'Recycled packaging', 'Advice by phone'] } }),
 
   'plinth-gallery': brand({ key: 'plinth-gallery', name: 'Plinth', color: '#8A6A2E', gradient: BRONZE, tier: 'Brand Zone',
@@ -220,8 +220,8 @@ Object.assign(ZONES, {
 gxEvents('sculpture', [
   { gw: 'sculpture', zone: 'hollow-lane-park', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Hollow Lane Live · A bronze pour from the foundry', desc: 'Molten bronze poured into twelve moulds, live, with the foundry team explaining each step.' },
   { gw: 'sculpture', type: 'Event', icon: '🗿', time: 'Dec 2', title: 'Live portrait sculpt-along', desc: 'Clay & Chisel: model a small head in 90 minutes, online.' },
-  { gw: 'sculpture', type: 'Event', icon: '✏️', time: 'Nov 27', title: 'Life modelling session, Bristol', desc: 'Bristol Sculptors: a three-hour pose in Bedminster.' },
-  { gw: 'sculpture', zone: 'wedge-wire', type: 'Sale', icon: '🛠️', time: 'Nov 27', title: 'Wedge & Wire Black Friday', desc: 'A quarter off every tool and armature, for one day.' },
+  { gw: 'sculpture', type: 'Event', icon: '✏️', time: 'Dec 4', title: 'Life modelling session, Bristol', desc: 'Bristol Sculptors: a three-hour pose in Bedminster.' },
+  { gw: 'sculpture', zone: 'wedge-wire', type: 'Sale', icon: '🛠️', time: 'Dec 4', title: 'Wedge & Wire Christmas sale', desc: 'A quarter off every tool and armature, for one day.' },
   { gw: 'sculpture', zone: 'hollow-lane-park', type: 'Event', icon: '🏮', time: 'Dec 5', title: 'Lantern night on the Winter Trail', desc: 'Hollow Lane Sculpture Park after dark, with mulled drinks at the barn.' },
   { gw: 'sculpture', type: 'Event', icon: '🚪', time: 'Dec 6', title: 'Open studios weekend, Bristol', desc: 'Bristol Sculptors open their Bedminster studios.' },
   { gw: 'sculpture', zone: 'carve-club', type: 'Event', icon: '🪨', time: 'Dec 12', title: 'Stone carving taster weekend', desc: 'Carve Club: two taster days near Stroud.' },

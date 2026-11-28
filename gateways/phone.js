@@ -162,7 +162,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'repairs', label: 'Repairs', icon: '🔧' }, { key: 'extras', label: 'Extras', icon: '🛡️' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Lights on, kettle on, ready for the day’s <b>screen repairs</b>.', img: U('1773904215693-934764345e52', 800, 440), eng: '♡ 9.4K · 💬 680', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: £20 off batteries', when: 'Nov 27 · All day', desc: 'Every battery replacement £20 off, one day only.', registered: 2640, capacity: 8000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: £20 off batteries', when: 'Dec 4 · All day', desc: 'Every battery replacement £20 off, one day only.', registered: 2640, capacity: 8000 } ],
     about: { founded: 'Bristol · 2010', story: 'One market stall fixing screens. Now 120 shops, and still fixing screens.', milestones: [['2010', 'A market stall'], ['2020', '100 shops'], ['2026', 'Brand Zone on PhoneXX']], values: ['Fix before you replace', 'Twelve-month guarantee', 'Honest quotes'] } }),
 
   'kindred-cases': brand({ key: 'kindred-cases', name: 'Kindred Cases', color: '#10B981', gradient: MINT, tier: 'Brand Zone',
@@ -176,7 +176,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'cases', label: 'Cases', icon: '🧵' }, { key: 'charging', label: 'Charging', icon: '🔌' } ],
     feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'Plugged in overnight, full by breakfast: the <b>Fast Charger and Cable</b>.', img: U('1557767382-97b28f5488e7', 800, 440), eng: '♡ 6.2K · 💬 410', product: 2 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 30% off cases', when: 'Nov 27 · All day', desc: 'Every case a third off, one day only.', registered: 2180, capacity: 6000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 30% off cases', when: 'Dec 4 · All day', desc: 'Every case a third off, one day only.', registered: 2180, capacity: 6000 } ],
     about: { founded: 'Brighton · 2017', story: 'Two designers who couldn’t find a phone case that wasn’t plastic for ever.', milestones: [['2017', 'The first Weave Case'], ['2023', 'Case trade-in'], ['2026', 'Brand Zone on PhoneXX']], values: ['Recycled materials', 'Made to last', 'Take-back on everything'] } }),
 
   'brightsim': brand({ key: 'brightsim', name: 'Brightsim', color: '#64748B', gradient: INK, tier: 'Brand Zone',
@@ -190,7 +190,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'plans', label: 'Plans', icon: '📶' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1d', text: 'Same phones, smaller bills. Switch to a <b>20GB plan</b> and keep your number.', img: U('1573152143286-0c422b4d2175', 800, 440), eng: '♡ 3.6K · 💬 220', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: three months half price', when: 'Nov 27 · All day', desc: 'Half price for three months on any new plan.', registered: 3120, capacity: 10000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: three months half price', when: 'Dec 4 · All day', desc: 'Half price for three months on any new plan.', registered: 3120, capacity: 10000 } ],
     about: { founded: 'Manchester · 2019', story: 'A small network on a big one’s masts, with a simple idea: no contracts, no surprises.', milestones: [['2019', 'The first SIM'], ['2024', 'A million customers'], ['2026', 'Brand Zone on PhoneXX']], values: ['No contracts', 'No price rises mid-plan', 'Real people on the phone'] } }),
 
   'second-light-refurb': { key: 'second-light-refurb', kind: 'business', gw: 'phone', name: 'Second Light Refurb', color: '#4F46E5', gradient: INDIGO, img: U('1691256676376-357c3aa66c89', 900, 500),
@@ -219,9 +219,9 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('phone', [
   { gw: 'phone', zone: 'lumen-phones', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Lumen Live · the Lumen 9 launch', desc: 'The night camera, the swappable battery and seven years of updates, with questions answered live.' },
-  { gw: 'phone', zone: 'fixwell-repairs', type: 'Sale', icon: '🔋', time: 'Nov 27', title: 'Fixwell Black Friday', desc: '£20 off every battery replacement, one day only.' },
-  { gw: 'phone', zone: 'kindred-cases', type: 'Sale', icon: '🧵', time: 'Nov 27', title: 'Kindred Black Friday', desc: '30% off every case, one day only.' },
-  { gw: 'phone', zone: 'brightsim', type: 'Sale', icon: '📶', time: 'Nov 27', title: 'Brightsim Black Friday', desc: 'Three months half price on any new plan.' },
+  { gw: 'phone', zone: 'fixwell-repairs', type: 'Sale', icon: '🔋', time: 'Dec 4', title: 'Fixwell Christmas sale', desc: '£20 off every battery replacement, one day only.' },
+  { gw: 'phone', zone: 'kindred-cases', type: 'Sale', icon: '🧵', time: 'Dec 4', title: 'Kindred Christmas sale', desc: '30% off every case, one day only.' },
+  { gw: 'phone', zone: 'brightsim', type: 'Sale', icon: '📶', time: 'Dec 4', title: 'Brightsim Christmas sale', desc: 'Three months half price on any new plan.' },
   { gw: 'phone', type: 'Event', icon: '🔧', time: 'Nov 28', title: 'Repair café, Cardiff', desc: 'Cardiff Repair Café fixes phones and laptops for free.' },
   { gw: 'phone', type: 'Event', icon: '📸', time: 'Dec 3', title: 'Photo of the year: live vote', desc: 'Phone Photographers pick 2026’s best phone photo.' },
   { gw: 'phone', type: 'Event', icon: '🎄', time: 'Dec 12', title: 'Christmas repair café, Cardiff', desc: 'Cardiff Repair Café’s festive session, with mince pies.' },

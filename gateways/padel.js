@@ -181,7 +181,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'shoes', label: 'Shoes', icon: '👟' }, { key: 'apparel', label: 'Apparel', icon: '👕' } ],
     feed: [ { type: 'post', sub: 'Brand post · 5h', text: 'The <b>Espiga Court Shoe</b>: a herringbone sole made for padel turf.', img: U('1613870930431-a09c7139eb33', 800, 440), eng: '♡ 3.1K · 💬 240', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Shoe fitting night', when: 'Nov 27 · Manchester', desc: 'Try every Espiga on court with a gait check, at the Find-a-Fourth Thursday social.', registered: 72, capacity: 120 } ],
+    events: [ { zoneEvent: true, tag: 'EVENT', title: 'Shoe fitting night', when: 'Dec 4 · Manchester', desc: 'Try every Espiga on court with a gait check, at the Find-a-Fourth Thursday social.', registered: 72, capacity: 120 } ],
     about: { founded: 'Lisbon, Portugal · 2016', story: 'A padel shoe company first. We started because tennis shoes do not grip sand-filled turf, and we still test every sole on real courts.', milestones: [['2016', 'The first Espiga sole'], ['2023', 'Apparel launches'], ['2026', 'Brand Zone on PadelXX']], values: ['Made for padel', 'Tested on court', 'Recycled materials'] } }),
 
   'glasshouse-padel': brand({ key: 'glasshouse-padel', name: 'The Glasshouse Padel Clubs', color: '#14B8A6', gradient: TEAL, tier: 'Brand Zone',
@@ -226,7 +226,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('padel', [
   { gw: 'padel', zone: 'glasshouse-padel', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Glasshouse Live · Canary Wharf Exhibition', desc: 'Exhibition doubles on Court 1 at The Glasshouse, Canary Wharf, with commentary from coach Tom Hale.' },
-  { gw: 'padel', zone: 'lima-court-wear', type: 'Event', icon: '👟', time: 'Nov 27', title: 'Shoe fitting night, Manchester', desc: 'Try every Lima Espiga on court with a gait check at the Find-a-Fourth social.' },
+  { gw: 'padel', zone: 'lima-court-wear', type: 'Event', icon: '👟', time: 'Dec 4', title: 'Shoe fitting night, Manchester', desc: 'Try every Lima Espiga on court with a gait check at the Find-a-Fourth social.' },
   { gw: 'padel', zone: 'pared-balls', type: 'Offer', icon: '🎾', time: 'Nov 30', title: 'Club Box half price ends', desc: 'Clubs and academies: first 72-ball Pared Club Box at half price, until 30 November.' },
   { gw: 'padel', type: 'Event', icon: '🏆', time: 'Dec 2', title: 'Manchester winter league launch', desc: 'Find-a-Fourth’s winter league starts. Five divisions, all levels.' },
   { gw: 'padel', zone: 'solera-padel', type: 'Event', icon: '💎', time: 'Dec 5', title: 'Solera demo day, Canary Wharf', desc: 'Try the whole Solera range at The Glasshouse, with free mini-clinics from Tom Hale.' },

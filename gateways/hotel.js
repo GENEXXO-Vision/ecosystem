@@ -164,7 +164,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'pillows', label: 'Pillows', icon: '🛏️' }, { key: 'linen', label: 'Bed linen', icon: '🧺' }, { key: 'duvets', label: 'Duvets', icon: '☁️' }, { key: 'toppers', label: 'Toppers', icon: '🛌' }, { key: 'extras', label: 'Extras', icon: '🌿' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'The <b>Hotel Pillow</b>, now in two firmnesses.', img: U('1631049307264-da0ec9d70304', 800, 440), eng: '♡ 6.2K · 💬 480', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday bedding sale', when: 'Nov 27 · All day', desc: 'A quarter off sheets, duvets and toppers for one day.', registered: 4120, capacity: 10000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas bedding sale', when: 'Dec 4 · All day', desc: 'A quarter off sheets, duvets and toppers for one day.', registered: 4120, capacity: 10000 } ],
     about: { founded: 'Manchester · 2015', story: 'We made pillows for hotels for ten years before guests started asking where to buy them. Now we sell to both.', milestones: [['2015', 'The first hotel order'], ['2022', 'Selling to guests at home'], ['2026', 'Brand Zone on HotelXX']], values: ['Made to be washed', 'Recycled fills', '100-night trial'] } }),
 
   'bramble-bath': brand({ key: 'bramble-bath', name: 'Bramble & Bath', color: '#7FA88E', gradient: SAGE, tier: 'Brand Zone',
@@ -223,7 +223,7 @@ Object.assign(ZONES, {
 gxEvents('hotel', [
   { gw: 'hotel', zone: 'concierge-club', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Concierge Club Live · Winter hotel deals', desc: 'Two concierges pick the best winter stays and answer your questions in the chat.' },
   { gw: 'hotel', type: 'Event', icon: '🍳', time: 'Nov 28', title: 'Hotel Hunters breakfast awards: vote closes', desc: 'The community’s vote for the best hotel breakfast in the UK closes at 8pm.' },
-  { gw: 'hotel', zone: 'pillowry', type: 'Sale', icon: '🛏️', time: 'Nov 27', title: 'Pillowry Black Friday bedding sale', desc: 'A quarter off sheets, duvets and toppers for one day.' },
+  { gw: 'hotel', zone: 'pillowry', type: 'Sale', icon: '🛏️', time: 'Dec 4', title: 'Pillowry Christmas bedding sale', desc: 'A quarter off sheets, duvets and toppers for one day.' },
   { gw: 'hotel', zone: 'linen-lantern', type: 'Deadline', icon: '🏨', time: 'Nov 30', title: 'Winter Weekend early booking ends', desc: 'Linen & Lantern: book January or February by midnight for a free dinner upgrade.' },
   { gw: 'hotel', type: 'Event', icon: '🛎️', time: 'Dec 2', title: 'Front-desk skills evening, London', desc: 'London Hospitality Network with James Okafor: arrivals, complaints and the first five minutes.' },
   { gw: 'hotel', type: 'Event', icon: '🥂', time: 'Dec 6', title: 'Hotel Hunters winter meet-up', desc: 'Drinks in Covent Garden and the breakfast awards results.' },

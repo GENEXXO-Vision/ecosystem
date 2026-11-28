@@ -176,7 +176,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'rooms', label: 'Rooms', icon: '🛏️' }, { key: 'offers', label: 'Offers', icon: '❄️' } ],
     feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'Domes and rooftops from the <b>Aventine Terrace</b>, just after breakfast.', img: U('1773590320601-b909dde1823d', 800, 440), eng: '♡ 6.4K · 💬 420', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: Winter Escape from €300', when: 'Nov 27 · All day', desc: 'Three winter nights for €300, one day only.', registered: 2140, capacity: 6000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: Winter Escape from €300', when: 'Dec 4 · All day', desc: 'Three winter nights for €300, one day only.', registered: 2140, capacity: 6000 } ],
     about: { founded: 'Rome · 2012', story: 'A family who restored a guesthouse on the Aventine, then one on each of the other six hills.', milestones: [['2012', 'The Aventine house'], ['2022', 'All seven hills'], ['2026', 'Brand Zone on RomeXX']], values: ['Local staff', 'Breakfast from local bakers', 'Restored, not rebuilt'] } }),
 
   'dispensa': brand({ key: 'dispensa', name: 'Dispensa', color: '#8A5A3C', gradient: STONE, tier: 'Brand Zone',
@@ -221,7 +221,7 @@ gxEvents('rome', [
   { gw: 'rome', zone: 'via-lucia-tours', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Via Lucia Live · Sunrise at the Colosseum', desc: 'The arena floor at first light, live, with a guide answering your questions.' },
   { gw: 'rome', type: 'Event', icon: '💬', time: 'Dec 1', title: 'Italian conversation evening, London', desc: 'London Italian Conversation Club: tables by level, aperitivo.' },
   { gw: 'rome', type: 'Event', icon: '❓', time: 'Dec 3', title: 'Live Q&A: planning a winter trip to Rome', desc: 'Roma Lovers: guides answer your questions.' },
-  { gw: 'rome', zone: 'casa-sette-colli', type: 'Sale', icon: '❄️', time: 'Nov 27', title: 'Casa Sette Colli Black Friday', desc: 'Three winter nights for €300, one day only.' },
+  { gw: 'rome', zone: 'casa-sette-colli', type: 'Sale', icon: '❄️', time: 'Dec 4', title: 'Casa Sette Colli Christmas sale', desc: 'Three winter nights for €300, one day only.' },
   { gw: 'rome', zone: 'testaccio-kitchen', type: 'Event', icon: '🍝', time: 'Dec 4', title: 'Christmas pasta cook-along', desc: 'Testaccio Kitchen: make tortellini, live online.' },
   { gw: 'rome', type: 'Event', icon: '👩‍🍳', time: 'Dec 4', title: 'Pasta cook-along', desc: 'Roma Lovers cook cacio e pepe together online.' },
   { gw: 'rome', type: 'Event', icon: '🥂', time: 'Dec 8', title: 'Christmas aperitivo, London', desc: 'London Italian Conversation Club’s festive evening.' },

@@ -178,7 +178,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'covers', label: 'Covers', icon: '🛏️' }, { key: 'care', label: 'Laundry', icon: '🧺' } ],
     feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'The <b>Soft Barrier</b> mattress cover feels like ordinary cotton.', img: U('1631049552057-403cdb8f0658', 800, 440), eng: '♡ 2.4K · 💬 170', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday bedding sale', when: 'Nov 27 · All day', desc: 'A third off every cover for one day.', registered: 1460, capacity: 5000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas bedding sale', when: 'Dec 4 · All day', desc: 'A third off every cover for one day.', registered: 1460, capacity: 5000 } ],
     about: { founded: 'Kendal · 2013', story: 'A family textile business that started weaving barrier fabric when a granddaughter was diagnosed with a dust mite allergy.', milestones: [['2013', 'The first barrier cover'], ['2021', 'The Soft Barrier range'], ['2026', 'Brand Zone on AsthmaXX']], values: ['No plastic membranes', 'Woven in Cumbria', 'Washable at 60°'] } }),
 
   'stride-air': brand({ key: 'stride-air', name: 'Stride Air', color: '#D99A12', gradient: SUN, tier: 'Brand Zone',
@@ -223,7 +223,7 @@ gxEvents('asthma', [
   { gw: 'asthma', zone: 'clearleaf-air', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Clearleaf Air Live · Winter air at home', desc: 'An air-quality scientist answers questions about damp, mould and clean air indoors.' },
   { gw: 'asthma', type: 'Event', icon: '🎒', time: 'Dec 2', title: 'Asthma Parents: school asthma chat', desc: 'An online chat on school plans, spare inhalers and PE.' },
   { gw: 'asthma', type: 'Event', icon: '🏃', time: 'Nov 29', title: 'Run Easy Leeds: Roundhay Park 5K', desc: 'An easy-paced 5K with a long warm-up. Reliever in your pocket.' },
-  { gw: 'asthma', zone: 'dustproof-home', type: 'Sale', icon: '🛏️', time: 'Nov 27', title: 'Dustproof Home Black Friday sale', desc: 'A third off every barrier cover for one day.' },
+  { gw: 'asthma', zone: 'dustproof-home', type: 'Sale', icon: '🛏️', time: 'Dec 4', title: 'Dustproof Home Christmas sale', desc: 'A third off every barrier cover for one day.' },
   { gw: 'asthma', type: 'Event', icon: '🫁', time: 'Dec 2', title: 'Breathing class with Tom Price', desc: 'An online group class: breathing exercises alongside your usual treatment.' },
   { gw: 'asthma', type: 'Event', icon: '⭐', time: 'Dec 4', title: 'Spacer tips with an asthma nurse', desc: 'Asthma Parents with Emma Clarke: getting little ones to use a spacer. Online.' },
   { gw: 'asthma', zone: 'stride-air', type: 'Event', icon: '🧣', time: 'Dec 7', title: 'Winter run and kit test, Leeds', desc: 'Stride Air: try the winter range on an easy 5K in Roundhay Park.' },

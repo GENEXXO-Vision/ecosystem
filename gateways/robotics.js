@@ -163,7 +163,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'motors', label: 'Motors', icon: '⚙️' }, { key: 'sensors', label: 'Sensors & tools', icon: '📡' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1d', text: 'Steady hands, lead-free solder, glasses on. The <b>Soldering Starter Set</b>.', img: U('1581090465980-58ea88b43443', 800, 440), eng: '♡ 5.6K · 💬 380', product: 3 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 25% off sensor packs', when: 'Nov 27 · All day', desc: 'A quarter off every sensor pack, today only.', registered: 1620, capacity: 4500 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 25% off sensor packs', when: 'Dec 4 · All day', desc: 'A quarter off every sensor pack, today only.', registered: 1620, capacity: 4500 } ],
     about: { founded: 'Sheffield · 2009', story: 'An electronics shop that grew up with the maker movement.', milestones: [['2009', 'The first shop'], ['2018', 'Smart servos'], ['2026', 'Brand Zone on RoboticsXX']], values: ['Next-day parts', 'Clear datasheets', 'Help from engineers'] } }),
 
   'cobotic': brand({ key: 'cobotic', name: 'Cobotic', color: '#94A3B8', gradient: STEELG, tier: 'Brand Zone',
@@ -220,7 +220,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('robotics', [
   { gw: 'robotics', zone: 'tinkerbot', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Tinkerbot Live · a class builds its first robot', desc: 'A Year 7 class meets its robot and builds a line follower.' },
-  { gw: 'robotics', zone: 'servoline', type: 'Sale', icon: '📡', time: 'Nov 27', title: 'Servoline Black Friday', desc: '25% off every sensor pack.' },
+  { gw: 'robotics', zone: 'servoline', type: 'Sale', icon: '📡', time: 'Dec 4', title: 'Servoline Christmas sale', desc: '25% off every sensor pack.' },
   { gw: 'robotics', type: 'Event', icon: '🛤️', time: 'Dec 2', title: 'Build Night: line followers', desc: 'Robot Builders build together, online.' },
   { gw: 'robotics', zone: 'cobotic', type: 'Event', icon: '🦾', time: 'Dec 4', title: 'Open day: try a cobot', desc: 'Teach an arm a task by hand in Coventry.' },
   { gw: 'robotics', type: 'Event', icon: '⚽', time: 'Dec 6', title: 'Robot football night, Coventry', desc: 'Coventry Robot Club plays robot football.' },

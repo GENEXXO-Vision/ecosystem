@@ -164,7 +164,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'knives', label: 'Knives', icon: '🔪' }, { key: 'care', label: 'Boards & stones', icon: '🪨' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Chef Mei has used the same <b>Santoku</b> every service for eleven years. Sharpened free, every spring.', img: U('1787504916907-10106151ae01', 800, 440), eng: '♡ 6.8K · 💬 520', product: 1 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: free whetstone', when: 'Nov 27 · All day', desc: 'A free whetstone with every knife, for one day.', registered: 2140, capacity: 5000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: free whetstone', when: 'Dec 4 · All day', desc: 'A free whetstone with every knife, for one day.', registered: 2140, capacity: 5000 } ],
     about: { founded: 'Seki · 1948 · UK since 2017', story: 'A family knife workshop in Seki, Japan’s knife city, now selling direct to cooks in Britain with a UK sharpening service.', milestones: [['1948', 'The workshop opens in Seki'], ['2017', 'The UK shop and sharpening service'], ['2026', 'Brand Zone on SushiXX']], values: ['Finished by hand', 'Sharpened free for life', 'One knife, used for decades'] } }),
 
   'umami-pantry': brand({ key: 'umami-pantry', name: 'Umami Pantry', color: '#C9B48A', gradient: RICE, tier: 'Brand Zone',
@@ -222,7 +222,7 @@ Object.assign(ZONES, {
 gxEvents('sushi', [
   { gw: 'sushi', zone: 'rolly', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Rolly Live · Roll-along Night', desc: 'Roll along with Chef Mika and ask anything in the chat.' },
   { gw: 'sushi', type: 'Event', icon: '🍶', time: 'Dec 1', title: 'Warm sake night, Edinburgh', desc: 'Edinburgh Sushi Club with Anna Cole: six sakes, warm and chilled, in Leith.' },
-  { gw: 'sushi', zone: 'hinoki-knives', type: 'Sale', icon: '🔪', time: 'Nov 27', title: 'Hinoki Black Friday: free whetstone', desc: 'A free whetstone with every knife, for one day.' },
+  { gw: 'sushi', zone: 'hinoki-knives', type: 'Sale', icon: '🔪', time: 'Dec 4', title: 'Hinoki Christmas sale: free whetstone', desc: 'A free whetstone with every knife, for one day.' },
   { gw: 'sushi', zone: 'kaito', type: 'Event', icon: '🍣', time: 'Dec 1', title: 'Kaito Winter Omakase opening night', desc: 'The winter menu begins at the London, Manchester and Edinburgh counters.' },
   { gw: 'sushi', type: 'Event', icon: '🍚', time: 'Dec 4', title: 'Sushi basics class, London', desc: 'Joel Mensah Sushi School: rice, maki and nigiri, then dinner.' },
   { gw: 'sushi', type: 'Event', icon: '🏆', time: 'Dec 10', title: 'Roll Call: best piece of the year vote', desc: 'The community picks its favourite piece of sushi of 2026.' },

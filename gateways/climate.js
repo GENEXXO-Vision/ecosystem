@@ -163,7 +163,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'hedges', label: 'Hedges', icon: '🌿' }, { key: 'trees', label: 'Trees', icon: '🌳' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Gloves on, roots in, a very long future. The <b>School Woodland Pack</b>.', img: U('1782386963665-b83ce1d6752e', 800, 440), eng: '♡ 9.6K · 💬 720', product: 1 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: free guards with every pack', when: 'Nov 27 · All day', desc: 'Free tree guards with every hedge and woodland pack.', registered: 1640, capacity: 4500 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: free guards with every pack', when: 'Dec 4 · All day', desc: 'Free tree guards with every hedge and woodland pack.', registered: 1640, capacity: 4500 } ],
     about: { founded: 'Shropshire · 1998', story: 'A family nursery that grows every tree from British seed.', milestones: [['1998', 'The first seedbeds'], ['2020', 'School packs'], ['2026', 'Brand Zone on ClimateXX']], values: ['British seed, British grown', 'Peat-free', 'Native species only'] } }),
 
   'draughtless': brand({ key: 'draughtless', name: 'Draughtless', color: '#0369A1', gradient: SKY, tier: 'Brand Zone',
@@ -191,7 +191,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'kits', label: 'Kits', icon: '🧰' }, { key: 'community', label: 'Community', icon: '☕' } ],
     feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'Every jumper on this rail deserves a second life. Darn it, patch it, wear it again: the <b>Clothes Mending Kit</b>.', img: U('1582719188393-bb71ca45dbb9', 800, 440), eng: '♡ 3.8K · 💬 240', product: 1 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: buy nothing new, fix something', when: 'Nov 27 · All day', desc: '30% off repair kits, one day only.', registered: 1340, capacity: 4000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'This Friday: buy nothing new, fix something', when: 'Dec 4 · All day', desc: '30% off repair kits, one day only.', registered: 1340, capacity: 4000 } ],
     about: { founded: 'Bristol · 2017', story: 'Fixers from a repair café who wanted the right part to be easy to find.', milestones: [['2017', 'The first kit'], ['2023', 'Repair café boxes'], ['2026', 'Brand Zone on ClimateXX']], values: ['Repair before replace', 'Parts for old things', 'Community first'] } }),
 
   'peatland-works': { key: 'peatland-works', kind: 'business', gw: 'climate', name: 'Peatland Works', color: '#A16207', gradient: PEAT, img: U('1593349783603-654a7069d88d', 900, 500),
@@ -220,8 +220,8 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('climate', [
   { gw: 'climate', zone: 'greenwarm', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Greenwarm Live · a family home goes gas-free', desc: 'A Leeds family home gets its heat pump, with thermal camera before and after.' },
-  { gw: 'climate', zone: 'treeline-nurseries', type: 'Sale', icon: '🌿', time: 'Nov 27', title: 'Treeline Black Friday', desc: 'Free tree guards with every hedge and woodland pack.' },
-  { gw: 'climate', zone: 'mendable', type: 'Sale', icon: '🧰', time: 'Nov 27', title: 'Mendable: fix something Friday', desc: '30% off repair kits.' },
+  { gw: 'climate', zone: 'treeline-nurseries', type: 'Sale', icon: '🌿', time: 'Dec 4', title: 'Treeline Christmas sale', desc: 'Free tree guards with every hedge and woodland pack.' },
+  { gw: 'climate', zone: 'mendable', type: 'Sale', icon: '🧰', time: 'Dec 4', title: 'Mendable: fix something Friday', desc: '30% off repair kits.' },
   { gw: 'climate', type: 'Event', icon: '♨️', time: 'Dec 1', title: 'Heat pump owners: live Q&A', desc: 'Everyday Climate members answer your heat pump questions.' },
   { gw: 'climate', zone: 'draughtless', type: 'Event', icon: '🚪', time: 'Dec 3', title: 'Live: draught-proof a room in an hour', desc: 'Follow along with a Draughtless kit.' },
   { gw: 'climate', type: 'Event', icon: '🥾', time: 'Dec 5', title: 'Work party: drain blocking, North York Moors', desc: 'Moors Peat Restorers re-wet the bog.' },

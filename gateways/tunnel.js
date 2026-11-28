@@ -162,7 +162,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'torches', label: 'Torches', icon: '🔦' }, { key: 'site', label: 'Site lights', icon: '💡' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'One beam, one long tunnel. The <b>Shift Torch</b> lights it all the way.', img: U('1638741015176-8f280df193f8', 800, 440), eng: '♡ 6.4K · 💬 420', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 25% off torches', when: 'Nov 27 · All day', desc: 'A quarter off every head torch, one day only.', registered: 1340, capacity: 4000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 25% off torches', when: 'Dec 4 · All day', desc: 'A quarter off every head torch, one day only.', registered: 1340, capacity: 4000 } ],
     about: { founded: 'Barnsley · 1998', story: 'Made by the family of a miner who wanted a lamp that never let you down.', milestones: [['1998', 'The first lamp'], ['2019', 'The Shift Torch'], ['2026', 'Brand Zone on TunnelXX']], values: ['Built for the dark', 'Repairable', 'Made in Yorkshire'] } }),
 
   'shaftsafe': brand({ key: 'shaftsafe', name: 'Shaftsafe', color: '#60A5FA', gradient: DEEP, tier: 'Brand Zone',
@@ -190,7 +190,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'tours', label: 'Tours', icon: '⛑️' }, { key: 'gifts', label: 'Gifts', icon: '🎁' } ],
     feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'Concrete, quiet and endless. Walk it before the trains do on a <b>Hard-Hat Tour</b>.', img: U('1648842014403-f29110567a52', 800, 440), eng: '♡ 5.6K · 💬 380', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: two tours for one', when: 'Nov 27 · All day', desc: 'Book one hard-hat tour, bring a friend free.', registered: 1820, capacity: 4000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: two tours for one', when: 'Dec 4 · All day', desc: 'Book one hard-hat tour, bring a friend free.', registered: 1820, capacity: 4000 } ],
     about: { founded: 'London · 2014', story: 'Engineers who couldn’t stop telling their friends about the tunnels they’d built.', milestones: [['2014', 'The first tour'], ['2022', 'School trips'], ['2026', 'Brand Zone on TunnelXX']], values: ['Safety first', 'Real engineers as guides', 'History respected'] } }),
 
   'segmentcast': { key: 'segmentcast', kind: 'business', gw: 'tunnel', name: 'Segmentcast', color: '#9CA3AF', gradient: CONCRETE, img: U('1517089596392-fb9a9033e05b', 900, 500),
@@ -219,8 +219,8 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('tunnel', [
   { gw: 'tunnel', zone: 'deepline-tunnelling', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Deepline Live · breakthrough day', desc: 'Watch Margaret cut into daylight after 6.2 kilometres underground.' },
-  { gw: 'tunnel', zone: 'lampwright', type: 'Sale', icon: '🔦', time: 'Nov 27', title: 'Lampwright Black Friday', desc: '25% off every head torch.' },
-  { gw: 'tunnel', zone: 'subterra-tours', type: 'Sale', icon: '⛑️', time: 'Nov 27', title: 'Subterra Black Friday', desc: 'Two hard-hat tours for the price of one.' },
+  { gw: 'tunnel', zone: 'lampwright', type: 'Sale', icon: '🔦', time: 'Dec 4', title: 'Lampwright Christmas sale', desc: '25% off every head torch.' },
+  { gw: 'tunnel', zone: 'subterra-tours', type: 'Sale', icon: '⛑️', time: 'Dec 4', title: 'Subterra Christmas sale', desc: 'Two hard-hat tours for the price of one.' },
   { gw: 'tunnel', zone: 'shaftsafe', type: 'Event', icon: '📟', time: 'Dec 2', title: 'Webinar: gas testing done right', desc: 'Bump tests, calibration and alarms, with Shaftsafe.' },
   { gw: 'tunnel', type: 'Event', icon: '🎤', time: 'Dec 2', title: 'Talk: how a Tube tunnel gets built, London', desc: 'London Below hears from a tunnel engineer.' },
   { gw: 'tunnel', type: 'Event', icon: '⛪', time: 'Dec 4', title: 'St Barbara’s Day: live chat with tunnellers', desc: 'Tunnel Fans marks the tunnellers’ patron saint’s day with the crews.' },

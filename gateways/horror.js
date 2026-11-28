@@ -190,7 +190,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'candles', label: 'Candles', icon: '🕯️' }, { key: 'books', label: 'Books', icon: '📚' }, { key: 'prints', label: 'Prints', icon: '🖼️' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1d', text: 'The <b>Haunted Library Candle</b>, lit for the long nights.', img: U('1619378352777-1742dc62b564', 800, 440), eng: '♡ 3.2K · 💬 210', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: a quarter off candles', when: 'Nov 27 · All day', desc: 'A quarter off every candle, for one day.', registered: 1460, capacity: 4000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: a quarter off candles', when: 'Dec 4 · All day', desc: 'A quarter off every candle, for one day.', registered: 1460, capacity: 4000 } ],
     about: { founded: 'Manchester · 2019', story: 'A horror fan who couldn’t find gifts that were spooky but beautiful.', milestones: [['2019', 'The first candle'], ['2024', 'The advent calendar'], ['2026', 'Brand Zone on HorrorXX']], values: ['Made in the UK', 'Independent artists', 'Plastic-free packaging'] } }),
 
   'ironwood-sfx': { key: 'ironwood-sfx', kind: 'business', gw: 'horror', name: 'Ironwood SFX', color: '#D8343B', gradient: BLOOD, img: U('1768151240764-9df5e3bcefdd', 900, 500),
@@ -221,7 +221,7 @@ gxEvents('horror', [
   { gw: 'horror', zone: 'blackthorn-press', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Blackthorn Live · Ghost stories by candlelight', desc: 'Three authors read new ghost stories live from Whitby. Lights off recommended.' },
   { gw: 'horror', type: 'Event', icon: '🔥', time: 'Dec 2', title: 'Fireside ghost stories, York', desc: 'York Ghost Story Club: stories read aloud by candlelight.' },
   { gw: 'horror', type: 'Event', icon: '📖', time: 'Dec 3', title: 'Read-along: The Salt House, part one', desc: 'The Night Shift reads together online.' },
-  { gw: 'horror', zone: 'gravegoods', type: 'Sale', icon: '🕯️', time: 'Nov 27', title: 'Gravegoods Black Friday', desc: 'A quarter off every candle, for one day.' },
+  { gw: 'horror', zone: 'gravegoods', type: 'Sale', icon: '🕯️', time: 'Dec 4', title: 'Gravegoods Christmas sale', desc: 'A quarter off every candle, for one day.' },
   { gw: 'horror', zone: 'midnight-matinee', type: 'Event', icon: '🎬', time: 'Dec 1', title: 'Winter Chills begins', desc: 'Midnight Matinee: a new horror film every night until Christmas Eve.' },
   { gw: 'horror', zone: 'candle-crypt', type: 'Event', icon: '🌑', time: 'Dec 21', title: 'Winter solstice ghost walk, York', desc: 'Candle & Crypt: the longest night, two extra stops.' },
   { gw: 'horror', type: 'Event', icon: '🎄', time: 'Dec 23', title: 'Christmas Eve Eve readings, York', desc: 'York Ghost Story Club’s Christmas readings by the fire.' },

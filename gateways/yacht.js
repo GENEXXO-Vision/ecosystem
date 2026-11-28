@@ -191,7 +191,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'shoes', label: 'Shoes', icon: '👟' }, { key: 'bags', label: 'Bags', icon: '👜' }, { key: 'crew', label: 'Crew', icon: '👕' }, { key: 'gifts', label: 'Gifts', icon: '🪢' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1d', text: 'Every crew member should know their knots. The <b>Coiled Line Gift Set</b> is a good place to start.', img: U('1744290382098-141bbc2f1733', 800, 440), eng: '♡ 3.2K · 💬 180', product: 3 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 30% off deck shoes', when: 'Nov 27 · All day', desc: 'Thirty per cent off deck shoes, one day only.', registered: 1180, capacity: 4000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 30% off deck shoes', when: 'Dec 4 · All day', desc: 'Thirty per cent off deck shoes, one day only.', registered: 1180, capacity: 4000 } ],
     about: { founded: 'Cowes · 2011', story: 'A former superyacht stewardess who couldn’t find crew kit that lasted a season.', milestones: [['2011', 'The first crew polo'], ['2020', 'Deck shoes'], ['2026', 'Brand Zone on YachtXX']], values: ['Made for a season at sea', 'Recycled fabrics', 'Free name embroidery'] } }),
 
   'bluewater-survey': { key: 'bluewater-survey', kind: 'business', gw: 'yacht', name: 'Bluewater Marine Survey', color: '#0F6E7A', gradient: TEAL, img: U('1785013045447-92e088e00fa1', 900, 500),
@@ -221,7 +221,7 @@ Object.assign(ZONES, {
 gxEvents('yacht', [
   { gw: 'yacht', zone: 'aurelia-charter', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Aurelia Live · Sunset off Hvar', desc: 'Live from the catamaran Aurelia Sol, with the skipper answering questions.' },
   { gw: 'yacht', type: 'Event', icon: '❓', time: 'Dec 2', title: 'Live Q&A: planning a 2027 charter', desc: 'Yacht Life skippers answer your questions.' },
-  { gw: 'yacht', zone: 'weatherdeck', type: 'Sale', icon: '👟', time: 'Nov 27', title: 'Weatherdeck Black Friday', desc: '30% off deck shoes, one day only.' },
+  { gw: 'yacht', zone: 'weatherdeck', type: 'Sale', icon: '👟', time: 'Dec 4', title: 'Weatherdeck Christmas sale', desc: '30% off deck shoes, one day only.' },
   { gw: 'yacht', zone: 'corvina-yachts', type: 'Event', icon: '🛥️', time: 'Dec 2', title: 'Corvina 58 virtual tour', desc: 'A live walk-through with the designer.' },
   { gw: 'yacht', type: 'Event', icon: '⚓', time: 'Dec 3', title: 'Winter talk: anchoring in the Med, Southampton', desc: 'Southampton Weekend Boaters’ December talk.' },
   { gw: 'yacht', zone: 'fairwind-share', type: 'Event', icon: '🔑', time: 'Dec 9', title: 'Shared ownership explained', desc: 'Fairwind Share’s live Q&A on costs and calendars.' },

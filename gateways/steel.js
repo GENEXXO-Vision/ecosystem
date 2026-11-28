@@ -162,7 +162,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'knives', label: 'Knives', icon: '🔪' }, { key: 'care', label: 'Care', icon: '🪨' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Sparks from the grinding wheel, the way every <b>Hallam Chef’s Knife</b> starts.', img: U('1526634140919-468dc3ae3870', 800, 440), eng: '♡ 8.6K · 💬 610', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: free engraving', when: 'Nov 27 · All day', desc: 'Free engraving on every knife and set, one day only.', registered: 1620, capacity: 4000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: free engraving', when: 'Dec 4 · All day', desc: 'Free engraving on every knife and set, one day only.', registered: 1620, capacity: 4000 } ],
     about: { founded: 'Sheffield · 1921', story: 'Four generations of cutlers in the same workshop off the Moor.', milestones: [['1921', 'The first workshop'], ['1998', 'The chef’s knife'], ['2026', 'Brand Zone on SteelXX']], values: ['Made in Sheffield', 'Sharpened free for life', 'Apprentices trained in-house'] } }),
 
   'ironleaf-cookware': brand({ key: 'ironleaf-cookware', name: 'Ironleaf Cookware', color: '#B91C1C', gradient: MOLTEN, tier: 'Brand Zone',
@@ -176,7 +176,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'pans', label: 'Pans', icon: '🍳' }, { key: 'care', label: 'Care', icon: '🧴' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1d', text: 'Every pan starts as molten metal. Ours are spun, riveted and seasoned in Walsall: the <b>Frying Pan 28</b>.', img: U('1684259499227-e9844ab79747', 800, 440), eng: '♡ 4.4K · 💬 280', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 25% off pans', when: 'Nov 27 · All day', desc: 'A quarter off every pan, one day only.', registered: 1080, capacity: 3000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 25% off pans', when: 'Dec 4 · All day', desc: 'A quarter off every pan, one day only.', registered: 1080, capacity: 3000 } ],
     about: { founded: 'Walsall · 2016', story: 'A metal spinner and a chef who wanted pans you never throw away.', milestones: [['2016', 'The first pan'], ['2022', 'The wok'], ['2026', 'Brand Zone on SteelXX']], values: ['No coatings', 'Made in the Black Country', 'Repaired, not replaced'] } }),
 
   'arcwright-welding': brand({ key: 'arcwright-welding', name: 'Arcwright Welding', color: '#60A5FA', gradient: ARC, tier: 'Brand Zone',
@@ -219,8 +219,8 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('steel', [
   { gw: 'steel', zone: 'northforge-steel', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Northforge Live · first pour from the new furnace', desc: 'Watch the first melt from an electric arc furnace, powered by renewables.' },
-  { gw: 'steel', zone: 'hallam-blades', type: 'Sale', icon: '🔪', time: 'Nov 27', title: 'Hallam Blades Black Friday', desc: 'Free engraving on every knife and set.' },
-  { gw: 'steel', zone: 'ironleaf-cookware', type: 'Sale', icon: '🍳', time: 'Nov 27', title: 'Ironleaf Black Friday', desc: '25% off every pan.' },
+  { gw: 'steel', zone: 'hallam-blades', type: 'Sale', icon: '🔪', time: 'Dec 4', title: 'Hallam Blades Christmas sale', desc: 'Free engraving on every knife and set.' },
+  { gw: 'steel', zone: 'ironleaf-cookware', type: 'Sale', icon: '🍳', time: 'Dec 4', title: 'Ironleaf Christmas sale', desc: '25% off every pan.' },
   { gw: 'steel', type: 'Event', icon: '⚡', time: 'Nov 30', title: 'Live demo: welding thin sheet', desc: 'Metalworkers’ Bench shows how to weld thin steel without blowing holes.' },
   { gw: 'steel', zone: 'arcwright-welding', type: 'Event', icon: '🪖', time: 'Dec 2', title: 'Beginners’ welding night', desc: 'Set up, strike an arc and run a bead, live with Arcwright.' },
   { gw: 'steel', type: 'Event', icon: '🎤', time: 'Dec 2', title: 'Talk: the story of stainless, Sheffield', desc: 'Sheffield Steel City on the city’s most famous invention.' },

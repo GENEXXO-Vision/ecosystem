@@ -163,7 +163,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'cheese', label: 'Cheese', icon: '🧀' }, { key: 'milk', label: 'Milk & cream', icon: '🥛' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Afternoon feed in the winter shed. Every one of these girls has a name and a say in the <b>Moorland Cheddar</b>.', img: U('1771962152057-4c3015841488', 800, 440), eng: '♡ 8.8K · 💬 640', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: free cheese with every box', when: 'Nov 27 · All day', desc: 'A free truckle with every Christmas Cheese Box, one day only.', registered: 1460, capacity: 4000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: free cheese with every box', when: 'Dec 4 · All day', desc: 'A free truckle with every Christmas Cheese Box, one day only.', registered: 1460, capacity: 4000 } ],
     about: { founded: 'Exmoor · 1994', story: 'A small family dairy that started making cheese to keep the farm going.', milestones: [['1994', 'The first cheddar'], ['2018', 'Glass bottles back'], ['2026', 'Brand Zone on CattleXX']], values: ['Small herd, known by name', 'Cows out at grass all summer', 'Made on the farm'] } }),
 
   'herdwise': brand({ key: 'herdwise', name: 'Herdwise', color: '#15803D', gradient: MEADOW, tier: 'Brand Zone',
@@ -191,7 +191,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'feeding', label: 'Feeding', icon: '🌾' }, { key: 'comfort', label: 'Comfort', icon: '🪥' } ],
     feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'Breakfast queue at the barrier. Less waste, more hay in bellies with the <b>Round Bale Feeder</b>.', img: U('1583095117886-ddb019562ee0', 800, 440), eng: '♡ 3.6K · 💬 220', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 20% off winter kit', when: 'Nov 27 · All day', desc: 'A fifth off feeders, heaters and bedding.', registered: 860, capacity: 2500 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 20% off winter kit', when: 'Dec 4 · All day', desc: 'A fifth off feeders, heaters and bedding.', registered: 860, capacity: 2500 } ],
     about: { founded: 'Shrewsbury · 1985', story: 'A farm supply shop that grew because farmers kept asking for kit that lasts.', milestones: [['1985', 'The first shop'], ['2019', 'Online'], ['2026', 'Brand Zone on CattleXX']], values: ['Kit that lasts', 'Advice from farmers', 'Animal comfort first'] } }),
 
   'taw-valley-livestock': { key: 'taw-valley-livestock', kind: 'business', gw: 'cattle', name: 'Taw Valley Livestock Market', color: '#B45309', gradient: RUSSET, img: U('1549488235-42996ae3b650', 900, 500),
@@ -220,8 +220,8 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('cattle', [
   { gw: 'cattle', zone: 'hillhead-beef', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Hillhead Live · housing day', desc: 'The herd walks down off the hill into the winter shed.' },
-  { gw: 'cattle', zone: 'moorland-dairy', type: 'Sale', icon: '🧀', time: 'Nov 27', title: 'Moorland Dairy Black Friday', desc: 'A free truckle with every Christmas Cheese Box.' },
-  { gw: 'cattle', zone: 'byre-and-bale', type: 'Sale', icon: '🌾', time: 'Nov 27', title: 'Byre & Bale Black Friday', desc: '20% off winter kit.' },
+  { gw: 'cattle', zone: 'moorland-dairy', type: 'Sale', icon: '🧀', time: 'Dec 4', title: 'Moorland Dairy Christmas sale', desc: 'A free truckle with every Christmas Cheese Box.' },
+  { gw: 'cattle', zone: 'byre-and-bale', type: 'Sale', icon: '🌾', time: 'Dec 4', title: 'Byre & Bale Christmas sale', desc: '20% off winter kit.' },
   { gw: 'cattle', zone: 'herdwise', type: 'Event', icon: '📡', time: 'Dec 1', title: 'Webinar: spotting illness early', desc: 'What collars notice, and when to call the vet.' },
   { gw: 'cattle', type: 'Event', icon: '💬', time: 'Dec 1', title: 'Winter housing Q&A: live chat', desc: 'The Cattle Yard talks sheds, straw and ventilation.' },
   { gw: 'cattle', type: 'Event', icon: '🥾', time: 'Dec 5', title: 'Farm walk: soils in winter, Devon', desc: 'Devon Grazing Group digs soil pits on World Soil Day.' },

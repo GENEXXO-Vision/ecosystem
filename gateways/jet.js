@@ -190,7 +190,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'headsets', label: 'Headsets', icon: '🎧' }, { key: 'bags', label: 'Bags', icon: '🎒' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1d', text: 'Night flight, cockpit lights low, the <b>ANR Headset</b> keeping the cabin quiet.', img: U('1587408811730-1a978e6c407d', 800, 440), eng: '♡ 3.4K · 💬 190', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 20% off headsets', when: 'Nov 27 · All day', desc: 'A fifth off every headset, one day only.', registered: 960, capacity: 3000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 20% off headsets', when: 'Dec 4 · All day', desc: 'A fifth off every headset, one day only.', registered: 960, capacity: 3000 } ],
     about: { founded: 'Bristol · 2012', story: 'An audio engineer and a pilot who wanted a headset that didn’t squeeze.', milestones: [['2012', 'The first headset'], ['2021', 'Bluetooth'], ['2026', 'Brand Zone on JetXX']], values: ['Light and comfy', 'Five-year warranty', 'Repairs, not replacements'] } }),
 
   'northstar-mro': { key: 'northstar-mro', kind: 'business', gw: 'jet', name: 'Northstar Aircraft Maintenance', color: '#38BDF8', gradient: SKY, img: U('1585916788784-64aa099fec1f', 900, 500),
@@ -219,8 +219,8 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('jet', [
   { gw: 'jet', zone: 'altair-jets', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Altair Live · London to Geneva from the cockpit', desc: 'Take-off, cruise and the Alps at dusk, with the captain answering questions.' },
-  { gw: 'jet', type: 'Event', icon: '📸', time: 'Nov 27', title: 'Photo of the year: live vote', desc: 'Jet Spotters pick 2026’s best aviation photo.' },
-  { gw: 'jet', zone: 'clearsky-headsets', type: 'Sale', icon: '🎧', time: 'Nov 27', title: 'Clearsky Black Friday', desc: '20% off every headset, one day only.' },
+  { gw: 'jet', type: 'Event', icon: '📸', time: 'Dec 4', title: 'Photo of the year: live vote', desc: 'Jet Spotters pick 2026’s best aviation photo.' },
+  { gw: 'jet', zone: 'clearsky-headsets', type: 'Sale', icon: '🎧', time: 'Dec 4', title: 'Clearsky Christmas sale', desc: '20% off every headset, one day only.' },
   { gw: 'jet', zone: 'northgate-terminal', type: 'Event', icon: '🎿', time: 'Dec 1', title: 'Ski season departures open', desc: 'Northgate lounge and fast-track bookings for Alps flights.' },
   { gw: 'jet', type: 'Event', icon: '🧭', time: 'Dec 1', title: 'Ground school night, Bristol', desc: 'Bristol Flying Club: navigation for students.' },
   { gw: 'jet', zone: 'contrail-academy', type: 'Event', icon: '🛫', time: 'Dec 5', title: 'Contrail open day: learn to fly', desc: 'Meet the instructors and sit in the aircraft.' },

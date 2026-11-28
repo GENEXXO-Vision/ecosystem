@@ -163,7 +163,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'prints', label: 'Prints', icon: '🖼️' }, { key: 'gifts', label: 'Gifts', icon: '💌' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Dust, ears wide, coming straight on. The <b>Matriarch Print</b>.', img: U('1507461476191-0ed4f9f18533', 800, 440), eng: '♡ 11.6K · 💬 820', product: 1 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 25% off prints', when: 'Nov 27 · All day', desc: 'A quarter off every print, one day only.', registered: 1820, capacity: 4500 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 25% off prints', when: 'Dec 4 · All day', desc: 'A quarter off every print, one day only.', registered: 1820, capacity: 4500 } ],
     about: { founded: 'Bristol · 2014', story: 'Three wildlife photographers who print what they love and give a share to conservation.', milestones: [['2014', 'The first prints'], ['2021', 'The calendar'], ['2026', 'Brand Zone on ElephantXX']], values: ['Ethical photography only', 'Printed in Bristol', 'A share to conservation'] } }),
 
   'hivefence-honey': brand({ key: 'hivefence-honey', name: 'Hivefence Honey', color: '#B45309', gradient: HONEY, tier: 'Brand Zone',
@@ -177,7 +177,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'honey', label: 'Honey', icon: '🍯' }, { key: 'gifts', label: 'Gifts', icon: '🐝' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1d', text: 'A family walks the long way round, past the farm and its humming fence. <b>Sponsor a Hive</b> to add another.', img: U('1481464904474-a575a33b44a0', 800, 440), eng: '♡ 5.2K · 💬 360', product: 3 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: hive gift sets', when: 'Nov 27 · All day', desc: 'A free candle with every Sponsor a Hive, one day only.', registered: 980, capacity: 3000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: hive gift sets', when: 'Dec 4 · All day', desc: 'A free candle with every Sponsor a Hive, one day only.', registered: 980, capacity: 3000 } ],
     about: { founded: 'Nanyuki · 2016', story: 'A co-operative of farmers who found that hives on their fences kept elephants away, and that the honey sold.', milestones: [['2016', 'The first hive fence'], ['2022', '1,000 hives'], ['2026', 'Brand Zone on ElephantXX']], values: ['Fair prices to farmers', 'Elephants and farms, side by side', 'Raw, unblended honey'] } }),
 
   'ranger-kit': brand({ key: 'ranger-kit', name: 'Ranger Kit', color: '#4D7C0F', gradient: ACACIA, tier: 'Brand Zone',
@@ -220,8 +220,8 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('elephant', [
   { gw: 'elephant', zone: 'savanna-trails', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Savanna Trails Live · the afternoon waterhole', desc: 'Three elephant families come in to drink, streamed from a hide in Samburu.' },
-  { gw: 'elephant', zone: 'greygiant-prints', type: 'Sale', icon: '🖼️', time: 'Nov 27', title: 'Greygiant Black Friday', desc: '25% off every elephant print.' },
-  { gw: 'elephant', zone: 'hivefence-honey', type: 'Sale', icon: '🐝', time: 'Nov 27', title: 'Hivefence Black Friday', desc: 'A free candle with every Sponsor a Hive.' },
+  { gw: 'elephant', zone: 'greygiant-prints', type: 'Sale', icon: '🖼️', time: 'Dec 4', title: 'Greygiant Christmas sale', desc: '25% off every elephant print.' },
+  { gw: 'elephant', zone: 'hivefence-honey', type: 'Sale', icon: '🐝', time: 'Dec 4', title: 'Hivefence Christmas sale', desc: 'A free candle with every Sponsor a Hive.' },
   { gw: 'elephant', zone: 'ranger-kit', type: 'Event', icon: '🎒', time: 'Dec 3', title: 'Webinar: packing for your first safari', desc: 'What to bring and what to leave, with Ranger Kit.' },
   { gw: 'elephant', type: 'Event', icon: '💧', time: 'Dec 3', title: 'Live waterhole watch: chat along', desc: 'Herd Watchers watch the waterhole together.' },
   { gw: 'elephant', type: 'Event', icon: '🎤', time: 'Dec 8', title: 'Talk: how elephants remember, Manchester', desc: 'Manchester Wildlife Talks hears from an elephant scientist.' },

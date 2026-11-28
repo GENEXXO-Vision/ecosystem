@@ -163,7 +163,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'prints', label: 'Prints', icon: '🖼️' }, { key: 'data', label: 'Data', icon: '🌾' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'A continent at night, every city lit. The <b>Night Lights Print</b>.', img: U('1451187580459-43490279c0fa', 800, 440), eng: '♡ 8.8K · 💬 640', product: 2 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 30% off prints', when: 'Nov 27 · All day', desc: 'Every print a third off, one day only.', registered: 1420, capacity: 4000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 30% off prints', when: 'Dec 4 · All day', desc: 'Every print a third off, one day only.', registered: 1420, capacity: 4000 } ],
     about: { founded: 'Guildford · 2014', story: 'A small-satellite imaging company that started selling prints because people kept asking for pictures of their homes.', milestones: [['2014', 'The first images'], ['2021', 'Field Watch'], ['2026', 'Brand Zone on SatelliteXX']], values: ['Fresh images', 'Privacy first: no zooming into gardens', 'Data for farmers'] } }),
 
   'nightpass-optics': brand({ key: 'nightpass-optics', name: 'Nightpass Optics', color: '#FBBF24', gradient: SOLAR, tier: 'Brand Zone',
@@ -177,7 +177,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'optics', label: 'Optics', icon: '🔭' }, { key: 'photo', label: 'Photo', icon: '🌌' }, { key: 'kit', label: 'Kit', icon: '🔦' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1d', text: 'Four hours, one tripod, the whole sky turning. Steady trails with the <b>Star Tracker Mount</b>.', img: U('1768466587836-7f031fd5e632', 800, 440), eng: '♡ 4.2K · 💬 240', product: 1 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 25% off binoculars', when: 'Nov 27 · All day', desc: 'A quarter off every pair, one day only.', registered: 980, capacity: 3000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 25% off binoculars', when: 'Dec 4 · All day', desc: 'A quarter off every pair, one day only.', registered: 980, capacity: 3000 } ],
     about: { founded: 'Northumberland · 2012', story: 'Started under some of England’s darkest skies by two astronomers who wanted affordable, honest optics.', milestones: [['2012', 'The first binoculars'], ['2020', 'The Star Tracker'], ['2026', 'Brand Zone on SatelliteXX']], values: ['Honest optics', 'Ten-year warranty', 'Dark skies matter'] } }),
 
   'groundlink-kits': brand({ key: 'groundlink-kits', name: 'Groundlink Kits', color: '#94A3B8', gradient: DEEP, tier: 'Brand Zone',
@@ -220,8 +220,8 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('satellite', [
   { gw: 'satellite', zone: 'orbitra', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Orbitra Live · forty new satellites wake up', desc: 'Watch from mission control as forty satellites unfold their panels and come online.' },
-  { gw: 'satellite', zone: 'clearorbit-imaging', type: 'Sale', icon: '🖼️', time: 'Nov 27', title: 'Clearorbit Black Friday', desc: '30% off every print, one day only.' },
-  { gw: 'satellite', zone: 'nightpass-optics', type: 'Sale', icon: '🔭', time: 'Nov 27', title: 'Nightpass Black Friday', desc: '25% off every pair of binoculars.' },
+  { gw: 'satellite', zone: 'clearorbit-imaging', type: 'Sale', icon: '🖼️', time: 'Dec 4', title: 'Clearorbit Christmas sale', desc: '30% off every print, one day only.' },
+  { gw: 'satellite', zone: 'nightpass-optics', type: 'Sale', icon: '🔭', time: 'Dec 4', title: 'Nightpass Christmas sale', desc: '25% off every pair of binoculars.' },
   { gw: 'satellite', type: 'Event', icon: '🛰️', time: 'Nov 30', title: 'Beginners’ spotting night', desc: 'Satellite Spotters help newcomers find their first satellite.' },
   { gw: 'satellite', type: 'Event', icon: '🎤', time: 'Dec 2', title: 'Talk: how a satellite gets built, Glasgow', desc: 'Glasgow Space Meetup hears from a satellite engineer.' },
   { gw: 'satellite', zone: 'groundlink-kits', type: 'Event', icon: '📡', time: 'Dec 3', title: 'Build night: your first ground station', desc: 'Build a Groundlink Starter Kit live, then catch a pass together.' },

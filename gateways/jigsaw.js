@@ -175,7 +175,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'boards', label: 'Boards', icon: '🗄️' }, { key: 'mats', label: 'Mats', icon: '🌀' }, { key: 'trays', label: 'Trays', icon: '🟦' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Edges in one tray, sky in another: the <b>Sorting Trays</b>, stacked.', img: U('1684773585761-fde68b4ece42', 800, 440), eng: '♡ 5.6K · 💬 420', product: 2 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: a quarter off boards', when: 'Nov 27 · All day', desc: 'A quarter off every board and desk, for one day.', registered: 1240, capacity: 3500 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: a quarter off boards', when: 'Dec 4 · All day', desc: 'A quarter off every board and desk, for one day.', registered: 1240, capacity: 3500 } ],
     about: { founded: 'Sheffield · 2018', story: 'A carpenter who built a puzzle board for his mum and got 400 orders from her friends.', milestones: [['2018', 'The first board'], ['2022', 'The Puzzle Desk'], ['2026', 'Brand Zone on JigsawXX']], values: ['Made in Sheffield', 'FSC timber', 'Repairs for life'] } }),
 
   'puzzle-post': brand({ key: 'puzzle-post', name: 'Puzzle Post', color: '#7A52AE', gradient: PLUM, tier: 'Brand Zone',
@@ -218,7 +218,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('jigsaw', [
   { gw: 'jigsaw', zone: 'haverly-puzzles', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Haverly Live · Speed puzzling, 500 pieces against the clock', desc: 'Four of Britain’s fastest puzzlers race the same puzzle live, with commentary.' },
-  { gw: 'jigsaw', zone: 'board-sort', type: 'Sale', icon: '🗄️', time: 'Nov 27', title: 'Board & Sort Black Friday', desc: 'A quarter off every board and desk, for one day.' },
+  { gw: 'jigsaw', zone: 'board-sort', type: 'Sale', icon: '🗄️', time: 'Dec 4', title: 'Board & Sort Christmas sale', desc: 'A quarter off every board and desk, for one day.' },
   { gw: 'jigsaw', type: 'Event', icon: '⏱️', time: 'Nov 28', title: 'Online speed puzzling heat', desc: 'The Thousand Piece Club: same puzzle, same start, 90 minutes.' },
   { gw: 'jigsaw', type: 'Event', icon: '🔄', time: 'Nov 28', title: 'Monthly puzzle swap, Bath', desc: 'Bath Puzzle Swap: bring one, take one, have cake.' },
   { gw: 'jigsaw', zone: 'puzzle-post', type: 'Event', icon: '❓', time: 'Dec 1', title: 'December mystery puzzle ships', desc: 'Puzzle Post’s December mystery goes out.' },

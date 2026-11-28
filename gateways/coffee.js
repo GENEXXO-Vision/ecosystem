@@ -163,7 +163,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'grinders', label: 'Grinders', icon: '⚙️' }, { key: 'kettles', label: 'Kettles', icon: '🫖' }, { key: 'drippers', label: 'Drippers', icon: '🔻' }, { key: 'scales', label: 'Scales', icon: '⚖️' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Steam, stretch, pour: our milk jug is back in stock alongside the <b>Brew Scale</b>.', img: U('1757495152561-1f632725b271', 800, 440), eng: '♡ 6.8K · 💬 520', product: 3 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: a fifth off grinders', when: 'Nov 27 · All day', desc: 'A fifth off every grinder, for one day.', registered: 3860, capacity: 9000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: a fifth off grinders', when: 'Dec 4 · All day', desc: 'A fifth off every grinder, for one day.', registered: 3860, capacity: 9000 } ],
     about: { founded: 'Sheffield · 2017', story: 'Two engineers who wanted their home coffee to taste the same every day. Our grinders are machined in Sheffield.', milestones: [['2017', 'The first hand grinder'], ['2023', 'The gooseneck kettle'], ['2026', 'Brand Zone on CoffeeXX']], values: ['Made to repeat', 'Spare parts for everything', 'Machined in Britain'] } }),
 
   'crema-club': brand({ key: 'crema-club', name: 'Crema Club', color: '#A8916C', gradient: OAT, tier: 'Brand Zone',
@@ -221,7 +221,7 @@ Object.assign(ZONES, {
 gxEvents('coffee', [
   { gw: 'coffee', zone: 'ember-bean', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Ember & Bean Live · Cupping the 2026 Ethiopians', desc: 'Six new Ethiopian lots cupped live, and which ones to buy.' },
   { gw: 'coffee', type: 'Event', icon: '☕', time: 'Dec 1', title: 'Live home cupping', desc: 'Brew Club: four coffees, one kitchen table, everyone tasting together.' },
-  { gw: 'coffee', zone: 'pourwell', type: 'Sale', icon: '⚙️', time: 'Nov 27', title: 'Pourwell Black Friday', desc: 'A fifth off every grinder, for one day.' },
+  { gw: 'coffee', zone: 'pourwell', type: 'Sale', icon: '⚙️', time: 'Dec 4', title: 'Pourwell Christmas sale', desc: 'A fifth off every grinder, for one day.' },
   { gw: 'coffee', zone: 'crema-club', type: 'Event', icon: '📬', time: 'Dec 1', title: 'Crema Club: December box reveal', desc: 'Meet December’s roaster live as the boxes land.' },
   { gw: 'coffee', type: 'Event', icon: '🔄', time: 'Dec 3', title: 'Home brewers’ bean swap, Brighton', desc: 'Brighton Coffee Crawl: bring a bag, take a bag.' },
   { gw: 'coffee', type: 'Event', icon: '🥛', time: 'Dec 4', title: 'Latte art class, Bristol', desc: 'Maya Brooks: silky milk, a heart, then a tulip.' },

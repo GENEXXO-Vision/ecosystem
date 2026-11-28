@@ -176,7 +176,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'bags', label: 'Bags', icon: '👜' }, { key: 'straps', label: 'Straps', icon: '🎗️' } ],
     feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'The <b>Walker Shoulder Bag</b>, out on the streets of Bangkok with a customer.', img: U('1493863641943-9b68992a8d07', 800, 440), eng: '♡ 3.6K · 💬 260', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: a quarter off straps', when: 'Nov 27 · All day', desc: 'A quarter off every strap, for one day.', registered: 1460, capacity: 4000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: a quarter off straps', when: 'Dec 4 · All day', desc: 'A quarter off every strap, for one day.', registered: 1460, capacity: 4000 } ],
     about: { founded: 'Walsall · 2015', story: 'A saddlery family in England’s leather town who started making camera straps for a photographer friend.', milestones: [['2015', 'The first strap'], ['2021', 'Waxed canvas bags'], ['2026', 'Brand Zone on CameraXX']], values: ['Made in Walsall', 'Repairs for life', 'Vegetable-tanned leather'] } }),
 
   'shutter-school': brand({ key: 'shutter-school', name: 'Shutter School', color: '#14B8A6', gradient: TEAL, tier: 'Brand Zone',
@@ -220,7 +220,7 @@ Object.assign(ZONES, {
 gxEvents('camera', [
   { gw: 'camera', zone: 'halden-cameras', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Halden Live · Golden hour in the Lake District', desc: 'The winter sunset above Buttermere, shot live with settings on screen.' },
   { gw: 'camera', type: 'Event', icon: '🌃', time: 'Dec 2', title: 'Night photowalk, Merchant City', desc: 'Glasgow Photowalks: city lights, tripods optional.' },
-  { gw: 'camera', zone: 'strap-satchel', type: 'Sale', icon: '🎗️', time: 'Nov 27', title: 'Strap & Satchel Black Friday', desc: 'A quarter off every strap, for one day.' },
+  { gw: 'camera', zone: 'strap-satchel', type: 'Sale', icon: '🎗️', time: 'Dec 4', title: 'Strap & Satchel Christmas sale', desc: 'A quarter off every strap, for one day.' },
   { gw: 'camera', type: 'Event', icon: '🌅', time: 'Nov 28', title: 'Golden hour challenge', desc: 'Golden Hour Club: one photo at golden hour, wherever you are.' },
   { gw: 'camera', zone: 'shutter-school', type: 'Event', icon: '🎓', time: 'Dec 2', title: 'Live photo critique', desc: 'Shutter School tutors critique your photos live.' },
   { gw: 'camera', type: 'Event', icon: '🎄', time: 'Dec 5', title: 'Christmas lights photowalk, Glasgow', desc: 'Glasgow Photowalks from George Square at dusk.' },

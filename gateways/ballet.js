@@ -176,7 +176,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'leotards', label: 'Leotards', icon: '🩱' }, { key: 'warmups', label: 'Warm-ups', icon: '🧶' } ],
     feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'Fourteen sizes, recycled fabric: the <b>Camisole Leotard</b>.', img: U('1675806528444-75a88ed9c014', 800, 440), eng: '♡ 4.6K · 💬 360', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: a quarter off warm-ups', when: 'Nov 27 · All day', desc: 'A quarter off every warm-up, for one day.', registered: 2140, capacity: 6000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: a quarter off warm-ups', when: 'Dec 4 · All day', desc: 'A quarter off every warm-up, for one day.', registered: 2140, capacity: 6000 } ],
     about: { founded: 'Leicester · 2017', story: 'Two dancers who couldn’t find leotards for bodies like theirs. Every style comes in 14 sizes.', milestones: [['2017', 'The first leotard'], ['2023', 'Recycled fabrics'], ['2026', 'Brand Zone on BalletXX']], values: ['Every body', 'Recycled fabric', 'Made in Leicester'] } }),
 
   'barre-at-home': brand({ key: 'barre-at-home', name: 'Barre at Home', color: '#D99AAA', gradient: BLUSH, tier: 'Brand Zone',
@@ -220,7 +220,7 @@ Object.assign(ZONES, {
 gxEvents('ballet', [
   { gw: 'ballet', zone: 'riverside-ballet', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Riverside Ballet Live · Nutcracker rehearsal', desc: 'The snow scene, rehearsed live, with the ballet mistress explaining every correction.' },
   { gw: 'ballet', type: 'Event', icon: '🩰', time: 'Dec 1', title: 'Online adult beginners class', desc: 'Adult Ballet Club: a gentle first class from your kitchen.' },
-  { gw: 'ballet', zone: 'arabesque-wear', type: 'Sale', icon: '🧶', time: 'Nov 27', title: 'Arabesque Black Friday', desc: 'A quarter off every warm-up, for one day.' },
+  { gw: 'ballet', zone: 'arabesque-wear', type: 'Sale', icon: '🧶', time: 'Dec 4', title: 'Arabesque Christmas sale', desc: 'A quarter off every warm-up, for one day.' },
   { gw: 'ballet', type: 'Event', icon: '🎄', time: 'Dec 4', title: 'The Nutcracker opens, Bristol', desc: 'Riverside Ballet’s opening night, with a live orchestra.' },
   { gw: 'ballet', zone: 'pointe-ribbon', type: 'Event', icon: '👣', time: 'Dec 5', title: 'Pointe fitting day, Northampton', desc: 'Free fittings with the makers. Teacher’s note needed for a first pair.' },
   { gw: 'ballet', type: 'Event', icon: '🎟️', time: 'Dec 3', title: 'Group trip to the Nutcracker, Manchester', desc: 'Manchester Adult Ballet goes to the ballet together.' },

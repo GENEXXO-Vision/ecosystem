@@ -175,7 +175,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'posters', label: 'Posters', icon: '🖼️' }, { key: 'leaflets', label: 'Leaflets', icon: '📄' } ],
     feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'Brick, gold frame, your message. A3 or bigger, our <b>A3 Poster Pack</b> starts small.', img: U('1727488962226-e271159f7a93', 800, 440), eng: '♡ 5.4K · 💬 380', product: 3 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: free delivery on posters', when: 'Nov 27 · All day', desc: 'Free next-day delivery on every poster order.', registered: 1340, capacity: 4000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: free delivery on posters', when: 'Dec 4 · All day', desc: 'Free next-day delivery on every poster order.', registered: 1340, capacity: 4000 } ],
     about: { founded: 'Nottingham · 1994', story: 'A family print shop that went from wedding invitations to bus shelters.', milestones: [['1994', 'The first press'], ['2019', 'All recycled paper'], ['2026', 'Brand Zone on AdvertisingXX']], values: ['Recycled paper', 'Proofs you can trust', 'Friendly people'] } }),
 
   'clearcopy': brand({ key: 'clearcopy', name: 'Clearcopy', color: '#94A3B8', gradient: INK, tier: 'Brand Zone',
@@ -218,7 +218,7 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('advertising', [
   { gw: 'advertising', zone: 'bigboard-media', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Bigboard Live · a bakery’s first poster goes up', desc: 'Watch the paste-up in Leeds, then see who stops to look.' },
-  { gw: 'advertising', zone: 'inkwell-print', type: 'Sale', icon: '🖼️', time: 'Nov 27', title: 'Inkwell Black Friday', desc: 'Free next-day delivery on every poster order.' },
+  { gw: 'advertising', zone: 'inkwell-print', type: 'Sale', icon: '🖼️', time: 'Dec 4', title: 'Inkwell Christmas sale', desc: 'Free next-day delivery on every poster order.' },
   { gw: 'advertising', type: 'Event', icon: '🗳️', time: 'Dec 2', title: 'Live crit: your posters', desc: 'Ad Crit gives kind, honest feedback.' },
   { gw: 'advertising', zone: 'lumen-studios', type: 'Event', icon: '📸', time: 'Dec 3', title: 'Open studio: shoot your product free', desc: 'Bring one product, leave with three photos.' },
   { gw: 'advertising', type: 'Event', icon: '📻', time: 'Dec 4', title: 'Manchester Creatives: making radio ads', desc: 'A talk and pints in Manchester.' },

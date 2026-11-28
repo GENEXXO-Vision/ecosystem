@@ -176,7 +176,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'kits', label: 'Kits', icon: '🎬' }, { key: 'sound', label: 'Sound', icon: '🎙️' }, { key: 'light', label: 'Light', icon: '💡' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Scene one, take one. The <b>First Film Kit</b>, out on a student shoot in Manchester.', img: U('1515634928627-2a4e0dae3ddf', 800, 440), eng: '♡ 6.4K · 💬 520', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: a fifth off kits', when: 'Nov 27 · All day', desc: 'A fifth off every kit, for one day.', registered: 1640, capacity: 5000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: a fifth off kits', when: 'Dec 4 · All day', desc: 'A fifth off every kit, for one day.', registered: 1640, capacity: 5000 } ],
     about: { founded: 'Manchester · 2018', story: 'Two film graduates who wished someone had sold them the right kit when they started.', milestones: [['2018', 'The first kit'], ['2023', 'Video lessons'], ['2026', 'Brand Zone on FilmXX']], values: ['Kit that lasts', 'Free lessons', 'Student discounts'] } }),
 
   'short-film-academy': brand({ key: 'short-film-academy', name: 'Short Film Academy', color: '#14B8A6', gradient: INK, tier: 'Brand Zone',
@@ -221,7 +221,7 @@ gxEvents('film', [
   { gw: 'film', zone: 'lantern-cinemas', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Lantern Live · Q&A with the director of The Quiet Harbour', desc: 'Straight after the screening, live to six cinemas and to you.' },
   { gw: 'film', type: 'Event', icon: '🎞️', time: 'Nov 30', title: 'Monday screening, Cardiff', desc: 'Cardiff Film Society: a film, then a pub and a good argument.' },
   { gw: 'film', type: 'Event', icon: '🍿', time: 'Dec 3', title: 'Watch party: film of the week', desc: 'The Film Club watches together online, spoilers tagged.' },
-  { gw: 'film', zone: 'clapper-kit', type: 'Sale', icon: '🎬', time: 'Nov 27', title: 'Clapper Kit Black Friday', desc: 'A fifth off every filmmaking kit, for one day.' },
+  { gw: 'film', zone: 'clapper-kit', type: 'Sale', icon: '🎬', time: 'Dec 4', title: 'Clapper Kit Christmas sale', desc: 'A fifth off every filmmaking kit, for one day.' },
   { gw: 'film', zone: 'reelhouse', type: 'Event', icon: '🎄', time: 'Dec 1', title: 'The December Collection begins', desc: 'Reelhouse: a new film every night of December.' },
   { gw: 'film', type: 'Event', icon: '🎥', time: 'Dec 7', title: 'Members’ short-film night, Cardiff', desc: 'Cardiff Film Society members screen their own films.' },
   { gw: 'film', zone: 'short-film-academy', type: 'Deadline', icon: '🎓', time: 'Dec 15', title: 'January course: last day to enrol', desc: 'Short Film Academy: enrol by midnight to start in January.' },

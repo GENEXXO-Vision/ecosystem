@@ -162,7 +162,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'kids', label: 'Kids', icon: '👙' }, { key: 'baby', label: 'Baby', icon: '👶' }, { key: 'family', label: 'Family', icon: '👨‍👩‍👧' } ],
     feed: [ { type: 'post', sub: 'Brand post · 4h', text: 'Down the slide in a <b>Spotted Swimsuit</b>: bright enough to see from the top of the stairs.', img: U('1706843540922-5682f3ad5b98', 800, 440), eng: '♡ 5.8K · 💬 340', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 30% off swimwear', when: 'Nov 27 · All day', desc: 'Thirty per cent off everything, one day only.', registered: 2860, capacity: 8000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 30% off swimwear', when: 'Dec 4 · All day', desc: 'Thirty per cent off everything, one day only.', registered: 2860, capacity: 8000 } ],
     about: { founded: 'Cornwall · 2016', story: 'A swimming teacher who couldn’t spot children in dark swimsuits in a busy pool, and started making bright ones.', milestones: [['2016', 'The first swimsuit'], ['2022', 'Recycled fabrics'], ['2026', 'Brand Zone on WaterparkXX']], values: ['Bright for safety', 'UPF 50+', 'Recycled nylon'] } }),
 
   'floatabout': brand({ key: 'floatabout', name: 'Floatabout', color: '#EA580C', gradient: SUN, tier: 'Brand Zone',
@@ -219,8 +219,8 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('waterpark', [
   { gw: 'waterpark', zone: 'splashline-parks', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Splashline Live · First ride on The Plunge', desc: 'The first public riders on Birmingham’s new drop slide, live, with POV cameras.' },
-  { gw: 'waterpark', type: 'Event', icon: '🗳️', time: 'Nov 27', title: 'Slide of the year: live vote', desc: 'Slide Hunters pick 2026’s best slide, live online.' },
-  { gw: 'waterpark', zone: 'tidewell-swim', type: 'Sale', icon: '👙', time: 'Nov 27', title: 'Tidewell Black Friday', desc: '30% off all swimwear, one day only.' },
+  { gw: 'waterpark', type: 'Event', icon: '🗳️', time: 'Dec 4', title: 'Slide of the year: live vote', desc: 'Slide Hunters pick 2026’s best slide, live online.' },
+  { gw: 'waterpark', zone: 'tidewell-swim', type: 'Sale', icon: '👙', time: 'Dec 4', title: 'Tidewell Christmas sale', desc: '30% off all swimwear, one day only.' },
   { gw: 'waterpark', type: 'Event', icon: '🏊', time: 'Nov 29', title: 'Family swim morning, Manchester', desc: 'Manchester Splash Families meet for a relaxed Sunday swim.' },
   { gw: 'waterpark', zone: 'floatabout', type: 'Event', icon: '🎁', time: 'Dec 3', title: 'Floatabout gift guide live', desc: 'Water toys for every age, with questions answered.' },
   { gw: 'waterpark', zone: 'wavehouse-surf', type: 'Event', icon: '🌙', time: 'Dec 12', title: 'Night surf under the lights', desc: 'Wavehouse Surf after dark, with music and hot chocolate.' },

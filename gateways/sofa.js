@@ -163,7 +163,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'covers', label: 'Covers', icon: '📏' }, { key: 'cushions', label: 'Cushions', icon: '🟧' }, { key: 'refills', label: 'Refills', icon: '🪶' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Twenty-four velvets. Pick four and we will tell you if they work together.', img: U('1553114552-c4ece3a33c93', 800, 440), eng: '♡ 5.2K · 💬 410', product: 1 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday cushion sale', when: 'Nov 27 · All day', desc: 'A third off every scatter cushion for one day.', registered: 3620, capacity: 9000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas cushion sale', when: 'Dec 4 · All day', desc: 'A third off every scatter cushion for one day.', registered: 3620, capacity: 9000 } ],
     about: { founded: 'Nottingham · 2017', story: 'A family of curtain-makers who started cutting covers for people’s tired sofas. Now we do it for 30,000 homes a year.', milestones: [['2017', 'The first made-to-measure cover'], ['2023', 'Any brand, any cushion'], ['2026', 'Brand Zone on SofaXX']], values: ['Refresh, don’t replace', 'Cut in Nottingham', 'Washable, always'] } }),
 
   'woolpack': brand({ key: 'woolpack', name: 'Woolpack Throws', color: '#A0845C', gradient: OAT, tier: 'Brand Zone',
@@ -187,11 +187,11 @@ Object.assign(ZONES, {
       { name: 'The Spare Room Sofa Bed', price: '£1,090', tag: 'FLAGSHIP', emoji: '🛏️', rating: 4.8, reviews: 1980, cat: 'sofabeds', special: true, desc: 'A 14cm pocket-sprung mattress that unfolds in one pull. A sofa first, a proper bed second.', features: ['W 182 · D 92 cm', 'Double mattress', 'Fits through a 70cm door'], review: { who: 'Ro P.', text: 'Guests say it is better than their bed at home.' } },
       { name: 'Studio Two-Seater', price: '£649', tag: 'BESTSELLER', emoji: '🛋️', rating: 4.7, reviews: 2460, cat: 'sofas', desc: 'A full-depth seat in 150cm, for flats and box rooms.', features: ['W 150 · D 86 cm', 'Legs unscrew'], review: { who: 'Fran L.', text: 'Up three floors with no trouble.' } },
       { name: 'Chair Bed', price: '£590', emoji: '💤', rating: 4.6, reviews: 720, cat: 'sofabeds', desc: 'A single bed hiding in an armchair.', features: ['Single mattress'], review: { who: 'Nate O.', text: 'The kids fight over it at sleepovers.' } },
-      { name: 'Black Friday Sofa Bed Bundle', price: '£990', tag: 'SPECIAL', emoji: '🏷️', rating: 4.8, reviews: 410, cat: 'sofabeds', special: true, desc: 'The Spare Room Sofa Bed with a mattress topper and two pillows.', features: ['This week only'], review: { who: 'Kez M.', text: 'The topper makes it hotel-good.' } }
+      { name: 'Christmas Guest Sofa Bed Bundle', price: '£990', tag: 'SPECIAL', emoji: '🏷️', rating: 4.8, reviews: 410, cat: 'sofabeds', special: true, desc: 'The Spare Room Sofa Bed with a mattress topper and two pillows.', features: ['This week only'], review: { who: 'Kez M.', text: 'The topper makes it hotel-good.' } }
     ],
     shopCats: [ { key: 'sofabeds', label: 'Sofa beds', icon: '🛏️' }, { key: 'sofas', label: 'Small sofas', icon: '🛋️' } ],
     feed: [ { type: 'post', sub: 'Brand post · 3h', text: 'Christmas guests coming? The <b>Spare Room Sofa Bed</b> arrives in five days.', img: U('1605774337664-7a846e9cdf17', 800, 440), eng: '♡ 2.8K · 💬 260', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'LIVE', title: 'Settle Down Live · Black Friday sofa beds', when: 'Live now', desc: 'Watch every sofa bed unfold, and ask how it sleeps, live.', registered: 2960, capacity: 7000 } ],
+    events: [ { zoneEvent: true, tag: 'LIVE', title: 'Settle Down Live · sofa beds for Christmas guests', when: 'Live now', desc: 'Watch every sofa bed unfold, and ask how it sleeps, live.', registered: 2960, capacity: 7000 } ],
     about: { founded: 'Manchester · 2019', story: 'Made for people who live in flats: sofas that fit up the stairs and beds that hide in sofas.', milestones: [['2019', 'The Studio Two-Seater'], ['2024', 'The Spare Room Sofa Bed'], ['2026', 'Brand Zone on SofaXX']], values: ['Fits through the door', 'Real mattresses only', 'Small rooms, big comfort'] } }),
 
   'pennine-foam': { key: 'pennine-foam', kind: 'business', gw: 'sofa', name: 'Pennine Foam & Fibre', color: '#A0845C', gradient: OAT, img: U('1762803841519-25bb12e01579', 900, 500),
@@ -219,9 +219,9 @@ Object.assign(ZONES, {
 
 /* events in the Events tab */
 gxEvents('sofa', [
-  { gw: 'sofa', zone: 'settle-down', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Settle Down Live · Black Friday sofa beds', desc: 'Every sofa bed unfolded on camera, and your questions answered.' },
+  { gw: 'sofa', zone: 'settle-down', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Settle Down Live · sofa beds for Christmas guests', desc: 'Every sofa bed unfolded on camera, and your questions answered.' },
   { gw: 'sofa', type: 'Event', icon: '🪑', time: 'Nov 29', title: 'Ask an upholsterer: live Q&A', desc: 'Sofa Shoppers with Nell Hartley: is your old sofa worth saving?' },
-  { gw: 'sofa', zone: 'cushionry', type: 'Sale', icon: '🟧', time: 'Nov 27', title: 'Cushionry Black Friday sale', desc: 'A third off every scatter cushion for one day.' },
+  { gw: 'sofa', zone: 'cushionry', type: 'Sale', icon: '🟧', time: 'Dec 4', title: 'Cushionry Christmas sale', desc: 'A third off every scatter cushion for one day.' },
   { gw: 'sofa', zone: 'hearth-hollow', type: 'Deadline', icon: '🛋️', time: 'Nov 30', title: 'Last order for Christmas delivery', desc: 'Hearth & Hollow: in-stock sofas ordered by midnight arrive before Christmas.' },
   { gw: 'sofa', type: 'Event', icon: '🔨', time: 'Dec 3', title: 'Drop-in stool workshop, Bristol', desc: 'Bristol Upholstery Circle: re-web and recover a stool in an evening. Tools provided.' },
   { gw: 'sofa', zone: 'woolpack', type: 'Event', icon: '🧶', time: 'Dec 5', title: 'Woolpack mill open day, Halifax', desc: 'Watch the looms, then shop seconds in the mill shop.' },

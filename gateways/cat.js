@@ -162,7 +162,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'wet', label: 'Wet food', icon: '🍗' }, { key: 'boxes', label: 'Taster boxes', icon: '📦' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Kitten-sized chunks: the <b>Kitten Recipe</b>, for the first year.', img: U('1529778873920-4da4926a72c2', 800, 440), eng: '♡ 7.8K · 💬 640', product: 2 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: a free taster box', when: 'Nov 27 · All day', desc: 'A free taster box with any order of two cases.', registered: 4120, capacity: 10000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: a free taster box', when: 'Dec 4 · All day', desc: 'A free taster box with any order of two cases.', registered: 4120, capacity: 10000 } ],
     about: { founded: 'Frome · 2016', story: 'A vet nurse and a chef who wanted cat food made like proper food. Every recipe is checked by our vet nutritionist.', milestones: [['2016', 'The first recipe'], ['2022', 'Senior Recipe'], ['2026', 'Brand Zone on CatXX']], values: ['Complete and balanced', 'Small batches', 'Checked by a vet nutritionist'] } }),
 
   'litterly': brand({ key: 'litterly', name: 'Litterly', color: '#2F7E73', gradient: TEAL, tier: 'Brand Zone',
@@ -220,8 +220,8 @@ Object.assign(ZONES, {
 gxEvents('cat', [
   { gw: 'cat', zone: 'purrch', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Purrch Live · Build a catio with us', desc: 'A Garden Catio goes up in an afternoon, with workshop cats supervising.' },
   { gw: 'cat', type: 'Event', icon: '🐾', time: 'Dec 2', title: 'Ask a behaviourist live', desc: 'Cat Lounge with Hannah Price: scratching, spraying and cats who don’t get on.' },
-  { gw: 'cat', zone: 'tabby-kitchen', type: 'Sale', icon: '🍗', time: 'Nov 27', title: 'Tabby Kitchen Black Friday', desc: 'A free taster box with any order of two cases.' },
-  { gw: 'cat', type: 'Event', icon: '🏠', time: 'Nov 27', title: 'New foster training, Cardiff', desc: 'Cardiff Cat Rescue Volunteers: learn to foster. All costs covered.' },
+  { gw: 'cat', zone: 'tabby-kitchen', type: 'Sale', icon: '🍗', time: 'Dec 4', title: 'Tabby Kitchen Christmas sale', desc: 'A free taster box with any order of two cases.' },
+  { gw: 'cat', type: 'Event', icon: '🏠', time: 'Dec 4', title: 'New foster training, Cardiff', desc: 'Cardiff Cat Rescue Volunteers: learn to foster. All costs covered.' },
   { gw: 'cat', zone: 'litterly', type: 'Event', icon: '🌱', time: 'Dec 2', title: 'Litter Q&A with a vet nurse', desc: 'Trays, litter and what changes in the tray can mean.' },
   { gw: 'cat', type: 'Event', icon: '🎄', time: 'Dec 3', title: 'Cats vs Christmas trees photo contest', desc: 'Cat Lounge: show us the chaos. Winners chosen by vote.' },
   { gw: 'cat', type: 'Event', icon: '❤️', time: 'Dec 5', title: 'Christmas adoption day, Cardiff', desc: 'Meet cats looking for homes, with the rescue team on hand.' },

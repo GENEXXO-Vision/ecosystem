@@ -163,7 +163,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'gloss', label: 'Gloss & liquid', icon: '✨' }, { key: 'care', label: 'Lip care', icon: '🌙' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Velvet matte that feels like nothing: <b>Liquid Lip</b> in twelve shades.', img: U('1760860992755-c432351d47e9', 800, 440), eng: '♡ 6.4K · 💬 480', product: 3 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: a third off lip care', when: 'Nov 27 · All day', desc: 'A third off every balm and mask, for one day.', registered: 3240, capacity: 8000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: a third off lip care', when: 'Dec 4 · All day', desc: 'A third off every balm and mask, for one day.', registered: 3240, capacity: 8000 } ],
     about: { founded: 'Brighton · 2016', story: 'Started at a market stall with one lip balm. Now we make glosses and lip care that feel lovely to wear.', milestones: [['2016', 'The first balm'], ['2022', 'The Frost Gloss'], ['2026', 'Brand Zone on LipstickXX']], values: ['Comfort first', 'Vegan', 'Kind to sensitive lips'] } }),
 
   'shade-lab': brand({ key: 'shade-lab', name: 'Shade Lab', color: '#A0674B', gradient: NUDE, tier: 'Brand Zone',
@@ -221,7 +221,7 @@ Object.assign(ZONES, {
 gxEvents('lipstick', [
   { gw: 'lipstick', zone: 'rouge-atelier', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Rouge Atelier Live · Party shades', desc: 'Six party reds on six skin tones, live, with your questions answered.' },
   { gw: 'lipstick', type: 'Event', icon: '💄', time: 'Nov 29', title: 'Swatch Sunday live', desc: 'Swatch Club swatches this week’s launches on every skin tone.' },
-  { gw: 'lipstick', zone: 'velvet-pout', type: 'Sale', icon: '🌙', time: 'Nov 27', title: 'Velvet Pout Black Friday', desc: 'A third off every balm and mask, for one day.' },
+  { gw: 'lipstick', zone: 'velvet-pout', type: 'Sale', icon: '🌙', time: 'Dec 4', title: 'Velvet Pout Christmas sale', desc: 'A third off every balm and mask, for one day.' },
   { gw: 'lipstick', type: 'Event', icon: '🗳️', time: 'Nov 29', title: 'Party reds: the community vote', desc: 'Swatch Club picks the red of the season.' },
   { gw: 'lipstick', zone: 'shade-lab', type: 'Event', icon: '🧪', time: 'Dec 6', title: 'Mix your own: Christmas workshop, Leeds', desc: 'Shade Lab: two hours mixing your own party shade.' },
   { gw: 'lipstick', type: 'Event', icon: '✨', time: 'Dec 11', title: 'Christmas makeover night, Glasgow', desc: 'Glasgow Beauty Collective: makeovers for a local charity.' },

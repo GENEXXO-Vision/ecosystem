@@ -150,7 +150,7 @@ Object.assign(ZONES, {
       { type: 'post', sub: 'Giving back · Yesterday', text: 'This year’s Pride collection raised £148,000 for LGBTQ+ youth charities. Thank you.', img: U('1637631531662-cea0fb4b1d97', 800, 440), eng: '♡ 9.8K · 💬 640' },
       { type: 'community', who: 'Nia O.', whoBg: SKY, sub: 'Community · 1d', text: 'Do you make the knit in bigger sizes? I am a 5XL.', eng: '♡ 380 · 💬 64', reply: 'Hi Nia! Yes: the Winter Pride Knit is made to order up to 6XL. Pick “Made to measure” on the product page and we will knit it for you in about two weeks. 🧶' }
     ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Proud Friday', when: 'Nov 27 · All day', desc: 'A fifth off everything, and the youth-charity donation doubled for the day.', registered: 6240, capacity: 15000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Proud Friday', when: 'Dec 4 · All day', desc: 'A fifth off everything, and the youth-charity donation doubled for the day.', registered: 6240, capacity: 15000 } ],
     about: { founded: 'Glasgow · 2016', story: 'Two friends with one knitting machine and a stall at Glasgow Pride. Now we knit for the whole country, and a tenth of every Pride piece goes to LGBTQ+ youth charities. Founding Partner on PrideXX because this is where our people are.', milestones: [['2016', 'A stall at Glasgow Pride'], ['2021', 'Our own knitting mill in the East End'], ['2026', 'Founding Partner on PrideXX']], values: ['LGBTQ+-owned, LGBTQ+-staffed', 'Made in Scotland', 'Giving back, every sale'] } }),
 
   'spectrum-books': brand({ key: 'spectrum-books', name: 'Spectrum Books', color: '#7DD3FC', gradient: SKY, tier: 'Brand Zone',
@@ -222,7 +222,7 @@ Object.assign(ZONES, {
 gxEvents('pride', [
   { gw: 'pride', zone: 'out-and-away', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Out & Away Live · Pride trips 2027', desc: 'Planners walk through Madrid, Amsterdam and Sitges and answer your questions in the chat.' },
   { gw: 'pride', type: 'Event', icon: '🧣', time: 'Dec 10', title: 'Trans+ winter social, Manchester', desc: 'Manchester Queer Social: hot drinks, games and good company in the Northern Quarter. All welcome.' },
-  { gw: 'pride', zone: 'proud-threads', type: 'Sale', icon: '🧶', time: 'Nov 27', title: 'Proud Friday at Proud Threads', desc: 'A fifth off everything, and the youth-charity donation doubled.' },
+  { gw: 'pride', zone: 'proud-threads', type: 'Sale', icon: '🧶', time: 'Dec 4', title: 'Proud Friday at Proud Threads', desc: 'A fifth off everything, and the youth-charity donation doubled.' },
   { gw: 'pride', zone: 'spectrum-books', type: 'Event', icon: '📚', time: 'Nov 28', title: 'Queer book club online', desc: 'Spectrum Books: this month’s pick, with the author for the last half hour.' },
   { gw: 'pride', type: 'Event', icon: '🎗️', time: 'Dec 1', title: 'World AIDS Day: red ribbon walk, London', desc: 'Out & About walks from King’s Cross to remember, and raises money for HIV charities.' },
   { gw: 'pride', type: 'Event', icon: '💼', time: 'Dec 3', title: 'Getting pronouns right at work: free webinar', desc: 'Open Door Workplace Inclusion, 12:30. For managers and colleagues.' },

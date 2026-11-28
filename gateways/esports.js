@@ -162,7 +162,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'audio', label: 'Audio', icon: '🎧' }, { key: 'mice', label: 'Mice', icon: '🖱️' }, { key: 'keyboards', label: 'Keyboards', icon: '⌨️' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'The <b>Pulse Pro</b>, tested for 48 hours straight by our engineers (not by players).', img: U('1636036824578-d0d300a4effb', 800, 440), eng: '♡ 8.4K · 💬 640', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: a quarter off headsets', when: 'Nov 27 · All day', desc: 'A quarter off every headset, for one day.', registered: 4860, capacity: 12000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: a quarter off headsets', when: 'Dec 4 · All day', desc: 'A quarter off every headset, for one day.', registered: 4860, capacity: 12000 } ],
     about: { founded: 'Cambridge · 2015', story: 'Engineers who played competitively and wanted kit that lasts.', milestones: [['2015', 'The first mouse'], ['2022', 'Official kit of the Northern Circuit'], ['2026', 'Brand Zone on EsportsXX']], values: ['Repairable', 'Two-year guarantee', 'Recycled packaging'] } }),
 
   'ready-up': brand({ key: 'ready-up', name: 'Ready Up', color: '#A3E635', gradient: LIME, tier: 'Brand Zone',
@@ -220,7 +220,7 @@ Object.assign(ZONES, {
 gxEvents('esports', [
   { gw: 'esports', zone: 'volt-arena', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Volt Arena Live · Northern Circuit Grand Final', desc: 'Mersey Wolves vs Clyde Kestrels, best of five, live from Manchester.' },
   { gw: 'esports', type: 'Event', icon: '👋', time: 'Dec 2', title: 'New players’ night, Manchester', desc: 'Manchester LAN Club: bring your rig, meet a team.' },
-  { gw: 'esports', zone: 'kinetic-gear', type: 'Sale', icon: '🎧', time: 'Nov 27', title: 'Kinetic Gear Black Friday', desc: 'A quarter off every headset, for one day.' },
+  { gw: 'esports', zone: 'kinetic-gear', type: 'Sale', icon: '🎧', time: 'Dec 4', title: 'Kinetic Gear Christmas sale', desc: 'A quarter off every headset, for one day.' },
   { gw: 'esports', type: 'Event', icon: '🏆', time: 'Nov 28', title: 'Community cup qualifiers', desc: 'Ready Check: open qualifiers, online.' },
   { gw: 'esports', zone: 'ready-up', type: 'Event', icon: '🪑', time: 'Dec 5', title: 'Free posture check day', desc: 'Ready Up and Dr Elena Voss check your set-up by video.' },
   { gw: 'esports', type: 'Event', icon: '🖥️', time: 'Dec 5', title: 'December LAN, Manchester', desc: 'Manchester LAN Club’s monthly bracket in the Northern Quarter.' },

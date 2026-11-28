@@ -177,7 +177,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'sleep', label: 'Sleep', icon: '🛏️' }, { key: 'kitchen', label: 'Kitchen', icon: '☕' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1d', text: 'Tail lights, tea in the <b>Cab Kettle</b>, last mile to the stop.', img: U('1795370518758-93bc97f645a5', 800, 440), eng: '♡ 3.2K · 💬 210', product: 2 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 25% off cab kit', when: 'Nov 27 · All day', desc: 'A quarter off everything, one day only.', registered: 1240, capacity: 5000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 25% off cab kit', when: 'Dec 4 · All day', desc: 'A quarter off everything, one day only.', registered: 1240, capacity: 5000 } ],
     about: { founded: 'Preston · 2015', story: 'A driver couple who kitted out their own cab, then started making the bits they couldn’t buy.', milestones: [['2015', 'The first topper'], ['2022', 'Cab fridges'], ['2026', 'Brand Zone on TruckXX']], values: ['Tested by drivers', 'Fits most cabs', 'Two-year guarantee'] } }),
 
   'gritline-workwear': brand({ key: 'gritline-workwear', name: 'Gritline Workwear', color: '#84CC16', gradient: HIVIS, tier: 'Brand Zone',
@@ -221,7 +221,7 @@ Object.assign(ZONES, {
 gxEvents('truck', [
   { gw: 'truck', zone: 'haulmark-trucks', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Haulmark Live · The E-Haul 44 night run', desc: 'Glasgow to London on one charge, live from the cab.' },
   { gw: 'truck', type: 'Event', icon: '🔋', time: 'Dec 3', title: 'Live Q&A: switching to electric', desc: 'Knights of the Road ask drivers who’ve switched.' },
-  { gw: 'truck', zone: 'nightroute-cab', type: 'Sale', icon: '🛏️', time: 'Nov 27', title: 'Nightroute Black Friday', desc: '25% off cab kit, one day only.' },
+  { gw: 'truck', zone: 'nightroute-cab', type: 'Sale', icon: '🛏️', time: 'Dec 4', title: 'Nightroute Christmas sale', desc: '25% off cab kit, one day only.' },
   { gw: 'truck', zone: 'gritline-workwear', type: 'Event', icon: '🧥', time: 'Dec 1', title: 'Gritline winter kit live', desc: 'What to wear for winter driving, with questions answered.' },
   { gw: 'truck', type: 'Event', icon: '🍳', time: 'Dec 5', title: 'Midlands Truckers’ breakfast', desc: 'The monthly breakfast in Birmingham. New drivers welcome.' },
   { gw: 'truck', type: 'Event', icon: '🎄', time: 'Dec 5', title: 'Christmas convoy for charity', desc: 'Knights of the Road drive together for a children’s charity.' },

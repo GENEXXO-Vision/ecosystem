@@ -162,7 +162,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'chalk', label: 'Chalk', icon: '🧴' }, { key: 'care', label: 'Hand care', icon: '🤲' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Cold bars, warm hands: <b>Liquid Chalk</b> and a hand balm for after.', img: U('1765302741884-e846c7a178df', 800, 440), eng: '♡ 5.4K · 💬 380', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: two-for-one chalk', when: 'Nov 27 · All day', desc: 'Two liquid chalks for the price of one.', registered: 2240, capacity: 6000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: two-for-one chalk', when: 'Dec 4 · All day', desc: 'Two liquid chalks for the price of one.', registered: 2240, capacity: 6000 } ],
     about: { founded: 'Leeds · 2018', story: 'Two climbers who switched to the bars and missed good chalk. We make it in small batches in Leeds.', milestones: [['2018', 'The first liquid chalk'], ['2023', 'Hand care range'], ['2026', 'Brand Zone on CalisthenicsXX']], values: ['Made in Leeds', 'Fragrance-free', 'Kind to skin'] } }),
 
   'lever-apparel': brand({ key: 'lever-apparel', name: 'Lever Apparel', color: '#94A3B8', gradient: SLATE, tier: 'Brand Zone',
@@ -220,7 +220,7 @@ Object.assign(ZONES, {
 gxEvents('calisthenics', [
   { gw: 'calisthenics', zone: 'barline-rigs', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Barline Live · Front lever clinic', desc: 'Coach Dan Kowalski runs the front lever ladder live and checks your form in the chat.' },
   { gw: 'calisthenics', type: 'Event', icon: '🌳', time: 'Nov 29', title: 'Sunday bars session, Manchester', desc: 'Manchester Street Workout at Hulme Park. Beginners’ corner from 10am.' },
-  { gw: 'calisthenics', zone: 'grip-theory', type: 'Sale', icon: '🧴', time: 'Nov 27', title: 'Grip Theory Black Friday', desc: 'Two liquid chalks for the price of one.' },
+  { gw: 'calisthenics', zone: 'grip-theory', type: 'Sale', icon: '🧴', time: 'Dec 4', title: 'Grip Theory Christmas sale', desc: 'Two liquid chalks for the price of one.' },
   { gw: 'calisthenics', zone: 'lever-apparel', type: 'Event', icon: '🧥', time: 'Dec 4', title: 'Lever Apparel winter launch', desc: 'The Winter Park Layer, launched live from Hulme Park.' },
   { gw: 'calisthenics', type: 'Event', icon: '🤸', time: 'Dec 6', title: 'Handstand workshop, Bristol', desc: 'Jordan Blake: three hours, all levels, lots of wall work.' },
   { gw: 'calisthenics', type: 'Event', icon: '💪', time: 'Dec 1', title: 'December pull-up challenge', desc: 'Bar Crew: a little more every day for 31 days, at your level.' },

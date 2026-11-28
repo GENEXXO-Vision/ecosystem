@@ -162,7 +162,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'cnc', label: 'CNC', icon: '⚙️' }, { key: 'printers', label: 'Printers', icon: '🖨️' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1h', text: 'Sparks, a steady beam and a part cut in minutes. The <b>Makerbench Laser</b> at work.', img: U('1764114235891-66ff86abaf87', 800, 440), eng: '♡ 7.8K · 💬 560', product: 2 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 20% off printers', when: 'Nov 27 · All day', desc: 'A fifth off every printer, one day only.', registered: 1480, capacity: 4000 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 20% off printers', when: 'Dec 4 · All day', desc: 'A fifth off every printer, one day only.', registered: 1480, capacity: 4000 } ],
     about: { founded: 'Cambridge · 2015', story: 'Engineers who wanted small shops to make their own parts.', milestones: [['2015', 'The first printer'], ['2022', 'The Mill'], ['2026', 'Brand Zone on FactoryXX']], values: ['Repairable machines', 'Open file formats', 'Schools discount'] } }),
 
   'guardline-workwear': brand({ key: 'guardline-workwear', name: 'Guardline Workwear', color: '#CA8A04', gradient: SAFETY, tier: 'Brand Zone',
@@ -176,7 +176,7 @@ Object.assign(ZONES, {
     ],
     shopCats: [ { key: 'boots', label: 'Boots', icon: '🥾' }, { key: 'gloves', label: 'Gloves & ears', icon: '🧤' }, { key: 'hivis', label: 'Hi-vis', icon: '🦺' } ],
     feed: [ { type: 'post', sub: 'Brand post · 1d', text: 'Hairnets, gloves and good boots, from the first shift to the last. <b>Guardline Safety Boots</b> in every size.', img: U('1652211955967-99c892925469', 800, 440), eng: '♡ 4.2K · 💬 260', product: 0 } ],
-    events: [ { zoneEvent: true, tag: 'SALE', title: 'Black Friday: 30% off boots', when: 'Nov 27 · All day', desc: 'Every pair of safety boots 30% off, one day only.', registered: 1160, capacity: 3500 } ],
+    events: [ { zoneEvent: true, tag: 'SALE', title: 'Christmas sale: 30% off boots', when: 'Dec 4 · All day', desc: 'Every pair of safety boots 30% off, one day only.', registered: 1160, capacity: 3500 } ],
     about: { founded: 'Leeds · 2012', story: 'Started by a factory worker who was tired of safety kit made for someone else’s body.', milestones: [['2012', 'The first boot'], ['2020', 'Women’s range'], ['2026', 'Brand Zone on FactoryXX']], values: ['Real sizes', 'Tested on real shifts', 'Recycled where we can'] } }),
 
   'tallyboard': brand({ key: 'tallyboard', name: 'Tallyboard', color: '#334155', gradient: STEELG, tier: 'Brand Zone',
@@ -219,8 +219,8 @@ Object.assign(ZONES, {
 /* events in the Events tab */
 gxEvents('factory', [
   { gw: 'factory', zone: 'linewise-robotics', type: 'Live', icon: '🔴', live: true, time: 'Live Now', title: 'Linewise Live · a bakery’s first robot', desc: 'A family bakery in Bolton switches on its first collaborative robot.' },
-  { gw: 'factory', zone: 'makerbench', type: 'Sale', icon: '🖨️', time: 'Nov 27', title: 'Makerbench Black Friday', desc: '20% off every 3D printer.' },
-  { gw: 'factory', zone: 'guardline-workwear', type: 'Sale', icon: '🥾', time: 'Nov 27', title: 'Guardline Black Friday', desc: '30% off every pair of safety boots.' },
+  { gw: 'factory', zone: 'makerbench', type: 'Sale', icon: '🖨️', time: 'Dec 4', title: 'Makerbench Christmas sale', desc: '20% off every 3D printer.' },
+  { gw: 'factory', zone: 'guardline-workwear', type: 'Sale', icon: '🥾', time: 'Dec 4', title: 'Guardline Christmas sale', desc: '30% off every pair of safety boots.' },
   { gw: 'factory', type: 'Event', icon: '💬', time: 'Dec 1', title: 'Ask a lean coach: live chat', desc: 'The Shop Floor puts your questions to a lean coach.' },
   { gw: 'factory', zone: 'tallyboard', type: 'Event', icon: '📊', time: 'Dec 3', title: 'Webinar: OEE without the spreadsheets', desc: 'Measure your lines properly, with Tallyboard.' },
   { gw: 'factory', type: 'Event', icon: '🏭', time: 'Dec 4', title: 'Factory tour, Birmingham', desc: 'Birmingham Makers visit a precision machining shop.' },
