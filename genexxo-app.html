@@ -1895,8 +1895,8 @@ if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true
   </aside>
 </div>
 
-<script src="genexxo-data.js?v=2026.08.26-105"></script>
-<script src="genexxo-core.js?v=2026.08.26-105"></script>
+<script src="genexxo-data.js?v=2026.08.26-106"></script>
+<script src="genexxo-core.js?v=2026.08.26-106"></script>
 <script>
 /* LOAD GUARD (2026-10-16). The data and core files arrive by plain <script> tags. If the host answers with an
    error page instead (Cloudflare 520/525 that day), nothing they define exists, the app below throws, and the
@@ -2069,7 +2069,7 @@ function loadFavs(){
     const g=localStorage.getItem('gx_favs'), b=localStorage.getItem('gx_brandFavs'), w=localStorage.getItem('gx_wallet'), pf=localStorage.getItem('gx_proFavs'), cm=localStorage.getItem('gx_commFavs'), cs=localStorage.getItem('gx_commStars');
     const sc=localStorage.getItem('gx_sectorFavs'), rc=localStorage.getItem('gx_recent');
     return { favs: g?JSON.parse(g):[...YOUR_GATEWAYS], brandFavs: b?JSON.parse(b):[],
-             sectorFavs: sc?JSON.parse(sc):[], recent: rc?JSON.parse(rc):[],
+             sectorFavs: sc?JSON.parse(sc):[], recent: rc?trimRecent(JSON.parse(rc)):[],
              wallet: w?JSON.parse(w):[{name:'Route Logger',color:'#4ADE80',gw:'ClimbXX'}], proFavs: pf?JSON.parse(pf):[], commFavs: cm?JSON.parse(cm):[], commStars: cs?JSON.parse(cs):(cm?JSON.parse(cm):[]) };
   }catch(e){ return { favs:[...YOUR_GATEWAYS], brandFavs:[], sectorFavs:[], recent:[], wallet:[{name:'Route Logger',color:'#4ADE80',gw:'ClimbXX'}], proFavs:[], commFavs:[], commStars:[] }; }
 }
@@ -2088,15 +2088,18 @@ function saveFavs(){
 /* Recent activity (2026-07-31): every committed navigation to a real place — a sector,
    a gateway, a brand zone — is logged most-recent-first, deduped, capped. Feeds the
    ★ panel's "Recent activity" tab. Pro Zones/apps join once they become destinations. */
-const RECENT_CAP = { sector:5 };   // every other kind keeps 15
 function logVisit(t, k){
   if(!t || !k || !state.recent) return;
   state.recent = state.recent.filter(r=>!(r.t===t && r.k===k));
   state.recent.unshift({t, k});
-  // -105 (Sean): capped per kind, not overall: the last 5 sectors and 15 of everything else.
-  const seen = {};
-  state.recent = state.recent.filter(r=>(seen[r.t]=(seen[r.t]||0)+1) <= (RECENT_CAP[r.t]||15));
+  state.recent = trimRecent(state.recent);
   saveFavs();
+}
+// -105 (Sean): capped per kind, not overall: the last 5 sectors and 15 of everything else.
+// -106: also applied on load, so a list saved before the cap is trimmed straight away.
+function trimRecent(list){
+  const seen = {};
+  return (list||[]).filter(r=>(seen[r.t]=(seen[r.t]||0)+1) <= ({sector:5}[r.t]||15));
 }
 const FAVS_INIT = loadFavs();
 function loadJSON(k, dflt){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):dflt(); }catch(e){ return dflt(); } }
@@ -2813,7 +2816,7 @@ const LIVE_DOT = '<span title="Built out · live" style="width:8px;height:8px;bo
 /* Build stamp — bump on every deploy. Shown in the Profile footer so any device can be
    glanced at to confirm which build it's running (kills the "did my push land?" guesswork
    when iOS caches a stale start page). Format: YYYY.MM.DD-n. */
-const BUILD = '2026.08.26-105';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
+const BUILD = '2026.08.26-106';  // Back climbs altitude instead of popping history; Discover remembers a glimpse like Events; search accepts plantxx / plantxx.com; Live tab in the star panel; info/apply/star icons on every root-level screen. Taxonomy: 13 outstanding guest placements applied (467 shelves, 6,754 placements).
 
 /* Chrome bar (2026-07-21): full-width second deck of the top chrome, sticky under
    the top bar. Title on the left names the altitude (Network / sector), view
